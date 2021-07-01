@@ -1,7 +1,5 @@
 plugins {
 	id 'java'
-	id 'antlr'
-	id 'org.fulib.fulibGradle' version '0.5.0'
 }
 
 group = 'org.fulib'
@@ -18,8 +16,6 @@ sourceSets.create('gen')
 
 // Das
 dependencies {
-	fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.0'
-
 	genImplementation rootProject
 	genImplementation 'org.fulib:fulibTools:1.5.1'
 
@@ -45,6 +41,8 @@ tasks.register('genModel', JavaExec) {
 	it.inputs.dir('src/main/java')
 	it.outputs.dir('src/main/java')
 }
+
+jar.enabled(false)
 
 // https://github.com/gradle/gradle/issues/820
 configurations.compile {
