@@ -21,6 +21,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.fulib/fulib
 	api group: 'org.fulib', name: 'fulib', version: '1.5.0'
 
+	fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.0'
 
 	implementation 'org.fulib:fulibTables:1.4.0'
 	implementation 'org.fulib:fulibTools:1.5.1'

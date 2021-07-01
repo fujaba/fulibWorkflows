@@ -16,6 +16,8 @@ repositories {
 
 // Das
 dependencies {
+	fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.0'
+
 	genImplementation rootProject
 	genImplementation 'org.fulib:fulibTools:1.5.1'
 

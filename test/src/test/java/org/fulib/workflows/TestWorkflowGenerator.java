@@ -17,9 +17,7 @@ public class TestWorkflowGenerator
    @Test
    public void testLoadEventModel() throws IOException
    {
-      String yaml = Files.readString(Path.of("src/test/src/test/resources/org/fulib/workflows/ShopWorkflow.yml"));
-      ArrayList<LinkedHashMap<String, String>> maps = new Yamler().decodeList(yaml);
 
-      System.out.println();
+
    }
 }
