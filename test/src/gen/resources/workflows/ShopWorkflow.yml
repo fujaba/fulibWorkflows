@@ -1,0 +1,31 @@
+
+- WorkflowStarted: monday
+
+
+- ProductStored: 12:00
+  box: box23
+  product: shoes
+  place: shelf23
+
+- OrderRegistered: 13:00
+  product: shoes
+  customer: Alice
+  address: "Wonderland 1"
+
+- OrderPicked: 14:00
+  order: order_13:00
+  box: box23
+  customer: Alice
+  address: "Wonderland 1"
+
+- ServiceRegistered: 10:00
+  name: Shop
+  events: "OrderRegistered OrderPicked"
+
+- ServiceRegistered: 10:10
+  name: Storage
+  events: "ProductStored OrderRegistered OrderPicked"
+
+- UserRegistered: 10:30
+  name: Alice
+  role: Customer

@@ -1,0 +1,6 @@
+
+startEventBroker() ::= <<
+// start the event broker
+eventBroker = new EventBroker();
+eventBroker.start();
+>>

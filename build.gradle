@@ -3,8 +3,6 @@ plugins {
 	id 'org.fulib.fulibGradle' version '0.5.0'
 }
 
-jar.enabled = false
-
 group = 'org.fulib'
 version = '0.1.0'
 
@@ -25,6 +23,8 @@ dependencies {
 
 	implementation 'org.fulib:fulibTables:1.4.0'
 	implementation 'org.fulib:fulibTools:1.5.1'
+
+	implementation group: 'org.antlr', name: 'ST4', version: '4.3'
 
 	testImplementation group: 'junit', name: 'junit', version: '4.13'
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.13.2'

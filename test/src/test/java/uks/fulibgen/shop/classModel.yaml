@@ -1,0 +1,51 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	testmonday
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"src/test/java"
+  packageName: 	uks.fulibgen.shop
+  packageSrcFolder: 	"src/test/java/uks/fulibgen/shop"
+
+- testmonday: 	org.fulib.classmodel.Clazz
+  attributes: 	testmonday_eventBroker
+  importList: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.EventBroker;"
+  imports: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.EventBroker;"
+  methods: 	testmonday_monday
+  model: 	c
+  modified: 	false
+  name: 	Testmonday
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- testmonday_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testmonday
+  id: 	Testmonday_eventBroker
+  modified: 	false
+  name: 	eventBroker
+  propertyStyle: 	Bean
+  type: 	EventBroker
+  typeSignature: 	EventBroker
+
+- testmonday_monday: 	org.fulib.classmodel.FMethod
+  annotations: 	"@Test"
+  clazz: 	testmonday
+  declaration: 	"@Test
+public void monday()"
+  id: 	Testmonday_monday
+  methodBody: 	"// start the event broker
+eventBroker = new EventBroker();
+eventBroker.start();"
+  modified: 	false
+  modifiers: 	public
+  name: 	monday
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/Testmonday/method/monday()"
+

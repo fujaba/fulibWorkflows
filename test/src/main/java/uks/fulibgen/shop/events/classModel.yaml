@@ -1,0 +1,164 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	event 	serviceSubscribed 	productStored 	orderRegistered 	orderPicked
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"src/main/java"
+  packageName: 	uks.fulibgen.shop.events
+  packageSrcFolder: 	"src/main/java/uks/fulibgen/shop/events"
+
+- event: 	org.fulib.classmodel.Clazz
+  attributes: 	event_id
+  model: 	c
+  modified: 	false
+  name: 	Event
+  propertyStyle: 	Bean
+  subClasses: 	serviceSubscribed 	productStored 	orderRegistered 	orderPicked
+
+- serviceSubscribed: 	org.fulib.classmodel.Clazz
+  attributes: 	serviceSubscribed_serviceUrl
+  model: 	c
+  modified: 	false
+  name: 	ServiceSubscribed
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- productStored: 	org.fulib.classmodel.Clazz
+  attributes: 	productStored_box 	productStored_product 	productStored_place
+  model: 	c
+  modified: 	false
+  name: 	ProductStored
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- orderRegistered: 	org.fulib.classmodel.Clazz
+  attributes: 	orderRegistered_product 	orderRegistered_customer 	orderRegistered_address
+  model: 	c
+  modified: 	false
+  name: 	OrderRegistered
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- orderPicked: 	org.fulib.classmodel.Clazz
+  attributes: 	orderPicked_order 	orderPicked_box 	orderPicked_customer 	orderPicked_address
+  model: 	c
+  modified: 	false
+  name: 	OrderPicked
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- event_id: 	org.fulib.classmodel.Attribute
+  clazz: 	event
+  id: 	Event_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- serviceSubscribed_serviceUrl: 	org.fulib.classmodel.Attribute
+  clazz: 	serviceSubscribed
+  id: 	ServiceSubscribed_serviceUrl
+  modified: 	false
+  name: 	serviceUrl
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStored_box: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_box
+  modified: 	false
+  name: 	box
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStored_product: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStored_place: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_place
+  modified: 	false
+  name: 	place
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderRegistered_product: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderRegistered_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderRegistered_address: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderPicked_order: 	org.fulib.classmodel.Attribute
+  clazz: 	orderPicked
+  id: 	OrderPicked_order
+  modified: 	false
+  name: 	order
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderPicked_box: 	org.fulib.classmodel.Attribute
+  clazz: 	orderPicked
+  id: 	OrderPicked_box
+  modified: 	false
+  name: 	box
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderPicked_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	orderPicked
+  id: 	OrderPicked_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderPicked_address: 	org.fulib.classmodel.Attribute
+  clazz: 	orderPicked
+  id: 	OrderPicked_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+

@@ -1,7 +1,8 @@
-package org.fulib.workflows;
+package uks.fulibgen.shop;
 
 import org.fulib.builder.ClassModelDecorator;
 import org.fulib.builder.ClassModelManager;
+import org.fulib.workflows.WorkflowGenerator;
 import org.fulib.yaml.Yamler;
 
 import java.io.IOException;
@@ -12,21 +13,13 @@ import java.util.LinkedHashMap;
 
 public class GenModel implements ClassModelDecorator
 {
-   class Event {
-      String id;
-   }
-
    @Override
    public void decorate(ClassModelManager mm)
    {
-      mm.haveNestedClasses(GenModel.class);
-
-      String yaml = null;
       try {
-         yaml = Files.readString(Path.of("src/gen/resources/org/fulib/workflows/ShopWorkflow.yml"));
-         ArrayList<LinkedHashMap<String, String>> maps = new Yamler().decodeList(yaml);
-         System.out.println();
-         new WorkflowGenerator().loadWorkflow(mm, yaml);
+         String yaml = Files.readString(Path.of("src/gen/resources/workflows/ShopWorkflow.yml"));
+
+         new WorkflowGenerator().generateWorkflow(mm, yaml);
       }
       catch (IOException e) {
          e.printStackTrace();
