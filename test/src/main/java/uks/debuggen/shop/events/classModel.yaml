@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	productStored 	orderRegistered 	orderPicked
+  classes: 	event 	serviceSubscribed 	productStored 	storageData 	orderRegistered 	orderPicked
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	productStored 	orderRegistered 	orderPicked
+  subClasses: 	serviceSubscribed 	productStored 	storageData 	orderRegistered 	orderPicked
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -24,10 +24,18 @@
   superClass: 	event
 
 - productStored: 	org.fulib.classmodel.Clazz
-  attributes: 	productStored_box 	productStored_product 	productStored_place
+  attributes: 	productStored_box 	productStored_product 	productStored_place 	productStored_user
   model: 	c
   modified: 	false
   name: 	ProductStored
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- storageData: 	org.fulib.classmodel.Clazz
+  attributes: 	storageData_Box 	storageData_product 	storageData_place
+  model: 	c
+  modified: 	false
+  name: 	StorageData
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -93,6 +101,42 @@
 - productStored_place: 	org.fulib.classmodel.Attribute
   clazz: 	productStored
   id: 	ProductStored_place
+  modified: 	false
+  name: 	place
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStored_user: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_user
+  modified: 	false
+  name: 	user
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- storageData_Box: 	org.fulib.classmodel.Attribute
+  clazz: 	storageData
+  id: 	StorageData_Box
+  modified: 	false
+  name: 	Box
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- storageData_product: 	org.fulib.classmodel.Attribute
+  clazz: 	storageData
+  id: 	StorageData_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- storageData_place: 	org.fulib.classmodel.Attribute
+  clazz: 	storageData
+  id: 	StorageData_place
   modified: 	false
   name: 	place
   propertyStyle: 	Bean

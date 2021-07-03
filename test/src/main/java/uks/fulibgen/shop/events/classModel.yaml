@@ -24,7 +24,7 @@
   superClass: 	event
 
 - productStored: 	org.fulib.classmodel.Clazz
-  attributes: 	productStored_box 	productStored_product 	productStored_place
+  attributes: 	productStored_box 	productStored_product 	productStored_place 	productStored_user
   model: 	c
   modified: 	false
   name: 	ProductStored
@@ -95,6 +95,15 @@
   id: 	ProductStored_place
   modified: 	false
   name: 	place
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStored_user: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_user
+  modified: 	false
+  name: 	user
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

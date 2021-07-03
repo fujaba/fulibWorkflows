@@ -41,17 +41,18 @@
 </g>
 <!-- ProductStored -->
 <g id="node4" class="node"><title>ProductStored</title>
-<polygon fill="none" stroke="black" points="274,-62.5 274,-83.5 365,-83.5 365,-62.5 274,-62.5"/>
-<text text-anchor="start" x="278" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">ProductStored</text>
-<polygon fill="none" stroke="black" points="274,-11.5 274,-62.5 365,-62.5 365,-11.5 274,-11.5"/>
-<text text-anchor="start" x="277" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
-<text text-anchor="start" x="277" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
-<text text-anchor="start" x="277" y="-18.3" font-family="Times New Roman,serif" font-size="14.00">place :String</text>
+<polygon fill="none" stroke="black" points="274,-69.5 274,-90.5 365,-90.5 365,-69.5 274,-69.5"/>
+<text text-anchor="start" x="278" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">ProductStored</text>
+<polygon fill="none" stroke="black" points="274,-3.5 274,-69.5 365,-69.5 365,-3.5 274,-3.5"/>
+<text text-anchor="start" x="277" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
+<text text-anchor="start" x="277" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="277" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">place :String</text>
+<text text-anchor="start" x="277" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">user :String</text>
 </g>
 <!-- ProductStored&#45;&gt;Event -->
 <g id="edge3" class="edge"><title>ProductStored&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M295.165,-87.5519C288.259,-98.8684 280.789,-111.108 274.132,-122.014"/>
-<polygon fill="none" stroke="black" points="270.984,-120.454 268.762,-130.813 276.959,-124.1 270.984,-120.454"/>
+<path fill="none" stroke="black" d="M290.49,-95.2125C284.92,-104.338 279.192,-113.724 273.973,-122.276"/>
+<polygon fill="none" stroke="black" points="270.968,-120.481 268.746,-130.84 276.943,-124.127 270.968,-120.481"/>
 </g>
 <!-- ServiceSubscribed -->
 <g id="node5" class="node"><title>ServiceSubscribed</title>

@@ -9,9 +9,9 @@
 
 - testmonday: 	org.fulib.classmodel.Clazz
   attributes: 	testmonday_eventBroker
-  importList: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.EventBroker;"
-  imports: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.EventBroker;"
-  methods: 	testmonday_monday
+  importList: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
+  imports: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
+  methods: 	testmonday_monday 	testmonday_publish
   model: 	c
   modified: 	false
   name: 	Testmonday
@@ -41,11 +41,53 @@ public void monday()"
   id: 	Testmonday_monday
   methodBody: 	"// start the event broker
 eventBroker = new EventBroker();
-eventBroker.start();"
+eventBroker.start();
+
+// start service
+ShopService shop = new ShopService();
+shop.start();
+
+// start service
+StorageService storage = new StorageService();
+storage.start();
+
+// send user event ProductStored: 12:00
+ProductStored e1200 = new ProductStored();
+e1200.setId(\"e1200\");
+e1200.setBox(\"box23\");
+e1200.setProduct(\"shoes\");
+e1200.setPlace(\"shelf23\");
+e1200.setUser(\"Bob\");
+publish(e1200);
+System.out.println();
+"
   modified: 	false
   modifiers: 	public
   name: 	monday
   paramsString: 	""
   returnType: 	void
   signature: 	"class/Testmonday/method/monday()"
+
+- testmonday_publish: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testmonday
+  declaration: 	"public void publish(Event event)"
+  id: 	Testmonday_publish
+  methodBody: 	"String yaml = Yaml.encode(event);
+
+try {
+   HttpResponse<String> response = Unirest.post(\"http://localhost:42000/publish\")
+         .body(yaml)
+         .asString();
+   System.out.println(response.getBody());
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	public
+  name: 	publish
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/Testmonday/method/publish(Event)"
 

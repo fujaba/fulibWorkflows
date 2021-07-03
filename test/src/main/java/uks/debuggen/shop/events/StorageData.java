@@ -1,31 +1,29 @@
-package uks.fulibgen.shop.events;
+package uks.debuggen.shop.events;
 import java.util.Objects;
 
-public class ProductStored extends Event
+public class StorageData extends Event
 {
-   public static final String PROPERTY_BOX = "box";
+   public static final String PROPERTY_BOX = "Box";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_PLACE = "place";
-   public static final String PROPERTY_USER = "user";
-   private String box;
+   private String Box;
    private String product;
    private String place;
-   private String user;
 
    public String getBox()
    {
-      return this.box;
+      return this.Box;
    }
 
-   public ProductStored setBox(String value)
+   public StorageData setBox(String value)
    {
-      if (Objects.equals(value, this.box))
+      if (Objects.equals(value, this.Box))
       {
          return this;
       }
 
-      final String oldValue = this.box;
-      this.box = value;
+      final String oldValue = this.Box;
+      this.Box = value;
       this.firePropertyChange(PROPERTY_BOX, oldValue, value);
       return this;
    }
@@ -35,7 +33,7 @@ public class ProductStored extends Event
       return this.product;
    }
 
-   public ProductStored setProduct(String value)
+   public StorageData setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -53,7 +51,7 @@ public class ProductStored extends Event
       return this.place;
    }
 
-   public ProductStored setPlace(String value)
+   public StorageData setPlace(String value)
    {
       if (Objects.equals(value, this.place))
       {
@@ -66,24 +64,6 @@ public class ProductStored extends Event
       return this;
    }
 
-   public String getUser()
-   {
-      return this.user;
-   }
-
-   public ProductStored setUser(String value)
-   {
-      if (Objects.equals(value, this.user))
-      {
-         return this;
-      }
-
-      final String oldValue = this.user;
-      this.user = value;
-      this.firePropertyChange(PROPERTY_USER, oldValue, value);
-      return this;
-   }
-
    @Override
    public String toString()
    {
@@ -91,7 +71,6 @@ public class ProductStored extends Event
       result.append(' ').append(this.getBox());
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getPlace());
-      result.append(' ').append(this.getUser());
       return result.toString();
    }
 }

@@ -2,30 +2,72 @@
 - WorkflowStarted: monday
 
 
+- ServiceRegistered: 10:00
+  name: Shop
+  port: 42100
+
+- ServiceRegistered: 10:10
+  name: Storage
+  port: 42200
+
+- UserRegistered: 10:20
+  name: Alice
+  role: Customer
+
+- UserRegistered: 10:21
+  name: Bob
+  role: Picker
+
+
 - ProductStored: 12:00
   box: box23
   product: shoes
   place: shelf23
+  user: Bob
+
+- StorageData: 12:00:01
+  Box: box23
+  product: shoes
+  place: shelf23
+
 
 - OrderRegistered: 13:00
   product: shoes
   customer: Alice
   address: "Wonderland 1"
 
-- OrderPicked: 14:00
-  order: order_13:00
-  box: box23
+- ShopData: 13:00:01
+  Order: order1300
+  product: shoes
+  customer: @Alice
+  address: "Wonderland 1"
+  state: pending
+
+- ShopData: 13:00:02
+  Customer: Alice
+  orders: [@order1300]
+
+- StorageData: 13:00:10
+  PickTask: pick1300
+  order: order1300
+  product: shoes
   customer: Alice
   address: "Wonderland 1"
+  state: todo
 
-- ServiceRegistered: 10:00
-  name: Shop
-  events: "OrderRegistered OrderPicked"
+- OrderPicked: 14:00
+  pickTask: pick1300
+  box: box23
 
-- ServiceRegistered: 10:10
-  name: Storage
-  events: "ProductStored OrderRegistered OrderPicked"
+- StorageData: 14:00:01
+  PickTask: pick1300
+  state: done
+  box: box23
 
-- UserRegistered: 10:30
-  name: Alice
-  role: Customer
+- StorageData: 14:00:02
+  Box: box23
+  place: shipping
+
+- ShopData: 14:00:10
+  Order: order1300
+  state: shipping
