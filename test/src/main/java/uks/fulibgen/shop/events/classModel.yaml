@@ -32,7 +32,7 @@
   superClass: 	event
 
 - orderRegistered: 	org.fulib.classmodel.Clazz
-  attributes: 	orderRegistered_product 	orderRegistered_customer 	orderRegistered_address
+  attributes: 	orderRegistered_product 	orderRegistered_customer 	orderRegistered_address 	orderRegistered_user
   model: 	c
   modified: 	false
   name: 	OrderRegistered
@@ -40,7 +40,7 @@
   superClass: 	event
 
 - orderPicked: 	org.fulib.classmodel.Clazz
-  attributes: 	orderPicked_order 	orderPicked_box 	orderPicked_customer 	orderPicked_address
+  attributes: 	orderPicked_pickTask 	orderPicked_box 	orderPicked_user
   model: 	c
   modified: 	false
   name: 	OrderPicked
@@ -135,11 +135,20 @@
   type: 	String
   typeSignature: 	String
 
-- orderPicked_order: 	org.fulib.classmodel.Attribute
-  clazz: 	orderPicked
-  id: 	OrderPicked_order
+- orderRegistered_user: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_user
   modified: 	false
-  name: 	order
+  name: 	user
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderPicked_pickTask: 	org.fulib.classmodel.Attribute
+  clazz: 	orderPicked
+  id: 	OrderPicked_pickTask
+  modified: 	false
+  name: 	pickTask
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -153,20 +162,11 @@
   type: 	String
   typeSignature: 	String
 
-- orderPicked_customer: 	org.fulib.classmodel.Attribute
+- orderPicked_user: 	org.fulib.classmodel.Attribute
   clazz: 	orderPicked
-  id: 	OrderPicked_customer
+  id: 	OrderPicked_user
   modified: 	false
-  name: 	customer
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- orderPicked_address: 	org.fulib.classmodel.Attribute
-  clazz: 	orderPicked
-  id: 	OrderPicked_address
-  modified: 	false
-  name: 	address
+  name: 	user
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

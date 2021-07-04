@@ -3,32 +3,12 @@ import java.util.Objects;
 
 public class OrderPicked extends Event
 {
-   public static final String PROPERTY_ORDER = "order";
    public static final String PROPERTY_BOX = "box";
-   public static final String PROPERTY_CUSTOMER = "customer";
-   public static final String PROPERTY_ADDRESS = "address";
-   private String order;
+   public static final String PROPERTY_PICK_TASK = "pickTask";
+   public static final String PROPERTY_USER = "user";
    private String box;
-   private String customer;
-   private String address;
-
-   public String getOrder()
-   {
-      return this.order;
-   }
-
-   public OrderPicked setOrder(String value)
-   {
-      if (Objects.equals(value, this.order))
-      {
-         return this;
-      }
-
-      final String oldValue = this.order;
-      this.order = value;
-      this.firePropertyChange(PROPERTY_ORDER, oldValue, value);
-      return this;
-   }
+   private String pickTask;
+   private String user;
 
    public String getBox()
    {
@@ -48,39 +28,39 @@ public class OrderPicked extends Event
       return this;
    }
 
-   public String getCustomer()
+   public String getPickTask()
    {
-      return this.customer;
+      return this.pickTask;
    }
 
-   public OrderPicked setCustomer(String value)
+   public OrderPicked setPickTask(String value)
    {
-      if (Objects.equals(value, this.customer))
+      if (Objects.equals(value, this.pickTask))
       {
          return this;
       }
 
-      final String oldValue = this.customer;
-      this.customer = value;
-      this.firePropertyChange(PROPERTY_CUSTOMER, oldValue, value);
+      final String oldValue = this.pickTask;
+      this.pickTask = value;
+      this.firePropertyChange(PROPERTY_PICK_TASK, oldValue, value);
       return this;
    }
 
-   public String getAddress()
+   public String getUser()
    {
-      return this.address;
+      return this.user;
    }
 
-   public OrderPicked setAddress(String value)
+   public OrderPicked setUser(String value)
    {
-      if (Objects.equals(value, this.address))
+      if (Objects.equals(value, this.user))
       {
          return this;
       }
 
-      final String oldValue = this.address;
-      this.address = value;
-      this.firePropertyChange(PROPERTY_ADDRESS, oldValue, value);
+      final String oldValue = this.user;
+      this.user = value;
+      this.firePropertyChange(PROPERTY_USER, oldValue, value);
       return this;
    }
 
@@ -88,10 +68,9 @@ public class OrderPicked extends Event
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getOrder());
+      result.append(' ').append(this.getPickTask());
       result.append(' ').append(this.getBox());
-      result.append(' ').append(this.getCustomer());
-      result.append(' ').append(this.getAddress());
+      result.append(' ').append(this.getUser());
       return result.toString();
    }
 }

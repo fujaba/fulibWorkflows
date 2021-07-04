@@ -28,14 +28,31 @@ public class Testmonday
       StorageService storage = new StorageService();
       storage.start();
 
-      // send user event ProductStored: 12:00
+      // create ProductStored: 12:00
       ProductStored e1200 = new ProductStored();
-      e1200.setId("e1200");
+      e1200.setId("12:00");
       e1200.setBox("box23");
       e1200.setProduct("shoes");
       e1200.setPlace("shelf23");
       e1200.setUser("Bob");
       publish(e1200);
+
+      // create OrderRegistered: 13:00
+      OrderRegistered e1300 = new OrderRegistered();
+      e1300.setId("13:00");
+      e1300.setProduct("shoes");
+      e1300.setCustomer("Alice");
+      e1300.setAddress("Wonderland 1");
+      e1300.setUser("Alice");
+      publish(e1300);
+
+      // create OrderPicked: 14:00
+      OrderPicked e1400 = new OrderPicked();
+      e1400.setId("14:00");
+      e1400.setPickTask("pick1300");
+      e1400.setBox("box23");
+      e1400.setUser("Bob");
+      publish(e1400);
       System.out.println();
    }
 

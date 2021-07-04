@@ -35,6 +35,7 @@
   product: shoes
   customer: Alice
   address: "Wonderland 1"
+  user: Alice
 
 - ShopData: 13:00:01
   Order: order1300
@@ -58,6 +59,7 @@
 - OrderPicked: 14:00
   pickTask: pick1300
   box: box23
+  user: Bob
 
 - StorageData: 14:00:01
   PickTask: pick1300

@@ -12,32 +12,32 @@
 </g>
 <!-- OrderPicked -->
 <g id="node2" class="node"><title>OrderPicked</title>
-<polygon fill="none" stroke="black" points="8,-69.5 8,-90.5 106,-90.5 106,-69.5 8,-69.5"/>
-<text text-anchor="start" x="21" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">OrderPicked</text>
-<polygon fill="none" stroke="black" points="8,-3.5 8,-69.5 106,-69.5 106,-3.5 8,-3.5"/>
-<text text-anchor="start" x="11" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">order :String</text>
-<text text-anchor="start" x="11" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
-<text text-anchor="start" x="11" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">customer :String</text>
-<text text-anchor="start" x="11" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
+<polygon fill="none" stroke="black" points="8,-62.5 8,-83.5 106,-83.5 106,-62.5 8,-62.5"/>
+<text text-anchor="start" x="21" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">OrderPicked</text>
+<polygon fill="none" stroke="black" points="8,-11.5 8,-62.5 106,-62.5 106,-11.5 8,-11.5"/>
+<text text-anchor="start" x="11" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">pickTask :String</text>
+<text text-anchor="start" x="11" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
+<text text-anchor="start" x="11" y="-18.3" font-family="Times New Roman,serif" font-size="14.00">user :String</text>
 </g>
 <!-- OrderPicked&#45;&gt;Event -->
 <g id="edge1" class="edge"><title>OrderPicked&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M114.182,-89.7205C117.134,-91.5531 120.083,-93.3237 123,-95 150.212,-110.64 182.219,-125.362 207.783,-136.309"/>
+<path fill="none" stroke="black" d="M110.863,-87.6343C114.917,-90.2118 118.99,-92.6951 123,-95 150.212,-110.64 182.219,-125.362 207.783,-136.309"/>
 <polygon fill="none" stroke="black" points="206.668,-139.638 217.241,-140.314 209.397,-133.192 206.668,-139.638"/>
 </g>
 <!-- OrderRegistered -->
 <g id="node3" class="node"><title>OrderRegistered</title>
-<polygon fill="none" stroke="black" points="141,-62.5 141,-83.5 240,-83.5 240,-62.5 141,-62.5"/>
-<text text-anchor="start" x="144" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">OrderRegistered</text>
-<polygon fill="none" stroke="black" points="141,-11.5 141,-62.5 240,-62.5 240,-11.5 141,-11.5"/>
-<text text-anchor="start" x="144.5" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
-<text text-anchor="start" x="144.5" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">customer :String</text>
-<text text-anchor="start" x="144.5" y="-18.3" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
+<polygon fill="none" stroke="black" points="141,-69.5 141,-90.5 240,-90.5 240,-69.5 141,-69.5"/>
+<text text-anchor="start" x="144" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">OrderRegistered</text>
+<polygon fill="none" stroke="black" points="141,-3.5 141,-69.5 240,-69.5 240,-3.5 141,-3.5"/>
+<text text-anchor="start" x="144.5" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="144.5" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">customer :String</text>
+<text text-anchor="start" x="144.5" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
+<text text-anchor="start" x="144.5" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">user :String</text>
 </g>
 <!-- OrderRegistered&#45;&gt;Event -->
 <g id="edge2" class="edge"><title>OrderRegistered&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M213.468,-87.5519C220.268,-98.8684 227.624,-111.108 234.178,-122.014"/>
-<polygon fill="none" stroke="black" points="231.314,-124.044 239.465,-130.813 237.314,-120.438 231.314,-124.044"/>
+<path fill="none" stroke="black" d="M218.071,-95.2125C223.498,-104.242 229.077,-113.526 234.172,-122.005"/>
+<polygon fill="none" stroke="black" points="231.33,-124.071 239.481,-130.84 237.33,-120.466 231.33,-124.071"/>
 </g>
 <!-- ProductStored -->
 <g id="node4" class="node"><title>ProductStored</title>

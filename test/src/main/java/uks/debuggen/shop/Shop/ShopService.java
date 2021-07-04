@@ -208,8 +208,9 @@ public class ShopService
    private void initEventHandlerMap()
    {
       if (handlerMap == null) {
-      handlerMap = new LinkedHashMap<>();
-         // add handlers for interesting events
+         handlerMap = new LinkedHashMap<>();
+         handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
+         handlerMap.put(OrderPicked.class, this::handleOrderPicked);
       }
    }
 
@@ -248,5 +249,31 @@ public class ShopService
          Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
       }
       return "apply done";
+   }
+
+   private void handleOrderRegistered(Event e)
+   {
+      OrderRegistered event = (OrderRegistered) e;
+      if (event.getId().equals("13:00")) {
+
+         Order order1300 = model.getOrCreateOrder("order1300");
+         order1300.setProduct("shoes");
+         order1300.setCustomer("@Alice");
+         order1300.setAddress("Wonderland 1");
+         order1300.setState("pending");
+
+         Customer alice = model.getOrCreateCustomer("Alice");
+         alice.setOrders("[@order1300]");
+      }
+   }
+
+   private void handleOrderPicked(Event e)
+   {
+      OrderPicked event = (OrderPicked) e;
+      if (event.getId().equals("14:00")) {
+
+         Order order1300 = model.getOrCreateOrder("order1300");
+         order1300.setState("shipping");
+      }
    }
 }
