@@ -19,6 +19,7 @@
   role: Picker
 
 
+
 - ProductStored: 12:00
   box: box23
   product: shoes
@@ -29,6 +30,13 @@
   Box: box23
   product: shoes
   place: shelf23
+
+- CustomerUI: order
+  l1: "label welcome to the shop"
+  product: "input product? shoes"
+  customer: "input name? Alice"
+  ok: "button OK OrderRegistered"
+
 
 
 - OrderRegistered: 13:00
