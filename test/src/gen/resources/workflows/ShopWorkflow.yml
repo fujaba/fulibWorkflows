@@ -31,15 +31,15 @@
   product: shoes
   place: shelf23
 
-- CustomerUI: order
+- Mockup: Alice
+  OrderRegistered: 13:00
   l1: "label welcome to the shop"
   product: "input product? shoes"
   customer: "input name? Alice"
-  ok: "button OK OrderRegistered"
+  address: "input address? Wonderland_1"
+  ok: "button OK"
 
-
-
-- OrderRegistered: 13:00
+- OrderRegistered: 13:01
   product: shoes
   customer: Alice
   address: "Wonderland 1"
