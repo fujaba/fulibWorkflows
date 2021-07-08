@@ -254,7 +254,7 @@ public class ShopService
    private void handleOrderRegistered(Event e)
    {
       OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:00")) {
+      if (event.getId().equals("13:01")) {
 
          Order order1300 = model.getOrCreateOrder("order1300");
          order1300.setProduct("shoes");

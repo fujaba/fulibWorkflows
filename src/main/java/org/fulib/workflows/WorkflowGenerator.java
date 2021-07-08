@@ -26,14 +26,9 @@ public class WorkflowGenerator
    private ClassModelManager tm;
    private Clazz modelClazz;
    private LinkedHashMap<String, ClassModelManager> managerMap;
-   private TreeMap<String, LinkedHashMap<String, String>> eventMap;
-   private LinkedHashMap<String, LinkedHashMap<String, String>> userMap;
-   private LinkedHashMap<String, LinkedHashMap<String, String>> serviceMap;
-   private LinkedHashMap<String, LinkedHashSet<String>> serviceEventsMap;
-   private LinkedHashMap<String, LinkedHashMap<String, LinkedHashSet<LinkedHashMap<String, String>>>> handlerDataMockupsMap;
-   private String workflowName;
    private STGroupFile group;
    private Clazz testClazz;
+   private EventModel eventModel;
 
    public WorkflowGenerator generateWorkflow(ClassModelManager mm, String yaml)
    {
@@ -49,7 +44,8 @@ public class WorkflowGenerator
       group = new STGroupFile(this.getClass().getResource("templates/Workflows.stg"));
 
       // event map
-      buildEventMap(yaml);
+      eventModel = new EventModel();
+      eventModel.buildEventMap(yaml);
       buildManagerMaps(mm);
       buildEventBroker();
       buildHandlerMaps();
@@ -64,9 +60,9 @@ public class WorkflowGenerator
 
    private void buildHandlerMaps()
    {
-      serviceEventsMap = new LinkedHashMap<>();
-      handlerDataMockupsMap = new LinkedHashMap<>();
-      for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventMap.entrySet()) {
+      eventModel.serviceEventsMap = new LinkedHashMap<>();
+      eventModel.handlerDataMockupsMap = new LinkedHashMap<>();
+      for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventModel.eventMap.entrySet()) {
          // find Data entries
          LinkedHashMap<String, String> map = entry.getValue();
          String key = getEventType(map);
@@ -77,15 +73,16 @@ public class WorkflowGenerator
          String dataId = getEventId(map);
          String eventId = dataId.substring(0, dataId.lastIndexOf(':'));
          // find corresponding event
-         LinkedHashMap<String, String> event = eventMap.get(eventId);
+         LinkedHashMap<String, String> event = eventModel.eventMap.get(eventId);
          String eventType = getEventType(event);
-         LinkedHashSet<String> eventSet = serviceEventsMap.computeIfAbsent(serviceId, k -> new LinkedHashSet<>());
+         LinkedHashSet<String> eventSet = eventModel.serviceEventsMap.computeIfAbsent(serviceId, k -> new LinkedHashSet<>());
          eventSet.add(eventType);
          System.out.println();
 
          // handler data mockups
          String handlerId = serviceId + " " + eventType;
-         LinkedHashMap<String, LinkedHashSet<LinkedHashMap<String, String>>> mockupMap = handlerDataMockupsMap.computeIfAbsent(handlerId, k -> new LinkedHashMap<>());
+         LinkedHashMap<String, LinkedHashSet<LinkedHashMap<String, String>>> mockupMap =
+               eventModel.handlerDataMockupsMap.computeIfAbsent(handlerId, k -> new LinkedHashMap<>());
          LinkedHashSet<LinkedHashMap<String, String>> dataMockups = mockupMap.computeIfAbsent(eventId, k -> new LinkedHashSet<>());
          dataMockups.add(map);
          System.out.println();
@@ -107,7 +104,7 @@ public class WorkflowGenerator
    {
       ClassModelManager modelManager = null;
 
-      for (Map.Entry<String, LinkedHashMap<String, String>> entry : serviceMap.entrySet()) {
+      for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventModel.serviceMap.entrySet()) {
          // each service gets its own package
          // build classModelManager for that package
          LinkedHashMap<String, String> map = entry.getValue();
@@ -227,7 +224,7 @@ public class WorkflowGenerator
 
    private void addHandlersToInitEventHandlerMap(ClassModelManager modelManager, Clazz serviceClazz, String serviceName, StringBuilder body)
    {
-      LinkedHashSet<String> events = serviceEventsMap.get(serviceName);
+      LinkedHashSet<String> events = eventModel.serviceEventsMap.get(serviceName);
       for (String event : events) {
          body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
                event, event));
@@ -240,7 +237,8 @@ public class WorkflowGenerator
       StringBuilder body = new StringBuilder();
       String declaration = String.format("private void handle%s(Event e)", event);
       body.append(String.format("%s event = (%s) e;\n", event, event));
-      LinkedHashMap<String, LinkedHashSet<LinkedHashMap<String, String>>> mockupsMap = handlerDataMockupsMap.get(serviceName + " " + event);
+      LinkedHashMap<String, LinkedHashSet<LinkedHashMap<String, String>>> mockupsMap =
+            eventModel.handlerDataMockupsMap.get(serviceName + " " + event);
       if (mockupsMap != null) {
          for (Map.Entry<String, LinkedHashSet<LinkedHashMap<String, String>>> entry : mockupsMap.entrySet()) {
             String eventId = entry.getKey();
@@ -346,7 +344,7 @@ public class WorkflowGenerator
 
    private void buildTest()
    {
-      if (workflowName == null) {
+      if (eventModel.workflowName == null) {
          return;
       }
 
@@ -354,7 +352,7 @@ public class WorkflowGenerator
             .setPackageName(mm.getClassModel().getPackageName());
       managerMap.put("tm", tm);
 
-      testClazz = tm.haveClass("Test" + workflowName);
+      testClazz = tm.haveClass("Test" + eventModel.workflowName);
       testClazz.withImports("import org.junit.Test;");
       testClazz.withImports(String.format("import %s;",
             em.getClassModel().getPackageName() + ".*"));
@@ -362,14 +360,14 @@ public class WorkflowGenerator
 
       StringBuilder body = new StringBuilder();
       String declaration = "@Test\n" +
-            "public void " + workflowName + "()";
+            "public void " + eventModel.workflowName + "()";
       ST st = group.getInstanceOf("startEventBroker");
       body.append(st.render());
 
-      for (LinkedHashMap<String, String> map : eventMap.values()) {
+      for (LinkedHashMap<String, String> map : eventModel.eventMap.values()) {
          // Send user events, start services, control event lists and object models
          String user = map.get("user");
-         if (user != null && userMap.get(user) != null) {
+         if (user != null && eventModel.userMap.get(user) != null) {
             testGenerateSendUserEvent(body, map);
             continue;
          }
@@ -460,30 +458,7 @@ public class WorkflowGenerator
       return varName;
    }
 
-   private void buildEventMap(String yaml)
-   {
-      eventMap = new TreeMap<>();
-      userMap = new LinkedHashMap<>();
-      serviceMap = new LinkedHashMap<>();
 
-      ArrayList<LinkedHashMap<String, String>> maps = new Yamler().decodeList(yaml);
-
-      for (LinkedHashMap<String, String> map : maps) {
-         Map.Entry<String, String> entry = map.entrySet().iterator().next();
-         if (entry.getKey().equals("WorkflowStarted")) {
-            workflowName = entry.getValue();
-            continue;
-         }
-         if (entry.getKey().equals("UserRegistered")) {
-            userMap.put(map.get("name"), map);
-         }
-         if (entry.getKey().equals("ServiceRegistered")) {
-            serviceMap.put(map.get("name"), map);
-         }
-         eventMap.put(entry.getValue(), map);
-      }
-
-   }
 
    private void buildManagerMaps(ClassModelManager mm)
    {
@@ -504,7 +479,7 @@ public class WorkflowGenerator
 
    private void buildEventClasses()
    {
-      for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventMap.entrySet()) {
+      for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventModel.eventMap.entrySet()) {
          oneEventClass(entry.getValue());
       }
    }

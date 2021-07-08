@@ -37,14 +37,14 @@ public class Testmonday
       e1200.setUser("Bob");
       publish(e1200);
 
-      // create OrderRegistered: 13:00
-      OrderRegistered e1300 = new OrderRegistered();
-      e1300.setId("13:00");
-      e1300.setProduct("shoes");
-      e1300.setCustomer("Alice");
-      e1300.setAddress("Wonderland 1");
-      e1300.setUser("Alice");
-      publish(e1300);
+      // create OrderRegistered: 13:01
+      OrderRegistered e1301 = new OrderRegistered();
+      e1301.setId("13:01");
+      e1301.setProduct("shoes");
+      e1301.setCustomer("Alice");
+      e1301.setAddress("Wonderland 1");
+      e1301.setUser("Alice");
+      publish(e1301);
 
       // create OrderPicked: 14:00
       OrderPicked e1400 = new OrderPicked();

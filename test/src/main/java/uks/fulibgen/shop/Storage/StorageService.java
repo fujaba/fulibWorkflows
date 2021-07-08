@@ -265,7 +265,7 @@ public class StorageService
    private void handleOrderRegistered(Event e)
    {
       OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:00")) {
+      if (event.getId().equals("13:01")) {
 
          PickTask pick1300 = model.getOrCreatePickTask("pick1300");
          pick1300.setOrder("order1300");

@@ -18,8 +18,6 @@
   name: Bob
   role: Picker
 
-
-
 - ProductStored: 12:00
   box: box23
   product: shoes
@@ -31,7 +29,7 @@
   product: shoes
   place: shelf23
 
-- Mockup: Alice
+- MockupDone: Alice
   OrderRegistered: 13:00
   l1: "label welcome to the shop"
   product: "input product? shoes"
@@ -45,18 +43,18 @@
   address: "Wonderland 1"
   user: Alice
 
-- ShopData: 13:00:01
+- ShopData: 13:01:01
   Order: order1300
   product: shoes
   customer: @Alice
   address: "Wonderland 1"
   state: pending
 
-- ShopData: 13:00:02
+- ShopData: 13:01:02
   Customer: Alice
   orders: [@order1300]
 
-- StorageData: 13:00:10
+- StorageData: 13:01:10
   PickTask: pick1300
   order: order1300
   product: shoes
