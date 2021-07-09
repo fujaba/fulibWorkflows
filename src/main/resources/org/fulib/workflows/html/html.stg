@@ -30,6 +30,10 @@ page(content, width) ::= <<
             background-color:Orange;
         \}
 
+        .command \{
+            background-color:LightBlue;
+        \}
+
         .data \{
             background-color:LightGreen;
         \}
@@ -41,6 +45,10 @@ page(content, width) ::= <<
         .server \{
             background-color:Violet;
         \}
+
+        .center \{
+            text-align: center;
+        }
     </style>
 <body>
     {content}
