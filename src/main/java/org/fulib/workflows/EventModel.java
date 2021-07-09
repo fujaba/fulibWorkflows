@@ -37,4 +37,14 @@ public class EventModel
       }
 
    }
+
+   public String getEventId(LinkedHashMap<String, String> map)
+   {
+      return map.values().iterator().next();
+   }
+
+   public String getEventType(LinkedHashMap<String, String> map)
+   {
+      return map.keySet().iterator().next();
+   }
 }

@@ -5,7 +5,6 @@ import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
 import org.fulib.builder.Type;
 import org.fulib.classmodel.Clazz;
-import org.fulib.yaml.Yamler;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
@@ -65,16 +64,16 @@ public class WorkflowGenerator
       for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventModel.eventMap.entrySet()) {
          // find Data entries
          LinkedHashMap<String, String> map = entry.getValue();
-         String key = getEventType(map);
+         String key = eventModel.getEventType(map);
          if (!key.endsWith("Data")) {
             continue;
          }
          String serviceId = key.substring(0, key.length() - "Data".length());
-         String dataId = getEventId(map);
+         String dataId = eventModel.getEventId(map);
          String eventId = dataId.substring(0, dataId.lastIndexOf(':'));
          // find corresponding event
          LinkedHashMap<String, String> event = eventModel.eventMap.get(eventId);
-         String eventType = getEventType(event);
+         String eventType = eventModel.getEventType(event);
          LinkedHashSet<String> eventSet = eventModel.serviceEventsMap.computeIfAbsent(serviceId, k -> new LinkedHashSet<>());
          eventSet.add(eventType);
          System.out.println();
@@ -87,16 +86,6 @@ public class WorkflowGenerator
          dataMockups.add(map);
          System.out.println();
       }
-   }
-
-   private String getEventId(LinkedHashMap<String, String> map)
-   {
-      return map.values().iterator().next();
-   }
-
-   private String getEventType(LinkedHashMap<String, String> map)
-   {
-      return map.keySet().iterator().next();
    }
 
 
@@ -271,7 +260,7 @@ public class WorkflowGenerator
 
    private void addGetOrCreateMethodToServiceModel(ClassModelManager modelManager, String serviceName, LinkedHashMap<String, String> mockup)
    {
-      String type = getEventType(mockup);
+      String type = eventModel.getEventType(mockup);
       Clazz modelClazz = modelManager.haveClass(serviceName + "Model");
       String declaration = String.format("public %s getOrCreate%s(String id)", type, type);
       String body = String.format("return (%s) modelMap.computeIfAbsent(id, k -> new %s().setId(k));\n"

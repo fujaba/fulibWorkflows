@@ -2,7 +2,7 @@
 delimiters "{", "}"
 
 
-page(content) ::= <<
+page(content, width) ::= <<
 <html>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -11,7 +11,7 @@ page(content) ::= <<
         \}
 
         .lane \{
-            width: 99%;
+            width: {width}px;
             float: left;
         \}
 
@@ -22,14 +22,24 @@ page(content) ::= <<
             padding: 4px;
         \}
 
+        .placeholder \{
+            opacity: 0.0;
+        \}
+
         .event \{
             background-color:Orange;
         \}
+
+        .data \{
+            background-color:LightGreen;
+        \}
+
         .user \{
             background-color:Yellow;
         \}
-        .center \{
-              margin: auto;
+
+        .server \{
+            background-color:Violet;
         \}
     </style>
 <body>
@@ -38,11 +48,11 @@ page(content) ::= <<
 </html>
 >>
 
-lane(id, content) ::=
+lane(id, type, content) ::=
 <<
     <div id="{id}" class="lane">
-        <div class="box user">
-            <div class="center"><i class="fa fa-user"></i></div>
+        <div class="box {type}">
+            <div class="center"><i class="fa fa-{type}"></i></div>
             <div>{id}</div>
         </div>
         {content}
@@ -50,9 +60,9 @@ lane(id, content) ::=
 
 >>
 
-note(id, content) ::=
+note(id, type, content) ::=
 <<
-    <div class="box event">
+    <div class="box {type}">
         {content}
     </div>
 

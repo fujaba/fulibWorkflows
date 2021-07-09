@@ -29,12 +29,13 @@
   product: shoes
   place: shelf23
 
-- MockupDone: Alice
-  OrderRegistered: 13:00
+- CommandSent: 13:00
+  type: OrderRegistered
+  user: Alice
   l1: "label welcome to the shop"
   product: "input product? shoes"
   customer: "input name? Alice"
-  address: "input address? Wonderland_1"
+  address: "input address? Wonderland 1"
   ok: "button OK"
 
 - OrderRegistered: 13:01
@@ -46,13 +47,13 @@
 - ShopData: 13:01:01
   Order: order1300
   product: shoes
-  customer: @Alice
+  customer: Alice
   address: "Wonderland 1"
   state: pending
 
 - ShopData: 13:01:02
   Customer: Alice
-  orders: [@order1300]
+  orders: [order1300]
 
 - StorageData: 13:01:10
   PickTask: pick1300
