@@ -60,6 +60,18 @@ e1200.setPlace(\"shelf23\");
 e1200.setUser(\"Bob\");
 publish(e1200);
 
+// create CommandSent: 13:00
+CommandSent e1300 = new CommandSent();
+e1300.setId(\"13:00\");
+e1300.setType(\"OrderRegistered\");
+e1300.setUser(\"Alice\");
+e1300.setL1(\"label welcome to the shop\");
+e1300.setProduct(\"input product? shoes\");
+e1300.setCustomer(\"input name? Alice\");
+e1300.setAddress(\"input address? Wonderland 1\");
+e1300.setOk(\"button OK\");
+publish(e1300);
+
 // create OrderRegistered: 13:01
 OrderRegistered e1301 = new OrderRegistered();
 e1301.setId(\"13:01\");

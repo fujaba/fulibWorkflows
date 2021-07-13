@@ -68,6 +68,23 @@ lane(id, type, content) ::=
 
 >>
 
+lane2(id, content) ::=
+<<
+    <div id="{id}" class="lane">
+        {content}
+    </div>
+
+>>
+
+actor(id, type) ::=
+<<
+    <div class="box {type}">
+        <div class="center"><i class="fa fa-{type}"></i></div>
+        <div>{id}</div>
+    </div>
+
+>>
+
 note(id, type, content) ::=
 <<
     <div class="box {type}">

@@ -1,5 +1,5 @@
 
-- WorkflowStarted: monday
+- WorkflowStarted: ordering
 
 
 - ServiceRegistered: 10:00
@@ -25,42 +25,46 @@
   user: Bob
 
 - StorageData: 12:00:01
-  Box: box23
+  box: box23
   product: shoes
   place: shelf23
 
 - CommandSent: 13:00
   type: OrderRegistered
   user: Alice
-  l1: "label welcome to the shop"
-  product: "input product? shoes"
-  customer: "input name? Alice"
-  address: "input address? Wonderland 1"
-  ok: "button OK"
+  l1: label welcome to the shop
+  product: input product? shoes
+  customer: input name? Alice
+  address: input address? Wonderland 1
+  ok: button OK
 
 - OrderRegistered: 13:01
   product: shoes
   customer: Alice
-  address: "Wonderland 1"
+  address: Wonderland 1
   user: Alice
 
 - ShopData: 13:01:01
-  Order: order1300
-  product: shoes
-  customer: Alice
-  address: "Wonderland 1"
-  state: pending
-
-- ShopData: 13:01:02
-  Customer: Alice
-  orders: [order1300]
-
-- StorageData: 13:01:10
-  PickTask: pick1300
   order: order1300
   product: shoes
   customer: Alice
-  address: "Wonderland 1"
+  address: Wonderland 1
+  state: pending
+
+- ShopData: 13:01:02
+  customer: Alice
+  orders: [order1300]
+
+- ShopPolicy: 13:01:10
+  OrderApproved: 13:02
+  order: order1300
+
+- StorageData: 13:02:01
+  pickTask: pick1300
+  order: order1300
+  product: shoes
+  customer: Alice
+  address: Wonderland 1
   state: todo
 
 - OrderPicked: 14:00
@@ -69,14 +73,14 @@
   user: Bob
 
 - StorageData: 14:00:01
-  PickTask: pick1300
+  pickTask: pick1300
   state: done
   box: box23
 
 - StorageData: 14:00:02
-  Box: box23
+  box: box23
   place: shipping
 
 - ShopData: 14:00:10
-  Order: order1300
+  order: order1300
   state: shipping

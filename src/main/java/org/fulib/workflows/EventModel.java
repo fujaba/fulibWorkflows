@@ -1,6 +1,6 @@
 package org.fulib.workflows;
 
-import org.fulib.yaml.Yamler;
+import org.fulib.yaml.Yamler2;
 
 import java.util.*;
 
@@ -19,10 +19,11 @@ public class EventModel
       userMap = new LinkedHashMap<>();
       serviceMap = new LinkedHashMap<>();
 
-      ArrayList<LinkedHashMap<String, String>> maps = new Yamler().decodeList(yaml);
+      ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(yaml);
 
       for (LinkedHashMap<String, String> map : maps) {
-         Map.Entry<String, String> entry = map.entrySet().iterator().next();
+         Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+         Map.Entry<String, String> entry = iterator.next();
          if (entry.getKey().equals("WorkflowStarted")) {
             workflowName = entry.getValue();
             continue;
@@ -32,6 +33,9 @@ public class EventModel
          }
          if (entry.getKey().equals("ServiceRegistered")) {
             serviceMap.put(map.get("name"), map);
+         }
+         if (entry.getKey().endsWith("Policy")) {
+            entry = iterator.next();
          }
          eventMap.put(entry.getValue(), map);
       }

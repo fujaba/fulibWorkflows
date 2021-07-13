@@ -2,7 +2,7 @@ package uks.debuggen.shop.Storage;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class PickTask
+public class pickTask
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_ORDER = "order";
@@ -12,20 +12,20 @@ public class PickTask
    public static final String PROPERTY_STATE = "state";
    public static final String PROPERTY_BOX = "box";
    private String id;
-   protected PropertyChangeSupport listeners;
    private String order;
    private String product;
    private String customer;
    private String address;
    private String state;
    private String box;
+   protected PropertyChangeSupport listeners;
 
    public String getId()
    {
       return this.id;
    }
 
-   public PickTask setId(String value)
+   public pickTask setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -43,7 +43,7 @@ public class PickTask
       return this.order;
    }
 
-   public PickTask setOrder(String value)
+   public pickTask setOrder(String value)
    {
       if (Objects.equals(value, this.order))
       {
@@ -61,7 +61,7 @@ public class PickTask
       return this.product;
    }
 
-   public PickTask setProduct(String value)
+   public pickTask setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -79,7 +79,7 @@ public class PickTask
       return this.customer;
    }
 
-   public PickTask setCustomer(String value)
+   public pickTask setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -97,7 +97,7 @@ public class PickTask
       return this.address;
    }
 
-   public PickTask setAddress(String value)
+   public pickTask setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -115,7 +115,7 @@ public class PickTask
       return this.state;
    }
 
-   public PickTask setState(String value)
+   public pickTask setState(String value)
    {
       if (Objects.equals(value, this.state))
       {
@@ -133,7 +133,7 @@ public class PickTask
       return this.box;
    }
 
-   public PickTask setBox(String value)
+   public pickTask setBox(String value)
    {
       if (Objects.equals(value, this.box))
       {

@@ -11,7 +11,7 @@
   attributes: 	shopModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	shopModel_getOrCreateOrder 	shopModel_getOrCreateCustomer
+  methods: 	shopModel_getOrCreateorder 	shopModel_getOrCreatecustomer
   model: 	c
   modified: 	false
   name: 	ShopModel
@@ -31,14 +31,14 @@
   attributes: 	order_id 	order_product 	order_customer 	order_address 	order_state
   model: 	c
   modified: 	false
-  name: 	Order
+  name: 	order
   propertyStyle: 	Bean
 
 - customer: 	org.fulib.classmodel.Clazz
   attributes: 	customer_id 	customer_orders
   model: 	c
   modified: 	false
-  name: 	Customer
+  name: 	customer
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -58,33 +58,33 @@
   type: 	"LinkedHashMap<String, Object>"
   typeSignature: 	"LinkedHashMap<String,Object>"
 
-- shopModel_getOrCreateOrder: 	org.fulib.classmodel.FMethod
+- shopModel_getOrCreateorder: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopModel
-  declaration: 	"public Order getOrCreateOrder(String id)"
-  id: 	ShopModel_getOrCreateOrder
-  methodBody: 	"return (Order) modelMap.computeIfAbsent(id, k -> new Order().setId(k));
+  declaration: 	"public order getOrCreateorder(String id)"
+  id: 	ShopModel_getOrCreateorder
+  methodBody: 	"return (order) modelMap.computeIfAbsent(id, k -> new order().setId(k));
 "
   modified: 	false
   modifiers: 	public
-  name: 	getOrCreateOrder
+  name: 	getOrCreateorder
   paramsString: 	"String id"
-  returnType: 	Order
-  signature: 	"class/ShopModel/method/getOrCreateOrder(String)"
+  returnType: 	order
+  signature: 	"class/ShopModel/method/getOrCreateorder(String)"
 
-- shopModel_getOrCreateCustomer: 	org.fulib.classmodel.FMethod
+- shopModel_getOrCreatecustomer: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopModel
-  declaration: 	"public Customer getOrCreateCustomer(String id)"
-  id: 	ShopModel_getOrCreateCustomer
-  methodBody: 	"return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
+  declaration: 	"public customer getOrCreatecustomer(String id)"
+  id: 	ShopModel_getOrCreatecustomer
+  methodBody: 	"return (customer) modelMap.computeIfAbsent(id, k -> new customer().setId(k));
 "
   modified: 	false
   modifiers: 	public
-  name: 	getOrCreateCustomer
+  name: 	getOrCreatecustomer
   paramsString: 	"String id"
-  returnType: 	Customer
-  signature: 	"class/ShopModel/method/getOrCreateCustomer(String)"
+  returnType: 	customer
+  signature: 	"class/ShopModel/method/getOrCreatecustomer(String)"
 
 - shopService_history: 	org.fulib.classmodel.Attribute
   clazz: 	shopService
@@ -239,14 +239,14 @@ publish(event);"
   methodBody: 	"OrderRegistered event = (OrderRegistered) e;
 if (event.getId().equals(\"13:01\")) {
 
-   Order order1300 = model.getOrCreateOrder(\"order1300\");
+   order order1300 = model.getOrCreateorder(\"order1300\");
    order1300.setProduct(\"shoes\");
-   order1300.setCustomer(\"@Alice\");
+   order1300.setCustomer(\"Alice\");
    order1300.setAddress(\"Wonderland 1\");
    order1300.setState(\"pending\");
 
-   Customer alice = model.getOrCreateCustomer(\"Alice\");
-   alice.setOrders(\"[@order1300]\");
+   customer alice = model.getOrCreatecustomer(\"Alice\");
+   alice.setOrders(\"[order1300]\");
 }
 "
   modified: 	false
@@ -264,7 +264,7 @@ if (event.getId().equals(\"13:01\")) {
   methodBody: 	"OrderPicked event = (OrderPicked) e;
 if (event.getId().equals(\"14:00\")) {
 
-   Order order1300 = model.getOrCreateOrder(\"order1300\");
+   order order1300 = model.getOrCreateorder(\"order1300\");
    order1300.setState(\"shipping\");
 }
 "
@@ -357,7 +357,7 @@ catch (UnirestException e) {
 
 - order_id: 	org.fulib.classmodel.Attribute
   clazz: 	order
-  id: 	Order_id
+  id: 	order_id
   modified: 	false
   name: 	id
   propertyStyle: 	Bean
@@ -366,7 +366,7 @@ catch (UnirestException e) {
 
 - order_product: 	org.fulib.classmodel.Attribute
   clazz: 	order
-  id: 	Order_product
+  id: 	order_product
   modified: 	false
   name: 	product
   propertyStyle: 	Bean
@@ -375,7 +375,7 @@ catch (UnirestException e) {
 
 - order_customer: 	org.fulib.classmodel.Attribute
   clazz: 	order
-  id: 	Order_customer
+  id: 	order_customer
   modified: 	false
   name: 	customer
   propertyStyle: 	Bean
@@ -384,7 +384,7 @@ catch (UnirestException e) {
 
 - order_address: 	org.fulib.classmodel.Attribute
   clazz: 	order
-  id: 	Order_address
+  id: 	order_address
   modified: 	false
   name: 	address
   propertyStyle: 	Bean
@@ -393,7 +393,7 @@ catch (UnirestException e) {
 
 - order_state: 	org.fulib.classmodel.Attribute
   clazz: 	order
-  id: 	Order_state
+  id: 	order_state
   modified: 	false
   name: 	state
   propertyStyle: 	Bean
@@ -402,7 +402,7 @@ catch (UnirestException e) {
 
 - customer_id: 	org.fulib.classmodel.Attribute
   clazz: 	customer
-  id: 	Customer_id
+  id: 	customer_id
   modified: 	false
   name: 	id
   propertyStyle: 	Bean
@@ -411,7 +411,7 @@ catch (UnirestException e) {
 
 - customer_orders: 	org.fulib.classmodel.Attribute
   clazz: 	customer
-  id: 	Customer_orders
+  id: 	customer_orders
   modified: 	false
   name: 	orders
   propertyStyle: 	Bean

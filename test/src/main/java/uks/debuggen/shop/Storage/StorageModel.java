@@ -46,13 +46,13 @@ public class StorageModel
       return this.listeners;
    }
 
-   public Box getOrCreateBox(String id)
+   public box getOrCreatebox(String id)
    {
-      return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
+      return (box) modelMap.computeIfAbsent(id, k -> new box().setId(k));
    }
 
-   public PickTask getOrCreatePickTask(String id)
+   public pickTask getOrCreatepickTask(String id)
    {
-      return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
+      return (pickTask) modelMap.computeIfAbsent(id, k -> new pickTask().setId(k));
    }
 }

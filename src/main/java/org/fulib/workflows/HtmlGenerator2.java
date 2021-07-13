@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
-public class HtmlGenerator
+public class HtmlGenerator2
 {
    private STGroupFile group;
    private EventModel eventModel;
@@ -25,29 +25,13 @@ public class HtmlGenerator
       group = new STGroupFile(this.getClass().getResource("html/html.stg"));
       body = new StringBuilder();
 
-      // user lanes
+      // workflow lane
       body.setLength(0);
-      for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventModel.userMap.entrySet()) {
-         String userName = entry.getKey();
-         String notes = notes(userName);
-         st = group.getInstanceOf("lane");
-         st.add("id", userName);
-         st.add("type", "user");
-         st.add("content", notes);
-         body.append(st.render());
-      }
-
-      // service lanes
-      for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventModel.serviceMap.entrySet()) {
-         String serviceName = entry.getKey();
-         String notes = notes(serviceName);
-         st = group.getInstanceOf("lane");
-         st.add("id", serviceName);
-         st.add("type", "server");
-         st.add("content", notes);
-         body.append(st.render());
-      }
-
+      String notes = notes();
+      st = group.getInstanceOf("lane2");
+      st.add("id", "monday");
+      st.add("content", notes);
+      body.append(st.render());
 
       st = group.getInstanceOf("page");
       st.add("content", body.toString());
@@ -57,18 +41,16 @@ public class HtmlGenerator
       return body.toString();
    }
 
-   private String notes(String laneName)
+   private String notes()
    {
+      String laneName = null;
       StringBuilder buf = new StringBuilder();
 
       notesPerLane = 1;
 
-      String previousLane = "noLane";
+      String previousActor = "noActor";
       for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventModel.eventMap.entrySet()) {
          String time = entry.getKey();
-         if (time.equals("13:01:10")) {
-            Logger.getGlobal().info("HtmlGenerator::notes " + time);
-         }
          LinkedHashMap<String, String> map = entry.getValue();
          String eventType = eventModel.getEventType(map);
          if (eventType.equals("ServiceRegistered")
@@ -80,20 +62,27 @@ public class HtmlGenerator
          if (eventType.endsWith("Policy")) {
             user = eventType.substring(0, eventType.length() - "Policy".length());
          }
-         String targetLane = user;
-         String noteType = "placeholder";
-         if (user != null && user.equals(laneName)) {
-            noteType = "event";
-            if (eventType.equals("CommandSent")) {
-               noteType = "command";
-            }
+         else if (eventType.endsWith("Data")) {
+            user = eventType.substring(0, eventType.length() - "Data".length());
          }
-         if (eventType.endsWith("Data")) {
+         if (user == null) {
+            user = "Somebody";
+         }
+
+         String userType = "user";
+         if (eventModel.serviceMap.get(user) != null) {
+            userType = "server";
+         }
+
+         String targetActor = user;
+         String noteType = "event";
+         if (eventType.equals("CommandSent")) {
+            noteType = "command";
+         }
+         else if (eventType.endsWith("Data")) {
             String serviceName = eventType.substring(0, eventType.length() - "Data".length());
-            targetLane = serviceName;
-            if (serviceName.equals(laneName)) {
-               noteType = "data";
-            }
+            targetActor = serviceName;
+            noteType = "data";
          }
 
          String noteContent;
@@ -104,11 +93,19 @@ public class HtmlGenerator
             noteContent = eventNote(map);
          }
 
-         if (noteType.equals("placeholder") && ! previousLane.equals(targetLane)) {
+         if (noteType.equals("placeholder") && !previousActor.equals(targetActor)) {
             noteContent = "<div>a_placeholder</div>";
          }
 
-         previousLane = targetLane;
+         if ( ! previousActor.equals(targetActor)) {
+            // add user icon
+            st = group.getInstanceOf("actor");
+            st.add("id", user);
+            st.add("type", userType);
+            buf.append(st.render());
+         }
+
+         previousActor = targetActor;
 
          st = group.getInstanceOf("note");
          st.add("id", time);

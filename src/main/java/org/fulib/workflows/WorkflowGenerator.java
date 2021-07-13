@@ -53,7 +53,6 @@ public class WorkflowGenerator
 
       buildEventClasses();
 
-      System.out.println();
       return this;
    }
 
@@ -76,7 +75,6 @@ public class WorkflowGenerator
          String eventType = eventModel.getEventType(event);
          LinkedHashSet<String> eventSet = eventModel.serviceEventsMap.computeIfAbsent(serviceId, k -> new LinkedHashSet<>());
          eventSet.add(eventType);
-         System.out.println();
 
          // handler data mockups
          String handlerId = serviceId + " " + eventType;
@@ -84,7 +82,6 @@ public class WorkflowGenerator
                eventModel.handlerDataMockupsMap.computeIfAbsent(handlerId, k -> new LinkedHashMap<>());
          LinkedHashSet<LinkedHashMap<String, String>> dataMockups = mockupMap.computeIfAbsent(eventId, k -> new LinkedHashSet<>());
          dataMockups.add(map);
-         System.out.println();
       }
    }
 
@@ -234,7 +231,6 @@ public class WorkflowGenerator
             body.append(String.format("if (event.getId().equals(\"%s\")) {\n", eventId));
             addMockupData(modelManager, serviceName, entry.getValue(), body);
             body.append("}\n");
-            System.out.println();
          }
       }
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
