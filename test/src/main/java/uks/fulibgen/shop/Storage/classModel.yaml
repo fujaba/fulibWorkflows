@@ -11,7 +11,7 @@
   attributes: 	storageModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	storageModel_getOrCreateBox 	storageModel_getOrCreatePickTask
+  methods: 	storageModel_getOrCreatebox 	storageModel_getOrCreatepickTask
   model: 	c
   modified: 	false
   name: 	StorageModel
@@ -21,7 +21,7 @@
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model 	storageService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_handleProductStored 	storageService_handleOrderRegistered 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
+  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_handleProductStored 	storageService_handleShopPolicy 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
   model: 	c
   modified: 	false
   name: 	StorageService
@@ -31,14 +31,14 @@
   attributes: 	box_id 	box_product 	box_place
   model: 	c
   modified: 	false
-  name: 	Box
+  name: 	box
   propertyStyle: 	Bean
 
 - pickTask: 	org.fulib.classmodel.Clazz
   attributes: 	pickTask_id 	pickTask_order 	pickTask_product 	pickTask_customer 	pickTask_address 	pickTask_state 	pickTask_box
   model: 	c
   modified: 	false
-  name: 	PickTask
+  name: 	pickTask
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -58,33 +58,33 @@
   type: 	"LinkedHashMap<String, Object>"
   typeSignature: 	"LinkedHashMap<String,Object>"
 
-- storageModel_getOrCreateBox: 	org.fulib.classmodel.FMethod
+- storageModel_getOrCreatebox: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageModel
-  declaration: 	"public Box getOrCreateBox(String id)"
-  id: 	StorageModel_getOrCreateBox
-  methodBody: 	"return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
+  declaration: 	"public box getOrCreatebox(String id)"
+  id: 	StorageModel_getOrCreatebox
+  methodBody: 	"return (box) modelMap.computeIfAbsent(id, k -> new box().setId(k));
 "
   modified: 	false
   modifiers: 	public
-  name: 	getOrCreateBox
+  name: 	getOrCreatebox
   paramsString: 	"String id"
-  returnType: 	Box
-  signature: 	"class/StorageModel/method/getOrCreateBox(String)"
+  returnType: 	box
+  signature: 	"class/StorageModel/method/getOrCreatebox(String)"
 
-- storageModel_getOrCreatePickTask: 	org.fulib.classmodel.FMethod
+- storageModel_getOrCreatepickTask: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageModel
-  declaration: 	"public PickTask getOrCreatePickTask(String id)"
-  id: 	StorageModel_getOrCreatePickTask
-  methodBody: 	"return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
+  declaration: 	"public pickTask getOrCreatepickTask(String id)"
+  id: 	StorageModel_getOrCreatepickTask
+  methodBody: 	"return (pickTask) modelMap.computeIfAbsent(id, k -> new pickTask().setId(k));
 "
   modified: 	false
   modifiers: 	public
-  name: 	getOrCreatePickTask
+  name: 	getOrCreatepickTask
   paramsString: 	"String id"
-  returnType: 	PickTask
-  signature: 	"class/StorageModel/method/getOrCreatePickTask(String)"
+  returnType: 	pickTask
+  signature: 	"class/StorageModel/method/getOrCreatepickTask(String)"
 
 - storageService_history: 	org.fulib.classmodel.Attribute
   clazz: 	storageService
@@ -239,7 +239,7 @@ publish(event);"
   methodBody: 	"ProductStored event = (ProductStored) e;
 if (event.getId().equals(\"12:00\")) {
 
-   Box box23 = model.getOrCreateBox(\"box23\");
+   box box23 = model.getOrCreatebox(\"box23\");
    box23.setProduct(\"shoes\");
    box23.setPlace(\"shelf23\");
 }
@@ -251,15 +251,15 @@ if (event.getId().equals(\"12:00\")) {
   returnType: 	void
   signature: 	"class/StorageService/method/handleProductStored(Event)"
 
-- storageService_handleOrderRegistered: 	org.fulib.classmodel.FMethod
+- storageService_handleShopPolicy: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageService
-  declaration: 	"private void handleOrderRegistered(Event e)"
-  id: 	StorageService_handleOrderRegistered
-  methodBody: 	"OrderRegistered event = (OrderRegistered) e;
-if (event.getId().equals(\"13:01\")) {
+  declaration: 	"private void handleShopPolicy(Event e)"
+  id: 	StorageService_handleShopPolicy
+  methodBody: 	"ShopPolicy event = (ShopPolicy) e;
+if (event.getId().equals(\"13:02\")) {
 
-   PickTask pick1300 = model.getOrCreatePickTask(\"pick1300\");
+   pickTask pick1300 = model.getOrCreatepickTask(\"pick1300\");
    pick1300.setOrder(\"order1300\");
    pick1300.setProduct(\"shoes\");
    pick1300.setCustomer(\"Alice\");
@@ -269,10 +269,10 @@ if (event.getId().equals(\"13:01\")) {
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleOrderRegistered
+  name: 	handleShopPolicy
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StorageService/method/handleOrderRegistered(Event)"
+  signature: 	"class/StorageService/method/handleShopPolicy(Event)"
 
 - storageService_handleOrderPicked: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -282,11 +282,11 @@ if (event.getId().equals(\"13:01\")) {
   methodBody: 	"OrderPicked event = (OrderPicked) e;
 if (event.getId().equals(\"14:00\")) {
 
-   PickTask pick1300 = model.getOrCreatePickTask(\"pick1300\");
+   pickTask pick1300 = model.getOrCreatepickTask(\"pick1300\");
    pick1300.setState(\"done\");
    pick1300.setBox(\"box23\");
 
-   Box box23 = model.getOrCreateBox(\"box23\");
+   box box23 = model.getOrCreatebox(\"box23\");
    box23.setPlace(\"shipping\");
 }
 "
@@ -305,7 +305,7 @@ if (event.getId().equals(\"14:00\")) {
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(ProductStored.class, this::handleProductStored);
-   handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
+   handlerMap.put(ShopPolicy.class, this::handleShopPolicy);
    handlerMap.put(OrderPicked.class, this::handleOrderPicked);
 }
 "
@@ -380,7 +380,7 @@ catch (UnirestException e) {
 
 - box_id: 	org.fulib.classmodel.Attribute
   clazz: 	box
-  id: 	Box_id
+  id: 	box_id
   modified: 	false
   name: 	id
   propertyStyle: 	Bean
@@ -389,7 +389,7 @@ catch (UnirestException e) {
 
 - box_product: 	org.fulib.classmodel.Attribute
   clazz: 	box
-  id: 	Box_product
+  id: 	box_product
   modified: 	false
   name: 	product
   propertyStyle: 	Bean
@@ -398,7 +398,7 @@ catch (UnirestException e) {
 
 - box_place: 	org.fulib.classmodel.Attribute
   clazz: 	box
-  id: 	Box_place
+  id: 	box_place
   modified: 	false
   name: 	place
   propertyStyle: 	Bean
@@ -407,7 +407,7 @@ catch (UnirestException e) {
 
 - pickTask_id: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	PickTask_id
+  id: 	pickTask_id
   modified: 	false
   name: 	id
   propertyStyle: 	Bean
@@ -416,7 +416,7 @@ catch (UnirestException e) {
 
 - pickTask_order: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	PickTask_order
+  id: 	pickTask_order
   modified: 	false
   name: 	order
   propertyStyle: 	Bean
@@ -425,7 +425,7 @@ catch (UnirestException e) {
 
 - pickTask_product: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	PickTask_product
+  id: 	pickTask_product
   modified: 	false
   name: 	product
   propertyStyle: 	Bean
@@ -434,7 +434,7 @@ catch (UnirestException e) {
 
 - pickTask_customer: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	PickTask_customer
+  id: 	pickTask_customer
   modified: 	false
   name: 	customer
   propertyStyle: 	Bean
@@ -443,7 +443,7 @@ catch (UnirestException e) {
 
 - pickTask_address: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	PickTask_address
+  id: 	pickTask_address
   modified: 	false
   name: 	address
   propertyStyle: 	Bean
@@ -452,7 +452,7 @@ catch (UnirestException e) {
 
 - pickTask_state: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	PickTask_state
+  id: 	pickTask_state
   modified: 	false
   name: 	state
   propertyStyle: 	Bean
@@ -461,7 +461,7 @@ catch (UnirestException e) {
 
 - pickTask_box: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	PickTask_box
+  id: 	pickTask_box
   modified: 	false
   name: 	box
   propertyStyle: 	Bean

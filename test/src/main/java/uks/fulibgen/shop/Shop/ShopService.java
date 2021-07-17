@@ -255,14 +255,14 @@ public class ShopService
       OrderRegistered event = (OrderRegistered) e;
       if (event.getId().equals("13:01")) {
 
-         Order order1300 = model.getOrCreateOrder("order1300");
+         order order1300 = model.getOrCreateorder("order1300");
          order1300.setProduct("shoes");
-         order1300.setCustomer("@Alice");
+         order1300.setCustomer("Alice");
          order1300.setAddress("Wonderland 1");
          order1300.setState("pending");
 
-         Customer alice = model.getOrCreateCustomer("Alice");
-         alice.setOrders("[@order1300]");
+         customer alice = model.getOrCreatecustomer("Alice");
+         alice.setOrders("[order1300]");
       }
    }
 
@@ -271,7 +271,7 @@ public class ShopService
       OrderPicked event = (OrderPicked) e;
       if (event.getId().equals("14:00")) {
 
-         Order order1300 = model.getOrCreateOrder("order1300");
+         order order1300 = model.getOrCreateorder("order1300");
          order1300.setState("shipping");
       }
    }

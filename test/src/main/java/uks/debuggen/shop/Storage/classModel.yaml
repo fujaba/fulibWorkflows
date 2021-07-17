@@ -21,7 +21,7 @@
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model 	storageService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_handleProductStored 	storageService_handleShopPolicy 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
+  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_handleProductStored 	storageService_handleOrderRegistered 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
   model: 	c
   modified: 	false
   name: 	StorageService
@@ -251,13 +251,13 @@ if (event.getId().equals(\"12:00\")) {
   returnType: 	void
   signature: 	"class/StorageService/method/handleProductStored(Event)"
 
-- storageService_handleShopPolicy: 	org.fulib.classmodel.FMethod
+- storageService_handleOrderRegistered: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageService
-  declaration: 	"private void handleShopPolicy(Event e)"
-  id: 	StorageService_handleShopPolicy
-  methodBody: 	"ShopPolicy event = (ShopPolicy) e;
-if (event.getId().equals(\"13:02\")) {
+  declaration: 	"private void handleOrderRegistered(Event e)"
+  id: 	StorageService_handleOrderRegistered
+  methodBody: 	"OrderRegistered event = (OrderRegistered) e;
+if (event.getId().equals(\"13:01\")) {
 
    pickTask pick1300 = model.getOrCreatepickTask(\"pick1300\");
    pick1300.setOrder(\"order1300\");
@@ -269,10 +269,10 @@ if (event.getId().equals(\"13:02\")) {
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleShopPolicy
+  name: 	handleOrderRegistered
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StorageService/method/handleShopPolicy(Event)"
+  signature: 	"class/StorageService/method/handleOrderRegistered(Event)"
 
 - storageService_handleOrderPicked: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -305,7 +305,7 @@ if (event.getId().equals(\"14:00\")) {
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(ProductStored.class, this::handleProductStored);
-   handlerMap.put(ShopPolicy.class, this::handleShopPolicy);
+   handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
    handlerMap.put(OrderPicked.class, this::handleOrderPicked);
 }
 "

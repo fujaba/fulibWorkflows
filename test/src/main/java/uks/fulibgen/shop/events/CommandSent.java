@@ -1,36 +1,56 @@
 package uks.fulibgen.shop.events;
 import java.util.Objects;
 
-public class MockupDone extends Event
+public class CommandSent extends Event
 {
-   public static final String PROPERTY_ORDER_REGISTERED = "OrderRegistered";
+   public static final String PROPERTY_TYPE = "type";
+   public static final String PROPERTY_USER = "user";
    public static final String PROPERTY_L1 = "l1";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_OK = "ok";
-   private String OrderRegistered;
+   private String type;
+   private String user;
    private String l1;
    private String product;
    private String customer;
    private String address;
    private String ok;
 
-   public String getOrderRegistered()
+   public String getType()
    {
-      return this.OrderRegistered;
+      return this.type;
    }
 
-   public MockupDone setOrderRegistered(String value)
+   public CommandSent setType(String value)
    {
-      if (Objects.equals(value, this.OrderRegistered))
+      if (Objects.equals(value, this.type))
       {
          return this;
       }
 
-      final String oldValue = this.OrderRegistered;
-      this.OrderRegistered = value;
-      this.firePropertyChange(PROPERTY_ORDER_REGISTERED, oldValue, value);
+      final String oldValue = this.type;
+      this.type = value;
+      this.firePropertyChange(PROPERTY_TYPE, oldValue, value);
+      return this;
+   }
+
+   public String getUser()
+   {
+      return this.user;
+   }
+
+   public CommandSent setUser(String value)
+   {
+      if (Objects.equals(value, this.user))
+      {
+         return this;
+      }
+
+      final String oldValue = this.user;
+      this.user = value;
+      this.firePropertyChange(PROPERTY_USER, oldValue, value);
       return this;
    }
 
@@ -39,7 +59,7 @@ public class MockupDone extends Event
       return this.l1;
    }
 
-   public MockupDone setL1(String value)
+   public CommandSent setL1(String value)
    {
       if (Objects.equals(value, this.l1))
       {
@@ -57,7 +77,7 @@ public class MockupDone extends Event
       return this.product;
    }
 
-   public MockupDone setProduct(String value)
+   public CommandSent setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -75,7 +95,7 @@ public class MockupDone extends Event
       return this.customer;
    }
 
-   public MockupDone setCustomer(String value)
+   public CommandSent setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -93,7 +113,7 @@ public class MockupDone extends Event
       return this.address;
    }
 
-   public MockupDone setAddress(String value)
+   public CommandSent setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -111,7 +131,7 @@ public class MockupDone extends Event
       return this.ok;
    }
 
-   public MockupDone setOk(String value)
+   public CommandSent setOk(String value)
    {
       if (Objects.equals(value, this.ok))
       {
@@ -128,7 +148,8 @@ public class MockupDone extends Event
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getOrderRegistered());
+      result.append(' ').append(this.getType());
+      result.append(' ').append(this.getUser());
       result.append(' ').append(this.getL1());
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());

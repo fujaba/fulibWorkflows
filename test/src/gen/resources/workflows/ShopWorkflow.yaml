@@ -1,7 +1,6 @@
 
 - WorkflowStarted: ordering
 
-
 - ServiceRegistered: 10:00
   name: Shop
   port: 42100
@@ -55,11 +54,8 @@
   customer: Alice
   orders: [order1300]
 
-- ShopPolicy: 13:01:10
-  OrderApproved: 13:02
-  order: order1300
 
-- StorageData: 13:02:01
+- StorageData: 13:01:21
   pickTask: pick1300
   order: order1300
   product: shoes

@@ -1,11 +1,106 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	note 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
   mainJavaDir: 	"src/main/java"
   packageName: 	org.fulib.workflows
   packageSrcFolder: 	"src/main/java/org/fulib/workflows"
+
+- policy: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	Policy
+  propertyStyle: 	Bean
+  roles: 	policy_service 	policy_trigger 	policy_workflow
+  superClass: 	interaction
+
+- interaction: 	org.fulib.classmodel.Clazz
+  attributes: 	interaction_actorName
+  model: 	c
+  modified: 	false
+  name: 	Interaction
+  propertyStyle: 	Bean
+  roles: 	interaction_steps
+  subClasses: 	policy 	userInteraction
+
+- serviceNote: 	org.fulib.classmodel.Clazz
+  attributes: 	serviceNote_name 	serviceNote_port
+  model: 	c
+  modified: 	false
+  name: 	ServiceNote
+  propertyStyle: 	Bean
+  roles: 	serviceNote_policies 	serviceNote_userInteractions 	serviceNote_workflows
+  superClass: 	note
+
+- eventNote: 	org.fulib.classmodel.Clazz
+  attributes: 	eventNote_eventType
+  model: 	c
+  modified: 	false
+  name: 	EventNote
+  propertyStyle: 	Bean
+  roles: 	eventNote_policies
+  superClass: 	workflowNote
+
+- workflow: 	org.fulib.classmodel.Clazz
+  attributes: 	workflow_name
+  model: 	c
+  modified: 	false
+  name: 	Workflow
+  propertyStyle: 	Bean
+  roles: 	workflow_policies 	workflow_userInteractions 	workflow_notes 	workflow_services 	workflow_users
+  superClass: 	note
+
+- userInteraction: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	UserInteraction
+  propertyStyle: 	Bean
+  roles: 	userInteraction_user 	userInteraction_service 	userInteraction_workflow
+  superClass: 	interaction
+
+- userNote: 	org.fulib.classmodel.Clazz
+  attributes: 	userNote_name
+  model: 	c
+  modified: 	false
+  name: 	UserNote
+  propertyStyle: 	Bean
+  roles: 	userNote_interactions 	userNote_workflows
+  superClass: 	note
+
+- workflowNote: 	org.fulib.classmodel.Clazz
+  attributes: 	workflowNote_time
+  model: 	c
+  modified: 	false
+  name: 	WorkflowNote
+  propertyStyle: 	Bean
+  roles: 	workflowNote_interaction 	workflowNote_workflow
+  subClasses: 	commandNote 	dataNote 	eventNote
+  superClass: 	note
+
+- commandNote: 	org.fulib.classmodel.Clazz
+  attributes: 	commandNote_eventType
+  model: 	c
+  modified: 	false
+  name: 	CommandNote
+  propertyStyle: 	Bean
+  superClass: 	workflowNote
+
+- dataNote: 	org.fulib.classmodel.Clazz
+  attributes: 	dataNote_dataType
+  model: 	c
+  modified: 	false
+  name: 	DataNote
+  propertyStyle: 	Bean
+  superClass: 	workflowNote
+
+- note: 	org.fulib.classmodel.Clazz
+  attributes: 	note_map
+  model: 	c
+  modified: 	false
+  name: 	Note
+  propertyStyle: 	Bean
+  subClasses: 	workflowNote 	serviceNote 	userNote 	workflow
 
 - event: 	org.fulib.classmodel.Clazz
   attributes: 	event_id
@@ -20,6 +115,320 @@
   itf: 	org.fulib.classmodel.CollectionInterface.List
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
+
+- policy_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	policy
+  id: 	Policy_service
+  modified: 	false
+  name: 	service
+  other: 	serviceNote_policies
+  propertyStyle: 	Bean
+
+- policy_trigger: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	policy
+  id: 	Policy_trigger
+  modified: 	false
+  name: 	trigger
+  other: 	eventNote_policies
+  propertyStyle: 	Bean
+
+- policy_workflow: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	policy
+  id: 	Policy_workflow
+  modified: 	false
+  name: 	workflow
+  other: 	workflow_policies
+  propertyStyle: 	Bean
+
+- interaction_actorName: 	org.fulib.classmodel.Attribute
+  clazz: 	interaction
+  id: 	Interaction_actorName
+  modified: 	false
+  name: 	actorName
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- interaction_steps: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	interaction
+  collectionType: 	c1
+  id: 	Interaction_steps
+  modified: 	false
+  name: 	steps
+  other: 	workflowNote_interaction
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- serviceNote_name: 	org.fulib.classmodel.Attribute
+  clazz: 	serviceNote
+  id: 	ServiceNote_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- serviceNote_port: 	org.fulib.classmodel.Attribute
+  clazz: 	serviceNote
+  id: 	ServiceNote_port
+  modified: 	false
+  name: 	port
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- serviceNote_policies: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	serviceNote
+  collectionType: 	c1
+  id: 	ServiceNote_policies
+  modified: 	false
+  name: 	policies
+  other: 	policy_service
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- serviceNote_userInteractions: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	serviceNote
+  collectionType: 	c1
+  id: 	ServiceNote_userInteractions
+  modified: 	false
+  name: 	userInteractions
+  other: 	userInteraction_service
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- serviceNote_workflows: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	serviceNote
+  collectionType: 	c1
+  id: 	ServiceNote_workflows
+  modified: 	false
+  name: 	workflows
+  other: 	workflow_services
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- eventNote_eventType: 	org.fulib.classmodel.Attribute
+  clazz: 	eventNote
+  id: 	EventNote_eventType
+  modified: 	false
+  name: 	eventType
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- eventNote_policies: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	eventNote
+  collectionType: 	c1
+  id: 	EventNote_policies
+  modified: 	false
+  name: 	policies
+  other: 	policy_trigger
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- workflow_name: 	org.fulib.classmodel.Attribute
+  clazz: 	workflow
+  id: 	Workflow_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- workflow_policies: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	workflow
+  collectionType: 	c1
+  id: 	Workflow_policies
+  modified: 	false
+  name: 	policies
+  other: 	policy_workflow
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- workflow_userInteractions: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	workflow
+  collectionType: 	c1
+  id: 	Workflow_userInteractions
+  modified: 	false
+  name: 	userInteractions
+  other: 	userInteraction_workflow
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- workflow_notes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	workflow
+  collectionType: 	c1
+  id: 	Workflow_notes
+  modified: 	false
+  name: 	notes
+  other: 	workflowNote_workflow
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- workflow_services: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	workflow
+  collectionType: 	c1
+  id: 	Workflow_services
+  modified: 	false
+  name: 	services
+  other: 	serviceNote_workflows
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- workflow_users: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	workflow
+  collectionType: 	c1
+  id: 	Workflow_users
+  modified: 	false
+  name: 	users
+  other: 	userNote_workflows
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- userInteraction_user: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	userInteraction
+  id: 	UserInteraction_user
+  modified: 	false
+  name: 	user
+  other: 	userNote_interactions
+  propertyStyle: 	Bean
+
+- userInteraction_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	userInteraction
+  id: 	UserInteraction_service
+  modified: 	false
+  name: 	service
+  other: 	serviceNote_userInteractions
+  propertyStyle: 	Bean
+
+- userInteraction_workflow: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	userInteraction
+  id: 	UserInteraction_workflow
+  modified: 	false
+  name: 	workflow
+  other: 	workflow_userInteractions
+  propertyStyle: 	Bean
+
+- userNote_name: 	org.fulib.classmodel.Attribute
+  clazz: 	userNote
+  id: 	UserNote_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- userNote_interactions: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	userNote
+  collectionType: 	c1
+  id: 	UserNote_interactions
+  modified: 	false
+  name: 	interactions
+  other: 	userInteraction_user
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- userNote_workflows: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	userNote
+  collectionType: 	c1
+  id: 	UserNote_workflows
+  modified: 	false
+  name: 	workflows
+  other: 	workflow_users
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- workflowNote_time: 	org.fulib.classmodel.Attribute
+  clazz: 	workflowNote
+  id: 	WorkflowNote_time
+  modified: 	false
+  name: 	time
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- workflowNote_interaction: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	workflowNote
+  id: 	WorkflowNote_interaction
+  modified: 	false
+  name: 	interaction
+  other: 	interaction_steps
+  propertyStyle: 	Bean
+
+- workflowNote_workflow: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	workflowNote
+  id: 	WorkflowNote_workflow
+  modified: 	false
+  name: 	workflow
+  other: 	workflow_notes
+  propertyStyle: 	Bean
+
+- commandNote_eventType: 	org.fulib.classmodel.Attribute
+  clazz: 	commandNote
+  id: 	CommandNote_eventType
+  modified: 	false
+  name: 	eventType
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- dataNote_dataType: 	org.fulib.classmodel.Attribute
+  clazz: 	dataNote
+  id: 	DataNote_dataType
+  modified: 	false
+  name: 	dataType
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- note_map: 	org.fulib.classmodel.Attribute
+  clazz: 	note
+  id: 	Note_map
+  modified: 	false
+  name: 	map
+  propertyStyle: 	Bean
+  type: 	"import(java.util.LinkedHashMap)<String, String>"
+  typeSignature: 	"LinkedHashMap<String,String>"
 
 - event_id: 	org.fulib.classmodel.Attribute
   clazz: 	event

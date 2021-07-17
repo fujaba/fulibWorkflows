@@ -13,15 +13,12 @@ public class HtmlTest
    public void testGenWorkflow() throws IOException
    {
 
-      String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow.yml"));
+      String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow.yaml"));
       Files.createDirectories(Path.of("tmp"));
 
-      HtmlGenerator2 generator2 = new HtmlGenerator2();
-      String html2 = generator2.generateHtml(yaml);
-      Files.write(Path.of("tmp/index2.html"), html2.getBytes(StandardCharsets.UTF_8));
-
-      HtmlGenerator generator = new HtmlGenerator();
+      HtmlGenerator3 generator = new HtmlGenerator3();
       String html = generator.generateHtml(yaml);
-      Files.write(Path.of("tmp/index.html"), html.getBytes(StandardCharsets.UTF_8));
+      Files.write(Path.of("tmp/index3.html"), html.getBytes(StandardCharsets.UTF_8));
+
    }
 }

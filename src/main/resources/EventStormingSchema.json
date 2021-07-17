@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/product.schema.json",
+  "title": "Product",
+  "description": "A product in the catalog",
+  "type": "array",
+  "items": {
+    "anyOf": [
+      {
+        "type": "object",
+        "required": [
+          "WorkflowStarted"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "ServiceRegistered", "port", "name"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "UserRegistered", "role", "name"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "user"
+        ]
+      }
+    ]
+  },
+  "minItems": 1,
+  "uniqueItems": true
+}
+

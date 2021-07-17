@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	testmonday
+  classes: 	testordering
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -7,14 +7,14 @@
   packageName: 	uks.fulibgen.shop
   packageSrcFolder: 	"src/test/java/uks/fulibgen/shop"
 
-- testmonday: 	org.fulib.classmodel.Clazz
-  attributes: 	testmonday_eventBroker
+- testordering: 	org.fulib.classmodel.Clazz
+  attributes: 	testordering_eventBroker
   importList: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
   imports: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
-  methods: 	testmonday_monday 	testmonday_publish
+  methods: 	testordering_ordering 	testordering_publish
   model: 	c
   modified: 	false
-  name: 	Testmonday
+  name: 	Testordering
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -24,21 +24,21 @@
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
 
-- testmonday_eventBroker: 	org.fulib.classmodel.Attribute
-  clazz: 	testmonday
-  id: 	Testmonday_eventBroker
+- testordering_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testordering
+  id: 	Testordering_eventBroker
   modified: 	false
   name: 	eventBroker
   propertyStyle: 	Bean
   type: 	EventBroker
   typeSignature: 	EventBroker
 
-- testmonday_monday: 	org.fulib.classmodel.FMethod
+- testordering_ordering: 	org.fulib.classmodel.FMethod
   annotations: 	"@Test"
-  clazz: 	testmonday
+  clazz: 	testordering
   declaration: 	"@Test
-public void monday()"
-  id: 	Testmonday_monday
+public void ordering()"
+  id: 	Testordering_ordering
   methodBody: 	"// start the event broker
 eventBroker = new EventBroker();
 eventBroker.start();
@@ -60,6 +60,18 @@ e1200.setPlace(\"shelf23\");
 e1200.setUser(\"Bob\");
 publish(e1200);
 
+// create CommandSent: 13:00
+CommandSent e1300 = new CommandSent();
+e1300.setId(\"13:00\");
+e1300.setType(\"OrderRegistered\");
+e1300.setUser(\"Alice\");
+e1300.setL1(\"label welcome to the shop\");
+e1300.setProduct(\"input product? shoes\");
+e1300.setCustomer(\"input name? Alice\");
+e1300.setAddress(\"input address? Wonderland 1\");
+e1300.setOk(\"button OK\");
+publish(e1300);
+
 // create OrderRegistered: 13:01
 OrderRegistered e1301 = new OrderRegistered();
 e1301.setId(\"13:01\");
@@ -80,16 +92,16 @@ System.out.println();
 "
   modified: 	false
   modifiers: 	public
-  name: 	monday
+  name: 	ordering
   paramsString: 	""
   returnType: 	void
-  signature: 	"class/Testmonday/method/monday()"
+  signature: 	"class/Testordering/method/ordering()"
 
-- testmonday_publish: 	org.fulib.classmodel.FMethod
+- testordering_publish: 	org.fulib.classmodel.FMethod
   annotations: 	""
-  clazz: 	testmonday
+  clazz: 	testordering
   declaration: 	"public void publish(Event event)"
-  id: 	Testmonday_publish
+  id: 	Testordering_publish
   methodBody: 	"String yaml = Yaml.encode(event);
 
 try {
@@ -106,5 +118,5 @@ catch (UnirestException e) {
   name: 	publish
   paramsString: 	"Event event"
   returnType: 	void
-  signature: 	"class/Testmonday/method/publish(Event)"
+  signature: 	"class/Testordering/method/publish(Event)"
 

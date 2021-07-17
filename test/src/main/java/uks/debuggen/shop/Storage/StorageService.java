@@ -211,7 +211,7 @@ public class StorageService
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(ProductStored.class, this::handleProductStored);
-         handlerMap.put(ShopPolicy.class, this::handleShopPolicy);
+         handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
       }
    }
@@ -278,10 +278,10 @@ public class StorageService
       }
    }
 
-   private void handleShopPolicy(Event e)
+   private void handleOrderRegistered(Event e)
    {
-      ShopPolicy event = (ShopPolicy) e;
-      if (event.getId().equals("13:02")) {
+      OrderRegistered event = (OrderRegistered) e;
+      if (event.getId().equals("13:01")) {
 
          pickTask pick1300 = model.getOrCreatepickTask("pick1300");
          pick1300.setOrder("order1300");

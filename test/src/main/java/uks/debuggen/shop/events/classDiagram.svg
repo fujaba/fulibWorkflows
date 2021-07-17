@@ -1,8 +1,8 @@
-<svg width="829px" height="234px"
- viewBox="0.00 0.00 829.00 234.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="659px" height="234px"
+ viewBox="0.00 0.00 659.00 234.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 230)">
 <title>uks.debuggen.shop.events</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-230 825,-230 825,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-230 655,-230 655,4 -4,4"/>
 <!-- CommandSent -->
 <g id="node1" class="node"><title>CommandSent</title>
 <polygon fill="none" stroke="black" points="8,-115 8,-136 106,-136 106,-115 8,-115"/>
@@ -18,15 +18,15 @@
 </g>
 <!-- Event -->
 <g id="node2" class="node"><title>Event</title>
-<polygon fill="none" stroke="black" points="358,-201 358,-222 415,-222 415,-201 358,-201"/>
-<text text-anchor="start" x="370.5" y="-207.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
-<polygon fill="none" stroke="black" points="358,-180 358,-201 415,-201 415,-180 358,-180"/>
-<text text-anchor="start" x="361" y="-186.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<polygon fill="none" stroke="black" points="294,-201 294,-222 351,-222 351,-201 294,-201"/>
+<text text-anchor="start" x="306.5" y="-207.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
+<polygon fill="none" stroke="black" points="294,-180 294,-201 351,-201 351,-180 294,-180"/>
+<text text-anchor="start" x="297" y="-186.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
 </g>
 <!-- CommandSent&#45;&gt;Event -->
 <g id="edge1" class="edge"><title>CommandSent&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M114.086,-134.341C116.997,-136.382 119.972,-138.283 123,-140 191.694,-178.964 284.006,-192.63 339.014,-197.42"/>
-<polygon fill="none" stroke="black" points="338.919,-200.923 349.169,-198.239 339.483,-193.946 338.919,-200.923"/>
+<path fill="none" stroke="black" d="M114.239,-134.082C117.108,-136.194 120.033,-138.18 123,-140 170.455,-169.11 232.987,-184.925 275.189,-192.897"/>
+<polygon fill="none" stroke="black" points="274.729,-196.37 285.193,-194.712 275.978,-189.483 274.729,-196.37"/>
 </g>
 <!-- OrderPicked -->
 <g id="node3" class="node"><title>OrderPicked</title>
@@ -39,8 +39,8 @@
 </g>
 <!-- OrderPicked&#45;&gt;Event -->
 <g id="edge2" class="edge"><title>OrderPicked&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M221.61,-110.217C231.602,-120.744 243.115,-131.541 255,-140 281.047,-158.538 313.737,-173.521 339.945,-183.878"/>
-<polygon fill="none" stroke="black" points="338.693,-187.146 349.283,-187.482 341.214,-180.616 338.693,-187.146"/>
+<path fill="none" stroke="black" d="M225.485,-110.196C234.95,-120.071 245.232,-130.547 255,-140 265.015,-149.691 276.19,-159.917 286.499,-169.128"/>
+<polygon fill="none" stroke="black" points="284.379,-171.926 294.181,-175.948 289.026,-166.691 284.379,-171.926"/>
 </g>
 <!-- OrderRegistered -->
 <g id="node4" class="node"><title>OrderRegistered</title>
@@ -54,8 +54,8 @@
 </g>
 <!-- OrderRegistered&#45;&gt;Event -->
 <g id="edge3" class="edge"><title>OrderRegistered&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M345.105,-117.572C353.153,-133.793 362.016,-151.657 369.428,-166.596"/>
-<polygon fill="none" stroke="black" points="366.486,-168.541 374.065,-175.944 372.756,-165.43 366.486,-168.541"/>
+<path fill="none" stroke="black" d="M322,-117.572C322,-133.484 322,-150.978 322,-165.739"/>
+<polygon fill="none" stroke="black" points="318.5,-165.944 322,-175.944 325.5,-165.944 318.5,-165.944"/>
 </g>
 <!-- ProductStored -->
 <g id="node5" class="node"><title>ProductStored</title>
@@ -69,8 +69,8 @@
 </g>
 <!-- ProductStored&#45;&gt;Event -->
 <g id="edge4" class="edge"><title>ProductStored&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M427.534,-117.572C419.36,-133.793 410.359,-151.657 402.831,-166.596"/>
-<polygon fill="none" stroke="black" points="399.495,-165.439 398.121,-175.944 405.747,-168.589 399.495,-165.439"/>
+<path fill="none" stroke="black" d="M410.322,-117.665C403.346,-125.261 396.066,-132.946 389,-140 379.226,-149.758 368.207,-159.936 357.971,-169.078"/>
+<polygon fill="none" stroke="black" points="355.496,-166.595 350.329,-175.844 360.137,-171.836 355.496,-166.595"/>
 </g>
 <!-- ServiceSubscribed -->
 <g id="node6" class="node"><title>ServiceSubscribed</title>
@@ -81,21 +81,8 @@
 </g>
 <!-- ServiceSubscribed&#45;&gt;Event -->
 <g id="edge5" class="edge"><title>ServiceSubscribed&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M565.289,-95.0909C551.556,-109.376 532.883,-127.142 514,-140 488.546,-157.331 457.296,-172.087 432.045,-182.628"/>
-<polygon fill="none" stroke="black" points="430.615,-179.431 422.685,-186.458 433.266,-185.91 430.615,-179.431"/>
-</g>
-<!-- ShopPolicy -->
-<g id="node7" class="node"><title>ShopPolicy</title>
-<polygon fill="none" stroke="black" points="677,-77 677,-98 813,-98 813,-77 677,-77"/>
-<text text-anchor="start" x="712" y="-83.8" font-family="Times New Roman,serif" font-size="14.00">ShopPolicy</text>
-<polygon fill="none" stroke="black" points="677,-41 677,-77 813,-77 813,-41 677,-41"/>
-<text text-anchor="start" x="680" y="-62.8" font-family="Times New Roman,serif" font-size="14.00">OrderApproved :String</text>
-<text text-anchor="start" x="680" y="-47.8" font-family="Times New Roman,serif" font-size="14.00">order :String</text>
-</g>
-<!-- ShopPolicy&#45;&gt;Event -->
-<g id="edge6" class="edge"><title>ShopPolicy&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M713.178,-102.815C698.181,-116.147 679.352,-130.683 660,-140 585.445,-175.897 489.144,-190.575 432.813,-196.387"/>
-<polygon fill="none" stroke="black" points="432.385,-192.912 422.774,-197.372 433.068,-199.878 432.385,-192.912"/>
+<path fill="none" stroke="black" d="M566.801,-95.0262C553.218,-109.834 534.162,-128.185 514,-140 468.168,-166.857 409.016,-182.981 368.553,-191.645"/>
+<polygon fill="none" stroke="black" points="367.77,-188.233 358.688,-193.689 369.191,-195.088 367.77,-188.233"/>
 </g>
 </g>
 </svg>

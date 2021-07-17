@@ -2,7 +2,7 @@ package uks.fulibgen.shop.Shop;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class Customer
+public class customer
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_ORDERS = "orders";
@@ -15,7 +15,7 @@ public class Customer
       return this.id;
    }
 
-   public Customer setId(String value)
+   public customer setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -33,7 +33,7 @@ public class Customer
       return this.orders;
    }
 
-   public Customer setOrders(String value)
+   public customer setOrders(String value)
    {
       if (Objects.equals(value, this.orders))
       {

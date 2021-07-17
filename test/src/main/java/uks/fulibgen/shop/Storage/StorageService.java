@@ -209,7 +209,7 @@ public class StorageService
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(ProductStored.class, this::handleProductStored);
-         handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
+         handlerMap.put(ShopPolicy.class, this::handleShopPolicy);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
       }
    }
@@ -256,23 +256,9 @@ public class StorageService
       ProductStored event = (ProductStored) e;
       if (event.getId().equals("12:00")) {
 
-         Box box23 = model.getOrCreateBox("box23");
+         box box23 = model.getOrCreatebox("box23");
          box23.setProduct("shoes");
          box23.setPlace("shelf23");
-      }
-   }
-
-   private void handleOrderRegistered(Event e)
-   {
-      OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:01")) {
-
-         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
-         pick1300.setOrder("order1300");
-         pick1300.setProduct("shoes");
-         pick1300.setCustomer("Alice");
-         pick1300.setAddress("Wonderland 1");
-         pick1300.setState("todo");
       }
    }
 
@@ -281,12 +267,26 @@ public class StorageService
       OrderPicked event = (OrderPicked) e;
       if (event.getId().equals("14:00")) {
 
-         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
+         pickTask pick1300 = model.getOrCreatepickTask("pick1300");
          pick1300.setState("done");
          pick1300.setBox("box23");
 
-         Box box23 = model.getOrCreateBox("box23");
+         box box23 = model.getOrCreatebox("box23");
          box23.setPlace("shipping");
+      }
+   }
+
+   private void handleShopPolicy(Event e)
+   {
+      ShopPolicy event = (ShopPolicy) e;
+      if (event.getId().equals("13:02")) {
+
+         pickTask pick1300 = model.getOrCreatepickTask("pick1300");
+         pick1300.setOrder("order1300");
+         pick1300.setProduct("shoes");
+         pick1300.setCustomer("Alice");
+         pick1300.setAddress("Wonderland 1");
+         pick1300.setState("todo");
       }
    }
 }

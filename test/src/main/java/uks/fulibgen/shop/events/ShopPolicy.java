@@ -1,11 +1,13 @@
-package uks.debuggen.shop.events;
+package uks.fulibgen.shop.events;
 import java.util.Objects;
 
 public class ShopPolicy extends Event
 {
    public static final String PROPERTY_ORDER_APPROVED = "OrderApproved";
+   public static final String PROPERTY_TRIGGER = "trigger";
    public static final String PROPERTY_ORDER = "order";
    private String OrderApproved;
+   private String trigger;
    private String order;
 
    public String getOrderApproved()
@@ -23,6 +25,24 @@ public class ShopPolicy extends Event
       final String oldValue = this.OrderApproved;
       this.OrderApproved = value;
       this.firePropertyChange(PROPERTY_ORDER_APPROVED, oldValue, value);
+      return this;
+   }
+
+   public String getTrigger()
+   {
+      return this.trigger;
+   }
+
+   public ShopPolicy setTrigger(String value)
+   {
+      if (Objects.equals(value, this.trigger))
+      {
+         return this;
+      }
+
+      final String oldValue = this.trigger;
+      this.trigger = value;
+      this.firePropertyChange(PROPERTY_TRIGGER, oldValue, value);
       return this;
    }
 
@@ -49,6 +69,7 @@ public class ShopPolicy extends Event
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getOrderApproved());
+      result.append(' ').append(this.getTrigger());
       result.append(' ').append(this.getOrder());
       return result.toString();
    }

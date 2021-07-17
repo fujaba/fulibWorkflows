@@ -1,20 +1,41 @@
-package uks.debuggen.shop;
-import org.junit.Test;
-import uks.debuggen.shop.Shop.ShopService;
-import uks.debuggen.shop.events.*;
-import java.util.Objects;
-import java.beans.PropertyChangeSupport;
+package uks.fulibgen.shop;
 import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.yaml.Yaml;
-import com.mashape.unirest.http.Unirest;
-import uks.debuggen.shop.Storage.StorageService;
+import org.junit.Test;
+import uks.fulibgen.shop.Shop.ShopService;
+import uks.fulibgen.shop.Storage.StorageService;
+import uks.fulibgen.shop.events.*;
+import java.util.Objects;
+import java.beans.PropertyChangeSupport;
 
-public class Testmonday
+public class Testordering
 {
+   public static final String PROPERTY_EVENT_BROKER = "eventBroker";
+   private EventBroker eventBroker;
+   protected PropertyChangeSupport listeners;
+
+   public EventBroker getEventBroker()
+   {
+      return this.eventBroker;
+   }
+
+   public Testordering setEventBroker(EventBroker value)
+   {
+      if (Objects.equals(value, this.eventBroker))
+      {
+         return this;
+      }
+
+      final EventBroker oldValue = this.eventBroker;
+      this.eventBroker = value;
+      this.firePropertyChange(PROPERTY_EVENT_BROKER, oldValue, value);
+      return this;
+   }
 
    @Test
-   public void monday()
+   public void ordering()
    {
       // start the event broker
       eventBroker = new EventBroker();
@@ -68,6 +89,21 @@ public class Testmonday
       System.out.println();
    }
 
+   public void publish(Event event)
+   {
+      String yaml = Yaml.encode(event);
+
+      try {
+         HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
+               .body(yaml)
+               .asString();
+         System.out.println(response.getBody());
+      }
+      catch (UnirestException e) {
+         e.printStackTrace();
+      }
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -85,41 +121,5 @@ public class Testmonday
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
-   }
-
-   public void publish(Event event)
-   {
-      String yaml = Yaml.encode(event);
-
-      try {
-         HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
-               .body(yaml)
-               .asString();
-         System.out.println(response.getBody());
-      }
-      catch (UnirestException e) {
-         e.printStackTrace();
-      }
-   }
-   public static final String PROPERTY_EVENT_BROKER = "eventBroker";
-   protected PropertyChangeSupport listeners;
-   private EventBroker eventBroker;
-
-   public EventBroker getEventBroker()
-   {
-      return this.eventBroker;
-   }
-
-   public Testmonday setEventBroker(EventBroker value)
-   {
-      if (Objects.equals(value, this.eventBroker))
-      {
-         return this;
-      }
-
-      final EventBroker oldValue = this.eventBroker;
-      this.eventBroker = value;
-      this.firePropertyChange(PROPERTY_EVENT_BROKER, oldValue, value);
-      return this;
    }
 }

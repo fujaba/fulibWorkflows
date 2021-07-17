@@ -68,7 +68,6 @@ public class Yamler2
          if ( ! hasNextLine()) {
             return currentObject;
          }
-         System.out.println();
       }
    }
 

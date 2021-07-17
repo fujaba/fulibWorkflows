@@ -1,6 +1,7 @@
 package org.fulib.workflows;
 
 import org.fulib.Fulib;
+import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
 import org.junit.Test;
 
@@ -21,9 +22,12 @@ public class TestGenerator
          mm.setMainJavaDir("test/src/main/java");
          mm.setPackageName("uks.debuggen.shop");
 
-         String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow.yml"));
+         String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow.yaml"));
 
          WorkflowGenerator workflowGenerator = new WorkflowGenerator().loadWorkflow(mm, yaml);
+
+         FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
+               workflowGenerator.getEventModel().getRootWorkflow());
 
          workflowGenerator.generate();
 

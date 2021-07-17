@@ -4,24 +4,24 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
-public class HtmlGenerator2
+public class HtmlGenerator3
 {
    private STGroupFile group;
    private EventModel eventModel;
    private ST st;
    private StringBuilder body;
    private int notesPerLane;
+   private Workflow rootWorkflow;
 
    public String generateHtml(String yaml)
    {
 
       eventModel = new EventModel();
       eventModel.buildEventMap(yaml);
+      rootWorkflow = eventModel.getRootWorkflow();
       group = new STGroupFile(this.getClass().getResource("html/html.stg"));
       body = new StringBuilder();
 
@@ -49,14 +49,11 @@ public class HtmlGenerator2
       notesPerLane = 1;
 
       String previousActor = "noActor";
-      for (Map.Entry<String, LinkedHashMap<String, String>> entry : eventModel.eventMap.entrySet()) {
-         String time = entry.getKey();
-         LinkedHashMap<String, String> map = entry.getValue();
+      for (WorkflowNote note : rootWorkflow.getNotes()) {
+         String time = note.getTime();
+         Map<String, String> map = note.getMap();
          String eventType = eventModel.getEventType(map);
-         if (eventType.equals("ServiceRegistered")
-               || eventType.equals("UserRegistered")) {
-            continue;
-         }
+
 
          String user = map.get("user");
          if (eventType.endsWith("Policy")) {
@@ -70,7 +67,8 @@ public class HtmlGenerator2
          }
 
          String userType = "user";
-         if (eventModel.serviceMap.get(user) != null) {
+         ServiceNote serviceNote = rootWorkflow.getFromServices(user);
+         if (serviceNote != null) {
             userType = "server";
          }
 
@@ -119,7 +117,7 @@ public class HtmlGenerator2
       return buf.toString();
    }
 
-   private String commandNote(LinkedHashMap<String, String> map)
+   private String commandNote(Map<String, String> map)
    {
       StringBuilder attrs = new StringBuilder();
 
@@ -167,7 +165,7 @@ public class HtmlGenerator2
       return noteContent;
    }
 
-   private String eventNote(LinkedHashMap<String, String> map)
+   private String eventNote(Map<String, String> map)
    {
       StringBuilder attrs = new StringBuilder();
       for (Map.Entry<String, String> attr : map.entrySet()) {
