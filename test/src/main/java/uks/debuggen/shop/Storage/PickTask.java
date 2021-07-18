@@ -2,7 +2,7 @@ package uks.debuggen.shop.Storage;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class pickTask
+public class PickTask
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_ORDER = "order";
@@ -25,7 +25,7 @@ public class pickTask
       return this.id;
    }
 
-   public pickTask setId(String value)
+   public PickTask setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -43,7 +43,7 @@ public class pickTask
       return this.order;
    }
 
-   public pickTask setOrder(String value)
+   public PickTask setOrder(String value)
    {
       if (Objects.equals(value, this.order))
       {
@@ -61,7 +61,7 @@ public class pickTask
       return this.product;
    }
 
-   public pickTask setProduct(String value)
+   public PickTask setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -79,7 +79,7 @@ public class pickTask
       return this.customer;
    }
 
-   public pickTask setCustomer(String value)
+   public PickTask setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -97,7 +97,7 @@ public class pickTask
       return this.address;
    }
 
-   public pickTask setAddress(String value)
+   public PickTask setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -115,7 +115,7 @@ public class pickTask
       return this.state;
    }
 
-   public pickTask setState(String value)
+   public PickTask setState(String value)
    {
       if (Objects.equals(value, this.state))
       {
@@ -133,7 +133,7 @@ public class pickTask
       return this.box;
    }
 
-   public pickTask setBox(String value)
+   public PickTask setBox(String value)
    {
       if (Objects.equals(value, this.box))
       {

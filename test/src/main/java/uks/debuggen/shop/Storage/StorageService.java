@@ -258,7 +258,7 @@ public class StorageService
       ProductStored event = (ProductStored) e;
       if (event.getId().equals("12:00")) {
 
-         box box23 = model.getOrCreatebox("box23");
+         Box box23 = model.getOrCreateBox("box23");
          box23.setProduct("shoes");
          box23.setPlace("shelf23");
       }
@@ -269,11 +269,11 @@ public class StorageService
       OrderPicked event = (OrderPicked) e;
       if (event.getId().equals("14:00")) {
 
-         pickTask pick1300 = model.getOrCreatepickTask("pick1300");
+         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
          pick1300.setState("done");
          pick1300.setBox("box23");
 
-         box box23 = model.getOrCreatebox("box23");
+         Box box23 = model.getOrCreateBox("box23");
          box23.setPlace("shipping");
       }
    }
@@ -283,7 +283,7 @@ public class StorageService
       OrderRegistered event = (OrderRegistered) e;
       if (event.getId().equals("13:01")) {
 
-         pickTask pick1300 = model.getOrCreatepickTask("pick1300");
+         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
          pick1300.setOrder("order1300");
          pick1300.setProduct("shoes");
          pick1300.setCustomer("Alice");

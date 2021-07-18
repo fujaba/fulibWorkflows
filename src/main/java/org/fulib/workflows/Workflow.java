@@ -13,12 +13,14 @@ public class Workflow extends Note
    public static final String PROPERTY_SERVICES = "services";
    public static final String PROPERTY_POLICIES = "policies";
    public static final String PROPERTY_USER_INTERACTIONS = "userInteractions";
+   public static final String PROPERTY_EVENT_TYPES = "eventTypes";
    private String name;
    private List<WorkflowNote> notes;
    private List<UserNote> users;
    private List<ServiceNote> services;
    private List<Policy> policies;
    private List<UserInteraction> userInteractions;
+   private List<EventType> eventTypes;
 
    public String getName()
    {
@@ -368,6 +370,72 @@ public class Workflow extends Note
       return this;
    }
 
+   public List<EventType> getEventTypes()
+   {
+      return this.eventTypes != null ? Collections.unmodifiableList(this.eventTypes) : Collections.emptyList();
+   }
+
+   public Workflow withEventTypes(EventType value)
+   {
+      if (this.eventTypes == null)
+      {
+         this.eventTypes = new ArrayList<>();
+      }
+      if (!this.eventTypes.contains(value))
+      {
+         this.eventTypes.add(value);
+         value.setWorkflow(this);
+         this.firePropertyChange(PROPERTY_EVENT_TYPES, null, value);
+      }
+      return this;
+   }
+
+   public Workflow withEventTypes(EventType... value)
+   {
+      for (final EventType item : value)
+      {
+         this.withEventTypes(item);
+      }
+      return this;
+   }
+
+   public Workflow withEventTypes(Collection<? extends EventType> value)
+   {
+      for (final EventType item : value)
+      {
+         this.withEventTypes(item);
+      }
+      return this;
+   }
+
+   public Workflow withoutEventTypes(EventType value)
+   {
+      if (this.eventTypes != null && this.eventTypes.remove(value))
+      {
+         value.setWorkflow(null);
+         this.firePropertyChange(PROPERTY_EVENT_TYPES, value, null);
+      }
+      return this;
+   }
+
+   public Workflow withoutEventTypes(EventType... value)
+   {
+      for (final EventType item : value)
+      {
+         this.withoutEventTypes(item);
+      }
+      return this;
+   }
+
+   public Workflow withoutEventTypes(Collection<? extends EventType> value)
+   {
+      for (final EventType item : value)
+      {
+         this.withoutEventTypes(item);
+      }
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -380,6 +448,7 @@ public class Workflow extends Note
    {
       this.withoutPolicies(new ArrayList<>(this.getPolicies()));
       this.withoutUserInteractions(new ArrayList<>(this.getUserInteractions()));
+      this.withoutEventTypes(new ArrayList<>(this.getEventTypes()));
       this.withoutNotes(new ArrayList<>(this.getNotes()));
       this.withoutServices(new ArrayList<>(this.getServices()));
       this.withoutUsers(new ArrayList<>(this.getUsers()));
@@ -413,5 +482,18 @@ public class Workflow extends Note
          }
       }
       return null;
+   }
+
+   public EventType getOrCreateEventType(String eventTypeName)
+   {
+      for (EventType eventType : this.getEventTypes()) {
+         if (eventType.getEventTypeName().equals(eventTypeName)) {
+            return eventType;
+         }
+      }
+      EventType eventType = new EventType();
+      eventType.setEventTypeName(eventTypeName);
+      eventType.setWorkflow(this);
+      return eventType;
    }
 }

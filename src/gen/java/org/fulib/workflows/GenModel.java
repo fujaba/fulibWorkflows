@@ -7,7 +7,6 @@ import org.fulib.builder.reflect.Link;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class GenModel implements ClassModelDecorator
 {
@@ -31,7 +30,8 @@ public class GenModel implements ClassModelDecorator
       List<UserInteraction> userInteractions;
       @Link("workflow")
       List<Policy> policies;
-
+      @Link("workflow")
+      List<EventType> eventTypes;
    }
 
    class UserNote extends Note {
@@ -51,6 +51,8 @@ public class GenModel implements ClassModelDecorator
       List<UserInteraction> userInteractions;
       @Link("service")
       List<Policy> policies;
+      @Link("handlers")
+      List<EventType> handledEventTypes;
    }
 
    class WorkflowNote extends Note {
@@ -61,10 +63,23 @@ public class GenModel implements ClassModelDecorator
       Interaction interaction;
    }
 
+   class EventType
+   {
+      String eventTypeName;
+      @Link("eventTypes")
+      Workflow workflow;
+      @Link("type")
+      List<EventNote> events;
+      @Link("handledEventTypes")
+      List<ServiceNote> handlers;
+   }
+
    class EventNote extends WorkflowNote {
-      String eventType;
+      String eventTypeName;
       @Link("trigger")
       List<Policy> policies;
+      @Link("events")
+      EventType type;
    }
 
    class DataNote extends WorkflowNote {

@@ -11,7 +11,7 @@
   attributes: 	storageModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	storageModel_getOrCreatebox 	storageModel_getOrCreatepickTask
+  methods: 	storageModel_getOrCreateBox 	storageModel_getOrCreatePickTask
   model: 	c
   modified: 	false
   name: 	StorageModel
@@ -31,14 +31,14 @@
   attributes: 	box_id 	box_product 	box_place
   model: 	c
   modified: 	false
-  name: 	box
+  name: 	Box
   propertyStyle: 	Bean
 
 - pickTask: 	org.fulib.classmodel.Clazz
   attributes: 	pickTask_id 	pickTask_order 	pickTask_product 	pickTask_customer 	pickTask_address 	pickTask_state 	pickTask_box
   model: 	c
   modified: 	false
-  name: 	pickTask
+  name: 	PickTask
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -58,33 +58,33 @@
   type: 	"LinkedHashMap<String, Object>"
   typeSignature: 	"LinkedHashMap<String,Object>"
 
-- storageModel_getOrCreatebox: 	org.fulib.classmodel.FMethod
+- storageModel_getOrCreateBox: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageModel
-  declaration: 	"public box getOrCreatebox(String id)"
-  id: 	StorageModel_getOrCreatebox
-  methodBody: 	"return (box) modelMap.computeIfAbsent(id, k -> new box().setId(k));
+  declaration: 	"public Box getOrCreateBox(String id)"
+  id: 	StorageModel_getOrCreateBox
+  methodBody: 	"return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
 "
   modified: 	false
   modifiers: 	public
-  name: 	getOrCreatebox
+  name: 	getOrCreateBox
   paramsString: 	"String id"
-  returnType: 	box
-  signature: 	"class/StorageModel/method/getOrCreatebox(String)"
+  returnType: 	Box
+  signature: 	"class/StorageModel/method/getOrCreateBox(String)"
 
-- storageModel_getOrCreatepickTask: 	org.fulib.classmodel.FMethod
+- storageModel_getOrCreatePickTask: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageModel
-  declaration: 	"public pickTask getOrCreatepickTask(String id)"
-  id: 	StorageModel_getOrCreatepickTask
-  methodBody: 	"return (pickTask) modelMap.computeIfAbsent(id, k -> new pickTask().setId(k));
+  declaration: 	"public PickTask getOrCreatePickTask(String id)"
+  id: 	StorageModel_getOrCreatePickTask
+  methodBody: 	"return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
 "
   modified: 	false
   modifiers: 	public
-  name: 	getOrCreatepickTask
+  name: 	getOrCreatePickTask
   paramsString: 	"String id"
-  returnType: 	pickTask
-  signature: 	"class/StorageModel/method/getOrCreatepickTask(String)"
+  returnType: 	PickTask
+  signature: 	"class/StorageModel/method/getOrCreatePickTask(String)"
 
 - storageService_history: 	org.fulib.classmodel.Attribute
   clazz: 	storageService
@@ -239,7 +239,7 @@ publish(event);"
   methodBody: 	"ProductStored event = (ProductStored) e;
 if (event.getId().equals(\"12:00\")) {
 
-   box box23 = model.getOrCreatebox(\"box23\");
+   Box box23 = model.getOrCreateBox(\"box23\");
    box23.setProduct(\"shoes\");
    box23.setPlace(\"shelf23\");
 }
@@ -259,7 +259,7 @@ if (event.getId().equals(\"12:00\")) {
   methodBody: 	"OrderRegistered event = (OrderRegistered) e;
 if (event.getId().equals(\"13:01\")) {
 
-   pickTask pick1300 = model.getOrCreatepickTask(\"pick1300\");
+   PickTask pick1300 = model.getOrCreatePickTask(\"pick1300\");
    pick1300.setOrder(\"order1300\");
    pick1300.setProduct(\"shoes\");
    pick1300.setCustomer(\"Alice\");
@@ -282,11 +282,11 @@ if (event.getId().equals(\"13:01\")) {
   methodBody: 	"OrderPicked event = (OrderPicked) e;
 if (event.getId().equals(\"14:00\")) {
 
-   pickTask pick1300 = model.getOrCreatepickTask(\"pick1300\");
+   PickTask pick1300 = model.getOrCreatePickTask(\"pick1300\");
    pick1300.setState(\"done\");
    pick1300.setBox(\"box23\");
 
-   box box23 = model.getOrCreatebox(\"box23\");
+   Box box23 = model.getOrCreateBox(\"box23\");
    box23.setPlace(\"shipping\");
 }
 "
@@ -380,7 +380,7 @@ catch (UnirestException e) {
 
 - box_id: 	org.fulib.classmodel.Attribute
   clazz: 	box
-  id: 	box_id
+  id: 	Box_id
   modified: 	false
   name: 	id
   propertyStyle: 	Bean
@@ -389,7 +389,7 @@ catch (UnirestException e) {
 
 - box_product: 	org.fulib.classmodel.Attribute
   clazz: 	box
-  id: 	box_product
+  id: 	Box_product
   modified: 	false
   name: 	product
   propertyStyle: 	Bean
@@ -398,7 +398,7 @@ catch (UnirestException e) {
 
 - box_place: 	org.fulib.classmodel.Attribute
   clazz: 	box
-  id: 	box_place
+  id: 	Box_place
   modified: 	false
   name: 	place
   propertyStyle: 	Bean
@@ -407,7 +407,7 @@ catch (UnirestException e) {
 
 - pickTask_id: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	pickTask_id
+  id: 	PickTask_id
   modified: 	false
   name: 	id
   propertyStyle: 	Bean
@@ -416,7 +416,7 @@ catch (UnirestException e) {
 
 - pickTask_order: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	pickTask_order
+  id: 	PickTask_order
   modified: 	false
   name: 	order
   propertyStyle: 	Bean
@@ -425,7 +425,7 @@ catch (UnirestException e) {
 
 - pickTask_product: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	pickTask_product
+  id: 	PickTask_product
   modified: 	false
   name: 	product
   propertyStyle: 	Bean
@@ -434,7 +434,7 @@ catch (UnirestException e) {
 
 - pickTask_customer: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	pickTask_customer
+  id: 	PickTask_customer
   modified: 	false
   name: 	customer
   propertyStyle: 	Bean
@@ -443,7 +443,7 @@ catch (UnirestException e) {
 
 - pickTask_address: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	pickTask_address
+  id: 	PickTask_address
   modified: 	false
   name: 	address
   propertyStyle: 	Bean
@@ -452,7 +452,7 @@ catch (UnirestException e) {
 
 - pickTask_state: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	pickTask_state
+  id: 	PickTask_state
   modified: 	false
   name: 	state
   propertyStyle: 	Bean
@@ -461,7 +461,7 @@ catch (UnirestException e) {
 
 - pickTask_box: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
-  id: 	pickTask_box
+  id: 	PickTask_box
   modified: 	false
   name: 	box
   propertyStyle: 	Bean

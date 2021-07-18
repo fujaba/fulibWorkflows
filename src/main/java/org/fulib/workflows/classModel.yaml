@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	note 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	eventType 	note 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -30,16 +30,16 @@
   modified: 	false
   name: 	ServiceNote
   propertyStyle: 	Bean
-  roles: 	serviceNote_policies 	serviceNote_userInteractions 	serviceNote_workflows
+  roles: 	serviceNote_policies 	serviceNote_userInteractions 	serviceNote_handledEventTypes 	serviceNote_workflows
   superClass: 	note
 
 - eventNote: 	org.fulib.classmodel.Clazz
-  attributes: 	eventNote_eventType
+  attributes: 	eventNote_eventTypeName
   model: 	c
   modified: 	false
   name: 	EventNote
   propertyStyle: 	Bean
-  roles: 	eventNote_policies
+  roles: 	eventNote_policies 	eventNote_type
   superClass: 	workflowNote
 
 - workflow: 	org.fulib.classmodel.Clazz
@@ -48,7 +48,7 @@
   modified: 	false
   name: 	Workflow
   propertyStyle: 	Bean
-  roles: 	workflow_policies 	workflow_userInteractions 	workflow_notes 	workflow_services 	workflow_users
+  roles: 	workflow_policies 	workflow_userInteractions 	workflow_eventTypes 	workflow_notes 	workflow_services 	workflow_users
   superClass: 	note
 
 - userInteraction: 	org.fulib.classmodel.Clazz
@@ -93,6 +93,14 @@
   name: 	DataNote
   propertyStyle: 	Bean
   superClass: 	workflowNote
+
+- eventType: 	org.fulib.classmodel.Clazz
+  attributes: 	eventType_eventTypeName
+  model: 	c
+  modified: 	false
+  name: 	EventType
+  propertyStyle: 	Bean
+  roles: 	eventType_events 	eventType_workflow 	eventType_handlers
 
 - note: 	org.fulib.classmodel.Clazz
   attributes: 	note_map
@@ -209,6 +217,18 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
+- serviceNote_handledEventTypes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	serviceNote
+  collectionType: 	c1
+  id: 	ServiceNote_handledEventTypes
+  modified: 	false
+  name: 	handledEventTypes
+  other: 	eventType_handlers
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - serviceNote_workflows: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -221,11 +241,11 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- eventNote_eventType: 	org.fulib.classmodel.Attribute
+- eventNote_eventTypeName: 	org.fulib.classmodel.Attribute
   clazz: 	eventNote
-  id: 	EventNote_eventType
+  id: 	EventNote_eventTypeName
   modified: 	false
-  name: 	eventType
+  name: 	eventTypeName
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -241,6 +261,16 @@
   other: 	policy_trigger
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- eventNote_type: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	eventNote
+  id: 	EventNote_type
+  modified: 	false
+  name: 	type
+  other: 	eventType_events
+  propertyStyle: 	Bean
 
 - workflow_name: 	org.fulib.classmodel.Attribute
   clazz: 	workflow
@@ -272,6 +302,18 @@
   modified: 	false
   name: 	userInteractions
   other: 	userInteraction_workflow
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- workflow_eventTypes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	workflow
+  collectionType: 	c1
+  id: 	Workflow_eventTypes
+  modified: 	false
+  name: 	eventTypes
+  other: 	eventType_workflow
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -420,6 +462,49 @@
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- eventType_eventTypeName: 	org.fulib.classmodel.Attribute
+  clazz: 	eventType
+  id: 	EventType_eventTypeName
+  modified: 	false
+  name: 	eventTypeName
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- eventType_events: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	eventType
+  collectionType: 	c1
+  id: 	EventType_events
+  modified: 	false
+  name: 	events
+  other: 	eventNote_type
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- eventType_workflow: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	eventType
+  id: 	EventType_workflow
+  modified: 	false
+  name: 	workflow
+  other: 	workflow_eventTypes
+  propertyStyle: 	Bean
+
+- eventType_handlers: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	eventType
+  collectionType: 	c1
+  id: 	EventType_handlers
+  modified: 	false
+  name: 	handlers
+  other: 	serviceNote_handledEventTypes
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
 
 - note_map: 	org.fulib.classmodel.Attribute
   clazz: 	note

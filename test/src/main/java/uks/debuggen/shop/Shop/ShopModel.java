@@ -46,13 +46,13 @@ public class ShopModel
       return this.listeners;
    }
 
-   public order getOrCreateorder(String id)
+   public Order getOrCreateOrder(String id)
    {
-      return (order) modelMap.computeIfAbsent(id, k -> new order().setId(k));
+      return (Order) modelMap.computeIfAbsent(id, k -> new Order().setId(k));
    }
 
-   public customer getOrCreatecustomer(String id)
+   public Customer getOrCreateCustomer(String id)
    {
-      return (customer) modelMap.computeIfAbsent(id, k -> new customer().setId(k));
+      return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
    }
 }

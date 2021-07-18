@@ -12,11 +12,13 @@ public class ServiceNote extends Note
    public static final String PROPERTY_USER_INTERACTIONS = "userInteractions";
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_WORKFLOWS = "workflows";
+   public static final String PROPERTY_HANDLED_EVENT_TYPES = "handledEventTypes";
    private String port;
    private List<Policy> policies;
    private List<UserInteraction> userInteractions;
    private String name;
    private List<Workflow> workflows;
+   private List<EventType> handledEventTypes;
 
    public String getPort()
    {
@@ -252,6 +254,72 @@ public class ServiceNote extends Note
       return this;
    }
 
+   public List<EventType> getHandledEventTypes()
+   {
+      return this.handledEventTypes != null ? Collections.unmodifiableList(this.handledEventTypes) : Collections.emptyList();
+   }
+
+   public ServiceNote withHandledEventTypes(EventType value)
+   {
+      if (this.handledEventTypes == null)
+      {
+         this.handledEventTypes = new ArrayList<>();
+      }
+      if (!this.handledEventTypes.contains(value))
+      {
+         this.handledEventTypes.add(value);
+         value.withHandlers(this);
+         this.firePropertyChange(PROPERTY_HANDLED_EVENT_TYPES, null, value);
+      }
+      return this;
+   }
+
+   public ServiceNote withHandledEventTypes(EventType... value)
+   {
+      for (final EventType item : value)
+      {
+         this.withHandledEventTypes(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withHandledEventTypes(Collection<? extends EventType> value)
+   {
+      for (final EventType item : value)
+      {
+         this.withHandledEventTypes(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutHandledEventTypes(EventType value)
+   {
+      if (this.handledEventTypes != null && this.handledEventTypes.remove(value))
+      {
+         value.withoutHandlers(this);
+         this.firePropertyChange(PROPERTY_HANDLED_EVENT_TYPES, value, null);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutHandledEventTypes(EventType... value)
+   {
+      for (final EventType item : value)
+      {
+         this.withoutHandledEventTypes(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutHandledEventTypes(Collection<? extends EventType> value)
+   {
+      for (final EventType item : value)
+      {
+         this.withoutHandledEventTypes(item);
+      }
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -265,6 +333,7 @@ public class ServiceNote extends Note
    {
       this.withoutPolicies(new ArrayList<>(this.getPolicies()));
       this.withoutUserInteractions(new ArrayList<>(this.getUserInteractions()));
+      this.withoutHandledEventTypes(new ArrayList<>(this.getHandledEventTypes()));
       this.withoutWorkflows(new ArrayList<>(this.getWorkflows()));
    }
 }

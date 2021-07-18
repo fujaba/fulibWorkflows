@@ -2,7 +2,7 @@ package uks.debuggen.shop.Shop;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class order
+public class Order
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_PRODUCT = "product";
@@ -21,7 +21,7 @@ public class order
       return this.id;
    }
 
-   public order setId(String value)
+   public Order setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -39,7 +39,7 @@ public class order
       return this.product;
    }
 
-   public order setProduct(String value)
+   public Order setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -57,7 +57,7 @@ public class order
       return this.customer;
    }
 
-   public order setCustomer(String value)
+   public Order setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -75,7 +75,7 @@ public class order
       return this.address;
    }
 
-   public order setAddress(String value)
+   public Order setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -93,7 +93,7 @@ public class order
       return this.state;
    }
 
-   public order setState(String value)
+   public Order setState(String value)
    {
       if (Objects.equals(value, this.state))
       {
