@@ -2,7 +2,7 @@ package uks.fulibgen.shop.Storage;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class box
+public class Box
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_PRODUCT = "product";
@@ -17,7 +17,7 @@ public class box
       return this.id;
    }
 
-   public box setId(String value)
+   public Box setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -35,7 +35,7 @@ public class box
       return this.product;
    }
 
-   public box setProduct(String value)
+   public Box setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -53,7 +53,7 @@ public class box
       return this.place;
    }
 
-   public box setPlace(String value)
+   public Box setPlace(String value)
    {
       if (Objects.equals(value, this.place))
       {

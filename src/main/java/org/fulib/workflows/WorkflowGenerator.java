@@ -51,9 +51,8 @@ public class WorkflowGenerator
 
       // event map
       eventModel = new EventModel();
-      eventModel.buildEventMap(yaml);
-      rootWorkflow = eventModel.getRootWorkflow();
-      buildManagerMaps(mm);
+      rootWorkflow = eventModel.buildEventStormModel(yaml);
+      buildClassModelManagerMap(mm);
       buildEventBroker();
       buildServices();
       buildTest();
@@ -433,7 +432,7 @@ public class WorkflowGenerator
    }
 
 
-   private void buildManagerMaps(ClassModelManager mm)
+   private void buildClassModelManagerMap(ClassModelManager mm)
    {
       managerMap = new LinkedHashMap<>();
       managerMap.put("mm", mm);

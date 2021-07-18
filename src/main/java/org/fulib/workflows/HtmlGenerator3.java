@@ -20,7 +20,7 @@ public class HtmlGenerator3
    {
 
       eventModel = new EventModel();
-      eventModel.buildEventMap(yaml);
+      eventModel.buildEventStormModel(yaml);
       rootWorkflow = eventModel.getRootWorkflow();
       group = new STGroupFile(this.getClass().getResource("html/html.stg"));
       body = new StringBuilder();

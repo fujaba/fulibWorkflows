@@ -14,7 +14,7 @@ public class EventModel
       return rootWorkflow;
    }
 
-   public void buildEventMap(String yaml)
+   public Workflow buildEventStormModel(String yaml)
    {
       ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(yaml);
 
@@ -111,7 +111,7 @@ public class EventModel
 
          }
       }
-
+      return rootWorkflow;
    }
 
    public String getEventId(Map<String, String> map)

@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	productStored 	commandSent 	orderRegistered 	shopPolicy 	orderPicked
+  classes: 	event 	serviceSubscribed 	productStored 	commandSent 	orderRegistered 	orderPicked
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	productStored 	commandSent 	orderRegistered 	shopPolicy 	orderPicked
+  subClasses: 	serviceSubscribed 	productStored 	commandSent 	orderRegistered 	orderPicked
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -44,14 +44,6 @@
   model: 	c
   modified: 	false
   name: 	OrderRegistered
-  propertyStyle: 	Bean
-  superClass: 	event
-
-- shopPolicy: 	org.fulib.classmodel.Clazz
-  attributes: 	shopPolicy_OrderApproved 	shopPolicy_trigger 	shopPolicy_order
-  model: 	c
-  modified: 	false
-  name: 	ShopPolicy
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -219,33 +211,6 @@
   id: 	OrderRegistered_user
   modified: 	false
   name: 	user
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- shopPolicy_OrderApproved: 	org.fulib.classmodel.Attribute
-  clazz: 	shopPolicy
-  id: 	ShopPolicy_OrderApproved
-  modified: 	false
-  name: 	OrderApproved
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- shopPolicy_trigger: 	org.fulib.classmodel.Attribute
-  clazz: 	shopPolicy
-  id: 	ShopPolicy_trigger
-  modified: 	false
-  name: 	trigger
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- shopPolicy_order: 	org.fulib.classmodel.Attribute
-  clazz: 	shopPolicy
-  id: 	ShopPolicy_order
-  modified: 	false
-  name: 	order
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
