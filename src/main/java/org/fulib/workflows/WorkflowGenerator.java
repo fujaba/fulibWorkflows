@@ -66,7 +66,6 @@ public class WorkflowGenerator
 
    private void buildHandlerMaps()
    {
-      eventModel.handlerDataMockupsMap = new LinkedHashMap<>();
       for (WorkflowNote note : rootWorkflow.getNotes()) {
 
          // find Data entries
@@ -84,12 +83,7 @@ public class WorkflowGenerator
          LinkedHashMap<String, String> event = eventModel.eventMap.get(eventId);
          String eventType = eventModel.getEventType(event);
 
-         // handler data mockups
-         String handlerId = serviceId + " " + eventType;
-         LinkedHashMap<String, LinkedHashSet<Map<String, String>>> mockupMap =
-               eventModel.handlerDataMockupsMap.computeIfAbsent(handlerId, k -> new LinkedHashMap<>());
-         LinkedHashSet<Map<String, String>> dataMockups = mockupMap.computeIfAbsent(eventId, k -> new LinkedHashSet<>());
-         dataMockups.add(map);
+
       }
    }
 

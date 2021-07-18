@@ -7,8 +7,6 @@ import java.util.*;
 public class EventModel
 {
    public TreeMap<String, LinkedHashMap<String, String>> eventMap;
-   public LinkedHashMap<String, LinkedHashMap<String, String>> userMap;
-   public LinkedHashMap<String, LinkedHashMap<String, LinkedHashSet<Map<String, String>>>> handlerDataMockupsMap;
    public String workflowName;
    private Workflow rootWorkflow;
 
@@ -20,7 +18,6 @@ public class EventModel
    public void buildEventMap(String yaml)
    {
       eventMap = new TreeMap<>();
-      userMap = new LinkedHashMap<>();
 
       ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(yaml);
 
@@ -36,7 +33,6 @@ public class EventModel
             continue;
          }
          if (entry.getKey().equals("UserRegistered")) {
-            userMap.put(map.get("name"), map);
             UserNote userNote = new UserNote().setName(map.get("name"));
             userNote.setMap(map);
             userNote.withWorkflows(rootWorkflow);
