@@ -6,7 +6,6 @@ import java.util.*;
 
 public class EventModel
 {
-   public TreeMap<String, LinkedHashMap<String, String>> eventMap;
    public String workflowName;
    private Workflow rootWorkflow;
 
@@ -17,8 +16,6 @@ public class EventModel
 
    public void buildEventMap(String yaml)
    {
-      eventMap = new TreeMap<>();
-
       ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(yaml);
 
       Interaction lastActor = null;
@@ -36,7 +33,6 @@ public class EventModel
             UserNote userNote = new UserNote().setName(map.get("name"));
             userNote.setMap(map);
             userNote.withWorkflows(rootWorkflow);
-            eventMap.put(entry.getValue(), map);
          }
          else if (entry.getKey().equals("ServiceRegistered")) {
             ServiceNote note = new ServiceNote();
@@ -44,10 +40,8 @@ public class EventModel
             note.setPort(map.get("port"));
             note.setMap(map);
             note.withWorkflows(rootWorkflow);
-            eventMap.put(entry.getValue(), map);
          }
          else if (entry.getKey().endsWith("Data")) {
-            eventMap.put(entry.getValue(), map);
             Map.Entry<String, String> typeEntry = iterator.next();
             DataNote note = new DataNote();
             note.setTime(entry.getValue());
@@ -79,7 +73,6 @@ public class EventModel
             policy.withSteps(note);
          }
          else {
-            eventMap.put(entry.getValue(), map);
             EventNote eventNote = new EventNote();
             eventNote.setTime(getEventId(map));
             eventNote.setEventTypeName(getEventType(map));

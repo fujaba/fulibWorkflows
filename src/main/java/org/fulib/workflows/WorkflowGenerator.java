@@ -55,36 +55,12 @@ public class WorkflowGenerator
       rootWorkflow = eventModel.getRootWorkflow();
       buildManagerMaps(mm);
       buildEventBroker();
-      buildHandlerMaps();
       buildServices();
       buildTest();
 
       buildEventClasses();
 
       return this;
-   }
-
-   private void buildHandlerMaps()
-   {
-      for (WorkflowNote note : rootWorkflow.getNotes()) {
-
-         // find Data entries
-         Map<String, String> map = note.getMap();
-         String key = eventModel.getEventType(map);
-
-         if (!(note instanceof DataNote)) {
-            continue;
-         }
-         String serviceId = note.getInteraction().getActorName();
-         String dataId = note.getTime();
-         Policy policy = (Policy) note.getInteraction();
-         String eventId = policy.getTrigger().getTime();
-         // find corresponding event
-         LinkedHashMap<String, String> event = eventModel.eventMap.get(eventId);
-         String eventType = eventModel.getEventType(event);
-
-
-      }
    }
 
 
