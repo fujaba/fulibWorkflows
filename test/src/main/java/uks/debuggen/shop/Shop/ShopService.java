@@ -210,6 +210,7 @@ public class ShopService
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
+         handlerMap.put(OrderApproved.class, this::handleOrderApproved);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
       }
    }
@@ -264,6 +265,16 @@ public class ShopService
 
          Customer alice = model.getOrCreateCustomer("Alice");
          alice.setOrders("[order1300]");
+      }
+   }
+
+   private void handleOrderApproved(Event e)
+   {
+      OrderApproved event = (OrderApproved) e;
+      if (event.getId().equals("13:05")) {
+
+         Order order1300 = model.getOrCreateOrder("order1300");
+         order1300.setState("picking");
       }
    }
 

@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +31,8 @@ public class WorkflowGenerator
    private Clazz testClazz;
    private EventModel eventModel;
    private Workflow rootWorkflow;
+
+   public BiConsumer<String, Object> dumpObjectDiagram;
 
    public EventModel getEventModel()
    {
@@ -52,6 +55,7 @@ public class WorkflowGenerator
       // event map
       eventModel = new EventModel();
       rootWorkflow = eventModel.buildEventStormModel(yaml);
+      dumpObjectDiagram.accept("tmp/afterBuildEventStormModel.svg", rootWorkflow);
       buildClassModelManagerMap(mm);
       buildEventBroker();
       buildServices();
@@ -71,7 +75,8 @@ public class WorkflowGenerator
          // each service gets its own package
          // build classModelManager for that package
          Map<String, String> map = serviceNote.getMap();
-         String serviceName = map.get("name");
+         String port = map.get("port");
+         String serviceName = serviceNote.getName();
          modelManager = new ClassModelManager().setMainJavaDir(mm.getClassModel().getMainJavaDir())
                .setPackageName(mm.getClassModel().getPackageName() + "." + serviceName);
          managerMap.put(serviceName, modelManager);
@@ -104,7 +109,7 @@ public class WorkflowGenerator
          modelManager.haveAttribute(serviceClazz, "history",
                "LinkedHashMap<String, Event>",
                "new LinkedHashMap<>()");
-         modelManager.haveAttribute(serviceClazz, "port", Type.INT, map.get("port"));
+         modelManager.haveAttribute(serviceClazz, "port", Type.INT, port);
          modelManager.haveAttribute(serviceClazz, "spark", "Service");
          modelManager.haveAttribute(serviceClazz, "model", serviceName + "Model");
          modelManager.haveAttribute(serviceClazz, "handlerMap",
@@ -137,7 +142,7 @@ public class WorkflowGenerator
          declaration = "private void subscribeAndLoadOldEvents()";
          body.setLength(0);
          st = group.getInstanceOf("serviceSubscribeAndLoadOldEvents");
-         st.add("port", map.get("port"));
+         st.add("port", port);
          body.append(st.render());
          modelManager.haveMethod(serviceClazz, declaration, body.toString());
 
@@ -226,18 +231,39 @@ public class WorkflowGenerator
    private void addMockupData(ClassModelManager modelManager, String serviceName, Policy policy, StringBuilder body)
    {
       for (WorkflowNote note : policy.getSteps()) {
-         //    Example
-         //      - StorageData: 12:00:01
-         //        Box: box23
-         //        product: shoes
-         //        place: shelf23
-         LinkedHashMap<String, String> map = note.getMap();
-         LinkedHashMap<String, String> mockup = (LinkedHashMap<String, String>) ((LinkedHashMap<String, String>) map).clone();
-         Map.Entry<String, String> firstEntry = mockup.entrySet().iterator().next();
-         mockup.remove(firstEntry.getKey());
-         addModelClass(modelManager, mockup);
-         addGetOrCreateMethodToServiceModel(modelManager, serviceName, mockup);
-         addCreateAndInitModelObjectCode(mockup, body);
+         if (note instanceof DataNote) {
+            //    Example
+            //      - StorageData: 12:00:01
+            //        Box: box23
+            //        product: shoes
+            //        place: shelf23
+            LinkedHashMap<String, String> map = note.getMap();
+            LinkedHashMap<String, String> mockup = (LinkedHashMap<String, String>) ((LinkedHashMap<String, String>) map).clone();
+            Map.Entry<String, String> firstEntry = mockup.entrySet().iterator().next();
+            mockup.remove(firstEntry.getKey());
+            addModelClass(modelManager, mockup);
+            addGetOrCreateMethodToServiceModel(modelManager, serviceName, mockup);
+            addCreateAndInitModelObjectCode(mockup, body);
+         }
+         else {
+            // fire event
+            EventNote eventNote = (EventNote) note;
+            String varName = eventNote.getTime().replaceAll("\\:", "");
+            body.append(String.format("\n   %s e%s = new %1$s();\n",
+                  eventNote.getEventTypeName(), varName));
+
+            LinkedHashMap<String, String> map = eventNote.getMap();
+            LinkedHashMap<String, String> clone = (LinkedHashMap<String, String>) map.clone();
+            clone.remove(eventNote.getEventTypeName());
+            for (Map.Entry<String, String> entry : clone.entrySet()) {
+               String setterName = org.fulib.StrUtil.cap(entry.getKey());
+               String statement = String.format("   e%s.set%s(\"%s\");\n",
+                     varName, setterName, entry.getValue());
+               body.append(statement);
+            }
+            body.append(String.format("   publish(e%s);\n",
+                  varName));
+         }
       }
    }
 

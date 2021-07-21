@@ -55,14 +55,12 @@ public class Testordering
       e1200.setBox("box23");
       e1200.setProduct("shoes");
       e1200.setPlace("shelf23");
-      e1200.setUser("Bob");
       publish(e1200);
 
       // create CommandSent: 13:00
       CommandSent e1300 = new CommandSent();
       e1300.setId("13:00");
       e1300.setType("OrderRegistered");
-      e1300.setUser("Alice");
       e1300.setL1("label welcome to the shop");
       e1300.setProduct("input product? shoes");
       e1300.setCustomer("input name? Alice");
@@ -76,7 +74,6 @@ public class Testordering
       e1301.setProduct("shoes");
       e1301.setCustomer("Alice");
       e1301.setAddress("Wonderland 1");
-      e1301.setUser("Alice");
       publish(e1301);
 
       // create OrderPicked: 14:00

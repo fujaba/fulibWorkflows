@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	productStored 	commandSent 	orderRegistered 	orderPicked
+  classes: 	event 	serviceSubscribed 	productStored 	commandSent 	orderRegistered 	orderApproved 	orderPicked
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	productStored 	commandSent 	orderRegistered 	orderPicked
+  subClasses: 	serviceSubscribed 	productStored 	commandSent 	orderRegistered 	orderApproved 	orderPicked
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -24,7 +24,7 @@
   superClass: 	event
 
 - productStored: 	org.fulib.classmodel.Clazz
-  attributes: 	productStored_box 	productStored_product 	productStored_place 	productStored_user
+  attributes: 	productStored_box 	productStored_product 	productStored_place
   model: 	c
   modified: 	false
   name: 	ProductStored
@@ -32,7 +32,7 @@
   superClass: 	event
 
 - commandSent: 	org.fulib.classmodel.Clazz
-  attributes: 	commandSent_type 	commandSent_user 	commandSent_l1 	commandSent_product 	commandSent_customer 	commandSent_address 	commandSent_ok
+  attributes: 	commandSent_type 	commandSent_l1 	commandSent_product 	commandSent_customer 	commandSent_address 	commandSent_ok
   model: 	c
   modified: 	false
   name: 	CommandSent
@@ -40,10 +40,18 @@
   superClass: 	event
 
 - orderRegistered: 	org.fulib.classmodel.Clazz
-  attributes: 	orderRegistered_product 	orderRegistered_customer 	orderRegistered_address 	orderRegistered_user
+  attributes: 	orderRegistered_product 	orderRegistered_customer 	orderRegistered_address
   model: 	c
   modified: 	false
   name: 	OrderRegistered
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- orderApproved: 	org.fulib.classmodel.Clazz
+  attributes: 	orderApproved_order
+  model: 	c
+  modified: 	false
+  name: 	OrderApproved
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -107,29 +115,11 @@
   type: 	String
   typeSignature: 	String
 
-- productStored_user: 	org.fulib.classmodel.Attribute
-  clazz: 	productStored
-  id: 	ProductStored_user
-  modified: 	false
-  name: 	user
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
 - commandSent_type: 	org.fulib.classmodel.Attribute
   clazz: 	commandSent
   id: 	CommandSent_type
   modified: 	false
   name: 	type
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- commandSent_user: 	org.fulib.classmodel.Attribute
-  clazz: 	commandSent
-  id: 	CommandSent_user
-  modified: 	false
-  name: 	user
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -206,11 +196,11 @@
   type: 	String
   typeSignature: 	String
 
-- orderRegistered_user: 	org.fulib.classmodel.Attribute
-  clazz: 	orderRegistered
-  id: 	OrderRegistered_user
+- orderApproved_order: 	org.fulib.classmodel.Attribute
+  clazz: 	orderApproved
+  id: 	OrderApproved_order
   modified: 	false
-  name: 	user
+  name: 	order
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

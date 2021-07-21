@@ -496,4 +496,15 @@ public class Workflow extends Note
       eventType.setWorkflow(this);
       return eventType;
    }
+
+   public UserNote getOrCreateFromUsers(String actorName)
+   {
+      UserNote user = getFromUsers(actorName);
+      if (user == null) {
+         user = new UserNote();
+         user.setName(actorName);
+         user.withWorkflows(this);
+      }
+      return user;
+   }
 }

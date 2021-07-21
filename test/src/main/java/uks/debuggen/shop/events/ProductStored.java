@@ -6,11 +6,9 @@ public class ProductStored extends Event
    public static final String PROPERTY_BOX = "box";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_PLACE = "place";
-   public static final String PROPERTY_USER = "user";
    private String box;
    private String product;
    private String place;
-   private String user;
 
    public String getBox()
    {
@@ -66,24 +64,6 @@ public class ProductStored extends Event
       return this;
    }
 
-   public String getUser()
-   {
-      return this.user;
-   }
-
-   public ProductStored setUser(String value)
-   {
-      if (Objects.equals(value, this.user))
-      {
-         return this;
-      }
-
-      final String oldValue = this.user;
-      this.user = value;
-      this.firePropertyChange(PROPERTY_USER, oldValue, value);
-      return this;
-   }
-
    @Override
    public String toString()
    {
@@ -91,7 +71,6 @@ public class ProductStored extends Event
       result.append(' ').append(this.getBox());
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getPlace());
-      result.append(' ').append(this.getUser());
       return result.toString();
    }
 }

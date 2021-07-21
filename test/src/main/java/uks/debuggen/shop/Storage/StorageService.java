@@ -289,6 +289,11 @@ public class StorageService
          pick1300.setCustomer("Alice");
          pick1300.setAddress("Wonderland 1");
          pick1300.setState("todo");
+
+         OrderApproved e1305 = new OrderApproved();
+         e1305.setOrder("order1300");
+         publish(e1305);
       }
    }
+
 }

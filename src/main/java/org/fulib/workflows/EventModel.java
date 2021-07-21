@@ -18,7 +18,7 @@ public class EventModel
    {
       ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(yaml);
 
-      Interaction lastActor = null;
+      Interaction lastActor = new UserInteraction().setActorName("somebody");
       EventNote lastEvent = null;
 
       for (LinkedHashMap<String, String> map : maps) {
@@ -36,10 +36,29 @@ public class EventModel
          }
          else if (entry.getKey().equals("ServiceRegistered")) {
             ServiceNote note = new ServiceNote();
-            note.setName(map.get("name"));
+            note.setName(entry.getValue());
             note.setPort(map.get("port"));
             note.setMap(map);
             note.withWorkflows(rootWorkflow);
+         }
+         else if (entry.getKey().equals("Action")) {
+            UserInteraction userInteraction = new UserInteraction();
+            userInteraction.setActorName(entry.getValue());
+            UserNote userNote = rootWorkflow.getOrCreateFromUsers(userInteraction.getActorName());
+            userNote.withInteractions(userInteraction);
+            lastActor = userInteraction;
+         }
+         else if (entry.getKey().equals("Policy")) {
+            Policy policy = new Policy();
+            policy.setActorName(entry.getValue());
+            policy.setWorkflow(rootWorkflow);
+            ServiceNote service = rootWorkflow.getFromServices(entry.getValue());
+            policy.setService(service);
+            EventNote trigger = (EventNote) rootWorkflow.getFromNotes(map.get("trigger"));
+            policy.setTrigger(trigger);
+            EventType type = trigger.getType();
+            service.withHandledEventTypes(type);
+            lastActor = policy;
          }
          else if (entry.getKey().endsWith("Data")) {
             Map.Entry<String, String> typeEntry = iterator.next();
@@ -48,28 +67,7 @@ public class EventModel
             note.setMap(map);
             note.setWorkflow(rootWorkflow);
             note.setDataType(typeEntry.getKey());
-            String dataTime = note.getTime();
-            String triggerTime = dataTime.substring(0, dataTime.lastIndexOf(':'));
-            EventNote triggerNote = (EventNote) rootWorkflow.getFromNotes(triggerTime);
-            EventType eventType = triggerNote.getType();
-            String serviceName = entry.getKey();
-            serviceName = serviceName.substring(0, serviceName.length() - "Data".length());
-            Policy policy = null;
-            if (lastActor == null || !lastActor.getActorName().equals(serviceName)) {
-               ServiceNote serviceNote = rootWorkflow.getFromServices(serviceName);
-               policy = new Policy();
-               policy.setActorName(serviceName);
-               policy.setWorkflow(rootWorkflow);
-               policy.setService(serviceNote);
-               policy.setTrigger((EventNote) triggerNote);
-
-               serviceNote.withHandledEventTypes(eventType);
-
-               lastActor = policy;
-            }
-            else {
-               policy = (Policy) lastActor;
-            }
+            Policy policy = (Policy) lastActor;
             policy.withSteps(note);
          }
          else {
@@ -82,31 +80,6 @@ public class EventModel
             EventType eventType = rootWorkflow.getOrCreateEventType(eventNote.getEventTypeName());
             eventType.withEvents(eventNote);
 
-            String user = map.get("user");
-            if (lastActor == null || !lastActor.getActorName().equals(user)) {
-               UserNote userNote = rootWorkflow.getFromUsers(user);
-               if (userNote != null) {
-                  UserInteraction userInteraction = new UserInteraction();
-                  userInteraction.setActorName(user);
-                  userInteraction.setUser(userNote);
-                  userInteraction.setWorkflow(rootWorkflow);
-                  lastActor = userInteraction;
-               }
-               else {
-                  ServiceNote serviceNote = rootWorkflow.getFromServices(user);
-                  Policy policy = new Policy();
-                  policy.setActorName(user);
-                  policy.setService(serviceNote);
-                  policy.setWorkflow(rootWorkflow);
-                  policy.setTrigger(lastEvent);
-
-                  EventType type = lastEvent.getType();
-                  type.withHandlers(serviceNote);
-
-                  lastActor = policy;
-               }
-
-            }
             lastActor.withSteps(eventNote);
 
          }

@@ -4,14 +4,12 @@ import java.util.Objects;
 public class CommandSent extends Event
 {
    public static final String PROPERTY_TYPE = "type";
-   public static final String PROPERTY_USER = "user";
    public static final String PROPERTY_L1 = "l1";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_OK = "ok";
    private String type;
-   private String user;
    private String l1;
    private String product;
    private String customer;
@@ -33,24 +31,6 @@ public class CommandSent extends Event
       final String oldValue = this.type;
       this.type = value;
       this.firePropertyChange(PROPERTY_TYPE, oldValue, value);
-      return this;
-   }
-
-   public String getUser()
-   {
-      return this.user;
-   }
-
-   public CommandSent setUser(String value)
-   {
-      if (Objects.equals(value, this.user))
-      {
-         return this;
-      }
-
-      final String oldValue = this.user;
-      this.user = value;
-      this.firePropertyChange(PROPERTY_USER, oldValue, value);
       return this;
    }
 
@@ -149,7 +129,6 @@ public class CommandSent extends Event
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getType());
-      result.append(' ').append(this.getUser());
       result.append(' ').append(this.getL1());
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());

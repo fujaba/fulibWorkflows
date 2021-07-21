@@ -1,36 +1,31 @@
 
 - WorkflowStarted: ordering
 
-- ServiceRegistered: 10:00
-  name: Shop
+- ServiceRegistered: Shop
   port: 42100
 
-- ServiceRegistered: 10:10
-  name: Storage
+- ServiceRegistered: Storage
   port: 42200
 
-- UserRegistered: 10:20
-  name: Alice
-  role: Customer
-
-- UserRegistered: 10:21
-  name: Bob
-  role: Picker
+- Action: Bob
 
 - ProductStored: 12:00
   box: box23
   product: shoes
   place: shelf23
-  user: Bob
 
-- StorageData: 12:00:01
+- Policy: Storage
+  trigger: 12:00
+
+- StorageData: 12:01
   box: box23
   product: shoes
   place: shelf23
 
+- Action: Alice
+
 - CommandSent: 13:00
   type: OrderRegistered
-  user: Alice
   l1: label welcome to the shop
   product: input product? shoes
   customer: input name? Alice
@@ -41,20 +36,25 @@
   product: shoes
   customer: Alice
   address: Wonderland 1
-  user: Alice
 
-- ShopData: 13:01:01
+- Policy: Shop
+  trigger: 13:01
+
+- ShopData: 13:02
   order: order1300
   product: shoes
   customer: Alice
   address: Wonderland 1
   state: pending
 
-- ShopData: 13:01:02
+- ShopData: 13:03
   customer: Alice
   orders: [order1300]
 
-- StorageData: 13:01:21
+- Policy: Storage
+  trigger: 13:01
+
+- StorageData: 13:04
   pickTask: pick1300
   order: order1300
   product: shoes
@@ -62,23 +62,38 @@
   address: Wonderland 1
   state: todo
 
-- OrderApproved: 13:02
+- OrderApproved: 13:05
   order: order1300
+
+- Policy: Shop
+  trigger: 13:05
+
+- Data: 13:06
+  order: order1300
+  state: picking
+
+- Action: Bob
 
 - OrderPicked: 14:00
   pickTask: pick1300
   box: box23
   user: Bob
 
-- StorageData: 14:00:01
+- Policy: Storage
+  trigger: 14:00
+
+- StorageData: 14:01
   pickTask: pick1300
   state: done
   box: box23
 
-- StorageData: 14:00:02
+- StorageData: 14:02
   box: box23
   place: shipping
 
-- ShopData: 14:00:10
+- Policy: Shop
+  trigger: 14:00
+
+- ShopData: 14:03
   order: order1300
   state: shipping

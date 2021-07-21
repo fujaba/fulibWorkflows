@@ -22,9 +22,11 @@ public class TestGenerator
          mm.setMainJavaDir("test/src/main/java");
          mm.setPackageName("uks.debuggen.shop");
 
-         String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow.yaml"));
+         String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow2.yaml"));
 
-         WorkflowGenerator workflowGenerator = new WorkflowGenerator().loadWorkflow(mm, yaml);
+         WorkflowGenerator workflowGenerator = new WorkflowGenerator();
+         workflowGenerator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
+         workflowGenerator.loadWorkflow(mm, yaml);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
                workflowGenerator.getEventModel().getRootWorkflow());
