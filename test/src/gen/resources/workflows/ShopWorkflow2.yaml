@@ -1,60 +1,59 @@
 
-- Workflow: ordering smooth
+- workflow: ordering smooth
 
-- ServiceRegistered: Shop
+- service: Shop
   port: 42100
 
-- ServiceRegistered: Storage
-  port: 42200
-
-- Action: Bob
-
-- ProductStored: 12:00
+- event: product stored 12:00
   box: box23
   product: shoes
   place: shelf23
 
-- Policy: Storage
-  trigger: 12:00
-
-- Data: 12:01
+- data: 12:01
   box: box23
   product: shoes
   place: shelf23
 
-- Action: Alice
+- action: Alice
 
-- CommandSent: 13:00
-  type: OrderRegistered
+- read model: actions 12:50
+  label 1: label Hello Alice
+  label order11:00: order 11:00 coffee mug state registered
+  button 0: cancel
+  button 1: new order
+
+- command: order registered 13:00
+  trigger: button new order
   l1: label welcome to the shop
   product: input product? shoes
   customer: input name? Alice
   address: input address? Wonderland 1
-  ok: button OK
+  button: OK
 
-- OrderRegistered: 13:01
+- event: order registered 13:01
+  trigger: button OK
   product: shoes
   customer: Alice
   address: Wonderland 1
 
-- Policy: Shop
+- policy: Shop
   trigger: 13:01
 
-- ShopData: 13:02
+- data: 13:02
   order: order1300
   product: shoes
   customer: Alice
   address: Wonderland 1
   state: pending
 
-- ShopData: 13:03
+- data: 13:03
   customer: Alice
   orders: [order1300]
 
-- Policy: Storage
+- policy: Storage
   trigger: 13:01
 
-- StorageData: 13:04
+- data: 13:04
   pickTask: pick1300
   order: order1300
   product: shoes
@@ -62,38 +61,38 @@
   address: Wonderland 1
   state: todo
 
-- OrderApproved: 13:05
+- event: order approved 13:05
   order: order1300
 
-- Policy: Shop
+- policy: Shop
   trigger: 13:05
 
-- Data: 13:06
+- data: 13:06
   order: order1300
   state: picking
 
-- Action: Bob
+- action: Bob
 
-- OrderPicked: 14:00
+- event: order picked 14:00
   pickTask: pick1300
   box: box23
   user: Bob
 
-- Policy: Storage
+- policy: Storage
   trigger: 14:00
 
-- StorageData: 14:01
+- data: 14:01
   pickTask: pick1300
   state: done
   box: box23
 
-- StorageData: 14:02
+- data: 14:02
   box: box23
   place: shipping
 
-- Policy: Shop
+- policy: Shop
   trigger: 14:00
 
-- ShopData: 14:03
+- data: 14:03
   order: order1300
   state: shipping

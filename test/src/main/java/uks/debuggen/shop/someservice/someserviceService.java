@@ -1,25 +1,23 @@
-package uks.debuggen.shop.Storage;
-import uks.debuggen.shop.events.Event;
-
-import java.util.LinkedHashMap;
-import java.util.Objects;
-import java.beans.PropertyChangeSupport;
-import uks.debuggen.shop.events.*;
-import spark.Service;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import spark.Request;
-import spark.Response;
-import org.fulib.yaml.Yaml;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+package uks.debuggen.shop.someservice;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.fulib.yaml.Yaml;
+import spark.Request;
+import spark.Response;
+import spark.Service;
+import uks.debuggen.shop.events.*;
+import java.util.Objects;
+import java.beans.PropertyChangeSupport;
 
-public class StorageService
+public class someserviceService
 {
    public static final String PROPERTY_HISTORY = "history";
    public static final String PROPERTY_PORT = "port";
@@ -27,18 +25,18 @@ public class StorageService
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
-   protected PropertyChangeSupport listeners;
-   private int port = 42003;
+   private int port = 42002;
    private Service spark;
-   private StorageModel model;
+   private someserviceModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
+   protected PropertyChangeSupport listeners;
 
    public LinkedHashMap<String, Event> getHistory()
    {
       return this.history;
    }
 
-   public StorageService setHistory(LinkedHashMap<String, Event> value)
+   public someserviceService setHistory(LinkedHashMap<String, Event> value)
    {
       if (Objects.equals(value, this.history))
       {
@@ -56,7 +54,7 @@ public class StorageService
       return this.port;
    }
 
-   public StorageService setPort(int value)
+   public someserviceService setPort(int value)
    {
       if (value == this.port)
       {
@@ -74,7 +72,7 @@ public class StorageService
       return this.spark;
    }
 
-   public StorageService setSpark(Service value)
+   public someserviceService setSpark(Service value)
    {
       if (Objects.equals(value, this.spark))
       {
@@ -87,19 +85,19 @@ public class StorageService
       return this;
    }
 
-   public StorageModel getModel()
+   public someserviceModel getModel()
    {
       return this.model;
    }
 
-   public StorageService setModel(StorageModel value)
+   public someserviceService setModel(someserviceModel value)
    {
       if (Objects.equals(value, this.model))
       {
          return this;
       }
 
-      final StorageModel oldValue = this.model;
+      final someserviceModel oldValue = this.model;
       this.model = value;
       this.firePropertyChange(PROPERTY_MODEL, oldValue, value);
       return this;
@@ -110,7 +108,7 @@ public class StorageService
       return this.handlerMap;
    }
 
-   public StorageService setHandlerMap(LinkedHashMap<Class, Consumer<Event>> value)
+   public someserviceService setHandlerMap(LinkedHashMap<Class, Consumer<Event>> value)
    {
       if (Objects.equals(value, this.handlerMap))
       {
@@ -123,35 +121,16 @@ public class StorageService
       return this;
    }
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
-      {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
-      }
-      return false;
-   }
-
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
-      {
-         this.listeners = new PropertyChangeSupport(this);
-      }
-      return this.listeners;
-   }
-
    public void start()
    {
-      model = new StorageModel();
+      model = new someserviceModel();
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);
       spark.get("/", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
       executor.submit(this::subscribeAndLoadOldEvents);
-      Logger.getGlobal().info("Storage service is up and running on port " + port);
+      Logger.getGlobal().info("someservice service is up and running on port " + port);
    }
 
    private String getHello(Request req, Response res)
@@ -159,21 +138,21 @@ public class StorageService
       try {
          String events = Yaml.encode(getHistory().values().toArray());
          String objects = Yaml.encode(model.getModelMap().values().toArray());
-         return "<p id='Storage'>This is the Storage service. </p>\n" +
+         return "<p id='someservice'>This is the someservice service. </p>\n" +
                "<pre>" + events + "</pre>\n" +
                "<pre>" + objects + "</pre>\n" +
                "";
       }
       catch (Exception e) {
          Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
-         return "Storage Error " + e.getMessage();
+         return "someservice Error " + e.getMessage();
       }
    }
 
    private void subscribeAndLoadOldEvents()
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-            .setServiceUrl("http://localhost:42003/apply");
+            .setServiceUrl("http://localhost:42002/apply");
       String json = Yaml.encode(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
@@ -210,8 +189,7 @@ public class StorageService
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
-         handlerMap.put(OrderPicked.class, this::handleOrderPicked);
+         handlerMap.put(ProductStored.class, this::handleProductStored);
       }
    }
 
@@ -252,32 +230,33 @@ public class StorageService
       return "apply done";
    }
 
-   private void handleOrderPicked(Event e)
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      OrderPicked event = (OrderPicked) e;
-      if (event.getId().equals("14:00")) {
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
+   }
 
-         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
-         pick1300.setState("done");
-         pick1300.setBox("box23");
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
+   }
+
+   private void handleProductStored(Event e)
+   {
+      ProductStored event = (ProductStored) e;
+      if (event.getId().equals("12:00")) {
 
          Box box23 = model.getOrCreateBox("box23");
-         box23.setPlace("shipping");
+         box23.setProduct("shoes");
+         box23.setPlace("shelf23");
       }
    }
-
-   private void handleOrderRegistered(Event e)
-   {
-      OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:01")) {
-
-         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
-         pick1300.setOrder("order1300");
-         pick1300.setProduct("shoes");
-         pick1300.setCustomer("Alice");
-         pick1300.setAddress("Wonderland 1");
-         pick1300.setState("todo");
-      }
-   }
-
 }

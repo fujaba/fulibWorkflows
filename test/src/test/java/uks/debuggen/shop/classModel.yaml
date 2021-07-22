@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	testordering_smooth
+  classes: 	testOrdering
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -7,14 +7,14 @@
   packageName: 	uks.debuggen.shop
   packageSrcFolder: 	"test/src/test/java/uks/debuggen/shop"
 
-- testordering_smooth: 	org.fulib.classmodel.Clazz
-  attributes: 	testordering_smooth_eventBroker
-  importList: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
-  imports: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
-  methods: 	testordering_smooth_ordering_smooth 	testordering_smooth_publish
+- testOrdering: 	org.fulib.classmodel.Clazz
+  attributes: 	testOrdering_eventBroker
+  importList: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.someservice.someserviceService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
+  imports: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.someservice.someserviceService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
+  methods: 	testOrdering_ordering_smooth 	testOrdering_publish
   model: 	c
   modified: 	false
-  name: 	Testordering_smooth
+  name: 	TestOrdering
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -24,21 +24,21 @@
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
 
-- testordering_smooth_eventBroker: 	org.fulib.classmodel.Attribute
-  clazz: 	testordering_smooth
-  id: 	Testordering_smooth_eventBroker
+- testOrdering_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testOrdering
+  id: 	TestOrdering_eventBroker
   modified: 	false
   name: 	eventBroker
   propertyStyle: 	Bean
   type: 	EventBroker
   typeSignature: 	EventBroker
 
-- testordering_smooth_ordering_smooth: 	org.fulib.classmodel.FMethod
+- testOrdering_ordering_smooth: 	org.fulib.classmodel.FMethod
   annotations: 	"@Test"
-  clazz: 	testordering_smooth
+  clazz: 	testOrdering
   declaration: 	"@Test
 public void ordering_smooth()"
-  id: 	Testordering_smooth_ordering_smooth
+  id: 	TestOrdering_ordering_smooth
   methodBody: 	"// start the event broker
 eventBroker = new EventBroker();
 eventBroker.start();
@@ -48,10 +48,14 @@ ShopService shop = new ShopService();
 shop.start();
 
 // start service
+someserviceService someservice = new someserviceService();
+someservice.start();
+
+// start service
 StorageService storage = new StorageService();
 storage.start();
 
-// create ProductStored: 12:00
+// create ProductStored: product stored 12:00
 ProductStored e1200 = new ProductStored();
 e1200.setId(\"12:00\");
 e1200.setBox(\"box23\");
@@ -59,26 +63,22 @@ e1200.setProduct(\"shoes\");
 e1200.setPlace(\"shelf23\");
 publish(e1200);
 
-// create CommandSent: 13:00
-CommandSent e1300 = new CommandSent();
-e1300.setId(\"13:00\");
-e1300.setType(\"OrderRegistered\");
-e1300.setL1(\"label welcome to the shop\");
-e1300.setProduct(\"input product? shoes\");
-e1300.setCustomer(\"input name? Alice\");
-e1300.setAddress(\"input address? Wonderland 1\");
-e1300.setOk(\"button OK\");
-publish(e1300);
-
-// create OrderRegistered: 13:01
+// create OrderRegistered: order registered 13:01
 OrderRegistered e1301 = new OrderRegistered();
 e1301.setId(\"13:01\");
+e1301.setTrigger(\"button OK\");
 e1301.setProduct(\"shoes\");
 e1301.setCustomer(\"Alice\");
 e1301.setAddress(\"Wonderland 1\");
 publish(e1301);
 
-// create OrderPicked: 14:00
+// create OrderApproved: order approved 13:05
+OrderApproved e1305 = new OrderApproved();
+e1305.setId(\"13:05\");
+e1305.setOrder(\"order1300\");
+publish(e1305);
+
+// create OrderPicked: order picked 14:00
 OrderPicked e1400 = new OrderPicked();
 e1400.setId(\"14:00\");
 e1400.setPickTask(\"pick1300\");
@@ -92,13 +92,13 @@ System.out.println();
   name: 	ordering_smooth
   paramsString: 	""
   returnType: 	void
-  signature: 	"class/Testordering_smooth/method/ordering_smooth()"
+  signature: 	"class/TestOrdering/method/ordering_smooth()"
 
-- testordering_smooth_publish: 	org.fulib.classmodel.FMethod
+- testOrdering_publish: 	org.fulib.classmodel.FMethod
   annotations: 	""
-  clazz: 	testordering_smooth
+  clazz: 	testOrdering
   declaration: 	"public void publish(Event event)"
-  id: 	Testordering_smooth_publish
+  id: 	TestOrdering_publish
   methodBody: 	"String yaml = Yaml.encode(event);
 
 try {
@@ -115,5 +115,5 @@ catch (UnirestException e) {
   name: 	publish
   paramsString: 	"Event event"
   returnType: 	void
-  signature: 	"class/Testordering_smooth/method/publish(Event)"
+  signature: 	"class/TestOrdering/method/publish(Event)"
 

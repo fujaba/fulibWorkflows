@@ -1,27 +1,57 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.com/product.schema.json",
-  "title": "Product",
-  "description": "A product in the catalog",
+  "title": "Event Storming",
+  "description": "Event Storming Schema",
   "type": "array",
   "items": {
     "anyOf": [
       {
         "type": "object",
         "required": [
-          "WorkflowStarted"
+          "workflow"
         ]
       },
       {
         "type": "object",
         "required": [
-          "ServiceRegistered", "port", "name"
+          "service registered", "port"
         ]
       },
       {
         "type": "object",
         "required": [
-          "UserRegistered", "role", "name"
+          "event"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "policy", "trigger"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "action"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "read model"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "command", "button"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "data"
         ]
       },
       {
@@ -32,7 +62,6 @@
       }
     ]
   },
-  "minItems": 1,
-  "uniqueItems": true
+  "minItems": 1
 }
 

@@ -1,4 +1,4 @@
-package uks.debuggen.shop.events;
+package uks.fulibgen.shop.events;
 import java.util.Objects;
 
 public class OrderApproved extends Event

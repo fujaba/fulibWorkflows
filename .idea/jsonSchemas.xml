@@ -16,10 +16,7 @@
                     <option name="mappingKind" value="Pattern" />
                   </Item>
                   <Item>
-                    <option name="path" value="test/src/gen/resources/workflows/ShopWorkflow.yaml" />
-                  </Item>
-                  <Item>
-                    <option name="path" value="test/src/gen/resources/workflows/withSchema/someExamle.yaml" />
+                    <option name="path" value="test/src/gen/resources/workflows/ShopWorkflow2.yaml" />
                   </Item>
                 </list>
               </option>

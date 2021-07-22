@@ -27,7 +27,7 @@ public class Yamler2
 
       hasNextLine();
       while (true) {
-         if ( ! trim.startsWith("-")) {
+         if (!trim.startsWith("-")) {
             return result;
          }
          LinkedHashMap<String, String> map = decodeObject();
@@ -41,7 +41,7 @@ public class Yamler2
          line = iterator.next();
          trim = line.trim();
 
-         if ( ! trim.equals("")) {
+         if (!trim.equals("")) {
             return true;
          }
       }
@@ -57,15 +57,21 @@ public class Yamler2
       trim = line.replace("-", "").trim();
       while (true) {
          words = trim.split("\\s+");
-         String key = words[0];
          if (words[0].equals("-")) {
             return currentObject;
+         }
+         String key = "";
+         for (int i = 0; i < words.length; i++) {
+            key += (" " + words[i]).trim();
+            if (key.endsWith(":")) {
+               break;
+            }
          }
          String attrName = stripColon(key);
          String value = trim.replace(key, "").trim();
          currentObject.put(attrName, value);
 
-         if ( ! hasNextLine()) {
+         if (!hasNextLine()) {
             return currentObject;
          }
       }
@@ -76,12 +82,10 @@ public class Yamler2
    {
       String id = key;
 
-      if (key.endsWith(":"))
-      {
+      if (key.endsWith(":")) {
          id = key.substring(0, key.length() - 1);
       }
-      else
-      {
+      else {
          this.printError("key does not end with ':' " + key);
       }
 

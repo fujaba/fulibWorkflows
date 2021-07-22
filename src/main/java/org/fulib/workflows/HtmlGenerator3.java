@@ -55,7 +55,7 @@ public class HtmlGenerator3
          String eventType = eventModel.getEventType(map);
 
 
-         String user = map.get("user");
+         String user = null;
          if (note.getInteraction() != null) {
             user = note.getInteraction().getActorName();
          }
@@ -71,17 +71,17 @@ public class HtmlGenerator3
 
          String targetActor = user;
          String noteType = "event";
-         if (eventType.equals("CommandSent")) {
+         if (eventType.equalsIgnoreCase("command")) {
             noteType = "command";
          }
-         else if (eventType.endsWith("Data")) {
-            String serviceName = eventType.substring(0, eventType.length() - "Data".length());
+         else if (eventType.equalsIgnoreCase("Data")) {
+            String serviceName = note.getInteraction().getActorName();
             targetActor = serviceName;
             noteType = "data";
          }
 
          String noteContent;
-         if (eventType.equals("CommandSent")) {
+         if (eventType.equalsIgnoreCase("command")) {
             noteContent = commandNote(map);
          }
          else {
@@ -119,7 +119,7 @@ public class HtmlGenerator3
       StringBuilder attrs = new StringBuilder();
 
       Iterator<Map.Entry<String, String>> iter = map.entrySet().iterator();
-      String time = map.get("CommandSent");
+      String time = map.get("command");
       String eventType = map.get("type");
       String user = map.get("user");
 

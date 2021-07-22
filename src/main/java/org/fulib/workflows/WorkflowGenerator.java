@@ -74,8 +74,12 @@ public class WorkflowGenerator
       for (ServiceNote serviceNote : rootWorkflow.getServices()) {
          // each service gets its own package
          // build classModelManager for that package
+         String port = serviceNote.getPort();
+
          Map<String, String> map = serviceNote.getMap();
-         String port = map.get("port");
+         if (map != null) {
+            map.get("port");
+         }
          String serviceName = serviceNote.getName();
          modelManager = new ClassModelManager().setMainJavaDir(mm.getClassModel().getMainJavaDir())
                .setPackageName(mm.getClassModel().getPackageName() + "." + serviceName);
@@ -373,7 +377,7 @@ public class WorkflowGenerator
             EventNote eventNote = (EventNote) note;
             Interaction interaction = eventNote.getInteraction();
             if (interaction instanceof UserInteraction) {
-               testGenerateSendUserEvent(body, eventNote.getMap());
+               testGenerateSendUserEvent(body, eventNote);
             }
          }
       }
@@ -409,11 +413,11 @@ public class WorkflowGenerator
       body.append(String.format("%s.start();\n", serviceVarName));
    }
 
-   private void testGenerateSendUserEvent(StringBuilder body, LinkedHashMap<String, String> map)
+   private void testGenerateSendUserEvent(StringBuilder body, EventNote note)
    {
       // yes this event shall be send by a user, i.e. by our test
       // build it
-      String varName = addCreateAndInitEventCode(map, body);
+      String varName = addCreateAndInitEventCode(note, body);
       String statement;
 
       // send it
@@ -421,27 +425,30 @@ public class WorkflowGenerator
       body.append(statement);
    }
 
-   private String addCreateAndInitEventCode(LinkedHashMap<String, String> map, StringBuilder body)
+   private String addCreateAndInitEventCode(EventNote note, StringBuilder body)
    {
       boolean first = true;
       String varName = null;
       String id = null;
-      String eventType = null;
       String statement = null;
-      for (Map.Entry<String, String> entry : map.entrySet()) {
+      String eventTypeName = null;
+      for (Map.Entry<String, String> entry : note.getMap().entrySet()) {
          if (first) {
-            eventType = entry.getKey();
-            id = entry.getValue();
-            varName = entry.getValue().replaceAll("\\:", "");
+            String value = entry.getValue(); // example value: product stored 12:00
+            String[] split = value.split("\\s");
+            String time = note.getTime();
+            eventTypeName = note.getEventTypeName();
+            id = time;
+            varName = time.replaceAll("\\:", "");
             if (!Character.isAlphabetic(varName.charAt(0))) {
                varName = "e" + varName;
             }
             statement = String.format("\n" +
                         "// create %s: %s\n",
-                  eventType, entry.getValue());
+                  eventTypeName, entry.getValue());
             body.append(statement);
             statement = String.format("%s %s = new %s();\n",
-                  eventType, varName, eventType);
+                  eventTypeName, varName, eventTypeName);
             body.append(statement);
             statement = String.format("%s.setId(\"%s\");\n",
                   varName, id);

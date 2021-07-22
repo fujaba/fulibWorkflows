@@ -484,6 +484,18 @@ public class Workflow extends Note
       return null;
    }
 
+   public ServiceNote getOrCreateFromServices(String value)
+   {
+      ServiceNote service = getFromServices(value);
+      if (service == null) {
+         service = new ServiceNote();
+         service.setName(value)
+               .withWorkflows(this);
+         service.setPort("" + (42000 + this.getServices().size()));
+      }
+      return service;
+   }
+
    public EventType getOrCreateEventType(String eventTypeName)
    {
       for (EventType eventType : this.getEventTypes()) {
@@ -507,4 +519,5 @@ public class Workflow extends Note
       }
       return user;
    }
+
 }

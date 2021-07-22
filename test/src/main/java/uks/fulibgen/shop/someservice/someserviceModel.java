@@ -1,9 +1,9 @@
-package uks.fulibgen.shop.Storage;
+package uks.fulibgen.shop.someservice;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class StorageModel
+public class someserviceModel
 {
    public static final String PROPERTY_MODEL_MAP = "modelMap";
    private LinkedHashMap<String, Object> modelMap = new LinkedHashMap<>();
@@ -14,7 +14,7 @@ public class StorageModel
       return this.modelMap;
    }
 
-   public StorageModel setModelMap(LinkedHashMap<String, Object> value)
+   public someserviceModel setModelMap(LinkedHashMap<String, Object> value)
    {
       if (Objects.equals(value, this.modelMap))
       {
@@ -25,6 +25,11 @@ public class StorageModel
       this.modelMap = value;
       this.firePropertyChange(PROPERTY_MODEL_MAP, oldValue, value);
       return this;
+   }
+
+   public Box getOrCreateBox(String id)
+   {
+      return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
    }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
@@ -44,15 +49,5 @@ public class StorageModel
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
-   }
-
-   public PickTask getOrCreatePickTask(String id)
-   {
-      return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
-   }
-
-   public Box getOrCreateBox(String id)
-   {
-      return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
    }
 }

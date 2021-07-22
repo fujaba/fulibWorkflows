@@ -17,8 +17,8 @@ public class PickTask
    private String customer;
    private String address;
    private String state;
-   private String box;
    protected PropertyChangeSupport listeners;
+   private String box;
 
    public String getId()
    {

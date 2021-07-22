@@ -1,97 +1,85 @@
-<svg width="791px" height="219px"
- viewBox="0.00 0.00 791.00 219.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 215)">
+<svg width="659px" height="204px"
+ viewBox="0.00 0.00 658.50 204.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 200)">
 <title>uks.debuggen.shop.events</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-215 787,-215 787,4 -4,4"/>
-<!-- CommandSent -->
-<g id="node1" class="node"><title>CommandSent</title>
-<polygon fill="none" stroke="black" points="8,-99.5 8,-120.5 106,-120.5 106,-99.5 8,-99.5"/>
-<text text-anchor="start" x="15" y="-106.3" font-family="Times New Roman,serif" font-size="14.00">CommandSent</text>
-<polygon fill="none" stroke="black" points="8,-3.5 8,-99.5 106,-99.5 106,-3.5 8,-3.5"/>
-<text text-anchor="start" x="11" y="-85.3" font-family="Times New Roman,serif" font-size="14.00">type :String</text>
-<text text-anchor="start" x="11" y="-70.3" font-family="Times New Roman,serif" font-size="14.00">l1 :String</text>
-<text text-anchor="start" x="11" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
-<text text-anchor="start" x="11" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">customer :String</text>
-<text text-anchor="start" x="11" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
-<text text-anchor="start" x="11" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">ok :String</text>
-</g>
+<polygon fill="white" stroke="none" points="-4,4 -4,-200 654.5,-200 654.5,4 -4,4"/>
 <!-- Event -->
-<g id="node2" class="node"><title>Event</title>
-<polygon fill="none" stroke="black" points="359,-186 359,-207 416,-207 416,-186 359,-186"/>
-<text text-anchor="start" x="371.5" y="-192.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
-<polygon fill="none" stroke="black" points="359,-165 359,-186 416,-186 416,-165 359,-165"/>
-<text text-anchor="start" x="362" y="-171.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
-</g>
-<!-- CommandSent&#45;&gt;Event -->
-<g id="edge1" class="edge"><title>CommandSent&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M114.392,-119.937C117.219,-121.761 120.093,-123.461 123,-125 193.053,-162.078 285.368,-176.343 340.219,-181.761"/>
-<polygon fill="none" stroke="black" points="340.061,-185.261 350.342,-182.702 340.709,-178.291 340.061,-185.261"/>
+<g id="node1" class="node"><title>Event</title>
+<polygon fill="none" stroke="black" points="293.5,-171 293.5,-192 350.5,-192 350.5,-171 293.5,-171"/>
+<text text-anchor="start" x="306" y="-177.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
+<polygon fill="none" stroke="black" points="293.5,-150 293.5,-171 350.5,-171 350.5,-150 293.5,-150"/>
+<text text-anchor="start" x="296.5" y="-156.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
 </g>
 <!-- OrderApproved -->
-<g id="node3" class="node"><title>OrderApproved</title>
-<polygon fill="none" stroke="black" points="141,-62.5 141,-83.5 238,-83.5 238,-62.5 141,-62.5"/>
-<text text-anchor="start" x="144" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">OrderApproved</text>
-<polygon fill="none" stroke="black" points="141,-41.5 141,-62.5 238,-62.5 238,-41.5 141,-41.5"/>
-<text text-anchor="start" x="154.5" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">order :String</text>
+<g id="node2" class="node"><title>OrderApproved</title>
+<polygon fill="none" stroke="black" points="8.5,-62 8.5,-83 105.5,-83 105.5,-62 8.5,-62"/>
+<text text-anchor="start" x="11.5" y="-68.8" font-family="Times New Roman,serif" font-size="14.00">OrderApproved</text>
+<polygon fill="none" stroke="black" points="8.5,-26 8.5,-62 105.5,-62 105.5,-26 8.5,-26"/>
+<text text-anchor="start" x="22" y="-47.8" font-family="Times New Roman,serif" font-size="14.00">event :String</text>
+<text text-anchor="start" x="22" y="-32.8" font-family="Times New Roman,serif" font-size="14.00">order :String</text>
 </g>
 <!-- OrderApproved&#45;&gt;Event -->
-<g id="edge2" class="edge"><title>OrderApproved&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M211.254,-87.6938C223.371,-99.9307 239.106,-114.395 255,-125 281.762,-142.856 314.703,-157.837 340.982,-168.364"/>
-<polygon fill="none" stroke="black" points="339.751,-171.641 350.339,-172.038 342.31,-165.125 339.751,-171.641"/>
+<g id="edge1" class="edge"><title>OrderApproved&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M89.9492,-87.6144C99.8668,-95.7706 111.131,-103.946 122.5,-110 171.492,-136.087 233.454,-152.486 275.112,-161.422"/>
+<polygon fill="none" stroke="black" points="274.48,-164.865 284.984,-163.481 275.909,-158.013 274.48,-164.865"/>
 </g>
 <!-- OrderPicked -->
-<g id="node4" class="node"><title>OrderPicked</title>
-<polygon fill="none" stroke="black" points="272,-77.5 272,-98.5 370,-98.5 370,-77.5 272,-77.5"/>
-<text text-anchor="start" x="285" y="-84.3" font-family="Times New Roman,serif" font-size="14.00">OrderPicked</text>
-<polygon fill="none" stroke="black" points="272,-26.5 272,-77.5 370,-77.5 370,-26.5 272,-26.5"/>
-<text text-anchor="start" x="275" y="-63.3" font-family="Times New Roman,serif" font-size="14.00">pickTask :String</text>
-<text text-anchor="start" x="275" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
-<text text-anchor="start" x="275" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">user :String</text>
+<g id="node3" class="node"><title>OrderPicked</title>
+<polygon fill="none" stroke="black" points="139.5,-77 139.5,-98 237.5,-98 237.5,-77 139.5,-77"/>
+<text text-anchor="start" x="152.5" y="-83.8" font-family="Times New Roman,serif" font-size="14.00">OrderPicked</text>
+<polygon fill="none" stroke="black" points="139.5,-11 139.5,-77 237.5,-77 237.5,-11 139.5,-11"/>
+<text text-anchor="start" x="142.5" y="-62.8" font-family="Times New Roman,serif" font-size="14.00">event :String</text>
+<text text-anchor="start" x="142.5" y="-47.8" font-family="Times New Roman,serif" font-size="14.00">pickTask :String</text>
+<text text-anchor="start" x="142.5" y="-32.8" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
+<text text-anchor="start" x="142.5" y="-17.8" font-family="Times New Roman,serif" font-size="14.00">user :String</text>
 </g>
 <!-- OrderPicked&#45;&gt;Event -->
-<g id="edge3" class="edge"><title>OrderPicked&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M342.246,-102.612C350.859,-118.468 360.701,-136.586 368.958,-151.786"/>
-<polygon fill="none" stroke="black" points="366.02,-153.711 373.869,-160.828 372.171,-150.37 366.02,-153.711"/>
+<g id="edge2" class="edge"><title>OrderPicked&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M242.98,-102.697C257.238,-114.918 272.258,-127.793 285.301,-138.972"/>
+<polygon fill="none" stroke="black" points="283.271,-141.842 293.141,-145.693 287.827,-136.527 283.271,-141.842"/>
 </g>
 <!-- OrderRegistered -->
-<g id="node5" class="node"><title>OrderRegistered</title>
-<polygon fill="none" stroke="black" points="405,-77.5 405,-98.5 504,-98.5 504,-77.5 405,-77.5"/>
-<text text-anchor="start" x="408" y="-84.3" font-family="Times New Roman,serif" font-size="14.00">OrderRegistered</text>
-<polygon fill="none" stroke="black" points="405,-26.5 405,-77.5 504,-77.5 504,-26.5 405,-26.5"/>
-<text text-anchor="start" x="408.5" y="-63.3" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
-<text text-anchor="start" x="408.5" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">customer :String</text>
-<text text-anchor="start" x="408.5" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
+<g id="node4" class="node"><title>OrderRegistered</title>
+<polygon fill="none" stroke="black" points="272.5,-85 272.5,-106 371.5,-106 371.5,-85 272.5,-85"/>
+<text text-anchor="start" x="275.5" y="-91.8" font-family="Times New Roman,serif" font-size="14.00">OrderRegistered</text>
+<polygon fill="none" stroke="black" points="272.5,-4 272.5,-85 371.5,-85 371.5,-4 272.5,-4"/>
+<text text-anchor="start" x="276" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">event :String</text>
+<text text-anchor="start" x="276" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">trigger :String</text>
+<text text-anchor="start" x="276" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="276" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">customer :String</text>
+<text text-anchor="start" x="276" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
 </g>
 <!-- OrderRegistered&#45;&gt;Event -->
-<g id="edge4" class="edge"><title>OrderRegistered&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M432.432,-102.612C423.688,-118.468 413.698,-136.586 405.315,-151.786"/>
-<polygon fill="none" stroke="black" points="402.094,-150.381 400.33,-160.828 408.223,-153.761 402.094,-150.381"/>
+<g id="edge3" class="edge"><title>OrderRegistered&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M321.5,-110.329C321.5,-119.022 321.5,-127.797 321.5,-135.845"/>
+<polygon fill="none" stroke="black" points="318,-135.937 321.5,-145.937 325,-135.937 318,-135.937"/>
 </g>
 <!-- ProductStored -->
-<g id="node6" class="node"><title>ProductStored</title>
-<polygon fill="none" stroke="black" points="538,-77.5 538,-98.5 629,-98.5 629,-77.5 538,-77.5"/>
-<text text-anchor="start" x="542" y="-84.3" font-family="Times New Roman,serif" font-size="14.00">ProductStored</text>
-<polygon fill="none" stroke="black" points="538,-26.5 538,-77.5 629,-77.5 629,-26.5 538,-26.5"/>
-<text text-anchor="start" x="541" y="-63.3" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
-<text text-anchor="start" x="541" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
-<text text-anchor="start" x="541" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">place :String</text>
+<g id="node5" class="node"><title>ProductStored</title>
+<polygon fill="none" stroke="black" points="405.5,-77 405.5,-98 496.5,-98 496.5,-77 405.5,-77"/>
+<text text-anchor="start" x="409.5" y="-83.8" font-family="Times New Roman,serif" font-size="14.00">ProductStored</text>
+<polygon fill="none" stroke="black" points="405.5,-11 405.5,-77 496.5,-77 496.5,-11 405.5,-11"/>
+<text text-anchor="start" x="408.5" y="-62.8" font-family="Times New Roman,serif" font-size="14.00">event :String</text>
+<text text-anchor="start" x="408.5" y="-47.8" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
+<text text-anchor="start" x="408.5" y="-32.8" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="408.5" y="-17.8" font-family="Times New Roman,serif" font-size="14.00">place :String</text>
 </g>
 <!-- ProductStored&#45;&gt;Event -->
-<g id="edge5" class="edge"><title>ProductStored&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M547.909,-102.612C539.582,-110.627 530.377,-118.569 521,-125 493.854,-143.618 459.996,-158.721 433.106,-169.117"/>
-<polygon fill="none" stroke="black" points="431.657,-165.923 423.54,-172.732 434.132,-172.471 431.657,-165.923"/>
+<g id="edge4" class="edge"><title>ProductStored&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M397.659,-102.697C383.829,-114.918 369.261,-127.793 356.611,-138.972"/>
+<polygon fill="none" stroke="black" points="354.181,-136.448 349.006,-145.693 358.817,-141.693 354.181,-136.448"/>
 </g>
 <!-- ServiceSubscribed -->
-<g id="node7" class="node"><title>ServiceSubscribed</title>
-<polygon fill="none" stroke="black" points="663,-62.5 663,-83.5 775,-83.5 775,-62.5 663,-62.5"/>
-<text text-anchor="start" x="666" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">ServiceSubscribed</text>
-<polygon fill="none" stroke="black" points="663,-41.5 663,-62.5 775,-62.5 775,-41.5 663,-41.5"/>
-<text text-anchor="start" x="670.5" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">serviceUrl :String</text>
+<g id="node6" class="node"><title>ServiceSubscribed</title>
+<polygon fill="none" stroke="black" points="530.5,-55 530.5,-76 642.5,-76 642.5,-55 530.5,-55"/>
+<text text-anchor="start" x="533.5" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">ServiceSubscribed</text>
+<polygon fill="none" stroke="black" points="530.5,-34 530.5,-55 642.5,-55 642.5,-34 530.5,-34"/>
+<text text-anchor="start" x="538" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">serviceUrl :String</text>
 </g>
 <!-- ServiceSubscribed&#45;&gt;Event -->
-<g id="edge6" class="edge"><title>ServiceSubscribed&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M696.091,-87.7433C682.65,-100.614 664.674,-115.658 646,-125 576.923,-159.558 487.483,-174.574 433.819,-180.83"/>
-<polygon fill="none" stroke="black" points="433.132,-177.385 423.58,-181.968 433.905,-184.342 433.132,-177.385"/>
+<g id="edge5" class="edge"><title>ServiceSubscribed&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M558.481,-80.1742C545.467,-90.4677 529.383,-101.934 513.5,-110 466.423,-133.907 407.985,-150.503 368.025,-160.085"/>
+<polygon fill="none" stroke="black" points="367.219,-156.679 358.282,-162.37 368.817,-163.494 367.219,-156.679"/>
 </g>
 </g>
 </svg>

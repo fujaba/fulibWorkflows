@@ -1,12 +1,14 @@
-package uks.debuggen.shop.Storage;
+package uks.debuggen.shop.someservice;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
 public class Box
 {
    public static final String PROPERTY_ID = "id";
+   public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_PLACE = "place";
    private String id;
+   private String product;
    private String place;
    protected PropertyChangeSupport listeners;
 
@@ -25,6 +27,24 @@ public class Box
       final String oldValue = this.id;
       this.id = value;
       this.firePropertyChange(PROPERTY_ID, oldValue, value);
+      return this;
+   }
+
+   public String getProduct()
+   {
+      return this.product;
+   }
+
+   public Box setProduct(String value)
+   {
+      if (Objects.equals(value, this.product))
+      {
+         return this;
+      }
+
+      final String oldValue = this.product;
+      this.product = value;
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
       return this;
    }
 
@@ -70,6 +90,7 @@ public class Box
    {
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
+      result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getPlace());
       return result.substring(1);
    }
