@@ -27,6 +27,10 @@ public class Yamler2
 
       hasNextLine();
       while (true) {
+         if (trim.startsWith("#")) {
+            hasNextLine();
+            continue;
+         }
          if (!trim.startsWith("-")) {
             return result;
          }
@@ -59,6 +63,12 @@ public class Yamler2
          words = trim.split("\\s+");
          if (words[0].equals("-")) {
             return currentObject;
+         }
+         if (words[0].equals("#")) {
+            if (!hasNextLine()) {
+               return currentObject;
+            }
+            continue;
          }
          String key = "";
          for (int i = 0; i < words.length; i++) {

@@ -1,19 +1,24 @@
 
+# provide name for this scenario
 - workflow: ordering smooth
 
+# provide some service with its port
 - service: Shop
   port: 42100
 
+# send event by default user somebody
 - event: product stored 12:00
   box: box23
   product: shoes
   place: shelf23
 
+# handle event by default service someservice
 - data: 12:01
   box: box23
   product: shoes
   place: shelf23
 
+# following actions are created by Alice
 - action: Alice
 
 - read model: actions 12:50
@@ -35,6 +40,8 @@
   product: shoes
   customer: Alice
   address: Wonderland 1
+
+# policy notes tell that the following actions are executed by a sertain service triggered by a certain event
 
 - policy: Shop
   trigger: 13:01
