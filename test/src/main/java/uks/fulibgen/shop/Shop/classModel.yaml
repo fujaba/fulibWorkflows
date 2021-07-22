@@ -21,7 +21,7 @@
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model 	shopService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_handleOrderRegistered 	shopService_handleOrderPicked 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
+  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_handleOrderRegistered 	shopService_handleOrderApproved 	shopService_handleOrderPicked 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
   model: 	c
   modified: 	false
   name: 	ShopService
@@ -256,6 +256,25 @@ if (event.getId().equals(\"13:01\")) {
   returnType: 	void
   signature: 	"class/ShopService/method/handleOrderRegistered(Event)"
 
+- shopService_handleOrderApproved: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopService
+  declaration: 	"private void handleOrderApproved(Event e)"
+  id: 	ShopService_handleOrderApproved
+  methodBody: 	"OrderApproved event = (OrderApproved) e;
+if (event.getId().equals(\"13:05\")) {
+
+   Order order1300 = model.getOrCreateOrder(\"order1300\");
+   order1300.setState(\"picking\");
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleOrderApproved
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/ShopService/method/handleOrderApproved(Event)"
+
 - shopService_handleOrderPicked: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopService
@@ -283,6 +302,7 @@ if (event.getId().equals(\"14:00\")) {
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
+   handlerMap.put(OrderApproved.class, this::handleOrderApproved);
    handlerMap.put(OrderPicked.class, this::handleOrderPicked);
 }
 "

@@ -13,7 +13,7 @@ public class HtmlTest
    public void testGenWorkflow() throws IOException
    {
 
-      String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow.yaml"));
+      String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow2.yaml"));
       Files.createDirectories(Path.of("tmp"));
 
       HtmlGenerator3 generator = new HtmlGenerator3();

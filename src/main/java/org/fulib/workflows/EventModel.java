@@ -24,9 +24,11 @@ public class EventModel
       for (LinkedHashMap<String, String> map : maps) {
          Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
          Map.Entry<String, String> entry = iterator.next();
-         if (entry.getKey().equals("WorkflowStarted")) {
+         if (entry.getKey().equals("Workflow")) {
             workflowName = entry.getValue();
+            workflowName = StrUtil.toIdentifier(workflowName);
             rootWorkflow = new Workflow().setName(workflowName);
+            rootWorkflow.setMap(map);
             continue;
          }
          if (entry.getKey().equals("UserRegistered")) {

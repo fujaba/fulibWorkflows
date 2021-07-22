@@ -11,4 +11,10 @@ public class StrUtil
       }
       return index;
    }
+
+   public static String toIdentifier(String name)
+   {
+      String identifier = name.replaceAll("\\s+", "_");
+      return identifier;
+   }
 }

@@ -1,5 +1,5 @@
 
-- WorkflowStarted: ordering
+- Workflow: ordering smooth
 
 - ServiceRegistered: Shop
   port: 42100
@@ -17,7 +17,7 @@
 - Policy: Storage
   trigger: 12:00
 
-- StorageData: 12:01
+- Data: 12:01
   box: box23
   product: shoes
   place: shelf23

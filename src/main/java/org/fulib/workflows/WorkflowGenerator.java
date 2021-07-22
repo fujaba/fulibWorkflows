@@ -55,7 +55,7 @@ public class WorkflowGenerator
       // event map
       eventModel = new EventModel();
       rootWorkflow = eventModel.buildEventStormModel(yaml);
-      dumpObjectDiagram.accept("tmp/afterBuildEventStormModel.svg", rootWorkflow);
+      // dumpObjectDiagram.accept("tmp/afterBuildEventStormModel.svg", rootWorkflow);
       buildClassModelManagerMap(mm);
       buildEventBroker();
       buildServices();
@@ -350,7 +350,8 @@ public class WorkflowGenerator
             .setPackageName(mm.getClassModel().getPackageName());
       managerMap.put("tm", tm);
 
-      testClazz = tm.haveClass("Test" + rootWorkflow.getName());
+      String[] split = rootWorkflow.getName().split("_");
+      testClazz = tm.haveClass("Test" + org.fulib.StrUtil.cap(split[0]));
       testClazz.withImports("import org.junit.Test;");
       testClazz.withImports(String.format("import %s;",
             em.getClassModel().getPackageName() + ".*"));

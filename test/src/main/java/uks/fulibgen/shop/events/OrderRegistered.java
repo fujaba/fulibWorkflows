@@ -6,11 +6,9 @@ public class OrderRegistered extends Event
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
-   public static final String PROPERTY_USER = "user";
    private String product;
    private String customer;
    private String address;
-   private String user;
 
    public String getProduct()
    {
@@ -66,24 +64,6 @@ public class OrderRegistered extends Event
       return this;
    }
 
-   public String getUser()
-   {
-      return this.user;
-   }
-
-   public OrderRegistered setUser(String value)
-   {
-      if (Objects.equals(value, this.user))
-      {
-         return this;
-      }
-
-      final String oldValue = this.user;
-      this.user = value;
-      this.firePropertyChange(PROPERTY_USER, oldValue, value);
-      return this;
-   }
-
    @Override
    public String toString()
    {
@@ -91,7 +71,6 @@ public class OrderRegistered extends Event
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
-      result.append(' ').append(this.getUser());
       return result.toString();
    }
 }

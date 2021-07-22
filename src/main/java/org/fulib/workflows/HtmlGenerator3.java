@@ -56,13 +56,10 @@ public class HtmlGenerator3
 
 
          String user = map.get("user");
-         if (eventType.endsWith("Policy")) {
-            user = eventType.substring(0, eventType.length() - "Policy".length());
+         if (note.getInteraction() != null) {
+            user = note.getInteraction().getActorName();
          }
-         else if (eventType.endsWith("Data")) {
-            user = eventType.substring(0, eventType.length() - "Data".length());
-         }
-         if (user == null) {
+         else {
             user = "Somebody";
          }
 
