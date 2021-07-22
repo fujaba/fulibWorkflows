@@ -48,8 +48,6 @@ public class GenModel implements ClassModelDecorator
       @Link("services")
       List<Workflow> workflows;
       @Link("service")
-      List<UserInteraction> userInteractions;
-      @Link("service")
       List<Policy> policies;
       @Link("handlers")
       List<EventType> handledEventTypes;
@@ -99,8 +97,6 @@ public class GenModel implements ClassModelDecorator
    class UserInteraction extends Interaction {
       @Link("interactions")
       UserNote user;
-      @Link("userInteractions")
-      ServiceNote service;
       @Link("userInteractions")
       Workflow workflow;
    }

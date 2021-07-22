@@ -30,7 +30,7 @@
   modified: 	false
   name: 	ServiceNote
   propertyStyle: 	Bean
-  roles: 	serviceNote_policies 	serviceNote_userInteractions 	serviceNote_handledEventTypes 	serviceNote_workflows
+  roles: 	serviceNote_policies 	serviceNote_handledEventTypes 	serviceNote_workflows
   superClass: 	note
 
 - eventNote: 	org.fulib.classmodel.Clazz
@@ -56,7 +56,7 @@
   modified: 	false
   name: 	UserInteraction
   propertyStyle: 	Bean
-  roles: 	userInteraction_user 	userInteraction_service 	userInteraction_workflow
+  roles: 	userInteraction_user 	userInteraction_workflow
   superClass: 	interaction
 
 - userNote: 	org.fulib.classmodel.Clazz
@@ -205,18 +205,6 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- serviceNote_userInteractions: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	42
-  clazz: 	serviceNote
-  collectionType: 	c1
-  id: 	ServiceNote_userInteractions
-  modified: 	false
-  name: 	userInteractions
-  other: 	userInteraction_service
-  propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
-
 - serviceNote_handledEventTypes: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -361,16 +349,6 @@
   modified: 	false
   name: 	user
   other: 	userNote_interactions
-  propertyStyle: 	Bean
-
-- userInteraction_service: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	userInteraction
-  id: 	UserInteraction_service
-  modified: 	false
-  name: 	service
-  other: 	serviceNote_userInteractions
   propertyStyle: 	Bean
 
 - userInteraction_workflow: 	org.fulib.classmodel.AssocRole

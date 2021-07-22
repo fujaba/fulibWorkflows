@@ -9,13 +9,11 @@ public class ServiceNote extends Note
 {
    public static final String PROPERTY_PORT = "port";
    public static final String PROPERTY_POLICIES = "policies";
-   public static final String PROPERTY_USER_INTERACTIONS = "userInteractions";
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_WORKFLOWS = "workflows";
    public static final String PROPERTY_HANDLED_EVENT_TYPES = "handledEventTypes";
    private String port;
    private List<Policy> policies;
-   private List<UserInteraction> userInteractions;
    private String name;
    private List<Workflow> workflows;
    private List<EventType> handledEventTypes;
@@ -100,72 +98,6 @@ public class ServiceNote extends Note
       for (final Policy item : value)
       {
          this.withoutPolicies(item);
-      }
-      return this;
-   }
-
-   public List<UserInteraction> getUserInteractions()
-   {
-      return this.userInteractions != null ? Collections.unmodifiableList(this.userInteractions) : Collections.emptyList();
-   }
-
-   public ServiceNote withUserInteractions(UserInteraction value)
-   {
-      if (this.userInteractions == null)
-      {
-         this.userInteractions = new ArrayList<>();
-      }
-      if (!this.userInteractions.contains(value))
-      {
-         this.userInteractions.add(value);
-         value.setService(this);
-         this.firePropertyChange(PROPERTY_USER_INTERACTIONS, null, value);
-      }
-      return this;
-   }
-
-   public ServiceNote withUserInteractions(UserInteraction... value)
-   {
-      for (final UserInteraction item : value)
-      {
-         this.withUserInteractions(item);
-      }
-      return this;
-   }
-
-   public ServiceNote withUserInteractions(Collection<? extends UserInteraction> value)
-   {
-      for (final UserInteraction item : value)
-      {
-         this.withUserInteractions(item);
-      }
-      return this;
-   }
-
-   public ServiceNote withoutUserInteractions(UserInteraction value)
-   {
-      if (this.userInteractions != null && this.userInteractions.remove(value))
-      {
-         value.setService(null);
-         this.firePropertyChange(PROPERTY_USER_INTERACTIONS, value, null);
-      }
-      return this;
-   }
-
-   public ServiceNote withoutUserInteractions(UserInteraction... value)
-   {
-      for (final UserInteraction item : value)
-      {
-         this.withoutUserInteractions(item);
-      }
-      return this;
-   }
-
-   public ServiceNote withoutUserInteractions(Collection<? extends UserInteraction> value)
-   {
-      for (final UserInteraction item : value)
-      {
-         this.withoutUserInteractions(item);
       }
       return this;
    }
@@ -332,7 +264,6 @@ public class ServiceNote extends Note
    public void removeYou()
    {
       this.withoutPolicies(new ArrayList<>(this.getPolicies()));
-      this.withoutUserInteractions(new ArrayList<>(this.getUserInteractions()));
       this.withoutHandledEventTypes(new ArrayList<>(this.getHandledEventTypes()));
       this.withoutWorkflows(new ArrayList<>(this.getWorkflows()));
    }
