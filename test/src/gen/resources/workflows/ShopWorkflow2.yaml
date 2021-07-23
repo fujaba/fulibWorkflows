@@ -18,6 +18,7 @@
   product: shoes
   place: shelf23
 
+# policy notes tell that the following actions are executed by a certain service triggered by a certain event
 # let storage handle the event
 - policy: Storage
   trigger: 12:00
@@ -113,3 +114,40 @@
   order: order1300
   state: shipping
 
+
+- workflow: order out of stocks
+
+- action: Alice
+
+- event: order registered 13:11
+  trigger: button OK
+  product: tshirt
+  customer: Alice
+  address: Wonderland 1
+
+- policy: Shop
+  trigger: 13:11
+
+- data: 13:12
+  order: order1310
+  product: tshirt
+  customer: Alice
+  address: Wonderland 1
+  state: pending
+
+- data: 13:13
+  customer: Alice
+  orders: [order1300 order1310]
+
+- policy: Storage
+  trigger: 13:11
+
+- event: order declined 13:14
+  order: order1310
+
+- policy: Shop
+  trigger: 13:14
+
+- data: 13:12
+  order: order1310
+  state: out of stock

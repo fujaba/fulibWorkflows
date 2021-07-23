@@ -18,8 +18,15 @@ public class GenModel implements ClassModelDecorator
       LinkedHashMap<String, String> map = new LinkedHashMap<>();
    }
 
+   class EventStormingBoard {
+      @Link("eventStormingBoard")
+      List<Workflow> workflows;
+   }
+
    class Workflow extends Note {
       String name;
+      @Link("workflows")
+      EventStormingBoard eventStormingBoard;
       @Link("workflow")
       List<WorkflowNote> notes;
       @Link("workflows")

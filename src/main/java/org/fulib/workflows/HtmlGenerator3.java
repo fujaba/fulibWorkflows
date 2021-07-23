@@ -14,28 +14,30 @@ public class HtmlGenerator3
    private ST st;
    private StringBuilder body;
    private int notesPerLane;
+   private int maxNotesPerLane;
    private Workflow rootWorkflow;
+   private EventStormingBoard eventStormingBoard;
 
    public String generateHtml(String yaml)
    {
-
       eventModel = new EventModel();
       eventModel.buildEventStormModel(yaml);
-      rootWorkflow = eventModel.getOrCreateRootWorkflow();
+      eventStormingBoard = eventModel.getEventStormingBoard();
       group = new STGroupFile(this.getClass().getResource("html/html.stg"));
       body = new StringBuilder();
-
-      // workflow lane
-      body.setLength(0);
-      String notes = notes();
-      st = group.getInstanceOf("lane2");
-      st.add("id", rootWorkflow.getName().replaceAll("\\s+", "<br>"));
-      st.add("content", notes);
-      body.append(st.render());
+      for (Workflow workflow : eventStormingBoard.getWorkflows()) {
+         rootWorkflow = workflow;
+         // workflow lane
+         String notes = notes();
+         st = group.getInstanceOf("lane2");
+         st.add("id", rootWorkflow.getName().replaceAll("\\s+|_", "<br>"));
+         st.add("content", notes);
+         body.append(st.render());
+      }
 
       st = group.getInstanceOf("page");
       st.add("content", body.toString());
-      st.add("width", notesPerLane * 200);
+      st.add("width", maxNotesPerLane * 200);
       body.setLength(0);
       body.append(st.render());
       return body.toString();
@@ -47,6 +49,7 @@ public class HtmlGenerator3
       StringBuilder buf = new StringBuilder();
 
       notesPerLane = 1;
+      maxNotesPerLane = Math.max(maxNotesPerLane, notesPerLane);
 
       String previousActor = "noActor";
       for (WorkflowNote note : rootWorkflow.getNotes()) {
@@ -92,7 +95,7 @@ public class HtmlGenerator3
             noteContent = "<div>a_placeholder</div>";
          }
 
-         if ( ! previousActor.equals(targetActor)) {
+         if (!previousActor.equals(targetActor)) {
             // add user icon
             st = group.getInstanceOf("actor");
             st.add("id", user);
@@ -109,6 +112,7 @@ public class HtmlGenerator3
          buf.append(st.render());
 
          notesPerLane++;
+         maxNotesPerLane = Math.max(maxNotesPerLane, notesPerLane);
       }
 
       return buf.toString();

@@ -14,6 +14,7 @@ public class Workflow extends Note
    public static final String PROPERTY_POLICIES = "policies";
    public static final String PROPERTY_USER_INTERACTIONS = "userInteractions";
    public static final String PROPERTY_EVENT_TYPES = "eventTypes";
+   public static final String PROPERTY_EVENT_STORMING_BOARD = "eventStormingBoard";
    private String name;
    private List<WorkflowNote> notes;
    private List<UserNote> users;
@@ -21,6 +22,7 @@ public class Workflow extends Note
    private List<Policy> policies;
    private List<UserInteraction> userInteractions;
    private List<EventType> eventTypes;
+   private EventStormingBoard eventStormingBoard;
 
    public String getName()
    {
@@ -436,6 +438,33 @@ public class Workflow extends Note
       return this;
    }
 
+   public EventStormingBoard getEventStormingBoard()
+   {
+      return this.eventStormingBoard;
+   }
+
+   public Workflow setEventStormingBoard(EventStormingBoard value)
+   {
+      if (this.eventStormingBoard == value)
+      {
+         return this;
+      }
+
+      final EventStormingBoard oldValue = this.eventStormingBoard;
+      if (this.eventStormingBoard != null)
+      {
+         this.eventStormingBoard = null;
+         oldValue.withoutWorkflows(this);
+      }
+      this.eventStormingBoard = value;
+      if (value != null)
+      {
+         value.withWorkflows(this);
+      }
+      this.firePropertyChange(PROPERTY_EVENT_STORMING_BOARD, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -452,6 +481,7 @@ public class Workflow extends Note
       this.withoutNotes(new ArrayList<>(this.getNotes()));
       this.withoutServices(new ArrayList<>(this.getServices()));
       this.withoutUsers(new ArrayList<>(this.getUsers()));
+      this.setEventStormingBoard(null);
    }
 
    public WorkflowNote getFromNotes(String triggerTime)
