@@ -1,6 +1,6 @@
 
 # provide name for this scenario
-- workflow: ordering smooth
+# - workflow: ordering smooth
 
 # provide some service with its port
 - service: Shop
@@ -14,6 +14,15 @@
 
 # handle event by default service someservice
 - data: 12:01
+  box: box23
+  product: shoes
+  place: shelf23
+
+# let storage handle the event
+- policy: Storage
+  trigger: 12:00
+
+- data: 12:02
   box: box23
   product: shoes
   place: shelf23
@@ -103,3 +112,4 @@
 - data: 14:03
   order: order1300
   state: shipping
+

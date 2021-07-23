@@ -21,7 +21,7 @@ public class HtmlGenerator3
 
       eventModel = new EventModel();
       eventModel.buildEventStormModel(yaml);
-      rootWorkflow = eventModel.getRootWorkflow();
+      rootWorkflow = eventModel.getOrCreateRootWorkflow();
       group = new STGroupFile(this.getClass().getResource("html/html.stg"));
       body = new StringBuilder();
 
@@ -29,7 +29,7 @@ public class HtmlGenerator3
       body.setLength(0);
       String notes = notes();
       st = group.getInstanceOf("lane2");
-      st.add("id", "monday");
+      st.add("id", rootWorkflow.getName().replaceAll("\\s+", "<br>"));
       st.add("content", notes);
       body.append(st.render());
 
