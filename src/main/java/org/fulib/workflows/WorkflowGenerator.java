@@ -257,6 +257,8 @@ public class WorkflowGenerator
             String varName = eventNote.getTime().replaceAll("\\:", "");
             body.append(String.format("\n   %s e%s = new %1$s();\n",
                   eventNote.getEventTypeName(), varName));
+            body.append(String.format("\n   e%s.setId(\"%s\");\n",
+                  varName, eventNote.getTime()));
 
             LinkedHashMap<String, String> map = eventNote.getMap();
             LinkedHashMap<String, String> clone = (LinkedHashMap<String, String>) map.clone();
@@ -395,7 +397,7 @@ public class WorkflowGenerator
             "import com.mashape.unirest.http.exceptions.UnirestException;",
             "import static com.codeborne.selenide.Selenide.open;",
             "import static com.codeborne.selenide.Selenide.$;",
-            "import com.codeborne.selenide.Condition;",
+            "import static com.codeborne.selenide.Condition.text;",
             "import com.codeborne.selenide.SelenideElement;");
    }
 
@@ -412,11 +414,11 @@ public class WorkflowGenerator
 
       // validate that the event broker knows the services.
       testBody.append("\nopen(\"http://localhost:42000\");\n");
-      testBody.append("$(\"body\").shouldHave(Condition.text(\"event broker\"));\n\n");
+      testBody.append("$(\"body\").shouldHave(text(\"event broker\"));\n\n");
       testBody.append("SelenideElement pre = $(\"pre\");\n");
 
       for (ServiceNote service : eventStormingBoard.getServices()) {
-         String shouldHave = String.format("pre.shouldHave(Condition.text(\"http://localhost:%s/apply\"));\n",
+         String shouldHave = String.format("pre.shouldHave(text(\"http://localhost:%s/apply\"));\n",
                service.getPort());
          testBody.append(shouldHave);
       }
@@ -448,15 +450,54 @@ public class WorkflowGenerator
       // send it
       statement = String.format("publish(%s);\n", varName);
       body.append(statement);
+      body.append("open(\"http://localhost:42000\");\n");
 
+      String checkHistory = "pre = $(\"#history\");\n" +
+            String.format("pre.shouldHave(text(\"- %s:\"));\n",
+                  note.getTime().replaceAll("\\:", "_"));
+
+      body.append(checkHistory);
+
+      LinkedHashMap<ServiceNote, String> lastChecks = new LinkedHashMap<>();
+      LinkedList<Policy> policyList = new LinkedList<>(note.getPolicies());
       // check subscribers
-      for (Policy policy : note.getPolicies()) {
+      while ( ! policyList.isEmpty()) {
+         Policy policy = policyList.poll();
          ServiceNote service = policy.getService();
-         body.append(String.format("\n// check %s\n", service.getName()));
-         body.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
-         body.append("pre = $(\"#history\");\n");
-         body.append(String.format("pre.shouldHave(Condition.text(\"- %s:\"));\n",
-               note.getTime().replaceAll("\\:", "_")));
+         StringBuilder check = new StringBuilder();
+         check.append(String.format("\n// check %s\n", service.getName()));
+         check.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
+         check.append(checkHistory);
+         for (WorkflowNote step : policy.getSteps()) {
+            if (step instanceof DataNote) {
+               DataNote dataNote = (DataNote) step;
+               check.append(String.format("// check data note %s\n", dataNote.getTime()));
+               check.append("pre = $(\"#data\");\n");
+               Iterator<Map.Entry<String, String>> iterator = dataNote.getMap().entrySet().iterator();
+               iterator.next();
+               Map.Entry<String, String> entry = iterator.next();
+               String value = entry.getValue();
+               check.append(String.format("pre.shouldHave(text(\"- %s:\"));\n", value));
+               while (iterator.hasNext()) {
+                  entry = iterator.next();
+                  value = entry.getValue();
+                  if (value.indexOf(" ") > 0) {
+                     value = "\\\"" +  value + "\\\"";
+                  }
+                  check.append(String.format("pre.shouldHave(text(\"%s: %s\"));\n",
+                        entry.getKey(), value));
+               }
+            }
+            else if (step instanceof EventNote) {
+               EventNote eventNote = (EventNote) step;
+               policyList.addAll(eventNote.getPolicies());
+            }
+         }
+         lastChecks.put(service, check.toString());
+      }
+
+      for (String check : lastChecks.values()) {
+         body.append(check);
       }
    }
 

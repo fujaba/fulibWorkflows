@@ -10,6 +10,8 @@ import uks.fulibgen.shop.events.*;
 import uks.fulibgen.shop.someservice.someserviceService;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import com.codeborne.selenide.Condition;
@@ -59,12 +61,12 @@ public class TestSomeEventStorming
       storage.start();
 
       open("http://localhost:42000");
-      $("body").shouldHave(Condition.text("event broker"));
+      $("body").shouldHave(text("event broker"));
 
       SelenideElement pre = $("pre");
-      pre.shouldHave(Condition.text("http://localhost:42100/apply"));
-      pre.shouldHave(Condition.text("http://localhost:42002/apply"));
-      pre.shouldHave(Condition.text("http://localhost:42003/apply"));
+      pre.shouldHave(text("http://localhost:42100/apply"));
+      pre.shouldHave(text("http://localhost:42002/apply"));
+      pre.shouldHave(text("http://localhost:42003/apply"));
 
       // workflow working smoothly
       // create ProductStored: product stored 12:00
@@ -74,16 +76,29 @@ public class TestSomeEventStorming
       e1200.setProduct("shoes");
       e1200.setPlace("shelf23");
       publish(e1200);
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 12_00:"));
 
       // check someservice
       open("http://localhost:42002");
       pre = $("#history");
-      pre.shouldHave(Condition.text("- 12_00:"));
+      pre.shouldHave(text("- 12_00:"));
+      // check data note 12:01
+      pre = $("#data");
+      pre.shouldHave(text("- box23:"));
+      pre.shouldHave(text("product: shoes"));
+      pre.shouldHave(text("place: shelf23"));
 
       // check Storage
       open("http://localhost:42003");
       pre = $("#history");
-      pre.shouldHave(Condition.text("- 12_00:"));
+      pre.shouldHave(text("- 12_00:"));
+      // check data note 12:02
+      pre = $("#data");
+      pre.shouldHave(text("- box23:"));
+      pre.shouldHave(text("product: shoes"));
+      pre.shouldHave(text("place: shelf23"));
 
       // create OrderRegistered: order registered 13:01
       OrderRegistered e1301 = new OrderRegistered();
@@ -93,16 +108,31 @@ public class TestSomeEventStorming
       e1301.setCustomer("Alice");
       e1301.setAddress("Wonderland 1");
       publish(e1301);
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 13_01:"));
 
       // check Shop
       open("http://localhost:42100");
       pre = $("#history");
-      pre.shouldHave(Condition.text("- 13_01:"));
+      pre.shouldHave(text("- 13_01:"));
+      // check data note 13:06
+      pre = $("#data");
+      pre.shouldHave(text("- order1300:"));
+      pre.shouldHave(text("state: picking"));
 
       // check Storage
       open("http://localhost:42003");
       pre = $("#history");
-      pre.shouldHave(Condition.text("- 13_01:"));
+      pre.shouldHave(text("- 13_01:"));
+      // check data note 13:04
+      pre = $("#data");
+      pre.shouldHave(text("- pick1300:"));
+      pre.shouldHave(text("order: order1300"));
+      pre.shouldHave(text("product: shoes"));
+      pre.shouldHave(text("customer: Alice"));
+      pre.shouldHave(text("address: \"Wonderland 1\""));
+      pre.shouldHave(text("state: todo"));
 
       // create OrderPicked: order picked 14:00
       OrderPicked e1400 = new OrderPicked();
@@ -111,16 +141,32 @@ public class TestSomeEventStorming
       e1400.setBox("box23");
       e1400.setUser("Bob");
       publish(e1400);
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 14_00:"));
 
       // check Storage
       open("http://localhost:42003");
       pre = $("#history");
-      pre.shouldHave(Condition.text("- 14_00:"));
+      pre.shouldHave(text("- 14_00:"));
+      // check data note 14:01
+      pre = $("#data");
+      pre.shouldHave(text("- pick1300:"));
+      pre.shouldHave(text("state: done"));
+      pre.shouldHave(text("box: box23"));
+      // check data note 14:02
+      pre = $("#data");
+      pre.shouldHave(text("- box23:"));
+      pre.shouldHave(text("place: shipping"));
 
       // check Shop
       open("http://localhost:42100");
       pre = $("#history");
-      pre.shouldHave(Condition.text("- 14_00:"));
+      pre.shouldHave(text("- 14_00:"));
+      // check data note 14:03
+      pre = $("#data");
+      pre.shouldHave(text("- order1300:"));
+      pre.shouldHave(text("state: shipping"));
 
       // workflow OrderOutOfStocks
       // create OrderRegistered: order registered 13:11
@@ -131,16 +177,23 @@ public class TestSomeEventStorming
       e1311.setCustomer("Alice");
       e1311.setAddress("Wonderland 1");
       publish(e1311);
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 13_11:"));
 
       // check Shop
       open("http://localhost:42100");
       pre = $("#history");
-      pre.shouldHave(Condition.text("- 13_11:"));
+      pre.shouldHave(text("- 13_11:"));
+      // check data note 13:12
+      pre = $("#data");
+      pre.shouldHave(text("- order1310:"));
+      pre.shouldHave(text("state: \"out of stock\""));
 
       // check Storage
       open("http://localhost:42003");
       pre = $("#history");
-      pre.shouldHave(Condition.text("- 13_11:"));
+      pre.shouldHave(text("- 13_11:"));
 
       System.out.println();
    }

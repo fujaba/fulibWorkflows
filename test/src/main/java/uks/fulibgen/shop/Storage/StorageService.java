@@ -275,6 +275,8 @@ public class StorageService
          pick1300.setState("todo");
 
          OrderApproved e1305 = new OrderApproved();
+
+         e1305.setId("13:05");
          e1305.setEvent("order approved 13:05");
          e1305.setOrder("order1300");
          publish(e1305);
@@ -282,6 +284,8 @@ public class StorageService
       if (event.getId().equals("13:11")) {
 
          OrderDeclined e1314 = new OrderDeclined();
+
+         e1314.setId("13:14");
          e1314.setEvent("order declined 13:14");
          e1314.setOrder("order1310");
          publish(e1314);
