@@ -10,6 +10,8 @@ import uks.fulibgen.shop.events.*;
 import uks.fulibgen.shop.someservice.someserviceService;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class TestSomeEventStorming
 {
@@ -53,6 +55,8 @@ public class TestSomeEventStorming
       // start service
       StorageService storage = new StorageService();
       storage.start();
+
+      open("http://localhost:42000");
 
       // workflow working smoothly
       // create ProductStored: product stored 12:00
@@ -101,7 +105,6 @@ public class TestSomeEventStorming
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
                .body(yaml)
                .asString();
-         System.out.println(response.getBody());
       }
       catch (UnirestException e) {
          e.printStackTrace();

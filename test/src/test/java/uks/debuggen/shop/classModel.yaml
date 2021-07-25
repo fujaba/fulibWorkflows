@@ -9,8 +9,8 @@
 
 - testSomeEventStorming: 	org.fulib.classmodel.Clazz
   attributes: 	testSomeEventStorming_eventBroker
-  importList: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.someservice.someserviceService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
-  imports: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.someservice.someserviceService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
+  importList: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.someservice.someserviceService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;"
+  imports: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.someservice.someserviceService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;"
   methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
   model: 	c
   modified: 	false
@@ -54,6 +54,8 @@ someservice.start();
 // start service
 StorageService storage = new StorageService();
 storage.start();
+
+open(\"http://localhost:42000\");
 
 // workflow working smoothly
 // create ProductStored: product stored 12:00

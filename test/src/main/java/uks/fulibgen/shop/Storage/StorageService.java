@@ -175,13 +175,11 @@ public class StorageService
       String json = Yaml.encode(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
-         Logger.getGlobal().info("Connecting to " + url);
          HttpResponse<String> response = Unirest
                .post(url)
                .body(json)
                .asString();
          String body = response.getBody();
-         Logger.getGlobal().info("       .... got \n" + body);
          Map<String, Object> objectMap = Yaml.decode(body);
          for (Object obj : objectMap.values()) {
             apply((Event) obj);
@@ -211,7 +209,6 @@ public class StorageService
          handlerMap.put(ProductStored.class, this::handleProductStored);
          handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
-         handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
       }
    }
 
@@ -229,7 +226,6 @@ public class StorageService
                .post("http://localhost:42000/publish")
                .body(json)
                .asString();
-         System.out.println(response.getBody());
       }
       catch (UnirestException e) {
          e.printStackTrace();
@@ -269,6 +265,20 @@ public class StorageService
    private void handleOrderRegistered(Event e)
    {
       OrderRegistered event = (OrderRegistered) e;
+      if (event.getId().equals("13:01")) {
+
+         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
+         pick1300.setOrder("order1300");
+         pick1300.setProduct("shoes");
+         pick1300.setCustomer("Alice");
+         pick1300.setAddress("Wonderland 1");
+         pick1300.setState("todo");
+
+         OrderApproved e1305 = new OrderApproved();
+         e1305.setEvent("order approved 13:05");
+         e1305.setOrder("order1300");
+         publish(e1305);
+      }
       if (event.getId().equals("13:11")) {
 
          OrderDeclined e1314 = new OrderDeclined();

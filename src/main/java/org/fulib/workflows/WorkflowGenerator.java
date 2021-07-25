@@ -34,6 +34,7 @@ public class WorkflowGenerator
 
    public BiConsumer<String, Object> dumpObjectDiagram;
    private EventStormingBoard eventStormingBoard;
+   private StringBuilder testBody;
 
    public EventModel getEventModel()
    {
@@ -358,44 +359,58 @@ public class WorkflowGenerator
             em.getClassModel().getPackageName() + ".*"));
       tm.haveAttribute(testClazz, "eventBroker", "EventBroker");
 
-      StringBuilder body = new StringBuilder();
       String declaration = "@Test\n" +
             "public void " + StrUtil.toIdentifier(eventModel.getEventStormingBoard().getName()) + "()";
-      ST st = group.getInstanceOf("startEventBroker");
-      body.append(st.render());
 
-      for (ServiceNote service : eventStormingBoard.getServices()) {
-         testGenerateServiceStart(body, service);
-      }
+      startServices();
 
       for (Workflow workflow : eventStormingBoard.getWorkflows()) {
-         body.append("\n// workflow " + workflow.getName());
+         testBody.append("\n// workflow " + workflow.getName());
          for (WorkflowNote note : workflow.getNotes()) {
             // Send user events
             if (note instanceof EventNote) {
                EventNote eventNote = (EventNote) note;
                Interaction interaction = eventNote.getInteraction();
                if (interaction instanceof UserInteraction) {
-                  testGenerateSendUserEvent(body, eventNote);
+                  testGenerateSendUserEvent(testBody, eventNote);
                }
             }
          }
       }
 
-      body.append("\nSystem.out.println();\n");
+      testBody.append("\nSystem.out.println();\n");
 
-      tm.haveMethod(testClazz, declaration, body.toString());
+      tm.haveMethod(testClazz, declaration, testBody.toString());
 
       // add publish method to the test class
       declaration = "public void publish(Event event)";
-      body.setLength(0);
+      testBody.setLength(0);
+      ST st;
       st = group.getInstanceOf("publishBody");
-      body.append(st.render());
-      tm.haveMethod(testClazz, declaration, body.toString());
+      testBody.append(st.render());
+      tm.haveMethod(testClazz, declaration, testBody.toString());
       testClazz.withImports("import org.fulib.yaml.Yaml;",
             "import com.mashape.unirest.http.HttpResponse;",
             "import com.mashape.unirest.http.Unirest;",
-            "import com.mashape.unirest.http.exceptions.UnirestException;");
+            "import com.mashape.unirest.http.exceptions.UnirestException;",
+            "import static com.codeborne.selenide.Selenide.open;",
+            "import static com.codeborne.selenide.Selenide.$;");
+   }
+
+   private void startServices()
+   {
+      testBody = new StringBuilder();
+
+      ST st = group.getInstanceOf("startEventBroker");
+      testBody.append(st.render());
+
+      for (ServiceNote service : eventStormingBoard.getServices()) {
+         testGenerateServiceStart(testBody, service);
+      }
+
+      // validate that the event broker knows the services.
+
+      testBody.append("\nopen(\"http://localhost:42000\");\n");
    }
 
    private void testGenerateServiceStart(StringBuilder body, ServiceNote serviceNote)
