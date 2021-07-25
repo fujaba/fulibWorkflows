@@ -448,6 +448,16 @@ public class WorkflowGenerator
       // send it
       statement = String.format("publish(%s);\n", varName);
       body.append(statement);
+
+      // check subscribers
+      for (Policy policy : note.getPolicies()) {
+         ServiceNote service = policy.getService();
+         body.append(String.format("\n// check %s\n", service.getName()));
+         body.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
+         body.append("pre = $(\"#history\");\n");
+         body.append(String.format("pre.shouldHave(Condition.text(\"- %s:\"));\n",
+               note.getTime().replaceAll("\\:", "_")));
+      }
    }
 
    private String addCreateAndInitEventCode(EventNote note, StringBuilder body)

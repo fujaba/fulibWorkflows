@@ -48,7 +48,6 @@ public class TestSomeEventStorming
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
                .body(yaml)
                .asString();
-         System.out.println(response.getBody());
       }
       catch (UnirestException e) {
          e.printStackTrace();
@@ -110,6 +109,10 @@ public class TestSomeEventStorming
       e1200.setPlace("shelf23");
       publish(e1200);
 
+      open("http://localhost:42003");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 12_00:"));
+
       // create OrderRegistered: order registered 13:01
       OrderRegistered e1301 = new OrderRegistered();
       e1301.setId("13:01");
@@ -160,6 +163,12 @@ public class TestSomeEventStorming
       storage.start();
 
       open("http://localhost:42000");
+      $("body").shouldHave(Condition.text("event broker"));
+
+      SelenideElement pre = $("pre");
+      pre.shouldHave(Condition.text("http://localhost:42100/apply"));
+      pre.shouldHave(Condition.text("http://localhost:42002/apply"));
+      pre.shouldHave(Condition.text("http://localhost:42003/apply"));
 
       // workflow working smoothly
       // create ProductStored: product stored 12:00

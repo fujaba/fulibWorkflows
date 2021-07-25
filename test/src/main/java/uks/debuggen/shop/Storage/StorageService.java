@@ -160,8 +160,8 @@ public class StorageService
          String events = Yaml.encode(getHistory().values().toArray());
          String objects = Yaml.encode(model.getModelMap().values().toArray());
          return "<p id='Storage'>This is the Storage service. </p>\n" +
-               "<pre>" + events + "</pre>\n" +
-               "<pre>" + objects + "</pre>\n" +
+               "<pre id=\"history\">" + events + "</pre>\n" +
+               "<pre id=\"data\">" + objects + "</pre>\n" +
                "";
       }
       catch (Exception e) {
@@ -177,13 +177,11 @@ public class StorageService
       String json = Yaml.encode(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
-         Logger.getGlobal().info("Connecting to " + url);
          HttpResponse<String> response = Unirest
                .post(url)
                .body(json)
                .asString();
          String body = response.getBody();
-         Logger.getGlobal().info("       .... got \n" + body);
          Map<String, Object> objectMap = Yaml.decode(body);
          for (Object obj : objectMap.values()) {
             apply((Event) obj);
@@ -230,7 +228,6 @@ public class StorageService
                .post("http://localhost:42000/publish")
                .body(json)
                .asString();
-         System.out.println(response.getBody());
       }
       catch (UnirestException e) {
          e.printStackTrace();

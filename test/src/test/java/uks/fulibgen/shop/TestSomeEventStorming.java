@@ -75,6 +75,16 @@ public class TestSomeEventStorming
       e1200.setPlace("shelf23");
       publish(e1200);
 
+      // check someservice
+      open("http://localhost:42002");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 12_00:"));
+
+      // check Storage
+      open("http://localhost:42003");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 12_00:"));
+
       // create OrderRegistered: order registered 13:01
       OrderRegistered e1301 = new OrderRegistered();
       e1301.setId("13:01");
@@ -84,6 +94,16 @@ public class TestSomeEventStorming
       e1301.setAddress("Wonderland 1");
       publish(e1301);
 
+      // check Shop
+      open("http://localhost:42100");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 13_01:"));
+
+      // check Storage
+      open("http://localhost:42003");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 13_01:"));
+
       // create OrderPicked: order picked 14:00
       OrderPicked e1400 = new OrderPicked();
       e1400.setId("14:00");
@@ -91,6 +111,16 @@ public class TestSomeEventStorming
       e1400.setBox("box23");
       e1400.setUser("Bob");
       publish(e1400);
+
+      // check Storage
+      open("http://localhost:42003");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 14_00:"));
+
+      // check Shop
+      open("http://localhost:42100");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 14_00:"));
 
       // workflow OrderOutOfStocks
       // create OrderRegistered: order registered 13:11
@@ -101,6 +131,16 @@ public class TestSomeEventStorming
       e1311.setCustomer("Alice");
       e1311.setAddress("Wonderland 1");
       publish(e1311);
+
+      // check Shop
+      open("http://localhost:42100");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 13_11:"));
+
+      // check Storage
+      open("http://localhost:42003");
+      pre = $("#history");
+      pre.shouldHave(Condition.text("- 13_11:"));
 
       System.out.println();
    }

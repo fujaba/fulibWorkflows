@@ -40,7 +40,7 @@ public class EventBroker
       spark.post("/subscribe", (req, res) -> executor.submit(() -> this.postSubscribe(req, res)).get());
       spark.post("/publish", (req, res) -> executor.submit(() -> this.postPublish(req, res)).get());
 
-      Logger.getGlobal().info("Event Broker has been is up and running on port " + port);
+      Logger.getGlobal().info("Event Broker is up and running on port " + port);
    }
 
    private String getHello(Request req, Response res)
@@ -55,7 +55,7 @@ public class EventBroker
       buf.append(pre);
 
       yaml = Yaml.encode(getHistory().values().toArray());
-      pre = String.format("<pre>%s</pre>", yaml);
+      pre = String.format("<pre id=\"history\">%s</pre>", yaml);
       buf.append(pre);
       return buf.toString();
    }
@@ -120,8 +120,8 @@ public class EventBroker
             HttpResponse<String> response = Unirest.post(service.getServiceUrl())
                   .body(yaml)
                   .asString();
-            System.out.println(response.getBody());
-            System.out.println();
+            // System.out.println(response.getBody());
+            // System.out.println();
          }
          catch (UnirestException e) {
             e.printStackTrace();

@@ -139,8 +139,8 @@ public class someserviceService
          String events = Yaml.encode(getHistory().values().toArray());
          String objects = Yaml.encode(model.getModelMap().values().toArray());
          return "<p id='someservice'>This is the someservice service. </p>\n" +
-               "<pre>" + events + "</pre>\n" +
-               "<pre>" + objects + "</pre>\n" +
+               "<pre id=\"history\">" + events + "</pre>\n" +
+               "<pre id=\"data\">" + objects + "</pre>\n" +
                "";
       }
       catch (Exception e) {
