@@ -1,5 +1,6 @@
 package uks.debuggen.shop;
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -95,9 +96,10 @@ public class TestSomeEventStorming
       open("http://localhost:42000");
       $("body").shouldHave(Condition.text("event broker"));
 
-      $("pre").shouldHave(Condition.text("http://localhost:42002/apply"));
-      $("pre").shouldHave(Condition.text("http://localhost:42003/apply"));
-      $("pre").shouldHave(Condition.text("http://localhost:42100/apply"));
+      SelenideElement pre = $("pre");
+      pre.shouldHave(Condition.text("http://localhost:42002/apply"));
+      pre.shouldHave(Condition.text("http://localhost:42003/apply"));
+      pre.shouldHave(Condition.text("http://localhost:42100/apply"));
 
       // workflow working smoothly
       // create ProductStored: product stored 12:00

@@ -394,7 +394,9 @@ public class WorkflowGenerator
             "import com.mashape.unirest.http.Unirest;",
             "import com.mashape.unirest.http.exceptions.UnirestException;",
             "import static com.codeborne.selenide.Selenide.open;",
-            "import static com.codeborne.selenide.Selenide.$;");
+            "import static com.codeborne.selenide.Selenide.$;",
+            "import com.codeborne.selenide.Condition;",
+            "import com.codeborne.selenide.SelenideElement;");
    }
 
    private void startServices()
@@ -409,8 +411,16 @@ public class WorkflowGenerator
       }
 
       // validate that the event broker knows the services.
-
       testBody.append("\nopen(\"http://localhost:42000\");\n");
+      testBody.append("$(\"body\").shouldHave(Condition.text(\"event broker\"));\n\n");
+      testBody.append("SelenideElement pre = $(\"pre\");\n");
+
+      for (ServiceNote service : eventStormingBoard.getServices()) {
+         String shouldHave = String.format("pre.shouldHave(Condition.text(\"http://localhost:%s/apply\"));\n",
+               service.getPort());
+         testBody.append(shouldHave);
+      }
+
    }
 
    private void testGenerateServiceStart(StringBuilder body, ServiceNote serviceNote)

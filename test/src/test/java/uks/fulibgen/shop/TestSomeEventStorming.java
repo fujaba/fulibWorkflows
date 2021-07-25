@@ -12,6 +12,8 @@ import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 
 public class TestSomeEventStorming
 {
@@ -57,6 +59,12 @@ public class TestSomeEventStorming
       storage.start();
 
       open("http://localhost:42000");
+      $("body").shouldHave(Condition.text("event broker"));
+
+      SelenideElement pre = $("pre");
+      pre.shouldHave(Condition.text("http://localhost:42100/apply"));
+      pre.shouldHave(Condition.text("http://localhost:42002/apply"));
+      pre.shouldHave(Condition.text("http://localhost:42003/apply"));
 
       // workflow working smoothly
       // create ProductStored: product stored 12:00
