@@ -19,8 +19,15 @@ public class GenModel implements ClassModelDecorator
    }
 
    class EventStormingBoard {
+      String name = "some event storming";
       @Link("eventStormingBoard")
       List<Workflow> workflows;
+      @Link("eventStormingBoard")
+      List<ServiceNote> services;
+      @Link("eventStormingBoard")
+      List<EventType> eventTypes;
+      @Link("eventStormingBoard")
+      List<UserNote> users;
    }
 
    class Workflow extends Note {
@@ -30,23 +37,19 @@ public class GenModel implements ClassModelDecorator
       @Link("workflow")
       List<WorkflowNote> notes;
       @Link("workflows")
-      List<UserNote> users;
-      @Link("workflows")
       List<ServiceNote> services;
       @Link("workflow")
       List<UserInteraction> userInteractions;
       @Link("workflow")
       List<Policy> policies;
-      @Link("workflow")
-      List<EventType> eventTypes;
    }
 
    class UserNote extends Note {
       String name;
-      @Link("users")
-      List<Workflow> workflows;
       @Link("user")
       List<UserInteraction> interactions;
+      @Link("users")
+      EventStormingBoard eventStormingBoard;
    }
 
    class ServiceNote extends Note {
@@ -54,6 +57,8 @@ public class GenModel implements ClassModelDecorator
       String port;
       @Link("services")
       List<Workflow> workflows;
+      @Link("services")
+      EventStormingBoard eventStormingBoard;
       @Link("service")
       List<Policy> policies;
       @Link("handlers")
@@ -71,12 +76,12 @@ public class GenModel implements ClassModelDecorator
    class EventType
    {
       String eventTypeName;
-      @Link("eventTypes")
-      Workflow workflow;
       @Link("type")
       List<EventNote> events;
       @Link("handledEventTypes")
       List<ServiceNote> handlers;
+      @Link("eventTypes")
+      EventStormingBoard eventStormingBoard;
    }
 
    class EventNote extends WorkflowNote {

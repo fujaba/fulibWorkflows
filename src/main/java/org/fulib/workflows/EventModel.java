@@ -29,7 +29,7 @@ public class EventModel
       return rootWorkflow;
    }
 
-   public Workflow buildEventStormModel(String yaml)
+   public EventStormingBoard buildEventStormModel(String yaml)
    {
       ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(yaml);
 
@@ -49,7 +49,7 @@ public class EventModel
          if (entry.getKey().equals("user")) {
             UserNote userNote = new UserNote().setName(map.get("name"));
             userNote.setMap(map);
-            userNote.withWorkflows(getRootWorkflow());
+            userNote.setEventStormingBoard(getEventStormingBoard());
          }
          else if (entry.getKey().equalsIgnoreCase("service")) {
             ServiceNote note = new ServiceNote();
@@ -57,11 +57,12 @@ public class EventModel
             note.setPort(map.get("port"));
             note.setMap(map);
             note.withWorkflows(getRootWorkflow());
+            note.setEventStormingBoard(getEventStormingBoard());
          }
          else if (entry.getKey().equalsIgnoreCase("Action")) {
             UserInteraction userInteraction = new UserInteraction();
             userInteraction.setActorName(entry.getValue());
-            UserNote userNote = getRootWorkflow().getOrCreateFromUsers(userInteraction.getActorName());
+            UserNote userNote = getEventStormingBoard().getOrCreateFromUsers(userInteraction.getActorName());
             userNote.withInteractions(userInteraction);
             lastActor = userInteraction;
          }
@@ -69,7 +70,7 @@ public class EventModel
             Policy policy = new Policy();
             policy.setActorName(entry.getValue());
             policy.setWorkflow(getRootWorkflow());
-            ServiceNote service = getRootWorkflow().getOrCreateFromServices(entry.getValue());
+            ServiceNote service = getEventStormingBoard().getOrCreateFromServices(entry.getValue());
             policy.setService(service);
             EventNote trigger = (EventNote) getRootWorkflow().getFromNotes(map.get("trigger"));
             policy.setTrigger(trigger);
@@ -99,7 +100,7 @@ public class EventModel
             eventNote.setWorkflow(getRootWorkflow());
             eventNote.setMap(map);
 
-            EventType eventType = getRootWorkflow().getOrCreateEventType(eventNote.getEventTypeName());
+            EventType eventType = getEventStormingBoard().getOrCreateEventType(eventNote.getEventTypeName());
             eventType.withEvents(eventNote);
 
             lastEvent = eventNote;
@@ -109,21 +110,21 @@ public class EventModel
             Logger.getGlobal().severe("Unknown event type " + getEventType(map));
          }
       }
-      return getRootWorkflow();
+      return getEventStormingBoard();
    }
 
    private void addToStepsOfLastActor(WorkflowNote note)
    {
       if (note instanceof EventNote) {
          if (lastActor == null) {
-            UserNote somebody = getRootWorkflow().getOrCreateFromUsers("somebody");
+            UserNote somebody = getEventStormingBoard().getOrCreateFromUsers("somebody");
             Interaction someaction = new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody).setActorName("somebody");
             lastActor = someaction;
          }
       }
       else if (note instanceof DataNote) {
          if (lastActor == null || ! (lastActor instanceof Policy)) {
-            ServiceNote someservice = getRootWorkflow().getOrCreateFromServices("someservice");
+            ServiceNote someservice = getEventStormingBoard().getOrCreateFromServices("someservice");
             Interaction someaction = new Policy()
                   .setWorkflow(getRootWorkflow())
                   .setService(someservice)

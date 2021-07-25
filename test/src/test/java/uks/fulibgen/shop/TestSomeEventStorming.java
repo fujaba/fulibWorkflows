@@ -1,17 +1,17 @@
-package uks.debuggen.shop;
+package uks.fulibgen.shop;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.yaml.Yaml;
 import org.junit.Test;
-import uks.debuggen.shop.Shop.ShopService;
-import uks.debuggen.shop.Storage.StorageService;
-import uks.debuggen.shop.events.*;
-import uks.debuggen.shop.someservice.someserviceService;
+import uks.fulibgen.shop.Shop.ShopService;
+import uks.fulibgen.shop.Storage.StorageService;
+import uks.fulibgen.shop.events.*;
+import uks.fulibgen.shop.someservice.someserviceService;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class TestOrdering
+public class TestSomeEventStorming
 {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
    private EventBroker eventBroker;
@@ -22,7 +22,7 @@ public class TestOrdering
       return this.eventBroker;
    }
 
-   public TestOrdering setEventBroker(EventBroker value)
+   public TestSomeEventStorming setEventBroker(EventBroker value)
    {
       if (Objects.equals(value, this.eventBroker))
       {
@@ -36,7 +36,7 @@ public class TestOrdering
    }
 
    @Test
-   public void ordering_smooth()
+   public void SomeEventStorming()
    {
       // start the event broker
       eventBroker = new EventBroker();
@@ -54,6 +54,7 @@ public class TestOrdering
       StorageService storage = new StorageService();
       storage.start();
 
+      // workflow working smoothly
       // create ProductStored: product stored 12:00
       ProductStored e1200 = new ProductStored();
       e1200.setId("12:00");
@@ -71,12 +72,6 @@ public class TestOrdering
       e1301.setAddress("Wonderland 1");
       publish(e1301);
 
-      // create OrderApproved: order approved 13:05
-      OrderApproved e1305 = new OrderApproved();
-      e1305.setId("13:05");
-      e1305.setOrder("order1300");
-      publish(e1305);
-
       // create OrderPicked: order picked 14:00
       OrderPicked e1400 = new OrderPicked();
       e1400.setId("14:00");
@@ -84,6 +79,17 @@ public class TestOrdering
       e1400.setBox("box23");
       e1400.setUser("Bob");
       publish(e1400);
+
+      // workflow OrderOutOfStocks
+      // create OrderRegistered: order registered 13:11
+      OrderRegistered e1311 = new OrderRegistered();
+      e1311.setId("13:11");
+      e1311.setTrigger("button OK");
+      e1311.setProduct("tshirt");
+      e1311.setCustomer("Alice");
+      e1311.setAddress("Wonderland 1");
+      publish(e1311);
+
       System.out.println();
    }
 

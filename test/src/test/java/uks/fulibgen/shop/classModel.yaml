@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	testOrdering
+  classes: 	testSomeEventStorming
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -7,14 +7,14 @@
   packageName: 	uks.fulibgen.shop
   packageSrcFolder: 	"src/test/java/uks/fulibgen/shop"
 
-- testOrdering: 	org.fulib.classmodel.Clazz
-  attributes: 	testOrdering_eventBroker
+- testSomeEventStorming: 	org.fulib.classmodel.Clazz
+  attributes: 	testSomeEventStorming_eventBroker
   importList: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.someservice.someserviceService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
   imports: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.someservice.someserviceService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;"
-  methods: 	testOrdering_ordering_smooth 	testOrdering_publish
+  methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
   model: 	c
   modified: 	false
-  name: 	TestOrdering
+  name: 	TestSomeEventStorming
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -24,21 +24,21 @@
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
 
-- testOrdering_eventBroker: 	org.fulib.classmodel.Attribute
-  clazz: 	testOrdering
-  id: 	TestOrdering_eventBroker
+- testSomeEventStorming_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testSomeEventStorming
+  id: 	TestSomeEventStorming_eventBroker
   modified: 	false
   name: 	eventBroker
   propertyStyle: 	Bean
   type: 	EventBroker
   typeSignature: 	EventBroker
 
-- testOrdering_ordering_smooth: 	org.fulib.classmodel.FMethod
+- testSomeEventStorming_SomeEventStorming: 	org.fulib.classmodel.FMethod
   annotations: 	"@Test"
-  clazz: 	testOrdering
+  clazz: 	testSomeEventStorming
   declaration: 	"@Test
-public void ordering_smooth()"
-  id: 	TestOrdering_ordering_smooth
+public void SomeEventStorming()"
+  id: 	TestSomeEventStorming_SomeEventStorming
   methodBody: 	"// start the event broker
 eventBroker = new EventBroker();
 eventBroker.start();
@@ -55,6 +55,7 @@ someservice.start();
 StorageService storage = new StorageService();
 storage.start();
 
+// workflow working smoothly
 // create ProductStored: product stored 12:00
 ProductStored e1200 = new ProductStored();
 e1200.setId(\"12:00\");
@@ -72,12 +73,6 @@ e1301.setCustomer(\"Alice\");
 e1301.setAddress(\"Wonderland 1\");
 publish(e1301);
 
-// create OrderApproved: order approved 13:05
-OrderApproved e1305 = new OrderApproved();
-e1305.setId(\"13:05\");
-e1305.setOrder(\"order1300\");
-publish(e1305);
-
 // create OrderPicked: order picked 14:00
 OrderPicked e1400 = new OrderPicked();
 e1400.setId(\"14:00\");
@@ -85,20 +80,31 @@ e1400.setPickTask(\"pick1300\");
 e1400.setBox(\"box23\");
 e1400.setUser(\"Bob\");
 publish(e1400);
+
+// workflow OrderOutOfStocks
+// create OrderRegistered: order registered 13:11
+OrderRegistered e1311 = new OrderRegistered();
+e1311.setId(\"13:11\");
+e1311.setTrigger(\"button OK\");
+e1311.setProduct(\"tshirt\");
+e1311.setCustomer(\"Alice\");
+e1311.setAddress(\"Wonderland 1\");
+publish(e1311);
+
 System.out.println();
 "
   modified: 	false
   modifiers: 	public
-  name: 	ordering_smooth
+  name: 	SomeEventStorming
   paramsString: 	""
   returnType: 	void
-  signature: 	"class/TestOrdering/method/ordering_smooth()"
+  signature: 	"class/TestSomeEventStorming/method/SomeEventStorming()"
 
-- testOrdering_publish: 	org.fulib.classmodel.FMethod
+- testSomeEventStorming_publish: 	org.fulib.classmodel.FMethod
   annotations: 	""
-  clazz: 	testOrdering
+  clazz: 	testSomeEventStorming
   declaration: 	"public void publish(Event event)"
-  id: 	TestOrdering_publish
+  id: 	TestSomeEventStorming_publish
   methodBody: 	"String yaml = Yaml.encode(event);
 
 try {
@@ -115,5 +121,5 @@ catch (UnirestException e) {
   name: 	publish
   paramsString: 	"Event event"
   returnType: 	void
-  signature: 	"class/TestOrdering/method/publish(Event)"
+  signature: 	"class/TestSomeEventStorming/method/publish(Event)"
 

@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	eventType 	note 	eventStormingBoard 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	eventType 	eventStormingBoard 	note 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -30,7 +30,7 @@
   modified: 	false
   name: 	ServiceNote
   propertyStyle: 	Bean
-  roles: 	serviceNote_policies 	serviceNote_handledEventTypes 	serviceNote_workflows
+  roles: 	serviceNote_policies 	serviceNote_handledEventTypes 	serviceNote_workflows 	serviceNote_eventStormingBoard
   superClass: 	note
 
 - eventNote: 	org.fulib.classmodel.Clazz
@@ -48,7 +48,7 @@
   modified: 	false
   name: 	Workflow
   propertyStyle: 	Bean
-  roles: 	workflow_policies 	workflow_userInteractions 	workflow_eventTypes 	workflow_notes 	workflow_services 	workflow_users 	workflow_eventStormingBoard
+  roles: 	workflow_policies 	workflow_userInteractions 	workflow_notes 	workflow_services 	workflow_eventStormingBoard
   superClass: 	note
 
 - userInteraction: 	org.fulib.classmodel.Clazz
@@ -65,7 +65,7 @@
   modified: 	false
   name: 	UserNote
   propertyStyle: 	Bean
-  roles: 	userNote_interactions 	userNote_workflows
+  roles: 	userNote_interactions 	userNote_eventStormingBoard
   superClass: 	note
 
 - workflowNote: 	org.fulib.classmodel.Clazz
@@ -100,7 +100,15 @@
   modified: 	false
   name: 	EventType
   propertyStyle: 	Bean
-  roles: 	eventType_events 	eventType_workflow 	eventType_handlers
+  roles: 	eventType_events 	eventType_handlers 	eventType_eventStormingBoard
+
+- eventStormingBoard: 	org.fulib.classmodel.Clazz
+  attributes: 	eventStormingBoard_name
+  model: 	c
+  modified: 	false
+  name: 	EventStormingBoard
+  propertyStyle: 	Bean
+  roles: 	eventStormingBoard_eventTypes 	eventStormingBoard_services 	eventStormingBoard_users 	eventStormingBoard_workflows
 
 - note: 	org.fulib.classmodel.Clazz
   attributes: 	note_map
@@ -109,13 +117,6 @@
   name: 	Note
   propertyStyle: 	Bean
   subClasses: 	workflowNote 	serviceNote 	userNote 	workflow
-
-- eventStormingBoard: 	org.fulib.classmodel.Clazz
-  model: 	c
-  modified: 	false
-  name: 	EventStormingBoard
-  propertyStyle: 	Bean
-  roles: 	eventStormingBoard_workflows
 
 - event: 	org.fulib.classmodel.Clazz
   attributes: 	event_id
@@ -236,6 +237,16 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
+- serviceNote_eventStormingBoard: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	serviceNote
+  id: 	ServiceNote_eventStormingBoard
+  modified: 	false
+  name: 	eventStormingBoard
+  other: 	eventStormingBoard_services
+  propertyStyle: 	Bean
+
 - eventNote_eventTypeName: 	org.fulib.classmodel.Attribute
   clazz: 	eventNote
   id: 	EventNote_eventTypeName
@@ -300,18 +311,6 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- workflow_eventTypes: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	42
-  clazz: 	workflow
-  collectionType: 	c1
-  id: 	Workflow_eventTypes
-  modified: 	false
-  name: 	eventTypes
-  other: 	eventType_workflow
-  propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
-
 - workflow_notes: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -333,18 +332,6 @@
   modified: 	false
   name: 	services
   other: 	serviceNote_workflows
-  propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
-
-- workflow_users: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	42
-  clazz: 	workflow
-  collectionType: 	c1
-  id: 	Workflow_users
-  modified: 	false
-  name: 	users
-  other: 	userNote_workflows
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -399,17 +386,15 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- userNote_workflows: 	org.fulib.classmodel.AssocRole
+- userNote_eventStormingBoard: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
-  cardinality: 	42
+  cardinality: 	1
   clazz: 	userNote
-  collectionType: 	c1
-  id: 	UserNote_workflows
+  id: 	UserNote_eventStormingBoard
   modified: 	false
-  name: 	workflows
-  other: 	workflow_users
+  name: 	eventStormingBoard
+  other: 	eventStormingBoard_users
   propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
 
 - workflowNote_time: 	org.fulib.classmodel.Attribute
   clazz: 	workflowNote
@@ -479,16 +464,6 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- eventType_workflow: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	eventType
-  id: 	EventType_workflow
-  modified: 	false
-  name: 	workflow
-  other: 	workflow_eventTypes
-  propertyStyle: 	Bean
-
 - eventType_handlers: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -501,14 +476,60 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- note_map: 	org.fulib.classmodel.Attribute
-  clazz: 	note
-  id: 	Note_map
+- eventType_eventStormingBoard: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	eventType
+  id: 	EventType_eventStormingBoard
   modified: 	false
-  name: 	map
+  name: 	eventStormingBoard
+  other: 	eventStormingBoard_eventTypes
   propertyStyle: 	Bean
-  type: 	"import(java.util.LinkedHashMap)<String, String>"
-  typeSignature: 	"LinkedHashMap<String,String>"
+
+- eventStormingBoard_name: 	org.fulib.classmodel.Attribute
+  clazz: 	eventStormingBoard
+  id: 	EventStormingBoard_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- eventStormingBoard_eventTypes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	eventStormingBoard
+  collectionType: 	c1
+  id: 	EventStormingBoard_eventTypes
+  modified: 	false
+  name: 	eventTypes
+  other: 	eventType_eventStormingBoard
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- eventStormingBoard_services: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	eventStormingBoard
+  collectionType: 	c1
+  id: 	EventStormingBoard_services
+  modified: 	false
+  name: 	services
+  other: 	serviceNote_eventStormingBoard
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- eventStormingBoard_users: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	eventStormingBoard
+  collectionType: 	c1
+  id: 	EventStormingBoard_users
+  modified: 	false
+  name: 	users
+  other: 	userNote_eventStormingBoard
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
 
 - eventStormingBoard_workflows: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
@@ -521,6 +542,15 @@
   other: 	workflow_eventStormingBoard
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- note_map: 	org.fulib.classmodel.Attribute
+  clazz: 	note
+  id: 	Note_map
+  modified: 	false
+  name: 	map
+  propertyStyle: 	Bean
+  type: 	"import(java.util.LinkedHashMap)<String, String>"
+  typeSignature: 	"LinkedHashMap<String,String>"
 
 - event_id: 	org.fulib.classmodel.Attribute
   clazz: 	event

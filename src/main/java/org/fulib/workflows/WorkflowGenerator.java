@@ -33,6 +33,7 @@ public class WorkflowGenerator
    private Workflow rootWorkflow;
 
    public BiConsumer<String, Object> dumpObjectDiagram;
+   private EventStormingBoard eventStormingBoard;
 
    public EventModel getEventModel()
    {
@@ -54,7 +55,7 @@ public class WorkflowGenerator
 
       // event map
       eventModel = new EventModel();
-      rootWorkflow = eventModel.buildEventStormModel(yaml);
+      eventStormingBoard = eventModel.buildEventStormModel(yaml);
       // dumpObjectDiagram.accept("tmp/afterBuildEventStormModel.svg", rootWorkflow);
       buildClassModelManagerMap(mm);
       buildEventBroker();
@@ -71,7 +72,7 @@ public class WorkflowGenerator
    {
       ClassModelManager modelManager = null;
 
-      for (ServiceNote serviceNote : rootWorkflow.getServices()) {
+      for (ServiceNote serviceNote : eventStormingBoard.getServices()) {
          // each service gets its own package
          // build classModelManager for that package
          String port = serviceNote.getPort();
@@ -196,7 +197,7 @@ public class WorkflowGenerator
 
    private void addHandlersToInitEventHandlerMap(ClassModelManager modelManager, Clazz serviceClazz, String serviceName, StringBuilder body)
    {
-      ServiceNote service = rootWorkflow.getFromServices(serviceName);
+      ServiceNote service = eventStormingBoard.getFromServices(serviceName);
       for (EventType eventType : service.getHandledEventTypes()) {
          String eventTypeName = eventType.getEventTypeName();
          body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
@@ -212,7 +213,7 @@ public class WorkflowGenerator
       String declaration = String.format("private void handle%s(Event e)", eventTypeName);
       body.append(String.format("%s event = (%s) e;\n", eventTypeName, eventTypeName));
 
-      ServiceNote serviceNote = rootWorkflow.getFromServices(serviceName);
+      ServiceNote serviceNote = eventStormingBoard.getFromServices(serviceName);
       ObjectTable<Object> table = new ObjectTable<>("service", serviceNote);
       LinkedHashSet<Object> policies = table.expandLink("eventType", ServiceNote.PROPERTY_HANDLED_EVENT_TYPES)
             .filter(et -> et == eventType)
@@ -346,16 +347,12 @@ public class WorkflowGenerator
 
    private void buildTest()
    {
-      if (eventModel.workflowName == null) {
-         return;
-      }
-
       tm = new ClassModelManager().setMainJavaDir(mm.getClassModel().getMainJavaDir().replace("/main/java", "/test/java"))
             .setPackageName(mm.getClassModel().getPackageName());
       managerMap.put("tm", tm);
 
-      String[] split = rootWorkflow.getName().split("_");
-      testClazz = tm.haveClass("Test" + org.fulib.StrUtil.cap(split[0]));
+      String boardName = StrUtil.toIdentifier(eventStormingBoard.getName());
+      testClazz = tm.haveClass("Test" + boardName);
       testClazz.withImports("import org.junit.Test;");
       testClazz.withImports(String.format("import %s;",
             em.getClassModel().getPackageName() + ".*"));
@@ -363,26 +360,29 @@ public class WorkflowGenerator
 
       StringBuilder body = new StringBuilder();
       String declaration = "@Test\n" +
-            "public void " + eventModel.workflowName + "()";
+            "public void " + StrUtil.toIdentifier(eventModel.getEventStormingBoard().getName()) + "()";
       ST st = group.getInstanceOf("startEventBroker");
       body.append(st.render());
 
-      for (ServiceNote service : rootWorkflow.getServices()) {
+      for (ServiceNote service : eventStormingBoard.getServices()) {
          testGenerateServiceStart(body, service);
       }
 
-      for (WorkflowNote note : rootWorkflow.getNotes()) {
-         // Send user events
-         if (note instanceof EventNote) {
-            EventNote eventNote = (EventNote) note;
-            Interaction interaction = eventNote.getInteraction();
-            if (interaction instanceof UserInteraction) {
-               testGenerateSendUserEvent(body, eventNote);
+      for (Workflow workflow : eventStormingBoard.getWorkflows()) {
+         body.append("\n// workflow " + workflow.getName());
+         for (WorkflowNote note : workflow.getNotes()) {
+            // Send user events
+            if (note instanceof EventNote) {
+               EventNote eventNote = (EventNote) note;
+               Interaction interaction = eventNote.getInteraction();
+               if (interaction instanceof UserInteraction) {
+                  testGenerateSendUserEvent(body, eventNote);
+               }
             }
          }
       }
 
-      body.append("System.out.println();\n");
+      body.append("\nSystem.out.println();\n");
 
       tm.haveMethod(testClazz, declaration, body.toString());
 
@@ -485,10 +485,12 @@ public class WorkflowGenerator
 
    private void buildEventClasses()
    {
-      for (WorkflowNote note : rootWorkflow.getNotes()) {
-         if (note instanceof EventNote) {
-            EventNote eventNote = (EventNote) note;
-            oneEventClass(eventNote);
+      for (Workflow workflow : eventStormingBoard.getWorkflows()) {
+         for (WorkflowNote note : workflow.getNotes()) {
+            if (note instanceof EventNote) {
+               EventNote eventNote = (EventNote) note;
+               oneEventClass(eventNote);
+            }
          }
       }
    }

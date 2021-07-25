@@ -6,9 +6,11 @@ public class Box
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_PLACE = "place";
+   public static final String PROPERTY_PRODUCT = "product";
    private String id;
    private String place;
    protected PropertyChangeSupport listeners;
+   private String product;
 
    public String getId()
    {
@@ -46,6 +48,24 @@ public class Box
       return this;
    }
 
+   public String getProduct()
+   {
+      return this.product;
+   }
+
+   public Box setProduct(String value)
+   {
+      if (Objects.equals(value, this.product))
+      {
+         return this;
+      }
+
+      final String oldValue = this.product;
+      this.product = value;
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -70,6 +90,7 @@ public class Box
    {
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
+      result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getPlace());
       return result.substring(1);
    }

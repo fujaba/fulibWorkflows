@@ -12,11 +12,13 @@ public class ServiceNote extends Note
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_WORKFLOWS = "workflows";
    public static final String PROPERTY_HANDLED_EVENT_TYPES = "handledEventTypes";
+   public static final String PROPERTY_EVENT_STORMING_BOARD = "eventStormingBoard";
    private String port;
    private List<Policy> policies;
    private String name;
    private List<Workflow> workflows;
    private List<EventType> handledEventTypes;
+   private EventStormingBoard eventStormingBoard;
 
    public String getPort()
    {
@@ -252,6 +254,33 @@ public class ServiceNote extends Note
       return this;
    }
 
+   public EventStormingBoard getEventStormingBoard()
+   {
+      return this.eventStormingBoard;
+   }
+
+   public ServiceNote setEventStormingBoard(EventStormingBoard value)
+   {
+      if (this.eventStormingBoard == value)
+      {
+         return this;
+      }
+
+      final EventStormingBoard oldValue = this.eventStormingBoard;
+      if (this.eventStormingBoard != null)
+      {
+         this.eventStormingBoard = null;
+         oldValue.withoutServices(this);
+      }
+      this.eventStormingBoard = value;
+      if (value != null)
+      {
+         value.withServices(this);
+      }
+      this.firePropertyChange(PROPERTY_EVENT_STORMING_BOARD, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -266,5 +295,6 @@ public class ServiceNote extends Note
       this.withoutPolicies(new ArrayList<>(this.getPolicies()));
       this.withoutHandledEventTypes(new ArrayList<>(this.getHandledEventTypes()));
       this.withoutWorkflows(new ArrayList<>(this.getWorkflows()));
+      this.setEventStormingBoard(null);
    }
 }

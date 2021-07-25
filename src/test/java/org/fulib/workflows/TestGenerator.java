@@ -29,7 +29,7 @@ public class TestGenerator
          workflowGenerator.loadWorkflow(mm, yaml);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
-               workflowGenerator.getEventModel().getRootWorkflow());
+               workflowGenerator.getEventModel().getEventStormingBoard());
 
          workflowGenerator.generate();
 

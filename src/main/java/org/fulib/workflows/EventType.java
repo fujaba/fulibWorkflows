@@ -9,14 +9,14 @@ import java.beans.PropertyChangeSupport;
 public class EventType
 {
    public static final String PROPERTY_EVENTS = "events";
-   public static final String PROPERTY_WORKFLOW = "workflow";
    public static final String PROPERTY_HANDLERS = "handlers";
    public static final String PROPERTY_EVENT_TYPE_NAME = "eventTypeName";
+   public static final String PROPERTY_EVENT_STORMING_BOARD = "eventStormingBoard";
    private List<EventNote> events;
-   private Workflow workflow;
    protected PropertyChangeSupport listeners;
    private List<ServiceNote> handlers;
    private String eventTypeName;
+   private EventStormingBoard eventStormingBoard;
 
    public List<EventNote> getEvents()
    {
@@ -81,33 +81,6 @@ public class EventType
       {
          this.withoutEvents(item);
       }
-      return this;
-   }
-
-   public Workflow getWorkflow()
-   {
-      return this.workflow;
-   }
-
-   public EventType setWorkflow(Workflow value)
-   {
-      if (this.workflow == value)
-      {
-         return this;
-      }
-
-      final Workflow oldValue = this.workflow;
-      if (this.workflow != null)
-      {
-         this.workflow = null;
-         oldValue.withoutEventTypes(this);
-      }
-      this.workflow = value;
-      if (value != null)
-      {
-         value.withEventTypes(this);
-      }
-      this.firePropertyChange(PROPERTY_WORKFLOW, oldValue, value);
       return this;
    }
 
@@ -195,6 +168,33 @@ public class EventType
       return this;
    }
 
+   public EventStormingBoard getEventStormingBoard()
+   {
+      return this.eventStormingBoard;
+   }
+
+   public EventType setEventStormingBoard(EventStormingBoard value)
+   {
+      if (this.eventStormingBoard == value)
+      {
+         return this;
+      }
+
+      final EventStormingBoard oldValue = this.eventStormingBoard;
+      if (this.eventStormingBoard != null)
+      {
+         this.eventStormingBoard = null;
+         oldValue.withoutEventTypes(this);
+      }
+      this.eventStormingBoard = value;
+      if (value != null)
+      {
+         value.withEventTypes(this);
+      }
+      this.firePropertyChange(PROPERTY_EVENT_STORMING_BOARD, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -225,7 +225,7 @@ public class EventType
    public void removeYou()
    {
       this.withoutEvents(new ArrayList<>(this.getEvents()));
-      this.setWorkflow(null);
       this.withoutHandlers(new ArrayList<>(this.getHandlers()));
+      this.setEventStormingBoard(null);
    }
 }

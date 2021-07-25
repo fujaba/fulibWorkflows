@@ -9,19 +9,15 @@ public class Workflow extends Note
 {
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_NOTES = "notes";
-   public static final String PROPERTY_USERS = "users";
    public static final String PROPERTY_SERVICES = "services";
    public static final String PROPERTY_POLICIES = "policies";
    public static final String PROPERTY_USER_INTERACTIONS = "userInteractions";
-   public static final String PROPERTY_EVENT_TYPES = "eventTypes";
    public static final String PROPERTY_EVENT_STORMING_BOARD = "eventStormingBoard";
    private String name;
    private List<WorkflowNote> notes;
-   private List<UserNote> users;
    private List<ServiceNote> services;
    private List<Policy> policies;
    private List<UserInteraction> userInteractions;
-   private List<EventType> eventTypes;
    private EventStormingBoard eventStormingBoard;
 
    public String getName()
@@ -104,72 +100,6 @@ public class Workflow extends Note
       for (final WorkflowNote item : value)
       {
          this.withoutNotes(item);
-      }
-      return this;
-   }
-
-   public List<UserNote> getUsers()
-   {
-      return this.users != null ? Collections.unmodifiableList(this.users) : Collections.emptyList();
-   }
-
-   public Workflow withUsers(UserNote value)
-   {
-      if (this.users == null)
-      {
-         this.users = new ArrayList<>();
-      }
-      if (!this.users.contains(value))
-      {
-         this.users.add(value);
-         value.withWorkflows(this);
-         this.firePropertyChange(PROPERTY_USERS, null, value);
-      }
-      return this;
-   }
-
-   public Workflow withUsers(UserNote... value)
-   {
-      for (final UserNote item : value)
-      {
-         this.withUsers(item);
-      }
-      return this;
-   }
-
-   public Workflow withUsers(Collection<? extends UserNote> value)
-   {
-      for (final UserNote item : value)
-      {
-         this.withUsers(item);
-      }
-      return this;
-   }
-
-   public Workflow withoutUsers(UserNote value)
-   {
-      if (this.users != null && this.users.remove(value))
-      {
-         value.withoutWorkflows(this);
-         this.firePropertyChange(PROPERTY_USERS, value, null);
-      }
-      return this;
-   }
-
-   public Workflow withoutUsers(UserNote... value)
-   {
-      for (final UserNote item : value)
-      {
-         this.withoutUsers(item);
-      }
-      return this;
-   }
-
-   public Workflow withoutUsers(Collection<? extends UserNote> value)
-   {
-      for (final UserNote item : value)
-      {
-         this.withoutUsers(item);
       }
       return this;
    }
@@ -372,72 +302,6 @@ public class Workflow extends Note
       return this;
    }
 
-   public List<EventType> getEventTypes()
-   {
-      return this.eventTypes != null ? Collections.unmodifiableList(this.eventTypes) : Collections.emptyList();
-   }
-
-   public Workflow withEventTypes(EventType value)
-   {
-      if (this.eventTypes == null)
-      {
-         this.eventTypes = new ArrayList<>();
-      }
-      if (!this.eventTypes.contains(value))
-      {
-         this.eventTypes.add(value);
-         value.setWorkflow(this);
-         this.firePropertyChange(PROPERTY_EVENT_TYPES, null, value);
-      }
-      return this;
-   }
-
-   public Workflow withEventTypes(EventType... value)
-   {
-      for (final EventType item : value)
-      {
-         this.withEventTypes(item);
-      }
-      return this;
-   }
-
-   public Workflow withEventTypes(Collection<? extends EventType> value)
-   {
-      for (final EventType item : value)
-      {
-         this.withEventTypes(item);
-      }
-      return this;
-   }
-
-   public Workflow withoutEventTypes(EventType value)
-   {
-      if (this.eventTypes != null && this.eventTypes.remove(value))
-      {
-         value.setWorkflow(null);
-         this.firePropertyChange(PROPERTY_EVENT_TYPES, value, null);
-      }
-      return this;
-   }
-
-   public Workflow withoutEventTypes(EventType... value)
-   {
-      for (final EventType item : value)
-      {
-         this.withoutEventTypes(item);
-      }
-      return this;
-   }
-
-   public Workflow withoutEventTypes(Collection<? extends EventType> value)
-   {
-      for (final EventType item : value)
-      {
-         this.withoutEventTypes(item);
-      }
-      return this;
-   }
-
    public EventStormingBoard getEventStormingBoard()
    {
       return this.eventStormingBoard;
@@ -477,10 +341,8 @@ public class Workflow extends Note
    {
       this.withoutPolicies(new ArrayList<>(this.getPolicies()));
       this.withoutUserInteractions(new ArrayList<>(this.getUserInteractions()));
-      this.withoutEventTypes(new ArrayList<>(this.getEventTypes()));
       this.withoutNotes(new ArrayList<>(this.getNotes()));
       this.withoutServices(new ArrayList<>(this.getServices()));
-      this.withoutUsers(new ArrayList<>(this.getUsers()));
       this.setEventStormingBoard(null);
    }
 
@@ -493,61 +355,5 @@ public class Workflow extends Note
       }
       return null;
    }
-
-   public UserNote getFromUsers(String user)
-   {
-      for (UserNote userNote : this.getUsers()) {
-         if (userNote.getName().equals(user)) {
-            return userNote;
-         }
-      }
-      return null;
-   }
-
-   public ServiceNote getFromServices(String serviceName)
-   {
-      for (ServiceNote service : this.getServices()) {
-         if (service.getName().equals(serviceName)) {
-            return service;
-         }
-      }
-      return null;
-   }
-
-   public ServiceNote getOrCreateFromServices(String value)
-   {
-      ServiceNote service = getFromServices(value);
-      if (service == null) {
-         service = new ServiceNote();
-         service.setName(value)
-               .withWorkflows(this);
-         service.setPort("" + (42000 + this.getServices().size()));
-      }
-      return service;
-   }
-
-   public EventType getOrCreateEventType(String eventTypeName)
-   {
-      for (EventType eventType : this.getEventTypes()) {
-         if (eventType.getEventTypeName().equals(eventTypeName)) {
-            return eventType;
-         }
-      }
-      EventType eventType = new EventType();
-      eventType.setEventTypeName(eventTypeName);
-      eventType.setWorkflow(this);
-      return eventType;
-   }
-
-   public UserNote getOrCreateFromUsers(String actorName)
-   {
-      UserNote user = getFromUsers(actorName);
-      if (user == null) {
-         user = new UserNote();
-         user.setName(actorName);
-         user.withWorkflows(this);
-      }
-      return user;
-   }
-
+   
 }

@@ -21,7 +21,7 @@
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model 	shopService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_handleOrderRegistered 	shopService_handleOrderApproved 	shopService_handleOrderPicked 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
+  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_handleOrderRegistered 	shopService_handleOrderApproved 	shopService_handleOrderPicked 	shopService_handleOrderDeclined 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
   model: 	c
   modified: 	false
   name: 	ShopService
@@ -237,16 +237,16 @@ publish(event);"
   declaration: 	"private void handleOrderRegistered(Event e)"
   id: 	ShopService_handleOrderRegistered
   methodBody: 	"OrderRegistered event = (OrderRegistered) e;
-if (event.getId().equals(\"13:01\")) {
+if (event.getId().equals(\"13:11\")) {
 
-   Order order1300 = model.getOrCreateOrder(\"order1300\");
-   order1300.setProduct(\"shoes\");
-   order1300.setCustomer(\"Alice\");
-   order1300.setAddress(\"Wonderland 1\");
-   order1300.setState(\"pending\");
+   Order order1310 = model.getOrCreateOrder(\"order1310\");
+   order1310.setProduct(\"tshirt\");
+   order1310.setCustomer(\"Alice\");
+   order1310.setAddress(\"Wonderland 1\");
+   order1310.setState(\"pending\");
 
    Customer alice = model.getOrCreateCustomer(\"Alice\");
-   alice.setOrders(\"[order1300]\");
+   alice.setOrders(\"[order1300 order1310]\");
 }
 "
   modified: 	false
@@ -294,6 +294,25 @@ if (event.getId().equals(\"14:00\")) {
   returnType: 	void
   signature: 	"class/ShopService/method/handleOrderPicked(Event)"
 
+- shopService_handleOrderDeclined: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopService
+  declaration: 	"private void handleOrderDeclined(Event e)"
+  id: 	ShopService_handleOrderDeclined
+  methodBody: 	"OrderDeclined event = (OrderDeclined) e;
+if (event.getId().equals(\"13:14\")) {
+
+   Order order1310 = model.getOrCreateOrder(\"order1310\");
+   order1310.setState(\"out of stock\");
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleOrderDeclined
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/ShopService/method/handleOrderDeclined(Event)"
+
 - shopService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopService
@@ -304,6 +323,8 @@ if (event.getId().equals(\"14:00\")) {
    handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
    handlerMap.put(OrderApproved.class, this::handleOrderApproved);
    handlerMap.put(OrderPicked.class, this::handleOrderPicked);
+   handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
+   handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
 }
 "
   modified: 	false

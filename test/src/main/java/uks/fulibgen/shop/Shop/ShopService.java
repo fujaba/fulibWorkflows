@@ -211,6 +211,8 @@ public class ShopService
          handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
          handlerMap.put(OrderApproved.class, this::handleOrderApproved);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
+         handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
+         handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
       }
    }
 
@@ -254,16 +256,16 @@ public class ShopService
    private void handleOrderRegistered(Event e)
    {
       OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:01")) {
+      if (event.getId().equals("13:11")) {
 
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setProduct("shoes");
-         order1300.setCustomer("Alice");
-         order1300.setAddress("Wonderland 1");
-         order1300.setState("pending");
+         Order order1310 = model.getOrCreateOrder("order1310");
+         order1310.setProduct("tshirt");
+         order1310.setCustomer("Alice");
+         order1310.setAddress("Wonderland 1");
+         order1310.setState("pending");
 
          Customer alice = model.getOrCreateCustomer("Alice");
-         alice.setOrders("[order1300]");
+         alice.setOrders("[order1300 order1310]");
       }
    }
 
@@ -284,6 +286,16 @@ public class ShopService
 
          Order order1300 = model.getOrCreateOrder("order1300");
          order1300.setState("picking");
+      }
+   }
+
+   private void handleOrderDeclined(Event e)
+   {
+      OrderDeclined event = (OrderDeclined) e;
+      if (event.getId().equals("13:14")) {
+
+         Order order1310 = model.getOrCreateOrder("order1310");
+         order1310.setState("out of stock");
       }
    }
 }

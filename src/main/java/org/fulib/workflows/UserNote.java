@@ -8,11 +8,11 @@ import java.util.Collection;
 public class UserNote extends Note
 {
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_WORKFLOWS = "workflows";
    public static final String PROPERTY_INTERACTIONS = "interactions";
+   public static final String PROPERTY_EVENT_STORMING_BOARD = "eventStormingBoard";
    private String name;
-   private List<Workflow> workflows;
    private List<UserInteraction> interactions;
+   private EventStormingBoard eventStormingBoard;
 
    public String getName()
    {
@@ -29,72 +29,6 @@ public class UserNote extends Note
       final String oldValue = this.name;
       this.name = value;
       this.firePropertyChange(PROPERTY_NAME, oldValue, value);
-      return this;
-   }
-
-   public List<Workflow> getWorkflows()
-   {
-      return this.workflows != null ? Collections.unmodifiableList(this.workflows) : Collections.emptyList();
-   }
-
-   public UserNote withWorkflows(Workflow value)
-   {
-      if (this.workflows == null)
-      {
-         this.workflows = new ArrayList<>();
-      }
-      if (!this.workflows.contains(value))
-      {
-         this.workflows.add(value);
-         value.withUsers(this);
-         this.firePropertyChange(PROPERTY_WORKFLOWS, null, value);
-      }
-      return this;
-   }
-
-   public UserNote withWorkflows(Workflow... value)
-   {
-      for (final Workflow item : value)
-      {
-         this.withWorkflows(item);
-      }
-      return this;
-   }
-
-   public UserNote withWorkflows(Collection<? extends Workflow> value)
-   {
-      for (final Workflow item : value)
-      {
-         this.withWorkflows(item);
-      }
-      return this;
-   }
-
-   public UserNote withoutWorkflows(Workflow value)
-   {
-      if (this.workflows != null && this.workflows.remove(value))
-      {
-         value.withoutUsers(this);
-         this.firePropertyChange(PROPERTY_WORKFLOWS, value, null);
-      }
-      return this;
-   }
-
-   public UserNote withoutWorkflows(Workflow... value)
-   {
-      for (final Workflow item : value)
-      {
-         this.withoutWorkflows(item);
-      }
-      return this;
-   }
-
-   public UserNote withoutWorkflows(Collection<? extends Workflow> value)
-   {
-      for (final Workflow item : value)
-      {
-         this.withoutWorkflows(item);
-      }
       return this;
    }
 
@@ -164,6 +98,33 @@ public class UserNote extends Note
       return this;
    }
 
+   public EventStormingBoard getEventStormingBoard()
+   {
+      return this.eventStormingBoard;
+   }
+
+   public UserNote setEventStormingBoard(EventStormingBoard value)
+   {
+      if (this.eventStormingBoard == value)
+      {
+         return this;
+      }
+
+      final EventStormingBoard oldValue = this.eventStormingBoard;
+      if (this.eventStormingBoard != null)
+      {
+         this.eventStormingBoard = null;
+         oldValue.withoutUsers(this);
+      }
+      this.eventStormingBoard = value;
+      if (value != null)
+      {
+         value.withUsers(this);
+      }
+      this.firePropertyChange(PROPERTY_EVENT_STORMING_BOARD, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -175,6 +136,6 @@ public class UserNote extends Note
    public void removeYou()
    {
       this.withoutInteractions(new ArrayList<>(this.getInteractions()));
-      this.withoutWorkflows(new ArrayList<>(this.getWorkflows()));
+      this.setEventStormingBoard(null);
    }
 }

@@ -14,7 +14,33 @@ public class StrUtil
 
    public static String toIdentifier(String name)
    {
-      String identifier = name.replaceAll("\\s+", "_");
-      return identifier;
+      String[] split = name.split("\\s+");
+      StringBuilder buf = new StringBuilder();
+      for (String word : split) {
+         buf.append(cap(word));
+      }
+      return buf.toString();
+   }
+
+   public static String cap(String name) {
+      if (name.isEmpty())
+      {
+         return "";
+      }
+
+      final StringBuilder builder = new StringBuilder(name);
+      builder.setCharAt(0, Character.toUpperCase(builder.charAt(0)));
+      return builder.toString();
+   }
+
+   public static String decap(String name) {
+      if (name.isEmpty())
+      {
+         return "";
+      }
+
+      final StringBuilder builder = new StringBuilder(name);
+      builder.setCharAt(0, Character.toLowerCase(builder.charAt(0)));
+      return builder.toString();
    }
 }

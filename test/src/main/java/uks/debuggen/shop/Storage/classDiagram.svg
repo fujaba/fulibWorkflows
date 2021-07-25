@@ -1,46 +1,47 @@
-<svg width="884px" height="148px"
- viewBox="0.00 0.00 884.00 148.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="900px" height="148px"
+ viewBox="0.00 0.00 899.50 148.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 144)">
 <title>uks.debuggen.shop.Storage</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-144 880,-144 880,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-144 895.5,-144 895.5,4 -4,4"/>
 <!-- Box -->
 <g id="node1" class="node"><title>Box</title>
-<polygon fill="none" stroke="black" points="8,-77 8,-98 84,-98 84,-77 8,-77"/>
-<text text-anchor="start" x="34" y="-83.8" font-family="Times New Roman,serif" font-size="14.00">Box</text>
-<polygon fill="none" stroke="black" points="8,-41 8,-77 84,-77 84,-41 8,-41"/>
-<text text-anchor="start" x="11" y="-62.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="11" y="-47.8" font-family="Times New Roman,serif" font-size="14.00">place :String</text>
+<polygon fill="none" stroke="black" points="8.5,-85 8.5,-106 99.5,-106 99.5,-85 8.5,-85"/>
+<text text-anchor="start" x="42" y="-91.8" font-family="Times New Roman,serif" font-size="14.00">Box</text>
+<polygon fill="none" stroke="black" points="8.5,-34 8.5,-85 99.5,-85 99.5,-34 8.5,-34"/>
+<text text-anchor="start" x="11.5" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="11.5" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="11.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">place :String</text>
 </g>
 <!-- PickTask -->
 <g id="node2" class="node"><title>PickTask</title>
-<polygon fill="none" stroke="black" points="118,-115 118,-136 216,-136 216,-115 118,-115"/>
-<text text-anchor="start" x="140.5" y="-121.8" font-family="Times New Roman,serif" font-size="14.00">PickTask</text>
-<polygon fill="none" stroke="black" points="118,-4 118,-115 216,-115 216,-4 118,-4"/>
-<text text-anchor="start" x="121" y="-100.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="121" y="-85.8" font-family="Times New Roman,serif" font-size="14.00">order :String</text>
-<text text-anchor="start" x="121" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
-<text text-anchor="start" x="121" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">customer :String</text>
-<text text-anchor="start" x="121" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
-<text text-anchor="start" x="121" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">state :String</text>
-<text text-anchor="start" x="121" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
+<polygon fill="none" stroke="black" points="133.5,-115 133.5,-136 231.5,-136 231.5,-115 133.5,-115"/>
+<text text-anchor="start" x="156" y="-121.8" font-family="Times New Roman,serif" font-size="14.00">PickTask</text>
+<polygon fill="none" stroke="black" points="133.5,-4 133.5,-115 231.5,-115 231.5,-4 133.5,-4"/>
+<text text-anchor="start" x="136.5" y="-100.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="136.5" y="-85.8" font-family="Times New Roman,serif" font-size="14.00">order :String</text>
+<text text-anchor="start" x="136.5" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="136.5" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">customer :String</text>
+<text text-anchor="start" x="136.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
+<text text-anchor="start" x="136.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">state :String</text>
+<text text-anchor="start" x="136.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">box :String</text>
 </g>
 <!-- StorageModel -->
 <g id="node3" class="node"><title>StorageModel</title>
-<polygon fill="none" stroke="black" points="250,-70 250,-91 506,-91 506,-70 250,-70"/>
-<text text-anchor="start" x="338.5" y="-76.8" font-family="Times New Roman,serif" font-size="14.00">StorageModel</text>
-<polygon fill="none" stroke="black" points="250,-49 250,-70 506,-70 506,-49 250,-49"/>
-<text text-anchor="start" x="253" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+<polygon fill="none" stroke="black" points="265.5,-70 265.5,-91 521.5,-91 521.5,-70 265.5,-70"/>
+<text text-anchor="start" x="354" y="-76.8" font-family="Times New Roman,serif" font-size="14.00">StorageModel</text>
+<polygon fill="none" stroke="black" points="265.5,-49 265.5,-70 521.5,-70 521.5,-49 265.5,-49"/>
+<text text-anchor="start" x="268.5" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
 </g>
 <!-- StorageService -->
 <g id="node4" class="node"><title>StorageService</title>
-<polygon fill="none" stroke="black" points="540,-100 540,-121 868,-121 868,-100 540,-100"/>
-<text text-anchor="start" x="661.5" y="-106.8" font-family="Times New Roman,serif" font-size="14.00">StorageService</text>
-<polygon fill="none" stroke="black" points="540,-19 540,-100 868,-100 868,-19 540,-19"/>
-<text text-anchor="start" x="543" y="-85.8" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
-<text text-anchor="start" x="543" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
-<text text-anchor="start" x="543" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
-<text text-anchor="start" x="543" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">model :StorageModel</text>
-<text text-anchor="start" x="543" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+<polygon fill="none" stroke="black" points="555.5,-100 555.5,-121 883.5,-121 883.5,-100 555.5,-100"/>
+<text text-anchor="start" x="677" y="-106.8" font-family="Times New Roman,serif" font-size="14.00">StorageService</text>
+<polygon fill="none" stroke="black" points="555.5,-19 555.5,-100 883.5,-100 883.5,-19 555.5,-19"/>
+<text text-anchor="start" x="558.5" y="-85.8" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="558.5" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="558.5" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="558.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">model :StorageModel</text>
+<text text-anchor="start" x="558.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
 </g>
 </g>
 </svg>

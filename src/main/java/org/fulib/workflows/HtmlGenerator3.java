@@ -63,11 +63,11 @@ public class HtmlGenerator3
             user = note.getInteraction().getActorName();
          }
          else {
-            user = "Somebody";
+            user = "somebody";
          }
 
          String userType = "user";
-         ServiceNote serviceNote = rootWorkflow.getFromServices(user);
+         ServiceNote serviceNote = eventStormingBoard.getFromServices(user);
          if (serviceNote != null) {
             userType = "server";
          }

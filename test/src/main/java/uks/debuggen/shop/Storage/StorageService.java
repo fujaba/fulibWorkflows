@@ -210,6 +210,7 @@ public class StorageService
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
+         handlerMap.put(ProductStored.class, this::handleProductStored);
          handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
       }
@@ -277,6 +278,29 @@ public class StorageService
          pick1300.setCustomer("Alice");
          pick1300.setAddress("Wonderland 1");
          pick1300.setState("todo");
+
+         OrderApproved e1305 = new OrderApproved();
+         e1305.setEvent("order approved 13:05");
+         e1305.setOrder("order1300");
+         publish(e1305);
+      }
+      if (event.getId().equals("13:11")) {
+
+         OrderDeclined e1314 = new OrderDeclined();
+         e1314.setEvent("order declined 13:14");
+         e1314.setOrder("order1310");
+         publish(e1314);
+      }
+   }
+
+   private void handleProductStored(Event e)
+   {
+      ProductStored event = (ProductStored) e;
+      if (event.getId().equals("12:00")) {
+
+         Box box23 = model.getOrCreateBox("box23");
+         box23.setProduct("shoes");
+         box23.setPlace("shelf23");
       }
    }
 
