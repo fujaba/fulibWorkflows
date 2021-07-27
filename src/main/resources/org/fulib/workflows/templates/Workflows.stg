@@ -73,9 +73,12 @@ publish(event);
 >>
 
 
-serviceGetPage(content) ::= <<
+serviceGetPage(eventHandling, content) ::= <<
 StringBuilder html = new StringBuilder();
 String id = request.params("id");
+String event = request.queryParams("event");
+
+%eventHandling%
 
 %content%
 

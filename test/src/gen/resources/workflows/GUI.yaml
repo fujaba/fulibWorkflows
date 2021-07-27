@@ -1,4 +1,9 @@
 
+- event: product stored 12:00
+  box: box23
+  product: shoes
+  place: shelf23
+
 - action: Alice
 
 - page:
@@ -6,7 +11,7 @@
     - label: Welcome to the event shop
     - label: What do you want?
     - button: shoes
-      event: Shop shoes selected 12:51
+      event: product selected 12:51
     - button: tshirt
 
 - page:
@@ -27,4 +32,4 @@
     - label: What else do you want
     - button: shoes
     - button: tshirt
-      event: Shop tshirt selected 13:10
+      event: product selected 13:10

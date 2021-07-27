@@ -311,6 +311,28 @@ public class ShopService
    {
       StringBuilder html = new StringBuilder();
       String id = request.params("id");
+      String event = request.queryParams("event");
+
+      if ("Shop shoes selected 12:51".equals(event)) {
+
+         // create ShopShoesSelected: Shop shoes selected 12:51
+         ShopShoesSelected e1251 = new ShopShoesSelected();
+         e1251.setId("12:51");
+         publish(e1251);
+      }
+
+      if ("order registered 13:01".equals(event)) {
+
+         // create OrderRegistered: order registered 13:01
+         OrderRegistered e1301 = new OrderRegistered();
+         e1301.setId("13:01");
+         e1301.setProduct(request.queryParams("product"));
+         e1301.setName(request.queryParams("name"));
+         e1301.setAddress(request.queryParams("address"));
+         publish(e1301);
+      }
+
+
 
       // 12:50
       if (id.equals("12_50")) {

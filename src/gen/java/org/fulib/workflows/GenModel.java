@@ -92,6 +92,8 @@ public class GenModel implements ClassModelDecorator
       List<Policy> policies;
       @Link("events")
       EventType type;
+      @Link("raisedEvent")
+      PageNote raisingPage;
    }
 
    class PageNote extends WorkflowNote {
@@ -104,6 +106,8 @@ public class GenModel implements ClassModelDecorator
       PageNote previousPage;
       @Link("previousPage")
       PageNote nextPage;
+      @Link("raisingPage")
+      EventNote raisedEvent;
    }
 
    class PageLine {

@@ -38,48 +38,6 @@ public class TestSomeEventStorming
    }
 
    @Test
-   public void uitest()
-   {
-      // start the event broker
-      eventBroker = new EventBroker();
-      eventBroker.start();
-
-      // start service
-      ShopService shop = new ShopService();
-      shop.start();
-
-      open("http://localhost:42000");
-      $("body").shouldHave(text("event broker"));
-
-      SelenideElement pre = $("pre");
-      pre.shouldHave(text("http://localhost:42001/apply"));
-
-      // workflow working smoothly
-      // page 12:50
-      open("http://localhost:42001/page/12_50");
-      pre = $("#shoes");
-      pre.click();
-
-      // create ShopShoesSelected: Shop shoes selected 12:51
-      ShopShoesSelected e1251 = new ShopShoesSelected();
-      e1251.setId("12:51");
-      publish(e1251);
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_51:"));
-
-      // create OrderRegistered: order registered 13:00
-      OrderRegistered e1300 = new OrderRegistered();
-      e1300.setId("13:00");
-      publish(e1300);
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_00:"));
-
-      System.out.println();
-   }
-
-   @Test
    public void SomeEventStorming()
    {
       // start the event broker
@@ -97,14 +55,22 @@ public class TestSomeEventStorming
       pre.shouldHave(text("http://localhost:42001/apply"));
 
       // workflow working smoothly
+      // create ProductStored: product stored 12:00
+      ProductStored e1200 = new ProductStored();
+      e1200.setId("12:00");
+      e1200.setBox("box23");
+      e1200.setProduct("shoes");
+      e1200.setPlace("shelf23");
+      publish(e1200);
+
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 12_00:"));
+
       // page 12:50
       open("http://localhost:42001/page/12_50");
       $("#shoes").click();
 
-      // create ShopShoesSelected: Shop shoes selected 12:51
-      ShopShoesSelected e1251 = new ShopShoesSelected();
-      e1251.setId("12:51");
-      publish(e1251);
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 12_51:"));
@@ -115,10 +81,6 @@ public class TestSomeEventStorming
       $("#address").setValue("Wonderland 1");
       $("#ok").click();
 
-      // create OrderRegistered: order registered 13:00
-      OrderRegistered e1300 = new OrderRegistered();
-      e1300.setId("13:00");
-      publish(e1300);
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 13_00:"));
@@ -127,10 +89,6 @@ public class TestSomeEventStorming
       open("http://localhost:42001/page/13_07");
       $("#tshirt").click();
 
-      // create ShopTshirtSelected: Shop tshirt selected 13:10
-      ShopTshirtSelected e1310 = new ShopTshirtSelected();
-      e1310.setId("13:10");
-      publish(e1310);
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 13_10:"));

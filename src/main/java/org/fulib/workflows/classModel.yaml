@@ -39,7 +39,7 @@
   modified: 	false
   name: 	EventNote
   propertyStyle: 	Bean
-  roles: 	eventNote_policies 	eventNote_type
+  roles: 	eventNote_policies 	eventNote_raisingPage 	eventNote_type
   superClass: 	workflowNote
 
 - workflow: 	org.fulib.classmodel.Clazz
@@ -108,7 +108,7 @@
   modified: 	false
   name: 	PageNote
   propertyStyle: 	Bean
-  roles: 	pageNote_lines 	pageNote_service 	pageNote_previousPage 	pageNote_nextPage
+  roles: 	pageNote_lines 	pageNote_service 	pageNote_previousPage 	pageNote_nextPage 	pageNote_raisedEvent
   superClass: 	workflowNote
 
 - eventType: 	org.fulib.classmodel.Clazz
@@ -296,6 +296,16 @@
   other: 	policy_trigger
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- eventNote_raisingPage: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	eventNote
+  id: 	EventNote_raisingPage
+  modified: 	false
+  name: 	raisingPage
+  other: 	pageNote_raisedEvent
+  propertyStyle: 	Bean
 
 - eventNote_type: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
@@ -540,6 +550,16 @@
   modified: 	false
   name: 	nextPage
   other: 	pageNote_previousPage
+  propertyStyle: 	Bean
+
+- pageNote_raisedEvent: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	pageNote
+  id: 	PageNote_raisedEvent
+  modified: 	false
+  name: 	raisedEvent
+  other: 	eventNote_raisingPage
   propertyStyle: 	Bean
 
 - eventType_eventTypeName: 	org.fulib.classmodel.Attribute

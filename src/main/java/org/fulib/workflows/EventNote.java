@@ -10,9 +10,11 @@ public class EventNote extends WorkflowNote
    public static final String PROPERTY_POLICIES = "policies";
    public static final String PROPERTY_EVENT_TYPE_NAME = "eventTypeName";
    public static final String PROPERTY_TYPE = "type";
+   public static final String PROPERTY_RAISING_PAGE = "raisingPage";
    private List<Policy> policies;
    private String eventTypeName;
    private EventType type;
+   private PageNote raisingPage;
 
    public List<Policy> getPolicies()
    {
@@ -125,6 +127,33 @@ public class EventNote extends WorkflowNote
       return this;
    }
 
+   public PageNote getRaisingPage()
+   {
+      return this.raisingPage;
+   }
+
+   public EventNote setRaisingPage(PageNote value)
+   {
+      if (this.raisingPage == value)
+      {
+         return this;
+      }
+
+      final PageNote oldValue = this.raisingPage;
+      if (this.raisingPage != null)
+      {
+         this.raisingPage = null;
+         oldValue.setRaisedEvent(null);
+      }
+      this.raisingPage = value;
+      if (value != null)
+      {
+         value.setRaisedEvent(this);
+      }
+      this.firePropertyChange(PROPERTY_RAISING_PAGE, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -138,6 +167,7 @@ public class EventNote extends WorkflowNote
    {
       super.removeYou();
       this.withoutPolicies(new ArrayList<>(this.getPolicies()));
+      this.setRaisingPage(null);
       this.setType(null);
    }
 }

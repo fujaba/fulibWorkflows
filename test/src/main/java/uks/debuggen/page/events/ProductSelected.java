@@ -1,7 +1,7 @@
 package uks.debuggen.page.events;
 import java.util.Objects;
 
-public class ShopTshirtSelected extends Event
+public class ProductSelected extends Event
 {
    public static final String PROPERTY_EVENT = "event";
    private String event;
@@ -11,7 +11,7 @@ public class ShopTshirtSelected extends Event
       return this.event;
    }
 
-   public ShopTshirtSelected setEvent(String value)
+   public ProductSelected setEvent(String value)
    {
       if (Objects.equals(value, this.event))
       {

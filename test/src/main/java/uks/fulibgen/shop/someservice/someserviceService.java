@@ -262,6 +262,8 @@ public class someserviceService
    {
       StringBuilder html = new StringBuilder();
       String id = request.params("id");
+      String event = request.queryParams("event");
+
 
 
       html.append("This is the Shop Service page " + id + "\n");

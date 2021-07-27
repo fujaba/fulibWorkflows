@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	shopShoesSelected 	orderRegistered 	shopTshirtSelected
+  classes: 	event 	serviceSubscribed 	productStored 	productSelected 	orderRegistered
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	shopShoesSelected 	orderRegistered 	shopTshirtSelected
+  subClasses: 	serviceSubscribed 	productStored 	productSelected 	orderRegistered
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -23,27 +23,27 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- shopShoesSelected: 	org.fulib.classmodel.Clazz
-  attributes: 	shopShoesSelected_event
+- productStored: 	org.fulib.classmodel.Clazz
+  attributes: 	productStored_event 	productStored_box 	productStored_product 	productStored_place
   model: 	c
   modified: 	false
-  name: 	ShopShoesSelected
+  name: 	ProductStored
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- productSelected: 	org.fulib.classmodel.Clazz
+  attributes: 	productSelected_event
+  model: 	c
+  modified: 	false
+  name: 	ProductSelected
   propertyStyle: 	Bean
   superClass: 	event
 
 - orderRegistered: 	org.fulib.classmodel.Clazz
-  attributes: 	orderRegistered_event
+  attributes: 	orderRegistered_event 	orderRegistered_count 	orderRegistered_name 	orderRegistered_address
   model: 	c
   modified: 	false
   name: 	OrderRegistered
-  propertyStyle: 	Bean
-  superClass: 	event
-
-- shopTshirtSelected: 	org.fulib.classmodel.Clazz
-  attributes: 	shopTshirtSelected_event
-  model: 	c
-  modified: 	false
-  name: 	ShopTshirtSelected
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -72,9 +72,45 @@
   type: 	String
   typeSignature: 	String
 
-- shopShoesSelected_event: 	org.fulib.classmodel.Attribute
-  clazz: 	shopShoesSelected
-  id: 	ShopShoesSelected_event
+- productStored_event: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_event
+  modified: 	false
+  name: 	event
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStored_box: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_box
+  modified: 	false
+  name: 	box
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStored_product: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStored_place: 	org.fulib.classmodel.Attribute
+  clazz: 	productStored
+  id: 	ProductStored_place
+  modified: 	false
+  name: 	place
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productSelected_event: 	org.fulib.classmodel.Attribute
+  clazz: 	productSelected
+  id: 	ProductSelected_event
   modified: 	false
   name: 	event
   propertyStyle: 	Bean
@@ -90,11 +126,29 @@
   type: 	String
   typeSignature: 	String
 
-- shopTshirtSelected_event: 	org.fulib.classmodel.Attribute
-  clazz: 	shopTshirtSelected
-  id: 	ShopTshirtSelected_event
+- orderRegistered_count: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_count
   modified: 	false
-  name: 	event
+  name: 	count
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderRegistered_name: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderRegistered_address: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_address
+  modified: 	false
+  name: 	address
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

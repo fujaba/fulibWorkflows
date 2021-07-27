@@ -1,7 +1,9 @@
 package uks.debuggen.page.Shop;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -9,11 +11,13 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.fulib.yaml.Yaml;
 import spark.Request;
 import spark.Response;
 import spark.Service;
 import uks.debuggen.page.events.*;
+
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
@@ -184,24 +188,40 @@ public class ShopService
       publish(event);
    }
 
-   public String myPage(Request request, Response response)
-   {
-      StringBuilder html = new StringBuilder();
-      String id = request.params("id");
-
-      if (id.equals("12_50")) {
-         html.append("<p>Welcome to the event shop</p>\n");
-         return html.toString();
-      }
-
-      html.append("This is the Shop Service page " + id + "\n");
-      return html.toString();
-   }
-
    public String getPage(Request request, Response response)
    {
       StringBuilder html = new StringBuilder();
       String id = request.params("id");
+      String event = request.queryParams("event");
+
+      if ("product selected 12:51".equals(event)) {
+
+         // create ProductSelected: product selected 12:51
+         ProductSelected e1251 = new ProductSelected();
+         e1251.setId("12:51");
+         publish(e1251);
+      }
+
+      if ("order registered 13:00".equals(event)) {
+
+         // create OrderRegistered: order registered 13:00
+         OrderRegistered e1300 = new OrderRegistered();
+         e1300.setId("13:00");
+         e1300.setCount(request.queryParams("count"));
+         e1300.setName(request.queryParams("name"));
+         e1300.setAddress(request.queryParams("address"));
+         publish(e1300);
+      }
+
+      if ("product selected 13:10".equals(event)) {
+
+         // create ProductSelected: product selected 13:10
+         ProductSelected e1310 = new ProductSelected();
+         e1310.setId("13:10");
+         publish(e1310);
+      }
+
+
 
       // 12:50
       if (id.equals("12_50")) {
@@ -209,7 +229,7 @@ public class ShopService
          // Shop 12:50
          html.append("   <p>Welcome to the event shop</p>\n");
          html.append("   <p>What do you want?</p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop shoes selected 12:51\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"product selected 12:51\"></p>\n");
          html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
          html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
          html.append("</form>\n");
@@ -238,7 +258,7 @@ public class ShopService
          html.append("   <p>order1300 shoes is pending</p>\n");
          html.append("   <p>What else do you want</p>\n");
          html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop tshirt selected 13:10\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"product selected 13:10\"></p>\n");
          html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
          html.append("</form>\n");
          return html.toString();

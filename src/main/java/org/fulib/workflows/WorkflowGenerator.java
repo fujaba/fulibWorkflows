@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -164,24 +163,26 @@ public class WorkflowGenerator
       declaration = "public String getPage(Request request, Response response)";
       body.setLength(0);
 
+      StringBuilder eventHandling = new StringBuilder();
       StringBuilder content = new StringBuilder();
       ServiceNote serviceNote = eventStormingBoard.getFromServices(serviceName);
       for (PageNote pageNote : serviceNote.getPages()) {
          content.append(String.format("// %s\n", pageNote.getTime()));
          String pageId = StrUtil.pageId(pageNote.getTime());
          content.append(String.format("if (id.equals(\"%s\")) {\n", pageId));
-         buildPage(pageNote, content);
+         buildPage(pageNote, eventHandling, content);
          content.append("   return html.toString();\n");
          content.append("}\n\n");
       }
 
       st = group.getInstanceOf("serviceGetPage");
+      st.add("eventHandling", eventHandling.toString());
       st.add("content", content.toString());
       body.append(st.render());
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
    }
 
-   private void buildPage(PageNote pageNote, StringBuilder content)
+   private void buildPage(PageNote pageNote, StringBuilder eventHandling, StringBuilder content)
    {
       String nextTime = "next_page";
       if (pageNote.getNextPage() != null) {
@@ -200,6 +201,8 @@ public class WorkflowGenerator
             String key = line.getMap().get("button");
             String event = line.getMap().get("event");
             if (event != null) {
+               buildEventHandling(pageNote, event, eventHandling);
+
                // hidden input
                content.append(String.format(
                      "   html.append(\"   <p><input id=\\\"event\\\" name=\\\"event\\\" type=\\\"hidden\\\" value=\\\"%s\\\"></p>\\n\");\n",
@@ -222,6 +225,15 @@ public class WorkflowGenerator
          content.append(String.format("   // %s\n", line.getMap().entrySet().iterator().next().getValue()));
       }
       content.append("   html.append(\"</form>\\n\");\n");
+   }
+
+   private void buildEventHandling(PageNote pageNote, String event, StringBuilder eventHandling)
+   {
+      EventNote eventNote = pageNote.getRaisedEvent();
+      eventHandling.append(String.format("if (\"%s\".equals(event)) {\n", event));
+      String varName = addCreateAndInitEventCode("   ", eventNote, eventHandling);
+      eventHandling.append(String.format("   publish(%s);\n", varName));
+      eventHandling.append("}\n\n");
    }
 
    private void addApplyMethod(ClassModelManager modelManager, Clazz serviceClazz, StringBuilder body)
@@ -553,15 +565,13 @@ public class WorkflowGenerator
 
    private void testGenerateSendUserEvent(StringBuilder body, EventNote note)
    {
-      // yes this event shall be send by a user, i.e. by our test
-      // build it
-      String varName = addCreateAndInitEventCode(note, body);
-      String statement;
-
-      // send it
-      statement = String.format("publish(%s);\n", varName);
-      body.append(statement);
-      body.append("open(\"http://localhost:42000\");\n");
+      if (note.getRaisingPage() == null) {
+         // yes this event shall be send by a user, i.e. by our test
+         // build it
+         String varName = addCreateAndInitEventCode("", note, body);
+         body.append(String.format("publish(%s);\n", varName));
+      }
+      body.append("\nopen(\"http://localhost:42000\");\n");
 
       String checkHistory = "pre = $(\"#history\");\n" +
             String.format("pre.shouldHave(text(\"- %s:\"));\n",
@@ -612,7 +622,7 @@ public class WorkflowGenerator
       }
    }
 
-   private String addCreateAndInitEventCode(EventNote note, StringBuilder body)
+   private String addCreateAndInitEventCode(String indent, EventNote note, StringBuilder body)
    {
       boolean first = true;
       String varName = null;
@@ -631,22 +641,28 @@ public class WorkflowGenerator
                varName = "e" + varName;
             }
             statement = String.format("\n" +
-                        "// create %s: %s\n",
-                  eventTypeName, entry.getValue());
+                        "%s// create %s: %s\n",
+                  indent, eventTypeName, entry.getValue());
             body.append(statement);
-            statement = String.format("%s %s = new %s();\n",
-                  eventTypeName, varName, eventTypeName);
+            statement = String.format("%s%s %s = new %s();\n",
+                  indent, eventTypeName, varName, eventTypeName);
             body.append(statement);
-            statement = String.format("%s.setId(\"%s\");\n",
-                  varName, id);
+            statement = String.format("%s%s.setId(\"%s\");\n",
+                  indent, varName, id);
             body.append(statement);
             first = false;
             continue;
          }
 
          String setterName = org.fulib.StrUtil.cap(entry.getKey());
-         statement = String.format("%s.set%s(\"%s\");\n",
-               varName, setterName, entry.getValue());
+         if (indent.equals("")) {
+            statement = String.format("%s%s.set%s(\"%s\");\n",
+                  indent, varName, setterName, entry.getValue());
+         }
+         else {
+            statement = String.format("%s%s.set%s(request.queryParams(\"%s\"));\n",
+                  indent, varName, setterName, entry.getKey());
+         }
          body.append(statement);
       }
       return varName;

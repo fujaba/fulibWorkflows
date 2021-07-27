@@ -12,11 +12,13 @@ public class PageNote extends WorkflowNote
    public static final String PROPERTY_LINES = "lines";
    public static final String PROPERTY_PREVIOUS_PAGE = "previousPage";
    public static final String PROPERTY_NEXT_PAGE = "nextPage";
+   public static final String PROPERTY_RAISED_EVENT = "raisedEvent";
    private ServiceNote service;
    private String buttonId;
    private List<PageLine> lines;
    private PageNote previousPage;
    private PageNote nextPage;
+   private EventNote raisedEvent;
 
    public ServiceNote getService()
    {
@@ -183,6 +185,33 @@ public class PageNote extends WorkflowNote
       return this;
    }
 
+   public EventNote getRaisedEvent()
+   {
+      return this.raisedEvent;
+   }
+
+   public PageNote setRaisedEvent(EventNote value)
+   {
+      if (this.raisedEvent == value)
+      {
+         return this;
+      }
+
+      final EventNote oldValue = this.raisedEvent;
+      if (this.raisedEvent != null)
+      {
+         this.raisedEvent = null;
+         oldValue.setRaisingPage(null);
+      }
+      this.raisedEvent = value;
+      if (value != null)
+      {
+         value.setRaisingPage(this);
+      }
+      this.firePropertyChange(PROPERTY_RAISED_EVENT, oldValue, value);
+      return this;
+   }
+
    @Override
    public void removeYou()
    {
@@ -191,6 +220,7 @@ public class PageNote extends WorkflowNote
       this.setService(null);
       this.setPreviousPage(null);
       this.setNextPage(null);
+      this.setRaisedEvent(null);
    }
 
    @Override

@@ -145,6 +145,17 @@ public class EventModel
                   EventNote eventNote = new EventNote();
                   LinkedHashMap<String, String> eventMap = new LinkedHashMap<>();
                   eventMap.put("event", event);
+                  for (PageLine line : pageNote.getLines()) {
+                     // add inputs as event attributes
+                     String input = line.getMap().get("input");
+                     if (input != null) {
+                        String fill = line.getMap().get("fill");
+                        if (fill == null) {
+                           fill = "somevalue";
+                        }
+                        eventMap.put(input, fill);
+                     }
+                  }
                   String eventDescription = getEventId(eventMap);
                   String eventTime = getEventTime(eventDescription);
                   String eventTypeName = getEventTypeName(eventDescription);
@@ -152,6 +163,7 @@ public class EventModel
                   eventNote.setEventTypeName(eventTypeName);
                   eventNote.setWorkflow(getRootWorkflow());
                   eventNote.setMap(eventMap);
+                  eventNote.setRaisingPage(pageNote);
 
                   EventType eventType = getEventStormingBoard().getOrCreateEventType(eventNote.getEventTypeName());
                   eventType.withEvents(eventNote);

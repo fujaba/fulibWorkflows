@@ -76,6 +76,7 @@ public class TestSomeEventStorming
       e1200.setProduct("shoes");
       e1200.setPlace("shelf23");
       publish(e1200);
+
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
@@ -104,10 +105,6 @@ public class TestSomeEventStorming
       open("http://localhost:42100/page/12_50");
       $("#shoes").click();
 
-      // create ShopShoesSelected: Shop shoes selected 12:51
-      ShopShoesSelected e1251 = new ShopShoesSelected();
-      e1251.setId("12:51");
-      publish(e1251);
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 12_51:"));
@@ -119,10 +116,6 @@ public class TestSomeEventStorming
       $("#address").setValue("Wonderland 1");
       $("#OK").click();
 
-      // create OrderRegistered: order registered 13:01
-      OrderRegistered e1301 = new OrderRegistered();
-      e1301.setId("13:01");
-      publish(e1301);
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
@@ -156,6 +149,7 @@ public class TestSomeEventStorming
       e1400.setBox("box23");
       e1400.setUser("Bob");
       publish(e1400);
+
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
@@ -192,6 +186,7 @@ public class TestSomeEventStorming
       e1311.setCustomer("Alice");
       e1311.setAddress("Wonderland 1");
       publish(e1311);
+
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 13_11:"));
