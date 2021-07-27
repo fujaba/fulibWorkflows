@@ -25,10 +25,10 @@ public class Yamler2
 
       result = new ArrayList<>();
 
-      hasNextLine();
+      nextLine();
       while (true) {
          if (trim.startsWith("#")) {
-            hasNextLine();
+            nextLine();
             continue;
          }
          if (!trim.startsWith("-")) {
@@ -39,7 +39,7 @@ public class Yamler2
       }
    }
 
-   private boolean hasNextLine()
+   private boolean nextLine()
    {
       while (iterator.hasNext()) {
          line = iterator.next();
@@ -65,11 +65,12 @@ public class Yamler2
             return currentObject;
          }
          if (words[0].equals("#")) {
-            if (!hasNextLine()) {
+            if (!nextLine()) {
                return currentObject;
             }
             continue;
          }
+         int currentIndent = line.indexOf(words[0]);
          String key = "";
          for (int i = 0; i < words.length; i++) {
             key += (" " + words[i]).trim();
@@ -79,11 +80,32 @@ public class Yamler2
          }
          String attrName = stripColon(key);
          String value = trim.replace(key, "").trim();
-         currentObject.put(attrName, value);
-
-         if (!hasNextLine()) {
-            return currentObject;
+         if (!value.equals("")) {
+            // usual value
+            currentObject.put(attrName, value);
+            if (!nextLine()) {
+               return currentObject;
+            }
          }
+         else {
+            // complex multiline value;
+            StringBuilder multiLineValue = new StringBuilder();
+            while (true) {
+               if (!nextLine()) {
+                  currentObject.put(attrName, multiLineValue.toString());
+                  return currentObject;
+               }
+               String[] newWords = trim.split("\\s+");
+               int newIndent = line.indexOf(newWords[0]);
+               if (currentIndent >= newIndent) {
+                  // end of multiline  value reached
+                  currentObject.put(attrName, multiLineValue.toString());
+                  break;
+               }
+               multiLineValue.append(line).append("\n");
+            }
+         }
+
       }
    }
 

@@ -127,6 +127,7 @@ public class ShopService
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);
+      spark.get("/page/:id", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());
       spark.get("/", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
       executor.submit(this::subscribeAndLoadOldEvents);
@@ -304,5 +305,14 @@ public class ShopService
          Order order1310 = model.getOrCreateOrder("order1310");
          order1310.setState("out of stock");
       }
+   }
+
+   public String getPage(Request request, Response response)
+   {
+      StringBuilder html = new StringBuilder();
+      String id = request.params("id");
+
+      html.append("This is the Shop Service page " + id);
+      return html.toString();
    }
 }

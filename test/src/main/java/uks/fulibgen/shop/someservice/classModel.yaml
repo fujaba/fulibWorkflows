@@ -21,7 +21,7 @@
   attributes: 	someserviceService_history 	someserviceService_port 	someserviceService_spark 	someserviceService_model 	someserviceService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	someserviceService_start 	someserviceService_getHello 	someserviceService_subscribeAndLoadOldEvents 	someserviceService_apply 	someserviceService_handleProductStored 	someserviceService_initEventHandlerMap 	someserviceService_ignoreEvent 	someserviceService_publish 	someserviceService_postApply
+  methods: 	someserviceService_start 	someserviceService_getHello 	someserviceService_subscribeAndLoadOldEvents 	someserviceService_apply 	someserviceService_getPage 	someserviceService_handleProductStored 	someserviceService_initEventHandlerMap 	someserviceService_ignoreEvent 	someserviceService_publish 	someserviceService_postApply
   model: 	c
   modified: 	false
   name: 	someserviceService
@@ -121,6 +121,7 @@
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
 spark.port(port);
+spark.get(\"/page/:id\", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());
 spark.get(\"/\", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
 spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
 executor.submit(this::subscribeAndLoadOldEvents);
@@ -207,6 +208,23 @@ publish(event);"
   paramsString: 	"Event event"
   returnType: 	void
   signature: 	"class/someserviceService/method/apply(Event)"
+
+- someserviceService_getPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceService
+  declaration: 	"public String getPage(Request request, Response response)"
+  id: 	someserviceService_getPage
+  methodBody: 	"StringBuilder html = new StringBuilder();
+String id = request.params(\"id\");
+
+html.append(\"This is the Shop Service page \" + id);
+return html.toString();"
+  modified: 	false
+  modifiers: 	public
+  name: 	getPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/someserviceService/method/getPage(Request,Response)"
 
 - someserviceService_handleProductStored: 	org.fulib.classmodel.FMethod
   annotations: 	""

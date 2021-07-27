@@ -127,6 +127,7 @@ public class someserviceService
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);
+      spark.get("/page/:id", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());
       spark.get("/", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
       executor.submit(this::subscribeAndLoadOldEvents);
@@ -255,5 +256,14 @@ public class someserviceService
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
+   }
+
+   public String getPage(Request request, Response response)
+   {
+      StringBuilder html = new StringBuilder();
+      String id = request.params("id");
+
+      html.append("This is the Shop Service page " + id);
+      return html.toString();
    }
 }

@@ -1,0 +1,16 @@
+
+# following actions are created by Alice
+- action: Alice
+  time: 11:11
+
+- page:
+    - name: Shop 12:50
+    - label: Welcome to the event shop
+    - button: ok
+
+- action: Bob
+
+- page:
+    - name: Storage 13:42
+    - label: This is the Storage
+

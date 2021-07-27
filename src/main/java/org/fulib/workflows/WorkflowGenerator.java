@@ -121,43 +121,16 @@ public class WorkflowGenerator
          modelManager.haveAttribute(serviceClazz, "handlerMap",
                "LinkedHashMap<Class, Consumer<Event>>", null);
 
-         // add start method
-         String declaration = "public void start()";
+         String declaration;
          StringBuilder body = new StringBuilder();
-         body.append(String.format("model = new %sModel();\n", serviceName));
-         body.append("ExecutorService executor = Executors.newSingleThreadExecutor();\n");
-         body.append("spark = Service.ignite();\n");
-         body.append("spark.port(port);\n");
-         body.append("spark.get(\"/\", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());\n");
-         body.append("spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());\n");
-         body.append("executor.submit(this::subscribeAndLoadOldEvents);\n");
-         body.append(
-               String.format("Logger.getGlobal().info(\"%s service is up and running on port \" + port);\n",
-                     serviceName));
-         modelManager.haveMethod(serviceClazz, declaration, body.toString());
+         ST st;
 
-         // add getHello
-         declaration = "private String getHello(Request req, Response res)";
-         body.setLength(0);
-         ST st = group.getInstanceOf("serviceGetHelloBody");
-         st.add("name", serviceName);
-         body.append(st.render());
-         modelManager.haveMethod(serviceClazz, declaration, body.toString());
+         addStartMethod(modelManager, serviceName, serviceClazz, body);
+         addGetHelloMethod(modelManager, serviceName, serviceClazz, body);
+         addSubscribeAndLoadOldEventsMethod(modelManager, port, serviceClazz, body);
+         addApplyMethod(modelManager, serviceClazz, body);
 
-         // add subscribeAndLoadOldEvents
-         declaration = "private void subscribeAndLoadOldEvents()";
-         body.setLength(0);
-         st = group.getInstanceOf("serviceSubscribeAndLoadOldEvents");
-         st.add("port", port);
-         body.append(st.render());
-         modelManager.haveMethod(serviceClazz, declaration, body.toString());
-
-         // apply method
-         declaration = "public void apply(Event event)";
-         body.setLength(0);
-         st = group.getInstanceOf("serviceApply");
-         body.append(st.render());
-         modelManager.haveMethod(serviceClazz, declaration, body.toString());
+         buildGetPageMethod(modelManager, serviceClazz, body);
 
          buildInitEventHandlerMapMethod(modelManager, serviceName, serviceClazz, body);
 
@@ -181,6 +154,72 @@ public class WorkflowGenerator
          body.append(st.render());
          modelManager.haveMethod(serviceClazz, declaration, body.toString());
       }
+   }
+
+   private void buildGetPageMethod(ClassModelManager modelManager, Clazz serviceClazz, StringBuilder body)
+   {
+      String declaration;
+      ST st;// apply method
+      declaration = "public String getPage(Request request, Response response)";
+      body.setLength(0);
+      st = group.getInstanceOf("serviceGetPage");
+      body.append(st.render());
+      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+   }
+
+   private void addApplyMethod(ClassModelManager modelManager, Clazz serviceClazz, StringBuilder body)
+   {
+      String declaration;
+      ST st;// apply method
+      declaration = "public void apply(Event event)";
+      body.setLength(0);
+      st = group.getInstanceOf("serviceApply");
+      body.append(st.render());
+      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+   }
+
+   private void addSubscribeAndLoadOldEventsMethod(ClassModelManager modelManager, String port, Clazz serviceClazz, StringBuilder body)
+   {
+      String declaration;
+      ST st;
+      // add subscribeAndLoadOldEvents
+      declaration = "private void subscribeAndLoadOldEvents()";
+      body.setLength(0);
+      st = group.getInstanceOf("serviceSubscribeAndLoadOldEvents");
+      st.add("port", port);
+      body.append(st.render());
+      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+   }
+
+   private void addGetHelloMethod(ClassModelManager modelManager, String serviceName, Clazz serviceClazz, StringBuilder body)
+   {
+      String declaration;
+      // add getHello
+      declaration = "private String getHello(Request req, Response res)";
+      body.setLength(0);
+      ST st = group.getInstanceOf("serviceGetHelloBody");
+      st.add("name", serviceName);
+      body.append(st.render());
+      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+   }
+
+   private void addStartMethod(ClassModelManager modelManager, String serviceName, Clazz serviceClazz, StringBuilder body)
+   {
+      String declaration;
+      // add start method
+      declaration = "public void start()";
+      body.append(String.format("model = new %sModel();\n", serviceName));
+      body.append("ExecutorService executor = Executors.newSingleThreadExecutor();\n");
+      body.append("spark = Service.ignite();\n");
+      body.append("spark.port(port);\n");
+      body.append("spark.get(\"/page/:id\", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());\n");
+      body.append("spark.get(\"/\", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());\n");
+      body.append("spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());\n");
+      body.append("executor.submit(this::subscribeAndLoadOldEvents);\n");
+      body.append(
+            String.format("Logger.getGlobal().info(\"%s service is up and running on port \" + port);\n",
+                  serviceName));
+      modelManager.haveMethod(serviceClazz, declaration, body.toString());
    }
 
    private void buildInitEventHandlerMapMethod(ClassModelManager modelManager, String serviceName, Clazz serviceClazz, StringBuilder body)

@@ -21,7 +21,7 @@
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model 	shopService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_handleOrderRegistered 	shopService_handleOrderApproved 	shopService_handleOrderPicked 	shopService_handleOrderDeclined 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
+  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_handleOrderRegistered 	shopService_handleOrderApproved 	shopService_handleOrderPicked 	shopService_handleOrderDeclined 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
   model: 	c
   modified: 	false
   name: 	ShopService
@@ -142,6 +142,7 @@
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
 spark.port(port);
+spark.get(\"/page/:id\", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());
 spark.get(\"/\", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
 spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
 executor.submit(this::subscribeAndLoadOldEvents);
@@ -228,6 +229,23 @@ publish(event);"
   paramsString: 	"Event event"
   returnType: 	void
   signature: 	"class/ShopService/method/apply(Event)"
+
+- shopService_getPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopService
+  declaration: 	"public String getPage(Request request, Response response)"
+  id: 	ShopService_getPage
+  methodBody: 	"StringBuilder html = new StringBuilder();
+String id = request.params(\"id\");
+
+html.append(\"This is the Shop Service page \" + id);
+return html.toString();"
+  modified: 	false
+  modifiers: 	public
+  name: 	getPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/ShopService/method/getPage(Request,Response)"
 
 - shopService_handleOrderRegistered: 	org.fulib.classmodel.FMethod
   annotations: 	""

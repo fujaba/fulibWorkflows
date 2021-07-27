@@ -73,6 +73,15 @@ publish(event);
 >>
 
 
+serviceGetPage() ::= <<
+StringBuilder html = new StringBuilder();
+String id = request.params("id");
+
+html.append("This is the Shop Service page " + id);
+return html.toString();
+>>
+
+
 servicePublish() ::= <<
 String json = Yaml.encode(event);
 

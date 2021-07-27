@@ -31,11 +31,13 @@
 # following actions are created by Alice
 - action: Alice
 
-- read model: actions 12:50
-  label 1: label Hello Alice
-  label order11:00: order 11:00 coffee mug state registered
-  button 0: cancel
-  button 1: new order
+- page:
+    -
+
+- page:
+    name: Shop 12:50
+    label: Welcome to the event shop
+
 
 - command: order registered 13:00
   trigger: button new order

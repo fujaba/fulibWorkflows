@@ -21,7 +21,7 @@
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model 	storageService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_handleProductStored 	storageService_handleOrderRegistered 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
+  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_handleProductStored 	storageService_handleOrderRegistered 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
   model: 	c
   modified: 	false
   name: 	StorageService
@@ -142,6 +142,7 @@
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
 spark.port(port);
+spark.get(\"/page/:id\", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());
 spark.get(\"/\", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
 spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
 executor.submit(this::subscribeAndLoadOldEvents);
@@ -228,6 +229,23 @@ publish(event);"
   paramsString: 	"Event event"
   returnType: 	void
   signature: 	"class/StorageService/method/apply(Event)"
+
+- storageService_getPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"public String getPage(Request request, Response response)"
+  id: 	StorageService_getPage
+  methodBody: 	"StringBuilder html = new StringBuilder();
+String id = request.params(\"id\");
+
+html.append(\"This is the Shop Service page \" + id);
+return html.toString();"
+  modified: 	false
+  modifiers: 	public
+  name: 	getPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/StorageService/method/getPage(Request,Response)"
 
 - storageService_handleProductStored: 	org.fulib.classmodel.FMethod
   annotations: 	""
