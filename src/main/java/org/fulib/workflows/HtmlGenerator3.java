@@ -6,9 +6,11 @@ import org.stringtemplate.v4.STGroupFile;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 
 public class HtmlGenerator3
 {
+   public BiConsumer<String, Object> dumpObjectDiagram;
    private STGroupFile group;
    private EventModel eventModel;
    private ST st;
@@ -23,6 +25,9 @@ public class HtmlGenerator3
       eventModel = new EventModel();
       eventModel.buildEventStormModel(yaml);
       eventStormingBoard = eventModel.getEventStormingBoard();
+      if (dumpObjectDiagram != null) {
+         dumpObjectDiagram.accept("tmp/GuiEventStormingBoard.svg", eventStormingBoard);
+      }
       group = new STGroupFile(this.getClass().getResource("html/html.stg"));
       body = new StringBuilder();
       for (Workflow workflow : eventStormingBoard.getWorkflows()) {
@@ -74,8 +79,8 @@ public class HtmlGenerator3
 
          String targetActor = user;
          String noteType = "event";
-         if (eventType.equalsIgnoreCase("command")) {
-            noteType = "command";
+         if (eventType.equalsIgnoreCase("page")) {
+            noteType = "page";
          }
          else if (eventType.equalsIgnoreCase("Data")) {
             String serviceName = note.getInteraction().getActorName();
@@ -84,8 +89,9 @@ public class HtmlGenerator3
          }
 
          String noteContent;
-         if (eventType.equalsIgnoreCase("command")) {
-            noteContent = commandNote(map);
+         if (eventType.equalsIgnoreCase("page")) {
+            PageNote pageNote = (PageNote) note;
+            noteContent = pageNote(pageNote);
          }
          else {
             noteContent = eventNote(map);
@@ -118,51 +124,49 @@ public class HtmlGenerator3
       return buf.toString();
    }
 
-   private String commandNote(Map<String, String> map)
+   private String pageNote(PageNote note)
    {
-      StringBuilder attrs = new StringBuilder();
+      StringBuilder pageBody = new StringBuilder();
 
-      Iterator<Map.Entry<String, String>> iter = map.entrySet().iterator();
-      String time = map.get("command");
-      String eventType = map.get("type");
-      String user = map.get("user");
 
-      attrs.append(String.format("<div><i class=\"fa fa-bars\"></i> %s: %s</div>", eventType, time));
+      String time = note.getTime();
+      String serviceName = note.getService().getName();
 
-      for (Map.Entry<String, String> attr : map.entrySet()) {
-         String key = attr.getKey();
-         if (key.equals("CommandSent")
-               || key.equals("type")
-               || key.equals("user")) {
+      pageBody.append(String.format("<div><i class=\"fa fa-bars\"></i> %s %s</div>", serviceName, time));
+
+      for (PageLine line : note.getLines()) {
+         String firstTag = line.getMap().keySet().iterator().next();
+         if (firstTag.equalsIgnoreCase("name")) {
             continue;
          }
-         String value = attr.getValue();
-
-         Scanner scanner = new Scanner(value);
-         String word = scanner.next();
-         if (word.equals("label")) {
-            value = value.substring("label ".length());
-            String line = String.format("<div class=\"center\">%s</div>\n", value);
-            attrs.append(line);
+         else if (firstTag.equalsIgnoreCase("label")) {
+            String value = line.getMap().get("label");
+            String html = String.format("<div class=\"center\">%s</div>\n", value);
+            pageBody.append(html);
          }
-         else if (word.equals("input")) {
-            int i = value.indexOf("?");
-            value = value.substring(i + 2);
-            String line = String.format("<div class=\"center\">%s: <u>%s</u></div>\n", key, value);
-            attrs.append(line);
+         else if (firstTag.equalsIgnoreCase("input")) {
+            String value = line.getMap().get("input") + "?";
+            String fill = line.getMap().get("fill");
+            if (fill != null) {
+               value = fill;
+            }
+            String html = String.format("<div class=\"center\"><u>%s</u></div>\n", value);
+            pageBody.append(html);
          }
-         else if (word.equals("button")) {
-            value = value.substring("button ".length());
-            String line = String.format("<div class=\"center\">[%s]</div>\n", key, value);
-            attrs.append(line);
+         else if (firstTag.equalsIgnoreCase("button")) {
+            String value = line.getMap().get("button");
+            String pointer = "";
+            if (line.getMap().get("event") != null) {
+               pointer = "<i class=\"fa fa-mouse-pointer\"></i>";
+            }
+            String html = String.format("<div class=\"center\">[%s] %s</div>\n", value, pointer);
+            pageBody.append(html);
          }
-         else {
-            String line = String.format("<div>%s: %s</div>\n", key, value);
-            attrs.append(line);
-         }
+         System.out.println();
       }
 
-      String noteContent = attrs.toString();
+
+      String noteContent = pageBody.toString();
       return noteContent;
    }
 
@@ -171,8 +175,14 @@ public class HtmlGenerator3
       StringBuilder attrs = new StringBuilder();
       for (Map.Entry<String, String> attr : map.entrySet()) {
          String key = attr.getKey();
+         if (key.equals("event")) {
+            key = "";
+         }
+         else {
+            key += ":";
+         }
          String value = attr.getValue();
-         String line = String.format("<div>%s: %s</div>\n", key, value);
+         String line = String.format("<div>%s %s</div>\n", key, value);
          attrs.append(line);
       }
 

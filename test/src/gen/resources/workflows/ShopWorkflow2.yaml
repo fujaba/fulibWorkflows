@@ -1,4 +1,3 @@
-
 # provide name for this scenario
 # - workflow: ordering smooth
 
@@ -32,26 +31,24 @@
 - action: Alice
 
 - page:
-    -
+    - name: Shop 12:50
+    - label: Welcome to the event shop
+    - label: What do you want?
+    - button: shoes
+      event: Shop shoes selected 12:51
+    - button: tshirt
 
 - page:
-    name: Shop 12:50
-    label: Welcome to the event shop
-
-
-- command: order registered 13:00
-  trigger: button new order
-  l1: label welcome to the shop
-  product: input product? shoes
-  customer: input name? Alice
-  address: input address? Wonderland 1
-  button: OK
-
-- event: order registered 13:01
-  trigger: button OK
-  product: shoes
-  customer: Alice
-  address: Wonderland 1
+    - name: Shop 13:00
+    - label: welcome to the shop
+    - input: product
+      fill: shoes
+    - input: name
+      fill: Alice
+    - input: address
+      fill: Wonderland 1
+    - button: OK
+      event: order registered 13:01
 
 # policy notes tell that the following actions are executed by a sertain service triggered by a certain event
 
@@ -67,7 +64,7 @@
 
 - data: 13:03
   customer: Alice
-  orders: [order1300]
+  orders: [ order1300 ]
 
 - policy: Storage
   trigger: 13:01
@@ -139,7 +136,7 @@
 
 - data: 13:13
   customer: Alice
-  orders: [order1300 order1310]
+  orders: [ order1300 order1310 ]
 
 - policy: Storage
   trigger: 13:11

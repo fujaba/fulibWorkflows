@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	eventType 	eventStormingBoard 	note 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	pageLine 	pageNote 	eventType 	eventStormingBoard 	note 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -30,7 +30,7 @@
   modified: 	false
   name: 	ServiceNote
   propertyStyle: 	Bean
-  roles: 	serviceNote_policies 	serviceNote_handledEventTypes 	serviceNote_workflows 	serviceNote_eventStormingBoard
+  roles: 	serviceNote_policies 	serviceNote_pages 	serviceNote_handledEventTypes 	serviceNote_workflows 	serviceNote_eventStormingBoard
   superClass: 	note
 
 - eventNote: 	org.fulib.classmodel.Clazz
@@ -75,7 +75,7 @@
   name: 	WorkflowNote
   propertyStyle: 	Bean
   roles: 	workflowNote_interaction 	workflowNote_workflow
-  subClasses: 	commandNote 	dataNote 	eventNote
+  subClasses: 	commandNote 	dataNote 	pageNote 	eventNote
   superClass: 	note
 
 - commandNote: 	org.fulib.classmodel.Clazz
@@ -92,6 +92,22 @@
   modified: 	false
   name: 	DataNote
   propertyStyle: 	Bean
+  superClass: 	workflowNote
+
+- pageLine: 	org.fulib.classmodel.Clazz
+  attributes: 	pageLine_map
+  model: 	c
+  modified: 	false
+  name: 	PageLine
+  propertyStyle: 	Bean
+  roles: 	pageLine_pageNote
+
+- pageNote: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	PageNote
+  propertyStyle: 	Bean
+  roles: 	pageNote_lines 	pageNote_service
   superClass: 	workflowNote
 
 - eventType: 	org.fulib.classmodel.Clazz
@@ -210,6 +226,18 @@
   modified: 	false
   name: 	policies
   other: 	policy_service
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- serviceNote_pages: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	serviceNote
+  collectionType: 	c1
+  id: 	ServiceNote_pages
+  modified: 	false
+  name: 	pages
+  other: 	pageNote_service
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -442,6 +470,47 @@
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- pageLine_map: 	org.fulib.classmodel.Attribute
+  clazz: 	pageLine
+  id: 	PageLine_map
+  modified: 	false
+  name: 	map
+  propertyStyle: 	Bean
+  type: 	"import(java.util.LinkedHashMap)<String, String>"
+  typeSignature: 	"LinkedHashMap<String,String>"
+
+- pageLine_pageNote: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	pageLine
+  id: 	PageLine_pageNote
+  modified: 	false
+  name: 	pageNote
+  other: 	pageNote_lines
+  propertyStyle: 	Bean
+
+- pageNote_lines: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	pageNote
+  collectionType: 	c1
+  id: 	PageNote_lines
+  modified: 	false
+  name: 	lines
+  other: 	pageLine_pageNote
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- pageNote_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	pageNote
+  id: 	PageNote_service
+  modified: 	false
+  name: 	service
+  other: 	serviceNote_pages
+  propertyStyle: 	Bean
 
 - eventType_eventTypeName: 	org.fulib.classmodel.Attribute
   clazz: 	eventType

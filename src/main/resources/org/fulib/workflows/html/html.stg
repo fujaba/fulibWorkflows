@@ -30,7 +30,7 @@ page(content, width) ::= <<
             background-color:Orange;
         \}
 
-        .command \{
+        .page \{
             background-color:LightBlue;
         \}
 

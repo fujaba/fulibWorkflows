@@ -63,6 +63,8 @@ public class GenModel implements ClassModelDecorator
       List<Policy> policies;
       @Link("handlers")
       List<EventType> handledEventTypes;
+      @Link("service")
+      List<PageNote> pages;
    }
 
    class WorkflowNote extends Note {
@@ -90,6 +92,19 @@ public class GenModel implements ClassModelDecorator
       List<Policy> policies;
       @Link("events")
       EventType type;
+   }
+
+   class PageNote extends WorkflowNote {
+      @Link("pageNote")
+      List<PageLine> lines;
+      @Link("pages")
+      ServiceNote service;
+   }
+
+   class PageLine {
+      LinkedHashMap<String, String> map = new LinkedHashMap<>();
+      @Link("lines")
+      PageNote pageNote;
    }
 
    class DataNote extends WorkflowNote {

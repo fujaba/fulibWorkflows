@@ -1,16 +1,21 @@
 
-# following actions are created by Alice
 - action: Alice
-  time: 11:11
 
 - page:
     - name: Shop 12:50
     - label: Welcome to the event shop
-    - button: ok
-
-- action: Bob
+    - label: What do you want?
+    - button: shoes
+      event: Shop shoes selected 12:51
+    - button: tshirt
 
 - page:
-    - name: Storage 13:42
-    - label: This is the Storage
-
+    - name: Shop 12:55
+    - label: Shoes order
+    - input: count
+    - input: name
+      fill: Alice
+    - input: address
+      fill: Wonderland 1
+    - button: ok
+      event: order registered 13:00

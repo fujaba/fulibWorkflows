@@ -21,7 +21,8 @@ public class EventModel
       return eventStormingBoard;
    }
 
-   public Workflow getRootWorkflow() {
+   public Workflow getRootWorkflow()
+   {
       if (rootWorkflow == null) {
          rootWorkflow = new Workflow().setName("working smoothly");
          getEventStormingBoard().withWorkflows(rootWorkflow);
@@ -87,15 +88,12 @@ public class EventModel
             note.setDataType(typeEntry.getKey());
             addToStepsOfLastActor(note);
          }
-         else if (entry.getKey().equalsIgnoreCase("event")){
+         else if (entry.getKey().equalsIgnoreCase("event")) {
             EventNote eventNote = new EventNote();
             String value = getEventId(map); // example value: product stored 12:00
-            String[] split = value.split("\\s");
-            eventNote.setTime(split[split.length-1]);
-            String eventTypeName = "";
-            for (int i = 0; i < split.length - 1; i++) {
-               eventTypeName += org.fulib.StrUtil.cap(split[i]);
-            }
+            String eventTime = getEventTime(value);
+            eventNote.setTime(eventTime);
+            String eventTypeName = getEventTypeName(value);
             eventNote.setEventTypeName(eventTypeName);
             eventNote.setWorkflow(getRootWorkflow());
             eventNote.setMap(map);
@@ -106,6 +104,52 @@ public class EventModel
             lastEvent = eventNote;
             addToStepsOfLastActor(eventNote);
          }
+         else if (entry.getKey().equalsIgnoreCase("page")) {
+            PageNote pageNote = new PageNote();
+            pageNote.setWorkflow(getRootWorkflow());
+            pageNote.setMap(map);
+            // read multiline value
+            String multilineValue = entry.getValue();
+            ArrayList<LinkedHashMap<String, String>> lineMaps = new Yamler2().decodeList(multilineValue);
+            for (LinkedHashMap<String, String> lineMap : lineMaps) {
+               PageLine pageLine = new PageLine()
+                     .setPageNote(pageNote)
+                     .setMap(lineMap);
+               String nameValue = lineMap.get("name");
+               if (nameValue != null) {
+                  // its like name: ServiceName timestamp
+                  String[] split = nameValue.split("\\s+");
+                  String pageName = split[split.length - 1];
+                  String serviceName = split[0];
+                  pageNote.setTime(pageName);
+                  ServiceNote serviceNote = getEventStormingBoard().getOrCreateFromServices(serviceName);
+                  pageNote.setService(serviceNote);
+
+                  addToStepsOfLastActor(pageNote);
+               }
+               String event = lineMap.get("event");
+               if (event != null) {
+                  // add an event note
+                  EventNote eventNote = new EventNote();
+                  LinkedHashMap<String, String> eventMap = new LinkedHashMap<>();
+                  eventMap.put("event", event);
+                  String eventDescription = getEventId(eventMap);
+                  String eventTime = getEventTime(eventDescription);
+                  String eventTypeName = getEventTypeName(eventDescription);
+                  eventNote.setTime(eventTime);
+                  eventNote.setEventTypeName(eventTypeName);
+                  eventNote.setWorkflow(getRootWorkflow());
+                  eventNote.setMap(eventMap);
+
+                  EventType eventType = getEventStormingBoard().getOrCreateEventType(eventNote.getEventTypeName());
+                  eventType.withEvents(eventNote);
+
+                  lastEvent = eventNote;
+                  addToStepsOfLastActor(eventNote);
+                  System.out.println();
+               }
+            }
+         }
          else {
             Logger.getGlobal().severe("Unknown event type " + getEventType(map));
          }
@@ -113,9 +157,26 @@ public class EventModel
       return getEventStormingBoard();
    }
 
+   private String getEventTime(String value)
+   {
+      String[] split = value.split("\\s");
+      String eventTime = split[split.length - 1];
+      return eventTime;
+   }
+
+   private String getEventTypeName(String value)
+   {
+      String[] split2 = value.split("\\s");
+      String eventTypeName = "";
+      for (int i = 0; i < split2.length - 1; i++) {
+         eventTypeName += org.fulib.StrUtil.cap(split2[i]);
+      }
+      return eventTypeName;
+   }
+
    private void addToStepsOfLastActor(WorkflowNote note)
    {
-      if (note instanceof EventNote) {
+      if (note instanceof EventNote || note instanceof PageNote) {
          if (lastActor == null) {
             UserNote somebody = getEventStormingBoard().getOrCreateFromUsers("somebody");
             Interaction someaction = new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody).setActorName("somebody");
@@ -123,7 +184,7 @@ public class EventModel
          }
       }
       else if (note instanceof DataNote) {
-         if (lastActor == null || ! (lastActor instanceof Policy)) {
+         if (lastActor == null || !(lastActor instanceof Policy)) {
             ServiceNote someservice = getEventStormingBoard().getOrCreateFromServices("someservice");
             Interaction someaction = new Policy()
                   .setWorkflow(getRootWorkflow())

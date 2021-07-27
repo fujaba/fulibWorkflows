@@ -13,12 +13,14 @@ public class ServiceNote extends Note
    public static final String PROPERTY_WORKFLOWS = "workflows";
    public static final String PROPERTY_HANDLED_EVENT_TYPES = "handledEventTypes";
    public static final String PROPERTY_EVENT_STORMING_BOARD = "eventStormingBoard";
+   public static final String PROPERTY_PAGES = "pages";
    private String port;
    private List<Policy> policies;
    private String name;
    private List<Workflow> workflows;
    private List<EventType> handledEventTypes;
    private EventStormingBoard eventStormingBoard;
+   private List<PageNote> pages;
 
    public String getPort()
    {
@@ -281,6 +283,72 @@ public class ServiceNote extends Note
       return this;
    }
 
+   public List<PageNote> getPages()
+   {
+      return this.pages != null ? Collections.unmodifiableList(this.pages) : Collections.emptyList();
+   }
+
+   public ServiceNote withPages(PageNote value)
+   {
+      if (this.pages == null)
+      {
+         this.pages = new ArrayList<>();
+      }
+      if (!this.pages.contains(value))
+      {
+         this.pages.add(value);
+         value.setService(this);
+         this.firePropertyChange(PROPERTY_PAGES, null, value);
+      }
+      return this;
+   }
+
+   public ServiceNote withPages(PageNote... value)
+   {
+      for (final PageNote item : value)
+      {
+         this.withPages(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withPages(Collection<? extends PageNote> value)
+   {
+      for (final PageNote item : value)
+      {
+         this.withPages(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutPages(PageNote value)
+   {
+      if (this.pages != null && this.pages.remove(value))
+      {
+         value.setService(null);
+         this.firePropertyChange(PROPERTY_PAGES, value, null);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutPages(PageNote... value)
+   {
+      for (final PageNote item : value)
+      {
+         this.withoutPages(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutPages(Collection<? extends PageNote> value)
+   {
+      for (final PageNote item : value)
+      {
+         this.withoutPages(item);
+      }
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -293,6 +361,7 @@ public class ServiceNote extends Note
    public void removeYou()
    {
       this.withoutPolicies(new ArrayList<>(this.getPolicies()));
+      this.withoutPages(new ArrayList<>(this.getPages()));
       this.withoutHandledEventTypes(new ArrayList<>(this.getHandledEventTypes()));
       this.withoutWorkflows(new ArrayList<>(this.getWorkflows()));
       this.setEventStormingBoard(null);

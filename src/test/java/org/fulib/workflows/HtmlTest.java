@@ -1,5 +1,6 @@
 package org.fulib.workflows;
 
+import org.fulib.FulibTools;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class HtmlTest
       Files.createDirectories(Path.of("tmp"));
 
       HtmlGenerator3 generator = new HtmlGenerator3();
+      generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
       String html = generator.generateHtml(yaml);
       Files.write(Path.of("tmp/index3.html"), html.getBytes(StandardCharsets.UTF_8));
 
@@ -30,6 +32,7 @@ public class HtmlTest
       Files.createDirectories(Path.of("tmp"));
 
       HtmlGenerator3 generator = new HtmlGenerator3();
+      generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
       String html = generator.generateHtml(yaml);
       Files.write(Path.of("tmp/gui.html"), html.getBytes(StandardCharsets.UTF_8));
 
