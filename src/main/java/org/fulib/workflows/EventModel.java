@@ -1,5 +1,6 @@
 package org.fulib.workflows;
 
+import org.fulib.builder.reflect.Link;
 import org.fulib.yaml.Yamler2;
 
 import java.util.*;
@@ -33,6 +34,7 @@ public class EventModel
    public EventStormingBoard buildEventStormModel(String yaml)
    {
       ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(yaml);
+      LinkedHashMap<String, PageNote> userLastPage = new LinkedHashMap<>();
 
       lastActor = null;
 
@@ -108,6 +110,7 @@ public class EventModel
             PageNote pageNote = new PageNote();
             pageNote.setWorkflow(getRootWorkflow());
             pageNote.setMap(map);
+
             // read multiline value
             String multilineValue = entry.getValue();
             ArrayList<LinkedHashMap<String, String>> lineMaps = new Yamler2().decodeList(multilineValue);
@@ -126,9 +129,18 @@ public class EventModel
                   pageNote.setService(serviceNote);
 
                   addToStepsOfLastActor(pageNote);
+                  PageNote previousPage = userLastPage.get(lastActor.getActorName());
+                  if (previousPage != null) {
+                     previousPage.setNextPage(pageNote);
+                  }
+                  userLastPage.put(lastActor.getActorName(), pageNote);
                }
                String event = lineMap.get("event");
                if (event != null) {
+                  // store button name
+                  String buttonId = lineMap.get("button");
+                  pageNote.setButtonId(buttonId);
+
                   // add an event note
                   EventNote eventNote = new EventNote();
                   LinkedHashMap<String, String> eventMap = new LinkedHashMap<>();
@@ -181,6 +193,10 @@ public class EventModel
             UserNote somebody = getEventStormingBoard().getOrCreateFromUsers("somebody");
             Interaction someaction = new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody).setActorName("somebody");
             lastActor = someaction;
+         }
+         if (note instanceof PageNote) {
+            String actorName = lastActor.getActorName();
+
          }
       }
       else if (note instanceof DataNote) {

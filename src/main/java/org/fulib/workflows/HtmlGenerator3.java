@@ -162,7 +162,6 @@ public class HtmlGenerator3
             String html = String.format("<div class=\"center\">[%s] %s</div>\n", value, pointer);
             pageBody.append(html);
          }
-         System.out.println();
       }
 
 

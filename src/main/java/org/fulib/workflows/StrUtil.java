@@ -43,4 +43,8 @@ public class StrUtil
       builder.setCharAt(0, Character.toLowerCase(builder.charAt(0)));
       return builder.toString();
    }
+
+   public static String pageId(String time) {
+      return time.replaceAll("\\:", "_");
+   }
 }

@@ -95,10 +95,15 @@ public class GenModel implements ClassModelDecorator
    }
 
    class PageNote extends WorkflowNote {
-      @Link("pageNote")
-      List<PageLine> lines;
+      String buttonId;
       @Link("pages")
       ServiceNote service;
+      @Link("pageNote")
+      List<PageLine> lines;
+      @Link("nextPage")
+      PageNote previousPage;
+      @Link("previousPage")
+      PageNote nextPage;
    }
 
    class PageLine {

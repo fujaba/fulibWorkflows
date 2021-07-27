@@ -19,3 +19,12 @@
       fill: Wonderland 1
     - button: ok
       event: order registered 13:00
+
+- page:
+    - name: Shop 13:07
+    - label: Your order
+    - label: order1300 shoes is pending
+    - label: What else do you want
+    - button: shoes
+    - button: tshirt
+      event: Shop tshirt selected 13:10

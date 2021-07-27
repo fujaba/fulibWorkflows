@@ -1,0 +1,25 @@
+<svg width="642px" height="118px"
+ viewBox="0.00 0.00 642.00 118.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 114)">
+<title>uks.debuggen.page.Shop</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-114 638,-114 638,4 -4,4"/>
+<!-- ShopModel -->
+<g id="node1" class="node"><title>ShopModel</title>
+<polygon fill="none" stroke="black" points="8,-55 8,-76 264,-76 264,-55 8,-55"/>
+<text text-anchor="start" x="102.5" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">ShopModel</text>
+<polygon fill="none" stroke="black" points="8,-34 8,-55 264,-55 264,-34 8,-34"/>
+<text text-anchor="start" x="11" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+</g>
+<!-- ShopService -->
+<g id="node2" class="node"><title>ShopService</title>
+<polygon fill="none" stroke="black" points="298,-85 298,-106 626,-106 626,-85 298,-85"/>
+<text text-anchor="start" x="426" y="-91.8" font-family="Times New Roman,serif" font-size="14.00">ShopService</text>
+<polygon fill="none" stroke="black" points="298,-4 298,-85 626,-85 626,-4 298,-4"/>
+<text text-anchor="start" x="301" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="301" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="301" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="301" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">model :ShopModel</text>
+<text text-anchor="start" x="301" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+</g>
+</g>
+</svg>

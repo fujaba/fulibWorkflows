@@ -103,11 +103,12 @@
   roles: 	pageLine_pageNote
 
 - pageNote: 	org.fulib.classmodel.Clazz
+  attributes: 	pageNote_buttonId
   model: 	c
   modified: 	false
   name: 	PageNote
   propertyStyle: 	Bean
-  roles: 	pageNote_lines 	pageNote_service
+  roles: 	pageNote_lines 	pageNote_service 	pageNote_previousPage 	pageNote_nextPage
   superClass: 	workflowNote
 
 - eventType: 	org.fulib.classmodel.Clazz
@@ -490,6 +491,15 @@
   other: 	pageNote_lines
   propertyStyle: 	Bean
 
+- pageNote_buttonId: 	org.fulib.classmodel.Attribute
+  clazz: 	pageNote
+  id: 	PageNote_buttonId
+  modified: 	false
+  name: 	buttonId
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - pageNote_lines: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -510,6 +520,26 @@
   modified: 	false
   name: 	service
   other: 	serviceNote_pages
+  propertyStyle: 	Bean
+
+- pageNote_previousPage: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	pageNote
+  id: 	PageNote_previousPage
+  modified: 	false
+  name: 	previousPage
+  other: 	pageNote_nextPage
+  propertyStyle: 	Bean
+
+- pageNote_nextPage: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	pageNote
+  id: 	PageNote_nextPage
+  modified: 	false
+  name: 	nextPage
+  other: 	pageNote_previousPage
   propertyStyle: 	Bean
 
 - eventType_eventTypeName: 	org.fulib.classmodel.Attribute

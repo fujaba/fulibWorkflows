@@ -1,21 +1,21 @@
-package uks.fulibgen.shop.Shop;
+package uks.debuggen.page.Shop;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.fulib.yaml.Yaml;
 import spark.Request;
 import spark.Response;
 import spark.Service;
-import uks.fulibgen.shop.events.*;
+import uks.debuggen.page.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import java.util.Map;
-import java.util.function.Consumer;
 
 public class ShopService
 {
@@ -25,11 +25,11 @@ public class ShopService
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
-   private int port = 42100;
+   private int port = 42001;
    private Service spark;
    private ShopModel model;
-   protected PropertyChangeSupport listeners;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
+   protected PropertyChangeSupport listeners;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -150,29 +150,10 @@ public class ShopService
       }
    }
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
-      {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
-      }
-      return false;
-   }
-
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
-      {
-         this.listeners = new PropertyChangeSupport(this);
-      }
-      return this.listeners;
-   }
-
    private void subscribeAndLoadOldEvents()
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-            .setServiceUrl("http://localhost:42100/apply");
+            .setServiceUrl("http://localhost:42001/apply");
       String json = Yaml.encode(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
@@ -203,14 +184,76 @@ public class ShopService
       publish(event);
    }
 
+   public String myPage(Request request, Response response)
+   {
+      StringBuilder html = new StringBuilder();
+      String id = request.params("id");
+
+      if (id.equals("12_50")) {
+         html.append("<p>Welcome to the event shop</p>\n");
+         return html.toString();
+      }
+
+      html.append("This is the Shop Service page " + id + "\n");
+      return html.toString();
+   }
+
+   public String getPage(Request request, Response response)
+   {
+      StringBuilder html = new StringBuilder();
+      String id = request.params("id");
+
+      // 12:50
+      if (id.equals("12_50")) {
+         html.append("<form action=\"/page/12_55\" method=\"get\">\n");
+         // Shop 12:50
+         html.append("   <p>Welcome to the event shop</p>\n");
+         html.append("   <p>What do you want?</p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop shoes selected 12:51\"></p>\n");
+         html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
+         html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:55
+      if (id.equals("12_55")) {
+         html.append("<form action=\"/page/13_07\" method=\"get\">\n");
+         // Shop 12:55
+         html.append("   <p>Shoes order</p>\n");
+         html.append("   <p><input id=\"count\" name=\"count\" placeholder=\"count?\"></p>\n");
+         html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
+         html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"order registered 13:00\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 13:07
+      if (id.equals("13_07")) {
+         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         // Shop 13:07
+         html.append("   <p>Your order</p>\n");
+         html.append("   <p>order1300 shoes is pending</p>\n");
+         html.append("   <p>What else do you want</p>\n");
+         html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop tshirt selected 13:10\"></p>\n");
+         html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+
+
+      html.append("This is the Shop Service page " + id + "\n");
+      return html.toString();
+   }
+
    private void initEventHandlerMap()
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
-         handlerMap.put(OrderApproved.class, this::handleOrderApproved);
-         handlerMap.put(OrderPicked.class, this::handleOrderPicked);
-         handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
       }
    }
 
@@ -250,98 +293,22 @@ public class ShopService
       return "apply done";
    }
 
-   private void handleOrderRegistered(Event e)
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:01")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setProduct("shoes");
-         order1300.setCustomer("Alice");
-         order1300.setAddress("Wonderland 1");
-         order1300.setState("pending");
-
-         Customer alice = model.getOrCreateCustomer("Alice");
-         alice.setOrders("[ order1300 ]");
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
       }
-      if (event.getId().equals("13:11")) {
-
-         Order order1310 = model.getOrCreateOrder("order1310");
-         order1310.setProduct("tshirt");
-         order1310.setCustomer("Alice");
-         order1310.setAddress("Wonderland 1");
-         order1310.setState("pending");
-
-         Customer alice = model.getOrCreateCustomer("Alice");
-         alice.setOrders("[ order1300 order1310 ]");
-      }
+      return false;
    }
 
-   private void handleOrderPicked(Event e)
+   public PropertyChangeSupport listeners()
    {
-      OrderPicked event = (OrderPicked) e;
-      if (event.getId().equals("14:00")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setState("shipping");
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
       }
-   }
-
-   private void handleOrderApproved(Event e)
-   {
-      OrderApproved event = (OrderApproved) e;
-      if (event.getId().equals("13:05")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setState("picking");
-      }
-   }
-
-   private void handleOrderDeclined(Event e)
-   {
-      OrderDeclined event = (OrderDeclined) e;
-      if (event.getId().equals("13:14")) {
-
-         Order order1310 = model.getOrCreateOrder("order1310");
-         order1310.setState("out of stock");
-      }
-   }
-
-   public String getPage(Request request, Response response)
-   {
-      StringBuilder html = new StringBuilder();
-      String id = request.params("id");
-
-      // 12:50
-      if (id.equals("12_50")) {
-         html.append("<form action=\"/page/13_00\" method=\"get\">\n");
-         // Shop 12:50
-         html.append("   <p>Welcome to the event shop</p>\n");
-         html.append("   <p>What do you want?</p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop shoes selected 12:51\"></p>\n");
-         html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
-         html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-      // 13:00
-      if (id.equals("13_00")) {
-         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // Shop 13:00
-         html.append("   <p>welcome to the shop</p>\n");
-         html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
-         html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
-         html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"order registered 13:01\"></p>\n");
-         html.append("   <p><input id=\"OK\" name=\"button\" type=\"submit\" value=\"OK\"></p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-
-
-      html.append("This is the Shop Service page " + id + "\n");
-      return html.toString();
+      return this.listeners;
    }
 }

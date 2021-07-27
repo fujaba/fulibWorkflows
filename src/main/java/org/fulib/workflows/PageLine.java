@@ -8,8 +8,8 @@ public class PageLine
    public static final String PROPERTY_MAP = "map";
    public static final String PROPERTY_PAGE_NOTE = "pageNote";
    private LinkedHashMap<String, String> map;
-   private PageNote pageNote;
    protected PropertyChangeSupport listeners;
+   private PageNote pageNote;
 
    public LinkedHashMap<String, String> getMap()
    {

@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +33,7 @@ public class WorkflowGenerator
    private EventModel eventModel;
    private Workflow rootWorkflow;
 
-   public BiConsumer<String, Object> dumpObjectDiagram;
+   public Consumer<Object> dumpObjectDiagram;
    private EventStormingBoard eventStormingBoard;
    private StringBuilder testBody;
 
@@ -130,7 +131,7 @@ public class WorkflowGenerator
          addSubscribeAndLoadOldEventsMethod(modelManager, port, serviceClazz, body);
          addApplyMethod(modelManager, serviceClazz, body);
 
-         buildGetPageMethod(modelManager, serviceClazz, body);
+         buildGetPageMethod(modelManager, serviceClazz, serviceName, body);
 
          buildInitEventHandlerMapMethod(modelManager, serviceName, serviceClazz, body);
 
@@ -156,15 +157,71 @@ public class WorkflowGenerator
       }
    }
 
-   private void buildGetPageMethod(ClassModelManager modelManager, Clazz serviceClazz, StringBuilder body)
+   private void buildGetPageMethod(ClassModelManager modelManager, Clazz serviceClazz, String serviceName, StringBuilder body)
    {
       String declaration;
       ST st;// apply method
       declaration = "public String getPage(Request request, Response response)";
       body.setLength(0);
+
+      StringBuilder content = new StringBuilder();
+      ServiceNote serviceNote = eventStormingBoard.getFromServices(serviceName);
+      for (PageNote pageNote : serviceNote.getPages()) {
+         content.append(String.format("// %s\n", pageNote.getTime()));
+         String pageId = StrUtil.pageId(pageNote.getTime());
+         content.append(String.format("if (id.equals(\"%s\")) {\n", pageId));
+         buildPage(pageNote, content);
+         content.append("   return html.toString();\n");
+         content.append("}\n\n");
+      }
+
       st = group.getInstanceOf("serviceGetPage");
+      st.add("content", content.toString());
       body.append(st.render());
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
+   }
+
+   private void buildPage(PageNote pageNote, StringBuilder content)
+   {
+      String nextTime = "next_page";
+      if (pageNote.getNextPage() != null) {
+         nextTime = StrUtil.pageId(pageNote.getNextPage().getTime());
+      }
+      content.append(String.format("   html.append(\"<form action=\\\"/page/%s\\\" method=\\\"get\\\">\\n\");\n", nextTime));
+
+      for (PageLine line : pageNote.getLines()) {
+         String firstTag = line.getMap().keySet().iterator().next();
+         if (firstTag.equals("label")) {
+            content.append(String.format("   html.append(\"   <p>%s</p>\\n\");\n", line.getMap().get("label")));
+            continue;
+         }
+         if (firstTag.equals("button")) {
+            // is there an event?
+            String key = line.getMap().get("button");
+            String event = line.getMap().get("event");
+            if (event != null) {
+               // hidden input
+               content.append(String.format(
+                     "   html.append(\"   <p><input id=\\\"event\\\" name=\\\"event\\\" type=\\\"hidden\\\" value=\\\"%s\\\"></p>\\n\");\n",
+                     event));
+            }
+            content.append(String.format(
+                  "   html.append(\"   <p><input id=\\\"%s\\\" name=\\\"button\\\" type=\\\"submit\\\" value=\\\"%1$s\\\"></p>\\n\");\n",
+                  key));
+            continue;
+         }
+
+         if (firstTag.equals("input")) {
+            String key = line.getMap().get("input");
+            content.append(String.format(
+                  "   html.append(\"   <p><input id=\\\"%s\\\" name=\\\"%1$s\\\" placeholder=\\\"%1$s?\\\"></p>\\n\");\n",
+                  key));
+            continue;
+         }
+
+         content.append(String.format("   // %s\n", line.getMap().entrySet().iterator().next().getValue()));
+      }
+      content.append("   html.append(\"</form>\\n\");\n");
    }
 
    private void addApplyMethod(ClassModelManager modelManager, Clazz serviceClazz, StringBuilder body)
@@ -409,7 +466,22 @@ public class WorkflowGenerator
          testBody.append("\n// workflow " + workflow.getName());
          for (WorkflowNote note : workflow.getNotes()) {
             // Send user events
-            if (note instanceof EventNote) {
+            if (note instanceof PageNote) {
+               PageNote pageNote = (PageNote) note;
+               String port = pageNote.getService().getPort();
+               testBody.append(String.format("\n// page %s\n", note.getTime()));
+               String pageId = note.getTime().replaceAll("\\:", "_");
+               testBody.append(String.format("open(\"http://localhost:%s/page/%s\");\n", port, pageId));
+               for (PageLine line : pageNote.getLines()) {
+                  String fill = line.getMap().get("fill");
+                  if (fill != null) {
+                     String id = line.getMap().get("input");
+                     testBody.append(String.format("$(\"#%s\").setValue(\"%s\");\n", id, fill));
+                  }
+               }
+               testBody.append(String.format("$(\"#%s\").click();\n", pageNote.getButtonId()));
+            }
+            else if (note instanceof EventNote) {
                EventNote eventNote = (EventNote) note;
                Interaction interaction = eventNote.getInteraction();
                if (interaction instanceof UserInteraction) {
@@ -500,7 +572,7 @@ public class WorkflowGenerator
       LinkedHashMap<ServiceNote, String> lastChecks = new LinkedHashMap<>();
       LinkedList<Policy> policyList = new LinkedList<>(note.getPolicies());
       // check subscribers
-      while ( ! policyList.isEmpty()) {
+      while (!policyList.isEmpty()) {
          Policy policy = policyList.poll();
          ServiceNote service = policy.getService();
          StringBuilder check = new StringBuilder();
@@ -521,7 +593,7 @@ public class WorkflowGenerator
                   entry = iterator.next();
                   value = entry.getValue();
                   if (value.indexOf(" ") > 0) {
-                     value = "\\\"" +  value + "\\\"";
+                     value = "\\\"" + value + "\\\"";
                   }
                   check.append(String.format("pre.shouldHave(text(\"%s: %s\"));\n",
                         entry.getKey(), value));

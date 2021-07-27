@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	productStored 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
+  classes: 	event 	serviceSubscribed 	productStored 	shopShoesSelected 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	productStored 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
+  subClasses: 	serviceSubscribed 	productStored 	shopShoesSelected 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -28,6 +28,14 @@
   model: 	c
   modified: 	false
   name: 	ProductStored
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- shopShoesSelected: 	org.fulib.classmodel.Clazz
+  attributes: 	shopShoesSelected_event
+  model: 	c
+  modified: 	false
+  name: 	ShopShoesSelected
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -120,6 +128,15 @@
   id: 	ProductStored_place
   modified: 	false
   name: 	place
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- shopShoesSelected_event: 	org.fulib.classmodel.Attribute
+  clazz: 	shopShoesSelected
+  id: 	ShopShoesSelected_event
+  modified: 	false
+  name: 	event
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

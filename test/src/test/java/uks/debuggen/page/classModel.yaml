@@ -1,0 +1,125 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	testSomeEventStorming
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/test/java"
+  packageName: 	uks.debuggen.page
+  packageSrcFolder: 	"test/src/test/java/uks/debuggen/page"
+
+- testSomeEventStorming: 	org.fulib.classmodel.Clazz
+  attributes: 	testSomeEventStorming_eventBroker
+  importList: 	"import org.junit.Test;" 	"import uks.debuggen.page.events.*;" 	"import uks.debuggen.page.Shop.ShopService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import uks.debuggen.page.events.*;" 	"import uks.debuggen.page.Shop.ShopService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
+  methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
+  model: 	c
+  modified: 	false
+  name: 	TestSomeEventStorming
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- testSomeEventStorming_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testSomeEventStorming
+  id: 	TestSomeEventStorming_eventBroker
+  modified: 	false
+  name: 	eventBroker
+  propertyStyle: 	Bean
+  type: 	EventBroker
+  typeSignature: 	EventBroker
+
+- testSomeEventStorming_SomeEventStorming: 	org.fulib.classmodel.FMethod
+  annotations: 	"@Test"
+  clazz: 	testSomeEventStorming
+  declaration: 	"@Test
+public void SomeEventStorming()"
+  id: 	TestSomeEventStorming_SomeEventStorming
+  methodBody: 	"// start the event broker
+eventBroker = new EventBroker();
+eventBroker.start();
+
+// start service
+ShopService shop = new ShopService();
+shop.start();
+
+open(\"http://localhost:42000\");
+$(\"body\").shouldHave(text(\"event broker\"));
+
+SelenideElement pre = $(\"pre\");
+pre.shouldHave(text(\"http://localhost:42001/apply\"));
+
+// workflow working smoothly
+// page 12:50
+open(\"http://localhost:42001/page/12_50\");
+$(\"#shoes\").click();
+
+// create ShopShoesSelected: Shop shoes selected 12:51
+ShopShoesSelected e1251 = new ShopShoesSelected();
+e1251.setId(\"12:51\");
+publish(e1251);
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_51:\"));
+
+// page 12:55
+open(\"http://localhost:42001/page/12_55\");
+$(\"#name\").setValue(\"Alice\");
+$(\"#address\").setValue(\"Wonderland 1\");
+$(\"#ok\").click();
+
+// create OrderRegistered: order registered 13:00
+OrderRegistered e1300 = new OrderRegistered();
+e1300.setId(\"13:00\");
+publish(e1300);
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 13_00:\"));
+
+// page 13:07
+open(\"http://localhost:42001/page/13_07\");
+$(\"#tshirt\").click();
+
+// create ShopTshirtSelected: Shop tshirt selected 13:10
+ShopTshirtSelected e1310 = new ShopTshirtSelected();
+e1310.setId(\"13:10\");
+publish(e1310);
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 13_10:\"));
+
+System.out.println();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	SomeEventStorming
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/TestSomeEventStorming/method/SomeEventStorming()"
+
+- testSomeEventStorming_publish: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testSomeEventStorming
+  declaration: 	"public void publish(Event event)"
+  id: 	TestSomeEventStorming_publish
+  methodBody: 	"String yaml = Yaml.encode(event);
+
+try {
+   HttpResponse<String> response = Unirest.post(\"http://localhost:42000/publish\")
+         .body(yaml)
+         .asString();
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	public
+  name: 	publish
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/TestSomeEventStorming/method/publish(Event)"
+

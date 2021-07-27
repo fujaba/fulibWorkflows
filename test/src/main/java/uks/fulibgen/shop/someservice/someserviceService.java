@@ -263,7 +263,8 @@ public class someserviceService
       StringBuilder html = new StringBuilder();
       String id = request.params("id");
 
-      html.append("This is the Shop Service page " + id);
+
+      html.append("This is the Shop Service page " + id + "\n");
       return html.toString();
    }
 }

@@ -8,9 +8,15 @@ import java.util.Collection;
 public class PageNote extends WorkflowNote
 {
    public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_BUTTON_ID = "buttonId";
    public static final String PROPERTY_LINES = "lines";
+   public static final String PROPERTY_PREVIOUS_PAGE = "previousPage";
+   public static final String PROPERTY_NEXT_PAGE = "nextPage";
    private ServiceNote service;
+   private String buttonId;
    private List<PageLine> lines;
+   private PageNote previousPage;
+   private PageNote nextPage;
 
    public ServiceNote getService()
    {
@@ -36,6 +42,24 @@ public class PageNote extends WorkflowNote
          value.withPages(this);
       }
       this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
+   }
+
+   public String getButtonId()
+   {
+      return this.buttonId;
+   }
+
+   public PageNote setButtonId(String value)
+   {
+      if (Objects.equals(value, this.buttonId))
+      {
+         return this;
+      }
+
+      final String oldValue = this.buttonId;
+      this.buttonId = value;
+      this.firePropertyChange(PROPERTY_BUTTON_ID, oldValue, value);
       return this;
    }
 
@@ -105,11 +129,75 @@ public class PageNote extends WorkflowNote
       return this;
    }
 
+   public PageNote getPreviousPage()
+   {
+      return this.previousPage;
+   }
+
+   public PageNote setPreviousPage(PageNote value)
+   {
+      if (this.previousPage == value)
+      {
+         return this;
+      }
+
+      final PageNote oldValue = this.previousPage;
+      if (this.previousPage != null)
+      {
+         this.previousPage = null;
+         oldValue.setNextPage(null);
+      }
+      this.previousPage = value;
+      if (value != null)
+      {
+         value.setNextPage(this);
+      }
+      this.firePropertyChange(PROPERTY_PREVIOUS_PAGE, oldValue, value);
+      return this;
+   }
+
+   public PageNote getNextPage()
+   {
+      return this.nextPage;
+   }
+
+   public PageNote setNextPage(PageNote value)
+   {
+      if (this.nextPage == value)
+      {
+         return this;
+      }
+
+      final PageNote oldValue = this.nextPage;
+      if (this.nextPage != null)
+      {
+         this.nextPage = null;
+         oldValue.setPreviousPage(null);
+      }
+      this.nextPage = value;
+      if (value != null)
+      {
+         value.setPreviousPage(this);
+      }
+      this.firePropertyChange(PROPERTY_NEXT_PAGE, oldValue, value);
+      return this;
+   }
+
    @Override
    public void removeYou()
    {
       super.removeYou();
       this.withoutLines(new ArrayList<>(this.getLines()));
       this.setService(null);
+      this.setPreviousPage(null);
+      this.setNextPage(null);
+   }
+
+   @Override
+   public String toString()
+   {
+      final StringBuilder result = new StringBuilder(super.toString());
+      result.append(' ').append(this.getButtonId());
+      return result.toString();
    }
 }

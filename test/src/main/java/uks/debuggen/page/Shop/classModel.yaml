@@ -1,17 +1,16 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	shopModel 	shopService 	order 	customer
+  classes: 	shopModel 	shopService
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
-  mainJavaDir: 	"src/main/java"
-  packageName: 	uks.fulibgen.shop.Shop
-  packageSrcFolder: 	"src/main/java/uks/fulibgen/shop/Shop"
+  mainJavaDir: 	"test/src/main/java"
+  packageName: 	uks.debuggen.page.Shop
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/page/Shop"
 
 - shopModel: 	org.fulib.classmodel.Clazz
   attributes: 	shopModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	shopModel_getOrCreateOrder 	shopModel_getOrCreateCustomer
   model: 	c
   modified: 	false
   name: 	ShopModel
@@ -19,26 +18,12 @@
 
 - shopService: 	org.fulib.classmodel.Clazz
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model 	shopService_handlerMap
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_handleOrderRegistered 	shopService_handleOrderApproved 	shopService_handleOrderPicked 	shopService_handleOrderDeclined 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.page.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.page.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
   model: 	c
   modified: 	false
   name: 	ShopService
-  propertyStyle: 	Bean
-
-- order: 	org.fulib.classmodel.Clazz
-  attributes: 	order_id 	order_product 	order_customer 	order_address 	order_state
-  model: 	c
-  modified: 	false
-  name: 	Order
-  propertyStyle: 	Bean
-
-- customer: 	org.fulib.classmodel.Clazz
-  attributes: 	customer_id 	customer_orders
-  model: 	c
-  modified: 	false
-  name: 	Customer
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -58,34 +43,6 @@
   type: 	"LinkedHashMap<String, Object>"
   typeSignature: 	"LinkedHashMap<String,Object>"
 
-- shopModel_getOrCreateOrder: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopModel
-  declaration: 	"public Order getOrCreateOrder(String id)"
-  id: 	ShopModel_getOrCreateOrder
-  methodBody: 	"return (Order) modelMap.computeIfAbsent(id, k -> new Order().setId(k));
-"
-  modified: 	false
-  modifiers: 	public
-  name: 	getOrCreateOrder
-  paramsString: 	"String id"
-  returnType: 	Order
-  signature: 	"class/ShopModel/method/getOrCreateOrder(String)"
-
-- shopModel_getOrCreateCustomer: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopModel
-  declaration: 	"public Customer getOrCreateCustomer(String id)"
-  id: 	ShopModel_getOrCreateCustomer
-  methodBody: 	"return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
-"
-  modified: 	false
-  modifiers: 	public
-  name: 	getOrCreateCustomer
-  paramsString: 	"String id"
-  returnType: 	Customer
-  signature: 	"class/ShopModel/method/getOrCreateCustomer(String)"
-
 - shopService_history: 	org.fulib.classmodel.Attribute
   clazz: 	shopService
   id: 	ShopService_history
@@ -99,7 +56,7 @@
 - shopService_port: 	org.fulib.classmodel.Attribute
   clazz: 	shopService
   id: 	ShopService_port
-  initialization: 	42100
+  initialization: 	42001
   modified: 	false
   name: 	port
   propertyStyle: 	Bean
@@ -186,7 +143,7 @@ catch (Exception e) {
   declaration: 	"private void subscribeAndLoadOldEvents()"
   id: 	ShopService_subscribeAndLoadOldEvents
   methodBody: 	"ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-      .setServiceUrl(\"http://localhost:42100/apply\");
+      .setServiceUrl(\"http://localhost:42001/apply\");
 String json = Yaml.encode(serviceSubscribed);
 try {
    String url = \"http://localhost:42000/subscribe\";
@@ -240,7 +197,7 @@ String id = request.params(\"id\");
 
 // 12:50
 if (id.equals(\"12_50\")) {
-   html.append(\"<form action=\\"/page/13_00\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/12_55\\" method=\\"get\\">\n\");
    // Shop 12:50
    html.append(\"   <p>Welcome to the event shop</p>\n\");
    html.append(\"   <p>What do you want?</p>\n\");
@@ -251,16 +208,30 @@ if (id.equals(\"12_50\")) {
    return html.toString();
 }
 
-// 13:00
-if (id.equals(\"13_00\")) {
-   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
-   // Shop 13:00
-   html.append(\"   <p>welcome to the shop</p>\n\");
-   html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
+// 12:55
+if (id.equals(\"12_55\")) {
+   html.append(\"<form action=\\"/page/13_07\\" method=\\"get\\">\n\");
+   // Shop 12:55
+   html.append(\"   <p>Shoes order</p>\n\");
+   html.append(\"   <p><input id=\\"count\\" name=\\"count\\" placeholder=\\"count?\\"></p>\n\");
    html.append(\"   <p><input id=\\"name\\" name=\\"name\\" placeholder=\\"name?\\"></p>\n\");
    html.append(\"   <p><input id=\\"address\\" name=\\"address\\" placeholder=\\"address?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"order registered 13:01\\"></p>\n\");
-   html.append(\"   <p><input id=\\"OK\\" name=\\"button\\" type=\\"submit\\" value=\\"OK\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"order registered 13:00\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 13:07
+if (id.equals(\"13_07\")) {
+   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   // Shop 13:07
+   html.append(\"   <p>Your order</p>\n\");
+   html.append(\"   <p>order1300 shoes is pending</p>\n\");
+   html.append(\"   <p>What else do you want</p>\n\");
+   html.append(\"   <p><input id=\\"shoes\\" name=\\"button\\" type=\\"submit\\" value=\\"shoes\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"Shop tshirt selected 13:10\\"></p>\n\");
+   html.append(\"   <p><input id=\\"tshirt\\" name=\\"button\\" type=\\"submit\\" value=\\"tshirt\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -276,99 +247,6 @@ return html.toString();"
   returnType: 	String
   signature: 	"class/ShopService/method/getPage(Request,Response)"
 
-- shopService_handleOrderRegistered: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopService
-  declaration: 	"private void handleOrderRegistered(Event e)"
-  id: 	ShopService_handleOrderRegistered
-  methodBody: 	"OrderRegistered event = (OrderRegistered) e;
-if (event.getId().equals(\"13:01\")) {
-
-   Order order1300 = model.getOrCreateOrder(\"order1300\");
-   order1300.setProduct(\"shoes\");
-   order1300.setCustomer(\"Alice\");
-   order1300.setAddress(\"Wonderland 1\");
-   order1300.setState(\"pending\");
-
-   Customer alice = model.getOrCreateCustomer(\"Alice\");
-   alice.setOrders(\"[ order1300 ]\");
-}
-if (event.getId().equals(\"13:11\")) {
-
-   Order order1310 = model.getOrCreateOrder(\"order1310\");
-   order1310.setProduct(\"tshirt\");
-   order1310.setCustomer(\"Alice\");
-   order1310.setAddress(\"Wonderland 1\");
-   order1310.setState(\"pending\");
-
-   Customer alice = model.getOrCreateCustomer(\"Alice\");
-   alice.setOrders(\"[ order1300 order1310 ]\");
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleOrderRegistered
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopService/method/handleOrderRegistered(Event)"
-
-- shopService_handleOrderApproved: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopService
-  declaration: 	"private void handleOrderApproved(Event e)"
-  id: 	ShopService_handleOrderApproved
-  methodBody: 	"OrderApproved event = (OrderApproved) e;
-if (event.getId().equals(\"13:05\")) {
-
-   Order order1300 = model.getOrCreateOrder(\"order1300\");
-   order1300.setState(\"picking\");
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleOrderApproved
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopService/method/handleOrderApproved(Event)"
-
-- shopService_handleOrderPicked: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopService
-  declaration: 	"private void handleOrderPicked(Event e)"
-  id: 	ShopService_handleOrderPicked
-  methodBody: 	"OrderPicked event = (OrderPicked) e;
-if (event.getId().equals(\"14:00\")) {
-
-   Order order1300 = model.getOrCreateOrder(\"order1300\");
-   order1300.setState(\"shipping\");
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleOrderPicked
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopService/method/handleOrderPicked(Event)"
-
-- shopService_handleOrderDeclined: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopService
-  declaration: 	"private void handleOrderDeclined(Event e)"
-  id: 	ShopService_handleOrderDeclined
-  methodBody: 	"OrderDeclined event = (OrderDeclined) e;
-if (event.getId().equals(\"13:14\")) {
-
-   Order order1310 = model.getOrCreateOrder(\"order1310\");
-   order1310.setState(\"out of stock\");
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleOrderDeclined
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopService/method/handleOrderDeclined(Event)"
-
 - shopService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopService
@@ -376,10 +254,6 @@ if (event.getId().equals(\"13:14\")) {
   id: 	ShopService_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
-   handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
-   handlerMap.put(OrderApproved.class, this::handleOrderApproved);
-   handlerMap.put(OrderPicked.class, this::handleOrderPicked);
-   handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
 }
 "
   modified: 	false
@@ -449,67 +323,4 @@ catch (UnirestException e) {
   paramsString: 	"Request req, Response res"
   returnType: 	String
   signature: 	"class/ShopService/method/postApply(Request,Response)"
-
-- order_id: 	org.fulib.classmodel.Attribute
-  clazz: 	order
-  id: 	Order_id
-  modified: 	false
-  name: 	id
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- order_product: 	org.fulib.classmodel.Attribute
-  clazz: 	order
-  id: 	Order_product
-  modified: 	false
-  name: 	product
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- order_customer: 	org.fulib.classmodel.Attribute
-  clazz: 	order
-  id: 	Order_customer
-  modified: 	false
-  name: 	customer
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- order_address: 	org.fulib.classmodel.Attribute
-  clazz: 	order
-  id: 	Order_address
-  modified: 	false
-  name: 	address
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- order_state: 	org.fulib.classmodel.Attribute
-  clazz: 	order
-  id: 	Order_state
-  modified: 	false
-  name: 	state
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- customer_id: 	org.fulib.classmodel.Attribute
-  clazz: 	customer
-  id: 	Customer_id
-  modified: 	false
-  name: 	id
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- customer_orders: 	org.fulib.classmodel.Attribute
-  clazz: 	customer
-  id: 	Customer_orders
-  modified: 	false
-  name: 	orders
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
 
