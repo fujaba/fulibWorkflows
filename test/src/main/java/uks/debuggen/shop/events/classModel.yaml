@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	productStored 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
+  classes: 	event 	serviceSubscribed 	productStored 	shopShoesSelected 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	productStored 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
+  subClasses: 	serviceSubscribed 	productStored 	shopShoesSelected 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -31,8 +31,16 @@
   propertyStyle: 	Bean
   superClass: 	event
 
+- shopShoesSelected: 	org.fulib.classmodel.Clazz
+  attributes: 	shopShoesSelected_event
+  model: 	c
+  modified: 	false
+  name: 	ShopShoesSelected
+  propertyStyle: 	Bean
+  superClass: 	event
+
 - orderRegistered: 	org.fulib.classmodel.Clazz
-  attributes: 	orderRegistered_event 	orderRegistered_trigger 	orderRegistered_product 	orderRegistered_customer 	orderRegistered_address
+  attributes: 	orderRegistered_event 	orderRegistered_product 	orderRegistered_name 	orderRegistered_address 	orderRegistered_trigger 	orderRegistered_customer
   model: 	c
   modified: 	false
   name: 	OrderRegistered
@@ -124,20 +132,20 @@
   type: 	String
   typeSignature: 	String
 
-- orderRegistered_event: 	org.fulib.classmodel.Attribute
-  clazz: 	orderRegistered
-  id: 	OrderRegistered_event
+- shopShoesSelected_event: 	org.fulib.classmodel.Attribute
+  clazz: 	shopShoesSelected
+  id: 	ShopShoesSelected_event
   modified: 	false
   name: 	event
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- orderRegistered_trigger: 	org.fulib.classmodel.Attribute
+- orderRegistered_event: 	org.fulib.classmodel.Attribute
   clazz: 	orderRegistered
-  id: 	OrderRegistered_trigger
+  id: 	OrderRegistered_event
   modified: 	false
-  name: 	trigger
+  name: 	event
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -151,11 +159,11 @@
   type: 	String
   typeSignature: 	String
 
-- orderRegistered_customer: 	org.fulib.classmodel.Attribute
+- orderRegistered_name: 	org.fulib.classmodel.Attribute
   clazz: 	orderRegistered
-  id: 	OrderRegistered_customer
+  id: 	OrderRegistered_name
   modified: 	false
-  name: 	customer
+  name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -165,6 +173,24 @@
   id: 	OrderRegistered_address
   modified: 	false
   name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderRegistered_trigger: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_trigger
+  modified: 	false
+  name: 	trigger
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderRegistered_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegistered
+  id: 	OrderRegistered_customer
+  modified: 	false
+  name: 	customer
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
