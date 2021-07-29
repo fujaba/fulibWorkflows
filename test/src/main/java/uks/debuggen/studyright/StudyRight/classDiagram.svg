@@ -1,0 +1,34 @@
+<svg width="760px" height="118px"
+ viewBox="0.00 0.00 760.00 118.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 114)">
+<title>uks.debuggen.studyright.StudyRight</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-114 756,-114 756,4 -4,4"/>
+<!-- Room -->
+<g id="node1" class="node"><title>Room</title>
+<polygon fill="none" stroke="black" points="8,-70 8,-91 92,-91 92,-70 8,-70"/>
+<text text-anchor="start" x="32" y="-76.8" font-family="Times New Roman,serif" font-size="14.00">Room</text>
+<polygon fill="none" stroke="black" points="8,-19 8,-70 92,-70 92,-19 8,-19"/>
+<text text-anchor="start" x="11" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="11" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">credits :String</text>
+<text text-anchor="start" x="11" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">doors :String</text>
+</g>
+<!-- StudyRightModel -->
+<g id="node2" class="node"><title>StudyRightModel</title>
+<polygon fill="none" stroke="black" points="126,-55 126,-76 382,-76 382,-55 126,-55"/>
+<text text-anchor="start" x="204" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">StudyRightModel</text>
+<polygon fill="none" stroke="black" points="126,-34 126,-55 382,-55 382,-34 126,-34"/>
+<text text-anchor="start" x="129" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+</g>
+<!-- StudyRightService -->
+<g id="node3" class="node"><title>StudyRightService</title>
+<polygon fill="none" stroke="black" points="416,-85 416,-106 744,-106 744,-85 416,-85"/>
+<text text-anchor="start" x="527.5" y="-91.8" font-family="Times New Roman,serif" font-size="14.00">StudyRightService</text>
+<polygon fill="none" stroke="black" points="416,-4 416,-85 744,-85 744,-4 416,-4"/>
+<text text-anchor="start" x="419" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="419" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="419" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="419" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">model :StudyRightModel</text>
+<text text-anchor="start" x="419" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+</g>
+</g>
+</svg>

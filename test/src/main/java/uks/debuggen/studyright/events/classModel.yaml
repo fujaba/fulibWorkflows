@@ -1,0 +1,67 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	event 	serviceSubscribed 	roomsLoaded
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/main/java"
+  packageName: 	uks.debuggen.studyright.events
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/studyright/events"
+
+- event: 	org.fulib.classmodel.Clazz
+  attributes: 	event_id
+  model: 	c
+  modified: 	false
+  name: 	Event
+  propertyStyle: 	Bean
+  subClasses: 	serviceSubscribed 	roomsLoaded
+
+- serviceSubscribed: 	org.fulib.classmodel.Clazz
+  attributes: 	serviceSubscribed_serviceUrl
+  model: 	c
+  modified: 	false
+  name: 	ServiceSubscribed
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- roomsLoaded: 	org.fulib.classmodel.Clazz
+  attributes: 	roomsLoaded_event
+  model: 	c
+  modified: 	false
+  name: 	RoomsLoaded
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- event_id: 	org.fulib.classmodel.Attribute
+  clazz: 	event
+  id: 	Event_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- serviceSubscribed_serviceUrl: 	org.fulib.classmodel.Attribute
+  clazz: 	serviceSubscribed
+  id: 	ServiceSubscribed_serviceUrl
+  modified: 	false
+  name: 	serviceUrl
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- roomsLoaded_event: 	org.fulib.classmodel.Attribute
+  clazz: 	roomsLoaded
+  id: 	RoomsLoaded_event
+  modified: 	false
+  name: 	event
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+

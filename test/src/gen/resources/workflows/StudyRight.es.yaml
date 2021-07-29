@@ -1,0 +1,21 @@
+
+- service: StudyRight
+  port: 42400
+
+- action: Alice
+
+- page:
+    - name: StudyRight 11:00
+    - label: Welcome at Study Right
+    - label: Find your way, start with math
+    - button: ok
+      event: rooms loaded 12:00
+
+- policy: StudyRight
+  trigger: 12:00
+
+- data: 12:01
+  room: math
+  credits: 23
+  doors: [algebra modeling arts]
+

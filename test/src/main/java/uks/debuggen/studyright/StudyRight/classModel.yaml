@@ -1,0 +1,394 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	studyRightModel 	studyRightService 	room
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/main/java"
+  packageName: 	uks.debuggen.studyright.StudyRight
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/studyright/StudyRight"
+
+- studyRightModel: 	org.fulib.classmodel.Clazz
+  attributes: 	studyRightModel_modelMap
+  importList: 	"import java.util.LinkedHashMap;"
+  imports: 	"import java.util.LinkedHashMap;"
+  methods: 	studyRightModel_getOrCreateRoom
+  model: 	c
+  modified: 	false
+  name: 	StudyRightModel
+  propertyStyle: 	Bean
+
+- studyRightService: 	org.fulib.classmodel.Clazz
+  attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model 	studyRightService_handlerMap
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleRoomsLoaded 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply
+  model: 	c
+  modified: 	false
+  name: 	StudyRightService
+  propertyStyle: 	Bean
+
+- room: 	org.fulib.classmodel.Clazz
+  attributes: 	room_id 	room_credits 	room_doors
+  model: 	c
+  modified: 	false
+  name: 	Room
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- studyRightModel_modelMap: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightModel
+  id: 	StudyRightModel_modelMap
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	modelMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, Object>"
+  typeSignature: 	"LinkedHashMap<String,Object>"
+
+- studyRightModel_getOrCreateRoom: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightModel
+  declaration: 	"public Room getOrCreateRoom(String id)"
+  id: 	StudyRightModel_getOrCreateRoom
+  methodBody: 	"return (Room) modelMap.computeIfAbsent(id, k -> new Room().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateRoom
+  paramsString: 	"String id"
+  returnType: 	Room
+  signature: 	"class/StudyRightModel/method/getOrCreateRoom(String)"
+
+- studyRightService_history: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightService
+  id: 	StudyRightService_history
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	history
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, Event>"
+  typeSignature: 	"LinkedHashMap<String,Event>"
+
+- studyRightService_port: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightService
+  id: 	StudyRightService_port
+  initialization: 	42400
+  modified: 	false
+  name: 	port
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- studyRightService_spark: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightService
+  id: 	StudyRightService_spark
+  modified: 	false
+  name: 	spark
+  propertyStyle: 	Bean
+  type: 	Service
+  typeSignature: 	Service
+
+- studyRightService_model: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightService
+  id: 	StudyRightService_model
+  modified: 	false
+  name: 	model
+  propertyStyle: 	Bean
+  type: 	StudyRightModel
+  typeSignature: 	StudyRightModel
+
+- studyRightService_handlerMap: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightService
+  id: 	StudyRightService_handlerMap
+  modified: 	false
+  name: 	handlerMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Consumer<Event>>"
+  typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
+
+- studyRightService_start: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"public void start()"
+  id: 	StudyRightService_start
+  methodBody: 	"model = new StudyRightModel();
+ExecutorService executor = Executors.newSingleThreadExecutor();
+spark = Service.ignite();
+spark.port(port);
+spark.get(\"/page/:id\", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());
+spark.get(\"/\", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
+spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+executor.submit(this::subscribeAndLoadOldEvents);
+Logger.getGlobal().info(\"StudyRight service is up and running on port \" + port);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	start
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/start()"
+
+- studyRightService_getHello: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private String getHello(Request req, Response res)"
+  id: 	StudyRightService_getHello
+  methodBody: 	"try {
+   String events = Yaml.encode(getHistory().values().toArray());
+   String objects = Yaml.encode(model.getModelMap().values().toArray());
+   return \"<p id='StudyRight'>This is the StudyRight service. </p>\n\" +
+         \"<pre id=\\"history\\">\" + events + \"</pre>\n\" +
+         \"<pre id=\\"data\\">\" + objects + \"</pre>\n\" +
+         \"\";
+}
+catch (Exception e) {
+   Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
+   return \"StudyRight Error \" + e.getMessage();
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	getHello
+  paramsString: 	"Request req, Response res"
+  returnType: 	String
+  signature: 	"class/StudyRightService/method/getHello(Request,Response)"
+
+- studyRightService_subscribeAndLoadOldEvents: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void subscribeAndLoadOldEvents()"
+  id: 	StudyRightService_subscribeAndLoadOldEvents
+  methodBody: 	"ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+      .setServiceUrl(\"http://localhost:42400/apply\");
+String json = Yaml.encode(serviceSubscribed);
+try {
+   String url = \"http://localhost:42000/subscribe\";
+   HttpResponse<String> response = Unirest
+         .post(url)
+         .body(json)
+         .asString();
+   String body = response.getBody();
+   Map<String, Object> objectMap = Yaml.decode(body);
+   for (Object obj : objectMap.values()) {
+      apply((Event) obj);
+   }
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	private
+  name: 	subscribeAndLoadOldEvents
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/subscribeAndLoadOldEvents()"
+
+- studyRightService_apply: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"public void apply(Event event)"
+  id: 	StudyRightService_apply
+  methodBody: 	"if (history.get(event.getId()) != null) {
+   return;
+}
+initEventHandlerMap();
+Consumer<Event> handler = handlerMap.computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+handler.accept(event);
+history.put(event.getId(), event);
+publish(event);"
+  modified: 	false
+  modifiers: 	public
+  name: 	apply
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/apply(Event)"
+
+- studyRightService_getPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"public String getPage(Request request, Response response)"
+  id: 	StudyRightService_getPage
+  methodBody: 	"// no fulib
+// add your page handling here
+return getDemoPage(request, response);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/StudyRightService/method/getPage(Request,Response)"
+
+- studyRightService_getDemoPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"public String getDemoPage(Request request, Response response)"
+  id: 	StudyRightService_getDemoPage
+  methodBody: 	"StringBuilder html = new StringBuilder();
+String id = request.params(\"id\");
+String event = request.queryParams(\"event\");
+
+if (\"rooms loaded 12:00\".equals(event)) {
+
+   // create RoomsLoaded: rooms loaded 12:00
+   RoomsLoaded e1200 = new RoomsLoaded();
+   e1200.setId(\"12:00\");
+   publish(e1200);
+}
+
+
+
+// 11:00
+if (id.equals(\"11_00\")) {
+   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   // StudyRight 11:00
+   html.append(\"   <p>Welcome at Study Right</p>\n\");
+   html.append(\"   <p>Find your way, start with math</p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"rooms loaded 12:00\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+
+
+html.append(\"This is the Shop Service page \" + id + \"\n\");
+return html.toString();"
+  modified: 	false
+  modifiers: 	public
+  name: 	getDemoPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/StudyRightService/method/getDemoPage(Request,Response)"
+
+- studyRightService_handleRoomsLoaded: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleRoomsLoaded(Event e)"
+  id: 	StudyRightService_handleRoomsLoaded
+  methodBody: 	"RoomsLoaded event = (RoomsLoaded) e;
+if (event.getId().equals(\"12:00\")) {
+
+   Room math = model.getOrCreateRoom(\"math\");
+   math.setCredits(\"23\");
+   math.setDoors(\"[algebra modeling arts]\");
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleRoomsLoaded
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleRoomsLoaded(Event)"
+
+- studyRightService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void initEventHandlerMap()"
+  id: 	StudyRightService_initEventHandlerMap
+  methodBody: 	"if (handlerMap == null) {
+   handlerMap = new LinkedHashMap<>();
+   handlerMap.put(RoomsLoaded.class, this::handleRoomsLoaded);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	initEventHandlerMap
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/initEventHandlerMap()"
+
+- studyRightService_ignoreEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void ignoreEvent(Event event)"
+  id: 	StudyRightService_ignoreEvent
+  methodBody: 	"// empty
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	ignoreEvent
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/ignoreEvent(Event)"
+
+- studyRightService_publish: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"public void publish(Event event)"
+  id: 	StudyRightService_publish
+  methodBody: 	"String json = Yaml.encode(event);
+
+try {
+   HttpResponse<String> response = Unirest
+         .post(\"http://localhost:42000/publish\")
+         .body(json)
+         .asString();
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	public
+  name: 	publish
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/publish(Event)"
+
+- studyRightService_postApply: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private String postApply(Request req, Response res)"
+  id: 	StudyRightService_postApply
+  methodBody: 	"      try {
+         String body = req.body();
+         Map<String, Object> map = Yaml.decode(body);
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            apply(event);
+         }
+      }
+      catch (Exception e) {
+         Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+      }
+      return \"apply done\";"
+  modified: 	false
+  modifiers: 	private
+  name: 	postApply
+  paramsString: 	"Request req, Response res"
+  returnType: 	String
+  signature: 	"class/StudyRightService/method/postApply(Request,Response)"
+
+- room_id: 	org.fulib.classmodel.Attribute
+  clazz: 	room
+  id: 	Room_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- room_credits: 	org.fulib.classmodel.Attribute
+  clazz: 	room
+  id: 	Room_credits
+  modified: 	false
+  name: 	credits
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- room_doors: 	org.fulib.classmodel.Attribute
+  clazz: 	room
+  id: 	Room_doors
+  modified: 	false
+  name: 	doors
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+

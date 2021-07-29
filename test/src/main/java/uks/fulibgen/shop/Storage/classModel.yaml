@@ -21,7 +21,7 @@
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model 	storageService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_handleProductStored 	storageService_handleOrderRegistered 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
+  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_handleProductStored 	storageService_handleOrderRegistered 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
   model: 	c
   modified: 	false
   name: 	StorageService
@@ -235,6 +235,22 @@ publish(event);"
   clazz: 	storageService
   declaration: 	"public String getPage(Request request, Response response)"
   id: 	StorageService_getPage
+  methodBody: 	"// no fulib
+// add your page handling here
+return getDemoPage(request, response);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/StorageService/method/getPage(Request,Response)"
+
+- storageService_getDemoPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"public String getDemoPage(Request request, Response response)"
+  id: 	StorageService_getDemoPage
   methodBody: 	"StringBuilder html = new StringBuilder();
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
@@ -245,10 +261,10 @@ html.append(\"This is the Shop Service page \" + id + \"\n\");
 return html.toString();"
   modified: 	false
   modifiers: 	public
-  name: 	getPage
+  name: 	getDemoPage
   paramsString: 	"Request request, Response response"
   returnType: 	String
-  signature: 	"class/StorageService/method/getPage(Request,Response)"
+  signature: 	"class/StorageService/method/getDemoPage(Request,Response)"
 
 - storageService_handleProductStored: 	org.fulib.classmodel.FMethod
   annotations: 	""

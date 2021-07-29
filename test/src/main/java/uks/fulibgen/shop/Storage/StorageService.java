@@ -306,6 +306,13 @@ public class StorageService
 
    public String getPage(Request request, Response response)
    {
+      // no fulib
+      // add your page handling here
+      return getDemoPage(request, response);
+   }
+
+   public String getDemoPage(Request request, Response response)
+   {
       StringBuilder html = new StringBuilder();
       String id = request.params("id");
       String event = request.queryParams("event");

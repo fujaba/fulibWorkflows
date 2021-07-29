@@ -160,9 +160,17 @@ public class WorkflowGenerator
    {
       String declaration;
       ST st;// apply method
+
       declaration = "public String getPage(Request request, Response response)";
       body.setLength(0);
+      body.append("// no fulib\n");
+      body.append("// add your page handling here\n");
+      body.append("return getDemoPage(request, response);\n");
+      modelManager.haveMethod(serviceClazz, declaration, body.toString());
 
+      // getDemoPage method
+      body.setLength(0);
+      declaration = "public String getDemoPage(Request request, Response response)";
       StringBuilder eventHandling = new StringBuilder();
       StringBuilder content = new StringBuilder();
       ServiceNote serviceNote = eventStormingBoard.getFromServices(serviceName);

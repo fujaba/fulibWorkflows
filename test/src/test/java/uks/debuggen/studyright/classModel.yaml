@@ -1,0 +1,105 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	testSomeEventStorming
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/test/java"
+  packageName: 	uks.debuggen.studyright
+  packageSrcFolder: 	"test/src/test/java/uks/debuggen/studyright"
+
+- testSomeEventStorming: 	org.fulib.classmodel.Clazz
+  attributes: 	testSomeEventStorming_eventBroker
+  importList: 	"import org.junit.Test;" 	"import uks.debuggen.studyright.events.*;" 	"import uks.debuggen.studyright.StudyRight.StudyRightService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import uks.debuggen.studyright.events.*;" 	"import uks.debuggen.studyright.StudyRight.StudyRightService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
+  methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
+  model: 	c
+  modified: 	false
+  name: 	TestSomeEventStorming
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- testSomeEventStorming_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testSomeEventStorming
+  id: 	TestSomeEventStorming_eventBroker
+  modified: 	false
+  name: 	eventBroker
+  propertyStyle: 	Bean
+  type: 	EventBroker
+  typeSignature: 	EventBroker
+
+- testSomeEventStorming_SomeEventStorming: 	org.fulib.classmodel.FMethod
+  annotations: 	"@Test"
+  clazz: 	testSomeEventStorming
+  declaration: 	"@Test
+public void SomeEventStorming()"
+  id: 	TestSomeEventStorming_SomeEventStorming
+  methodBody: 	"// start the event broker
+eventBroker = new EventBroker();
+eventBroker.start();
+
+// start service
+StudyRightService studyRight = new StudyRightService();
+studyRight.start();
+
+open(\"http://localhost:42000\");
+$(\"body\").shouldHave(text(\"event broker\"));
+
+SelenideElement pre = $(\"pre\");
+pre.shouldHave(text(\"http://localhost:42400/apply\"));
+
+// workflow working smoothly
+// page 11:00
+open(\"http://localhost:42400/page/11_00\");
+$(\"#ok\").click();
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_00:\"));
+
+// check StudyRight
+open(\"http://localhost:42400\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_00:\"));
+// check data note 12:01
+pre = $(\"#data\");
+pre.shouldHave(text(\"- math:\"));
+pre.shouldHave(text(\"credits: 23\"));
+pre.shouldHave(text(\"doors: \\"[algebra modeling arts]\\"\"));
+
+System.out.println();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	SomeEventStorming
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/TestSomeEventStorming/method/SomeEventStorming()"
+
+- testSomeEventStorming_publish: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testSomeEventStorming
+  declaration: 	"public void publish(Event event)"
+  id: 	TestSomeEventStorming_publish
+  methodBody: 	"String yaml = Yaml.encode(event);
+
+try {
+   HttpResponse<String> response = Unirest.post(\"http://localhost:42000/publish\")
+         .body(yaml)
+         .asString();
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	public
+  name: 	publish
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/TestSomeEventStorming/method/publish(Event)"
+

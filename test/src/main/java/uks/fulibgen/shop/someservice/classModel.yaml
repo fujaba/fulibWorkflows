@@ -21,7 +21,7 @@
   attributes: 	someserviceService_history 	someserviceService_port 	someserviceService_spark 	someserviceService_model 	someserviceService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	someserviceService_start 	someserviceService_getHello 	someserviceService_subscribeAndLoadOldEvents 	someserviceService_apply 	someserviceService_getPage 	someserviceService_handleProductStored 	someserviceService_initEventHandlerMap 	someserviceService_ignoreEvent 	someserviceService_publish 	someserviceService_postApply
+  methods: 	someserviceService_start 	someserviceService_getHello 	someserviceService_subscribeAndLoadOldEvents 	someserviceService_apply 	someserviceService_getPage 	someserviceService_getDemoPage 	someserviceService_handleProductStored 	someserviceService_initEventHandlerMap 	someserviceService_ignoreEvent 	someserviceService_publish 	someserviceService_postApply
   model: 	c
   modified: 	false
   name: 	someserviceService
@@ -214,6 +214,22 @@ publish(event);"
   clazz: 	someserviceService
   declaration: 	"public String getPage(Request request, Response response)"
   id: 	someserviceService_getPage
+  methodBody: 	"// no fulib
+// add your page handling here
+return getDemoPage(request, response);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/someserviceService/method/getPage(Request,Response)"
+
+- someserviceService_getDemoPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceService
+  declaration: 	"public String getDemoPage(Request request, Response response)"
+  id: 	someserviceService_getDemoPage
   methodBody: 	"StringBuilder html = new StringBuilder();
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
@@ -224,10 +240,10 @@ html.append(\"This is the Shop Service page \" + id + \"\n\");
 return html.toString();"
   modified: 	false
   modifiers: 	public
-  name: 	getPage
+  name: 	getDemoPage
   paramsString: 	"Request request, Response response"
   returnType: 	String
-  signature: 	"class/someserviceService/method/getPage(Request,Response)"
+  signature: 	"class/someserviceService/method/getDemoPage(Request,Response)"
 
 - someserviceService_handleProductStored: 	org.fulib.classmodel.FMethod
   annotations: 	""

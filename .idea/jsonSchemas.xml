@@ -12,7 +12,7 @@
                 <list>
                   <Item>
                     <option name="pattern" value="true" />
-                    <option name="path" value="test/src/gen/resouces/workflows/*.yaml" />
+                    <option name="path" value="*.es.yaml" />
                     <option name="mappingKind" value="Pattern" />
                   </Item>
                   <Item>

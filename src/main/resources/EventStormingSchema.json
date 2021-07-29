@@ -39,13 +39,7 @@
       {
         "type": "object",
         "required": [
-          "read model"
-        ]
-      },
-      {
-        "type": "object",
-        "required": [
-          "command", "button"
+          "page"
         ]
       },
       {

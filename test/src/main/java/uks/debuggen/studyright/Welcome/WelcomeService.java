@@ -1,4 +1,4 @@
-package uks.fulibgen.shop.someservice;
+package uks.debuggen.studyright.Welcome;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -13,11 +13,11 @@ import org.fulib.yaml.Yaml;
 import spark.Request;
 import spark.Response;
 import spark.Service;
-import uks.fulibgen.shop.events.*;
+import uks.debuggen.studyright.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class someserviceService
+public class WelcomeService
 {
    public static final String PROPERTY_HISTORY = "history";
    public static final String PROPERTY_PORT = "port";
@@ -25,9 +25,9 @@ public class someserviceService
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
-   private int port = 42002;
+   private int port = 42001;
    private Service spark;
-   private someserviceModel model;
+   private WelcomeModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
    protected PropertyChangeSupport listeners;
 
@@ -36,7 +36,7 @@ public class someserviceService
       return this.history;
    }
 
-   public someserviceService setHistory(LinkedHashMap<String, Event> value)
+   public WelcomeService setHistory(LinkedHashMap<String, Event> value)
    {
       if (Objects.equals(value, this.history))
       {
@@ -54,7 +54,7 @@ public class someserviceService
       return this.port;
    }
 
-   public someserviceService setPort(int value)
+   public WelcomeService setPort(int value)
    {
       if (value == this.port)
       {
@@ -72,7 +72,7 @@ public class someserviceService
       return this.spark;
    }
 
-   public someserviceService setSpark(Service value)
+   public WelcomeService setSpark(Service value)
    {
       if (Objects.equals(value, this.spark))
       {
@@ -85,19 +85,19 @@ public class someserviceService
       return this;
    }
 
-   public someserviceModel getModel()
+   public WelcomeModel getModel()
    {
       return this.model;
    }
 
-   public someserviceService setModel(someserviceModel value)
+   public WelcomeService setModel(WelcomeModel value)
    {
       if (Objects.equals(value, this.model))
       {
          return this;
       }
 
-      final someserviceModel oldValue = this.model;
+      final WelcomeModel oldValue = this.model;
       this.model = value;
       this.firePropertyChange(PROPERTY_MODEL, oldValue, value);
       return this;
@@ -108,7 +108,7 @@ public class someserviceService
       return this.handlerMap;
    }
 
-   public someserviceService setHandlerMap(LinkedHashMap<Class, Consumer<Event>> value)
+   public WelcomeService setHandlerMap(LinkedHashMap<Class, Consumer<Event>> value)
    {
       if (Objects.equals(value, this.handlerMap))
       {
@@ -123,7 +123,7 @@ public class someserviceService
 
    public void start()
    {
-      model = new someserviceModel();
+      model = new WelcomeModel();
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);
@@ -131,7 +131,7 @@ public class someserviceService
       spark.get("/", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
       executor.submit(this::subscribeAndLoadOldEvents);
-      Logger.getGlobal().info("someservice service is up and running on port " + port);
+      Logger.getGlobal().info("Welcome service is up and running on port " + port);
    }
 
    private String getHello(Request req, Response res)
@@ -139,21 +139,21 @@ public class someserviceService
       try {
          String events = Yaml.encode(getHistory().values().toArray());
          String objects = Yaml.encode(model.getModelMap().values().toArray());
-         return "<p id='someservice'>This is the someservice service. </p>\n" +
+         return "<p id='Welcome'>This is the Welcome service. </p>\n" +
                "<pre id=\"history\">" + events + "</pre>\n" +
                "<pre id=\"data\">" + objects + "</pre>\n" +
                "";
       }
       catch (Exception e) {
          Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
-         return "someservice Error " + e.getMessage();
+         return "Welcome Error " + e.getMessage();
       }
    }
 
    private void subscribeAndLoadOldEvents()
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-            .setServiceUrl("http://localhost:42002/apply");
+            .setServiceUrl("http://localhost:42001/apply");
       String json = Yaml.encode(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
@@ -184,22 +184,39 @@ public class someserviceService
       publish(event);
    }
 
-   private void handleProductStored(Event e)
+   public String getPage(Request request, Response response)
    {
-      ProductStored event = (ProductStored) e;
-      if (event.getId().equals("12:00")) {
+      return getDemoPage(request, response);
+   }
 
-         Box box23 = model.getOrCreateBox("box23");
-         box23.setProduct("shoes");
-         box23.setPlace("shelf23");
+   public String getDemoPage(Request request, Response response)
+   {
+      StringBuilder html = new StringBuilder();
+      String id = request.params("id");
+      String event = request.queryParams("event");
+
+
+      // 11:00
+      if (id.equals("11_00")) {
+         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         // Welcome 11:00
+         html.append("   <p>Welcome at Study Right</p>\n");
+         html.append("   <p>Find your way, start with math</p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
       }
+
+
+
+      html.append("This is the Shop Service page " + id + "\n");
+      return html.toString();
    }
 
    private void initEventHandlerMap()
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(ProductStored.class, this::handleProductStored);
       }
    }
 
@@ -256,24 +273,5 @@ public class someserviceService
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
-   }
-
-   public String getPage(Request request, Response response)
-   {
-      // no fulib
-      // add your page handling here
-      return getDemoPage(request, response);
-   }
-
-   public String getDemoPage(Request request, Response response)
-   {
-      StringBuilder html = new StringBuilder();
-      String id = request.params("id");
-      String event = request.queryParams("event");
-
-
-
-      html.append("This is the Shop Service page " + id + "\n");
-      return html.toString();
    }
 }
