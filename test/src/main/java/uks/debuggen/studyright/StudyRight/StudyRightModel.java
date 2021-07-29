@@ -50,4 +50,9 @@ public class StudyRightModel
       }
       return this.listeners;
    }
+
+   public University getOrCreateUniversity(String id)
+   {
+      return (University) modelMap.computeIfAbsent(id, k -> new University().setId(k));
+   }
 }

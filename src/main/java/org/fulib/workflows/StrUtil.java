@@ -47,4 +47,14 @@ public class StrUtil
    public static String pageId(String time) {
       return time.replaceAll("\\:", "_");
    }
+
+   public static String stripBrackets(String back)
+   {
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;
+   }
 }

@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	studyRightModel 	studyRightService 	room
+  classes: 	studyRightModel 	studyRightService 	university 	room
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	studyRightModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	studyRightModel_getOrCreateRoom
+  methods: 	studyRightModel_getOrCreateUniversity 	studyRightModel_getOrCreateRoom
   model: 	c
   modified: 	false
   name: 	StudyRightModel
@@ -27,12 +27,21 @@
   name: 	StudyRightService
   propertyStyle: 	Bean
 
+- university: 	org.fulib.classmodel.Clazz
+  attributes: 	university_id
+  model: 	c
+  modified: 	false
+  name: 	University
+  propertyStyle: 	Bean
+  roles: 	university_rooms
+
 - room: 	org.fulib.classmodel.Clazz
-  attributes: 	room_id 	room_credits 	room_doors
+  attributes: 	room_id 	room_credits
   model: 	c
   modified: 	false
   name: 	Room
   propertyStyle: 	Bean
+  roles: 	room_uni 	room_doors
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -50,6 +59,20 @@
   propertyStyle: 	Bean
   type: 	"LinkedHashMap<String, Object>"
   typeSignature: 	"LinkedHashMap<String,Object>"
+
+- studyRightModel_getOrCreateUniversity: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightModel
+  declaration: 	"public University getOrCreateUniversity(String id)"
+  id: 	StudyRightModel_getOrCreateUniversity
+  methodBody: 	"return (University) modelMap.computeIfAbsent(id, k -> new University().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateUniversity
+  paramsString: 	"String id"
+  returnType: 	University
+  signature: 	"class/StudyRightModel/method/getOrCreateUniversity(String)"
 
 - studyRightModel_getOrCreateRoom: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -275,9 +298,23 @@ return html.toString();"
   methodBody: 	"RoomsLoaded event = (RoomsLoaded) e;
 if (event.getId().equals(\"12:00\")) {
 
+   University studyRight = model.getOrCreateUniversity(\"StudyRight\");
+
    Room math = model.getOrCreateRoom(\"math\");
    math.setCredits(\"23\");
-   math.setDoors(\"[algebra modeling arts]\");
+   math.setUni(model.getOrCreateUniversity(\"StudyRight\"));
+   math.withDoors(model.getOrCreateRoom(\"modeling\"), model.getOrCreateRoom(\"algebra\"));
+
+   Room modeling = model.getOrCreateRoom(\"modeling\");
+   modeling.setCredits(\"42\");
+   modeling.withDoors(model.getOrCreateRoom(\"math\"), model.getOrCreateRoom(\"algebra\"), model.getOrCreateRoom(\"exam\"));
+
+   Room algebra = model.getOrCreateRoom(\"algebra\");
+   algebra.setCredits(\"12\");
+
+   Room exam = model.getOrCreateRoom(\"exam\");
+   exam.setCredits(\"0\");
+   exam.setUni(model.getOrCreateUniversity(\"StudyRight\"));
 }
 "
   modified: 	false
@@ -365,6 +402,27 @@ catch (UnirestException e) {
   returnType: 	String
   signature: 	"class/StudyRightService/method/postApply(Request,Response)"
 
+- university_id: 	org.fulib.classmodel.Attribute
+  clazz: 	university
+  id: 	University_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- university_rooms: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	university
+  collectionType: 	c1
+  id: 	University_rooms
+  modified: 	false
+  name: 	rooms
+  other: 	room_uni
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - room_id: 	org.fulib.classmodel.Attribute
   clazz: 	room
   id: 	Room_id
@@ -383,12 +441,25 @@ catch (UnirestException e) {
   type: 	String
   typeSignature: 	String
 
-- room_doors: 	org.fulib.classmodel.Attribute
+- room_uni: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
   clazz: 	room
+  id: 	Room_uni
+  modified: 	false
+  name: 	uni
+  other: 	university_rooms
+  propertyStyle: 	Bean
+
+- room_doors: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	room
+  collectionType: 	c1
   id: 	Room_doors
   modified: 	false
   name: 	doors
+  other: 	room_doors
   propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
+  roleType: 	"java.util.ArrayList<%s>"
 

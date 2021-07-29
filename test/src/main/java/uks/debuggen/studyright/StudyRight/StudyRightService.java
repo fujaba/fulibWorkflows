@@ -242,9 +242,23 @@ public class StudyRightService
       RoomsLoaded event = (RoomsLoaded) e;
       if (event.getId().equals("12:00")) {
 
+         University studyRight = model.getOrCreateUniversity("StudyRight");
+
          Room math = model.getOrCreateRoom("math");
          math.setCredits("23");
-         math.setDoors("[algebra modeling arts]");
+         math.setUni(model.getOrCreateUniversity("StudyRight"));
+         math.withDoors(model.getOrCreateRoom("modeling"), model.getOrCreateRoom("algebra"));
+
+         Room modeling = model.getOrCreateRoom("modeling");
+         modeling.setCredits("42");
+         modeling.withDoors(model.getOrCreateRoom("math"), model.getOrCreateRoom("algebra"), model.getOrCreateRoom("exam"));
+
+         Room algebra = model.getOrCreateRoom("algebra");
+         algebra.setCredits("12");
+
+         Room exam = model.getOrCreateRoom("exam");
+         exam.setCredits("0");
+         exam.setUni(model.getOrCreateUniversity("StudyRight"));
       }
    }
 

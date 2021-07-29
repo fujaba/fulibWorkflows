@@ -83,12 +83,17 @@ public class EventModel
          }
          else if (entry.getKey().equalsIgnoreCase("Data")) {
             Map.Entry<String, String> typeEntry = iterator.next();
+            String className = StrUtil.cap(typeEntry.getKey());
+            String objectId = typeEntry.getValue();
+
             DataNote note = new DataNote();
             note.setTime(entry.getValue());
             note.setMap(map);
             note.setWorkflow(getRootWorkflow());
             note.setDataType(typeEntry.getKey());
             addToStepsOfLastActor(note);
+            ServiceNote serviceNote = ((Policy) lastActor).getService();
+            serviceNote.getObjectMap().put(objectId, className);
          }
          else if (entry.getKey().equalsIgnoreCase("event")) {
             EventNote eventNote = new EventNote();

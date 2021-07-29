@@ -3,6 +3,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.fulib.FulibTools;
 import org.fulib.yaml.Yaml;
 import org.junit.Test;
 import uks.debuggen.studyright.StudyRight.StudyRightService;
@@ -68,11 +69,29 @@ public class TestSomeEventStorming
       open("http://localhost:42400");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
+      // check data note 12:00:01
+      pre = $("#data");
+      pre.shouldHave(text("- StudyRight:"));
       // check data note 12:01
       pre = $("#data");
       pre.shouldHave(text("- math:"));
       pre.shouldHave(text("credits: 23"));
-      pre.shouldHave(text("doors: \"[algebra modeling arts]\""));
+      pre.shouldHave(text("uni: StudyRight"));
+      pre.shouldHave(text("doors: modeling algebra"));
+      // check data note 12:02
+      pre = $("#data");
+      pre.shouldHave(text("- modeling:"));
+      pre.shouldHave(text("credits: 42"));
+      pre.shouldHave(text("doors: math algebra exam"));
+      // check data note 12:03
+      pre = $("#data");
+      pre.shouldHave(text("- algebra:"));
+      pre.shouldHave(text("credits: 12"));
+      // check data note 12:04
+      pre = $("#data");
+      pre.shouldHave(text("- exam:"));
+      pre.shouldHave(text("credits: 0"));
+      pre.shouldHave(text("uni: StudyRight"));
 
       System.out.println();
    }

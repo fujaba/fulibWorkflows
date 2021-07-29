@@ -4,6 +4,7 @@ import org.fulib.Fulib;
 import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
 import org.fulib.builder.Type;
+import org.fulib.classmodel.AssocRole;
 import org.fulib.classmodel.Clazz;
 import org.fulib.tables.ObjectTable;
 import org.stringtemplate.v4.ST;
@@ -132,7 +133,7 @@ public class WorkflowGenerator
 
          buildGetPageMethod(modelManager, serviceClazz, serviceName, body);
 
-         buildInitEventHandlerMapMethod(modelManager, serviceName, serviceClazz, body);
+         buildInitEventHandlerMapMethod(modelManager, serviceNote, serviceClazz, body);
 
          // ignoreEvents method
          declaration = "private void ignoreEvent(Event event)";
@@ -299,7 +300,7 @@ public class WorkflowGenerator
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
    }
 
-   private void buildInitEventHandlerMapMethod(ClassModelManager modelManager, String serviceName, Clazz serviceClazz, StringBuilder body)
+   private void buildInitEventHandlerMapMethod(ClassModelManager modelManager, ServiceNote serviceNote, Clazz serviceClazz, StringBuilder body)
    {
       String declaration;
       // initHandlerMap
@@ -307,30 +308,28 @@ public class WorkflowGenerator
       body.setLength(0);
       body.append("if (handlerMap == null) {\n");
       body.append("   handlerMap = new LinkedHashMap<>();\n");
-      addHandlersToInitEventHandlerMap(modelManager, serviceClazz, serviceName, body);
+      addHandlersToInitEventHandlerMap(modelManager, serviceClazz, serviceNote, body);
       body.append("}\n");
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
    }
 
-   private void addHandlersToInitEventHandlerMap(ClassModelManager modelManager, Clazz serviceClazz, String serviceName, StringBuilder body)
+   private void addHandlersToInitEventHandlerMap(ClassModelManager modelManager, Clazz serviceClazz, ServiceNote serviceNote, StringBuilder body)
    {
-      ServiceNote service = eventStormingBoard.getFromServices(serviceName);
-      for (EventType eventType : service.getHandledEventTypes()) {
+      for (EventType eventType : serviceNote.getHandledEventTypes()) {
          String eventTypeName = eventType.getEventTypeName();
          body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
                eventTypeName, eventTypeName));
-         addEventHandlerMethod(modelManager, serviceClazz, serviceName, eventType);
+         addEventHandlerMethod(modelManager, serviceClazz, serviceNote, eventType);
       }
    }
 
-   private void addEventHandlerMethod(ClassModelManager modelManager, Clazz serviceClazz, String serviceName, EventType eventType)
+   private void addEventHandlerMethod(ClassModelManager modelManager, Clazz serviceClazz, ServiceNote serviceNote, EventType eventType)
    {
       StringBuilder body = new StringBuilder();
       String eventTypeName = eventType.getEventTypeName();
       String declaration = String.format("private void handle%s(Event e)", eventTypeName);
       body.append(String.format("%s event = (%s) e;\n", eventTypeName, eventTypeName));
 
-      ServiceNote serviceNote = eventStormingBoard.getFromServices(serviceName);
       ObjectTable<Object> table = new ObjectTable<>("service", serviceNote);
       LinkedHashSet<Object> policies = table.expandLink("eventType", ServiceNote.PROPERTY_HANDLED_EVENT_TYPES)
             .filter(et -> et == eventType)
@@ -344,28 +343,28 @@ public class WorkflowGenerator
          EventNote triggerEvent = policy.getTrigger();
          String eventId = triggerEvent.getTime();
          body.append(String.format("if (event.getId().equals(\"%s\")) {\n", eventId));
-         addMockupData(modelManager, serviceName, policy, body);
+         addMockupData(modelManager, serviceNote, policy, body);
          body.append("}\n");
       }
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
    }
 
-   private void addMockupData(ClassModelManager modelManager, String serviceName, Policy policy, StringBuilder body)
+   private void addMockupData(ClassModelManager modelManager, ServiceNote serviceNote, Policy policy, StringBuilder body)
    {
       for (WorkflowNote note : policy.getSteps()) {
          if (note instanceof DataNote) {
             //    Example
-            //      - StorageData: 12:00:01
-            //        Box: box23
+            //      - data: 12:00:01
+            //        box: box23
             //        product: shoes
             //        place: shelf23
             LinkedHashMap<String, String> map = note.getMap();
             LinkedHashMap<String, String> mockup = (LinkedHashMap<String, String>) ((LinkedHashMap<String, String>) map).clone();
             Map.Entry<String, String> firstEntry = mockup.entrySet().iterator().next();
             mockup.remove(firstEntry.getKey());
-            addModelClass(modelManager, mockup);
-            addGetOrCreateMethodToServiceModel(modelManager, serviceName, mockup);
-            addCreateAndInitModelObjectCode(mockup, body);
+            addModelClass(modelManager, serviceNote, mockup);
+            addGetOrCreateMethodToServiceModel(modelManager, serviceNote.getName(), mockup);
+            addCreateAndInitModelObjectCode(modelManager, serviceNote, mockup, body);
          }
          else {
             // fire event
@@ -401,46 +400,104 @@ public class WorkflowGenerator
       modelManager.haveMethod(modelClazz, declaration, body);
    }
 
-   private void addModelClass(ClassModelManager modelManager, LinkedHashMap<String, String> map)
+   private void addModelClass(ClassModelManager modelManager, ServiceNote serviceNote, LinkedHashMap<String, String> map)
    {
       Iterator<Map.Entry<String, String>> iter = map.entrySet().iterator();
       Map.Entry<String, String> entry = iter.next();
       String type = entry.getKey();
+      String objectId = entry.getValue();
       type = org.fulib.StrUtil.cap(type);
       Clazz clazz = modelManager.haveClass(type);
       modelManager.haveAttribute(clazz, "id", Type.STRING);
 
       while (iter.hasNext()) {
          entry = iter.next();
-         modelManager.haveAttribute(clazz, entry.getKey(), Type.STRING);
+
+         String attrName = entry.getKey();
+         String value = entry.getValue();
+         if (attrName.endsWith(".back")) {
+            continue;
+         }
+         String back = map.get(attrName + ".back");
+         if (back != null) {
+            // its an assoc
+            int srcSize = value.startsWith("[") ? 42 : 1;
+            value = StrUtil.stripBrackets(value).split("\\s+")[0];
+            // find other class
+            String otherClassName = serviceNote.getObjectMap().get(value);
+            Clazz otherClazz = modelManager.haveClass(otherClassName);
+            int backSize = back.startsWith("[") ? 42 : 1;
+            back = StrUtil.stripBrackets(back);
+            // declare assoc
+            modelManager.associate(clazz, attrName, srcSize, otherClazz, back, backSize);
+            // remove string attributes
+
+            clazz.withoutAttributes(clazz.getAttribute(attrName));
+            otherClazz.withoutAttributes(otherClazz.getAttribute(back));
+            continue;
+         }
+         if (clazz.getRole(attrName) != null) {
+            // its an assoc and already known
+            continue;
+         }
+         modelManager.haveAttribute(clazz, attrName, Type.STRING);
       }
    }
 
 
-   private String addCreateAndInitModelObjectCode(LinkedHashMap<String, String> map, StringBuilder body)
+   private String addCreateAndInitModelObjectCode(ClassModelManager modelManager, ServiceNote serviceNote, LinkedHashMap<String, String> map, StringBuilder body)
    {
       boolean first = true;
       String varName = null;
       String id = null;
-      String eventType = null;
+      String className = null;
+      Clazz clazz = null;
       String statement = null;
       for (Map.Entry<String, String> entry : map.entrySet()) {
+         String value = entry.getValue();
          if (first) {
-            eventType = org.fulib.StrUtil.cap(entry.getKey());
-            id = entry.getValue();
+            className = org.fulib.StrUtil.cap(entry.getKey());
+            clazz = modelManager.haveClass(className);
+            id = value;
             varName = org.fulib.StrUtil.downFirstChar(id);
             statement = String.format("\n" +
                         "   %s %s = model.getOrCreate%s(\"%s\");\n",
-                  eventType, varName, eventType, id);
+                  className, varName, className, id);
             body.append(statement);
             first = false;
             continue;
          }
 
-         String setterName = org.fulib.StrUtil.cap(entry.getKey());
-         statement = String.format("   %s.set%s(\"%s\");\n",
-               varName, setterName, entry.getValue());
-         body.append(statement);
+         String attrName = entry.getKey();
+         if (attrName.endsWith(".back")) {
+            continue;
+         }
+
+         String setterName = org.fulib.StrUtil.cap(attrName);
+         AssocRole role = clazz.getRole(entry.getKey());
+         if (role == null) {
+            statement = String.format("   %s.set%s(\"%s\");\n",
+                  varName, setterName, value);
+            body.append(statement);
+         }
+         else if (value.startsWith("[")) {
+            String[] split = StrUtil.stripBrackets(value).split("\\s+");
+            String firstValue = split[0];
+            String valueClassName = serviceNote.getObjectMap().get(firstValue);
+            for (int i = 0; i < split.length; i++) {
+               split[i] = String.format("model.getOrCreate%s(\"%s\")", valueClassName, split[i]);
+            }
+            String valueList = String.join(", ", split);
+            statement = String.format("   %s.with%s(%s);\n",
+                  varName, setterName, valueList);
+            body.append(statement);
+         }
+         else {
+            String valueClassName = serviceNote.getObjectMap().get(value);
+            statement = String.format("   %s.set%s(model.getOrCreate%s(\"%s\"));\n",
+                  varName, setterName, valueClassName, value);
+            body.append(statement);
+         }
       }
       return varName;
    }
@@ -609,12 +666,19 @@ public class WorkflowGenerator
                check.append(String.format("pre.shouldHave(text(\"- %s:\"));\n", value));
                while (iterator.hasNext()) {
                   entry = iterator.next();
+                  String key = entry.getKey();
+                  if (key.endsWith(".back")) {
+                     continue;
+                  }
                   value = entry.getValue();
-                  if (value.indexOf(" ") > 0) {
+                  if (value.startsWith("[")) {
+                     value = StrUtil.stripBrackets(value);
+                  }
+                  else if (value.indexOf(" ") > 0) {
                      value = "\\\"" + value + "\\\"";
                   }
                   check.append(String.format("pre.shouldHave(text(\"%s: %s\"));\n",
-                        entry.getKey(), value));
+                        key, value));
                }
             }
             else if (step instanceof EventNote) {

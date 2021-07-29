@@ -14,8 +14,27 @@
 - policy: StudyRight
   trigger: 12:00
 
+- data: 12:00:01
+  university: StudyRight
+
 - data: 12:01
   room: math
   credits: 23
-  doors: [algebra modeling arts]
+  uni: StudyRight
+  uni.back: [rooms]
+  doors: [modeling algebra]
+  doors.back: [doors]
 
+- data: 12:02
+  room: modeling
+  credits: 42
+  doors: [math algebra exam]
+
+- data: 12:03
+  room: algebra
+  credits: 12
+
+- data: 12:04
+  room: exam
+  credits: 0
+  uni: StudyRight

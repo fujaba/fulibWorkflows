@@ -1,7 +1,9 @@
 package org.fulib.workflows;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.Future;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Collections;
 import java.util.Collection;
 
@@ -21,6 +23,7 @@ public class ServiceNote extends Note
    private List<EventType> handledEventTypes;
    private EventStormingBoard eventStormingBoard;
    private List<PageNote> pages;
+   private LinkedHashMap<String, String> objectMap = new LinkedHashMap<>();
 
    public String getPort()
    {
@@ -365,5 +368,10 @@ public class ServiceNote extends Note
       this.withoutHandledEventTypes(new ArrayList<>(this.getHandledEventTypes()));
       this.withoutWorkflows(new ArrayList<>(this.getWorkflows()));
       this.setEventStormingBoard(null);
+   }
+
+   public LinkedHashMap<String, String> getObjectMap()
+   {
+      return this.objectMap;
    }
 }
