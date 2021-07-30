@@ -196,6 +196,7 @@ public class StudyRightService
          // StudyRight 11:00
          html.append("   <p>Welcome at Study Right</p>\n");
          html.append("   <p>Find your way, start with math</p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"rooms loaded 12:00\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
@@ -259,6 +260,12 @@ public class StudyRightService
          Room exam = model.getOrCreateRoom("exam");
          exam.setCredits("0");
          exam.setUni(model.getOrCreateUniversity("StudyRight"));
+
+         TourStarted e1201 = new TourStarted();
+
+         e1201.setId("12:01");
+         e1201.setEvent("tour started 12:01");
+         publish(e1201);
       }
    }
 
@@ -267,6 +274,7 @@ public class StudyRightService
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(RoomsLoaded.class, this::handleRoomsLoaded);
+         handlerMap.put(TourStarted.class, this::handleTourStarted);
       }
    }
 
@@ -323,5 +331,15 @@ public class StudyRightService
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
+   }
+
+   private void handleTourStarted(Event e)
+   {
+      TourStarted event = (TourStarted) e;
+      if (event.getId().equals("12:01")) {
+
+         Stop s01 = model.getOrCreateStop("s01");
+         s01.setMotivation("77");
+      }
    }
 }

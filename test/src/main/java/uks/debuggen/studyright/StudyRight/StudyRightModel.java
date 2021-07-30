@@ -55,4 +55,9 @@ public class StudyRightModel
    {
       return (University) modelMap.computeIfAbsent(id, k -> new University().setId(k));
    }
+
+   public Stop getOrCreateStop(String id)
+   {
+      return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
+   }
 }

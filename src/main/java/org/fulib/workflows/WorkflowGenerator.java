@@ -354,14 +354,12 @@ public class WorkflowGenerator
       for (WorkflowNote note : policy.getSteps()) {
          if (note instanceof DataNote) {
             //    Example
-            //      - data: 12:00:01
-            //        box: box23
+            //      - data: box box23
             //        product: shoes
             //        place: shelf23
+            DataNote dataNote = (DataNote) note;
             LinkedHashMap<String, String> map = note.getMap();
-            LinkedHashMap<String, String> mockup = (LinkedHashMap<String, String>) ((LinkedHashMap<String, String>) map).clone();
-            Map.Entry<String, String> firstEntry = mockup.entrySet().iterator().next();
-            mockup.remove(firstEntry.getKey());
+            LinkedHashMap<String, String> mockup = getMockup(map);
             addModelClass(modelManager, serviceNote, mockup);
             addGetOrCreateMethodToServiceModel(modelManager, serviceNote.getName(), mockup);
             addCreateAndInitModelObjectCode(modelManager, serviceNote, mockup, body);
@@ -388,6 +386,26 @@ public class WorkflowGenerator
                   varName));
          }
       }
+   }
+
+   private LinkedHashMap<String, String> getMockup(LinkedHashMap<String, String> map)
+   {
+      Map.Entry<String, String> firstEntry = map.entrySet().iterator().next();
+      LinkedHashMap<String, String> mockup;
+      String value = firstEntry.getValue();
+      String[] split = StrUtil.split(value);
+      if (split.length == 1) {
+         // old style
+         mockup = (LinkedHashMap<String, String>) ((LinkedHashMap<String, String>) map).clone();
+         mockup.remove(firstEntry.getKey());
+      }
+      else {
+         mockup = new LinkedHashMap<>();
+         mockup.put(split[0], split[1]);
+         mockup.putAll(map);
+         mockup.remove("data");
+      }
+      return mockup;
    }
 
    private void addGetOrCreateMethodToServiceModel(ClassModelManager modelManager, String serviceName, LinkedHashMap<String, String> mockup)
@@ -659,8 +677,8 @@ public class WorkflowGenerator
                DataNote dataNote = (DataNote) step;
                check.append(String.format("// check data note %s\n", dataNote.getTime()));
                check.append("pre = $(\"#data\");\n");
-               Iterator<Map.Entry<String, String>> iterator = dataNote.getMap().entrySet().iterator();
-               iterator.next();
+               LinkedHashMap<String, String> mockup = getMockup(dataNote.getMap());
+               Iterator<Map.Entry<String, String>> iterator = mockup.entrySet().iterator();
                Map.Entry<String, String> entry = iterator.next();
                String value = entry.getValue();
                check.append(String.format("pre.shouldHave(text(\"- %s:\"));\n", value));

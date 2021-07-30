@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	studyRightModel 	studyRightService 	university 	room
+  classes: 	studyRightModel 	studyRightService 	university 	room 	stop
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	studyRightModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	studyRightModel_getOrCreateUniversity 	studyRightModel_getOrCreateRoom
+  methods: 	studyRightModel_getOrCreateUniversity 	studyRightModel_getOrCreateRoom 	studyRightModel_getOrCreateStop
   model: 	c
   modified: 	false
   name: 	StudyRightModel
@@ -21,7 +21,7 @@
   attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model 	studyRightService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleRoomsLoaded 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply
+  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleRoomsLoaded 	studyRightService_handleTourStarted 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply
   model: 	c
   modified: 	false
   name: 	StudyRightService
@@ -42,6 +42,13 @@
   name: 	Room
   propertyStyle: 	Bean
   roles: 	room_uni 	room_doors
+
+- stop: 	org.fulib.classmodel.Clazz
+  attributes: 	stop_id 	stop_motivation
+  model: 	c
+  modified: 	false
+  name: 	Stop
+  propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -87,6 +94,20 @@
   paramsString: 	"String id"
   returnType: 	Room
   signature: 	"class/StudyRightModel/method/getOrCreateRoom(String)"
+
+- studyRightModel_getOrCreateStop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightModel
+  declaration: 	"public Stop getOrCreateStop(String id)"
+  id: 	StudyRightModel_getOrCreateStop
+  methodBody: 	"return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateStop
+  paramsString: 	"String id"
+  returnType: 	Stop
+  signature: 	"class/StudyRightModel/method/getOrCreateStop(String)"
 
 - studyRightService_history: 	org.fulib.classmodel.Attribute
   clazz: 	studyRightService
@@ -315,6 +336,12 @@ if (event.getId().equals(\"12:00\")) {
    Room exam = model.getOrCreateRoom(\"exam\");
    exam.setCredits(\"0\");
    exam.setUni(model.getOrCreateUniversity(\"StudyRight\"));
+
+   TourStarted e1201 = new TourStarted();
+
+   e1201.setId(\"12:01\");
+   e1201.setEvent(\"tour started 12:01\");
+   publish(e1201);
 }
 "
   modified: 	false
@@ -324,6 +351,25 @@ if (event.getId().equals(\"12:00\")) {
   returnType: 	void
   signature: 	"class/StudyRightService/method/handleRoomsLoaded(Event)"
 
+- studyRightService_handleTourStarted: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleTourStarted(Event e)"
+  id: 	StudyRightService_handleTourStarted
+  methodBody: 	"TourStarted event = (TourStarted) e;
+if (event.getId().equals(\"12:01\")) {
+
+   Stop s01 = model.getOrCreateStop(\"s01\");
+   s01.setMotivation(\"77\");
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleTourStarted
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleTourStarted(Event)"
+
 - studyRightService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
@@ -332,6 +378,7 @@ if (event.getId().equals(\"12:00\")) {
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(RoomsLoaded.class, this::handleRoomsLoaded);
+   handlerMap.put(TourStarted.class, this::handleTourStarted);
 }
 "
   modified: 	false
@@ -462,4 +509,22 @@ catch (UnirestException e) {
   other: 	room_doors
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- stop_id: 	org.fulib.classmodel.Attribute
+  clazz: 	stop
+  id: 	Stop_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- stop_motivation: 	org.fulib.classmodel.Attribute
+  clazz: 	stop
+  id: 	Stop_motivation
+  modified: 	false
+  name: 	motivation
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 

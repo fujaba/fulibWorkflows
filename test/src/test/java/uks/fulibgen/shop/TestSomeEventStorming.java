@@ -85,7 +85,7 @@ public class TestSomeEventStorming
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
-      // check data note 12:01
+      // check data note box23
       pre = $("#data");
       pre.shouldHave(text("- box23:"));
       pre.shouldHave(text("product: shoes"));
@@ -95,7 +95,7 @@ public class TestSomeEventStorming
       open("http://localhost:42003");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
-      // check data note 12:02
+      // check data note box23
       pre = $("#data");
       pre.shouldHave(text("- box23:"));
       pre.shouldHave(text("product: shoes"));
@@ -124,7 +124,7 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
-      // check data note 13:06
+      // check data note order1300
       pre = $("#data");
       pre.shouldHave(text("- order1300:"));
       pre.shouldHave(text("state: picking"));
@@ -133,7 +133,7 @@ public class TestSomeEventStorming
       open("http://localhost:42003");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
-      // check data note 13:04
+      // check data note pick1300
       pre = $("#data");
       pre.shouldHave(text("- pick1300:"));
       pre.shouldHave(text("order: order1300"));
@@ -158,12 +158,12 @@ public class TestSomeEventStorming
       open("http://localhost:42003");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
-      // check data note 14:01
+      // check data note pick1300
       pre = $("#data");
       pre.shouldHave(text("- pick1300:"));
       pre.shouldHave(text("state: done"));
       pre.shouldHave(text("box: box23"));
-      // check data note 14:02
+      // check data note box23
       pre = $("#data");
       pre.shouldHave(text("- box23:"));
       pre.shouldHave(text("place: shipping"));
@@ -172,7 +172,7 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
-      // check data note 14:03
+      // check data note order1300
       pre = $("#data");
       pre.shouldHave(text("- order1300:"));
       pre.shouldHave(text("state: shipping"));
@@ -195,7 +195,7 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 13_11:"));
-      // check data note 13:12
+      // check data note order1310
       pre = $("#data");
       pre.shouldHave(text("- order1310:"));
       pre.shouldHave(text("state: \"out of stock\""));

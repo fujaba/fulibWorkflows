@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	roomsLoaded
+  classes: 	event 	serviceSubscribed 	roomsLoaded 	tourStarted
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	roomsLoaded
+  subClasses: 	serviceSubscribed 	roomsLoaded 	tourStarted
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -28,6 +28,14 @@
   model: 	c
   modified: 	false
   name: 	RoomsLoaded
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- tourStarted: 	org.fulib.classmodel.Clazz
+  attributes: 	tourStarted_event
+  model: 	c
+  modified: 	false
+  name: 	TourStarted
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -59,6 +67,15 @@
 - roomsLoaded_event: 	org.fulib.classmodel.Attribute
   clazz: 	roomsLoaded
   id: 	RoomsLoaded_event
+  modified: 	false
+  name: 	event
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourStarted_event: 	org.fulib.classmodel.Attribute
+  clazz: 	tourStarted
+  id: 	TourStarted_event
   modified: 	false
   name: 	event
   propertyStyle: 	Bean

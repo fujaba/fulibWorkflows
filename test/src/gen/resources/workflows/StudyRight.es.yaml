@@ -14,27 +14,31 @@
 - policy: StudyRight
   trigger: 12:00
 
-- data: 12:00:01
-  university: StudyRight
+- data: university StudyRight
 
-- data: 12:01
-  room: math
+- data: room math
   credits: 23
   uni: StudyRight
   uni.back: [rooms]
   doors: [modeling algebra]
   doors.back: [doors]
 
-- data: 12:02
-  room: modeling
+- data: room modeling
   credits: 42
   doors: [math algebra exam]
 
-- data: 12:03
-  room: algebra
+- data: room algebra
   credits: 12
 
-- data: 12:04
-  room: exam
+- data: room exam
   credits: 0
   uni: StudyRight
+
+- event: tour started 12:01
+
+- policy: StudyRight
+  trigger: 12:01
+
+- data: Stop s01
+  motivation: 77
+
