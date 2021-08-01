@@ -81,7 +81,7 @@
   superClass: 	event
 
 - tourEdited: 	org.fulib.classmodel.Clazz
-  attributes: 	tourEdited_stops
+  attributes: 	tourEdited_stops 	tourEdited_tourList
   model: 	c
   modified: 	false
   name: 	TourEdited
@@ -97,7 +97,7 @@
   superClass: 	dataEvent
 
 - tourEndFound: 	org.fulib.classmodel.Clazz
-  attributes: 	tourEndFound_event 	tourEndFound_stop 	tourEndFound_tour
+  attributes: 	tourEndFound_event 	tourEndFound_stop 	tourEndFound_tour 	tourEndFound_tourList
   model: 	c
   modified: 	false
   name: 	TourEndFound
@@ -255,6 +255,15 @@
   type: 	String
   typeSignature: 	String
 
+- tourEdited_tourList: 	org.fulib.classmodel.Attribute
+  clazz: 	tourEdited
+  id: 	TourEdited_tourList
+  modified: 	false
+  name: 	tourList
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - tourListEdited_alternatives: 	org.fulib.classmodel.Attribute
   clazz: 	tourListEdited
   id: 	TourListEdited_alternatives
@@ -287,6 +296,15 @@
   id: 	TourEndFound_tour
   modified: 	false
   name: 	tour
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourEndFound_tourList: 	org.fulib.classmodel.Attribute
+  clazz: 	tourEndFound
+  id: 	TourEndFound_tourList
+  modified: 	false
+  name: 	tourList
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

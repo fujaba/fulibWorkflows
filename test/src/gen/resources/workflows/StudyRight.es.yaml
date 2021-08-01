@@ -28,11 +28,13 @@
 
 - data: 12:00:02
   room: modeling
+  uni: StudyRight
   credits: 42
   doors: [math algebra exam]
 
 - data: 12:00:03
   room: algebra
+  uni: StudyRight
   credits: 12
 
 - data: 12:00:04
@@ -135,6 +137,7 @@
 - event: tour end found 12:09
   stop: s08
   tour: tour1
+  tourList: allTours
 
 - policy: StudyRight
   trigger: 12:09
@@ -142,6 +145,7 @@
 - data: 12:09:01
   tour: tour1
   stops: modeling exam
+  tourList: allTours
 
 - event: tour end found 12:10
   stop: s05

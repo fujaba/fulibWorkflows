@@ -410,6 +410,7 @@ handleDemoRoomsLoaded(event);
    RoomEdited modelingEvent = new RoomEdited();
    modelingEvent.setId(\"12:00:02\");
    modelingEvent.setIncrement(\"modeling\");
+   modelingEvent.setUni(\"StudyRight\");
    modelingEvent.setCredits(\"42\");
    modelingEvent.setDoors(\"[math algebra exam]\");
    apply(modelingEvent);
@@ -417,6 +418,7 @@ handleDemoRoomsLoaded(event);
    RoomEdited algebraEvent = new RoomEdited();
    algebraEvent.setId(\"12:00:03\");
    algebraEvent.setIncrement(\"algebra\");
+   algebraEvent.setUni(\"StudyRight\");
    algebraEvent.setCredits(\"12\");
    apply(algebraEvent);
 
@@ -624,6 +626,7 @@ if (event.getId().equals(\"12:08\")) {
    e1209.setEvent(\"tour end found 12:09\");
    e1209.setStop(\"s08\");
    e1209.setTour(\"tour1\");
+   e1209.setTourList(\"allTours\");
    apply(e1209);
 }
 "
@@ -660,6 +663,7 @@ handleDemoTourEndFound(event);
    tour1Event.setId(\"12:09:01\");
    tour1Event.setIncrement(\"tour1\");
    tour1Event.setStops(\"modeling exam\");
+   tour1Event.setTourList(\"allTours\");
    apply(tour1Event);
 
 
@@ -719,6 +723,7 @@ if (event.getId().equals(\"12:11\")) {
   methodBody: 	"UniversityEdited event = (UniversityEdited) e;
 University object = model.getOrCreateUniversity(event.getIncrement());
 for (String name : stripBrackets(event.getRooms()).split(\"\\s+\")) {
+if (name.equals(\"\")) continue;
    object.withRooms(model.getOrCreateRoom(name));
 }
 "
@@ -739,6 +744,7 @@ Room object = model.getOrCreateRoom(event.getIncrement());
 object.setCredits(event.getCredits());
 object.setUni(model.getOrCreateUniversity(event.getUni()));
 for (String name : stripBrackets(event.getDoors()).split(\"\\s+\")) {
+if (name.equals(\"\")) continue;
    object.withDoors(model.getOrCreateRoom(name));
 }
 "
@@ -775,6 +781,7 @@ object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
   methodBody: 	"TourEdited event = (TourEdited) e;
 Tour object = model.getOrCreateTour(event.getIncrement());
 object.setStops(event.getStops());
+object.setTourList(model.getOrCreateTourList(event.getTourList()));
 "
   modified: 	false
   modifiers: 	private
@@ -791,6 +798,7 @@ object.setStops(event.getStops());
   methodBody: 	"TourListEdited event = (TourListEdited) e;
 TourList object = model.getOrCreateTourList(event.getIncrement());
 for (String name : stripBrackets(event.getAlternatives()).split(\"\\s+\")) {
+if (name.equals(\"\")) continue;
    object.withAlternatives(model.getOrCreateTour(name));
 }
 "

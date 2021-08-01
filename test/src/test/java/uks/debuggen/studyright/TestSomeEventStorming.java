@@ -48,6 +48,30 @@ public class TestSomeEventStorming
    }
 
    @Test
+   public void testImplentation()
+   {
+      eventBroker = new EventBroker();
+      eventBroker.start();
+
+      // start service
+      StudyRightService studyRight = new StudyRightService();
+      studyRight.start();
+
+      open("http://localhost:42000");
+      $("body").shouldHave(text("event broker"));
+
+      SelenideElement pre = $("pre");
+      pre.shouldHave(text("http://localhost:42400/apply"));
+
+      // workflow working smoothly
+      // page 11:00
+      open("http://localhost:42400/page/welcome");
+      $("#ok").click();
+
+      System.out.println();
+   }
+
+   @Test
    public void SomeEventStorming()
    {
       // start the event broker
@@ -84,7 +108,6 @@ public class TestSomeEventStorming
 
       // page 12:13
       open("http://localhost:42400/page/12_13");
-      $("#null").click();
 
       System.out.println();
    }

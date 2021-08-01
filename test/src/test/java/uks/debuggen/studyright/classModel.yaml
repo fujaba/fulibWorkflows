@@ -73,7 +73,6 @@ pre.shouldHave(text(\"stops: \\"math algebra modeling exam\\"\"));
 
 // page 12:13
 open(\"http://localhost:42400/page/12_13\");
-$(\"#null\").click();
 
 System.out.println();
 "

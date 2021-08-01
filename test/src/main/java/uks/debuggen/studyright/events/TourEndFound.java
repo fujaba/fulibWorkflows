@@ -6,9 +6,11 @@ public class TourEndFound extends Event
    public static final String PROPERTY_EVENT = "event";
    public static final String PROPERTY_STOP = "stop";
    public static final String PROPERTY_TOUR = "tour";
+   public static final String PROPERTY_TOUR_LIST = "tourList";
    private String event;
    private String stop;
    private String tour;
+   private String tourList;
 
    public String getEvent()
    {
@@ -64,6 +66,24 @@ public class TourEndFound extends Event
       return this;
    }
 
+   public String getTourList()
+   {
+      return this.tourList;
+   }
+
+   public TourEndFound setTourList(String value)
+   {
+      if (Objects.equals(value, this.tourList))
+      {
+         return this;
+      }
+
+      final String oldValue = this.tourList;
+      this.tourList = value;
+      this.firePropertyChange(PROPERTY_TOUR_LIST, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -71,6 +91,7 @@ public class TourEndFound extends Event
       result.append(' ').append(this.getEvent());
       result.append(' ').append(this.getStop());
       result.append(' ').append(this.getTour());
+      result.append(' ').append(this.getTourList());
       return result.toString();
    }
 }
