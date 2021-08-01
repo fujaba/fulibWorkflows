@@ -16,6 +16,7 @@ public class ServiceNote extends Note
    public static final String PROPERTY_HANDLED_EVENT_TYPES = "handledEventTypes";
    public static final String PROPERTY_EVENT_STORMING_BOARD = "eventStormingBoard";
    public static final String PROPERTY_PAGES = "pages";
+   public static final String PROPERTY_HANDLED_DATA_TYPES = "handledDataTypes";
    private String port;
    private List<Policy> policies;
    private String name;
@@ -24,6 +25,7 @@ public class ServiceNote extends Note
    private EventStormingBoard eventStormingBoard;
    private List<PageNote> pages;
    private LinkedHashMap<String, String> objectMap = new LinkedHashMap<>();
+   private List<DataType> handledDataTypes;
 
    public String getPort()
    {
@@ -352,6 +354,72 @@ public class ServiceNote extends Note
       return this;
    }
 
+   public List<DataType> getHandledDataTypes()
+   {
+      return this.handledDataTypes != null ? Collections.unmodifiableList(this.handledDataTypes) : Collections.emptyList();
+   }
+
+   public ServiceNote withHandledDataTypes(DataType value)
+   {
+      if (this.handledDataTypes == null)
+      {
+         this.handledDataTypes = new ArrayList<>();
+      }
+      if (!this.handledDataTypes.contains(value))
+      {
+         this.handledDataTypes.add(value);
+         value.withHandlers(this);
+         this.firePropertyChange(PROPERTY_HANDLED_DATA_TYPES, null, value);
+      }
+      return this;
+   }
+
+   public ServiceNote withHandledDataTypes(DataType... value)
+   {
+      for (final DataType item : value)
+      {
+         this.withHandledDataTypes(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withHandledDataTypes(Collection<? extends DataType> value)
+   {
+      for (final DataType item : value)
+      {
+         this.withHandledDataTypes(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutHandledDataTypes(DataType value)
+   {
+      if (this.handledDataTypes != null && this.handledDataTypes.remove(value))
+      {
+         value.withoutHandlers(this);
+         this.firePropertyChange(PROPERTY_HANDLED_DATA_TYPES, value, null);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutHandledDataTypes(DataType... value)
+   {
+      for (final DataType item : value)
+      {
+         this.withoutHandledDataTypes(item);
+      }
+      return this;
+   }
+
+   public ServiceNote withoutHandledDataTypes(Collection<? extends DataType> value)
+   {
+      for (final DataType item : value)
+      {
+         this.withoutHandledDataTypes(item);
+      }
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -365,6 +433,7 @@ public class ServiceNote extends Note
    {
       this.withoutPolicies(new ArrayList<>(this.getPolicies()));
       this.withoutPages(new ArrayList<>(this.getPages()));
+      this.withoutHandledDataTypes(new ArrayList<>(this.getHandledDataTypes()));
       this.withoutHandledEventTypes(new ArrayList<>(this.getHandledEventTypes()));
       this.withoutWorkflows(new ArrayList<>(this.getWorkflows()));
       this.setEventStormingBoard(null);

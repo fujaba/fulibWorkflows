@@ -211,6 +211,8 @@ public class ShopService
          handlerMap.put(OrderApproved.class, this::handleOrderApproved);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
          handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
+         handlerMap.put(OrderEdited.class, this::handleOrderEdited);
+         handlerMap.put(CustomerEdited.class, this::handleCustomerEdited);
       }
    }
 
@@ -252,59 +254,30 @@ public class ShopService
 
    private void handleOrderRegistered(Event e)
    {
+      // no fulib
       OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:01")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setProduct("shoes");
-         order1300.setCustomer("Alice");
-         order1300.setAddress("Wonderland 1");
-         order1300.setState("pending");
-
-         Customer alice = model.getOrCreateCustomer("Alice");
-         alice.setOrders("[ order1300 ]");
-      }
-      if (event.getId().equals("13:11")) {
-
-         Order order1310 = model.getOrCreateOrder("order1310");
-         order1310.setProduct("tshirt");
-         order1310.setCustomer("Alice");
-         order1310.setAddress("Wonderland 1");
-         order1310.setState("pending");
-
-         Customer alice = model.getOrCreateCustomer("Alice");
-         alice.setOrders("[ order1300 order1310 ]");
-      }
+      handleDemoOrderRegistered(event);
    }
 
    private void handleOrderPicked(Event e)
    {
+      // no fulib
       OrderPicked event = (OrderPicked) e;
-      if (event.getId().equals("14:00")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setState("shipping");
-      }
+      handleDemoOrderPicked(event);
    }
 
    private void handleOrderApproved(Event e)
    {
+      // no fulib
       OrderApproved event = (OrderApproved) e;
-      if (event.getId().equals("13:05")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setState("picking");
-      }
+      handleDemoOrderApproved(event);
    }
 
    private void handleOrderDeclined(Event e)
    {
+      // no fulib
       OrderDeclined event = (OrderDeclined) e;
-      if (event.getId().equals("13:14")) {
-
-         Order order1310 = model.getOrCreateOrder("order1310");
-         order1310.setState("out of stock");
-      }
+      handleDemoOrderDeclined(event);
    }
 
    public String getPage(Request request, Response response)
@@ -325,7 +298,7 @@ public class ShopService
          // create ShopShoesSelected: Shop shoes selected 12:51
          ShopShoesSelected e1251 = new ShopShoesSelected();
          e1251.setId("12:51");
-         publish(e1251);
+         apply(e1251);
       }
 
       if ("order registered 13:01".equals(event)) {
@@ -336,7 +309,7 @@ public class ShopService
          e1301.setProduct(request.queryParams("product"));
          e1301.setName(request.queryParams("name"));
          e1301.setAddress(request.queryParams("address"));
-         publish(e1301);
+         apply(e1301);
       }
 
 
@@ -372,5 +345,109 @@ public class ShopService
 
       html.append("This is the Shop Service page " + id + "\n");
       return html.toString();
+   }
+
+   private void handleDemoOrderRegistered(OrderRegistered event)
+   {
+      if (event.getId().equals("13:01")) {
+         OrderEdited order1300Event = new OrderEdited();
+         order1300Event.setId("13:02");
+         order1300Event.setIncrement("order1300");
+         order1300Event.setProduct("shoes");
+         order1300Event.setCustomer("Alice");
+         order1300Event.setAddress("Wonderland 1");
+         order1300Event.setState("pending");
+         apply(order1300Event);
+
+         CustomerEdited aliceEvent = new CustomerEdited();
+         aliceEvent.setId("13:03");
+         aliceEvent.setIncrement("Alice");
+         aliceEvent.setOrders("[ order1300 ]");
+         apply(aliceEvent);
+
+      }
+      if (event.getId().equals("13:11")) {
+         OrderEdited order1310Event = new OrderEdited();
+         order1310Event.setId("13:12");
+         order1310Event.setIncrement("order1310");
+         order1310Event.setProduct("tshirt");
+         order1310Event.setCustomer("Alice");
+         order1310Event.setAddress("Wonderland 1");
+         order1310Event.setState("pending");
+         apply(order1310Event);
+
+         CustomerEdited aliceEvent = new CustomerEdited();
+         aliceEvent.setId("13:13");
+         aliceEvent.setIncrement("Alice");
+         aliceEvent.setOrders("[ order1300 order1310 ]");
+         apply(aliceEvent);
+
+      }
+   }
+
+   private void handleDemoOrderApproved(OrderApproved event)
+   {
+      if (event.getId().equals("13:05")) {
+         OrderEdited order1300Event = new OrderEdited();
+         order1300Event.setId("13:06");
+         order1300Event.setIncrement("order1300");
+         order1300Event.setState("picking");
+         apply(order1300Event);
+
+      }
+   }
+
+   private void handleDemoOrderPicked(OrderPicked event)
+   {
+      if (event.getId().equals("14:00")) {
+         OrderEdited order1300Event = new OrderEdited();
+         order1300Event.setId("14:03");
+         order1300Event.setIncrement("order1300");
+         order1300Event.setState("shipping");
+         apply(order1300Event);
+
+      }
+   }
+
+   private void handleDemoOrderDeclined(OrderDeclined event)
+   {
+      if (event.getId().equals("13:14")) {
+         OrderEdited order1310Event = new OrderEdited();
+         order1310Event.setId("13:12");
+         order1310Event.setIncrement("order1310");
+         order1310Event.setState("out of stock");
+         apply(order1310Event);
+
+      }
+   }
+
+   private void handleOrderEdited(Event e)
+   {
+      OrderEdited event = (OrderEdited) e;
+      Order object = model.getOrCreateOrder(event.getIncrement());
+      object.setProduct(event.getProduct());
+      object.setCustomer(event.getCustomer());
+      object.setAddress(event.getAddress());
+      object.setState(event.getState());
+   }
+
+   private void handleCustomerEdited(Event e)
+   {
+      CustomerEdited event = (CustomerEdited) e;
+      Customer object = model.getOrCreateCustomer(event.getIncrement());
+      object.setOrders(event.getOrders());
+   }
+
+   public String stripBrackets(String back)
+   {
+      if (back == null) {
+         return "";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;
    }
 }

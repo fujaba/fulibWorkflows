@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	pageLine 	pageNote 	eventType 	eventStormingBoard 	note 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	dataType 	pageLine 	pageNote 	eventType 	eventStormingBoard 	note 	dataEvent 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -30,7 +30,7 @@
   modified: 	false
   name: 	ServiceNote
   propertyStyle: 	Bean
-  roles: 	serviceNote_policies 	serviceNote_pages 	serviceNote_handledEventTypes 	serviceNote_workflows 	serviceNote_eventStormingBoard
+  roles: 	serviceNote_policies 	serviceNote_pages 	serviceNote_handledDataTypes 	serviceNote_handledEventTypes 	serviceNote_workflows 	serviceNote_eventStormingBoard
   superClass: 	note
 
 - eventNote: 	org.fulib.classmodel.Clazz
@@ -87,12 +87,21 @@
   superClass: 	workflowNote
 
 - dataNote: 	org.fulib.classmodel.Clazz
-  attributes: 	dataNote_dataType
+  attributes: 	dataNote_increment 	dataNote_dataType
   model: 	c
   modified: 	false
   name: 	DataNote
   propertyStyle: 	Bean
+  roles: 	dataNote_type
   superClass: 	workflowNote
+
+- dataType: 	org.fulib.classmodel.Clazz
+  attributes: 	dataType_dataTypeName
+  model: 	c
+  modified: 	false
+  name: 	DataType
+  propertyStyle: 	Bean
+  roles: 	dataType_dataNotes 	dataType_handlers 	dataType_eventStormingBoard
 
 - pageLine: 	org.fulib.classmodel.Clazz
   attributes: 	pageLine_map
@@ -125,7 +134,7 @@
   modified: 	false
   name: 	EventStormingBoard
   propertyStyle: 	Bean
-  roles: 	eventStormingBoard_eventTypes 	eventStormingBoard_services 	eventStormingBoard_users 	eventStormingBoard_workflows
+  roles: 	eventStormingBoard_dataTypes 	eventStormingBoard_eventTypes 	eventStormingBoard_services 	eventStormingBoard_users 	eventStormingBoard_workflows
 
 - note: 	org.fulib.classmodel.Clazz
   attributes: 	note_map
@@ -135,12 +144,21 @@
   propertyStyle: 	Bean
   subClasses: 	workflowNote 	serviceNote 	userNote 	workflow
 
+- dataEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	dataEvent_increment
+  model: 	c
+  modified: 	false
+  name: 	DataEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
 - event: 	org.fulib.classmodel.Clazz
   attributes: 	event_id
   model: 	c
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
+  subClasses: 	dataEvent
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -239,6 +257,18 @@
   modified: 	false
   name: 	pages
   other: 	pageNote_service
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- serviceNote_handledDataTypes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	serviceNote
+  collectionType: 	c1
+  id: 	ServiceNote_handledDataTypes
+  modified: 	false
+  name: 	handledDataTypes
+  other: 	dataType_handlers
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -473,6 +503,15 @@
   type: 	String
   typeSignature: 	String
 
+- dataNote_increment: 	org.fulib.classmodel.Attribute
+  clazz: 	dataNote
+  id: 	DataNote_increment
+  modified: 	false
+  name: 	increment
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - dataNote_dataType: 	org.fulib.classmodel.Attribute
   clazz: 	dataNote
   id: 	DataNote_dataType
@@ -481,6 +520,59 @@
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- dataNote_type: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	dataNote
+  id: 	DataNote_type
+  modified: 	false
+  name: 	type
+  other: 	dataType_dataNotes
+  propertyStyle: 	Bean
+
+- dataType_dataTypeName: 	org.fulib.classmodel.Attribute
+  clazz: 	dataType
+  id: 	DataType_dataTypeName
+  modified: 	false
+  name: 	dataTypeName
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- dataType_dataNotes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	dataType
+  collectionType: 	c1
+  id: 	DataType_dataNotes
+  modified: 	false
+  name: 	dataNotes
+  other: 	dataNote_type
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- dataType_handlers: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	dataType
+  collectionType: 	c1
+  id: 	DataType_handlers
+  modified: 	false
+  name: 	handlers
+  other: 	serviceNote_handledDataTypes
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- dataType_eventStormingBoard: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	dataType
+  id: 	DataType_eventStormingBoard
+  modified: 	false
+  name: 	eventStormingBoard
+  other: 	eventStormingBoard_dataTypes
+  propertyStyle: 	Bean
 
 - pageLine_map: 	org.fulib.classmodel.Attribute
   clazz: 	pageLine
@@ -614,6 +706,18 @@
   type: 	String
   typeSignature: 	String
 
+- eventStormingBoard_dataTypes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	eventStormingBoard
+  collectionType: 	c1
+  id: 	EventStormingBoard_dataTypes
+  modified: 	false
+  name: 	dataTypes
+  other: 	dataType_eventStormingBoard
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - eventStormingBoard_eventTypes: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -670,6 +774,15 @@
   propertyStyle: 	Bean
   type: 	"import(java.util.LinkedHashMap)<String, String>"
   typeSignature: 	"LinkedHashMap<String,String>"
+
+- dataEvent_increment: 	org.fulib.classmodel.Attribute
+  clazz: 	dataEvent
+  id: 	DataEvent_increment
+  modified: 	false
+  name: 	increment
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 
 - event_id: 	org.fulib.classmodel.Attribute
   clazz: 	event

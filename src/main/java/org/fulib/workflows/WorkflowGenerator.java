@@ -5,6 +5,7 @@ import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
 import org.fulib.builder.Type;
 import org.fulib.classmodel.AssocRole;
+import org.fulib.classmodel.Attribute;
 import org.fulib.classmodel.Clazz;
 import org.fulib.tables.ObjectTable;
 import org.stringtemplate.v4.ST;
@@ -61,10 +62,9 @@ public class WorkflowGenerator
       // dumpObjectDiagram.accept("tmp/afterBuildEventStormModel.svg", rootWorkflow);
       buildClassModelManagerMap(mm);
       buildEventBroker();
+      buildEventClasses();
       buildServices();
       buildTest();
-
-      buildEventClasses();
 
       return this;
    }
@@ -154,6 +154,14 @@ public class WorkflowGenerator
          st = group.getInstanceOf("servicePostApply");
          body.append(st.render());
          modelManager.haveMethod(serviceClazz, declaration, body.toString());
+
+         // stripbrackets
+         declaration = "public String stripBrackets(String back)";
+         body.setLength(0);
+         st = group.getInstanceOf("stripBrackets");
+         body.append(st.render());
+         modelManager.haveMethod(serviceClazz, declaration, body.toString());
+
       }
    }
 
@@ -241,7 +249,7 @@ public class WorkflowGenerator
       EventNote eventNote = pageNote.getRaisedEvent();
       eventHandling.append(String.format("if (\"%s\".equals(event)) {\n", event));
       String varName = addCreateAndInitEventCode("   ", eventNote, eventHandling);
-      eventHandling.append(String.format("   publish(%s);\n", varName));
+      eventHandling.append(String.format("   apply(%s);\n", varName));
       eventHandling.append("}\n\n");
    }
 
@@ -321,6 +329,50 @@ public class WorkflowGenerator
                eventTypeName, eventTypeName));
          addEventHandlerMethod(modelManager, serviceClazz, serviceNote, eventType);
       }
+
+      for (DataType dataType : serviceNote.getHandledDataTypes()) {
+         String eventTypeName = dataType.getDataTypeName() + "Edited";
+         body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
+               eventTypeName, eventTypeName));
+         addDataEventHandlerMethod(modelManager, serviceClazz, serviceNote, dataType);
+      }
+   }
+
+   private void addDataEventHandlerMethod(ClassModelManager modelManager, Clazz serviceClazz, ServiceNote serviceNote, DataType dataType)
+   {
+      StringBuilder body = new StringBuilder();
+      String dataTypeName = dataType.getDataTypeName();
+      String eventTypeName = dataTypeName + "Edited";
+      String declaration = String.format("private void handle%s(Event e)", eventTypeName);
+      body.append(String.format("%s event = (%1$s) e;\n", eventTypeName));
+      body.append(String.format("%s object = model.getOrCreate%1$s(event.getIncrement());\n", dataTypeName));
+
+      Clazz dataClazz = modelManager.haveClass(dataTypeName);
+      Clazz eventClazz = em.haveClass(eventTypeName);
+
+      for (Attribute attribute : eventClazz.getAttributes()) {
+         String attrName = attribute.getName();
+         Attribute dataAttr = dataClazz.getAttribute(attrName);
+         if (dataAttr != null) {
+            // e.g.: object.setMotivation(event.getMotivation());
+            body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
+         }
+         else {
+            // e.g.: event.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
+            AssocRole role = dataClazz.getRole(attrName);
+            AssocRole other = role.getOther();
+            Clazz otherClazz = other.getClazz();
+            if (role.getCardinality() <= 1) {
+               body.append(String.format("object.set%s(model.getOrCreate%s(event.get%1$s()));\n", StrUtil.cap(attrName), otherClazz.getName()));
+            }
+            else {
+               body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\"\\\\s+\")) {\n", StrUtil.cap(attrName)));
+               body.append(String.format("   object.with%s(model.getOrCreate%s(name));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append("}\n");
+            }
+         }
+      }
+      modelManager.haveMethod(serviceClazz, declaration, body.toString());
    }
 
    private void addEventHandlerMethod(ClassModelManager modelManager, Clazz serviceClazz, ServiceNote serviceNote, EventType eventType)
@@ -328,7 +380,13 @@ public class WorkflowGenerator
       StringBuilder body = new StringBuilder();
       String eventTypeName = eventType.getEventTypeName();
       String declaration = String.format("private void handle%s(Event e)", eventTypeName);
+      body.append("// no fulib\n");
       body.append(String.format("%s event = (%s) e;\n", eventTypeName, eventTypeName));
+      body.append(String.format("handleDemo%s(event);\n", eventTypeName));
+      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+
+      body.setLength(0);
+      declaration = String.format("private void handleDemo%s(%1$s event)", eventTypeName);
 
       ObjectTable<Object> table = new ObjectTable<>("service", serviceNote);
       LinkedHashSet<Object> policies = table.expandLink("eventType", ServiceNote.PROPERTY_HANDLED_EVENT_TYPES)
@@ -362,7 +420,7 @@ public class WorkflowGenerator
             LinkedHashMap<String, String> mockup = getMockup(map);
             addModelClass(modelManager, serviceNote, mockup);
             addGetOrCreateMethodToServiceModel(modelManager, serviceNote.getName(), mockup);
-            addCreateAndInitModelObjectCode(modelManager, serviceNote, mockup, body);
+            addCreateAndInitModelObjectCode(modelManager, serviceNote, dataNote, mockup, body);
          }
          else {
             // fire event
@@ -382,7 +440,7 @@ public class WorkflowGenerator
                      varName, setterName, entry.getValue());
                body.append(statement);
             }
-            body.append(String.format("   publish(e%s);\n",
+            body.append(String.format("   apply(e%s);\n",
                   varName));
          }
       }
@@ -413,7 +471,9 @@ public class WorkflowGenerator
       String type = org.fulib.StrUtil.cap(eventModel.getEventType(mockup));
       Clazz modelClazz = modelManager.haveClass(serviceName + "Model");
       String declaration = String.format("public %s getOrCreate%s(String id)", type, type);
-      String body = String.format("return (%s) modelMap.computeIfAbsent(id, k -> new %s().setId(k));\n"
+      String body = String.format("if (id == null) return null;\n"
+            , type, type);
+      body += String.format("return (%s) modelMap.computeIfAbsent(id, k -> new %s().setId(k));\n"
             , type, type);
       modelManager.haveMethod(modelClazz, declaration, body);
    }
@@ -463,7 +523,7 @@ public class WorkflowGenerator
    }
 
 
-   private String addCreateAndInitModelObjectCode(ClassModelManager modelManager, ServiceNote serviceNote, LinkedHashMap<String, String> map, StringBuilder body)
+   private String addCreateAndInitModelObjectCode(ClassModelManager modelManager, ServiceNote serviceNote, DataNote dataNote, LinkedHashMap<String, String> map, StringBuilder body)
    {
       boolean first = true;
       String varName = null;
@@ -476,12 +536,16 @@ public class WorkflowGenerator
          if (first) {
             className = org.fulib.StrUtil.cap(entry.getKey());
             clazz = modelManager.haveClass(className);
+            className = className + "Edited";
             id = value;
-            varName = org.fulib.StrUtil.downFirstChar(id);
-            statement = String.format("\n" +
-                        "   %s %s = model.getOrCreate%s(\"%s\");\n",
-                  className, varName, className, id);
+            varName = org.fulib.StrUtil.downFirstChar(id) + "Event";
+            statement = String.format("   %s %s = new %1$s();\n", className, varName);
             body.append(statement);
+            statement = String.format("   %s.setId(\"%s\");\n", varName, dataNote.getTime());
+            body.append(statement);
+            statement = String.format("   %s.setIncrement(\"%s\");\n", varName, dataNote.getIncrement());
+            body.append(statement);
+
             first = false;
             continue;
          }
@@ -492,31 +556,14 @@ public class WorkflowGenerator
          }
 
          String setterName = org.fulib.StrUtil.cap(attrName);
-         AssocRole role = clazz.getRole(entry.getKey());
-         if (role == null) {
-            statement = String.format("   %s.set%s(\"%s\");\n",
-                  varName, setterName, value);
-            body.append(statement);
-         }
-         else if (value.startsWith("[")) {
-            String[] split = StrUtil.stripBrackets(value).split("\\s+");
-            String firstValue = split[0];
-            String valueClassName = serviceNote.getObjectMap().get(firstValue);
-            for (int i = 0; i < split.length; i++) {
-               split[i] = String.format("model.getOrCreate%s(\"%s\")", valueClassName, split[i]);
-            }
-            String valueList = String.join(", ", split);
-            statement = String.format("   %s.with%s(%s);\n",
-                  varName, setterName, valueList);
-            body.append(statement);
-         }
-         else {
-            String valueClassName = serviceNote.getObjectMap().get(value);
-            statement = String.format("   %s.set%s(model.getOrCreate%s(\"%s\"));\n",
-                  varName, setterName, valueClassName, value);
-            body.append(statement);
-         }
+         statement = String.format("   %s.set%s(\"%s\");\n",
+               varName, setterName, value);
+         body.append(statement);
       }
+
+      statement = String.format("   apply(%s);\n\n", varName);
+      body.append(statement);
+
       return varName;
    }
 
@@ -770,6 +817,9 @@ public class WorkflowGenerator
 
       Clazz event = em.haveClass("Event");
       em.haveAttribute(event, "id", Type.STRING);
+      Clazz dataEvent = em.haveClass("DataEvent");
+      dataEvent.setSuperClass(event);
+      em.haveAttribute(dataEvent, "increment", Type.STRING);
       Clazz serviceSubscribed = em.haveClass("ServiceSubscribed");
       serviceSubscribed.setSuperClass(event);
       em.haveAttribute(serviceSubscribed, "serviceUrl", Type.STRING);
@@ -784,10 +834,33 @@ public class WorkflowGenerator
                EventNote eventNote = (EventNote) note;
                oneEventClass(eventNote);
             }
+            else if (note instanceof DataNote) {
+               DataNote dataNote = (DataNote) note;
+               oneDataEventClass(dataNote);
+            }
          }
       }
    }
 
+   private void oneDataEventClass(DataNote note)
+   {
+      Clazz event = em.haveClass("DataEvent");
+      boolean first = true;
+      String dataType = note.getDataType();
+      String dataEventType = dataType + "Edited";
+      Clazz clazz = em.haveClass(dataEventType);
+      clazz.setSuperClass(event);
+      LinkedHashSet<String> keys = new LinkedHashSet<>(note.getMap().keySet());
+      keys.remove("data");
+      keys.remove(dataType);
+      keys.remove(StrUtil.decap(dataType));
+      for (String key : keys) {
+         if (key.endsWith(".back")) {
+            continue;
+         }
+         mm.haveAttribute(clazz, key, "String");
+      }
+   }
 
    private void oneEventClass(EventNote note)
    {

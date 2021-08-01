@@ -1,10 +1,12 @@
 package uks.debuggen.studyright;
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.FulibTools;
 import org.fulib.yaml.Yaml;
+import org.junit.Before;
 import org.junit.Test;
 import uks.debuggen.studyright.StudyRight.StudyRightService;
 import uks.debuggen.studyright.events.*;
@@ -39,6 +41,12 @@ public class TestSomeEventStorming
       return this;
    }
 
+   @Before
+   public void setTimeOut() {
+      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.pageLoadTimeout = Configuration.timeout;
+   }
+
    @Test
    public void SomeEventStorming()
    {
@@ -69,10 +77,12 @@ public class TestSomeEventStorming
       open("http://localhost:42400");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
-      // check data note s01
+      // check data note 12:03:01
       pre = $("#data");
-      pre.shouldHave(text("- s01:"));
-      pre.shouldHave(text("motivation: 77"));
+      pre.shouldHave(text("- s03:"));
+      pre.shouldHave(text("room: modeling"));
+      pre.shouldHave(text("previousStop: s02"));
+      pre.shouldHave(text("motivation: 12"));
 
       System.out.println();
    }

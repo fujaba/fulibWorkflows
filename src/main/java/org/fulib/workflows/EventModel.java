@@ -95,16 +95,23 @@ public class EventModel
             else {
                className = StrUtil.cap(split[0]);
                objectId = split[1];
+               value = split[2];
             }
 
             DataNote note = new DataNote();
-            note.setTime(objectId);
+            note.setTime(value);
+            note.setIncrement(objectId);
             note.setMap(map);
             note.setWorkflow(getRootWorkflow());
             note.setDataType(className);
             addToStepsOfLastActor(note);
             ServiceNote serviceNote = ((Policy) lastActor).getService();
             serviceNote.getObjectMap().put(objectId, className);
+
+            DataType dataType = eventStormingBoard.getOrCreateDataType(note.getDataType());
+            dataType.withDataNotes(note);
+            serviceNote.withHandledDataTypes(dataType);
+
          }
          else if (entry.getKey().equalsIgnoreCase("event")) {
             EventNote eventNote = new EventNote();

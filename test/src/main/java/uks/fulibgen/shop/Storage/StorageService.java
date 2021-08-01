@@ -210,6 +210,8 @@ public class StorageService
          handlerMap.put(ProductStored.class, this::handleProductStored);
          handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
+         handlerMap.put(BoxEdited.class, this::handleBoxEdited);
+         handlerMap.put(PickTaskEdited.class, this::handlePickTaskEdited);
       }
    }
 
@@ -251,57 +253,23 @@ public class StorageService
 
    private void handleOrderPicked(Event e)
    {
+      // no fulib
       OrderPicked event = (OrderPicked) e;
-      if (event.getId().equals("14:00")) {
-
-         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
-         pick1300.setState("done");
-         pick1300.setBox("box23");
-
-         Box box23 = model.getOrCreateBox("box23");
-         box23.setPlace("shipping");
-      }
+      handleDemoOrderPicked(event);
    }
 
    private void handleOrderRegistered(Event e)
    {
+      // no fulib
       OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:01")) {
-
-         PickTask pick1300 = model.getOrCreatePickTask("pick1300");
-         pick1300.setOrder("order1300");
-         pick1300.setProduct("shoes");
-         pick1300.setCustomer("Alice");
-         pick1300.setAddress("Wonderland 1");
-         pick1300.setState("todo");
-
-         OrderApproved e1305 = new OrderApproved();
-
-         e1305.setId("13:05");
-         e1305.setEvent("order approved 13:05");
-         e1305.setOrder("order1300");
-         publish(e1305);
-      }
-      if (event.getId().equals("13:11")) {
-
-         OrderDeclined e1314 = new OrderDeclined();
-
-         e1314.setId("13:14");
-         e1314.setEvent("order declined 13:14");
-         e1314.setOrder("order1310");
-         publish(e1314);
-      }
+      handleDemoOrderRegistered(event);
    }
 
    private void handleProductStored(Event e)
    {
+      // no fulib
       ProductStored event = (ProductStored) e;
-      if (event.getId().equals("12:00")) {
-
-         Box box23 = model.getOrCreateBox("box23");
-         box23.setProduct("shoes");
-         box23.setPlace("shelf23");
-      }
+      handleDemoProductStored(event);
    }
 
    public String getPage(Request request, Response response)
@@ -321,5 +289,102 @@ public class StorageService
 
       html.append("This is the Shop Service page " + id + "\n");
       return html.toString();
+   }
+
+   private void handleDemoProductStored(ProductStored event)
+   {
+      if (event.getId().equals("12:00")) {
+         BoxEdited box23Event = new BoxEdited();
+         box23Event.setId("12:02");
+         box23Event.setIncrement("box23");
+         box23Event.setProduct("shoes");
+         box23Event.setPlace("shelf23");
+         apply(box23Event);
+
+      }
+   }
+
+   private void handleDemoOrderRegistered(OrderRegistered event)
+   {
+      if (event.getId().equals("13:01")) {
+         PickTaskEdited pick1300Event = new PickTaskEdited();
+         pick1300Event.setId("13:04");
+         pick1300Event.setIncrement("pick1300");
+         pick1300Event.setOrder("order1300");
+         pick1300Event.setProduct("shoes");
+         pick1300Event.setCustomer("Alice");
+         pick1300Event.setAddress("Wonderland 1");
+         pick1300Event.setState("todo");
+         apply(pick1300Event);
+
+
+         OrderApproved e1305 = new OrderApproved();
+
+         e1305.setId("13:05");
+         e1305.setEvent("order approved 13:05");
+         e1305.setOrder("order1300");
+         apply(e1305);
+      }
+      if (event.getId().equals("13:11")) {
+
+         OrderDeclined e1314 = new OrderDeclined();
+
+         e1314.setId("13:14");
+         e1314.setEvent("order declined 13:14");
+         e1314.setOrder("order1310");
+         apply(e1314);
+      }
+   }
+
+   private void handleDemoOrderPicked(OrderPicked event)
+   {
+      if (event.getId().equals("14:00")) {
+         PickTaskEdited pick1300Event = new PickTaskEdited();
+         pick1300Event.setId("14:01");
+         pick1300Event.setIncrement("pick1300");
+         pick1300Event.setState("done");
+         pick1300Event.setBox("box23");
+         apply(pick1300Event);
+
+         BoxEdited box23Event = new BoxEdited();
+         box23Event.setId("14:02");
+         box23Event.setIncrement("box23");
+         box23Event.setPlace("shipping");
+         apply(box23Event);
+
+      }
+   }
+
+   private void handleBoxEdited(Event e)
+   {
+      BoxEdited event = (BoxEdited) e;
+      Box object = model.getOrCreateBox(event.getIncrement());
+      object.setProduct(event.getProduct());
+      object.setPlace(event.getPlace());
+   }
+
+   private void handlePickTaskEdited(Event e)
+   {
+      PickTaskEdited event = (PickTaskEdited) e;
+      PickTask object = model.getOrCreatePickTask(event.getIncrement());
+      object.setOrder(event.getOrder());
+      object.setProduct(event.getProduct());
+      object.setCustomer(event.getCustomer());
+      object.setAddress(event.getAddress());
+      object.setState(event.getState());
+      object.setBox(event.getBox());
+   }
+
+   public String stripBrackets(String back)
+   {
+      if (back == null) {
+         return "";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;
    }
 }

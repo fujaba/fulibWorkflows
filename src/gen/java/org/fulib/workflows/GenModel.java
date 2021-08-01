@@ -14,6 +14,10 @@ public class GenModel implements ClassModelDecorator
       String id;
    }
 
+   class DataEvent extends Event {
+      String increment;
+   }
+
    class Note {
       LinkedHashMap<String, String> map = new LinkedHashMap<>();
    }
@@ -26,6 +30,8 @@ public class GenModel implements ClassModelDecorator
       List<ServiceNote> services;
       @Link("eventStormingBoard")
       List<EventType> eventTypes;
+      @Link("eventStormingBoard")
+      List<DataType> dataTypes;
       @Link("eventStormingBoard")
       List<UserNote> users;
    }
@@ -63,6 +69,8 @@ public class GenModel implements ClassModelDecorator
       List<Policy> policies;
       @Link("handlers")
       List<EventType> handledEventTypes;
+      @Link("handlers")
+      List<DataType> handledDataTypes;
       @Link("service")
       List<PageNote> pages;
    }
@@ -83,6 +91,17 @@ public class GenModel implements ClassModelDecorator
       @Link("handledEventTypes")
       List<ServiceNote> handlers;
       @Link("eventTypes")
+      EventStormingBoard eventStormingBoard;
+   }
+
+   class DataType
+   {
+      String dataTypeName;
+      @Link("type")
+      List<DataNote> dataNotes;
+      @Link("handledDataTypes")
+      List<ServiceNote> handlers;
+      @Link("dataTypes")
       EventStormingBoard eventStormingBoard;
    }
 
@@ -117,7 +136,10 @@ public class GenModel implements ClassModelDecorator
    }
 
    class DataNote extends WorkflowNote {
+      String increment;
       String dataType;
+      @Link("dataNotes")
+      DataType type;
    }
 
    class CommandNote extends WorkflowNote {

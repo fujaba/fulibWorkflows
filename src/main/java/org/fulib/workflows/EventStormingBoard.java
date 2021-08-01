@@ -13,12 +13,14 @@ public class EventStormingBoard
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_EVENT_TYPES = "eventTypes";
    public static final String PROPERTY_USERS = "users";
+   public static final String PROPERTY_DATA_TYPES = "dataTypes";
    private List<Workflow> workflows;
    protected PropertyChangeSupport listeners;
    private List<ServiceNote> services;
    private String name;
    private List<EventType> eventTypes;
    private List<UserNote> users;
+   private List<DataType> dataTypes;
 
    public EventStormingBoard() {
       this.name = "some event storming";
@@ -306,6 +308,72 @@ public class EventStormingBoard
       return this;
    }
 
+   public List<DataType> getDataTypes()
+   {
+      return this.dataTypes != null ? Collections.unmodifiableList(this.dataTypes) : Collections.emptyList();
+   }
+
+   public EventStormingBoard withDataTypes(DataType value)
+   {
+      if (this.dataTypes == null)
+      {
+         this.dataTypes = new ArrayList<>();
+      }
+      if (!this.dataTypes.contains(value))
+      {
+         this.dataTypes.add(value);
+         value.setEventStormingBoard(this);
+         this.firePropertyChange(PROPERTY_DATA_TYPES, null, value);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withDataTypes(DataType... value)
+   {
+      for (final DataType item : value)
+      {
+         this.withDataTypes(item);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withDataTypes(Collection<? extends DataType> value)
+   {
+      for (final DataType item : value)
+      {
+         this.withDataTypes(item);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withoutDataTypes(DataType value)
+   {
+      if (this.dataTypes != null && this.dataTypes.remove(value))
+      {
+         value.setEventStormingBoard(null);
+         this.firePropertyChange(PROPERTY_DATA_TYPES, value, null);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withoutDataTypes(DataType... value)
+   {
+      for (final DataType item : value)
+      {
+         this.withoutDataTypes(item);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withoutDataTypes(Collection<? extends DataType> value)
+   {
+      for (final DataType item : value)
+      {
+         this.withoutDataTypes(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -327,6 +395,7 @@ public class EventStormingBoard
 
    public void removeYou()
    {
+      this.withoutDataTypes(new ArrayList<>(this.getDataTypes()));
       this.withoutEventTypes(new ArrayList<>(this.getEventTypes()));
       this.withoutServices(new ArrayList<>(this.getServices()));
       this.withoutUsers(new ArrayList<>(this.getUsers()));
@@ -376,6 +445,19 @@ public class EventStormingBoard
       return eventType;
    }
 
+   public DataType getOrCreateDataType(String dataType)
+   {
+      for (DataType type : this.getDataTypes()) {
+         if (type.getDataTypeName().equals(dataType)) {
+            return type;
+         }
+      }
+      DataType type = new DataType();
+      type.setDataTypeName(dataType);
+      type.setEventStormingBoard(this);
+      return type;
+   }
+
    public UserNote getFromUsers(String user)
    {
       for (UserNote userNote : this.getUsers()) {
@@ -396,4 +478,5 @@ public class EventStormingBoard
       }
       return user;
    }
+
 }

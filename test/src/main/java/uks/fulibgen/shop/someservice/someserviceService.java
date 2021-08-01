@@ -186,13 +186,9 @@ public class someserviceService
 
    private void handleProductStored(Event e)
    {
+      // no fulib
       ProductStored event = (ProductStored) e;
-      if (event.getId().equals("12:00")) {
-
-         Box box23 = model.getOrCreateBox("box23");
-         box23.setProduct("shoes");
-         box23.setPlace("shelf23");
-      }
+      handleDemoProductStored(event);
    }
 
    private void initEventHandlerMap()
@@ -200,6 +196,7 @@ public class someserviceService
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(ProductStored.class, this::handleProductStored);
+         handlerMap.put(BoxEdited.class, this::handleBoxEdited);
       }
    }
 
@@ -275,5 +272,39 @@ public class someserviceService
 
       html.append("This is the Shop Service page " + id + "\n");
       return html.toString();
+   }
+
+   private void handleDemoProductStored(ProductStored event)
+   {
+      if (event.getId().equals("12:00")) {
+         BoxEdited box23Event = new BoxEdited();
+         box23Event.setId("12:01");
+         box23Event.setIncrement("box23");
+         box23Event.setProduct("shoes");
+         box23Event.setPlace("shelf23");
+         apply(box23Event);
+
+      }
+   }
+
+   private void handleBoxEdited(Event e)
+   {
+      BoxEdited event = (BoxEdited) e;
+      Box object = model.getOrCreateBox(event.getIncrement());
+      object.setProduct(event.getProduct());
+      object.setPlace(event.getPlace());
+   }
+
+   public String stripBrackets(String back)
+   {
+      if (back == null) {
+         return "";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;
    }
 }

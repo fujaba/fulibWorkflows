@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	productStored 	shopShoesSelected 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
+  classes: 	event 	dataEvent 	serviceSubscribed 	productStored 	boxEdited 	shopShoesSelected 	orderRegistered 	orderEdited 	customerEdited 	pickTaskEdited 	orderApproved 	orderPicked 	orderDeclined
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,16 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	productStored 	shopShoesSelected 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
+  subClasses: 	dataEvent 	serviceSubscribed 	productStored 	shopShoesSelected 	orderRegistered 	orderApproved 	orderPicked 	orderDeclined
+
+- dataEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	dataEvent_increment
+  model: 	c
+  modified: 	false
+  name: 	DataEvent
+  propertyStyle: 	Bean
+  subClasses: 	boxEdited 	orderEdited 	customerEdited 	pickTaskEdited
+  superClass: 	event
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -31,6 +40,14 @@
   propertyStyle: 	Bean
   superClass: 	event
 
+- boxEdited: 	org.fulib.classmodel.Clazz
+  attributes: 	boxEdited_product 	boxEdited_place
+  model: 	c
+  modified: 	false
+  name: 	BoxEdited
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
 - shopShoesSelected: 	org.fulib.classmodel.Clazz
   attributes: 	shopShoesSelected_event
   model: 	c
@@ -46,6 +63,30 @@
   name: 	OrderRegistered
   propertyStyle: 	Bean
   superClass: 	event
+
+- orderEdited: 	org.fulib.classmodel.Clazz
+  attributes: 	orderEdited_product 	orderEdited_customer 	orderEdited_address 	orderEdited_state
+  model: 	c
+  modified: 	false
+  name: 	OrderEdited
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- customerEdited: 	org.fulib.classmodel.Clazz
+  attributes: 	customerEdited_orders
+  model: 	c
+  modified: 	false
+  name: 	CustomerEdited
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- pickTaskEdited: 	org.fulib.classmodel.Clazz
+  attributes: 	pickTaskEdited_order 	pickTaskEdited_product 	pickTaskEdited_customer 	pickTaskEdited_address 	pickTaskEdited_state 	pickTaskEdited_box
+  model: 	c
+  modified: 	false
+  name: 	PickTaskEdited
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
 
 - orderApproved: 	org.fulib.classmodel.Clazz
   attributes: 	orderApproved_event 	orderApproved_order
@@ -83,6 +124,15 @@
   id: 	Event_id
   modified: 	false
   name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- dataEvent_increment: 	org.fulib.classmodel.Attribute
+  clazz: 	dataEvent
+  id: 	DataEvent_increment
+  modified: 	false
+  name: 	increment
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -126,6 +176,24 @@
 - productStored_place: 	org.fulib.classmodel.Attribute
   clazz: 	productStored
   id: 	ProductStored_place
+  modified: 	false
+  name: 	place
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- boxEdited_product: 	org.fulib.classmodel.Attribute
+  clazz: 	boxEdited
+  id: 	BoxEdited_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- boxEdited_place: 	org.fulib.classmodel.Attribute
+  clazz: 	boxEdited
+  id: 	BoxEdited_place
   modified: 	false
   name: 	place
   propertyStyle: 	Bean
@@ -191,6 +259,105 @@
   id: 	OrderRegistered_customer
   modified: 	false
   name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderEdited_product: 	org.fulib.classmodel.Attribute
+  clazz: 	orderEdited
+  id: 	OrderEdited_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderEdited_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	orderEdited
+  id: 	OrderEdited_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderEdited_address: 	org.fulib.classmodel.Attribute
+  clazz: 	orderEdited
+  id: 	OrderEdited_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderEdited_state: 	org.fulib.classmodel.Attribute
+  clazz: 	orderEdited
+  id: 	OrderEdited_state
+  modified: 	false
+  name: 	state
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- customerEdited_orders: 	org.fulib.classmodel.Attribute
+  clazz: 	customerEdited
+  id: 	CustomerEdited_orders
+  modified: 	false
+  name: 	orders
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskEdited_order: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskEdited
+  id: 	PickTaskEdited_order
+  modified: 	false
+  name: 	order
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskEdited_product: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskEdited
+  id: 	PickTaskEdited_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskEdited_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskEdited
+  id: 	PickTaskEdited_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskEdited_address: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskEdited
+  id: 	PickTaskEdited_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskEdited_state: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskEdited
+  id: 	PickTaskEdited_state
+  modified: 	false
+  name: 	state
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskEdited_box: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskEdited
+  id: 	PickTaskEdited_box
+  modified: 	false
+  name: 	box
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

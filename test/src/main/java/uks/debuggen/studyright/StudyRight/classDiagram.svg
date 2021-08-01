@@ -1,8 +1,8 @@
-<svg width="918px" height="204px"
- viewBox="0.00 0.00 918.00 204.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="936px" height="204px"
+ viewBox="0.00 0.00 936.00 204.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 200)">
 <title>uks.debuggen.studyright.StudyRight</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-200 914,-200 914,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-200 932,-200 932,4 -4,4"/>
 <!-- Room -->
 <g id="node1" class="node"><title>Room</title>
 <polygon fill="none" stroke="black" points="8,-62 8,-83 92,-83 92,-62 8,-62"/>
@@ -14,7 +14,7 @@
 <!-- Room&#45;&gt;Room -->
 <g id="edge1" class="edge"><title>Room&#45;&gt;Room</title>
 <path fill="none" stroke="black" d="M100.114,-34.0146C110.518,-36.2236 118,-43.2188 118,-55 118,-66.7813 110.518,-73.7764 100.114,-75.9854"/>
-<text text-anchor="middle" x="122.114" y="-79.7854" font-family="Times New Roman,serif" font-size="14.00">doors *</text>
+<text text-anchor="middle" x="122.114" y="-64.7854" font-family="Times New Roman,serif" font-size="14.00">doors *</text>
 <text text-anchor="middle" x="122.114" y="-22.8146" font-family="Times New Roman,serif" font-size="14.00">doors *</text>
 </g>
 <!-- University -->
@@ -25,36 +25,43 @@
 <text text-anchor="start" x="25" y="-156.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
 </g>
 <!-- Room&#45;&gt;University -->
-<g id="edge2" class="edge"><title>Room&#45;&gt;University</title>
+<g id="edge3" class="edge"><title>Room&#45;&gt;University</title>
 <path fill="none" stroke="black" d="M50,-87.7554C50,-106.071 50,-128.744 50,-145.642"/>
 <text text-anchor="middle" x="41.5" y="-134.442" font-family="Times New Roman,serif" font-size="14.00">uni</text>
 <text text-anchor="middle" x="26.5" y="-91.5554" font-family="Times New Roman,serif" font-size="14.00">rooms *</text>
 </g>
 <!-- Stop -->
 <g id="node2" class="node"><title>Stop</title>
-<polygon fill="none" stroke="black" points="145,-62 145,-83 250,-83 250,-62 145,-62"/>
-<text text-anchor="start" x="183.5" y="-68.8" font-family="Times New Roman,serif" font-size="14.00">Stop</text>
-<polygon fill="none" stroke="black" points="145,-26 145,-62 250,-62 250,-26 145,-26"/>
-<text text-anchor="start" x="148" y="-47.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="148" y="-32.8" font-family="Times New Roman,serif" font-size="14.00">motivation :String</text>
+<polygon fill="none" stroke="black" points="145,-70 145,-91 250,-91 250,-70 145,-70"/>
+<text text-anchor="start" x="183.5" y="-76.8" font-family="Times New Roman,serif" font-size="14.00">Stop</text>
+<polygon fill="none" stroke="black" points="145,-19 145,-70 250,-70 250,-19 145,-19"/>
+<text text-anchor="start" x="148" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="148" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">motivation :String</text>
+<text text-anchor="start" x="148" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">room :String</text>
+</g>
+<!-- Stop&#45;&gt;Stop -->
+<g id="edge2" class="edge"><title>Stop&#45;&gt;Stop</title>
+<path fill="none" stroke="black" d="M257.562,-34.6094C268.141,-37.3281 275.5,-44.125 275.5,-55 275.5,-65.875 268.141,-72.6719 257.562,-75.3906"/>
+<text text-anchor="middle" x="295.562" y="-79.1906" font-family="Times New Roman,serif" font-size="14.00">previousStop</text>
+<text text-anchor="middle" x="291.062" y="-23.4094" font-family="Times New Roman,serif" font-size="14.00">nextStops *</text>
 </g>
 <!-- StudyRightModel -->
 <g id="node3" class="node"><title>StudyRightModel</title>
-<polygon fill="none" stroke="black" points="284,-55 284,-76 540,-76 540,-55 284,-55"/>
-<text text-anchor="start" x="362" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">StudyRightModel</text>
-<polygon fill="none" stroke="black" points="284,-34 284,-55 540,-55 540,-34 284,-34"/>
-<text text-anchor="start" x="287" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+<polygon fill="none" stroke="black" points="302,-55 302,-76 558,-76 558,-55 302,-55"/>
+<text text-anchor="start" x="380" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">StudyRightModel</text>
+<polygon fill="none" stroke="black" points="302,-34 302,-55 558,-55 558,-34 302,-34"/>
+<text text-anchor="start" x="305" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
 </g>
 <!-- StudyRightService -->
 <g id="node4" class="node"><title>StudyRightService</title>
-<polygon fill="none" stroke="black" points="574,-85 574,-106 902,-106 902,-85 574,-85"/>
-<text text-anchor="start" x="685.5" y="-91.8" font-family="Times New Roman,serif" font-size="14.00">StudyRightService</text>
-<polygon fill="none" stroke="black" points="574,-4 574,-85 902,-85 902,-4 574,-4"/>
-<text text-anchor="start" x="577" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
-<text text-anchor="start" x="577" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
-<text text-anchor="start" x="577" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
-<text text-anchor="start" x="577" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">model :StudyRightModel</text>
-<text text-anchor="start" x="577" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+<polygon fill="none" stroke="black" points="592,-85 592,-106 920,-106 920,-85 592,-85"/>
+<text text-anchor="start" x="703.5" y="-91.8" font-family="Times New Roman,serif" font-size="14.00">StudyRightService</text>
+<polygon fill="none" stroke="black" points="592,-4 592,-85 920,-85 920,-4 592,-4"/>
+<text text-anchor="start" x="595" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="595" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="595" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="595" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">model :StudyRightModel</text>
+<text text-anchor="start" x="595" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
 </g>
 </g>
 </svg>

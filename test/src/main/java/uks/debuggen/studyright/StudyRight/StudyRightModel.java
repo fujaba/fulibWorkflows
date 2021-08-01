@@ -29,6 +29,7 @@ public class StudyRightModel
 
    public Room getOrCreateRoom(String id)
    {
+      if (id == null) return null;
       return (Room) modelMap.computeIfAbsent(id, k -> new Room().setId(k));
    }
 
@@ -53,11 +54,13 @@ public class StudyRightModel
 
    public University getOrCreateUniversity(String id)
    {
+      if (id == null) return null;
       return (University) modelMap.computeIfAbsent(id, k -> new University().setId(k));
    }
 
    public Stop getOrCreateStop(String id)
    {
+      if (id == null) return null;
       return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
    }
 }

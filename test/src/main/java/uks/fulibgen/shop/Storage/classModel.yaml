@@ -21,7 +21,7 @@
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model 	storageService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_handleProductStored 	storageService_handleOrderRegistered 	storageService_handleOrderPicked 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
+  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_handleProductStored 	storageService_handleDemoProductStored 	storageService_handleOrderRegistered 	storageService_handleDemoOrderRegistered 	storageService_handleOrderPicked 	storageService_handleDemoOrderPicked 	storageService_handleBoxEdited 	storageService_handlePickTaskEdited 	storageService_initEventHandlerMap 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply 	storageService_stripBrackets
   model: 	c
   modified: 	false
   name: 	StorageService
@@ -63,7 +63,8 @@
   clazz: 	storageModel
   declaration: 	"public Box getOrCreateBox(String id)"
   id: 	StorageModel_getOrCreateBox
-  methodBody: 	"return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
+  methodBody: 	"if (id == null) return null;
+return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
 "
   modified: 	false
   modifiers: 	public
@@ -77,7 +78,8 @@
   clazz: 	storageModel
   declaration: 	"public PickTask getOrCreatePickTask(String id)"
   id: 	StorageModel_getOrCreatePickTask
-  methodBody: 	"return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
+  methodBody: 	"if (id == null) return null;
+return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
 "
   modified: 	false
   modifiers: 	public
@@ -271,13 +273,9 @@ return html.toString();"
   clazz: 	storageService
   declaration: 	"private void handleProductStored(Event e)"
   id: 	StorageService_handleProductStored
-  methodBody: 	"ProductStored event = (ProductStored) e;
-if (event.getId().equals(\"12:00\")) {
-
-   Box box23 = model.getOrCreateBox(\"box23\");
-   box23.setProduct(\"shoes\");
-   box23.setPlace(\"shelf23\");
-}
+  methodBody: 	"// no fulib
+ProductStored event = (ProductStored) e;
+handleDemoProductStored(event);
 "
   modified: 	false
   modifiers: 	private
@@ -286,37 +284,36 @@ if (event.getId().equals(\"12:00\")) {
   returnType: 	void
   signature: 	"class/StorageService/method/handleProductStored(Event)"
 
+- storageService_handleDemoProductStored: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"private void handleDemoProductStored(ProductStored event)"
+  id: 	StorageService_handleDemoProductStored
+  methodBody: 	"if (event.getId().equals(\"12:00\")) {
+   BoxEdited box23Event = new BoxEdited();
+   box23Event.setId(\"12:02\");
+   box23Event.setIncrement(\"box23\");
+   box23Event.setProduct(\"shoes\");
+   box23Event.setPlace(\"shelf23\");
+   apply(box23Event);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoProductStored
+  paramsString: 	"ProductStored event"
+  returnType: 	void
+  signature: 	"class/StorageService/method/handleDemoProductStored(ProductStored)"
+
 - storageService_handleOrderRegistered: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageService
   declaration: 	"private void handleOrderRegistered(Event e)"
   id: 	StorageService_handleOrderRegistered
-  methodBody: 	"OrderRegistered event = (OrderRegistered) e;
-if (event.getId().equals(\"13:01\")) {
-
-   PickTask pick1300 = model.getOrCreatePickTask(\"pick1300\");
-   pick1300.setOrder(\"order1300\");
-   pick1300.setProduct(\"shoes\");
-   pick1300.setCustomer(\"Alice\");
-   pick1300.setAddress(\"Wonderland 1\");
-   pick1300.setState(\"todo\");
-
-   OrderApproved e1305 = new OrderApproved();
-
-   e1305.setId(\"13:05\");
-   e1305.setEvent(\"order approved 13:05\");
-   e1305.setOrder(\"order1300\");
-   publish(e1305);
-}
-if (event.getId().equals(\"13:11\")) {
-
-   OrderDeclined e1314 = new OrderDeclined();
-
-   e1314.setId(\"13:14\");
-   e1314.setEvent(\"order declined 13:14\");
-   e1314.setOrder(\"order1310\");
-   publish(e1314);
-}
+  methodBody: 	"// no fulib
+OrderRegistered event = (OrderRegistered) e;
+handleDemoOrderRegistered(event);
 "
   modified: 	false
   modifiers: 	private
@@ -325,21 +322,55 @@ if (event.getId().equals(\"13:11\")) {
   returnType: 	void
   signature: 	"class/StorageService/method/handleOrderRegistered(Event)"
 
+- storageService_handleDemoOrderRegistered: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"private void handleDemoOrderRegistered(OrderRegistered event)"
+  id: 	StorageService_handleDemoOrderRegistered
+  methodBody: 	"if (event.getId().equals(\"13:01\")) {
+   PickTaskEdited pick1300Event = new PickTaskEdited();
+   pick1300Event.setId(\"13:04\");
+   pick1300Event.setIncrement(\"pick1300\");
+   pick1300Event.setOrder(\"order1300\");
+   pick1300Event.setProduct(\"shoes\");
+   pick1300Event.setCustomer(\"Alice\");
+   pick1300Event.setAddress(\"Wonderland 1\");
+   pick1300Event.setState(\"todo\");
+   apply(pick1300Event);
+
+
+   OrderApproved e1305 = new OrderApproved();
+
+   e1305.setId(\"13:05\");
+   e1305.setEvent(\"order approved 13:05\");
+   e1305.setOrder(\"order1300\");
+   apply(e1305);
+}
+if (event.getId().equals(\"13:11\")) {
+
+   OrderDeclined e1314 = new OrderDeclined();
+
+   e1314.setId(\"13:14\");
+   e1314.setEvent(\"order declined 13:14\");
+   e1314.setOrder(\"order1310\");
+   apply(e1314);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoOrderRegistered
+  paramsString: 	"OrderRegistered event"
+  returnType: 	void
+  signature: 	"class/StorageService/method/handleDemoOrderRegistered(OrderRegistered)"
+
 - storageService_handleOrderPicked: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageService
   declaration: 	"private void handleOrderPicked(Event e)"
   id: 	StorageService_handleOrderPicked
-  methodBody: 	"OrderPicked event = (OrderPicked) e;
-if (event.getId().equals(\"14:00\")) {
-
-   PickTask pick1300 = model.getOrCreatePickTask(\"pick1300\");
-   pick1300.setState(\"done\");
-   pick1300.setBox(\"box23\");
-
-   Box box23 = model.getOrCreateBox(\"box23\");
-   box23.setPlace(\"shipping\");
-}
+  methodBody: 	"// no fulib
+OrderPicked event = (OrderPicked) e;
+handleDemoOrderPicked(event);
 "
   modified: 	false
   modifiers: 	private
@@ -347,6 +378,72 @@ if (event.getId().equals(\"14:00\")) {
   paramsString: 	"Event e"
   returnType: 	void
   signature: 	"class/StorageService/method/handleOrderPicked(Event)"
+
+- storageService_handleDemoOrderPicked: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"private void handleDemoOrderPicked(OrderPicked event)"
+  id: 	StorageService_handleDemoOrderPicked
+  methodBody: 	"if (event.getId().equals(\"14:00\")) {
+   PickTaskEdited pick1300Event = new PickTaskEdited();
+   pick1300Event.setId(\"14:01\");
+   pick1300Event.setIncrement(\"pick1300\");
+   pick1300Event.setState(\"done\");
+   pick1300Event.setBox(\"box23\");
+   apply(pick1300Event);
+
+   BoxEdited box23Event = new BoxEdited();
+   box23Event.setId(\"14:02\");
+   box23Event.setIncrement(\"box23\");
+   box23Event.setPlace(\"shipping\");
+   apply(box23Event);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoOrderPicked
+  paramsString: 	"OrderPicked event"
+  returnType: 	void
+  signature: 	"class/StorageService/method/handleDemoOrderPicked(OrderPicked)"
+
+- storageService_handleBoxEdited: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"private void handleBoxEdited(Event e)"
+  id: 	StorageService_handleBoxEdited
+  methodBody: 	"BoxEdited event = (BoxEdited) e;
+Box object = model.getOrCreateBox(event.getIncrement());
+object.setProduct(event.getProduct());
+object.setPlace(event.getPlace());
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleBoxEdited
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StorageService/method/handleBoxEdited(Event)"
+
+- storageService_handlePickTaskEdited: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"private void handlePickTaskEdited(Event e)"
+  id: 	StorageService_handlePickTaskEdited
+  methodBody: 	"PickTaskEdited event = (PickTaskEdited) e;
+PickTask object = model.getOrCreatePickTask(event.getIncrement());
+object.setOrder(event.getOrder());
+object.setProduct(event.getProduct());
+object.setCustomer(event.getCustomer());
+object.setAddress(event.getAddress());
+object.setState(event.getState());
+object.setBox(event.getBox());
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handlePickTaskEdited
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StorageService/method/handlePickTaskEdited(Event)"
 
 - storageService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -358,6 +455,8 @@ if (event.getId().equals(\"14:00\")) {
    handlerMap.put(ProductStored.class, this::handleProductStored);
    handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
    handlerMap.put(OrderPicked.class, this::handleOrderPicked);
+   handlerMap.put(BoxEdited.class, this::handleBoxEdited);
+   handlerMap.put(PickTaskEdited.class, this::handlePickTaskEdited);
 }
 "
   modified: 	false
@@ -427,6 +526,27 @@ catch (UnirestException e) {
   paramsString: 	"Request req, Response res"
   returnType: 	String
   signature: 	"class/StorageService/method/postApply(Request,Response)"
+
+- storageService_stripBrackets: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"public String stripBrackets(String back)"
+  id: 	StorageService_stripBrackets
+  methodBody: 	"      if (back == null) {
+         return \"\";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;"
+  modified: 	false
+  modifiers: 	public
+  name: 	stripBrackets
+  paramsString: 	"String back"
+  returnType: 	String
+  signature: 	"class/StorageService/method/stripBrackets(String)"
 
 - box_id: 	org.fulib.classmodel.Attribute
   clazz: 	box

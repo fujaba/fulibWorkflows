@@ -21,7 +21,7 @@
   attributes: 	someserviceService_history 	someserviceService_port 	someserviceService_spark 	someserviceService_model 	someserviceService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	someserviceService_start 	someserviceService_getHello 	someserviceService_subscribeAndLoadOldEvents 	someserviceService_apply 	someserviceService_getPage 	someserviceService_getDemoPage 	someserviceService_handleProductStored 	someserviceService_initEventHandlerMap 	someserviceService_ignoreEvent 	someserviceService_publish 	someserviceService_postApply
+  methods: 	someserviceService_start 	someserviceService_getHello 	someserviceService_subscribeAndLoadOldEvents 	someserviceService_apply 	someserviceService_getPage 	someserviceService_getDemoPage 	someserviceService_handleProductStored 	someserviceService_handleDemoProductStored 	someserviceService_handleBoxEdited 	someserviceService_initEventHandlerMap 	someserviceService_ignoreEvent 	someserviceService_publish 	someserviceService_postApply 	someserviceService_stripBrackets
   model: 	c
   modified: 	false
   name: 	someserviceService
@@ -56,7 +56,8 @@
   clazz: 	someserviceModel
   declaration: 	"public Box getOrCreateBox(String id)"
   id: 	someserviceModel_getOrCreateBox
-  methodBody: 	"return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
+  methodBody: 	"if (id == null) return null;
+return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
 "
   modified: 	false
   modifiers: 	public
@@ -250,13 +251,9 @@ return html.toString();"
   clazz: 	someserviceService
   declaration: 	"private void handleProductStored(Event e)"
   id: 	someserviceService_handleProductStored
-  methodBody: 	"ProductStored event = (ProductStored) e;
-if (event.getId().equals(\"12:00\")) {
-
-   Box box23 = model.getOrCreateBox(\"box23\");
-   box23.setProduct(\"shoes\");
-   box23.setPlace(\"shelf23\");
-}
+  methodBody: 	"// no fulib
+ProductStored event = (ProductStored) e;
+handleDemoProductStored(event);
 "
   modified: 	false
   modifiers: 	private
@@ -264,6 +261,45 @@ if (event.getId().equals(\"12:00\")) {
   paramsString: 	"Event e"
   returnType: 	void
   signature: 	"class/someserviceService/method/handleProductStored(Event)"
+
+- someserviceService_handleDemoProductStored: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceService
+  declaration: 	"private void handleDemoProductStored(ProductStored event)"
+  id: 	someserviceService_handleDemoProductStored
+  methodBody: 	"if (event.getId().equals(\"12:00\")) {
+   BoxEdited box23Event = new BoxEdited();
+   box23Event.setId(\"12:01\");
+   box23Event.setIncrement(\"box23\");
+   box23Event.setProduct(\"shoes\");
+   box23Event.setPlace(\"shelf23\");
+   apply(box23Event);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoProductStored
+  paramsString: 	"ProductStored event"
+  returnType: 	void
+  signature: 	"class/someserviceService/method/handleDemoProductStored(ProductStored)"
+
+- someserviceService_handleBoxEdited: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceService
+  declaration: 	"private void handleBoxEdited(Event e)"
+  id: 	someserviceService_handleBoxEdited
+  methodBody: 	"BoxEdited event = (BoxEdited) e;
+Box object = model.getOrCreateBox(event.getIncrement());
+object.setProduct(event.getProduct());
+object.setPlace(event.getPlace());
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleBoxEdited
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/someserviceService/method/handleBoxEdited(Event)"
 
 - someserviceService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -273,6 +309,7 @@ if (event.getId().equals(\"12:00\")) {
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(ProductStored.class, this::handleProductStored);
+   handlerMap.put(BoxEdited.class, this::handleBoxEdited);
 }
 "
   modified: 	false
@@ -342,6 +379,27 @@ catch (UnirestException e) {
   paramsString: 	"Request req, Response res"
   returnType: 	String
   signature: 	"class/someserviceService/method/postApply(Request,Response)"
+
+- someserviceService_stripBrackets: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceService
+  declaration: 	"public String stripBrackets(String back)"
+  id: 	someserviceService_stripBrackets
+  methodBody: 	"      if (back == null) {
+         return \"\";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;"
+  modified: 	false
+  modifiers: 	public
+  name: 	stripBrackets
+  paramsString: 	"String back"
+  returnType: 	String
+  signature: 	"class/someserviceService/method/stripBrackets(String)"
 
 - box_id: 	org.fulib.classmodel.Attribute
   clazz: 	box

@@ -117,3 +117,16 @@ servicePostApply() ::=
       }
       return "apply done";
 >>
+
+stripBrackets() ::=
+<<
+      if (back == null) {
+         return "";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;
+>>
