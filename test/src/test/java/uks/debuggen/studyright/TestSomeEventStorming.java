@@ -77,12 +77,14 @@ public class TestSomeEventStorming
       open("http://localhost:42400");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
-      // check data note 12:03:01
+      // check data note 12:11:01
       pre = $("#data");
-      pre.shouldHave(text("- s03:"));
-      pre.shouldHave(text("room: modeling"));
-      pre.shouldHave(text("previousStop: s02"));
-      pre.shouldHave(text("motivation: 12"));
+      pre.shouldHave(text("- tour1:"));
+      pre.shouldHave(text("stops: \"math algebra modeling exam\""));
+
+      // page 12:13
+      open("http://localhost:42400/page/12_13");
+      $("#null").click();
 
       System.out.println();
    }

@@ -228,12 +228,22 @@ public class StudyRightService
 
       // 11:00
       if (id.equals("11_00")) {
-         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         html.append("<form action=\"/page/12_13\" method=\"get\">\n");
          // StudyRight 11:00
          html.append("   <p>Welcome at Study Right</p>\n");
          html.append("   <p>Find your way, start with math</p>\n");
          html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"rooms loaded 12:00\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:13
+      if (id.equals("12_13")) {
+         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         // StudyRight 12:13
+         html.append("   <p>This are your alternatives</p>\n");
+         html.append("   <p>tour1 math algebra modeling exam</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
@@ -259,9 +269,12 @@ public class StudyRightService
          handlerMap.put(RoomsLoaded.class, this::handleRoomsLoaded);
          handlerMap.put(TourStarted.class, this::handleTourStarted);
          handlerMap.put(RoomSelected.class, this::handleRoomSelected);
+         handlerMap.put(TourEndFound.class, this::handleTourEndFound);
          handlerMap.put(UniversityEdited.class, this::handleUniversityEdited);
          handlerMap.put(RoomEdited.class, this::handleRoomEdited);
          handlerMap.put(StopEdited.class, this::handleStopEdited);
+         handlerMap.put(TourEdited.class, this::handleTourEdited);
+         handlerMap.put(TourListEdited.class, this::handleTourListEdited);
       }
    }
 
@@ -399,7 +412,7 @@ public class StudyRightService
 
          e1203.setId("12:03");
          e1203.setEvent("room selected 12:03");
-         e1203.setRoom("modeling");
+         e1203.setRoom("algebra");
          e1203.setPreviousStop("s02");
          apply(e1203);
 
@@ -407,7 +420,7 @@ public class StudyRightService
 
          e1204.setId("12:04");
          e1204.setEvent("room selected 12:04");
-         e1204.setRoom("algebra");
+         e1204.setRoom("modeling");
          e1204.setPreviousStop("s02");
          apply(e1204);
       }
@@ -415,11 +428,93 @@ public class StudyRightService
          StopEdited s03Event = new StopEdited();
          s03Event.setId("12:03:01");
          s03Event.setIncrement("s03");
-         s03Event.setRoom("modeling");
+         s03Event.setRoom("algebra");
          s03Event.setPreviousStop("s02");
-         s03Event.setMotivation("12");
+         s03Event.setMotivation("42");
          apply(s03Event);
 
+
+         RoomSelected e1205 = new RoomSelected();
+
+         e1205.setId("12:05");
+         e1205.setEvent("room selected 12:05");
+         e1205.setPreviousStop("s03");
+         e1205.setRoom("modeling");
+         apply(e1205);
+
+         RoomSelected e1206 = new RoomSelected();
+
+         e1206.setId("12:06");
+         e1206.setEvent("room selected 12:06");
+         e1206.setPreviousStop("s03");
+         e1206.setRoom("math");
+         apply(e1206);
+      }
+      if (event.getId().equals("12:05")) {
+         StopEdited s05Event = new StopEdited();
+         s05Event.setId("12:05:01");
+         s05Event.setIncrement("s05");
+         s05Event.setRoom("modeling");
+         s05Event.setPreviousStop("s03");
+         s05Event.setMotivation("0");
+         apply(s05Event);
+
+
+         RoomSelected e1207 = new RoomSelected();
+
+         e1207.setId("12:07");
+         e1207.setEvent("room selected 12:07");
+         e1207.setPreviousStop("s05");
+         e1207.setRoom("math");
+         apply(e1207);
+
+         RoomSelected e1208 = new RoomSelected();
+
+         e1208.setId("12:08");
+         e1208.setEvent("room selected 12:08");
+         e1208.setPreviousStop("s05");
+         e1208.setRoom("exam");
+         apply(e1208);
+      }
+      if (event.getId().equals("12:07")) {
+         StopEdited s07Event = new StopEdited();
+         s07Event.setId("12:07:01");
+         s07Event.setIncrement("s07");
+         s07Event.setRoom("math");
+         s07Event.setPreviousStop("s05");
+         s07Event.setMotivation("-23");
+         apply(s07Event);
+
+      }
+      if (event.getId().equals("12:08")) {
+         StopEdited s08Event = new StopEdited();
+         s08Event.setId("12:08:01");
+         s08Event.setIncrement("s08");
+         s08Event.setRoom("exam");
+         s08Event.setPreviousStop("s05");
+         s08Event.setMotivation("0");
+         apply(s08Event);
+
+         TourEdited tour1Event = new TourEdited();
+         tour1Event.setId("12:08:02");
+         tour1Event.setIncrement("tour1");
+         tour1Event.setStops("exam");
+         apply(tour1Event);
+
+         TourListEdited allToursEvent = new TourListEdited();
+         allToursEvent.setId("12:08:03");
+         allToursEvent.setIncrement("allTours");
+         allToursEvent.setAlternatives("[tour1]");
+         apply(allToursEvent);
+
+
+         TourEndFound e1209 = new TourEndFound();
+
+         e1209.setId("12:09");
+         e1209.setEvent("tour end found 12:09");
+         e1209.setStop("s08");
+         e1209.setTour("tour1");
+         apply(e1209);
       }
    }
 
@@ -480,5 +575,80 @@ public class StudyRightService
          back = back.substring(open + 1, close);
       }
       return back;
+   }
+
+   private void handleTourEndFound(Event e)
+   {
+      // no fulib
+      TourEndFound event = (TourEndFound) e;
+      handleDemoTourEndFound(event);
+   }
+
+   private void handleDemoTourEndFound(TourEndFound event)
+   {
+      if (event.getId().equals("12:09")) {
+         TourEdited tour1Event = new TourEdited();
+         tour1Event.setId("12:09:01");
+         tour1Event.setIncrement("tour1");
+         tour1Event.setStops("modeling exam");
+         apply(tour1Event);
+
+
+         TourEndFound e1210 = new TourEndFound();
+
+         e1210.setId("12:10");
+         e1210.setEvent("tour end found 12:10");
+         e1210.setStop("s05");
+         e1210.setTour("tour1");
+         apply(e1210);
+      }
+      if (event.getId().equals("12:10")) {
+         TourEdited tour1Event = new TourEdited();
+         tour1Event.setId("12:10:01");
+         tour1Event.setIncrement("tour1");
+         tour1Event.setStops("algebra modeling exam");
+         apply(tour1Event);
+
+
+         TourEndFound e1211 = new TourEndFound();
+
+         e1211.setId("12:11");
+         e1211.setEvent("tour end found 12:11");
+         e1211.setStop("s03");
+         e1211.setTour("tour1");
+         apply(e1211);
+      }
+      if (event.getId().equals("12:11")) {
+         TourEdited tour1Event = new TourEdited();
+         tour1Event.setId("12:11:01");
+         tour1Event.setIncrement("tour1");
+         tour1Event.setStops("math algebra modeling exam");
+         apply(tour1Event);
+
+
+         TourEndFound e1212 = new TourEndFound();
+
+         e1212.setId("12:12");
+         e1212.setEvent("tour end found 12:12");
+         e1212.setStop("s02");
+         e1212.setTour("tour1");
+         apply(e1212);
+      }
+   }
+
+   private void handleTourEdited(Event e)
+   {
+      TourEdited event = (TourEdited) e;
+      Tour object = model.getOrCreateTour(event.getIncrement());
+      object.setStops(event.getStops());
+   }
+
+   private void handleTourListEdited(Event e)
+   {
+      TourListEdited event = (TourListEdited) e;
+      TourList object = model.getOrCreateTourList(event.getIncrement());
+      for (String name : stripBrackets(event.getAlternatives()).split("\\s+")) {
+         object.withAlternatives(model.getOrCreateTour(name));
+      }
    }
 }

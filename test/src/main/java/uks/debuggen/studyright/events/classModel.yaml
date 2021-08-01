@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	serviceSubscribed 	roomsLoaded 	universityEdited 	roomEdited 	tourStarted 	stopEdited 	roomSelected
+  classes: 	event 	dataEvent 	serviceSubscribed 	roomsLoaded 	universityEdited 	roomEdited 	tourStarted 	stopEdited 	roomSelected 	tourEdited 	tourListEdited 	tourEndFound
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	serviceSubscribed 	roomsLoaded 	tourStarted 	roomSelected
+  subClasses: 	dataEvent 	serviceSubscribed 	roomsLoaded 	tourStarted 	roomSelected 	tourEndFound
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_increment
@@ -21,7 +21,7 @@
   modified: 	false
   name: 	DataEvent
   propertyStyle: 	Bean
-  subClasses: 	universityEdited 	roomEdited 	stopEdited
+  subClasses: 	universityEdited 	roomEdited 	stopEdited 	tourEdited 	tourListEdited
   superClass: 	event
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
@@ -77,6 +77,30 @@
   model: 	c
   modified: 	false
   name: 	RoomSelected
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- tourEdited: 	org.fulib.classmodel.Clazz
+  attributes: 	tourEdited_stops
+  model: 	c
+  modified: 	false
+  name: 	TourEdited
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- tourListEdited: 	org.fulib.classmodel.Clazz
+  attributes: 	tourListEdited_alternatives
+  model: 	c
+  modified: 	false
+  name: 	TourListEdited
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- tourEndFound: 	org.fulib.classmodel.Clazz
+  attributes: 	tourEndFound_event 	tourEndFound_stop 	tourEndFound_tour
+  model: 	c
+  modified: 	false
+  name: 	TourEndFound
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -218,6 +242,51 @@
   id: 	RoomSelected_previousStop
   modified: 	false
   name: 	previousStop
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourEdited_stops: 	org.fulib.classmodel.Attribute
+  clazz: 	tourEdited
+  id: 	TourEdited_stops
+  modified: 	false
+  name: 	stops
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourListEdited_alternatives: 	org.fulib.classmodel.Attribute
+  clazz: 	tourListEdited
+  id: 	TourListEdited_alternatives
+  modified: 	false
+  name: 	alternatives
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourEndFound_event: 	org.fulib.classmodel.Attribute
+  clazz: 	tourEndFound
+  id: 	TourEndFound_event
+  modified: 	false
+  name: 	event
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourEndFound_stop: 	org.fulib.classmodel.Attribute
+  clazz: 	tourEndFound
+  id: 	TourEndFound_stop
+  modified: 	false
+  name: 	stop
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourEndFound_tour: 	org.fulib.classmodel.Attribute
+  clazz: 	tourEndFound
+  id: 	TourEndFound_tour
+  modified: 	false
+  name: 	tour
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

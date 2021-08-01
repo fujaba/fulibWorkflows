@@ -64,11 +64,11 @@
   previousStop.back: [nextStops]
 
 - event: room selected 12:03
-  room: modeling
+  room: algebra
   previousStop: s02
 
 - event: room selected 12:04
-  room: algebra
+  room: modeling
   previousStop: s02
 
 - policy: StudyRight
@@ -76,8 +76,102 @@
 
 - data: 12:03:01
   stop: s03
-  room: modeling
+  room: algebra
   previousStop: s02
-  motivation: 12
+  motivation: 42
 
+- event: room selected 12:05
+  previousStop: s03
+  room: modeling
 
+- event: room selected 12:06
+  previousStop: s03
+  room: math
+
+- policy: StudyRight
+  trigger: 12:05
+
+- data: 12:05:01
+  stop: s05
+  room: modeling
+  previousStop: s03
+  motivation: 0
+
+- event: room selected 12:07
+  previousStop: s05
+  room: math
+
+- event: room selected 12:08
+  previousStop: s05
+  room: exam
+
+- policy: StudyRight
+  trigger: 12:07
+
+- data: 12:07:01
+  stop: s07
+  room: math
+  previousStop: s05
+  motivation: -23
+
+- policy: StudyRight
+  trigger: 12:08
+
+- data: 12:08:01
+  stop: s08
+  room: exam
+  previousStop: s05
+  motivation: 0
+
+- data: 12:08:02
+  tour: tour1
+  stops: exam
+
+- data: 12:08:03
+  tourList: allTours
+  alternatives: [tour1]
+  alternatives.back: tourList
+
+- event: tour end found 12:09
+  stop: s08
+  tour: tour1
+
+- policy: StudyRight
+  trigger: 12:09
+
+- data: 12:09:01
+  tour: tour1
+  stops: modeling exam
+
+- event: tour end found 12:10
+  stop: s05
+  tour: tour1
+
+- policy: StudyRight
+  trigger: 12:10
+
+- data: 12:10:01
+  tour: tour1
+  stops: algebra modeling exam
+
+- event: tour end found 12:11
+  stop: s03
+  tour: tour1
+
+- policy: StudyRight
+  trigger: 12:11
+
+- data: 12:11:01
+  tour: tour1
+  stops: math algebra modeling exam
+
+- event: tour end found 12:12
+  stop: s02
+  tour: tour1
+
+- action: Alice
+
+- page:
+    - name: StudyRight 12:13
+    - label: This are your alternatives
+    - label: tour1 math algebra modeling exam

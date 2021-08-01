@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	studyRightModel 	studyRightService 	university 	room 	stop
+  classes: 	studyRightModel 	studyRightService 	university 	room 	stop 	tour 	tourList
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	studyRightModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	studyRightModel_getOrCreateUniversity 	studyRightModel_getOrCreateRoom 	studyRightModel_getOrCreateStop
+  methods: 	studyRightModel_getOrCreateUniversity 	studyRightModel_getOrCreateRoom 	studyRightModel_getOrCreateStop 	studyRightModel_getOrCreateTour 	studyRightModel_getOrCreateTourList
   model: 	c
   modified: 	false
   name: 	StudyRightModel
@@ -21,7 +21,7 @@
   attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model 	studyRightService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleRoomsLoaded 	studyRightService_handleDemoRoomsLoaded 	studyRightService_handleTourStarted 	studyRightService_handleDemoTourStarted 	studyRightService_handleRoomSelected 	studyRightService_handleDemoRoomSelected 	studyRightService_handleUniversityEdited 	studyRightService_handleRoomEdited 	studyRightService_handleStopEdited 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply 	studyRightService_stripBrackets
+  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleRoomsLoaded 	studyRightService_handleDemoRoomsLoaded 	studyRightService_handleTourStarted 	studyRightService_handleDemoTourStarted 	studyRightService_handleRoomSelected 	studyRightService_handleDemoRoomSelected 	studyRightService_handleTourEndFound 	studyRightService_handleDemoTourEndFound 	studyRightService_handleUniversityEdited 	studyRightService_handleRoomEdited 	studyRightService_handleStopEdited 	studyRightService_handleTourEdited 	studyRightService_handleTourListEdited 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply 	studyRightService_stripBrackets
   model: 	c
   modified: 	false
   name: 	StudyRightService
@@ -50,6 +50,22 @@
   name: 	Stop
   propertyStyle: 	Bean
   roles: 	stop_previousStop 	stop_nextStops
+
+- tour: 	org.fulib.classmodel.Clazz
+  attributes: 	tour_id 	tour_stops
+  model: 	c
+  modified: 	false
+  name: 	Tour
+  propertyStyle: 	Bean
+  roles: 	tour_tourList
+
+- tourList: 	org.fulib.classmodel.Clazz
+  attributes: 	tourList_id
+  model: 	c
+  modified: 	false
+  name: 	TourList
+  propertyStyle: 	Bean
+  roles: 	tourList_alternatives
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -112,6 +128,36 @@ return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
   paramsString: 	"String id"
   returnType: 	Stop
   signature: 	"class/StudyRightModel/method/getOrCreateStop(String)"
+
+- studyRightModel_getOrCreateTour: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightModel
+  declaration: 	"public Tour getOrCreateTour(String id)"
+  id: 	StudyRightModel_getOrCreateTour
+  methodBody: 	"if (id == null) return null;
+return (Tour) modelMap.computeIfAbsent(id, k -> new Tour().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateTour
+  paramsString: 	"String id"
+  returnType: 	Tour
+  signature: 	"class/StudyRightModel/method/getOrCreateTour(String)"
+
+- studyRightModel_getOrCreateTourList: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightModel
+  declaration: 	"public TourList getOrCreateTourList(String id)"
+  id: 	StudyRightModel_getOrCreateTourList
+  methodBody: 	"if (id == null) return null;
+return (TourList) modelMap.computeIfAbsent(id, k -> new TourList().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateTourList
+  paramsString: 	"String id"
+  returnType: 	TourList
+  signature: 	"class/StudyRightModel/method/getOrCreateTourList(String)"
 
 - studyRightService_history: 	org.fulib.classmodel.Attribute
   clazz: 	studyRightService
@@ -294,12 +340,22 @@ if (\"rooms loaded 12:00\".equals(event)) {
 
 // 11:00
 if (id.equals(\"11_00\")) {
-   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/12_13\\" method=\\"get\\">\n\");
    // StudyRight 11:00
    html.append(\"   <p>Welcome at Study Right</p>\n\");
    html.append(\"   <p>Find your way, start with math</p>\n\");
    html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"rooms loaded 12:00\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:13
+if (id.equals(\"12_13\")) {
+   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   // StudyRight 12:13
+   html.append(\"   <p>This are your alternatives</p>\n\");
+   html.append(\"   <p>tour1 math algebra modeling exam</p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -466,7 +522,7 @@ handleDemoRoomSelected(event);
 
    e1203.setId(\"12:03\");
    e1203.setEvent(\"room selected 12:03\");
-   e1203.setRoom(\"modeling\");
+   e1203.setRoom(\"algebra\");
    e1203.setPreviousStop(\"s02\");
    apply(e1203);
 
@@ -474,7 +530,7 @@ handleDemoRoomSelected(event);
 
    e1204.setId(\"12:04\");
    e1204.setEvent(\"room selected 12:04\");
-   e1204.setRoom(\"algebra\");
+   e1204.setRoom(\"modeling\");
    e1204.setPreviousStop(\"s02\");
    apply(e1204);
 }
@@ -482,11 +538,93 @@ if (event.getId().equals(\"12:03\")) {
    StopEdited s03Event = new StopEdited();
    s03Event.setId(\"12:03:01\");
    s03Event.setIncrement(\"s03\");
-   s03Event.setRoom(\"modeling\");
+   s03Event.setRoom(\"algebra\");
    s03Event.setPreviousStop(\"s02\");
-   s03Event.setMotivation(\"12\");
+   s03Event.setMotivation(\"42\");
    apply(s03Event);
 
+
+   RoomSelected e1205 = new RoomSelected();
+
+   e1205.setId(\"12:05\");
+   e1205.setEvent(\"room selected 12:05\");
+   e1205.setPreviousStop(\"s03\");
+   e1205.setRoom(\"modeling\");
+   apply(e1205);
+
+   RoomSelected e1206 = new RoomSelected();
+
+   e1206.setId(\"12:06\");
+   e1206.setEvent(\"room selected 12:06\");
+   e1206.setPreviousStop(\"s03\");
+   e1206.setRoom(\"math\");
+   apply(e1206);
+}
+if (event.getId().equals(\"12:05\")) {
+   StopEdited s05Event = new StopEdited();
+   s05Event.setId(\"12:05:01\");
+   s05Event.setIncrement(\"s05\");
+   s05Event.setRoom(\"modeling\");
+   s05Event.setPreviousStop(\"s03\");
+   s05Event.setMotivation(\"0\");
+   apply(s05Event);
+
+
+   RoomSelected e1207 = new RoomSelected();
+
+   e1207.setId(\"12:07\");
+   e1207.setEvent(\"room selected 12:07\");
+   e1207.setPreviousStop(\"s05\");
+   e1207.setRoom(\"math\");
+   apply(e1207);
+
+   RoomSelected e1208 = new RoomSelected();
+
+   e1208.setId(\"12:08\");
+   e1208.setEvent(\"room selected 12:08\");
+   e1208.setPreviousStop(\"s05\");
+   e1208.setRoom(\"exam\");
+   apply(e1208);
+}
+if (event.getId().equals(\"12:07\")) {
+   StopEdited s07Event = new StopEdited();
+   s07Event.setId(\"12:07:01\");
+   s07Event.setIncrement(\"s07\");
+   s07Event.setRoom(\"math\");
+   s07Event.setPreviousStop(\"s05\");
+   s07Event.setMotivation(\"-23\");
+   apply(s07Event);
+
+}
+if (event.getId().equals(\"12:08\")) {
+   StopEdited s08Event = new StopEdited();
+   s08Event.setId(\"12:08:01\");
+   s08Event.setIncrement(\"s08\");
+   s08Event.setRoom(\"exam\");
+   s08Event.setPreviousStop(\"s05\");
+   s08Event.setMotivation(\"0\");
+   apply(s08Event);
+
+   TourEdited tour1Event = new TourEdited();
+   tour1Event.setId(\"12:08:02\");
+   tour1Event.setIncrement(\"tour1\");
+   tour1Event.setStops(\"exam\");
+   apply(tour1Event);
+
+   TourListEdited allToursEvent = new TourListEdited();
+   allToursEvent.setId(\"12:08:03\");
+   allToursEvent.setIncrement(\"allTours\");
+   allToursEvent.setAlternatives(\"[tour1]\");
+   apply(allToursEvent);
+
+
+   TourEndFound e1209 = new TourEndFound();
+
+   e1209.setId(\"12:09\");
+   e1209.setEvent(\"tour end found 12:09\");
+   e1209.setStop(\"s08\");
+   e1209.setTour(\"tour1\");
+   apply(e1209);
 }
 "
   modified: 	false
@@ -495,6 +633,83 @@ if (event.getId().equals(\"12:03\")) {
   paramsString: 	"RoomSelected event"
   returnType: 	void
   signature: 	"class/StudyRightService/method/handleDemoRoomSelected(RoomSelected)"
+
+- studyRightService_handleTourEndFound: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleTourEndFound(Event e)"
+  id: 	StudyRightService_handleTourEndFound
+  methodBody: 	"// no fulib
+TourEndFound event = (TourEndFound) e;
+handleDemoTourEndFound(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleTourEndFound
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleTourEndFound(Event)"
+
+- studyRightService_handleDemoTourEndFound: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleDemoTourEndFound(TourEndFound event)"
+  id: 	StudyRightService_handleDemoTourEndFound
+  methodBody: 	"if (event.getId().equals(\"12:09\")) {
+   TourEdited tour1Event = new TourEdited();
+   tour1Event.setId(\"12:09:01\");
+   tour1Event.setIncrement(\"tour1\");
+   tour1Event.setStops(\"modeling exam\");
+   apply(tour1Event);
+
+
+   TourEndFound e1210 = new TourEndFound();
+
+   e1210.setId(\"12:10\");
+   e1210.setEvent(\"tour end found 12:10\");
+   e1210.setStop(\"s05\");
+   e1210.setTour(\"tour1\");
+   apply(e1210);
+}
+if (event.getId().equals(\"12:10\")) {
+   TourEdited tour1Event = new TourEdited();
+   tour1Event.setId(\"12:10:01\");
+   tour1Event.setIncrement(\"tour1\");
+   tour1Event.setStops(\"algebra modeling exam\");
+   apply(tour1Event);
+
+
+   TourEndFound e1211 = new TourEndFound();
+
+   e1211.setId(\"12:11\");
+   e1211.setEvent(\"tour end found 12:11\");
+   e1211.setStop(\"s03\");
+   e1211.setTour(\"tour1\");
+   apply(e1211);
+}
+if (event.getId().equals(\"12:11\")) {
+   TourEdited tour1Event = new TourEdited();
+   tour1Event.setId(\"12:11:01\");
+   tour1Event.setIncrement(\"tour1\");
+   tour1Event.setStops(\"math algebra modeling exam\");
+   apply(tour1Event);
+
+
+   TourEndFound e1212 = new TourEndFound();
+
+   e1212.setId(\"12:12\");
+   e1212.setEvent(\"tour end found 12:12\");
+   e1212.setStop(\"s02\");
+   e1212.setTour(\"tour1\");
+   apply(e1212);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoTourEndFound
+  paramsString: 	"TourEndFound event"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleDemoTourEndFound(TourEndFound)"
 
 - studyRightService_handleUniversityEdited: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -552,6 +767,40 @@ object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
   returnType: 	void
   signature: 	"class/StudyRightService/method/handleStopEdited(Event)"
 
+- studyRightService_handleTourEdited: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleTourEdited(Event e)"
+  id: 	StudyRightService_handleTourEdited
+  methodBody: 	"TourEdited event = (TourEdited) e;
+Tour object = model.getOrCreateTour(event.getIncrement());
+object.setStops(event.getStops());
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleTourEdited
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleTourEdited(Event)"
+
+- studyRightService_handleTourListEdited: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleTourListEdited(Event e)"
+  id: 	StudyRightService_handleTourListEdited
+  methodBody: 	"TourListEdited event = (TourListEdited) e;
+TourList object = model.getOrCreateTourList(event.getIncrement());
+for (String name : stripBrackets(event.getAlternatives()).split(\"\\s+\")) {
+   object.withAlternatives(model.getOrCreateTour(name));
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleTourListEdited
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleTourListEdited(Event)"
+
 - studyRightService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
@@ -562,9 +811,12 @@ object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
    handlerMap.put(RoomsLoaded.class, this::handleRoomsLoaded);
    handlerMap.put(TourStarted.class, this::handleTourStarted);
    handlerMap.put(RoomSelected.class, this::handleRoomSelected);
+   handlerMap.put(TourEndFound.class, this::handleTourEndFound);
    handlerMap.put(UniversityEdited.class, this::handleUniversityEdited);
    handlerMap.put(RoomEdited.class, this::handleRoomEdited);
    handlerMap.put(StopEdited.class, this::handleStopEdited);
+   handlerMap.put(TourEdited.class, this::handleTourEdited);
+   handlerMap.put(TourListEdited.class, this::handleTourListEdited);
 }
 "
   modified: 	false
@@ -763,6 +1015,55 @@ catch (UnirestException e) {
   modified: 	false
   name: 	nextStops
   other: 	stop_previousStop
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- tour_id: 	org.fulib.classmodel.Attribute
+  clazz: 	tour
+  id: 	Tour_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tour_stops: 	org.fulib.classmodel.Attribute
+  clazz: 	tour
+  id: 	Tour_stops
+  modified: 	false
+  name: 	stops
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tour_tourList: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	tour
+  id: 	Tour_tourList
+  modified: 	false
+  name: 	tourList
+  other: 	tourList_alternatives
+  propertyStyle: 	Bean
+
+- tourList_id: 	org.fulib.classmodel.Attribute
+  clazz: 	tourList
+  id: 	TourList_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourList_alternatives: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	tourList
+  collectionType: 	c1
+  id: 	TourList_alternatives
+  modified: 	false
+  name: 	alternatives
+  other: 	tour_tourList
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 

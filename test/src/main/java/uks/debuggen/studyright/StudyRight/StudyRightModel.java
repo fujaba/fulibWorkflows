@@ -63,4 +63,16 @@ public class StudyRightModel
       if (id == null) return null;
       return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
    }
+
+   public Tour getOrCreateTour(String id)
+   {
+      if (id == null) return null;
+      return (Tour) modelMap.computeIfAbsent(id, k -> new Tour().setId(k));
+   }
+
+   public TourList getOrCreateTourList(String id)
+   {
+      if (id == null) return null;
+      return (TourList) modelMap.computeIfAbsent(id, k -> new TourList().setId(k));
+   }
 }
