@@ -229,19 +229,8 @@ public class StudyRightService
       apply(loadSmallMap);
 
       // find tours
-      StopEdited s01Event = new StopEdited();
-      s01Event.setId(newEventId());
-      String firstStop = "stop" + idNumber;
-      s01Event.setIncrement(firstStop);
-      s01Event.setMotivation("77");
-      apply(s01Event);
+      apply(new TourStarted().setId(newEventId()));
 
-
-      RoomSelected roomSelected = new RoomSelected();
-      roomSelected.setId(newEventId());
-      roomSelected.setRoom("math");
-      roomSelected.setPreviousStop(firstStop);
-      apply(roomSelected);
 
       TourList tourList = model.getOrCreateTourList(idPrefix + "TourList");
 
@@ -446,6 +435,25 @@ public class StudyRightService
    {
       // no fulib
       TourStarted event = (TourStarted) e;
+
+      if (event.getId().startsWith(idPrefix)) {
+         StopEdited s01Event = new StopEdited();
+         s01Event.setId(newEventId());
+         String firstStop = "stop" + idNumber;
+         s01Event.setIncrement(firstStop);
+         s01Event.setMotivation("77");
+         apply(s01Event);
+
+
+         RoomSelected roomSelected = new RoomSelected();
+         roomSelected.setId(newEventId());
+         roomSelected.setRoom("math");
+         roomSelected.setPreviousStop(firstStop);
+         apply(roomSelected);
+         return;
+      }
+
+
       handleDemoTourStarted(event);
    }
 
@@ -504,6 +512,12 @@ public class StudyRightService
 
          // on negative motivation, stop searching
          if (newMotivation < 0) {
+            TourFailed tourFailed = new TourFailed();
+            tourFailed.setId(newEventId());
+            tourFailed.setStop(newStopId);
+            tourFailed.setRoom(room.getId());
+            tourFailed.setCredits("" + newMotivation);
+            apply(tourFailed);
             return;
          }
 
@@ -656,6 +670,15 @@ public class StudyRightService
          s07Event.setMotivation("-23");
          apply(s07Event);
 
+
+         TourFailed e120702 = new TourFailed();
+
+         e120702.setId("12:07:02");
+         e120702.setEvent("tour failed 12:07:02");
+         e120702.setStop("s07");
+         e120702.setRoom("math");
+         e120702.setCredits("-23");
+         apply(e120702);
       }
       if (event.getId().equals("12:08")) {
          StopEdited s08Event = new StopEdited();

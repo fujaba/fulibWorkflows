@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	serviceSubscribed 	roomsLoaded 	universityEdited 	roomEdited 	tourStarted 	stopEdited 	roomSelected 	tourEdited 	tourListEdited 	tourEndFound
+  classes: 	event 	dataEvent 	serviceSubscribed 	roomsLoaded 	universityEdited 	roomEdited 	tourStarted 	stopEdited 	roomSelected 	tourFailed 	tourEdited 	tourListEdited 	tourEndFound
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	serviceSubscribed 	roomsLoaded 	tourStarted 	roomSelected 	tourEndFound
+  subClasses: 	dataEvent 	serviceSubscribed 	roomsLoaded 	tourStarted 	roomSelected 	tourFailed 	tourEndFound
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_increment
@@ -77,6 +77,14 @@
   model: 	c
   modified: 	false
   name: 	RoomSelected
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- tourFailed: 	org.fulib.classmodel.Clazz
+  attributes: 	tourFailed_event 	tourFailed_stop 	tourFailed_room 	tourFailed_credits
+  model: 	c
+  modified: 	false
+  name: 	TourFailed
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -242,6 +250,42 @@
   id: 	RoomSelected_previousStop
   modified: 	false
   name: 	previousStop
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourFailed_event: 	org.fulib.classmodel.Attribute
+  clazz: 	tourFailed
+  id: 	TourFailed_event
+  modified: 	false
+  name: 	event
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourFailed_stop: 	org.fulib.classmodel.Attribute
+  clazz: 	tourFailed
+  id: 	TourFailed_stop
+  modified: 	false
+  name: 	stop
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourFailed_room: 	org.fulib.classmodel.Attribute
+  clazz: 	tourFailed
+  id: 	TourFailed_room
+  modified: 	false
+  name: 	room
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- tourFailed_credits: 	org.fulib.classmodel.Attribute
+  clazz: 	tourFailed
+  id: 	TourFailed_credits
+  modified: 	false
+  name: 	credits
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

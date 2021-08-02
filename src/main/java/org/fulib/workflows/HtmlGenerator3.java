@@ -1,11 +1,12 @@
 package org.fulib.workflows;
 
+import org.fulib.yaml.Yaml;
+import org.fulib.yaml.Yamler;
+import org.fulib.yaml.Yamler2;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 public class HtmlGenerator3
@@ -19,6 +20,7 @@ public class HtmlGenerator3
    private int maxNotesPerLane;
    private Workflow rootWorkflow;
    private EventStormingBoard eventStormingBoard;
+   private ArrayList<LinkedHashMap<String, String>> historyMaps;
 
    public String generateHtml(String yaml)
    {
@@ -124,6 +126,7 @@ public class HtmlGenerator3
       return buf.toString();
    }
 
+
    private String pageNote(PageNote note)
    {
       StringBuilder pageBody = new StringBuilder();
@@ -188,4 +191,79 @@ public class HtmlGenerator3
       String noteContent = attrs.toString();
       return noteContent;
    }
+
+   public String generateHtml(LinkedHashMap history)
+   {
+      Collection values = history.values();
+      Object[] objects = values.toArray();
+      String yaml = Yaml.encode(objects);
+      historyMaps = new Yamler2().decodeList(yaml);
+
+      group = new STGroupFile(this.getClass().getResource("html/html.stg"));
+      body = new StringBuilder();
+
+      String notes = historyNotes();
+
+      st = group.getInstanceOf("lane2");
+      st.add("id", "event<br>history");
+      st.add("content", notes);
+      body.append(st.render());
+
+      st = group.getInstanceOf("page");
+      st.add("content", body.toString());
+      st.add("width", maxNotesPerLane * 200);
+      body.setLength(0);
+      body.append(st.render());
+      return body.toString();
+
+   }
+
+   private String historyNotes()
+   {
+      String laneName = null;
+      StringBuilder notesBuffer = new StringBuilder();
+
+      notesPerLane = 1;
+      maxNotesPerLane = Math.max(maxNotesPerLane, notesPerLane);
+
+      String previousActor = "noActor";
+
+      StringBuilder noteContent = new StringBuilder();
+      for (LinkedHashMap<String, String> map : historyMaps) {
+         noteContent.setLength(0);
+
+         LinkedHashSet<String> keySet = new LinkedHashSet<>(map.keySet());
+
+         String time = map.get("id");
+         keySet.remove("id");
+         keySet.remove(time);
+
+         String block = map.get("increment");
+         keySet.remove("increment");
+
+         String eventTypeName = map.get(time);
+         eventTypeName = StrUtil.simpleName(eventTypeName);
+         String noteType = block == null ? "event" : "data";
+         noteContent.append(String.format("<div>%s</div>\n", time));
+         noteContent.append(String.format("<div>%s %s</div>\n", eventTypeName, block == null ? "" : block));
+
+         for (String key : keySet) {
+            String value = map.get(key);
+            noteContent.append(String.format("<div>%s: %s</div>\n", key, value));
+         }
+
+         st = group.getInstanceOf("note");
+         st.add("id", time);
+         st.add("type", noteType);
+         st.add("content", noteContent.toString());
+         notesBuffer.append(st.render());
+
+         notesPerLane++;
+         maxNotesPerLane = Math.max(maxNotesPerLane, notesPerLane);
+      }
+
+      return notesBuffer.toString();
+   }
+
+
 }

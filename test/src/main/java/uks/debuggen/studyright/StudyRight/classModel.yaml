@@ -597,6 +597,15 @@ if (event.getId().equals(\"12:07\")) {
    s07Event.setMotivation(\"-23\");
    apply(s07Event);
 
+
+   TourFailed e120702 = new TourFailed();
+
+   e120702.setId(\"12:07:02\");
+   e120702.setEvent(\"tour failed 12:07:02\");
+   e120702.setStop(\"s07\");
+   e120702.setRoom(\"math\");
+   e120702.setCredits(\"-23\");
+   apply(e120702);
 }
 if (event.getId().equals(\"12:08\")) {
    StopEdited s08Event = new StopEdited();

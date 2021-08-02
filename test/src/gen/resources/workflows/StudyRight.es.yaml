@@ -116,6 +116,11 @@
   previousStop: s05
   motivation: -23
 
+- event: tour failed 12:07:02
+  stop: s07
+  room: math
+  credits: -23
+
 - policy: StudyRight
   trigger: 12:08
 

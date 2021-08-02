@@ -1,40 +1,40 @@
-<svg width="1059px" height="305px"
- viewBox="0.00 0.00 1059.00 305.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="1177px" height="305px"
+ viewBox="0.00 0.00 1177.00 305.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 301)">
 <title>uks.debuggen.studyright.events</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-301 1055,-301 1055,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-301 1173,-301 1173,4 -4,4"/>
 <!-- DataEvent -->
 <g id="node1" class="node"><title>DataEvent</title>
-<polygon fill="none" stroke="black" points="672.5,-163.5 672.5,-184.5 772.5,-184.5 772.5,-163.5 672.5,-163.5"/>
-<text text-anchor="start" x="693.5" y="-170.3" font-family="Times New Roman,serif" font-size="14.00">DataEvent</text>
-<polygon fill="none" stroke="black" points="672.5,-142.5 672.5,-163.5 772.5,-163.5 772.5,-142.5 672.5,-142.5"/>
-<text text-anchor="start" x="675.5" y="-149.3" font-family="Times New Roman,serif" font-size="14.00">increment :String</text>
+<polygon fill="none" stroke="black" points="790.5,-163.5 790.5,-184.5 890.5,-184.5 890.5,-163.5 790.5,-163.5"/>
+<text text-anchor="start" x="811.5" y="-170.3" font-family="Times New Roman,serif" font-size="14.00">DataEvent</text>
+<polygon fill="none" stroke="black" points="790.5,-142.5 790.5,-163.5 890.5,-163.5 890.5,-142.5 790.5,-142.5"/>
+<text text-anchor="start" x="793.5" y="-149.3" font-family="Times New Roman,serif" font-size="14.00">increment :String</text>
 </g>
 <!-- Event -->
 <g id="node2" class="node"><title>Event</title>
-<polygon fill="none" stroke="black" points="384.5,-272 384.5,-293 441.5,-293 441.5,-272 384.5,-272"/>
-<text text-anchor="start" x="397" y="-278.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
-<polygon fill="none" stroke="black" points="384.5,-251 384.5,-272 441.5,-272 441.5,-251 384.5,-251"/>
-<text text-anchor="start" x="387.5" y="-257.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<polygon fill="none" stroke="black" points="453.5,-272 453.5,-293 510.5,-293 510.5,-272 453.5,-272"/>
+<text text-anchor="start" x="466" y="-278.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
+<polygon fill="none" stroke="black" points="453.5,-251 453.5,-272 510.5,-272 510.5,-251 453.5,-251"/>
+<text text-anchor="start" x="456.5" y="-257.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
 </g>
 <!-- DataEvent&#45;&gt;Event -->
 <g id="edge1" class="edge"><title>DataEvent&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M692.89,-188.521C681.71,-196.632 668.532,-205.112 655.5,-211 590.667,-240.295 509.372,-256.66 459.188,-264.651"/>
-<polygon fill="none" stroke="black" points="458.621,-261.197 449.274,-266.185 459.692,-268.115 458.621,-261.197"/>
+<path fill="none" stroke="black" d="M811.346,-188.563C800.109,-196.777 786.776,-205.314 773.5,-211 691.596,-246.081 587.792,-261.114 528.586,-267.197"/>
+<polygon fill="none" stroke="black" points="528.027,-263.735 518.418,-268.199 528.713,-270.702 528.027,-263.735"/>
 </g>
 <!-- RoomEdited -->
 <g id="node3" class="node"><title>RoomEdited</title>
-<polygon fill="none" stroke="black" points="403.5,-55 403.5,-76 487.5,-76 487.5,-55 403.5,-55"/>
-<text text-anchor="start" x="409.5" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">RoomEdited</text>
-<polygon fill="none" stroke="black" points="403.5,-4 403.5,-55 487.5,-55 487.5,-4 403.5,-4"/>
-<text text-anchor="start" x="406.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">credits :String</text>
-<text text-anchor="start" x="406.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">uni :String</text>
-<text text-anchor="start" x="406.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">doors :String</text>
+<polygon fill="none" stroke="black" points="521.5,-55 521.5,-76 605.5,-76 605.5,-55 521.5,-55"/>
+<text text-anchor="start" x="527.5" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">RoomEdited</text>
+<polygon fill="none" stroke="black" points="521.5,-4 521.5,-55 605.5,-55 605.5,-4 521.5,-4"/>
+<text text-anchor="start" x="524.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">credits :String</text>
+<text text-anchor="start" x="524.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">uni :String</text>
+<text text-anchor="start" x="524.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">doors :String</text>
 </g>
 <!-- RoomEdited&#45;&gt;DataEvent -->
 <g id="edge2" class="edge"><title>RoomEdited&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M495.557,-75.2559C498.86,-76.9763 502.19,-78.5772 505.5,-80 568.487,-107.074 592.93,-87.9735 655.5,-116 665.39,-120.43 675.356,-126.368 684.467,-132.516"/>
-<polygon fill="none" stroke="black" points="682.713,-135.56 692.911,-138.432 686.729,-129.827 682.713,-135.56"/>
+<path fill="none" stroke="black" d="M613.557,-75.2559C616.86,-76.9763 620.19,-78.5772 623.5,-80 686.487,-107.074 710.93,-87.9735 773.5,-116 783.39,-120.43 793.356,-126.368 802.467,-132.516"/>
+<polygon fill="none" stroke="black" points="800.713,-135.56 810.911,-138.432 804.729,-129.827 800.713,-135.56"/>
 </g>
 <!-- RoomSelected -->
 <g id="node4" class="node"><title>RoomSelected</title>
@@ -47,8 +47,8 @@
 </g>
 <!-- RoomSelected&#45;&gt;Event -->
 <g id="edge3" class="edge"><title>RoomSelected&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M130.188,-203.62C135.601,-206.329 141.082,-208.838 146.5,-211 220.232,-240.426 311.506,-257.046 365.702,-265.011"/>
-<polygon fill="none" stroke="black" points="365.309,-268.491 375.704,-266.445 366.302,-261.561 365.309,-268.491"/>
+<path fill="none" stroke="black" d="M129.645,-203.671C135.223,-206.406 140.888,-208.904 146.5,-211 245.145,-247.838 368.797,-262.464 434.833,-267.951"/>
+<polygon fill="none" stroke="black" points="434.677,-271.45 444.923,-268.755 435.233,-264.472 434.677,-271.45"/>
 </g>
 <!-- RoomsLoaded -->
 <g id="node5" class="node"><title>RoomsLoaded</title>
@@ -59,8 +59,8 @@
 </g>
 <!-- RoomsLoaded&#45;&gt;Event -->
 <g id="edge4" class="edge"><title>RoomsLoaded&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M238.287,-188.7C248.476,-196.368 260.169,-204.526 271.5,-211 301.771,-228.295 337.999,-243.606 366.153,-254.432"/>
-<polygon fill="none" stroke="black" points="365.16,-257.799 375.752,-258.071 367.641,-251.253 365.16,-257.799"/>
+<path fill="none" stroke="black" d="M236.582,-188.574C247.02,-196.593 259.301,-205.001 271.5,-211 324.577,-237.103 390.944,-253.673 434.696,-262.635"/>
+<polygon fill="none" stroke="black" points="434.273,-266.12 444.764,-264.645 435.643,-259.255 434.273,-266.12"/>
 </g>
 <!-- ServiceSubscribed -->
 <g id="node6" class="node"><title>ServiceSubscribed</title>
@@ -71,35 +71,35 @@
 </g>
 <!-- ServiceSubscribed&#45;&gt;Event -->
 <g id="edge5" class="edge"><title>ServiceSubscribed&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M359.93,-188.666C369.32,-203.373 381.436,-222.348 391.669,-238.374"/>
-<polygon fill="none" stroke="black" points="388.799,-240.384 397.131,-246.929 394.699,-236.617 388.799,-240.384"/>
+<path fill="none" stroke="black" d="M375.587,-188.666C395.381,-204.053 421.186,-224.114 442.369,-240.581"/>
+<polygon fill="none" stroke="black" points="440.492,-243.555 450.536,-246.929 444.789,-238.028 440.492,-243.555"/>
 </g>
 <!-- StopEdited -->
 <g id="node7" class="node"><title>StopEdited</title>
-<polygon fill="none" stroke="black" points="522.5,-55 522.5,-76 643.5,-76 643.5,-55 522.5,-55"/>
-<text text-anchor="start" x="551" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">StopEdited</text>
-<polygon fill="none" stroke="black" points="522.5,-4 522.5,-55 643.5,-55 643.5,-4 522.5,-4"/>
-<text text-anchor="start" x="525.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">motivation :String</text>
-<text text-anchor="start" x="525.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">room :String</text>
-<text text-anchor="start" x="525.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">previousStop :String</text>
+<polygon fill="none" stroke="black" points="640.5,-55 640.5,-76 761.5,-76 761.5,-55 640.5,-55"/>
+<text text-anchor="start" x="669" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">StopEdited</text>
+<polygon fill="none" stroke="black" points="640.5,-4 640.5,-55 761.5,-55 761.5,-4 640.5,-4"/>
+<text text-anchor="start" x="643.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">motivation :String</text>
+<text text-anchor="start" x="643.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">room :String</text>
+<text text-anchor="start" x="643.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">previousStop :String</text>
 </g>
 <!-- StopEdited&#45;&gt;DataEvent -->
 <g id="edge6" class="edge"><title>StopEdited&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M627.568,-80.1122C646.699,-96.7158 668.689,-115.8 686.685,-131.417"/>
-<polygon fill="none" stroke="black" points="684.8,-134.416 694.647,-138.328 689.389,-129.13 684.8,-134.416"/>
+<path fill="none" stroke="black" d="M745.568,-80.1122C764.699,-96.7158 786.689,-115.8 804.685,-131.417"/>
+<polygon fill="none" stroke="black" points="802.8,-134.416 812.647,-138.328 807.389,-129.13 802.8,-134.416"/>
 </g>
 <!-- TourEdited -->
 <g id="node8" class="node"><title>TourEdited</title>
-<polygon fill="none" stroke="black" points="677.5,-47 677.5,-68 767.5,-68 767.5,-47 677.5,-47"/>
-<text text-anchor="start" x="690.5" y="-53.8" font-family="Times New Roman,serif" font-size="14.00">TourEdited</text>
-<polygon fill="none" stroke="black" points="677.5,-11 677.5,-47 767.5,-47 767.5,-11 677.5,-11"/>
-<text text-anchor="start" x="680.5" y="-32.8" font-family="Times New Roman,serif" font-size="14.00">stops :String</text>
-<text text-anchor="start" x="680.5" y="-17.8" font-family="Times New Roman,serif" font-size="14.00">tourList :String</text>
+<polygon fill="none" stroke="black" points="795.5,-47 795.5,-68 885.5,-68 885.5,-47 795.5,-47"/>
+<text text-anchor="start" x="808.5" y="-53.8" font-family="Times New Roman,serif" font-size="14.00">TourEdited</text>
+<polygon fill="none" stroke="black" points="795.5,-11 795.5,-47 885.5,-47 885.5,-11 795.5,-11"/>
+<text text-anchor="start" x="798.5" y="-32.8" font-family="Times New Roman,serif" font-size="14.00">stops :String</text>
+<text text-anchor="start" x="798.5" y="-17.8" font-family="Times New Roman,serif" font-size="14.00">tourList :String</text>
 </g>
 <!-- TourEdited&#45;&gt;DataEvent -->
 <g id="edge7" class="edge"><title>TourEdited&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M722.5,-72.6055C722.5,-89.6079 722.5,-110.602 722.5,-128.024"/>
-<polygon fill="none" stroke="black" points="719,-128.343 722.5,-138.343 726,-128.343 719,-128.343"/>
+<path fill="none" stroke="black" d="M840.5,-72.6055C840.5,-89.6079 840.5,-110.602 840.5,-128.024"/>
+<polygon fill="none" stroke="black" points="837,-128.343 840.5,-138.343 844,-128.343 837,-128.343"/>
 </g>
 <!-- TourEndFound -->
 <g id="node9" class="node"><title>TourEndFound</title>
@@ -113,44 +113,59 @@
 </g>
 <!-- TourEndFound&#45;&gt;Event -->
 <g id="edge8" class="edge"><title>TourEndFound&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M451.236,-211.212C445.323,-220.338 439.242,-229.724 433.702,-238.276"/>
-<polygon fill="none" stroke="black" points="430.653,-236.544 428.153,-246.84 436.528,-240.35 430.653,-236.544"/>
+<path fill="none" stroke="black" d="M481.5,-211.212C481.5,-219.762 481.5,-228.539 481.5,-236.646"/>
+<polygon fill="none" stroke="black" points="478,-236.84 481.5,-246.84 485,-236.84 478,-236.84"/>
+</g>
+<!-- TourFailed -->
+<g id="node10" class="node"><title>TourFailed</title>
+<polygon fill="none" stroke="black" points="562.5,-185.5 562.5,-206.5 646.5,-206.5 646.5,-185.5 562.5,-185.5"/>
+<text text-anchor="start" x="573.5" y="-192.3" font-family="Times New Roman,serif" font-size="14.00">TourFailed</text>
+<polygon fill="none" stroke="black" points="562.5,-119.5 562.5,-185.5 646.5,-185.5 646.5,-119.5 562.5,-119.5"/>
+<text text-anchor="start" x="565.5" y="-171.3" font-family="Times New Roman,serif" font-size="14.00">event :String</text>
+<text text-anchor="start" x="565.5" y="-156.3" font-family="Times New Roman,serif" font-size="14.00">stop :String</text>
+<text text-anchor="start" x="565.5" y="-141.3" font-family="Times New Roman,serif" font-size="14.00">room :String</text>
+<text text-anchor="start" x="565.5" y="-126.3" font-family="Times New Roman,serif" font-size="14.00">credits :String</text>
+</g>
+<!-- TourFailed&#45;&gt;Event -->
+<g id="edge9" class="edge"><title>TourFailed&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M554.471,-207.818C541.934,-218.673 528.737,-230.099 517.066,-240.205"/>
+<polygon fill="none" stroke="black" points="514.526,-237.775 509.257,-246.967 519.108,-243.067 514.526,-237.775"/>
 </g>
 <!-- TourListEdited -->
-<g id="node10" class="node"><title>TourListEdited</title>
-<polygon fill="none" stroke="black" points="801.5,-40 801.5,-61 909.5,-61 909.5,-40 801.5,-40"/>
-<text text-anchor="start" x="813" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">TourListEdited</text>
-<polygon fill="none" stroke="black" points="801.5,-19 801.5,-40 909.5,-40 909.5,-19 801.5,-19"/>
-<text text-anchor="start" x="804.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">alternatives :String</text>
+<g id="node11" class="node"><title>TourListEdited</title>
+<polygon fill="none" stroke="black" points="919.5,-40 919.5,-61 1027.5,-61 1027.5,-40 919.5,-40"/>
+<text text-anchor="start" x="931" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">TourListEdited</text>
+<polygon fill="none" stroke="black" points="919.5,-19 919.5,-40 1027.5,-40 1027.5,-19 919.5,-19"/>
+<text text-anchor="start" x="922.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">alternatives :String</text>
 </g>
 <!-- TourListEdited&#45;&gt;DataEvent -->
-<g id="edge9" class="edge"><title>TourListEdited&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M829.223,-65.0045C808.411,-84.0175 779.178,-110.722 756.569,-131.377"/>
-<polygon fill="none" stroke="black" points="754.2,-128.801 749.177,-138.13 758.921,-133.969 754.2,-128.801"/>
+<g id="edge10" class="edge"><title>TourListEdited&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M947.223,-65.0045C926.411,-84.0175 897.178,-110.722 874.569,-131.377"/>
+<polygon fill="none" stroke="black" points="872.2,-128.801 867.177,-138.13 876.921,-133.969 872.2,-128.801"/>
 </g>
 <!-- TourStarted -->
-<g id="node11" class="node"><title>TourStarted</title>
-<polygon fill="none" stroke="black" points="562.5,-163.5 562.5,-184.5 638.5,-184.5 638.5,-163.5 562.5,-163.5"/>
-<text text-anchor="start" x="566.5" y="-170.3" font-family="Times New Roman,serif" font-size="14.00">TourStarted</text>
-<polygon fill="none" stroke="black" points="562.5,-142.5 562.5,-163.5 638.5,-163.5 638.5,-142.5 562.5,-142.5"/>
-<text text-anchor="start" x="565.5" y="-149.3" font-family="Times New Roman,serif" font-size="14.00">event :String</text>
+<g id="node12" class="node"><title>TourStarted</title>
+<polygon fill="none" stroke="black" points="680.5,-163.5 680.5,-184.5 756.5,-184.5 756.5,-163.5 680.5,-163.5"/>
+<text text-anchor="start" x="684.5" y="-170.3" font-family="Times New Roman,serif" font-size="14.00">TourStarted</text>
+<polygon fill="none" stroke="black" points="680.5,-142.5 680.5,-163.5 756.5,-163.5 756.5,-142.5 680.5,-142.5"/>
+<text text-anchor="start" x="683.5" y="-149.3" font-family="Times New Roman,serif" font-size="14.00">event :String</text>
 </g>
 <!-- TourStarted&#45;&gt;Event -->
-<g id="edge10" class="edge"><title>TourStarted&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M575.076,-188.542C566.139,-196.285 555.758,-204.528 545.5,-211 518.119,-228.274 484.929,-243.255 458.554,-253.927"/>
-<polygon fill="none" stroke="black" points="457.167,-250.711 449.169,-257.66 459.754,-257.216 457.167,-250.711"/>
+<g id="edge11" class="edge"><title>TourStarted&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M694.003,-188.696C684.976,-196.632 674.303,-204.955 663.5,-211 620.324,-235.16 565.894,-251.497 527.856,-260.948"/>
+<polygon fill="none" stroke="black" points="526.966,-257.562 518.07,-263.317 528.613,-264.366 526.966,-257.562"/>
 </g>
 <!-- UniversityEdited -->
-<g id="node12" class="node"><title>UniversityEdited</title>
-<polygon fill="none" stroke="black" points="944.5,-40 944.5,-61 1043.5,-61 1043.5,-40 944.5,-40"/>
-<text text-anchor="start" x="947.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">UniversityEdited</text>
-<polygon fill="none" stroke="black" points="944.5,-19 944.5,-40 1043.5,-40 1043.5,-19 944.5,-19"/>
-<text text-anchor="start" x="956" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">rooms :String</text>
+<g id="node13" class="node"><title>UniversityEdited</title>
+<polygon fill="none" stroke="black" points="1062.5,-40 1062.5,-61 1161.5,-61 1161.5,-40 1062.5,-40"/>
+<text text-anchor="start" x="1065.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">UniversityEdited</text>
+<polygon fill="none" stroke="black" points="1062.5,-19 1062.5,-40 1161.5,-40 1161.5,-19 1062.5,-19"/>
+<text text-anchor="start" x="1074" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">rooms :String</text>
 </g>
 <!-- UniversityEdited&#45;&gt;DataEvent -->
-<g id="edge11" class="edge"><title>UniversityEdited&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M954.332,-65.0521C945.321,-70.232 935.685,-75.4981 926.5,-80 882.038,-101.792 830.307,-122.665 790.063,-137.964"/>
-<polygon fill="none" stroke="black" points="788.733,-134.725 780.616,-141.533 791.207,-141.273 788.733,-134.725"/>
+<g id="edge12" class="edge"><title>UniversityEdited&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M1072.33,-65.0521C1063.32,-70.232 1053.68,-75.4981 1044.5,-80 1000.04,-101.792 948.307,-122.665 908.063,-137.964"/>
+<polygon fill="none" stroke="black" points="906.733,-134.725 898.616,-141.533 909.207,-141.273 906.733,-134.725"/>
 </g>
 </g>
 </svg>

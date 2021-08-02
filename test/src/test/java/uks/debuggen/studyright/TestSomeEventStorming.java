@@ -5,6 +5,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.FulibTools;
+import org.fulib.workflows.HtmlGenerator3;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +14,11 @@ import uks.debuggen.studyright.events.*;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 import uks.debuggen.studyright.Welcome.WelcomeService;
@@ -48,7 +54,7 @@ public class TestSomeEventStorming
    }
 
    @Test
-   public void testImplentation()
+   public void testImplentation() throws IOException
    {
       eventBroker = new EventBroker();
       eventBroker.start();
@@ -67,6 +73,11 @@ public class TestSomeEventStorming
       // page 11:00
       open("http://localhost:42400/page/welcome");
       $("#ok").click();
+
+
+      String html = new HtmlGenerator3().generateHtml(studyRight.getHistory());
+
+      Files.write(Path.of("tmp/history.html"), html.getBytes(StandardCharsets.UTF_8));
 
       System.out.println();
    }

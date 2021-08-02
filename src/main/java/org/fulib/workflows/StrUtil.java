@@ -62,4 +62,9 @@ public class StrUtil
    {
       return value.split("\\s+");
    }
+
+   public static String simpleName(String fullClassName)
+   {
+      return fullClassName.substring(fullClassName.lastIndexOf('.') + 1);
+   }
 }
