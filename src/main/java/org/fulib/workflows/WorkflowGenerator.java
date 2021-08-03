@@ -331,7 +331,7 @@ public class WorkflowGenerator
       }
 
       for (DataType dataType : serviceNote.getHandledDataTypes()) {
-         String eventTypeName = dataType.getDataTypeName() + "Edited";
+         String eventTypeName = dataType.getDataTypeName() + "Built";
          body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
                eventTypeName, eventTypeName));
          addDataEventHandlerMethod(modelManager, serviceClazz, serviceNote, dataType);
@@ -342,24 +342,32 @@ public class WorkflowGenerator
    {
       StringBuilder body = new StringBuilder();
       String dataTypeName = dataType.getDataTypeName();
-      String eventTypeName = dataTypeName + "Edited";
+      String eventTypeName = dataTypeName + "Built";
       String declaration = String.format("private void handle%s(Event e)", eventTypeName);
       body.append(String.format("%s event = (%1$s) e;\n", eventTypeName));
-      body.append(String.format("%s object = model.getOrCreate%1$s(event.getIncrement());\n", dataTypeName));
+      body.append(String.format("%s object = model.getOrCreate%1$s(event.getBlockId());\n", dataTypeName));
 
       Clazz dataClazz = modelManager.haveClass(dataTypeName);
       Clazz eventClazz = em.haveClass(eventTypeName);
 
       for (Attribute attribute : eventClazz.getAttributes()) {
          String attrName = attribute.getName();
-         Attribute dataAttr = dataClazz.getAttribute(attrName);
+         Attribute dataAttr = getAttribute(dataClazz, attrName);
          if (dataAttr != null) {
             // e.g.: object.setMotivation(event.getMotivation());
-            body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
+            if (dataAttr.getType().equals(Type.STRING)) {
+               body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
+            }
+            else if (dataAttr.getType().equals(Type.INT)) {
+               body.append(String.format("object.set%s(Integer.parseInt(event.get%1$s()));\n", StrUtil.cap(attrName)));
+            }
+            else if (dataAttr.getType().equals(Type.DOUBLE)) {
+               body.append(String.format("object.set%s(Double.parseDouble(event.get%1$s()));\n", StrUtil.cap(attrName)));
+            }
          }
          else {
             // e.g.: event.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
-            AssocRole role = dataClazz.getRole(attrName);
+            AssocRole role = getRole(dataClazz, attrName);
             AssocRole other = role.getOther();
             Clazz otherClazz = other.getClazz();
             if (role.getCardinality() <= 1) {
@@ -419,9 +427,13 @@ public class WorkflowGenerator
             DataNote dataNote = (DataNote) note;
             LinkedHashMap<String, String> map = note.getMap();
             LinkedHashMap<String, String> mockup = getMockup(map);
-            addModelClass(modelManager, serviceNote, mockup);
+            addModelClassForDataNote(modelManager, serviceNote, mockup);
             addGetOrCreateMethodToServiceModel(modelManager, serviceNote.getName(), mockup);
             addCreateAndInitModelObjectCode(modelManager, serviceNote, dataNote, mockup, body);
+         }
+         else if (note instanceof ClassNote) {
+            ClassNote classNote = (ClassNote) note;
+            addModelClassForClassNote(modelManager, serviceNote, classNote);
          }
          else {
             // fire event
@@ -479,7 +491,7 @@ public class WorkflowGenerator
       modelManager.haveMethod(modelClazz, declaration, body);
    }
 
-   private void addModelClass(ClassModelManager modelManager, ServiceNote serviceNote, LinkedHashMap<String, String> map)
+   private void addModelClassForDataNote(ClassModelManager modelManager, ServiceNote serviceNote, LinkedHashMap<String, String> map)
    {
       Iterator<Map.Entry<String, String>> iter = map.entrySet().iterator();
       Map.Entry<String, String> entry = iter.next();
@@ -487,7 +499,9 @@ public class WorkflowGenerator
       String objectId = entry.getValue();
       type = org.fulib.StrUtil.cap(type);
       Clazz clazz = modelManager.haveClass(type);
-      modelManager.haveAttribute(clazz, "id", Type.STRING);
+      if (clazz.getSuperClass() == null) {
+         modelManager.haveAttribute(clazz, "id", Type.STRING);
+      }
 
       while (iter.hasNext()) {
          entry = iter.next();
@@ -515,14 +529,91 @@ public class WorkflowGenerator
             otherClazz.withoutAttributes(otherClazz.getAttribute(back));
             continue;
          }
-         if (clazz.getRole(attrName) != null) {
+         if (getRole(clazz, attrName) != null) {
             // its an assoc and already known
+            continue;
+         }
+         if (getAttribute(clazz, attrName) != null) {
             continue;
          }
          modelManager.haveAttribute(clazz, attrName, Type.STRING);
       }
    }
 
+   private AssocRole getRole(Clazz clazz, String attrName)
+   {
+      AssocRole role = clazz.getRole(attrName);
+      if (role == null) {
+         Clazz superClass = clazz.getSuperClass();
+         if (superClass != null) {
+            role = getRole(superClass, attrName);
+         }
+      }
+      return role;
+   }
+
+   private Attribute getAttribute(Clazz clazz, String attrName)
+   {
+      Attribute attribute = clazz.getAttribute(attrName);
+      if (attribute == null) {
+         Clazz superClass = clazz.getSuperClass();
+         if (superClass != null) {
+            attribute = getAttribute(superClass, attrName);
+         }
+      }
+      return attribute;
+   }
+
+   private void addModelClassForClassNote(ClassModelManager modelManager, ServiceNote serviceNote, ClassNote classNote)
+   {
+      LinkedHashMap<String, String> map = classNote.getMap();
+      Iterator<Map.Entry<String, String>> iter = map.entrySet().iterator();
+      Map.Entry<String, String> entry = iter.next();
+      String type = entry.getValue();
+      type = org.fulib.StrUtil.cap(type);
+      Clazz clazz = modelManager.haveClass(type);
+      modelManager.haveAttribute(clazz, "id", Type.STRING);
+
+      while (iter.hasNext()) {
+         entry = iter.next();
+
+         String attrName = entry.getKey();
+         String value = entry.getValue();
+         if (attrName.endsWith(".back")) {
+            continue;
+         }
+         if (attrName.equals("extends")) {
+            Clazz superClass = modelManager.haveClass(value);
+            clazz.setSuperClass(superClass);
+            Attribute id = clazz.getAttribute("id");
+            clazz.withoutAttributes(id);
+            continue;
+         }
+         String back = map.get(attrName + ".back");
+         if (back != null) {
+            // its an assoc
+            int srcSize = value.startsWith("[") ? 42 : 1;
+            value = StrUtil.stripBrackets(value).split("\\s+")[0];
+            // find other class
+            String otherClassName = StrUtil.cap(value);
+            Clazz otherClazz = modelManager.haveClass(otherClassName);
+            int backSize = back.startsWith("[") ? 42 : 1;
+            back = StrUtil.stripBrackets(back);
+            // declare assoc
+            modelManager.associate(clazz, attrName, srcSize, otherClazz, back, backSize);
+            // remove string attributes
+
+            clazz.withoutAttributes(clazz.getAttribute(attrName));
+            otherClazz.withoutAttributes(otherClazz.getAttribute(back));
+            continue;
+         }
+         if (getRole(clazz, attrName) != null) {
+            // its an assoc and already known
+            continue;
+         }
+         modelManager.haveAttribute(clazz, attrName, value);
+      }
+   }
 
    private String addCreateAndInitModelObjectCode(ClassModelManager modelManager, ServiceNote serviceNote, DataNote dataNote, LinkedHashMap<String, String> map, StringBuilder body)
    {
@@ -537,14 +628,14 @@ public class WorkflowGenerator
          if (first) {
             className = org.fulib.StrUtil.cap(entry.getKey());
             clazz = modelManager.haveClass(className);
-            className = className + "Edited";
+            className = className + "Built";
             id = value;
             varName = org.fulib.StrUtil.downFirstChar(id) + "Event";
             statement = String.format("   %s %s = new %1$s();\n", className, varName);
             body.append(statement);
             statement = String.format("   %s.setId(\"%s\");\n", varName, dataNote.getTime());
             body.append(statement);
-            statement = String.format("   %s.setIncrement(\"%s\");\n", varName, dataNote.getIncrement());
+            statement = String.format("   %s.setBlockId(\"%s\");\n", varName, dataNote.getBlockId());
             body.append(statement);
 
             first = false;
@@ -823,7 +914,7 @@ public class WorkflowGenerator
       em.haveAttribute(event, "id", Type.STRING);
       Clazz dataEvent = em.haveClass("DataEvent");
       dataEvent.setSuperClass(event);
-      em.haveAttribute(dataEvent, "increment", Type.STRING);
+      em.haveAttribute(dataEvent, "blockId", Type.STRING);
       Clazz serviceSubscribed = em.haveClass("ServiceSubscribed");
       serviceSubscribed.setSuperClass(event);
       em.haveAttribute(serviceSubscribed, "serviceUrl", Type.STRING);
@@ -851,7 +942,7 @@ public class WorkflowGenerator
       Clazz event = em.haveClass("DataEvent");
       boolean first = true;
       String dataType = note.getDataType();
-      String dataEventType = dataType + "Edited";
+      String dataEventType = dataType + "Built";
       Clazz clazz = em.haveClass(dataEventType);
       clazz.setSuperClass(event);
       LinkedHashSet<String> keys = new LinkedHashSet<>(note.getMap().keySet());
@@ -879,25 +970,6 @@ public class WorkflowGenerator
       }
    }
 
-//   private void generateModelClass(LinkedHashMap<String, String> map)
-//   {
-//      String name = map.get("name");
-//      modelClazz = mm.haveClass(name + "Model");
-//      modelClazz.withImports("import java.util.LinkedHashMap;");
-//      mm.haveAttribute(modelClazz,
-//            "objectMap",
-//            "LinkedHashMap<String, Object>",
-//            "new LinkedHashMap<>()");
-//
-//      String events = map.get("events");
-//      String[] split = events.split(" ");
-//      for (String event : split) {
-//         generateModelElementsFor(event);
-//      }
-//      Logger.getGlobal().info(String.format("%s events are %s",
-//            modelClazz.getName(),
-//            events));
-//   }
 
    private void generateModelElementsFor(String event)
    {

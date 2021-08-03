@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	studyRightModel 	studyRightService 	university 	room 	stop 	tour 	tourList
+  classes: 	studyRightModel 	studyRightService 	university 	room 	person 	student 	stop 	tour 	tourList
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	studyRightModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	studyRightModel_getOrCreateUniversity 	studyRightModel_getOrCreateRoom 	studyRightModel_getOrCreateStop 	studyRightModel_getOrCreateTour 	studyRightModel_getOrCreateTourList
+  methods: 	studyRightModel_getOrCreateUniversity 	studyRightModel_getOrCreateRoom 	studyRightModel_getOrCreateStudent 	studyRightModel_getOrCreateStop 	studyRightModel_getOrCreateTour 	studyRightModel_getOrCreateTourList
   model: 	c
   modified: 	false
   name: 	StudyRightModel
@@ -21,7 +21,7 @@
   attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model 	studyRightService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleRoomsLoaded 	studyRightService_handleDemoRoomsLoaded 	studyRightService_handleTourStarted 	studyRightService_handleDemoTourStarted 	studyRightService_handleRoomSelected 	studyRightService_handleDemoRoomSelected 	studyRightService_handleTourEndFound 	studyRightService_handleDemoTourEndFound 	studyRightService_handleUniversityEdited 	studyRightService_handleRoomEdited 	studyRightService_handleStopEdited 	studyRightService_handleTourEdited 	studyRightService_handleTourListEdited 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply 	studyRightService_stripBrackets
+  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleRoomsLoaded 	studyRightService_handleDemoRoomsLoaded 	studyRightService_handleTourStarted 	studyRightService_handleDemoTourStarted 	studyRightService_handleRoomSelected 	studyRightService_handleDemoRoomSelected 	studyRightService_handleTourEndFound 	studyRightService_handleDemoTourEndFound 	studyRightService_handleUniversityBuilt 	studyRightService_handleRoomBuilt 	studyRightService_handleStudentBuilt 	studyRightService_handleStopBuilt 	studyRightService_handleTourBuilt 	studyRightService_handleTourListBuilt 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply 	studyRightService_stripBrackets
   model: 	c
   modified: 	false
   name: 	StudyRightService
@@ -33,7 +33,7 @@
   modified: 	false
   name: 	University
   propertyStyle: 	Bean
-  roles: 	university_rooms
+  roles: 	university_rooms 	university_persons
 
 - room: 	org.fulib.classmodel.Clazz
   attributes: 	room_id 	room_credits
@@ -42,6 +42,23 @@
   name: 	Room
   propertyStyle: 	Bean
   roles: 	room_uni 	room_doors
+
+- person: 	org.fulib.classmodel.Clazz
+  attributes: 	person_id 	person_name 	person_birthYear
+  model: 	c
+  modified: 	false
+  name: 	Person
+  propertyStyle: 	Bean
+  roles: 	person_uni
+  subClasses: 	student
+
+- student: 	org.fulib.classmodel.Clazz
+  attributes: 	student_studentId
+  model: 	c
+  modified: 	false
+  name: 	Student
+  propertyStyle: 	Bean
+  superClass: 	person
 
 - stop: 	org.fulib.classmodel.Clazz
   attributes: 	stop_id 	stop_motivation 	stop_room
@@ -113,6 +130,21 @@ return (Room) modelMap.computeIfAbsent(id, k -> new Room().setId(k));
   paramsString: 	"String id"
   returnType: 	Room
   signature: 	"class/StudyRightModel/method/getOrCreateRoom(String)"
+
+- studyRightModel_getOrCreateStudent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightModel
+  declaration: 	"public Student getOrCreateStudent(String id)"
+  id: 	StudyRightModel_getOrCreateStudent
+  methodBody: 	"if (id == null) return null;
+return (Student) modelMap.computeIfAbsent(id, k -> new Student().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateStudent
+  paramsString: 	"String id"
+  returnType: 	Student
+  signature: 	"class/StudyRightModel/method/getOrCreateStudent(String)"
 
 - studyRightModel_getOrCreateStop: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -393,41 +425,50 @@ handleDemoRoomsLoaded(event);
   declaration: 	"private void handleDemoRoomsLoaded(RoomsLoaded event)"
   id: 	StudyRightService_handleDemoRoomsLoaded
   methodBody: 	"if (event.getId().equals(\"12:00\")) {
-   UniversityEdited studyRightEvent = new UniversityEdited();
+   UniversityBuilt studyRightEvent = new UniversityBuilt();
    studyRightEvent.setId(\"12:00:00\");
-   studyRightEvent.setIncrement(\"StudyRight\");
+   studyRightEvent.setBlockId(\"StudyRight\");
    studyRightEvent.setRooms(\"[math exam]\");
    apply(studyRightEvent);
 
-   RoomEdited mathEvent = new RoomEdited();
+   RoomBuilt mathEvent = new RoomBuilt();
    mathEvent.setId(\"12:00:01\");
-   mathEvent.setIncrement(\"math\");
+   mathEvent.setBlockId(\"math\");
    mathEvent.setCredits(\"23\");
    mathEvent.setUni(\"StudyRight\");
    mathEvent.setDoors(\"[modeling algebra]\");
    apply(mathEvent);
 
-   RoomEdited modelingEvent = new RoomEdited();
+   RoomBuilt modelingEvent = new RoomBuilt();
    modelingEvent.setId(\"12:00:02\");
-   modelingEvent.setIncrement(\"modeling\");
+   modelingEvent.setBlockId(\"modeling\");
    modelingEvent.setUni(\"StudyRight\");
    modelingEvent.setCredits(\"42\");
    modelingEvent.setDoors(\"[math algebra exam]\");
    apply(modelingEvent);
 
-   RoomEdited algebraEvent = new RoomEdited();
+   RoomBuilt algebraEvent = new RoomBuilt();
    algebraEvent.setId(\"12:00:03\");
-   algebraEvent.setIncrement(\"algebra\");
+   algebraEvent.setBlockId(\"algebra\");
    algebraEvent.setUni(\"StudyRight\");
    algebraEvent.setCredits(\"12\");
    apply(algebraEvent);
 
-   RoomEdited examEvent = new RoomEdited();
+   RoomBuilt examEvent = new RoomBuilt();
    examEvent.setId(\"12:00:04\");
-   examEvent.setIncrement(\"exam\");
+   examEvent.setBlockId(\"exam\");
    examEvent.setCredits(\"0\");
    examEvent.setUni(\"StudyRight\");
    apply(examEvent);
+
+   StudentBuilt carliEvent = new StudentBuilt();
+   carliEvent.setId(\"12:00:05\");
+   carliEvent.setBlockId(\"carli\");
+   carliEvent.setName(\"Carli\");
+   carliEvent.setBirthYear(\"1970\");
+   carliEvent.setStudentId(\"stud42\");
+   carliEvent.setUni(\"StudyRight\");
+   apply(carliEvent);
 
 
    TourStarted e1201 = new TourStarted();
@@ -466,9 +507,9 @@ handleDemoTourStarted(event);
   declaration: 	"private void handleDemoTourStarted(TourStarted event)"
   id: 	StudyRightService_handleDemoTourStarted
   methodBody: 	"if (event.getId().equals(\"12:01\")) {
-   StopEdited s01Event = new StopEdited();
+   StopBuilt s01Event = new StopBuilt();
    s01Event.setId(\"12:01:01\");
-   s01Event.setIncrement(\"s01\");
+   s01Event.setBlockId(\"s01\");
    s01Event.setMotivation(\"77\");
    apply(s01Event);
 
@@ -511,9 +552,9 @@ handleDemoRoomSelected(event);
   declaration: 	"private void handleDemoRoomSelected(RoomSelected event)"
   id: 	StudyRightService_handleDemoRoomSelected
   methodBody: 	"if (event.getId().equals(\"12:02\")) {
-   StopEdited s02Event = new StopEdited();
+   StopBuilt s02Event = new StopBuilt();
    s02Event.setId(\"12:02:01\");
-   s02Event.setIncrement(\"s02\");
+   s02Event.setBlockId(\"s02\");
    s02Event.setRoom(\"math\");
    s02Event.setMotivation(\"54\");
    s02Event.setPreviousStop(\"s01\");
@@ -537,9 +578,9 @@ handleDemoRoomSelected(event);
    apply(e1204);
 }
 if (event.getId().equals(\"12:03\")) {
-   StopEdited s03Event = new StopEdited();
+   StopBuilt s03Event = new StopBuilt();
    s03Event.setId(\"12:03:01\");
-   s03Event.setIncrement(\"s03\");
+   s03Event.setBlockId(\"s03\");
    s03Event.setRoom(\"algebra\");
    s03Event.setPreviousStop(\"s02\");
    s03Event.setMotivation(\"42\");
@@ -563,9 +604,9 @@ if (event.getId().equals(\"12:03\")) {
    apply(e1206);
 }
 if (event.getId().equals(\"12:05\")) {
-   StopEdited s05Event = new StopEdited();
+   StopBuilt s05Event = new StopBuilt();
    s05Event.setId(\"12:05:01\");
-   s05Event.setIncrement(\"s05\");
+   s05Event.setBlockId(\"s05\");
    s05Event.setRoom(\"modeling\");
    s05Event.setPreviousStop(\"s03\");
    s05Event.setMotivation(\"0\");
@@ -589,9 +630,9 @@ if (event.getId().equals(\"12:05\")) {
    apply(e1208);
 }
 if (event.getId().equals(\"12:07\")) {
-   StopEdited s07Event = new StopEdited();
+   StopBuilt s07Event = new StopBuilt();
    s07Event.setId(\"12:07:01\");
-   s07Event.setIncrement(\"s07\");
+   s07Event.setBlockId(\"s07\");
    s07Event.setRoom(\"math\");
    s07Event.setPreviousStop(\"s05\");
    s07Event.setMotivation(\"-23\");
@@ -608,23 +649,23 @@ if (event.getId().equals(\"12:07\")) {
    apply(e120702);
 }
 if (event.getId().equals(\"12:08\")) {
-   StopEdited s08Event = new StopEdited();
+   StopBuilt s08Event = new StopBuilt();
    s08Event.setId(\"12:08:01\");
-   s08Event.setIncrement(\"s08\");
+   s08Event.setBlockId(\"s08\");
    s08Event.setRoom(\"exam\");
    s08Event.setPreviousStop(\"s05\");
    s08Event.setMotivation(\"0\");
    apply(s08Event);
 
-   TourEdited tour1Event = new TourEdited();
+   TourBuilt tour1Event = new TourBuilt();
    tour1Event.setId(\"12:08:02\");
-   tour1Event.setIncrement(\"tour1\");
+   tour1Event.setBlockId(\"tour1\");
    tour1Event.setStops(\"exam\");
    apply(tour1Event);
 
-   TourListEdited allToursEvent = new TourListEdited();
+   TourListBuilt allToursEvent = new TourListBuilt();
    allToursEvent.setId(\"12:08:03\");
-   allToursEvent.setIncrement(\"allTours\");
+   allToursEvent.setBlockId(\"allTours\");
    allToursEvent.setAlternatives(\"[tour1]\");
    apply(allToursEvent);
 
@@ -668,9 +709,9 @@ handleDemoTourEndFound(event);
   declaration: 	"private void handleDemoTourEndFound(TourEndFound event)"
   id: 	StudyRightService_handleDemoTourEndFound
   methodBody: 	"if (event.getId().equals(\"12:09\")) {
-   TourEdited tour1Event = new TourEdited();
+   TourBuilt tour1Event = new TourBuilt();
    tour1Event.setId(\"12:09:01\");
-   tour1Event.setIncrement(\"tour1\");
+   tour1Event.setBlockId(\"tour1\");
    tour1Event.setStops(\"modeling exam\");
    tour1Event.setTourList(\"allTours\");
    apply(tour1Event);
@@ -685,9 +726,9 @@ handleDemoTourEndFound(event);
    apply(e1210);
 }
 if (event.getId().equals(\"12:10\")) {
-   TourEdited tour1Event = new TourEdited();
+   TourBuilt tour1Event = new TourBuilt();
    tour1Event.setId(\"12:10:01\");
-   tour1Event.setIncrement(\"tour1\");
+   tour1Event.setBlockId(\"tour1\");
    tour1Event.setStops(\"algebra modeling exam\");
    apply(tour1Event);
 
@@ -701,9 +742,9 @@ if (event.getId().equals(\"12:10\")) {
    apply(e1211);
 }
 if (event.getId().equals(\"12:11\")) {
-   TourEdited tour1Event = new TourEdited();
+   TourBuilt tour1Event = new TourBuilt();
    tour1Event.setId(\"12:11:01\");
-   tour1Event.setIncrement(\"tour1\");
+   tour1Event.setBlockId(\"tour1\");
    tour1Event.setStops(\"math algebra modeling exam\");
    apply(tour1Event);
 
@@ -724,13 +765,13 @@ if (event.getId().equals(\"12:11\")) {
   returnType: 	void
   signature: 	"class/StudyRightService/method/handleDemoTourEndFound(TourEndFound)"
 
-- studyRightService_handleUniversityEdited: 	org.fulib.classmodel.FMethod
+- studyRightService_handleUniversityBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleUniversityEdited(Event e)"
-  id: 	StudyRightService_handleUniversityEdited
-  methodBody: 	"UniversityEdited event = (UniversityEdited) e;
-University object = model.getOrCreateUniversity(event.getIncrement());
+  declaration: 	"private void handleUniversityBuilt(Event e)"
+  id: 	StudyRightService_handleUniversityBuilt
+  methodBody: 	"UniversityBuilt event = (UniversityBuilt) e;
+University object = model.getOrCreateUniversity(event.getBlockId());
 for (String name : stripBrackets(event.getRooms()).split(\"\\s+\")) {
 if (name.equals(\"\")) continue;
    object.withRooms(model.getOrCreateRoom(name));
@@ -738,18 +779,18 @@ if (name.equals(\"\")) continue;
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleUniversityEdited
+  name: 	handleUniversityBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleUniversityEdited(Event)"
+  signature: 	"class/StudyRightService/method/handleUniversityBuilt(Event)"
 
-- studyRightService_handleRoomEdited: 	org.fulib.classmodel.FMethod
+- studyRightService_handleRoomBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleRoomEdited(Event e)"
-  id: 	StudyRightService_handleRoomEdited
-  methodBody: 	"RoomEdited event = (RoomEdited) e;
-Room object = model.getOrCreateRoom(event.getIncrement());
+  declaration: 	"private void handleRoomBuilt(Event e)"
+  id: 	StudyRightService_handleRoomBuilt
+  methodBody: 	"RoomBuilt event = (RoomBuilt) e;
+Room object = model.getOrCreateRoom(event.getBlockId());
 object.setCredits(event.getCredits());
 object.setUni(model.getOrCreateUniversity(event.getUni()));
 for (String name : stripBrackets(event.getDoors()).split(\"\\s+\")) {
@@ -759,53 +800,72 @@ if (name.equals(\"\")) continue;
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleRoomEdited
+  name: 	handleRoomBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleRoomEdited(Event)"
+  signature: 	"class/StudyRightService/method/handleRoomBuilt(Event)"
 
-- studyRightService_handleStopEdited: 	org.fulib.classmodel.FMethod
+- studyRightService_handleStudentBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleStopEdited(Event e)"
-  id: 	StudyRightService_handleStopEdited
-  methodBody: 	"StopEdited event = (StopEdited) e;
-Stop object = model.getOrCreateStop(event.getIncrement());
+  declaration: 	"private void handleStudentBuilt(Event e)"
+  id: 	StudyRightService_handleStudentBuilt
+  methodBody: 	"StudentBuilt event = (StudentBuilt) e;
+Student object = model.getOrCreateStudent(event.getBlockId());
+object.setName(event.getName());
+object.setBirthYear(Integer.parseInt(event.getBirthYear()));
+object.setStudentId(event.getStudentId());
+object.setUni(model.getOrCreateUniversity(event.getUni()));
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleStudentBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleStudentBuilt(Event)"
+
+- studyRightService_handleStopBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleStopBuilt(Event e)"
+  id: 	StudyRightService_handleStopBuilt
+  methodBody: 	"StopBuilt event = (StopBuilt) e;
+Stop object = model.getOrCreateStop(event.getBlockId());
 object.setMotivation(event.getMotivation());
 object.setRoom(event.getRoom());
 object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleStopEdited
+  name: 	handleStopBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleStopEdited(Event)"
+  signature: 	"class/StudyRightService/method/handleStopBuilt(Event)"
 
-- studyRightService_handleTourEdited: 	org.fulib.classmodel.FMethod
+- studyRightService_handleTourBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleTourEdited(Event e)"
-  id: 	StudyRightService_handleTourEdited
-  methodBody: 	"TourEdited event = (TourEdited) e;
-Tour object = model.getOrCreateTour(event.getIncrement());
+  declaration: 	"private void handleTourBuilt(Event e)"
+  id: 	StudyRightService_handleTourBuilt
+  methodBody: 	"TourBuilt event = (TourBuilt) e;
+Tour object = model.getOrCreateTour(event.getBlockId());
 object.setStops(event.getStops());
 object.setTourList(model.getOrCreateTourList(event.getTourList()));
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleTourEdited
+  name: 	handleTourBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleTourEdited(Event)"
+  signature: 	"class/StudyRightService/method/handleTourBuilt(Event)"
 
-- studyRightService_handleTourListEdited: 	org.fulib.classmodel.FMethod
+- studyRightService_handleTourListBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleTourListEdited(Event e)"
-  id: 	StudyRightService_handleTourListEdited
-  methodBody: 	"TourListEdited event = (TourListEdited) e;
-TourList object = model.getOrCreateTourList(event.getIncrement());
+  declaration: 	"private void handleTourListBuilt(Event e)"
+  id: 	StudyRightService_handleTourListBuilt
+  methodBody: 	"TourListBuilt event = (TourListBuilt) e;
+TourList object = model.getOrCreateTourList(event.getBlockId());
 for (String name : stripBrackets(event.getAlternatives()).split(\"\\s+\")) {
 if (name.equals(\"\")) continue;
    object.withAlternatives(model.getOrCreateTour(name));
@@ -813,10 +873,10 @@ if (name.equals(\"\")) continue;
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleTourListEdited
+  name: 	handleTourListBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleTourListEdited(Event)"
+  signature: 	"class/StudyRightService/method/handleTourListBuilt(Event)"
 
 - studyRightService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -829,11 +889,12 @@ if (name.equals(\"\")) continue;
    handlerMap.put(TourStarted.class, this::handleTourStarted);
    handlerMap.put(RoomSelected.class, this::handleRoomSelected);
    handlerMap.put(TourEndFound.class, this::handleTourEndFound);
-   handlerMap.put(UniversityEdited.class, this::handleUniversityEdited);
-   handlerMap.put(RoomEdited.class, this::handleRoomEdited);
-   handlerMap.put(StopEdited.class, this::handleStopEdited);
-   handlerMap.put(TourEdited.class, this::handleTourEdited);
-   handlerMap.put(TourListEdited.class, this::handleTourListEdited);
+   handlerMap.put(UniversityBuilt.class, this::handleUniversityBuilt);
+   handlerMap.put(RoomBuilt.class, this::handleRoomBuilt);
+   handlerMap.put(StudentBuilt.class, this::handleStudentBuilt);
+   handlerMap.put(StopBuilt.class, this::handleStopBuilt);
+   handlerMap.put(TourBuilt.class, this::handleTourBuilt);
+   handlerMap.put(TourListBuilt.class, this::handleTourListBuilt);
 }
 "
   modified: 	false
@@ -946,6 +1007,18 @@ catch (UnirestException e) {
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
+- university_persons: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	university
+  collectionType: 	c1
+  id: 	University_persons
+  modified: 	false
+  name: 	persons
+  other: 	person_uni
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - room_id: 	org.fulib.classmodel.Attribute
   clazz: 	room
   id: 	Room_id
@@ -985,6 +1058,52 @@ catch (UnirestException e) {
   other: 	room_doors
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- person_id: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- person_name: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- person_birthYear: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_birthYear
+  modified: 	false
+  name: 	birthYear
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- person_uni: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	person
+  id: 	Person_uni
+  modified: 	false
+  name: 	uni
+  other: 	university_persons
+  propertyStyle: 	Bean
+
+- student_studentId: 	org.fulib.classmodel.Attribute
+  clazz: 	student
+  id: 	Student_studentId
+  modified: 	false
+  name: 	studentId
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 
 - stop_id: 	org.fulib.classmodel.Attribute
   clazz: 	stop

@@ -1,7 +1,7 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class StopEdited extends DataEvent
+public class StopBuilt extends DataEvent
 {
    public static final String PROPERTY_MOTIVATION = "motivation";
    public static final String PROPERTY_ROOM = "room";
@@ -15,7 +15,7 @@ public class StopEdited extends DataEvent
       return this.motivation;
    }
 
-   public StopEdited setMotivation(String value)
+   public StopBuilt setMotivation(String value)
    {
       if (Objects.equals(value, this.motivation))
       {
@@ -33,7 +33,7 @@ public class StopEdited extends DataEvent
       return this.room;
    }
 
-   public StopEdited setRoom(String value)
+   public StopBuilt setRoom(String value)
    {
       if (Objects.equals(value, this.room))
       {
@@ -51,7 +51,7 @@ public class StopEdited extends DataEvent
       return this.previousStop;
    }
 
-   public StopEdited setPreviousStop(String value)
+   public StopBuilt setPreviousStop(String value)
    {
       if (Objects.equals(value, this.previousStop))
       {

@@ -1,7 +1,7 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class TourEdited extends DataEvent
+public class TourBuilt extends DataEvent
 {
    public static final String PROPERTY_STOPS = "stops";
    public static final String PROPERTY_TOUR_LIST = "tourList";
@@ -13,7 +13,7 @@ public class TourEdited extends DataEvent
       return this.stops;
    }
 
-   public TourEdited setStops(String value)
+   public TourBuilt setStops(String value)
    {
       if (Objects.equals(value, this.stops))
       {
@@ -31,7 +31,7 @@ public class TourEdited extends DataEvent
       return this.tourList;
    }
 
-   public TourEdited setTourList(String value)
+   public TourBuilt setTourList(String value)
    {
       if (Objects.equals(value, this.tourList))
       {

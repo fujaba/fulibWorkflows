@@ -48,11 +48,13 @@ public class ShopModel
 
    public Order getOrCreateOrder(String id)
    {
+      if (id == null) return null;
       return (Order) modelMap.computeIfAbsent(id, k -> new Order().setId(k));
    }
 
    public Customer getOrCreateCustomer(String id)
    {
+      if (id == null) return null;
       return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
    }
 }

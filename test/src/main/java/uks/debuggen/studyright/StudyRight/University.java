@@ -10,9 +10,11 @@ public class University
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_ROOMS = "rooms";
+   public static final String PROPERTY_PERSONS = "persons";
    private String id;
    protected PropertyChangeSupport listeners;
    private List<Room> rooms;
+   private List<Person> persons;
 
    public String getId()
    {
@@ -98,6 +100,72 @@ public class University
       return this;
    }
 
+   public List<Person> getPersons()
+   {
+      return this.persons != null ? Collections.unmodifiableList(this.persons) : Collections.emptyList();
+   }
+
+   public University withPersons(Person value)
+   {
+      if (this.persons == null)
+      {
+         this.persons = new ArrayList<>();
+      }
+      if (!this.persons.contains(value))
+      {
+         this.persons.add(value);
+         value.setUni(this);
+         this.firePropertyChange(PROPERTY_PERSONS, null, value);
+      }
+      return this;
+   }
+
+   public University withPersons(Person... value)
+   {
+      for (final Person item : value)
+      {
+         this.withPersons(item);
+      }
+      return this;
+   }
+
+   public University withPersons(Collection<? extends Person> value)
+   {
+      for (final Person item : value)
+      {
+         this.withPersons(item);
+      }
+      return this;
+   }
+
+   public University withoutPersons(Person value)
+   {
+      if (this.persons != null && this.persons.remove(value))
+      {
+         value.setUni(null);
+         this.firePropertyChange(PROPERTY_PERSONS, value, null);
+      }
+      return this;
+   }
+
+   public University withoutPersons(Person... value)
+   {
+      for (final Person item : value)
+      {
+         this.withoutPersons(item);
+      }
+      return this;
+   }
+
+   public University withoutPersons(Collection<? extends Person> value)
+   {
+      for (final Person item : value)
+      {
+         this.withoutPersons(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -128,5 +196,6 @@ public class University
    public void removeYou()
    {
       this.withoutRooms(new ArrayList<>(this.getRooms()));
+      this.withoutPersons(new ArrayList<>(this.getPersons()));
    }
 }

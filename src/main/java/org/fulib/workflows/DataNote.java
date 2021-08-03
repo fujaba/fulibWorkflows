@@ -5,10 +5,10 @@ public class DataNote extends WorkflowNote
 {
    public static final String PROPERTY_DATA_TYPE = "dataType";
    public static final String PROPERTY_TYPE = "type";
-   public static final String PROPERTY_INCREMENT = "increment";
+   public static final String PROPERTY_BLOCK_ID = "blockId";
    private String dataType;
    private DataType type;
-   private String increment;
+   private String blockId;
 
    public String getDataType()
    {
@@ -55,21 +55,21 @@ public class DataNote extends WorkflowNote
       return this;
    }
 
-   public String getIncrement()
+   public String getBlockId()
    {
-      return this.increment;
+      return this.blockId;
    }
 
-   public DataNote setIncrement(String value)
+   public DataNote setBlockId(String value)
    {
-      if (Objects.equals(value, this.increment))
+      if (Objects.equals(value, this.blockId))
       {
          return this;
       }
 
-      final String oldValue = this.increment;
-      this.increment = value;
-      this.firePropertyChange(PROPERTY_INCREMENT, oldValue, value);
+      final String oldValue = this.blockId;
+      this.blockId = value;
+      this.firePropertyChange(PROPERTY_BLOCK_ID, oldValue, value);
       return this;
    }
 
@@ -77,7 +77,7 @@ public class DataNote extends WorkflowNote
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getIncrement());
+      result.append(' ').append(this.getBlockId());
       result.append(' ').append(this.getDataType());
       return result.toString();
    }

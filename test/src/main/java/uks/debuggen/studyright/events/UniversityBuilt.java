@@ -1,7 +1,7 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class UniversityEdited extends DataEvent
+public class UniversityBuilt extends DataEvent
 {
    public static final String PROPERTY_ROOMS = "rooms";
    private String rooms;
@@ -11,7 +11,7 @@ public class UniversityEdited extends DataEvent
       return this.rooms;
    }
 
-   public UniversityEdited setRooms(String value)
+   public UniversityBuilt setRooms(String value)
    {
       if (Objects.equals(value, this.rooms))
       {

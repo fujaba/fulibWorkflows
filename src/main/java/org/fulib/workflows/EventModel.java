@@ -81,6 +81,12 @@ public class EventModel
             service.withHandledEventTypes(type);
             lastActor = policy;
          }
+         else if (entry.getKey().equalsIgnoreCase("class")) {
+            ClassNote classNote = new ClassNote();
+            classNote.setMap(map);
+            classNote.setWorkflow(getRootWorkflow());
+            addToStepsOfLastActor(classNote);
+         }
          else if (entry.getKey().equalsIgnoreCase("Data")) {
             String value = entry.getValue();
             String[] split = StrUtil.split(value);
@@ -100,7 +106,7 @@ public class EventModel
 
             DataNote note = new DataNote();
             note.setTime(value);
-            note.setIncrement(objectId);
+            note.setBlockId(objectId);
             note.setMap(map);
             note.setWorkflow(getRootWorkflow());
             note.setDataType(className);
@@ -234,7 +240,7 @@ public class EventModel
 
          }
       }
-      else if (note instanceof DataNote) {
+      else if ((note instanceof DataNote) || (note instanceof ClassNote)) {
          if (lastActor == null || !(lastActor instanceof Policy)) {
             ServiceNote someservice = getEventStormingBoard().getOrCreateFromServices("someservice");
             Interaction someaction = new Policy()

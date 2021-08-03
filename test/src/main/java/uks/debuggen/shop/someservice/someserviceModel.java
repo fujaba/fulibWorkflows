@@ -48,6 +48,7 @@ public class someserviceModel
 
    public Box getOrCreateBox(String id)
    {
+      if (id == null) return null;
       return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
    }
 }

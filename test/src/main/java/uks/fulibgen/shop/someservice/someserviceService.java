@@ -196,7 +196,7 @@ public class someserviceService
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(ProductStored.class, this::handleProductStored);
-         handlerMap.put(BoxEdited.class, this::handleBoxEdited);
+         handlerMap.put(BoxBuilt.class, this::handleBoxBuilt);
       }
    }
 
@@ -277,22 +277,14 @@ public class someserviceService
    private void handleDemoProductStored(ProductStored event)
    {
       if (event.getId().equals("12:00")) {
-         BoxEdited box23Event = new BoxEdited();
+         BoxBuilt box23Event = new BoxBuilt();
          box23Event.setId("12:01");
-         box23Event.setIncrement("box23");
+         box23Event.setBlockId("box23");
          box23Event.setProduct("shoes");
          box23Event.setPlace("shelf23");
          apply(box23Event);
 
       }
-   }
-
-   private void handleBoxEdited(Event e)
-   {
-      BoxEdited event = (BoxEdited) e;
-      Box object = model.getOrCreateBox(event.getIncrement());
-      object.setProduct(event.getProduct());
-      object.setPlace(event.getPlace());
    }
 
    public String stripBrackets(String back)
@@ -306,5 +298,13 @@ public class someserviceService
          back = back.substring(open + 1, close);
       }
       return back;
+   }
+
+   private void handleBoxBuilt(Event e)
+   {
+      BoxBuilt event = (BoxBuilt) e;
+      Box object = model.getOrCreateBox(event.getBlockId());
+      object.setProduct(event.getProduct());
+      object.setPlace(event.getPlace());
    }
 }

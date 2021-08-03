@@ -1,8 +1,8 @@
-package uks.debuggen.studyright.events;
+package uks.debuggen.shop.events;
 import java.util.Objects;
 
-public class DataEvent
-extends Event {
+public class DataEvent extends Event
+{
    public static final String PROPERTY_BLOCK_ID = "blockId";
    private String blockId;
 

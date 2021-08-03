@@ -60,6 +60,9 @@ public class HtmlGenerator3
 
       String previousActor = "noActor";
       for (WorkflowNote note : rootWorkflow.getNotes()) {
+         if (note instanceof ClassNote) {
+            continue;
+         }
          String time = note.getTime();
          Map<String, String> map = note.getMap();
          String eventType = eventModel.getEventType(map);
@@ -89,6 +92,7 @@ public class HtmlGenerator3
             targetActor = serviceName;
             noteType = "data";
          }
+
 
          String noteContent;
          if (eventType.equalsIgnoreCase("page")) {
@@ -238,8 +242,8 @@ public class HtmlGenerator3
          keySet.remove("id");
          keySet.remove(time);
 
-         String block = map.get("increment");
-         keySet.remove("increment");
+         String block = map.get("blockId");
+         keySet.remove("blockId");
 
          String eventTypeName = map.get(time);
          eventTypeName = StrUtil.simpleName(eventTypeName);

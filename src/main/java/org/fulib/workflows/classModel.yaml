@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	dataType 	pageLine 	pageNote 	eventType 	eventStormingBoard 	note 	dataEvent 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	eventType 	eventStormingBoard 	note 	dataEvent 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -75,7 +75,7 @@
   name: 	WorkflowNote
   propertyStyle: 	Bean
   roles: 	workflowNote_interaction 	workflowNote_workflow
-  subClasses: 	commandNote 	dataNote 	pageNote 	eventNote
+  subClasses: 	commandNote 	dataNote 	classNote 	pageNote 	eventNote
   superClass: 	note
 
 - commandNote: 	org.fulib.classmodel.Clazz
@@ -87,7 +87,7 @@
   superClass: 	workflowNote
 
 - dataNote: 	org.fulib.classmodel.Clazz
-  attributes: 	dataNote_increment 	dataNote_dataType
+  attributes: 	dataNote_blockId 	dataNote_dataType
   model: 	c
   modified: 	false
   name: 	DataNote
@@ -102,6 +102,13 @@
   name: 	DataType
   propertyStyle: 	Bean
   roles: 	dataType_dataNotes 	dataType_handlers 	dataType_eventStormingBoard
+
+- classNote: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	ClassNote
+  propertyStyle: 	Bean
+  superClass: 	workflowNote
 
 - pageLine: 	org.fulib.classmodel.Clazz
   attributes: 	pageLine_map
@@ -503,11 +510,11 @@
   type: 	String
   typeSignature: 	String
 
-- dataNote_increment: 	org.fulib.classmodel.Attribute
+- dataNote_blockId: 	org.fulib.classmodel.Attribute
   clazz: 	dataNote
-  id: 	DataNote_increment
+  id: 	DataNote_blockId
   modified: 	false
-  name: 	increment
+  name: 	blockId
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

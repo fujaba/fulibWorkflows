@@ -42,6 +42,23 @@
   credits: 0
   uni: StudyRight
 
+- class: Person
+  name: String
+  birthYear: int
+  uni: University
+  uni.back: [persons]
+
+- class: Student
+  extends: Person
+  studentId: String
+
+- data: 12:00:05
+  Student: carli
+  name: Carli
+  birthYear: 1970
+  studentId: stud42
+  uni: StudyRight
+
 - event: tour started 12:01
 
 - policy: StudyRight

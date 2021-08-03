@@ -135,8 +135,12 @@ public class GenModel implements ClassModelDecorator
       PageNote pageNote;
    }
 
+   class ClassNote extends  WorkflowNote{
+
+   }
+
    class DataNote extends WorkflowNote {
-      String increment;
+      String blockId;
       String dataType;
       @Link("dataNotes")
       DataType type;

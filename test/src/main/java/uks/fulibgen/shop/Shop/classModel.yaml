@@ -21,7 +21,7 @@
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model 	shopService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_handleOrderRegistered 	shopService_handleDemoOrderRegistered 	shopService_handleOrderApproved 	shopService_handleDemoOrderApproved 	shopService_handleOrderPicked 	shopService_handleDemoOrderPicked 	shopService_handleOrderDeclined 	shopService_handleDemoOrderDeclined 	shopService_handleOrderEdited 	shopService_handleCustomerEdited 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply 	shopService_stripBrackets
+  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_handleOrderRegistered 	shopService_handleDemoOrderRegistered 	shopService_handleOrderApproved 	shopService_handleDemoOrderApproved 	shopService_handleOrderPicked 	shopService_handleDemoOrderPicked 	shopService_handleOrderDeclined 	shopService_handleDemoOrderDeclined 	shopService_handleOrderBuilt 	shopService_handleCustomerBuilt 	shopService_initEventHandlerMap 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply 	shopService_stripBrackets
   model: 	c
   modified: 	false
   name: 	ShopService
@@ -338,35 +338,35 @@ handleDemoOrderRegistered(event);
   declaration: 	"private void handleDemoOrderRegistered(OrderRegistered event)"
   id: 	ShopService_handleDemoOrderRegistered
   methodBody: 	"if (event.getId().equals(\"13:01\")) {
-   OrderEdited order1300Event = new OrderEdited();
+   OrderBuilt order1300Event = new OrderBuilt();
    order1300Event.setId(\"13:02\");
-   order1300Event.setIncrement(\"order1300\");
+   order1300Event.setBlockId(\"order1300\");
    order1300Event.setProduct(\"shoes\");
    order1300Event.setCustomer(\"Alice\");
    order1300Event.setAddress(\"Wonderland 1\");
    order1300Event.setState(\"pending\");
    apply(order1300Event);
 
-   CustomerEdited aliceEvent = new CustomerEdited();
+   CustomerBuilt aliceEvent = new CustomerBuilt();
    aliceEvent.setId(\"13:03\");
-   aliceEvent.setIncrement(\"Alice\");
+   aliceEvent.setBlockId(\"Alice\");
    aliceEvent.setOrders(\"[ order1300 ]\");
    apply(aliceEvent);
 
 }
 if (event.getId().equals(\"13:11\")) {
-   OrderEdited order1310Event = new OrderEdited();
+   OrderBuilt order1310Event = new OrderBuilt();
    order1310Event.setId(\"13:12\");
-   order1310Event.setIncrement(\"order1310\");
+   order1310Event.setBlockId(\"order1310\");
    order1310Event.setProduct(\"tshirt\");
    order1310Event.setCustomer(\"Alice\");
    order1310Event.setAddress(\"Wonderland 1\");
    order1310Event.setState(\"pending\");
    apply(order1310Event);
 
-   CustomerEdited aliceEvent = new CustomerEdited();
+   CustomerBuilt aliceEvent = new CustomerBuilt();
    aliceEvent.setId(\"13:13\");
-   aliceEvent.setIncrement(\"Alice\");
+   aliceEvent.setBlockId(\"Alice\");
    aliceEvent.setOrders(\"[ order1300 order1310 ]\");
    apply(aliceEvent);
 
@@ -401,9 +401,9 @@ handleDemoOrderApproved(event);
   declaration: 	"private void handleDemoOrderApproved(OrderApproved event)"
   id: 	ShopService_handleDemoOrderApproved
   methodBody: 	"if (event.getId().equals(\"13:05\")) {
-   OrderEdited order1300Event = new OrderEdited();
+   OrderBuilt order1300Event = new OrderBuilt();
    order1300Event.setId(\"13:06\");
-   order1300Event.setIncrement(\"order1300\");
+   order1300Event.setBlockId(\"order1300\");
    order1300Event.setState(\"picking\");
    apply(order1300Event);
 
@@ -438,9 +438,9 @@ handleDemoOrderPicked(event);
   declaration: 	"private void handleDemoOrderPicked(OrderPicked event)"
   id: 	ShopService_handleDemoOrderPicked
   methodBody: 	"if (event.getId().equals(\"14:00\")) {
-   OrderEdited order1300Event = new OrderEdited();
+   OrderBuilt order1300Event = new OrderBuilt();
    order1300Event.setId(\"14:03\");
-   order1300Event.setIncrement(\"order1300\");
+   order1300Event.setBlockId(\"order1300\");
    order1300Event.setState(\"shipping\");
    apply(order1300Event);
 
@@ -475,9 +475,9 @@ handleDemoOrderDeclined(event);
   declaration: 	"private void handleDemoOrderDeclined(OrderDeclined event)"
   id: 	ShopService_handleDemoOrderDeclined
   methodBody: 	"if (event.getId().equals(\"13:14\")) {
-   OrderEdited order1310Event = new OrderEdited();
+   OrderBuilt order1310Event = new OrderBuilt();
    order1310Event.setId(\"13:12\");
-   order1310Event.setIncrement(\"order1310\");
+   order1310Event.setBlockId(\"order1310\");
    order1310Event.setState(\"out of stock\");
    apply(order1310Event);
 
@@ -490,13 +490,13 @@ handleDemoOrderDeclined(event);
   returnType: 	void
   signature: 	"class/ShopService/method/handleDemoOrderDeclined(OrderDeclined)"
 
-- shopService_handleOrderEdited: 	org.fulib.classmodel.FMethod
+- shopService_handleOrderBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopService
-  declaration: 	"private void handleOrderEdited(Event e)"
-  id: 	ShopService_handleOrderEdited
-  methodBody: 	"OrderEdited event = (OrderEdited) e;
-Order object = model.getOrCreateOrder(event.getIncrement());
+  declaration: 	"private void handleOrderBuilt(Event e)"
+  id: 	ShopService_handleOrderBuilt
+  methodBody: 	"OrderBuilt event = (OrderBuilt) e;
+Order object = model.getOrCreateOrder(event.getBlockId());
 object.setProduct(event.getProduct());
 object.setCustomer(event.getCustomer());
 object.setAddress(event.getAddress());
@@ -504,26 +504,26 @@ object.setState(event.getState());
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleOrderEdited
+  name: 	handleOrderBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/ShopService/method/handleOrderEdited(Event)"
+  signature: 	"class/ShopService/method/handleOrderBuilt(Event)"
 
-- shopService_handleCustomerEdited: 	org.fulib.classmodel.FMethod
+- shopService_handleCustomerBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopService
-  declaration: 	"private void handleCustomerEdited(Event e)"
-  id: 	ShopService_handleCustomerEdited
-  methodBody: 	"CustomerEdited event = (CustomerEdited) e;
-Customer object = model.getOrCreateCustomer(event.getIncrement());
+  declaration: 	"private void handleCustomerBuilt(Event e)"
+  id: 	ShopService_handleCustomerBuilt
+  methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
+Customer object = model.getOrCreateCustomer(event.getBlockId());
 object.setOrders(event.getOrders());
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleCustomerEdited
+  name: 	handleCustomerBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/ShopService/method/handleCustomerEdited(Event)"
+  signature: 	"class/ShopService/method/handleCustomerBuilt(Event)"
 
 - shopService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -536,8 +536,8 @@ object.setOrders(event.getOrders());
    handlerMap.put(OrderApproved.class, this::handleOrderApproved);
    handlerMap.put(OrderPicked.class, this::handleOrderPicked);
    handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
-   handlerMap.put(OrderEdited.class, this::handleOrderEdited);
-   handlerMap.put(CustomerEdited.class, this::handleCustomerEdited);
+   handlerMap.put(OrderBuilt.class, this::handleOrderBuilt);
+   handlerMap.put(CustomerBuilt.class, this::handleCustomerBuilt);
 }
 "
   modified: 	false

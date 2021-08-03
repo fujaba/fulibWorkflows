@@ -210,6 +210,65 @@ public class StudyRightService
       return "Exception raised";
    }
 
+   private void handleUniversityBuilt(Event e)
+   {
+      UniversityBuilt event = (UniversityBuilt) e;
+      University object = model.getOrCreateUniversity(event.getBlockId());
+      for (String name : stripBrackets(event.getRooms()).split("\\s+")) {
+      if (name.equals("")) continue;
+         object.withRooms(model.getOrCreateRoom(name));
+      }
+   }
+
+   private void handleRoomBuilt(Event e)
+   {
+      RoomBuilt event = (RoomBuilt) e;
+      Room object = model.getOrCreateRoom(event.getBlockId());
+      object.setCredits(event.getCredits());
+      object.setUni(model.getOrCreateUniversity(event.getUni()));
+      for (String name : stripBrackets(event.getDoors()).split("\\s+")) {
+      if (name.equals("")) continue;
+         object.withDoors(model.getOrCreateRoom(name));
+      }
+   }
+
+   private void handleStopBuilt(Event e)
+   {
+      StopBuilt event = (StopBuilt) e;
+      Stop object = model.getOrCreateStop(event.getBlockId());
+      object.setMotivation(event.getMotivation());
+      object.setRoom(event.getRoom());
+      object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
+   }
+
+   private void handleTourBuilt(Event e)
+   {
+      TourBuilt event = (TourBuilt) e;
+      Tour object = model.getOrCreateTour(event.getBlockId());
+      object.setStops(event.getStops());
+      object.setTourList(model.getOrCreateTourList(event.getTourList()));
+   }
+
+   private void handleTourListBuilt(Event e)
+   {
+      TourListBuilt event = (TourListBuilt) e;
+      TourList object = model.getOrCreateTourList(event.getBlockId());
+      for (String name : stripBrackets(event.getAlternatives()).split("\\s+")) {
+      if (name.equals("")) continue;
+         object.withAlternatives(model.getOrCreateTour(name));
+      }
+   }
+
+   private void handleStudentBuilt(Event e)
+   {
+      StudentBuilt event = (StudentBuilt) e;
+      Student object = model.getOrCreateStudent(event.getBlockId());
+      object.setName(event.getName());
+      object.setBirthYear(Integer.parseInt(event.getBirthYear()));
+      object.setStudentId(event.getStudentId());
+      object.setUni(model.getOrCreateUniversity(event.getUni()));
+   }
+
    private String idPrefix = "e";
    private int idNumber = 0;
 
@@ -322,38 +381,38 @@ public class StudyRightService
 
    private void loadSmallMap()
    {
-      UniversityEdited studyRightEvent = new UniversityEdited();
+      UniversityBuilt studyRightEvent = new UniversityBuilt();
       studyRightEvent.setId(newEventId());
-      studyRightEvent.setIncrement("StudyRight");
+      studyRightEvent.setBlockId("StudyRight");
       studyRightEvent.setRooms("[math exam]");
       apply(studyRightEvent);
 
-      RoomEdited mathEvent = new RoomEdited();
+      RoomBuilt mathEvent = new RoomBuilt();
       mathEvent.setId(newEventId());
-      mathEvent.setIncrement("math");
+      mathEvent.setBlockId("math");
       mathEvent.setCredits("23");
       mathEvent.setUni("StudyRight");
       mathEvent.setDoors("[modeling algebra]");
       apply(mathEvent);
 
-      RoomEdited modelingEvent = new RoomEdited();
+      RoomBuilt modelingEvent = new RoomBuilt();
       modelingEvent.setId(newEventId());
-      modelingEvent.setIncrement("modeling");
+      modelingEvent.setBlockId("modeling");
       modelingEvent.setUni("StudyRight");
       modelingEvent.setCredits("42");
       modelingEvent.setDoors("[math algebra exam]");
       apply(modelingEvent);
 
-      RoomEdited algebraEvent = new RoomEdited();
+      RoomBuilt algebraEvent = new RoomBuilt();
       algebraEvent.setId(newEventId());
-      algebraEvent.setIncrement("algebra");
+      algebraEvent.setBlockId("algebra");
       algebraEvent.setUni("StudyRight");
       algebraEvent.setCredits("12");
       apply(algebraEvent);
 
-      RoomEdited examEvent = new RoomEdited();
+      RoomBuilt examEvent = new RoomBuilt();
       examEvent.setId(newEventId());
-      examEvent.setIncrement("exam");
+      examEvent.setBlockId("exam");
       examEvent.setDoors("[modeling algebra]");
       examEvent.setCredits("0");
       examEvent.setUni("StudyRight");
@@ -368,11 +427,12 @@ public class StudyRightService
          handlerMap.put(TourStarted.class, this::handleTourStarted);
          handlerMap.put(RoomSelected.class, this::handleRoomSelected);
          handlerMap.put(TourEndFound.class, this::handleTourEndFound);
-         handlerMap.put(UniversityEdited.class, this::handleUniversityEdited);
-         handlerMap.put(RoomEdited.class, this::handleRoomEdited);
-         handlerMap.put(StopEdited.class, this::handleStopEdited);
-         handlerMap.put(TourEdited.class, this::handleTourEdited);
-         handlerMap.put(TourListEdited.class, this::handleTourListEdited);
+         handlerMap.put(UniversityBuilt.class, this::handleUniversityBuilt);
+         handlerMap.put(RoomBuilt.class, this::handleRoomBuilt);
+         handlerMap.put(StudentBuilt.class, this::handleStudentBuilt);
+         handlerMap.put(StopBuilt.class, this::handleStopBuilt);
+         handlerMap.put(TourBuilt.class, this::handleTourBuilt);
+         handlerMap.put(TourListBuilt.class, this::handleTourListBuilt);
       }
    }
 
@@ -437,10 +497,10 @@ public class StudyRightService
       TourStarted event = (TourStarted) e;
 
       if (event.getId().startsWith(idPrefix)) {
-         StopEdited s01Event = new StopEdited();
+         StopBuilt s01Event = new StopBuilt();
          s01Event.setId(newEventId());
          String firstStop = "stop" + idNumber;
-         s01Event.setIncrement(firstStop);
+         s01Event.setBlockId(firstStop);
          s01Event.setMotivation("77");
          apply(s01Event);
 
@@ -457,37 +517,6 @@ public class StudyRightService
       handleDemoTourStarted(event);
    }
 
-   private void handleUniversityEdited(Event e)
-   {
-      UniversityEdited event = (UniversityEdited) e;
-      University object = model.getOrCreateUniversity(event.getIncrement());
-      for (String name : stripBrackets(event.getRooms()).split("\\s+")) {
-      if (name.equals("")) continue;
-         object.withRooms(model.getOrCreateRoom(name));
-      }
-   }
-
-   private void handleRoomEdited(Event e)
-   {
-      RoomEdited event = (RoomEdited) e;
-      Room object = model.getOrCreateRoom(event.getIncrement());
-      object.setCredits(event.getCredits());
-      object.setUni(model.getOrCreateUniversity(event.getUni()));
-      for (String name : stripBrackets(event.getDoors()).split("\\s+")) {
-      if (name.equals("")) continue;
-         object.withDoors(model.getOrCreateRoom(name));
-      }
-   }
-
-   private void handleStopEdited(Event e)
-   {
-      StopEdited event = (StopEdited) e;
-      Stop object = model.getOrCreateStop(event.getIncrement());
-      object.setMotivation(event.getMotivation());
-      object.setRoom(event.getRoom());
-      object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
-   }
-
    private void handleRoomSelected(Event e)
    {
       // no fulib
@@ -501,10 +530,10 @@ public class StudyRightService
          String credits = room.getCredits();
          int newMotivation = Integer.parseInt(motivation) - Integer.parseInt(credits);
 
-         StopEdited newStopEvent = new StopEdited();
+         StopBuilt newStopEvent = new StopBuilt();
          newStopEvent.setId(newEventId());
          String newStopId = "stop" + idNumber;
-         newStopEvent.setIncrement(newStopId);
+         newStopEvent.setBlockId(newStopId);
          newStopEvent.setRoom(event.getRoom());
          newStopEvent.setMotivation("" + newMotivation);
          newStopEvent.setPreviousStop(event.getPreviousStop());
@@ -523,9 +552,9 @@ public class StudyRightService
 
          if (newMotivation == 0 && event.getRoom().equals("exam")) {
             // success, add to smallMap tour list
-            TourListEdited allToursEvent = new TourListEdited();
+            TourListBuilt allToursEvent = new TourListBuilt();
             allToursEvent.setId(idPrefix + "TourList");
-            allToursEvent.setIncrement(idPrefix + "TourList");
+            allToursEvent.setBlockId(idPrefix + "TourList");
             apply(allToursEvent);
 
             TourList tourList = model.getOrCreateTourList(idPrefix + "TourList");
@@ -535,9 +564,9 @@ public class StudyRightService
             Stop currentStop = model.getOrCreateStop(newStopId);
             while (currentStop.getPreviousStop() != null) {
                stopList = currentStop.getRoom() + " " + stopList;
-               TourEdited tour1Event = new TourEdited();
+               TourBuilt tour1Event = new TourBuilt();
                tour1Event.setId(newEventId());
-               tour1Event.setIncrement(tourId);
+               tour1Event.setBlockId(tourId);
                tour1Event.setStops(stopList);
                tour1Event.setTourList(idPrefix + "TourList");
                apply(tour1Event);
@@ -564,9 +593,9 @@ public class StudyRightService
    private void handleDemoTourStarted(TourStarted event)
    {
       if (event.getId().equals("12:01")) {
-         StopEdited s01Event = new StopEdited();
+         StopBuilt s01Event = new StopBuilt();
          s01Event.setId("12:01:01");
-         s01Event.setIncrement("s01");
+         s01Event.setBlockId("s01");
          s01Event.setMotivation("77");
          apply(s01Event);
 
@@ -584,9 +613,9 @@ public class StudyRightService
    private void handleDemoRoomSelected(RoomSelected event)
    {
       if (event.getId().equals("12:02")) {
-         StopEdited s02Event = new StopEdited();
+         StopBuilt s02Event = new StopBuilt();
          s02Event.setId("12:02:01");
-         s02Event.setIncrement("s02");
+         s02Event.setBlockId("s02");
          s02Event.setRoom("math");
          s02Event.setMotivation("54");
          s02Event.setPreviousStop("s01");
@@ -610,9 +639,9 @@ public class StudyRightService
          apply(e1204);
       }
       if (event.getId().equals("12:03")) {
-         StopEdited s03Event = new StopEdited();
+         StopBuilt s03Event = new StopBuilt();
          s03Event.setId("12:03:01");
-         s03Event.setIncrement("s03");
+         s03Event.setBlockId("s03");
          s03Event.setRoom("algebra");
          s03Event.setPreviousStop("s02");
          s03Event.setMotivation("42");
@@ -636,9 +665,9 @@ public class StudyRightService
          apply(e1206);
       }
       if (event.getId().equals("12:05")) {
-         StopEdited s05Event = new StopEdited();
+         StopBuilt s05Event = new StopBuilt();
          s05Event.setId("12:05:01");
-         s05Event.setIncrement("s05");
+         s05Event.setBlockId("s05");
          s05Event.setRoom("modeling");
          s05Event.setPreviousStop("s03");
          s05Event.setMotivation("0");
@@ -662,9 +691,9 @@ public class StudyRightService
          apply(e1208);
       }
       if (event.getId().equals("12:07")) {
-         StopEdited s07Event = new StopEdited();
+         StopBuilt s07Event = new StopBuilt();
          s07Event.setId("12:07:01");
-         s07Event.setIncrement("s07");
+         s07Event.setBlockId("s07");
          s07Event.setRoom("math");
          s07Event.setPreviousStop("s05");
          s07Event.setMotivation("-23");
@@ -681,23 +710,23 @@ public class StudyRightService
          apply(e120702);
       }
       if (event.getId().equals("12:08")) {
-         StopEdited s08Event = new StopEdited();
+         StopBuilt s08Event = new StopBuilt();
          s08Event.setId("12:08:01");
-         s08Event.setIncrement("s08");
+         s08Event.setBlockId("s08");
          s08Event.setRoom("exam");
          s08Event.setPreviousStop("s05");
          s08Event.setMotivation("0");
          apply(s08Event);
 
-         TourEdited tour1Event = new TourEdited();
+         TourBuilt tour1Event = new TourBuilt();
          tour1Event.setId("12:08:02");
-         tour1Event.setIncrement("tour1");
+         tour1Event.setBlockId("tour1");
          tour1Event.setStops("exam");
          apply(tour1Event);
 
-         TourListEdited allToursEvent = new TourListEdited();
+         TourListBuilt allToursEvent = new TourListBuilt();
          allToursEvent.setId("12:08:03");
-         allToursEvent.setIncrement("allTours");
+         allToursEvent.setBlockId("allTours");
          allToursEvent.setAlternatives("[tour1]");
          apply(allToursEvent);
 
@@ -716,41 +745,50 @@ public class StudyRightService
    private void handleDemoRoomsLoaded(RoomsLoaded event)
    {
       if (event.getId().equals("12:00")) {
-         UniversityEdited studyRightEvent = new UniversityEdited();
+         UniversityBuilt studyRightEvent = new UniversityBuilt();
          studyRightEvent.setId("12:00:00");
-         studyRightEvent.setIncrement("StudyRight");
+         studyRightEvent.setBlockId("StudyRight");
          studyRightEvent.setRooms("[math exam]");
          apply(studyRightEvent);
 
-         RoomEdited mathEvent = new RoomEdited();
+         RoomBuilt mathEvent = new RoomBuilt();
          mathEvent.setId("12:00:01");
-         mathEvent.setIncrement("math");
+         mathEvent.setBlockId("math");
          mathEvent.setCredits("23");
          mathEvent.setUni("StudyRight");
          mathEvent.setDoors("[modeling algebra]");
          apply(mathEvent);
 
-         RoomEdited modelingEvent = new RoomEdited();
+         RoomBuilt modelingEvent = new RoomBuilt();
          modelingEvent.setId("12:00:02");
-         modelingEvent.setIncrement("modeling");
+         modelingEvent.setBlockId("modeling");
          modelingEvent.setUni("StudyRight");
          modelingEvent.setCredits("42");
          modelingEvent.setDoors("[math algebra exam]");
          apply(modelingEvent);
 
-         RoomEdited algebraEvent = new RoomEdited();
+         RoomBuilt algebraEvent = new RoomBuilt();
          algebraEvent.setId("12:00:03");
-         algebraEvent.setIncrement("algebra");
+         algebraEvent.setBlockId("algebra");
          algebraEvent.setUni("StudyRight");
          algebraEvent.setCredits("12");
          apply(algebraEvent);
 
-         RoomEdited examEvent = new RoomEdited();
+         RoomBuilt examEvent = new RoomBuilt();
          examEvent.setId("12:00:04");
-         examEvent.setIncrement("exam");
+         examEvent.setBlockId("exam");
          examEvent.setCredits("0");
          examEvent.setUni("StudyRight");
          apply(examEvent);
+
+         StudentBuilt carliEvent = new StudentBuilt();
+         carliEvent.setId("12:00:05");
+         carliEvent.setBlockId("carli");
+         carliEvent.setName("Carli");
+         carliEvent.setBirthYear("1970");
+         carliEvent.setStudentId("stud42");
+         carliEvent.setUni("StudyRight");
+         apply(carliEvent);
 
 
          TourStarted e1201 = new TourStarted();
@@ -784,9 +822,9 @@ public class StudyRightService
    private void handleDemoTourEndFound(TourEndFound event)
    {
       if (event.getId().equals("12:09")) {
-         TourEdited tour1Event = new TourEdited();
+         TourBuilt tour1Event = new TourBuilt();
          tour1Event.setId("12:09:01");
-         tour1Event.setIncrement("tour1");
+         tour1Event.setBlockId("tour1");
          tour1Event.setStops("modeling exam");
          tour1Event.setTourList("allTours");
          apply(tour1Event);
@@ -801,9 +839,9 @@ public class StudyRightService
          apply(e1210);
       }
       if (event.getId().equals("12:10")) {
-         TourEdited tour1Event = new TourEdited();
+         TourBuilt tour1Event = new TourBuilt();
          tour1Event.setId("12:10:01");
-         tour1Event.setIncrement("tour1");
+         tour1Event.setBlockId("tour1");
          tour1Event.setStops("algebra modeling exam");
          apply(tour1Event);
 
@@ -817,9 +855,9 @@ public class StudyRightService
          apply(e1211);
       }
       if (event.getId().equals("12:11")) {
-         TourEdited tour1Event = new TourEdited();
+         TourBuilt tour1Event = new TourBuilt();
          tour1Event.setId("12:11:01");
-         tour1Event.setIncrement("tour1");
+         tour1Event.setBlockId("tour1");
          tour1Event.setStops("math algebra modeling exam");
          apply(tour1Event);
 
@@ -831,24 +869,6 @@ public class StudyRightService
          e1212.setStop("s02");
          e1212.setTour("tour1");
          apply(e1212);
-      }
-   }
-
-   private void handleTourEdited(Event e)
-   {
-      TourEdited event = (TourEdited) e;
-      Tour object = model.getOrCreateTour(event.getIncrement());
-      object.setStops(event.getStops());
-      object.setTourList(model.getOrCreateTourList(event.getTourList()));
-   }
-
-   private void handleTourListEdited(Event e)
-   {
-      TourListEdited event = (TourListEdited) e;
-      TourList object = model.getOrCreateTourList(event.getIncrement());
-      for (String name : stripBrackets(event.getAlternatives()).split("\\s+")) {
-      if (name.equals("")) continue;
-         object.withAlternatives(model.getOrCreateTour(name));
       }
    }
 }

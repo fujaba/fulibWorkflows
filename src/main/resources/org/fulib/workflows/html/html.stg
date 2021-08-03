@@ -35,7 +35,7 @@ page(content, width) ::= <<
         \}
 
         .data \{
-            background-color: #C8A2C8;
+            background-color: #FFA2FF;
         \}
 
         .user \{

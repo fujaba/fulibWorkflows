@@ -210,8 +210,8 @@ public class StorageService
          handlerMap.put(ProductStored.class, this::handleProductStored);
          handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
-         handlerMap.put(BoxEdited.class, this::handleBoxEdited);
-         handlerMap.put(PickTaskEdited.class, this::handlePickTaskEdited);
+         handlerMap.put(BoxBuilt.class, this::handleBoxBuilt);
+         handlerMap.put(PickTaskBuilt.class, this::handlePickTaskBuilt);
       }
    }
 
@@ -294,9 +294,9 @@ public class StorageService
    private void handleDemoProductStored(ProductStored event)
    {
       if (event.getId().equals("12:00")) {
-         BoxEdited box23Event = new BoxEdited();
+         BoxBuilt box23Event = new BoxBuilt();
          box23Event.setId("12:02");
-         box23Event.setIncrement("box23");
+         box23Event.setBlockId("box23");
          box23Event.setProduct("shoes");
          box23Event.setPlace("shelf23");
          apply(box23Event);
@@ -307,9 +307,9 @@ public class StorageService
    private void handleDemoOrderRegistered(OrderRegistered event)
    {
       if (event.getId().equals("13:01")) {
-         PickTaskEdited pick1300Event = new PickTaskEdited();
+         PickTaskBuilt pick1300Event = new PickTaskBuilt();
          pick1300Event.setId("13:04");
-         pick1300Event.setIncrement("pick1300");
+         pick1300Event.setBlockId("pick1300");
          pick1300Event.setOrder("order1300");
          pick1300Event.setProduct("shoes");
          pick1300Event.setCustomer("Alice");
@@ -339,40 +339,20 @@ public class StorageService
    private void handleDemoOrderPicked(OrderPicked event)
    {
       if (event.getId().equals("14:00")) {
-         PickTaskEdited pick1300Event = new PickTaskEdited();
+         PickTaskBuilt pick1300Event = new PickTaskBuilt();
          pick1300Event.setId("14:01");
-         pick1300Event.setIncrement("pick1300");
+         pick1300Event.setBlockId("pick1300");
          pick1300Event.setState("done");
          pick1300Event.setBox("box23");
          apply(pick1300Event);
 
-         BoxEdited box23Event = new BoxEdited();
+         BoxBuilt box23Event = new BoxBuilt();
          box23Event.setId("14:02");
-         box23Event.setIncrement("box23");
+         box23Event.setBlockId("box23");
          box23Event.setPlace("shipping");
          apply(box23Event);
 
       }
-   }
-
-   private void handleBoxEdited(Event e)
-   {
-      BoxEdited event = (BoxEdited) e;
-      Box object = model.getOrCreateBox(event.getIncrement());
-      object.setProduct(event.getProduct());
-      object.setPlace(event.getPlace());
-   }
-
-   private void handlePickTaskEdited(Event e)
-   {
-      PickTaskEdited event = (PickTaskEdited) e;
-      PickTask object = model.getOrCreatePickTask(event.getIncrement());
-      object.setOrder(event.getOrder());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
-      object.setBox(event.getBox());
    }
 
    public String stripBrackets(String back)
@@ -386,5 +366,25 @@ public class StorageService
          back = back.substring(open + 1, close);
       }
       return back;
+   }
+
+   private void handleBoxBuilt(Event e)
+   {
+      BoxBuilt event = (BoxBuilt) e;
+      Box object = model.getOrCreateBox(event.getBlockId());
+      object.setProduct(event.getProduct());
+      object.setPlace(event.getPlace());
+   }
+
+   private void handlePickTaskBuilt(Event e)
+   {
+      PickTaskBuilt event = (PickTaskBuilt) e;
+      PickTask object = model.getOrCreatePickTask(event.getBlockId());
+      object.setOrder(event.getOrder());
+      object.setProduct(event.getProduct());
+      object.setCustomer(event.getCustomer());
+      object.setAddress(event.getAddress());
+      object.setState(event.getState());
+      object.setBox(event.getBox());
    }
 }

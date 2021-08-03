@@ -1,7 +1,7 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class TourListEdited extends DataEvent
+public class TourListBuilt extends DataEvent
 {
    public static final String PROPERTY_ALTERNATIVES = "alternatives";
    private String alternatives;
@@ -11,7 +11,7 @@ public class TourListEdited extends DataEvent
       return this.alternatives;
    }
 
-   public TourListEdited setAlternatives(String value)
+   public TourListBuilt setAlternatives(String value)
    {
       if (Objects.equals(value, this.alternatives))
       {

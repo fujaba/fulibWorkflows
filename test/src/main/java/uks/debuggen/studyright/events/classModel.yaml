@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	serviceSubscribed 	roomsLoaded 	universityEdited 	roomEdited 	tourStarted 	stopEdited 	roomSelected 	tourFailed 	tourEdited 	tourListEdited 	tourEndFound
+  classes: 	event 	dataEvent 	serviceSubscribed 	roomsLoaded 	universityBuilt 	roomBuilt 	studentBuilt 	tourStarted 	stopBuilt 	roomSelected 	tourFailed 	tourBuilt 	tourListBuilt 	tourEndFound
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -16,12 +16,12 @@
   subClasses: 	dataEvent 	serviceSubscribed 	roomsLoaded 	tourStarted 	roomSelected 	tourFailed 	tourEndFound
 
 - dataEvent: 	org.fulib.classmodel.Clazz
-  attributes: 	dataEvent_increment
+  attributes: 	dataEvent_blockId
   model: 	c
   modified: 	false
   name: 	DataEvent
   propertyStyle: 	Bean
-  subClasses: 	universityEdited 	roomEdited 	stopEdited 	tourEdited 	tourListEdited
+  subClasses: 	universityBuilt 	roomBuilt 	studentBuilt 	stopBuilt 	tourBuilt 	tourListBuilt
   superClass: 	event
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
@@ -40,19 +40,27 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- universityEdited: 	org.fulib.classmodel.Clazz
-  attributes: 	universityEdited_rooms
+- universityBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	universityBuilt_rooms
   model: 	c
   modified: 	false
-  name: 	UniversityEdited
+  name: 	UniversityBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
-- roomEdited: 	org.fulib.classmodel.Clazz
-  attributes: 	roomEdited_credits 	roomEdited_uni 	roomEdited_doors
+- roomBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	roomBuilt_credits 	roomBuilt_uni 	roomBuilt_doors
   model: 	c
   modified: 	false
-  name: 	RoomEdited
+  name: 	RoomBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- studentBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	studentBuilt_name 	studentBuilt_birthYear 	studentBuilt_studentId 	studentBuilt_uni
+  model: 	c
+  modified: 	false
+  name: 	StudentBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
@@ -64,11 +72,11 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- stopEdited: 	org.fulib.classmodel.Clazz
-  attributes: 	stopEdited_motivation 	stopEdited_room 	stopEdited_previousStop
+- stopBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	stopBuilt_motivation 	stopBuilt_room 	stopBuilt_previousStop
   model: 	c
   modified: 	false
-  name: 	StopEdited
+  name: 	StopBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
@@ -88,19 +96,19 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- tourEdited: 	org.fulib.classmodel.Clazz
-  attributes: 	tourEdited_stops 	tourEdited_tourList
+- tourBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	tourBuilt_stops 	tourBuilt_tourList
   model: 	c
   modified: 	false
-  name: 	TourEdited
+  name: 	TourBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
-- tourListEdited: 	org.fulib.classmodel.Clazz
-  attributes: 	tourListEdited_alternatives
+- tourListBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	tourListBuilt_alternatives
   model: 	c
   modified: 	false
-  name: 	TourListEdited
+  name: 	TourListBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
@@ -128,11 +136,11 @@
   type: 	String
   typeSignature: 	String
 
-- dataEvent_increment: 	org.fulib.classmodel.Attribute
+- dataEvent_blockId: 	org.fulib.classmodel.Attribute
   clazz: 	dataEvent
-  id: 	DataEvent_increment
+  id: 	DataEvent_blockId
   modified: 	false
-  name: 	increment
+  name: 	blockId
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -155,38 +163,74 @@
   type: 	String
   typeSignature: 	String
 
-- universityEdited_rooms: 	org.fulib.classmodel.Attribute
-  clazz: 	universityEdited
-  id: 	UniversityEdited_rooms
+- universityBuilt_rooms: 	org.fulib.classmodel.Attribute
+  clazz: 	universityBuilt
+  id: 	UniversityBuilt_rooms
   modified: 	false
   name: 	rooms
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- roomEdited_credits: 	org.fulib.classmodel.Attribute
-  clazz: 	roomEdited
-  id: 	RoomEdited_credits
+- roomBuilt_credits: 	org.fulib.classmodel.Attribute
+  clazz: 	roomBuilt
+  id: 	RoomBuilt_credits
   modified: 	false
   name: 	credits
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- roomEdited_uni: 	org.fulib.classmodel.Attribute
-  clazz: 	roomEdited
-  id: 	RoomEdited_uni
+- roomBuilt_uni: 	org.fulib.classmodel.Attribute
+  clazz: 	roomBuilt
+  id: 	RoomBuilt_uni
   modified: 	false
   name: 	uni
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- roomEdited_doors: 	org.fulib.classmodel.Attribute
-  clazz: 	roomEdited
-  id: 	RoomEdited_doors
+- roomBuilt_doors: 	org.fulib.classmodel.Attribute
+  clazz: 	roomBuilt
+  id: 	RoomBuilt_doors
   modified: 	false
   name: 	doors
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- studentBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	studentBuilt
+  id: 	StudentBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- studentBuilt_birthYear: 	org.fulib.classmodel.Attribute
+  clazz: 	studentBuilt
+  id: 	StudentBuilt_birthYear
+  modified: 	false
+  name: 	birthYear
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- studentBuilt_studentId: 	org.fulib.classmodel.Attribute
+  clazz: 	studentBuilt
+  id: 	StudentBuilt_studentId
+  modified: 	false
+  name: 	studentId
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- studentBuilt_uni: 	org.fulib.classmodel.Attribute
+  clazz: 	studentBuilt
+  id: 	StudentBuilt_uni
+  modified: 	false
+  name: 	uni
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -200,27 +244,27 @@
   type: 	String
   typeSignature: 	String
 
-- stopEdited_motivation: 	org.fulib.classmodel.Attribute
-  clazz: 	stopEdited
-  id: 	StopEdited_motivation
+- stopBuilt_motivation: 	org.fulib.classmodel.Attribute
+  clazz: 	stopBuilt
+  id: 	StopBuilt_motivation
   modified: 	false
   name: 	motivation
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- stopEdited_room: 	org.fulib.classmodel.Attribute
-  clazz: 	stopEdited
-  id: 	StopEdited_room
+- stopBuilt_room: 	org.fulib.classmodel.Attribute
+  clazz: 	stopBuilt
+  id: 	StopBuilt_room
   modified: 	false
   name: 	room
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- stopEdited_previousStop: 	org.fulib.classmodel.Attribute
-  clazz: 	stopEdited
-  id: 	StopEdited_previousStop
+- stopBuilt_previousStop: 	org.fulib.classmodel.Attribute
+  clazz: 	stopBuilt
+  id: 	StopBuilt_previousStop
   modified: 	false
   name: 	previousStop
   propertyStyle: 	Bean
@@ -290,27 +334,27 @@
   type: 	String
   typeSignature: 	String
 
-- tourEdited_stops: 	org.fulib.classmodel.Attribute
-  clazz: 	tourEdited
-  id: 	TourEdited_stops
+- tourBuilt_stops: 	org.fulib.classmodel.Attribute
+  clazz: 	tourBuilt
+  id: 	TourBuilt_stops
   modified: 	false
   name: 	stops
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- tourEdited_tourList: 	org.fulib.classmodel.Attribute
-  clazz: 	tourEdited
-  id: 	TourEdited_tourList
+- tourBuilt_tourList: 	org.fulib.classmodel.Attribute
+  clazz: 	tourBuilt
+  id: 	TourBuilt_tourList
   modified: 	false
   name: 	tourList
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- tourListEdited_alternatives: 	org.fulib.classmodel.Attribute
-  clazz: 	tourListEdited
-  id: 	TourListEdited_alternatives
+- tourListBuilt_alternatives: 	org.fulib.classmodel.Attribute
+  clazz: 	tourListBuilt
+  id: 	TourListBuilt_alternatives
   modified: 	false
   name: 	alternatives
   propertyStyle: 	Bean

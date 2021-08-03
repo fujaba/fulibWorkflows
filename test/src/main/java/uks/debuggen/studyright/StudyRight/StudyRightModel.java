@@ -75,4 +75,10 @@ public class StudyRightModel
       if (id == null) return null;
       return (TourList) modelMap.computeIfAbsent(id, k -> new TourList().setId(k));
    }
+
+   public Student getOrCreateStudent(String id)
+   {
+      if (id == null) return null;
+      return (Student) modelMap.computeIfAbsent(id, k -> new Student().setId(k));
+   }
 }

@@ -3,24 +3,24 @@ import java.util.Objects;
 
 public class DataEvent extends Event
 {
-   public static final String PROPERTY_INCREMENT = "increment";
-   private String increment;
+   public static final String PROPERTY_BLOCK_ID = "blockId";
+   private String blockId;
 
-   public String getIncrement()
+   public String getBlockId()
    {
-      return this.increment;
+      return this.blockId;
    }
 
-   public DataEvent setIncrement(String value)
+   public DataEvent setBlockId(String value)
    {
-      if (Objects.equals(value, this.increment))
+      if (Objects.equals(value, this.blockId))
       {
          return this;
       }
 
-      final String oldValue = this.increment;
-      this.increment = value;
-      this.firePropertyChange(PROPERTY_INCREMENT, oldValue, value);
+      final String oldValue = this.blockId;
+      this.blockId = value;
+      this.firePropertyChange(PROPERTY_BLOCK_ID, oldValue, value);
       return this;
    }
 
@@ -28,7 +28,7 @@ public class DataEvent extends Event
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getIncrement());
+      result.append(' ').append(this.getBlockId());
       return result.toString();
    }
 }

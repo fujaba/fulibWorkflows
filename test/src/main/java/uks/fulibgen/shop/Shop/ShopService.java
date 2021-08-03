@@ -211,8 +211,8 @@ public class ShopService
          handlerMap.put(OrderApproved.class, this::handleOrderApproved);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
          handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
-         handlerMap.put(OrderEdited.class, this::handleOrderEdited);
-         handlerMap.put(CustomerEdited.class, this::handleCustomerEdited);
+         handlerMap.put(OrderBuilt.class, this::handleOrderBuilt);
+         handlerMap.put(CustomerBuilt.class, this::handleCustomerBuilt);
       }
    }
 
@@ -350,35 +350,35 @@ public class ShopService
    private void handleDemoOrderRegistered(OrderRegistered event)
    {
       if (event.getId().equals("13:01")) {
-         OrderEdited order1300Event = new OrderEdited();
+         OrderBuilt order1300Event = new OrderBuilt();
          order1300Event.setId("13:02");
-         order1300Event.setIncrement("order1300");
+         order1300Event.setBlockId("order1300");
          order1300Event.setProduct("shoes");
          order1300Event.setCustomer("Alice");
          order1300Event.setAddress("Wonderland 1");
          order1300Event.setState("pending");
          apply(order1300Event);
 
-         CustomerEdited aliceEvent = new CustomerEdited();
+         CustomerBuilt aliceEvent = new CustomerBuilt();
          aliceEvent.setId("13:03");
-         aliceEvent.setIncrement("Alice");
+         aliceEvent.setBlockId("Alice");
          aliceEvent.setOrders("[ order1300 ]");
          apply(aliceEvent);
 
       }
       if (event.getId().equals("13:11")) {
-         OrderEdited order1310Event = new OrderEdited();
+         OrderBuilt order1310Event = new OrderBuilt();
          order1310Event.setId("13:12");
-         order1310Event.setIncrement("order1310");
+         order1310Event.setBlockId("order1310");
          order1310Event.setProduct("tshirt");
          order1310Event.setCustomer("Alice");
          order1310Event.setAddress("Wonderland 1");
          order1310Event.setState("pending");
          apply(order1310Event);
 
-         CustomerEdited aliceEvent = new CustomerEdited();
+         CustomerBuilt aliceEvent = new CustomerBuilt();
          aliceEvent.setId("13:13");
-         aliceEvent.setIncrement("Alice");
+         aliceEvent.setBlockId("Alice");
          aliceEvent.setOrders("[ order1300 order1310 ]");
          apply(aliceEvent);
 
@@ -388,9 +388,9 @@ public class ShopService
    private void handleDemoOrderApproved(OrderApproved event)
    {
       if (event.getId().equals("13:05")) {
-         OrderEdited order1300Event = new OrderEdited();
+         OrderBuilt order1300Event = new OrderBuilt();
          order1300Event.setId("13:06");
-         order1300Event.setIncrement("order1300");
+         order1300Event.setBlockId("order1300");
          order1300Event.setState("picking");
          apply(order1300Event);
 
@@ -400,9 +400,9 @@ public class ShopService
    private void handleDemoOrderPicked(OrderPicked event)
    {
       if (event.getId().equals("14:00")) {
-         OrderEdited order1300Event = new OrderEdited();
+         OrderBuilt order1300Event = new OrderBuilt();
          order1300Event.setId("14:03");
-         order1300Event.setIncrement("order1300");
+         order1300Event.setBlockId("order1300");
          order1300Event.setState("shipping");
          apply(order1300Event);
 
@@ -412,30 +412,13 @@ public class ShopService
    private void handleDemoOrderDeclined(OrderDeclined event)
    {
       if (event.getId().equals("13:14")) {
-         OrderEdited order1310Event = new OrderEdited();
+         OrderBuilt order1310Event = new OrderBuilt();
          order1310Event.setId("13:12");
-         order1310Event.setIncrement("order1310");
+         order1310Event.setBlockId("order1310");
          order1310Event.setState("out of stock");
          apply(order1310Event);
 
       }
-   }
-
-   private void handleOrderEdited(Event e)
-   {
-      OrderEdited event = (OrderEdited) e;
-      Order object = model.getOrCreateOrder(event.getIncrement());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
-   }
-
-   private void handleCustomerEdited(Event e)
-   {
-      CustomerEdited event = (CustomerEdited) e;
-      Customer object = model.getOrCreateCustomer(event.getIncrement());
-      object.setOrders(event.getOrders());
    }
 
    public String stripBrackets(String back)
@@ -449,5 +432,22 @@ public class ShopService
          back = back.substring(open + 1, close);
       }
       return back;
+   }
+
+   private void handleOrderBuilt(Event e)
+   {
+      OrderBuilt event = (OrderBuilt) e;
+      Order object = model.getOrCreateOrder(event.getBlockId());
+      object.setProduct(event.getProduct());
+      object.setCustomer(event.getCustomer());
+      object.setAddress(event.getAddress());
+      object.setState(event.getState());
+   }
+
+   private void handleCustomerBuilt(Event e)
+   {
+      CustomerBuilt event = (CustomerBuilt) e;
+      Customer object = model.getOrCreateCustomer(event.getBlockId());
+      object.setOrders(event.getOrders());
    }
 }

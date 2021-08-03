@@ -1,7 +1,7 @@
 package uks.fulibgen.shop.events;
 import java.util.Objects;
 
-public class BoxEdited extends DataEvent
+public class BoxBuilt extends DataEvent
 {
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_PLACE = "place";
@@ -13,7 +13,7 @@ public class BoxEdited extends DataEvent
       return this.product;
    }
 
-   public BoxEdited setProduct(String value)
+   public BoxBuilt setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -31,7 +31,7 @@ public class BoxEdited extends DataEvent
       return this.place;
    }
 
-   public BoxEdited setPlace(String value)
+   public BoxBuilt setPlace(String value)
    {
       if (Objects.equals(value, this.place))
       {

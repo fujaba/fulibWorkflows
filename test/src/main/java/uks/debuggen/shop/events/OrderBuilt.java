@@ -1,7 +1,7 @@
-package uks.fulibgen.shop.events;
+package uks.debuggen.shop.events;
 import java.util.Objects;
 
-public class OrderEdited extends DataEvent
+public class OrderBuilt extends DataEvent
 {
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
@@ -17,7 +17,7 @@ public class OrderEdited extends DataEvent
       return this.product;
    }
 
-   public OrderEdited setProduct(String value)
+   public OrderBuilt setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -35,7 +35,7 @@ public class OrderEdited extends DataEvent
       return this.customer;
    }
 
-   public OrderEdited setCustomer(String value)
+   public OrderBuilt setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -53,7 +53,7 @@ public class OrderEdited extends DataEvent
       return this.address;
    }
 
-   public OrderEdited setAddress(String value)
+   public OrderBuilt setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -71,7 +71,7 @@ public class OrderEdited extends DataEvent
       return this.state;
    }
 
-   public OrderEdited setState(String value)
+   public OrderBuilt setState(String value)
    {
       if (Objects.equals(value, this.state))
       {

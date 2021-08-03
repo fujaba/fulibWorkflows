@@ -156,62 +156,9 @@ public class ShopService
 
    public String getPage(Request request, Response response)
    {
-      StringBuilder html = new StringBuilder();
-      String id = request.params("id");
-      String event = request.queryParams("event");
-
-      if ("Shop shoes selected 12:51".equals(event)) {
-
-         // create ShopShoesSelected: Shop shoes selected 12:51
-         ShopShoesSelected e1251 = new ShopShoesSelected();
-         e1251.setId("12:51");
-         publish(e1251);
-      }
-
-      if ("order registered 13:01".equals(event)) {
-
-         // create OrderRegistered: order registered 13:01
-         OrderRegistered e1301 = new OrderRegistered();
-         e1301.setId("13:01");
-         e1301.setProduct(request.queryParams("product"));
-         e1301.setName(request.queryParams("name"));
-         e1301.setAddress(request.queryParams("address"));
-         publish(e1301);
-      }
-
-
-
-      // 12:50
-      if (id.equals("12_50")) {
-         html.append("<form action=\"/page/13_00\" method=\"get\">\n");
-         // Shop 12:50
-         html.append("   <p>Welcome to the event shop</p>\n");
-         html.append("   <p>What do you want?</p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop shoes selected 12:51\"></p>\n");
-         html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
-         html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-      // 13:00
-      if (id.equals("13_00")) {
-         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // Shop 13:00
-         html.append("   <p>welcome to the shop</p>\n");
-         html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
-         html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
-         html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"order registered 13:01\"></p>\n");
-         html.append("   <p><input id=\"OK\" name=\"button\" type=\"submit\" value=\"OK\"></p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-
-
-      html.append("This is the Shop Service page " + id + "\n");
-      return html.toString();
+      // no fulib
+      // add your page handling here
+      return getDemoPage(request, response);
    }
 
    private String getHello(Request req, Response res)
@@ -272,6 +219,8 @@ public class ShopService
          handlerMap.put(OrderApproved.class, this::handleOrderApproved);
          handlerMap.put(OrderPicked.class, this::handleOrderPicked);
          handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
+         handlerMap.put(OrderBuilt.class, this::handleOrderBuilt);
+         handlerMap.put(CustomerBuilt.class, this::handleCustomerBuilt);
       }
    }
 
@@ -313,58 +262,193 @@ public class ShopService
 
    private void handleOrderRegistered(Event e)
    {
+      // no fulib
       OrderRegistered event = (OrderRegistered) e;
-      if (event.getId().equals("13:01")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setProduct("shoes");
-         order1300.setCustomer("Alice");
-         order1300.setAddress("Wonderland 1");
-         order1300.setState("pending");
-
-         Customer alice = model.getOrCreateCustomer("Alice");
-         alice.setOrders("[ order1300 ]");
-      }
-      if (event.getId().equals("13:11")) {
-
-         Order order1310 = model.getOrCreateOrder("order1310");
-         order1310.setProduct("tshirt");
-         order1310.setCustomer("Alice");
-         order1310.setAddress("Wonderland 1");
-         order1310.setState("pending");
-
-         Customer alice = model.getOrCreateCustomer("Alice");
-         alice.setOrders("[ order1300 order1310 ]");
-      }
+      handleDemoOrderRegistered(event);
    }
 
    private void handleOrderApproved(Event e)
    {
+      // no fulib
       OrderApproved event = (OrderApproved) e;
-      if (event.getId().equals("13:05")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setState("picking");
-      }
+      handleDemoOrderApproved(event);
    }
 
    private void handleOrderPicked(Event e)
    {
+      // no fulib
       OrderPicked event = (OrderPicked) e;
-      if (event.getId().equals("14:00")) {
-
-         Order order1300 = model.getOrCreateOrder("order1300");
-         order1300.setState("shipping");
-      }
+      handleDemoOrderPicked(event);
    }
 
    private void handleOrderDeclined(Event e)
    {
+      // no fulib
       OrderDeclined event = (OrderDeclined) e;
-      if (event.getId().equals("13:14")) {
+      handleDemoOrderDeclined(event);
+   }
 
-         Order order1310 = model.getOrCreateOrder("order1310");
-         order1310.setState("out of stock");
+   public String getDemoPage(Request request, Response response)
+   {
+      StringBuilder html = new StringBuilder();
+      String id = request.params("id");
+      String event = request.queryParams("event");
+
+      if ("Shop shoes selected 12:51".equals(event)) {
+
+         // create ShopShoesSelected: Shop shoes selected 12:51
+         ShopShoesSelected e1251 = new ShopShoesSelected();
+         e1251.setId("12:51");
+         apply(e1251);
       }
+
+      if ("order registered 13:01".equals(event)) {
+
+         // create OrderRegistered: order registered 13:01
+         OrderRegistered e1301 = new OrderRegistered();
+         e1301.setId("13:01");
+         e1301.setProduct(request.queryParams("product"));
+         e1301.setName(request.queryParams("name"));
+         e1301.setAddress(request.queryParams("address"));
+         apply(e1301);
+      }
+
+
+
+      // 12:50
+      if (id.equals("12_50")) {
+         html.append("<form action=\"/page/13_00\" method=\"get\">\n");
+         // Shop 12:50
+         html.append("   <p>Welcome to the event shop</p>\n");
+         html.append("   <p>What do you want?</p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop shoes selected 12:51\"></p>\n");
+         html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
+         html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 13:00
+      if (id.equals("13_00")) {
+         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         // Shop 13:00
+         html.append("   <p>welcome to the shop</p>\n");
+         html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
+         html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
+         html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"order registered 13:01\"></p>\n");
+         html.append("   <p><input id=\"OK\" name=\"button\" type=\"submit\" value=\"OK\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+
+
+      html.append("This is the Shop Service page " + id + "\n");
+      return html.toString();
+   }
+
+   private void handleDemoOrderRegistered(OrderRegistered event)
+   {
+      if (event.getId().equals("13:01")) {
+         OrderBuilt order1300Event = new OrderBuilt();
+         order1300Event.setId("13:02");
+         order1300Event.setBlockId("order1300");
+         order1300Event.setProduct("shoes");
+         order1300Event.setCustomer("Alice");
+         order1300Event.setAddress("Wonderland 1");
+         order1300Event.setState("pending");
+         apply(order1300Event);
+
+         CustomerBuilt aliceEvent = new CustomerBuilt();
+         aliceEvent.setId("13:03");
+         aliceEvent.setBlockId("Alice");
+         aliceEvent.setOrders("[ order1300 ]");
+         apply(aliceEvent);
+
+      }
+      if (event.getId().equals("13:11")) {
+         OrderBuilt order1310Event = new OrderBuilt();
+         order1310Event.setId("13:12");
+         order1310Event.setBlockId("order1310");
+         order1310Event.setProduct("tshirt");
+         order1310Event.setCustomer("Alice");
+         order1310Event.setAddress("Wonderland 1");
+         order1310Event.setState("pending");
+         apply(order1310Event);
+
+         CustomerBuilt aliceEvent = new CustomerBuilt();
+         aliceEvent.setId("13:13");
+         aliceEvent.setBlockId("Alice");
+         aliceEvent.setOrders("[ order1300 order1310 ]");
+         apply(aliceEvent);
+
+      }
+   }
+
+   private void handleDemoOrderApproved(OrderApproved event)
+   {
+      if (event.getId().equals("13:05")) {
+         OrderBuilt order1300Event = new OrderBuilt();
+         order1300Event.setId("13:06");
+         order1300Event.setBlockId("order1300");
+         order1300Event.setState("picking");
+         apply(order1300Event);
+
+      }
+   }
+
+   private void handleDemoOrderPicked(OrderPicked event)
+   {
+      if (event.getId().equals("14:00")) {
+         OrderBuilt order1300Event = new OrderBuilt();
+         order1300Event.setId("14:03");
+         order1300Event.setBlockId("order1300");
+         order1300Event.setState("shipping");
+         apply(order1300Event);
+
+      }
+   }
+
+   private void handleDemoOrderDeclined(OrderDeclined event)
+   {
+      if (event.getId().equals("13:14")) {
+         OrderBuilt order1310Event = new OrderBuilt();
+         order1310Event.setId("13:12");
+         order1310Event.setBlockId("order1310");
+         order1310Event.setState("out of stock");
+         apply(order1310Event);
+
+      }
+   }
+
+   private void handleOrderBuilt(Event e)
+   {
+      OrderBuilt event = (OrderBuilt) e;
+      Order object = model.getOrCreateOrder(event.getBlockId());
+      object.setProduct(event.getProduct());
+      object.setCustomer(event.getCustomer());
+      object.setAddress(event.getAddress());
+      object.setState(event.getState());
+   }
+
+   private void handleCustomerBuilt(Event e)
+   {
+      CustomerBuilt event = (CustomerBuilt) e;
+      Customer object = model.getOrCreateCustomer(event.getBlockId());
+      object.setOrders(event.getOrders());
+   }
+
+   public String stripBrackets(String back)
+   {
+      if (back == null) {
+         return "";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;
    }
 }

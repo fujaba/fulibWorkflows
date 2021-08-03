@@ -1,45 +1,23 @@
 package uks.fulibgen.shop.events;
 import java.util.Objects;
 
-public class PickTaskEdited extends DataEvent
+public class OrderBuilt extends DataEvent
 {
-   public static final String PROPERTY_ORDER = "order";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_STATE = "state";
-   public static final String PROPERTY_BOX = "box";
-   private String order;
    private String product;
    private String customer;
    private String address;
    private String state;
-   private String box;
-
-   public String getOrder()
-   {
-      return this.order;
-   }
-
-   public PickTaskEdited setOrder(String value)
-   {
-      if (Objects.equals(value, this.order))
-      {
-         return this;
-      }
-
-      final String oldValue = this.order;
-      this.order = value;
-      this.firePropertyChange(PROPERTY_ORDER, oldValue, value);
-      return this;
-   }
 
    public String getProduct()
    {
       return this.product;
    }
 
-   public PickTaskEdited setProduct(String value)
+   public OrderBuilt setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -57,7 +35,7 @@ public class PickTaskEdited extends DataEvent
       return this.customer;
    }
 
-   public PickTaskEdited setCustomer(String value)
+   public OrderBuilt setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -75,7 +53,7 @@ public class PickTaskEdited extends DataEvent
       return this.address;
    }
 
-   public PickTaskEdited setAddress(String value)
+   public OrderBuilt setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -93,7 +71,7 @@ public class PickTaskEdited extends DataEvent
       return this.state;
    }
 
-   public PickTaskEdited setState(String value)
+   public OrderBuilt setState(String value)
    {
       if (Objects.equals(value, this.state))
       {
@@ -106,34 +84,14 @@ public class PickTaskEdited extends DataEvent
       return this;
    }
 
-   public String getBox()
-   {
-      return this.box;
-   }
-
-   public PickTaskEdited setBox(String value)
-   {
-      if (Objects.equals(value, this.box))
-      {
-         return this;
-      }
-
-      final String oldValue = this.box;
-      this.box = value;
-      this.firePropertyChange(PROPERTY_BOX, oldValue, value);
-      return this;
-   }
-
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getOrder());
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
       result.append(' ').append(this.getState());
-      result.append(' ').append(this.getBox());
       return result.toString();
    }
 }

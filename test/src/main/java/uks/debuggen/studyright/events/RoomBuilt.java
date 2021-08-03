@@ -1,7 +1,7 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class RoomEdited extends DataEvent
+public class RoomBuilt extends DataEvent
 {
    public static final String PROPERTY_CREDITS = "credits";
    public static final String PROPERTY_UNI = "uni";
@@ -15,7 +15,7 @@ public class RoomEdited extends DataEvent
       return this.credits;
    }
 
-   public RoomEdited setCredits(String value)
+   public RoomBuilt setCredits(String value)
    {
       if (Objects.equals(value, this.credits))
       {
@@ -33,7 +33,7 @@ public class RoomEdited extends DataEvent
       return this.uni;
    }
 
-   public RoomEdited setUni(String value)
+   public RoomBuilt setUni(String value)
    {
       if (Objects.equals(value, this.uni))
       {
@@ -51,7 +51,7 @@ public class RoomEdited extends DataEvent
       return this.doors;
    }
 
-   public RoomEdited setDoors(String value)
+   public RoomBuilt setDoors(String value)
    {
       if (Objects.equals(value, this.doors))
       {
