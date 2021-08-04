@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/product.schema.json",
+  "title": "Testing Schema",
+  "description": "Testing out schema in its most basic ways",
+  "type": "array",
+  "additionalItems": false,
+  "$defs": {
+    "workflowItem": {
+      "description": "The title of your current workflow",
+      "type": "object",
+      "properties": {
+        "workflow": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "workflow"
+      ],
+      "additionalProperties": false
+    },
+    "serviceItem": {
+      "description": "Action performed by user",
+      "type": "object",
+      "properties": {
+        "service": {
+          "type": "string"
+        },
+        "port": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "service",
+        "port"
+      ],
+      "additionalProperties": false
+    },
+    "eventItem": {
+      "description": "The title of your current workflow",
+      "type": "object",
+      "properties": {
+        "event": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "event"
+      ]
+    },
+    "policyItem": {
+      "description": "Action performed by user",
+      "type": "object",
+      "properties": {
+        "policy": {
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "policy",
+        "trigger"
+      ],
+      "additionalProperties": false
+    },
+    "dataItem": {
+      "description": "Action performed by user",
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "data"
+      ]
+    },
+    "actionItem": {
+      "description": "Defines the user who is going to perform an action",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "pageList": {
+      "description": "Defines a ui page",
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/nameItem"
+              },
+              {
+                "$ref": "#/$defs/labelItem"
+              },
+              {
+                "$ref": "#/$defs/buttonItem"
+              },
+              {
+                "$ref": "#/$defs/inputItem"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "page"
+      ]
+    },
+    "nameItem": {
+      "description": "Defines the name of the page",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "labelItem": {
+      "description": "Defines a label",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label"
+      ]
+    },
+    "buttonItem": {
+      "description": "Defines a button with optional event",
+      "type": "object",
+      "properties": {
+        "button": {
+          "type": "string"
+        },
+        "event": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "button"
+      ]
+    },
+    "inputItem": {
+      "description": "Defines an input with optional fill",
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        },
+        "fill": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "input"
+      ]
+    }
+  },
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/$defs/workflowItem"
+      },
+      {
+        "$ref": "#/$defs/eventItem"
+      },
+      {
+        "$ref": "#/$defs/policyItem"
+      },
+      {
+        "$ref": "#/$defs/serviceItem"
+      },
+      {
+        "$ref": "#/$defs/dataItem"
+      },
+      {
+        "$ref": "#/$defs/actionItem"
+      },
+      {
+        "$ref": "#/$defs/pageList"
+      }
+    ]
+  }
+}
