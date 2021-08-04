@@ -66,7 +66,7 @@ pre.shouldHave(text(\"- 12_00:\"));
 open(\"http://localhost:42400\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 12_00:\"));
-// check data note 12:11:01
+// check data note 12:12:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- tour1:\"));
 pre.shouldHave(text(\"stops: \\"math algebra modeling exam\\"\"));

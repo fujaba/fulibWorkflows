@@ -9,8 +9,8 @@ public class Tour
    public static final String PROPERTY_TOUR_LIST = "tourList";
    private String id;
    private String stops;
-   private TourList tourList;
    protected PropertyChangeSupport listeners;
+   private TourList tourList;
 
    public String getId()
    {

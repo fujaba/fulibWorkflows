@@ -447,6 +447,12 @@ public class WorkflowGenerator
             LinkedHashMap<String, String> map = eventNote.getMap();
             LinkedHashMap<String, String> clone = (LinkedHashMap<String, String>) map.clone();
             clone.remove(eventNote.getEventTypeName());
+            if (eventNote instanceof CommandNote) {
+               clone.remove("command");
+            }
+            else {
+               clone.remove("event");
+            }
             for (Map.Entry<String, String> entry : clone.entrySet()) {
                String setterName = org.fulib.StrUtil.cap(entry.getKey());
                String statement = String.format("   e%s.set%s(\"%s\");\n",
@@ -960,11 +966,18 @@ public class WorkflowGenerator
    private void oneEventClass(EventNote note)
    {
       Clazz event = em.haveClass("Event");
+      Clazz command = em.haveClass("Command");
+      command.setSuperClass(event);
       boolean first = true;
       Clazz clazz = em.haveClass(note.getEventTypeName());
-      clazz.setSuperClass(event);
+      if (note instanceof CommandNote) {
+         clazz.setSuperClass(command);
+      }
+      else {
+         clazz.setSuperClass(event);
+      }
       LinkedHashSet<String> keys = new LinkedHashSet<>(note.getMap().keySet());
-      keys.remove(note.getEventTypeName());
+      keys.remove(keys.iterator().next());
       for (String key : keys) {
          mm.haveAttribute(clazz, key, "String");
       }

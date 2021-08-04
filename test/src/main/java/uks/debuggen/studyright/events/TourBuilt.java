@@ -48,8 +48,8 @@ public class TourBuilt extends DataEvent
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getStops());
       result.append(' ').append(this.getTourList());
+      result.append(' ').append(this.getStops());
       return result.toString();
    }
 }

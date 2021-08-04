@@ -3,32 +3,12 @@ import java.util.Objects;
 
 public class TourFailed extends Event
 {
-   public static final String PROPERTY_EVENT = "event";
    public static final String PROPERTY_STOP = "stop";
    public static final String PROPERTY_ROOM = "room";
    public static final String PROPERTY_CREDITS = "credits";
-   private String event;
    private String stop;
    private String room;
    private String credits;
-
-   public String getEvent()
-   {
-      return this.event;
-   }
-
-   public TourFailed setEvent(String value)
-   {
-      if (Objects.equals(value, this.event))
-      {
-         return this;
-      }
-
-      final String oldValue = this.event;
-      this.event = value;
-      this.firePropertyChange(PROPERTY_EVENT, oldValue, value);
-      return this;
-   }
 
    public String getStop()
    {
@@ -88,7 +68,6 @@ public class TourFailed extends Event
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getEvent());
       result.append(' ').append(this.getStop());
       result.append(' ').append(this.getRoom());
       result.append(' ').append(this.getCredits());

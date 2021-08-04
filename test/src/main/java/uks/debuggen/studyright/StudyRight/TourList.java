@@ -11,8 +11,8 @@ public class TourList
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_ALTERNATIVES = "alternatives";
    private String id;
-   private List<Tour> alternatives;
    protected PropertyChangeSupport listeners;
+   private List<Tour> alternatives;
 
    public String getId()
    {

@@ -66,6 +66,9 @@
 - policy: StudyRight
   trigger: 12:01
 
+- data: 12:01:00
+  tourList: allTours
+
 - data: 12:01:01
   Stop: s01
   motivation: 77
@@ -149,41 +152,20 @@
   previousStop: s05
   motivation: 0
 
-- command: report tour stops 12:09
-
-- policy: StudyRight
-  trigger: 12:08
-
-
-- event: tour end found 12:08:03
+- command: collect tour stops 12:09
   stop: s08
   tour: tour1
-  tourList: allTours
-
-
-- data: 12:08:02
-  tour: tour1
-  stops: exam
-
-- data: 12:08:03
-  tourList: allTours
-  alternatives: [tour1]
-  alternatives.back: tourList
-
-- event: tour end found 12:09
-  stop: s08
-  tour: tour1
-  tourList: allTours
 
 - policy: StudyRight
   trigger: 12:09
 
-- data: 12:09:01
+- data: 12:09:02
   tour: tour1
-  stops: modeling exam
   tourList: allTours
+  tourList.back: [alternatives]
+  stops: exam
 
-- event: tour end found 12:10
+- command: collect tour stops 12:10
   stop: s05
   tour: tour1
 
@@ -192,9 +174,9 @@
 
 - data: 12:10:01
   tour: tour1
-  stops: algebra modeling exam
+  stops: modeling exam
 
-- event: tour end found 12:11
+- command: collect tour stops 12:11
   stop: s03
   tour: tour1
 
@@ -203,10 +185,20 @@
 
 - data: 12:11:01
   tour: tour1
+  stops: algebra modeling exam
+
+- command: collect tour stops 12:12
+  stop: s02
+  tour: tour1
+
+- policy: StudyRight
+  trigger: 12:12
+
+- data: 12:12:01
+  tour: tour1
   stops: math algebra modeling exam
 
-- event: tour end found 12:12
-  stop: s02
+- event: tour found 12:13
   tour: tour1
 
 - action: Alice
