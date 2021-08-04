@@ -11,7 +11,7 @@
     - label: Welcome to the event shop
     - label: What do you want?
     - button: shoes
-      event: product selected 12:51
+      command: product selected 12:51
     - button: tshirt
 
 - page:
@@ -23,7 +23,7 @@
     - input: address
       fill: Wonderland 1
     - button: ok
-      event: order registered 13:00
+      command: order registered 13:00
 
 - page:
     - name: Shop 13:07
@@ -32,4 +32,4 @@
     - label: What else do you want
     - button: shoes
     - button: tshirt
-      event: product selected 13:10
+      command: product selected 13:10

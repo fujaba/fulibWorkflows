@@ -293,26 +293,6 @@ public class ShopService
       String id = request.params("id");
       String event = request.queryParams("event");
 
-      if ("Shop shoes selected 12:51".equals(event)) {
-
-         // create ShopShoesSelected: Shop shoes selected 12:51
-         ShopShoesSelected e1251 = new ShopShoesSelected();
-         e1251.setId("12:51");
-         apply(e1251);
-      }
-
-      if ("order registered 13:01".equals(event)) {
-
-         // create OrderRegistered: order registered 13:01
-         OrderRegistered e1301 = new OrderRegistered();
-         e1301.setId("13:01");
-         e1301.setProduct(request.queryParams("product"));
-         e1301.setName(request.queryParams("name"));
-         e1301.setAddress(request.queryParams("address"));
-         apply(e1301);
-      }
-
-
 
       // 12:50
       if (id.equals("12_50")) {
@@ -320,7 +300,6 @@ public class ShopService
          // Shop 12:50
          html.append("   <p>Welcome to the event shop</p>\n");
          html.append("   <p>What do you want?</p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop shoes selected 12:51\"></p>\n");
          html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
          html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
          html.append("</form>\n");
@@ -335,7 +314,6 @@ public class ShopService
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
          html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"order registered 13:01\"></p>\n");
          html.append("   <p><input id=\"OK\" name=\"button\" type=\"submit\" value=\"OK\"></p>\n");
          html.append("</form>\n");
          return html.toString();

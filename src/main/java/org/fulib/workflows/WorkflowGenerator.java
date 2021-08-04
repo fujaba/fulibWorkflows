@@ -375,7 +375,7 @@ public class WorkflowGenerator
             }
             else {
                body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\"\\\\s+\")) {\n", StrUtil.cap(attrName)));
-               body.append("if (name.equals(\"\")) continue;\n");
+               body.append("   if (name.equals(\"\")) continue;\n");
                body.append(String.format("   object.with%s(model.getOrCreate%s(name));\n", StrUtil.cap(attrName), otherClazz.getName()));
                body.append("}\n");
             }

@@ -34,6 +34,10 @@ page(content, width) ::= <<
             background-color:LightBlue;
         \}
 
+        .command \{
+            background-color:LightBlue;
+        \}
+
         .data \{
             background-color: #FFA2FF;
         \}

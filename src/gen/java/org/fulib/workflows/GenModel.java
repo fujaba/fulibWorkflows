@@ -10,19 +10,23 @@ import java.util.List;
 
 public class GenModel implements ClassModelDecorator
 {
-   class Event {
+   class Event
+   {
       String id;
    }
 
-   class DataEvent extends Event {
+   class DataEvent extends Event
+   {
       String increment;
    }
 
-   class Note {
+   class Note
+   {
       LinkedHashMap<String, String> map = new LinkedHashMap<>();
    }
 
-   class EventStormingBoard {
+   class EventStormingBoard
+   {
       String name = "some event storming";
       @Link("eventStormingBoard")
       List<Workflow> workflows;
@@ -36,7 +40,8 @@ public class GenModel implements ClassModelDecorator
       List<UserNote> users;
    }
 
-   class Workflow extends Note {
+   class Workflow extends Note
+   {
       String name;
       @Link("workflows")
       EventStormingBoard eventStormingBoard;
@@ -50,7 +55,8 @@ public class GenModel implements ClassModelDecorator
       List<Policy> policies;
    }
 
-   class UserNote extends Note {
+   class UserNote extends Note
+   {
       String name;
       @Link("user")
       List<UserInteraction> interactions;
@@ -58,7 +64,8 @@ public class GenModel implements ClassModelDecorator
       EventStormingBoard eventStormingBoard;
    }
 
-   class ServiceNote extends Note {
+   class ServiceNote extends Note
+   {
       String name;
       String port;
       @Link("services")
@@ -75,7 +82,8 @@ public class GenModel implements ClassModelDecorator
       List<PageNote> pages;
    }
 
-   class WorkflowNote extends Note {
+   class WorkflowNote extends Note
+   {
       String time;
       @Link("notes")
       Workflow workflow;
@@ -105,7 +113,8 @@ public class GenModel implements ClassModelDecorator
       EventStormingBoard eventStormingBoard;
    }
 
-   class EventNote extends WorkflowNote {
+   class EventNote extends WorkflowNote
+   {
       String eventTypeName;
       @Link("trigger")
       List<Policy> policies;
@@ -115,7 +124,13 @@ public class GenModel implements ClassModelDecorator
       PageNote raisingPage;
    }
 
-   class PageNote extends WorkflowNote {
+   class CommandNote extends EventNote
+   {
+
+   }
+
+   class PageNote extends WorkflowNote
+   {
       String buttonId;
       @Link("pages")
       ServiceNote service;
@@ -129,41 +144,43 @@ public class GenModel implements ClassModelDecorator
       EventNote raisedEvent;
    }
 
-   class PageLine {
+   class PageLine
+   {
       LinkedHashMap<String, String> map = new LinkedHashMap<>();
       @Link("lines")
       PageNote pageNote;
    }
 
-   class ClassNote extends  WorkflowNote{
+   class ClassNote extends WorkflowNote
+   {
 
    }
 
-   class DataNote extends WorkflowNote {
+   class DataNote extends WorkflowNote
+   {
       String blockId;
       String dataType;
       @Link("dataNotes")
       DataType type;
    }
 
-   class CommandNote extends WorkflowNote {
-      String eventType;
-   }
-
-   class Interaction {
+   class Interaction
+   {
       String actorName;
       @Link("interaction")
       List<WorkflowNote> steps;
    }
 
-   class UserInteraction extends Interaction {
+   class UserInteraction extends Interaction
+   {
       @Link("interactions")
       UserNote user;
       @Link("userInteractions")
       Workflow workflow;
    }
 
-   class Policy extends Interaction {
+   class Policy extends Interaction
+   {
       @Link("policies")
       ServiceNote service;
       @Link("policies")
@@ -171,7 +188,6 @@ public class GenModel implements ClassModelDecorator
       @Link("policies")
       Workflow workflow;
    }
-
 
 
    @Override

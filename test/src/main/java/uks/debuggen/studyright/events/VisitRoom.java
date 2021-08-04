@@ -1,30 +1,30 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class RoomSelected extends Event
+public class VisitRoom extends Event
 {
-   public static final String PROPERTY_EVENT = "event";
+   public static final String PROPERTY_COMMAND = "command";
    public static final String PROPERTY_ROOM = "room";
    public static final String PROPERTY_PREVIOUS_STOP = "previousStop";
-   private String event;
+   private String command;
    private String room;
    private String previousStop;
 
-   public String getEvent()
+   public String getCommand()
    {
-      return this.event;
+      return this.command;
    }
 
-   public RoomSelected setEvent(String value)
+   public VisitRoom setCommand(String value)
    {
-      if (Objects.equals(value, this.event))
+      if (Objects.equals(value, this.command))
       {
          return this;
       }
 
-      final String oldValue = this.event;
-      this.event = value;
-      this.firePropertyChange(PROPERTY_EVENT, oldValue, value);
+      final String oldValue = this.command;
+      this.command = value;
+      this.firePropertyChange(PROPERTY_COMMAND, oldValue, value);
       return this;
    }
 
@@ -33,7 +33,7 @@ public class RoomSelected extends Event
       return this.room;
    }
 
-   public RoomSelected setRoom(String value)
+   public VisitRoom setRoom(String value)
    {
       if (Objects.equals(value, this.room))
       {
@@ -51,7 +51,7 @@ public class RoomSelected extends Event
       return this.previousStop;
    }
 
-   public RoomSelected setPreviousStop(String value)
+   public VisitRoom setPreviousStop(String value)
    {
       if (Objects.equals(value, this.previousStop))
       {
@@ -68,7 +68,7 @@ public class RoomSelected extends Event
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getEvent());
+      result.append(' ').append(this.getCommand());
       result.append(' ').append(this.getRoom());
       result.append(' ').append(this.getPreviousStop());
       return result.toString();

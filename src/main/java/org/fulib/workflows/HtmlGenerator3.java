@@ -92,6 +92,9 @@ public class HtmlGenerator3
             targetActor = serviceName;
             noteType = "data";
          }
+         else if (note instanceof CommandNote) {
+            noteType = "command";
+         }
 
 
          String noteContent;

@@ -21,7 +21,7 @@
   attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model 	studyRightService_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleRoomsLoaded 	studyRightService_handleDemoRoomsLoaded 	studyRightService_handleTourStarted 	studyRightService_handleDemoTourStarted 	studyRightService_handleRoomSelected 	studyRightService_handleDemoRoomSelected 	studyRightService_handleTourEndFound 	studyRightService_handleDemoTourEndFound 	studyRightService_handleUniversityBuilt 	studyRightService_handleRoomBuilt 	studyRightService_handleStudentBuilt 	studyRightService_handleStopBuilt 	studyRightService_handleTourBuilt 	studyRightService_handleTourListBuilt 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply 	studyRightService_stripBrackets
+  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleLoadRooms 	studyRightService_handleDemoLoadRooms 	studyRightService_handleFindTours 	studyRightService_handleDemoFindTours 	studyRightService_handleVisitRoom 	studyRightService_handleDemoVisitRoom 	studyRightService_handleReportTourStops 	studyRightService_handleDemoReportTourStops 	studyRightService_handleTourEndFound 	studyRightService_handleDemoTourEndFound 	studyRightService_handleUniversityBuilt 	studyRightService_handleRoomBuilt 	studyRightService_handleStudentBuilt 	studyRightService_handleStopBuilt 	studyRightService_handleTourBuilt 	studyRightService_handleTourListBuilt 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply 	studyRightService_stripBrackets
   model: 	c
   modified: 	false
   name: 	StudyRightService
@@ -360,15 +360,6 @@ return getDemoPage(request, response);
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
 
-if (\"rooms loaded 12:00\".equals(event)) {
-
-   // create RoomsLoaded: rooms loaded 12:00
-   RoomsLoaded e1200 = new RoomsLoaded();
-   e1200.setId(\"12:00\");
-   apply(e1200);
-}
-
-
 
 // 11:00
 if (id.equals(\"11_00\")) {
@@ -376,7 +367,6 @@ if (id.equals(\"11_00\")) {
    // StudyRight 11:00
    html.append(\"   <p>Welcome at Study Right</p>\n\");
    html.append(\"   <p>Find your way, start with math</p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"rooms loaded 12:00\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -403,27 +393,27 @@ return html.toString();"
   returnType: 	String
   signature: 	"class/StudyRightService/method/getDemoPage(Request,Response)"
 
-- studyRightService_handleRoomsLoaded: 	org.fulib.classmodel.FMethod
+- studyRightService_handleLoadRooms: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleRoomsLoaded(Event e)"
-  id: 	StudyRightService_handleRoomsLoaded
+  declaration: 	"private void handleLoadRooms(Event e)"
+  id: 	StudyRightService_handleLoadRooms
   methodBody: 	"// no fulib
-RoomsLoaded event = (RoomsLoaded) e;
-handleDemoRoomsLoaded(event);
+LoadRooms event = (LoadRooms) e;
+handleDemoLoadRooms(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleRoomsLoaded
+  name: 	handleLoadRooms
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleRoomsLoaded(Event)"
+  signature: 	"class/StudyRightService/method/handleLoadRooms(Event)"
 
-- studyRightService_handleDemoRoomsLoaded: 	org.fulib.classmodel.FMethod
+- studyRightService_handleDemoLoadRooms: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleDemoRoomsLoaded(RoomsLoaded event)"
-  id: 	StudyRightService_handleDemoRoomsLoaded
+  declaration: 	"private void handleDemoLoadRooms(LoadRooms event)"
+  id: 	StudyRightService_handleDemoLoadRooms
   methodBody: 	"if (event.getId().equals(\"12:00\")) {
    UniversityBuilt studyRightEvent = new UniversityBuilt();
    studyRightEvent.setId(\"12:00:00\");
@@ -471,41 +461,47 @@ handleDemoRoomsLoaded(event);
    apply(carliEvent);
 
 
-   TourStarted e1201 = new TourStarted();
+   RoomsLoaded e120006 = new RoomsLoaded();
+
+   e120006.setId(\"12:00:06\");
+   e120006.setEvent(\"rooms loaded 12:00:06\");
+   apply(e120006);
+
+   FindTours e1201 = new FindTours();
 
    e1201.setId(\"12:01\");
-   e1201.setEvent(\"tour started 12:01\");
+   e1201.setCommand(\"find tours 12:01\");
    apply(e1201);
 }
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoRoomsLoaded
-  paramsString: 	"RoomsLoaded event"
+  name: 	handleDemoLoadRooms
+  paramsString: 	"LoadRooms event"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleDemoRoomsLoaded(RoomsLoaded)"
+  signature: 	"class/StudyRightService/method/handleDemoLoadRooms(LoadRooms)"
 
-- studyRightService_handleTourStarted: 	org.fulib.classmodel.FMethod
+- studyRightService_handleFindTours: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleTourStarted(Event e)"
-  id: 	StudyRightService_handleTourStarted
+  declaration: 	"private void handleFindTours(Event e)"
+  id: 	StudyRightService_handleFindTours
   methodBody: 	"// no fulib
-TourStarted event = (TourStarted) e;
-handleDemoTourStarted(event);
+FindTours event = (FindTours) e;
+handleDemoFindTours(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleTourStarted
+  name: 	handleFindTours
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleTourStarted(Event)"
+  signature: 	"class/StudyRightService/method/handleFindTours(Event)"
 
-- studyRightService_handleDemoTourStarted: 	org.fulib.classmodel.FMethod
+- studyRightService_handleDemoFindTours: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleDemoTourStarted(TourStarted event)"
-  id: 	StudyRightService_handleDemoTourStarted
+  declaration: 	"private void handleDemoFindTours(FindTours event)"
+  id: 	StudyRightService_handleDemoFindTours
   methodBody: 	"if (event.getId().equals(\"12:01\")) {
    StopBuilt s01Event = new StopBuilt();
    s01Event.setId(\"12:01:01\");
@@ -514,10 +510,10 @@ handleDemoTourStarted(event);
    apply(s01Event);
 
 
-   RoomSelected e1202 = new RoomSelected();
+   VisitRoom e1202 = new VisitRoom();
 
    e1202.setId(\"12:02\");
-   e1202.setEvent(\"room selected 12:02\");
+   e1202.setCommand(\"visit room 12:02\");
    e1202.setRoom(\"math\");
    e1202.setPreviousStop(\"s01\");
    apply(e1202);
@@ -525,32 +521,32 @@ handleDemoTourStarted(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoTourStarted
-  paramsString: 	"TourStarted event"
+  name: 	handleDemoFindTours
+  paramsString: 	"FindTours event"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleDemoTourStarted(TourStarted)"
+  signature: 	"class/StudyRightService/method/handleDemoFindTours(FindTours)"
 
-- studyRightService_handleRoomSelected: 	org.fulib.classmodel.FMethod
+- studyRightService_handleVisitRoom: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleRoomSelected(Event e)"
-  id: 	StudyRightService_handleRoomSelected
+  declaration: 	"private void handleVisitRoom(Event e)"
+  id: 	StudyRightService_handleVisitRoom
   methodBody: 	"// no fulib
-RoomSelected event = (RoomSelected) e;
-handleDemoRoomSelected(event);
+VisitRoom event = (VisitRoom) e;
+handleDemoVisitRoom(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleRoomSelected
+  name: 	handleVisitRoom
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleRoomSelected(Event)"
+  signature: 	"class/StudyRightService/method/handleVisitRoom(Event)"
 
-- studyRightService_handleDemoRoomSelected: 	org.fulib.classmodel.FMethod
+- studyRightService_handleDemoVisitRoom: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
-  declaration: 	"private void handleDemoRoomSelected(RoomSelected event)"
-  id: 	StudyRightService_handleDemoRoomSelected
+  declaration: 	"private void handleDemoVisitRoom(VisitRoom event)"
+  id: 	StudyRightService_handleDemoVisitRoom
   methodBody: 	"if (event.getId().equals(\"12:02\")) {
    StopBuilt s02Event = new StopBuilt();
    s02Event.setId(\"12:02:01\");
@@ -561,18 +557,18 @@ handleDemoRoomSelected(event);
    apply(s02Event);
 
 
-   RoomSelected e1203 = new RoomSelected();
+   VisitRoom e1203 = new VisitRoom();
 
    e1203.setId(\"12:03\");
-   e1203.setEvent(\"room selected 12:03\");
+   e1203.setCommand(\"visit room 12:03\");
    e1203.setRoom(\"algebra\");
    e1203.setPreviousStop(\"s02\");
    apply(e1203);
 
-   RoomSelected e1204 = new RoomSelected();
+   VisitRoom e1204 = new VisitRoom();
 
    e1204.setId(\"12:04\");
-   e1204.setEvent(\"room selected 12:04\");
+   e1204.setCommand(\"visit room 12:04\");
    e1204.setRoom(\"modeling\");
    e1204.setPreviousStop(\"s02\");
    apply(e1204);
@@ -587,18 +583,18 @@ if (event.getId().equals(\"12:03\")) {
    apply(s03Event);
 
 
-   RoomSelected e1205 = new RoomSelected();
+   VisitRoom e1205 = new VisitRoom();
 
    e1205.setId(\"12:05\");
-   e1205.setEvent(\"room selected 12:05\");
+   e1205.setCommand(\"visit room 12:05\");
    e1205.setPreviousStop(\"s03\");
    e1205.setRoom(\"modeling\");
    apply(e1205);
 
-   RoomSelected e1206 = new RoomSelected();
+   VisitRoom e1206 = new VisitRoom();
 
    e1206.setId(\"12:06\");
-   e1206.setEvent(\"room selected 12:06\");
+   e1206.setCommand(\"visit room 12:06\");
    e1206.setPreviousStop(\"s03\");
    e1206.setRoom(\"math\");
    apply(e1206);
@@ -613,18 +609,18 @@ if (event.getId().equals(\"12:05\")) {
    apply(s05Event);
 
 
-   RoomSelected e1207 = new RoomSelected();
+   VisitRoom e1207 = new VisitRoom();
 
    e1207.setId(\"12:07\");
-   e1207.setEvent(\"room selected 12:07\");
+   e1207.setCommand(\"visit room 12:07\");
    e1207.setPreviousStop(\"s05\");
    e1207.setRoom(\"math\");
    apply(e1207);
 
-   RoomSelected e1208 = new RoomSelected();
+   VisitRoom e1208 = new VisitRoom();
 
    e1208.setId(\"12:08\");
-   e1208.setEvent(\"room selected 12:08\");
+   e1208.setCommand(\"visit room 12:08\");
    e1208.setPreviousStop(\"s05\");
    e1208.setRoom(\"exam\");
    apply(e1208);
@@ -657,6 +653,23 @@ if (event.getId().equals(\"12:08\")) {
    s08Event.setMotivation(\"0\");
    apply(s08Event);
 
+
+   ReportTourStops e1209 = new ReportTourStops();
+
+   e1209.setId(\"12:09\");
+   e1209.setCommand(\"report tour stops 12:09\");
+   apply(e1209);
+}
+if (event.getId().equals(\"12:08\")) {
+
+   TourEndFound e120803 = new TourEndFound();
+
+   e120803.setId(\"12:08:03\");
+   e120803.setEvent(\"tour end found 12:08:03\");
+   e120803.setStop(\"s08\");
+   e120803.setTour(\"tour1\");
+   e120803.setTourList(\"allTours\");
+   apply(e120803);
    TourBuilt tour1Event = new TourBuilt();
    tour1Event.setId(\"12:08:02\");
    tour1Event.setBlockId(\"tour1\");
@@ -682,10 +695,56 @@ if (event.getId().equals(\"12:08\")) {
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoRoomSelected
-  paramsString: 	"RoomSelected event"
+  name: 	handleDemoVisitRoom
+  paramsString: 	"VisitRoom event"
   returnType: 	void
-  signature: 	"class/StudyRightService/method/handleDemoRoomSelected(RoomSelected)"
+  signature: 	"class/StudyRightService/method/handleDemoVisitRoom(VisitRoom)"
+
+- studyRightService_handleReportTourStops: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleReportTourStops(Event e)"
+  id: 	StudyRightService_handleReportTourStops
+  methodBody: 	"// no fulib
+ReportTourStops event = (ReportTourStops) e;
+handleDemoReportTourStops(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleReportTourStops
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleReportTourStops(Event)"
+
+- studyRightService_handleDemoReportTourStops: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"private void handleDemoReportTourStops(ReportTourStops event)"
+  id: 	StudyRightService_handleDemoReportTourStops
+  methodBody: 	"if (event.getId().equals(\"12:09\")) {
+   TourBuilt tour1Event = new TourBuilt();
+   tour1Event.setId(\"12:09:01\");
+   tour1Event.setBlockId(\"tour1\");
+   tour1Event.setStops(\"modeling exam\");
+   tour1Event.setTourList(\"allTours\");
+   apply(tour1Event);
+
+
+   TourEndFound e1210 = new TourEndFound();
+
+   e1210.setId(\"12:10\");
+   e1210.setEvent(\"tour end found 12:10\");
+   e1210.setStop(\"s05\");
+   e1210.setTour(\"tour1\");
+   apply(e1210);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoReportTourStops
+  paramsString: 	"ReportTourStops event"
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/handleDemoReportTourStops(ReportTourStops)"
 
 - studyRightService_handleTourEndFound: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -708,24 +767,7 @@ handleDemoTourEndFound(event);
   clazz: 	studyRightService
   declaration: 	"private void handleDemoTourEndFound(TourEndFound event)"
   id: 	StudyRightService_handleDemoTourEndFound
-  methodBody: 	"if (event.getId().equals(\"12:09\")) {
-   TourBuilt tour1Event = new TourBuilt();
-   tour1Event.setId(\"12:09:01\");
-   tour1Event.setBlockId(\"tour1\");
-   tour1Event.setStops(\"modeling exam\");
-   tour1Event.setTourList(\"allTours\");
-   apply(tour1Event);
-
-
-   TourEndFound e1210 = new TourEndFound();
-
-   e1210.setId(\"12:10\");
-   e1210.setEvent(\"tour end found 12:10\");
-   e1210.setStop(\"s05\");
-   e1210.setTour(\"tour1\");
-   apply(e1210);
-}
-if (event.getId().equals(\"12:10\")) {
+  methodBody: 	"if (event.getId().equals(\"12:10\")) {
    TourBuilt tour1Event = new TourBuilt();
    tour1Event.setId(\"12:10:01\");
    tour1Event.setBlockId(\"tour1\");
@@ -773,7 +815,7 @@ if (event.getId().equals(\"12:11\")) {
   methodBody: 	"UniversityBuilt event = (UniversityBuilt) e;
 University object = model.getOrCreateUniversity(event.getBlockId());
 for (String name : stripBrackets(event.getRooms()).split(\"\\s+\")) {
-if (name.equals(\"\")) continue;
+   if (name.equals(\"\")) continue;
    object.withRooms(model.getOrCreateRoom(name));
 }
 "
@@ -794,7 +836,7 @@ Room object = model.getOrCreateRoom(event.getBlockId());
 object.setCredits(event.getCredits());
 object.setUni(model.getOrCreateUniversity(event.getUni()));
 for (String name : stripBrackets(event.getDoors()).split(\"\\s+\")) {
-if (name.equals(\"\")) continue;
+   if (name.equals(\"\")) continue;
    object.withDoors(model.getOrCreateRoom(name));
 }
 "
@@ -867,7 +909,7 @@ object.setTourList(model.getOrCreateTourList(event.getTourList()));
   methodBody: 	"TourListBuilt event = (TourListBuilt) e;
 TourList object = model.getOrCreateTourList(event.getBlockId());
 for (String name : stripBrackets(event.getAlternatives()).split(\"\\s+\")) {
-if (name.equals(\"\")) continue;
+   if (name.equals(\"\")) continue;
    object.withAlternatives(model.getOrCreateTour(name));
 }
 "
@@ -885,9 +927,10 @@ if (name.equals(\"\")) continue;
   id: 	StudyRightService_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
-   handlerMap.put(RoomsLoaded.class, this::handleRoomsLoaded);
-   handlerMap.put(TourStarted.class, this::handleTourStarted);
-   handlerMap.put(RoomSelected.class, this::handleRoomSelected);
+   handlerMap.put(LoadRooms.class, this::handleLoadRooms);
+   handlerMap.put(FindTours.class, this::handleFindTours);
+   handlerMap.put(VisitRoom.class, this::handleVisitRoom);
+   handlerMap.put(ReportTourStops.class, this::handleReportTourStops);
    handlerMap.put(TourEndFound.class, this::handleTourEndFound);
    handlerMap.put(UniversityBuilt.class, this::handleUniversityBuilt);
    handlerMap.put(RoomBuilt.class, this::handleRoomBuilt);

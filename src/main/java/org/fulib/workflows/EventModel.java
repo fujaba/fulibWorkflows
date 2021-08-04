@@ -121,19 +121,11 @@ public class EventModel
          }
          else if (entry.getKey().equalsIgnoreCase("event")) {
             EventNote eventNote = new EventNote();
-            String value = getEventId(map); // example value: product stored 12:00
-            String eventTime = getEventTime(value);
-            eventNote.setTime(eventTime);
-            String eventTypeName = getEventTypeName(value);
-            eventNote.setEventTypeName(eventTypeName);
-            eventNote.setWorkflow(getRootWorkflow());
-            eventNote.setMap(map);
-
-            EventType eventType = getEventStormingBoard().getOrCreateEventType(eventNote.getEventTypeName());
-            eventType.withEvents(eventNote);
-
-            lastEvent = eventNote;
-            addToStepsOfLastActor(eventNote);
+            fillEventNote(map, eventNote);
+         }
+         else if (entry.getKey().equalsIgnoreCase("command")) {
+            CommandNote commandNote = new CommandNote();
+            fillEventNote(map, commandNote);
          }
          else if (entry.getKey().equalsIgnoreCase("page")) {
             PageNote pageNote = new PageNote();
@@ -164,16 +156,16 @@ public class EventModel
                   }
                   userLastPage.put(lastActor.getActorName(), pageNote);
                }
-               String event = lineMap.get("event");
-               if (event != null) {
+               String command = lineMap.get("command");
+               if (command != null) {
                   // store button name
                   String buttonId = lineMap.get("button");
                   pageNote.setButtonId(buttonId);
 
                   // add an event note
-                  EventNote eventNote = new EventNote();
+                  EventNote commandNote = new CommandNote();
                   LinkedHashMap<String, String> eventMap = new LinkedHashMap<>();
-                  eventMap.put("event", event);
+                  eventMap.put("event", command);
                   for (PageLine line : pageNote.getLines()) {
                      // add inputs as event attributes
                      String input = line.getMap().get("input");
@@ -188,17 +180,17 @@ public class EventModel
                   String eventDescription = getEventId(eventMap);
                   String eventTime = getEventTime(eventDescription);
                   String eventTypeName = getEventTypeName(eventDescription);
-                  eventNote.setTime(eventTime);
-                  eventNote.setEventTypeName(eventTypeName);
-                  eventNote.setWorkflow(getRootWorkflow());
-                  eventNote.setMap(eventMap);
-                  eventNote.setRaisingPage(pageNote);
+                  commandNote.setTime(eventTime);
+                  commandNote.setEventTypeName(eventTypeName);
+                  commandNote.setWorkflow(getRootWorkflow());
+                  commandNote.setMap(eventMap);
+                  commandNote.setRaisingPage(pageNote);
 
-                  EventType eventType = getEventStormingBoard().getOrCreateEventType(eventNote.getEventTypeName());
-                  eventType.withEvents(eventNote);
+                  EventType eventType = getEventStormingBoard().getOrCreateEventType(commandNote.getEventTypeName());
+                  eventType.withEvents(commandNote);
 
-                  lastEvent = eventNote;
-                  addToStepsOfLastActor(eventNote);
+                  lastEvent = commandNote;
+                  addToStepsOfLastActor(commandNote);
                   System.out.println();
                }
             }
@@ -208,6 +200,23 @@ public class EventModel
          }
       }
       return getEventStormingBoard();
+   }
+
+   private void fillEventNote(LinkedHashMap<String, String> map, EventNote eventNote)
+   {
+      String value = getEventId(map); // example value: product stored 12:00
+      String eventTime = getEventTime(value);
+      eventNote.setTime(eventTime);
+      String eventTypeName = getEventTypeName(value);
+      eventNote.setEventTypeName(eventTypeName);
+      eventNote.setWorkflow(getRootWorkflow());
+      eventNote.setMap(map);
+
+      EventType eventType = getEventStormingBoard().getOrCreateEventType(eventNote.getEventTypeName());
+      eventType.withEvents(eventNote);
+
+      lastEvent = eventNote;
+      addToStepsOfLastActor(eventNote);
    }
 
    private String getEventTime(String value)

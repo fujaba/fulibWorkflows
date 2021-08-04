@@ -9,7 +9,7 @@
     - label: Welcome at Study Right
     - label: Find your way, start with math
     - button: ok
-      event: rooms loaded 12:00
+      command: load rooms 12:00
 
 - policy: StudyRight
   trigger: 12:00
@@ -59,7 +59,9 @@
   studentId: stud42
   uni: StudyRight
 
-- event: tour started 12:01
+- event: rooms loaded 12:00:06
+
+- command: find tours 12:01
 
 - policy: StudyRight
   trigger: 12:01
@@ -68,7 +70,7 @@
   Stop: s01
   motivation: 77
 
-- event: room selected 12:02
+- command: visit room 12:02
   room: math
   previousStop: s01
 
@@ -82,11 +84,11 @@
   previousStop: s01
   previousStop.back: [nextStops]
 
-- event: room selected 12:03
+- command: visit room 12:03
   room: algebra
   previousStop: s02
 
-- event: room selected 12:04
+- command: visit room 12:04
   room: modeling
   previousStop: s02
 
@@ -99,11 +101,11 @@
   previousStop: s02
   motivation: 42
 
-- event: room selected 12:05
+- command: visit room 12:05
   previousStop: s03
   room: modeling
 
-- event: room selected 12:06
+- command: visit room 12:06
   previousStop: s03
   room: math
 
@@ -116,11 +118,11 @@
   previousStop: s03
   motivation: 0
 
-- event: room selected 12:07
+- command: visit room 12:07
   previousStop: s05
   room: math
 
-- event: room selected 12:08
+- command: visit room 12:08
   previousStop: s05
   room: exam
 
@@ -146,6 +148,18 @@
   room: exam
   previousStop: s05
   motivation: 0
+
+- command: report tour stops 12:09
+
+- policy: StudyRight
+  trigger: 12:08
+
+
+- event: tour end found 12:08:03
+  stop: s08
+  tour: tour1
+  tourList: allTours
+
 
 - data: 12:08:02
   tour: tour1

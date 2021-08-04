@@ -1,7 +1,7 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class TourStarted extends Event
+public class LoadRooms extends Event
 {
    public static final String PROPERTY_EVENT = "event";
    private String event;
@@ -11,7 +11,7 @@ public class TourStarted extends Event
       return this.event;
    }
 
-   public TourStarted setEvent(String value)
+   public LoadRooms setEvent(String value)
    {
       if (Objects.equals(value, this.event))
       {

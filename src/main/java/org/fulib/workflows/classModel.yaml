@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	commandNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	eventType 	eventStormingBoard 	note 	dataEvent 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	commandNote 	eventType 	eventStormingBoard 	note 	dataEvent 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -40,6 +40,7 @@
   name: 	EventNote
   propertyStyle: 	Bean
   roles: 	eventNote_policies 	eventNote_raisingPage 	eventNote_type
+  subClasses: 	commandNote
   superClass: 	workflowNote
 
 - workflow: 	org.fulib.classmodel.Clazz
@@ -75,16 +76,8 @@
   name: 	WorkflowNote
   propertyStyle: 	Bean
   roles: 	workflowNote_interaction 	workflowNote_workflow
-  subClasses: 	commandNote 	dataNote 	classNote 	pageNote 	eventNote
+  subClasses: 	dataNote 	classNote 	pageNote 	eventNote
   superClass: 	note
-
-- commandNote: 	org.fulib.classmodel.Clazz
-  attributes: 	commandNote_eventType
-  model: 	c
-  modified: 	false
-  name: 	CommandNote
-  propertyStyle: 	Bean
-  superClass: 	workflowNote
 
 - dataNote: 	org.fulib.classmodel.Clazz
   attributes: 	dataNote_blockId 	dataNote_dataType
@@ -126,6 +119,13 @@
   propertyStyle: 	Bean
   roles: 	pageNote_lines 	pageNote_service 	pageNote_previousPage 	pageNote_nextPage 	pageNote_raisedEvent
   superClass: 	workflowNote
+
+- commandNote: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	CommandNote
+  propertyStyle: 	Bean
+  superClass: 	eventNote
 
 - eventType: 	org.fulib.classmodel.Clazz
   attributes: 	eventType_eventTypeName
@@ -500,15 +500,6 @@
   name: 	workflow
   other: 	workflow_notes
   propertyStyle: 	Bean
-
-- commandNote_eventType: 	org.fulib.classmodel.Attribute
-  clazz: 	commandNote
-  id: 	CommandNote_eventType
-  modified: 	false
-  name: 	eventType
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
 
 - dataNote_blockId: 	org.fulib.classmodel.Attribute
   clazz: 	dataNote

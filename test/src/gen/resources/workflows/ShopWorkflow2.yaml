@@ -35,7 +35,7 @@
     - label: Welcome to the event shop
     - label: What do you want?
     - button: shoes
-      event: Shop shoes selected 12:51
+      command: Shop shoes selected 12:51
     - button: tshirt
 
 - page:
@@ -48,7 +48,7 @@
     - input: address
       fill: Wonderland 1
     - button: OK
-      event: order registered 13:01
+      command: order registered 13:01
 
 # policy notes tell that the following actions are executed by a sertain service triggered by a certain event
 
