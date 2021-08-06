@@ -13,8 +13,8 @@
         .box {
             position: relative;
             float: left;
-            margin: 3px;
-            padding: 4px;
+            margin: 6px;
+            padding: 12px;
         }
 
         .placeholder {
@@ -55,11 +55,6 @@
                 <div class="center"><i class="fa fa-cogs"></i></div>
                 <div>event<br>history</div>
             </div>
-                <div class="box event">
-                    <div>smallMap</div>
-                    <div>LoadRooms </div>
-
-                </div>
                 <div class="box data">
                     <div>smallMap1</div>
                     <div>UniversityBuilt StudyRight</div>
@@ -98,8 +93,8 @@
 
                 </div>
                 <div class="box event">
-                    <div>smallMap6</div>
-                    <div>FindTours </div>
+                    <div>smallMap</div>
+                    <div>LoadRoomsCommand </div>
 
                 </div>
                 <div class="box data">
@@ -113,13 +108,6 @@
                     <div>motivation: 77</div>
 
                 </div>
-                <div class="box event">
-                    <div>smallMap9</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop8</div>
-                    <div>room: math</div>
-
-                </div>
                 <div class="box data">
                     <div>smallMap10</div>
                     <div>StopBuilt stop10</div>
@@ -128,26 +116,12 @@
                     <div>room: math</div>
 
                 </div>
-                <div class="box event">
-                    <div>smallMap11</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop10</div>
-                    <div>room: modeling</div>
-
-                </div>
                 <div class="box data">
                     <div>smallMap12</div>
                     <div>StopBuilt stop12</div>
                     <div>motivation: 12</div>
                     <div>previousStop: stop10</div>
                     <div>room: modeling</div>
-
-                </div>
-                <div class="box event">
-                    <div>smallMap13</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop12</div>
-                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -160,17 +134,17 @@
                 </div>
                 <div class="box event">
                     <div>smallMap15</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: "-11"</div>
                     <div>room: math</div>
                     <div>stop: stop14</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap16</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap13</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop12</div>
-                    <div>room: algebra</div>
+                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -179,13 +153,6 @@
                     <div>motivation: 0</div>
                     <div>previousStop: stop12</div>
                     <div>room: algebra</div>
-
-                </div>
-                <div class="box event">
-                    <div>smallMap18</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop17</div>
-                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -198,17 +165,17 @@
                 </div>
                 <div class="box event">
                     <div>smallMap20</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: "-23"</div>
                     <div>room: math</div>
                     <div>stop: stop19</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap21</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap18</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop17</div>
-                    <div>room: modeling</div>
+                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -221,17 +188,17 @@
                 </div>
                 <div class="box event">
                     <div>smallMap23</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: "-42"</div>
                     <div>room: modeling</div>
                     <div>stop: stop22</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap24</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap21</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop17</div>
-                    <div>room: exam</div>
+                    <div>room: modeling</div>
 
                 </div>
                 <div class="box data">
@@ -240,13 +207,6 @@
                     <div>motivation: 0</div>
                     <div>previousStop: stop17</div>
                     <div>room: exam</div>
-
-                </div>
-                <div class="box event">
-                    <div>smallMap26</div>
-                    <div>CollectTourStops </div>
-                    <div>stop: stop25</div>
-                    <div>tour: tour0</div>
 
                 </div>
                 <div class="box data">
@@ -278,10 +238,24 @@
 
                 </div>
                 <div class="box event">
-                    <div>smallMap31</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop12</div>
+                    <div>smallMap26</div>
+                    <div>CollectTourStopsCommand </div>
+                    <div>stop: stop25</div>
+                    <div>tour: tour0</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap24</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop17</div>
                     <div>room: exam</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap16</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop12</div>
+                    <div>room: algebra</div>
 
                 </div>
                 <div class="box data">
@@ -294,17 +268,24 @@
                 </div>
                 <div class="box event">
                     <div>smallMap33</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: 12</div>
                     <div>room: exam</div>
                     <div>stop: stop32</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap34</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap31</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop12</div>
+                    <div>room: exam</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap11</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop10</div>
-                    <div>room: algebra</div>
+                    <div>room: modeling</div>
 
                 </div>
                 <div class="box data">
@@ -315,26 +296,12 @@
                     <div>room: algebra</div>
 
                 </div>
-                <div class="box event">
-                    <div>smallMap36</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop35</div>
-                    <div>room: math</div>
-
-                </div>
                 <div class="box data">
                     <div>smallMap37</div>
                     <div>StopBuilt stop37</div>
                     <div>motivation: 19</div>
                     <div>previousStop: stop35</div>
                     <div>room: math</div>
-
-                </div>
-                <div class="box event">
-                    <div>smallMap38</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop37</div>
-                    <div>room: modeling</div>
 
                 </div>
                 <div class="box data">
@@ -347,17 +314,17 @@
                 </div>
                 <div class="box event">
                     <div>smallMap40</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: "-23"</div>
                     <div>room: modeling</div>
                     <div>stop: stop39</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap41</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap38</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop37</div>
-                    <div>room: algebra</div>
+                    <div>room: modeling</div>
 
                 </div>
                 <div class="box data">
@@ -366,13 +333,6 @@
                     <div>motivation: 7</div>
                     <div>previousStop: stop37</div>
                     <div>room: algebra</div>
-
-                </div>
-                <div class="box event">
-                    <div>smallMap43</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop42</div>
-                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -385,17 +345,17 @@
                 </div>
                 <div class="box event">
                     <div>smallMap45</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: "-16"</div>
                     <div>room: math</div>
                     <div>stop: stop44</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap46</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap43</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop42</div>
-                    <div>room: modeling</div>
+                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -408,17 +368,17 @@
                 </div>
                 <div class="box event">
                     <div>smallMap48</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: "-35"</div>
                     <div>room: modeling</div>
                     <div>stop: stop47</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap49</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap46</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop42</div>
-                    <div>room: exam</div>
+                    <div>room: modeling</div>
 
                 </div>
                 <div class="box data">
@@ -431,17 +391,31 @@
                 </div>
                 <div class="box event">
                     <div>smallMap51</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: 7</div>
                     <div>room: exam</div>
                     <div>stop: stop50</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap52</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap49</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop42</div>
+                    <div>room: exam</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap41</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop37</div>
+                    <div>room: algebra</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap36</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop35</div>
-                    <div>room: modeling</div>
+                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -450,13 +424,6 @@
                     <div>motivation: 0</div>
                     <div>previousStop: stop35</div>
                     <div>room: modeling</div>
-
-                </div>
-                <div class="box event">
-                    <div>smallMap54</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop53</div>
-                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -469,17 +436,17 @@
                 </div>
                 <div class="box event">
                     <div>smallMap56</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: "-23"</div>
                     <div>room: math</div>
                     <div>stop: stop55</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap57</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap54</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop53</div>
-                    <div>room: algebra</div>
+                    <div>room: math</div>
 
                 </div>
                 <div class="box data">
@@ -492,17 +459,17 @@
                 </div>
                 <div class="box event">
                     <div>smallMap59</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: "-12"</div>
                     <div>room: algebra</div>
                     <div>stop: stop58</div>
 
                 </div>
                 <div class="box event">
-                    <div>smallMap60</div>
-                    <div>VisitRoom </div>
+                    <div>smallMap57</div>
+                    <div>VisitRoomCommand </div>
                     <div>previousStop: stop53</div>
-                    <div>room: exam</div>
+                    <div>room: algebra</div>
 
                 </div>
                 <div class="box data">
@@ -511,13 +478,6 @@
                     <div>motivation: 0</div>
                     <div>previousStop: stop53</div>
                     <div>room: exam</div>
-
-                </div>
-                <div class="box event">
-                    <div>smallMap62</div>
-                    <div>CollectTourStops </div>
-                    <div>stop: stop61</div>
-                    <div>tour: tour1</div>
 
                 </div>
                 <div class="box data">
@@ -549,10 +509,24 @@
 
                 </div>
                 <div class="box event">
-                    <div>smallMap67</div>
-                    <div>VisitRoom </div>
-                    <div>previousStop: stop35</div>
+                    <div>smallMap62</div>
+                    <div>CollectTourStopsCommand </div>
+                    <div>stop: stop61</div>
+                    <div>tour: tour1</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap60</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop53</div>
                     <div>room: exam</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap52</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop35</div>
+                    <div>room: modeling</div>
 
                 </div>
                 <div class="box data">
@@ -565,10 +539,36 @@
                 </div>
                 <div class="box event">
                     <div>smallMap69</div>
-                    <div>TourFailed </div>
+                    <div>TourFailedEvent </div>
                     <div>credits: 42</div>
                     <div>room: exam</div>
                     <div>stop: stop68</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap67</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop35</div>
+                    <div>room: exam</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap34</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop10</div>
+                    <div>room: algebra</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap9</div>
+                    <div>VisitRoomCommand </div>
+                    <div>previousStop: stop8</div>
+                    <div>room: math</div>
+
+                </div>
+                <div class="box event">
+                    <div>smallMap6</div>
+                    <div>FindToursCommand </div>
 
                 </div>
 

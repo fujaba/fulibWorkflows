@@ -1,7 +1,7 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class VisitRoom extends Command
+public class VisitRoomCommand extends Command
 {
    public static final String PROPERTY_ROOM = "room";
    public static final String PROPERTY_PREVIOUS_STOP = "previousStop";
@@ -13,7 +13,7 @@ public class VisitRoom extends Command
       return this.room;
    }
 
-   public VisitRoom setRoom(String value)
+   public VisitRoomCommand setRoom(String value)
    {
       if (Objects.equals(value, this.room))
       {
@@ -31,7 +31,7 @@ public class VisitRoom extends Command
       return this.previousStop;
    }
 
-   public VisitRoom setPreviousStop(String value)
+   public VisitRoomCommand setPreviousStop(String value)
    {
       if (Objects.equals(value, this.previousStop))
       {

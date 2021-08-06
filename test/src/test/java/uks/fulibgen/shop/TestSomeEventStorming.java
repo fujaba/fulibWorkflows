@@ -69,8 +69,8 @@ public class TestSomeEventStorming
       pre.shouldHave(text("http://localhost:42003/apply"));
 
       // workflow working smoothly
-      // create ProductStored: product stored 12:00
-      ProductStored e1200 = new ProductStored();
+      // create ProductStoredEvent: product stored 12:00
+      ProductStoredEvent e1200 = new ProductStoredEvent();
       e1200.setId("12:00");
       e1200.setBox("box23");
       e1200.setProduct("shoes");
@@ -142,8 +142,8 @@ public class TestSomeEventStorming
       pre.shouldHave(text("address: \"Wonderland 1\""));
       pre.shouldHave(text("state: todo"));
 
-      // create OrderPicked: order picked 14:00
-      OrderPicked e1400 = new OrderPicked();
+      // create OrderPickedEvent: order picked 14:00
+      OrderPickedEvent e1400 = new OrderPickedEvent();
       e1400.setId("14:00");
       e1400.setPickTask("pick1300");
       e1400.setBox("box23");
@@ -178,8 +178,8 @@ public class TestSomeEventStorming
       pre.shouldHave(text("state: shipping"));
 
       // workflow OrderOutOfStocks
-      // create OrderRegistered: order registered 13:11
-      OrderRegistered e1311 = new OrderRegistered();
+      // create OrderRegisteredEvent: order registered 13:11
+      OrderRegisteredEvent e1311 = new OrderRegisteredEvent();
       e1311.setId("13:11");
       e1311.setTrigger("button OK");
       e1311.setProduct("tshirt");

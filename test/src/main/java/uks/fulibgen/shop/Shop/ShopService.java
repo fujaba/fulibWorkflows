@@ -23,13 +23,13 @@ public class ShopService
    public static final String PROPERTY_PORT = "port";
    public static final String PROPERTY_SPARK = "spark";
    public static final String PROPERTY_MODEL = "model";
-   public static final String PROPERTY_HANDLER_MAP = "handlerMap";
+   public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
    private int port = 42100;
    private Service spark;
    private ShopModel model;
    protected PropertyChangeSupport listeners;
-   private LinkedHashMap<Class, Consumer<Event>> handlerMap;
+   private ShopBusinessLogic businessLogic;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -103,27 +103,38 @@ public class ShopService
       return this;
    }
 
-   public LinkedHashMap<Class, Consumer<Event>> getHandlerMap()
+   public ShopBusinessLogic getBusinessLogic()
    {
-      return this.handlerMap;
+      return this.businessLogic;
    }
 
-   public ShopService setHandlerMap(LinkedHashMap<Class, Consumer<Event>> value)
+   public ShopService setBusinessLogic(ShopBusinessLogic value)
    {
-      if (Objects.equals(value, this.handlerMap))
+      if (this.businessLogic == value)
       {
          return this;
       }
 
-      final LinkedHashMap<Class, Consumer<Event>> oldValue = this.handlerMap;
-      this.handlerMap = value;
-      this.firePropertyChange(PROPERTY_HANDLER_MAP, oldValue, value);
+      final ShopBusinessLogic oldValue = this.businessLogic;
+      if (this.businessLogic != null)
+      {
+         this.businessLogic = null;
+         oldValue.setService(null);
+      }
+      this.businessLogic = value;
+      if (value != null)
+      {
+         value.setService(this);
+      }
+      this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
       return this;
    }
 
    public void start()
    {
       model = new ShopModel();
+      setBusinessLogic(new ShopBusinessLogic());
+      businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);
@@ -196,24 +207,11 @@ public class ShopService
       if (history.get(event.getId()) != null) {
          return;
       }
-      initEventHandlerMap();
-      Consumer<Event> handler = handlerMap.computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+      businessLogic.initEventHandlerMap();
+      Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
       handler.accept(event);
       history.put(event.getId(), event);
       publish(event);
-   }
-
-   private void initEventHandlerMap()
-   {
-      if (handlerMap == null) {
-         handlerMap = new LinkedHashMap<>();
-         handlerMap.put(OrderRegistered.class, this::handleOrderRegistered);
-         handlerMap.put(OrderApproved.class, this::handleOrderApproved);
-         handlerMap.put(OrderPicked.class, this::handleOrderPicked);
-         handlerMap.put(OrderDeclined.class, this::handleOrderDeclined);
-         handlerMap.put(OrderBuilt.class, this::handleOrderBuilt);
-         handlerMap.put(CustomerBuilt.class, this::handleCustomerBuilt);
-      }
    }
 
    private void ignoreEvent(Event event)
@@ -252,34 +250,6 @@ public class ShopService
       return "apply done";
    }
 
-   private void handleOrderRegistered(Event e)
-   {
-      // no fulib
-      OrderRegistered event = (OrderRegistered) e;
-      handleDemoOrderRegistered(event);
-   }
-
-   private void handleOrderPicked(Event e)
-   {
-      // no fulib
-      OrderPicked event = (OrderPicked) e;
-      handleDemoOrderPicked(event);
-   }
-
-   private void handleOrderApproved(Event e)
-   {
-      // no fulib
-      OrderApproved event = (OrderApproved) e;
-      handleDemoOrderApproved(event);
-   }
-
-   private void handleOrderDeclined(Event e)
-   {
-      // no fulib
-      OrderDeclined event = (OrderDeclined) e;
-      handleDemoOrderDeclined(event);
-   }
-
    public String getPage(Request request, Response response)
    {
       // no fulib
@@ -293,6 +263,26 @@ public class ShopService
       String id = request.params("id");
       String event = request.queryParams("event");
 
+      if ("Shop shoes selected 12:51".equals(event)) {
+
+         // create ShopShoesSelectedCommand: Shop shoes selected 12:51
+         ShopShoesSelectedCommand e1251 = new ShopShoesSelectedCommand();
+         e1251.setId("12:51");
+         apply(e1251);
+      }
+
+      if ("order registered 13:01".equals(event)) {
+
+         // create OrderRegisteredCommand: order registered 13:01
+         OrderRegisteredCommand e1301 = new OrderRegisteredCommand();
+         e1301.setId("13:01");
+         e1301.setProduct(request.queryParams("product"));
+         e1301.setName(request.queryParams("name"));
+         e1301.setAddress(request.queryParams("address"));
+         apply(e1301);
+      }
+
+
 
       // 12:50
       if (id.equals("12_50")) {
@@ -300,6 +290,7 @@ public class ShopService
          // Shop 12:50
          html.append("   <p>Welcome to the event shop</p>\n");
          html.append("   <p>What do you want?</p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop shoes selected 12:51\"></p>\n");
          html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
          html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
          html.append("</form>\n");
@@ -314,6 +305,7 @@ public class ShopService
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
          html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"order registered 13:01\"></p>\n");
          html.append("   <p><input id=\"OK\" name=\"button\" type=\"submit\" value=\"OK\"></p>\n");
          html.append("</form>\n");
          return html.toString();
@@ -325,107 +317,8 @@ public class ShopService
       return html.toString();
    }
 
-   private void handleDemoOrderRegistered(OrderRegistered event)
+   public void removeYou()
    {
-      if (event.getId().equals("13:01")) {
-         OrderBuilt order1300Event = new OrderBuilt();
-         order1300Event.setId("13:02");
-         order1300Event.setBlockId("order1300");
-         order1300Event.setProduct("shoes");
-         order1300Event.setCustomer("Alice");
-         order1300Event.setAddress("Wonderland 1");
-         order1300Event.setState("pending");
-         apply(order1300Event);
-
-         CustomerBuilt aliceEvent = new CustomerBuilt();
-         aliceEvent.setId("13:03");
-         aliceEvent.setBlockId("Alice");
-         aliceEvent.setOrders("[ order1300 ]");
-         apply(aliceEvent);
-
-      }
-      if (event.getId().equals("13:11")) {
-         OrderBuilt order1310Event = new OrderBuilt();
-         order1310Event.setId("13:12");
-         order1310Event.setBlockId("order1310");
-         order1310Event.setProduct("tshirt");
-         order1310Event.setCustomer("Alice");
-         order1310Event.setAddress("Wonderland 1");
-         order1310Event.setState("pending");
-         apply(order1310Event);
-
-         CustomerBuilt aliceEvent = new CustomerBuilt();
-         aliceEvent.setId("13:13");
-         aliceEvent.setBlockId("Alice");
-         aliceEvent.setOrders("[ order1300 order1310 ]");
-         apply(aliceEvent);
-
-      }
-   }
-
-   private void handleDemoOrderApproved(OrderApproved event)
-   {
-      if (event.getId().equals("13:05")) {
-         OrderBuilt order1300Event = new OrderBuilt();
-         order1300Event.setId("13:06");
-         order1300Event.setBlockId("order1300");
-         order1300Event.setState("picking");
-         apply(order1300Event);
-
-      }
-   }
-
-   private void handleDemoOrderPicked(OrderPicked event)
-   {
-      if (event.getId().equals("14:00")) {
-         OrderBuilt order1300Event = new OrderBuilt();
-         order1300Event.setId("14:03");
-         order1300Event.setBlockId("order1300");
-         order1300Event.setState("shipping");
-         apply(order1300Event);
-
-      }
-   }
-
-   private void handleDemoOrderDeclined(OrderDeclined event)
-   {
-      if (event.getId().equals("13:14")) {
-         OrderBuilt order1310Event = new OrderBuilt();
-         order1310Event.setId("13:12");
-         order1310Event.setBlockId("order1310");
-         order1310Event.setState("out of stock");
-         apply(order1310Event);
-
-      }
-   }
-
-   public String stripBrackets(String back)
-   {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
-   }
-
-   private void handleOrderBuilt(Event e)
-   {
-      OrderBuilt event = (OrderBuilt) e;
-      Order object = model.getOrCreateOrder(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
-   }
-
-   private void handleCustomerBuilt(Event e)
-   {
-      CustomerBuilt event = (CustomerBuilt) e;
-      Customer object = model.getOrCreateCustomer(event.getBlockId());
-      object.setOrders(event.getOrders());
+      this.setBusinessLogic(null);
    }
 }

@@ -23,13 +23,13 @@ public class someserviceService
    public static final String PROPERTY_PORT = "port";
    public static final String PROPERTY_SPARK = "spark";
    public static final String PROPERTY_MODEL = "model";
-   public static final String PROPERTY_HANDLER_MAP = "handlerMap";
+   public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
    private int port = 42002;
    private Service spark;
    private someserviceModel model;
-   private LinkedHashMap<Class, Consumer<Event>> handlerMap;
    protected PropertyChangeSupport listeners;
+   private someserviceBusinessLogic businessLogic;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -103,27 +103,38 @@ public class someserviceService
       return this;
    }
 
-   public LinkedHashMap<Class, Consumer<Event>> getHandlerMap()
+   public someserviceBusinessLogic getBusinessLogic()
    {
-      return this.handlerMap;
+      return this.businessLogic;
    }
 
-   public someserviceService setHandlerMap(LinkedHashMap<Class, Consumer<Event>> value)
+   public someserviceService setBusinessLogic(someserviceBusinessLogic value)
    {
-      if (Objects.equals(value, this.handlerMap))
+      if (this.businessLogic == value)
       {
          return this;
       }
 
-      final LinkedHashMap<Class, Consumer<Event>> oldValue = this.handlerMap;
-      this.handlerMap = value;
-      this.firePropertyChange(PROPERTY_HANDLER_MAP, oldValue, value);
+      final someserviceBusinessLogic oldValue = this.businessLogic;
+      if (this.businessLogic != null)
+      {
+         this.businessLogic = null;
+         oldValue.setService(null);
+      }
+      this.businessLogic = value;
+      if (value != null)
+      {
+         value.setService(this);
+      }
+      this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
       return this;
    }
 
    public void start()
    {
       model = new someserviceModel();
+      setBusinessLogic(new someserviceBusinessLogic());
+      businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);
@@ -177,20 +188,11 @@ public class someserviceService
       if (history.get(event.getId()) != null) {
          return;
       }
-      initEventHandlerMap();
-      Consumer<Event> handler = handlerMap.computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+      businessLogic.initEventHandlerMap();
+      Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
       handler.accept(event);
       history.put(event.getId(), event);
       publish(event);
-   }
-
-   private void initEventHandlerMap()
-   {
-      if (handlerMap == null) {
-         handlerMap = new LinkedHashMap<>();
-         handlerMap.put(ProductStored.class, this::handleProductStored);
-         handlerMap.put(BoxBuilt.class, this::handleBoxBuilt);
-      }
    }
 
    private void ignoreEvent(Event event)
@@ -248,12 +250,6 @@ public class someserviceService
       return this.listeners;
    }
 
-   private void handleProductStored(Event e)
-   {
-      // no fulib
-      ProductStored event = (ProductStored) e;
-      handleDemoProductStored(event);
-   }
 
    public String getPage(Request request, Response response)
    {
@@ -274,37 +270,8 @@ public class someserviceService
       return html.toString();
    }
 
-   private void handleDemoProductStored(ProductStored event)
+   public void removeYou()
    {
-      if (event.getId().equals("12:00")) {
-         BoxBuilt box23Event = new BoxBuilt();
-         box23Event.setId("12:01");
-         box23Event.setBlockId("box23");
-         box23Event.setProduct("shoes");
-         box23Event.setPlace("shelf23");
-         apply(box23Event);
-
-      }
-   }
-
-   private void handleBoxBuilt(Event e)
-   {
-      BoxBuilt event = (BoxBuilt) e;
-      Box object = model.getOrCreateBox(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setPlace(event.getPlace());
-   }
-
-   public String stripBrackets(String back)
-   {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
+      this.setBusinessLogic(null);
    }
 }

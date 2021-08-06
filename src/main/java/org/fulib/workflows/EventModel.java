@@ -165,7 +165,7 @@ public class EventModel
                   // add an event note
                   EventNote commandNote = new CommandNote();
                   LinkedHashMap<String, String> eventMap = new LinkedHashMap<>();
-                  eventMap.put("event", command);
+                  eventMap.put("command", command);
                   for (PageLine line : pageNote.getLines()) {
                      // add inputs as event attributes
                      String input = line.getMap().get("input");
@@ -179,7 +179,7 @@ public class EventModel
                   }
                   String eventDescription = getEventId(eventMap);
                   String eventTime = getEventTime(eventDescription);
-                  String eventTypeName = getEventTypeName(eventDescription);
+                  String eventTypeName = getEventTypeName(eventDescription) + "Command";
                   commandNote.setTime(eventTime);
                   commandNote.setEventTypeName(eventTypeName);
                   commandNote.setWorkflow(getRootWorkflow());
@@ -207,7 +207,8 @@ public class EventModel
       String value = getEventId(map); // example value: product stored 12:00
       String eventTime = getEventTime(value);
       eventNote.setTime(eventTime);
-      String eventTypeName = getEventTypeName(value);
+      String suffix = eventNote instanceof CommandNote ? "Command" : "Event";
+      String eventTypeName = getEventTypeName(value) + suffix;
       eventNote.setEventTypeName(eventTypeName);
       eventNote.setWorkflow(getRootWorkflow());
       eventNote.setMap(map);

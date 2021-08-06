@@ -37,6 +37,8 @@ public class WorkflowGenerator
    public Consumer<Object> dumpObjectDiagram;
    private EventStormingBoard eventStormingBoard;
    private StringBuilder testBody;
+   private Clazz serviceClazz;
+   private Clazz logicClass;
 
    public EventModel getEventModel()
    {
@@ -88,7 +90,7 @@ public class WorkflowGenerator
                .setPackageName(mm.getClassModel().getPackageName() + "." + serviceName);
          managerMap.put(serviceName, modelManager);
 
-         // add ModelClass
+         // add model class
          Clazz modelClazz = modelManager.haveClass(serviceName + "Model");
          modelClazz.withImports("import java.util.LinkedHashMap;");
          modelManager.haveAttribute(modelClazz,
@@ -96,8 +98,13 @@ public class WorkflowGenerator
                "LinkedHashMap<String, Object>",
                "new LinkedHashMap<>()");
 
+
+         // add business logic class
+         logicClass = modelManager.haveClass(serviceName + "BusinessLogic");
+         modelManager.haveAttribute(logicClass, "model", serviceName + "Model");
+
          // add ServiceClass
-         Clazz serviceClazz = modelManager.haveClass(serviceName + "Service");
+         serviceClazz = modelManager.haveClass(serviceName + "Service");
          serviceClazz.withImports("import java.util.LinkedHashMap;",
                "import java.util.Map;",
                "import java.util.function.Consumer;",
@@ -119,8 +126,13 @@ public class WorkflowGenerator
          modelManager.haveAttribute(serviceClazz, "port", Type.INT, port);
          modelManager.haveAttribute(serviceClazz, "spark", "Service");
          modelManager.haveAttribute(serviceClazz, "model", serviceName + "Model");
-         modelManager.haveAttribute(serviceClazz, "handlerMap",
+         modelManager.associate(serviceClazz, "businessLogic", Type.ONE, logicClass, "service", Type.ONE);
+         modelManager.haveAttribute(logicClass, "handlerMap",
                "LinkedHashMap<Class, Consumer<Event>>", null);
+         logicClass.withImports("import java.util.LinkedHashMap;",
+               "import java.util.function.Consumer;",
+               "import " + em.getClassModel().getPackageName() + ".*;");
+
 
          String declaration;
          StringBuilder body = new StringBuilder();
@@ -129,11 +141,11 @@ public class WorkflowGenerator
          addStartMethod(modelManager, serviceName, serviceClazz, body);
          addGetHelloMethod(modelManager, serviceName, serviceClazz, body);
          addSubscribeAndLoadOldEventsMethod(modelManager, port, serviceClazz, body);
-         addApplyMethod(modelManager, serviceClazz, body);
+         addApplyMethod(modelManager, body);
 
          buildGetPageMethod(modelManager, serviceClazz, serviceName, body);
 
-         buildInitEventHandlerMapMethod(modelManager, serviceNote, serviceClazz, body);
+         buildInitEventHandlerMapMethod(modelManager, serviceNote, body);
 
          // ignoreEvents method
          declaration = "private void ignoreEvent(Event event)";
@@ -160,7 +172,7 @@ public class WorkflowGenerator
          body.setLength(0);
          st = group.getInstanceOf("stripBrackets");
          body.append(st.render());
-         modelManager.haveMethod(serviceClazz, declaration, body.toString());
+         modelManager.haveMethod(logicClass, declaration, body.toString());
 
       }
    }
@@ -216,14 +228,14 @@ public class WorkflowGenerator
          if (firstTag.equals("button")) {
             // is there an event?
             String key = line.getMap().get("button");
-            String event = line.getMap().get("event");
-            if (event != null) {
-               buildEventHandling(pageNote, event, eventHandling);
+            String command = line.getMap().get("command");
+            if (command != null) {
+               buildEventHandling(pageNote, command, eventHandling);
 
                // hidden input
                content.append(String.format(
                      "   html.append(\"   <p><input id=\\\"event\\\" name=\\\"event\\\" type=\\\"hidden\\\" value=\\\"%s\\\"></p>\\n\");\n",
-                     event));
+                     command));
             }
             content.append(String.format(
                   "   html.append(\"   <p><input id=\\\"%s\\\" name=\\\"button\\\" type=\\\"submit\\\" value=\\\"%1$s\\\"></p>\\n\");\n",
@@ -244,16 +256,16 @@ public class WorkflowGenerator
       content.append("   html.append(\"</form>\\n\");\n");
    }
 
-   private void buildEventHandling(PageNote pageNote, String event, StringBuilder eventHandling)
+   private void buildEventHandling(PageNote pageNote, String command, StringBuilder eventHandling)
    {
       EventNote eventNote = pageNote.getRaisedEvent();
-      eventHandling.append(String.format("if (\"%s\".equals(event)) {\n", event));
+      eventHandling.append(String.format("if (\"%s\".equals(event)) {\n", command));
       String varName = addCreateAndInitEventCode("   ", eventNote, eventHandling);
       eventHandling.append(String.format("   apply(%s);\n", varName));
       eventHandling.append("}\n\n");
    }
 
-   private void addApplyMethod(ClassModelManager modelManager, Clazz serviceClazz, StringBuilder body)
+   private void addApplyMethod(ClassModelManager modelManager, StringBuilder body)
    {
       String declaration;
       ST st;// apply method
@@ -295,6 +307,8 @@ public class WorkflowGenerator
       // add start method
       declaration = "public void start()";
       body.append(String.format("model = new %sModel();\n", serviceName));
+      body.append(String.format("setBusinessLogic(new %sBusinessLogic());\n", serviceName));
+      body.append("businessLogic.setModel(model);\n");
       body.append("ExecutorService executor = Executors.newSingleThreadExecutor();\n");
       body.append("spark = Service.ignite();\n");
       body.append("spark.port(port);\n");
@@ -308,37 +322,37 @@ public class WorkflowGenerator
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
    }
 
-   private void buildInitEventHandlerMapMethod(ClassModelManager modelManager, ServiceNote serviceNote, Clazz serviceClazz, StringBuilder body)
+   private void buildInitEventHandlerMapMethod(ClassModelManager modelManager, ServiceNote serviceNote, StringBuilder body)
    {
       String declaration;
       // initHandlerMap
-      declaration = "private void initEventHandlerMap()";
+      declaration = "public void initEventHandlerMap()";
       body.setLength(0);
       body.append("if (handlerMap == null) {\n");
       body.append("   handlerMap = new LinkedHashMap<>();\n");
-      addHandlersToInitEventHandlerMap(modelManager, serviceClazz, serviceNote, body);
+      addHandlersToInitEventHandlerMap(modelManager, serviceNote, body);
       body.append("}\n");
-      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+      modelManager.haveMethod(logicClass, declaration, body.toString());
    }
 
-   private void addHandlersToInitEventHandlerMap(ClassModelManager modelManager, Clazz serviceClazz, ServiceNote serviceNote, StringBuilder body)
+   private void addHandlersToInitEventHandlerMap(ClassModelManager modelManager, ServiceNote serviceNote, StringBuilder body)
    {
       for (EventType eventType : serviceNote.getHandledEventTypes()) {
          String eventTypeName = eventType.getEventTypeName();
          body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
                eventTypeName, eventTypeName));
-         addEventHandlerMethod(modelManager, serviceClazz, serviceNote, eventType);
+         addEventHandlerMethod(modelManager, serviceNote, eventType);
       }
 
       for (DataType dataType : serviceNote.getHandledDataTypes()) {
          String eventTypeName = dataType.getDataTypeName() + "Built";
          body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
                eventTypeName, eventTypeName));
-         addDataEventHandlerMethod(modelManager, serviceClazz, serviceNote, dataType);
+         addDataEventHandlerMethod(modelManager, serviceNote, dataType);
       }
    }
 
-   private void addDataEventHandlerMethod(ClassModelManager modelManager, Clazz serviceClazz, ServiceNote serviceNote, DataType dataType)
+   private void addDataEventHandlerMethod(ClassModelManager modelManager, ServiceNote serviceNote, DataType dataType)
    {
       StringBuilder body = new StringBuilder();
       String dataTypeName = dataType.getDataTypeName();
@@ -381,10 +395,10 @@ public class WorkflowGenerator
             }
          }
       }
-      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+      modelManager.haveMethod(logicClass, declaration, body.toString());
    }
 
-   private void addEventHandlerMethod(ClassModelManager modelManager, Clazz serviceClazz, ServiceNote serviceNote, EventType eventType)
+   private void addEventHandlerMethod(ClassModelManager modelManager, ServiceNote serviceNote, EventType eventType)
    {
       StringBuilder body = new StringBuilder();
       String eventTypeName = eventType.getEventTypeName();
@@ -392,7 +406,7 @@ public class WorkflowGenerator
       body.append("// no fulib\n");
       body.append(String.format("%s event = (%s) e;\n", eventTypeName, eventTypeName));
       body.append(String.format("handleDemo%s(event);\n", eventTypeName));
-      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+      modelManager.haveMethod(logicClass, declaration, body.toString());
 
       body.setLength(0);
       declaration = String.format("private void handleDemo%s(%1$s event)", eventTypeName);
@@ -413,7 +427,7 @@ public class WorkflowGenerator
          addMockupData(modelManager, serviceNote, policy, body);
          body.append("}\n");
       }
-      modelManager.haveMethod(serviceClazz, declaration, body.toString());
+      modelManager.haveMethod(logicClass, declaration, body.toString());
    }
 
    private void addMockupData(ClassModelManager modelManager, ServiceNote serviceNote, Policy policy, StringBuilder body)
@@ -459,7 +473,7 @@ public class WorkflowGenerator
                      varName, setterName, entry.getValue());
                body.append(statement);
             }
-            body.append(String.format("   apply(e%s);\n",
+            body.append(String.format("   service.apply(e%s);\n",
                   varName));
          }
       }
@@ -659,7 +673,7 @@ public class WorkflowGenerator
          body.append(statement);
       }
 
-      statement = String.format("   apply(%s);\n\n", varName);
+      statement = String.format("   service.apply(%s);\n\n", varName);
       body.append(statement);
 
       return varName;

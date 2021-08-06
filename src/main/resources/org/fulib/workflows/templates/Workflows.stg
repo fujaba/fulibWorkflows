@@ -65,8 +65,8 @@ serviceApply() ::= <<
 if (history.get(event.getId()) != null) {
    return;
 }
-initEventHandlerMap();
-Consumer<Event> handler = handlerMap.computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+businessLogic.initEventHandlerMap();
+Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
 handler.accept(event);
 history.put(event.getId(), event);
 publish(event);

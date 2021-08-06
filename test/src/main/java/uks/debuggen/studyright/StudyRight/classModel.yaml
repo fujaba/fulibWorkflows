@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	studyRightModel 	studyRightService 	university 	room 	person 	student 	tourList 	stop 	tour
+  classes: 	studyRightModel 	studyRightBusinessLogic 	studyRightService 	university 	room 	person 	student 	tourList 	stop 	tour
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -17,15 +17,27 @@
   name: 	StudyRightModel
   propertyStyle: 	Bean
 
+- studyRightBusinessLogic: 	org.fulib.classmodel.Clazz
+  attributes: 	studyRightBusinessLogic_model 	studyRightBusinessLogic_handlerMap
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;"
+  methods: 	studyRightBusinessLogic_handleLoadRoomsCommand 	studyRightBusinessLogic_handleDemoLoadRoomsCommand 	studyRightBusinessLogic_handleFindToursCommand 	studyRightBusinessLogic_handleDemoFindToursCommand 	studyRightBusinessLogic_handleVisitRoomCommand 	studyRightBusinessLogic_handleDemoVisitRoomCommand 	studyRightBusinessLogic_handleCollectTourStopsCommand 	studyRightBusinessLogic_handleDemoCollectTourStopsCommand 	studyRightBusinessLogic_handleUniversityBuilt 	studyRightBusinessLogic_handleRoomBuilt 	studyRightBusinessLogic_handleStudentBuilt 	studyRightBusinessLogic_handleTourListBuilt 	studyRightBusinessLogic_handleStopBuilt 	studyRightBusinessLogic_handleTourBuilt 	studyRightBusinessLogic_initEventHandlerMap 	studyRightBusinessLogic_stripBrackets
+  model: 	c
+  modified: 	false
+  name: 	StudyRightBusinessLogic
+  propertyStyle: 	Bean
+  roles: 	studyRightBusinessLogic_service
+
 - studyRightService: 	org.fulib.classmodel.Clazz
-  attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model 	studyRightService_handlerMap
+  attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_handleLoadRooms 	studyRightService_handleDemoLoadRooms 	studyRightService_handleFindTours 	studyRightService_handleDemoFindTours 	studyRightService_handleVisitRoom 	studyRightService_handleDemoVisitRoom 	studyRightService_handleCollectTourStops 	studyRightService_handleDemoCollectTourStops 	studyRightService_handleUniversityBuilt 	studyRightService_handleRoomBuilt 	studyRightService_handleStudentBuilt 	studyRightService_handleTourListBuilt 	studyRightService_handleStopBuilt 	studyRightService_handleTourBuilt 	studyRightService_initEventHandlerMap 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply 	studyRightService_stripBrackets
+  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_ignoreEvent 	studyRightService_publish 	studyRightService_postApply
   model: 	c
   modified: 	false
   name: 	StudyRightService
   propertyStyle: 	Bean
+  roles: 	studyRightService_businessLogic
 
 - university: 	org.fulib.classmodel.Clazz
   attributes: 	university_id
@@ -191,6 +203,550 @@ return (Tour) modelMap.computeIfAbsent(id, k -> new Tour().setId(k));
   returnType: 	Tour
   signature: 	"class/StudyRightModel/method/getOrCreateTour(String)"
 
+- studyRightBusinessLogic_model: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightBusinessLogic
+  id: 	StudyRightBusinessLogic_model
+  modified: 	false
+  name: 	model
+  propertyStyle: 	Bean
+  type: 	StudyRightModel
+  typeSignature: 	StudyRightModel
+
+- studyRightBusinessLogic_handlerMap: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightBusinessLogic
+  id: 	StudyRightBusinessLogic_handlerMap
+  modified: 	false
+  name: 	handlerMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Consumer<Event>>"
+  typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
+
+- studyRightBusinessLogic_handleLoadRoomsCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleLoadRoomsCommand(Event e)"
+  id: 	StudyRightBusinessLogic_handleLoadRoomsCommand
+  methodBody: 	"// no fulib
+LoadRoomsCommand event = (LoadRoomsCommand) e;
+handleDemoLoadRoomsCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleLoadRoomsCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleLoadRoomsCommand(Event)"
+
+- studyRightBusinessLogic_handleDemoLoadRoomsCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleDemoLoadRoomsCommand(LoadRoomsCommand event)"
+  id: 	StudyRightBusinessLogic_handleDemoLoadRoomsCommand
+  methodBody: 	"if (event.getId().equals(\"12:00\")) {
+   UniversityBuilt studyRightEvent = new UniversityBuilt();
+   studyRightEvent.setId(\"12:00:00\");
+   studyRightEvent.setBlockId(\"StudyRight\");
+   studyRightEvent.setRooms(\"[math exam]\");
+   service.apply(studyRightEvent);
+
+   RoomBuilt mathEvent = new RoomBuilt();
+   mathEvent.setId(\"12:00:01\");
+   mathEvent.setBlockId(\"math\");
+   mathEvent.setCredits(\"23\");
+   mathEvent.setUni(\"StudyRight\");
+   mathEvent.setDoors(\"[modeling algebra]\");
+   service.apply(mathEvent);
+
+   RoomBuilt modelingEvent = new RoomBuilt();
+   modelingEvent.setId(\"12:00:02\");
+   modelingEvent.setBlockId(\"modeling\");
+   modelingEvent.setUni(\"StudyRight\");
+   modelingEvent.setCredits(\"42\");
+   modelingEvent.setDoors(\"[math algebra exam]\");
+   service.apply(modelingEvent);
+
+   RoomBuilt algebraEvent = new RoomBuilt();
+   algebraEvent.setId(\"12:00:03\");
+   algebraEvent.setBlockId(\"algebra\");
+   algebraEvent.setUni(\"StudyRight\");
+   algebraEvent.setCredits(\"12\");
+   service.apply(algebraEvent);
+
+   RoomBuilt examEvent = new RoomBuilt();
+   examEvent.setId(\"12:00:04\");
+   examEvent.setBlockId(\"exam\");
+   examEvent.setCredits(\"0\");
+   examEvent.setUni(\"StudyRight\");
+   service.apply(examEvent);
+
+   StudentBuilt carliEvent = new StudentBuilt();
+   carliEvent.setId(\"12:00:05\");
+   carliEvent.setBlockId(\"carli\");
+   carliEvent.setName(\"Carli\");
+   carliEvent.setBirthYear(\"1970\");
+   carliEvent.setStudentId(\"stud42\");
+   carliEvent.setUni(\"StudyRight\");
+   service.apply(carliEvent);
+
+
+   RoomsLoadedEvent e120006 = new RoomsLoadedEvent();
+
+   e120006.setId(\"12:00:06\");
+   service.apply(e120006);
+
+   FindToursCommand e1201 = new FindToursCommand();
+
+   e1201.setId(\"12:01\");
+   service.apply(e1201);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoLoadRoomsCommand
+  paramsString: 	"LoadRoomsCommand event"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleDemoLoadRoomsCommand(LoadRoomsCommand)"
+
+- studyRightBusinessLogic_handleFindToursCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleFindToursCommand(Event e)"
+  id: 	StudyRightBusinessLogic_handleFindToursCommand
+  methodBody: 	"// no fulib
+FindToursCommand event = (FindToursCommand) e;
+handleDemoFindToursCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleFindToursCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleFindToursCommand(Event)"
+
+- studyRightBusinessLogic_handleDemoFindToursCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleDemoFindToursCommand(FindToursCommand event)"
+  id: 	StudyRightBusinessLogic_handleDemoFindToursCommand
+  methodBody: 	"if (event.getId().equals(\"12:01\")) {
+   TourListBuilt allToursEvent = new TourListBuilt();
+   allToursEvent.setId(\"12:01:00\");
+   allToursEvent.setBlockId(\"allTours\");
+   service.apply(allToursEvent);
+
+   StopBuilt s01Event = new StopBuilt();
+   s01Event.setId(\"12:01:01\");
+   s01Event.setBlockId(\"s01\");
+   s01Event.setMotivation(\"77\");
+   service.apply(s01Event);
+
+
+   VisitRoomCommand e1202 = new VisitRoomCommand();
+
+   e1202.setId(\"12:02\");
+   e1202.setRoom(\"math\");
+   e1202.setPreviousStop(\"s01\");
+   service.apply(e1202);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoFindToursCommand
+  paramsString: 	"FindToursCommand event"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleDemoFindToursCommand(FindToursCommand)"
+
+- studyRightBusinessLogic_handleVisitRoomCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleVisitRoomCommand(Event e)"
+  id: 	StudyRightBusinessLogic_handleVisitRoomCommand
+  methodBody: 	"// no fulib
+VisitRoomCommand event = (VisitRoomCommand) e;
+handleDemoVisitRoomCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleVisitRoomCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleVisitRoomCommand(Event)"
+
+- studyRightBusinessLogic_handleDemoVisitRoomCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleDemoVisitRoomCommand(VisitRoomCommand event)"
+  id: 	StudyRightBusinessLogic_handleDemoVisitRoomCommand
+  methodBody: 	"if (event.getId().equals(\"12:02\")) {
+   StopBuilt s02Event = new StopBuilt();
+   s02Event.setId(\"12:02:01\");
+   s02Event.setBlockId(\"s02\");
+   s02Event.setRoom(\"math\");
+   s02Event.setMotivation(\"54\");
+   s02Event.setPreviousStop(\"s01\");
+   service.apply(s02Event);
+
+
+   VisitRoomCommand e1203 = new VisitRoomCommand();
+
+   e1203.setId(\"12:03\");
+   e1203.setRoom(\"algebra\");
+   e1203.setPreviousStop(\"s02\");
+   service.apply(e1203);
+
+   VisitRoomCommand e1204 = new VisitRoomCommand();
+
+   e1204.setId(\"12:04\");
+   e1204.setRoom(\"modeling\");
+   e1204.setPreviousStop(\"s02\");
+   service.apply(e1204);
+}
+if (event.getId().equals(\"12:03\")) {
+   StopBuilt s03Event = new StopBuilt();
+   s03Event.setId(\"12:03:01\");
+   s03Event.setBlockId(\"s03\");
+   s03Event.setRoom(\"algebra\");
+   s03Event.setPreviousStop(\"s02\");
+   s03Event.setMotivation(\"42\");
+   service.apply(s03Event);
+
+
+   VisitRoomCommand e1205 = new VisitRoomCommand();
+
+   e1205.setId(\"12:05\");
+   e1205.setPreviousStop(\"s03\");
+   e1205.setRoom(\"modeling\");
+   service.apply(e1205);
+
+   VisitRoomCommand e1206 = new VisitRoomCommand();
+
+   e1206.setId(\"12:06\");
+   e1206.setPreviousStop(\"s03\");
+   e1206.setRoom(\"math\");
+   service.apply(e1206);
+}
+if (event.getId().equals(\"12:05\")) {
+   StopBuilt s05Event = new StopBuilt();
+   s05Event.setId(\"12:05:01\");
+   s05Event.setBlockId(\"s05\");
+   s05Event.setRoom(\"modeling\");
+   s05Event.setPreviousStop(\"s03\");
+   s05Event.setMotivation(\"0\");
+   service.apply(s05Event);
+
+
+   VisitRoomCommand e1207 = new VisitRoomCommand();
+
+   e1207.setId(\"12:07\");
+   e1207.setPreviousStop(\"s05\");
+   e1207.setRoom(\"math\");
+   service.apply(e1207);
+
+   VisitRoomCommand e1208 = new VisitRoomCommand();
+
+   e1208.setId(\"12:08\");
+   e1208.setPreviousStop(\"s05\");
+   e1208.setRoom(\"exam\");
+   service.apply(e1208);
+}
+if (event.getId().equals(\"12:07\")) {
+   StopBuilt s07Event = new StopBuilt();
+   s07Event.setId(\"12:07:01\");
+   s07Event.setBlockId(\"s07\");
+   s07Event.setRoom(\"math\");
+   s07Event.setPreviousStop(\"s05\");
+   s07Event.setMotivation(\"-23\");
+   service.apply(s07Event);
+
+
+   TourFailedEvent e120702 = new TourFailedEvent();
+
+   e120702.setId(\"12:07:02\");
+   e120702.setStop(\"s07\");
+   e120702.setRoom(\"math\");
+   e120702.setCredits(\"-23\");
+   service.apply(e120702);
+}
+if (event.getId().equals(\"12:08\")) {
+   StopBuilt s08Event = new StopBuilt();
+   s08Event.setId(\"12:08:01\");
+   s08Event.setBlockId(\"s08\");
+   s08Event.setRoom(\"exam\");
+   s08Event.setPreviousStop(\"s05\");
+   s08Event.setMotivation(\"0\");
+   service.apply(s08Event);
+
+
+   CollectTourStopsCommand e1209 = new CollectTourStopsCommand();
+
+   e1209.setId(\"12:09\");
+   e1209.setStop(\"s08\");
+   e1209.setTour(\"tour1\");
+   service.apply(e1209);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoVisitRoomCommand
+  paramsString: 	"VisitRoomCommand event"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleDemoVisitRoomCommand(VisitRoomCommand)"
+
+- studyRightBusinessLogic_handleCollectTourStopsCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleCollectTourStopsCommand(Event e)"
+  id: 	StudyRightBusinessLogic_handleCollectTourStopsCommand
+  methodBody: 	"// no fulib
+CollectTourStopsCommand event = (CollectTourStopsCommand) e;
+handleDemoCollectTourStopsCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleCollectTourStopsCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleCollectTourStopsCommand(Event)"
+
+- studyRightBusinessLogic_handleDemoCollectTourStopsCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleDemoCollectTourStopsCommand(CollectTourStopsCommand event)"
+  id: 	StudyRightBusinessLogic_handleDemoCollectTourStopsCommand
+  methodBody: 	"if (event.getId().equals(\"12:09\")) {
+   TourBuilt tour1Event = new TourBuilt();
+   tour1Event.setId(\"12:09:02\");
+   tour1Event.setBlockId(\"tour1\");
+   tour1Event.setTourList(\"allTours\");
+   tour1Event.setStops(\"exam\");
+   service.apply(tour1Event);
+
+
+   CollectTourStopsCommand e1210 = new CollectTourStopsCommand();
+
+   e1210.setId(\"12:10\");
+   e1210.setStop(\"s05\");
+   e1210.setTour(\"tour1\");
+   service.apply(e1210);
+}
+if (event.getId().equals(\"12:10\")) {
+   TourBuilt tour1Event = new TourBuilt();
+   tour1Event.setId(\"12:10:01\");
+   tour1Event.setBlockId(\"tour1\");
+   tour1Event.setStops(\"modeling exam\");
+   service.apply(tour1Event);
+
+
+   CollectTourStopsCommand e1211 = new CollectTourStopsCommand();
+
+   e1211.setId(\"12:11\");
+   e1211.setStop(\"s03\");
+   e1211.setTour(\"tour1\");
+   service.apply(e1211);
+}
+if (event.getId().equals(\"12:11\")) {
+   TourBuilt tour1Event = new TourBuilt();
+   tour1Event.setId(\"12:11:01\");
+   tour1Event.setBlockId(\"tour1\");
+   tour1Event.setStops(\"algebra modeling exam\");
+   service.apply(tour1Event);
+
+
+   CollectTourStopsCommand e1212 = new CollectTourStopsCommand();
+
+   e1212.setId(\"12:12\");
+   e1212.setStop(\"s02\");
+   e1212.setTour(\"tour1\");
+   service.apply(e1212);
+}
+if (event.getId().equals(\"12:12\")) {
+   TourBuilt tour1Event = new TourBuilt();
+   tour1Event.setId(\"12:12:01\");
+   tour1Event.setBlockId(\"tour1\");
+   tour1Event.setStops(\"math algebra modeling exam\");
+   service.apply(tour1Event);
+
+
+   TourFoundEvent e1213 = new TourFoundEvent();
+
+   e1213.setId(\"12:13\");
+   e1213.setTour(\"tour1\");
+   service.apply(e1213);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoCollectTourStopsCommand
+  paramsString: 	"CollectTourStopsCommand event"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleDemoCollectTourStopsCommand(CollectTourStopsCommand)"
+
+- studyRightBusinessLogic_handleUniversityBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleUniversityBuilt(Event e)"
+  id: 	StudyRightBusinessLogic_handleUniversityBuilt
+  methodBody: 	"UniversityBuilt event = (UniversityBuilt) e;
+University object = model.getOrCreateUniversity(event.getBlockId());
+for (String name : stripBrackets(event.getRooms()).split(\"\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withRooms(model.getOrCreateRoom(name));
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleUniversityBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleUniversityBuilt(Event)"
+
+- studyRightBusinessLogic_handleRoomBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleRoomBuilt(Event e)"
+  id: 	StudyRightBusinessLogic_handleRoomBuilt
+  methodBody: 	"RoomBuilt event = (RoomBuilt) e;
+Room object = model.getOrCreateRoom(event.getBlockId());
+object.setCredits(event.getCredits());
+object.setUni(model.getOrCreateUniversity(event.getUni()));
+for (String name : stripBrackets(event.getDoors()).split(\"\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withDoors(model.getOrCreateRoom(name));
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleRoomBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleRoomBuilt(Event)"
+
+- studyRightBusinessLogic_handleStudentBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleStudentBuilt(Event e)"
+  id: 	StudyRightBusinessLogic_handleStudentBuilt
+  methodBody: 	"StudentBuilt event = (StudentBuilt) e;
+Student object = model.getOrCreateStudent(event.getBlockId());
+object.setName(event.getName());
+object.setBirthYear(Integer.parseInt(event.getBirthYear()));
+object.setStudentId(event.getStudentId());
+object.setUni(model.getOrCreateUniversity(event.getUni()));
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleStudentBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleStudentBuilt(Event)"
+
+- studyRightBusinessLogic_handleTourListBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleTourListBuilt(Event e)"
+  id: 	StudyRightBusinessLogic_handleTourListBuilt
+  methodBody: 	"TourListBuilt event = (TourListBuilt) e;
+TourList object = model.getOrCreateTourList(event.getBlockId());
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleTourListBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleTourListBuilt(Event)"
+
+- studyRightBusinessLogic_handleStopBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleStopBuilt(Event e)"
+  id: 	StudyRightBusinessLogic_handleStopBuilt
+  methodBody: 	"StopBuilt event = (StopBuilt) e;
+Stop object = model.getOrCreateStop(event.getBlockId());
+object.setMotivation(event.getMotivation());
+object.setRoom(event.getRoom());
+object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleStopBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleStopBuilt(Event)"
+
+- studyRightBusinessLogic_handleTourBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"private void handleTourBuilt(Event e)"
+  id: 	StudyRightBusinessLogic_handleTourBuilt
+  methodBody: 	"TourBuilt event = (TourBuilt) e;
+Tour object = model.getOrCreateTour(event.getBlockId());
+object.setTourList(model.getOrCreateTourList(event.getTourList()));
+object.setStops(event.getStops());
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleTourBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/handleTourBuilt(Event)"
+
+- studyRightBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"public void initEventHandlerMap()"
+  id: 	StudyRightBusinessLogic_initEventHandlerMap
+  methodBody: 	"if (handlerMap == null) {
+   handlerMap = new LinkedHashMap<>();
+   handlerMap.put(LoadRoomsCommand.class, this::handleLoadRoomsCommand);
+   handlerMap.put(FindToursCommand.class, this::handleFindToursCommand);
+   handlerMap.put(VisitRoomCommand.class, this::handleVisitRoomCommand);
+   handlerMap.put(CollectTourStopsCommand.class, this::handleCollectTourStopsCommand);
+   handlerMap.put(UniversityBuilt.class, this::handleUniversityBuilt);
+   handlerMap.put(RoomBuilt.class, this::handleRoomBuilt);
+   handlerMap.put(StudentBuilt.class, this::handleStudentBuilt);
+   handlerMap.put(TourListBuilt.class, this::handleTourListBuilt);
+   handlerMap.put(StopBuilt.class, this::handleStopBuilt);
+   handlerMap.put(TourBuilt.class, this::handleTourBuilt);
+}
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	initEventHandlerMap
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/StudyRightBusinessLogic/method/initEventHandlerMap()"
+
+- studyRightBusinessLogic_stripBrackets: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBusinessLogic
+  declaration: 	"public String stripBrackets(String back)"
+  id: 	StudyRightBusinessLogic_stripBrackets
+  methodBody: 	"      if (back == null) {
+         return \"\";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;"
+  modified: 	false
+  modifiers: 	public
+  name: 	stripBrackets
+  paramsString: 	"String back"
+  returnType: 	String
+  signature: 	"class/StudyRightBusinessLogic/method/stripBrackets(String)"
+
+- studyRightBusinessLogic_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	studyRightBusinessLogic
+  id: 	StudyRightBusinessLogic_service
+  modified: 	false
+  name: 	service
+  other: 	studyRightService_businessLogic
+  propertyStyle: 	Bean
+
 - studyRightService_history: 	org.fulib.classmodel.Attribute
   clazz: 	studyRightService
   id: 	StudyRightService_history
@@ -229,21 +785,14 @@ return (Tour) modelMap.computeIfAbsent(id, k -> new Tour().setId(k));
   type: 	StudyRightModel
   typeSignature: 	StudyRightModel
 
-- studyRightService_handlerMap: 	org.fulib.classmodel.Attribute
-  clazz: 	studyRightService
-  id: 	StudyRightService_handlerMap
-  modified: 	false
-  name: 	handlerMap
-  propertyStyle: 	Bean
-  type: 	"LinkedHashMap<Class, Consumer<Event>>"
-  typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
-
 - studyRightService_start: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
   declaration: 	"public void start()"
   id: 	StudyRightService_start
   methodBody: 	"model = new StudyRightModel();
+setBusinessLogic(new StudyRightBusinessLogic());
+businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
 spark.port(port);
@@ -323,8 +872,8 @@ catch (UnirestException e) {
   methodBody: 	"if (history.get(event.getId()) != null) {
    return;
 }
-initEventHandlerMap();
-Consumer<Event> handler = handlerMap.computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+businessLogic.initEventHandlerMap();
+Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
 handler.accept(event);
 history.put(event.getId(), event);
 publish(event);"
@@ -360,6 +909,15 @@ return getDemoPage(request, response);
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
 
+if (\"load rooms 12:00\".equals(event)) {
+
+   // create LoadRoomsCommand: load rooms 12:00
+   LoadRoomsCommand e1200 = new LoadRoomsCommand();
+   e1200.setId(\"12:00\");
+   apply(e1200);
+}
+
+
 
 // 11:00
 if (id.equals(\"11_00\")) {
@@ -367,6 +925,7 @@ if (id.equals(\"11_00\")) {
    // StudyRight 11:00
    html.append(\"   <p>Welcome at Study Right</p>\n\");
    html.append(\"   <p>Find your way, start with math</p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"load rooms 12:00\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -392,501 +951,6 @@ return html.toString();"
   paramsString: 	"Request request, Response response"
   returnType: 	String
   signature: 	"class/StudyRightService/method/getDemoPage(Request,Response)"
-
-- studyRightService_handleLoadRooms: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleLoadRooms(Event e)"
-  id: 	StudyRightService_handleLoadRooms
-  methodBody: 	"// no fulib
-LoadRooms event = (LoadRooms) e;
-handleDemoLoadRooms(event);
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleLoadRooms
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleLoadRooms(Event)"
-
-- studyRightService_handleDemoLoadRooms: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleDemoLoadRooms(LoadRooms event)"
-  id: 	StudyRightService_handleDemoLoadRooms
-  methodBody: 	"if (event.getId().equals(\"12:00\")) {
-   UniversityBuilt studyRightEvent = new UniversityBuilt();
-   studyRightEvent.setId(\"12:00:00\");
-   studyRightEvent.setBlockId(\"StudyRight\");
-   studyRightEvent.setRooms(\"[math exam]\");
-   apply(studyRightEvent);
-
-   RoomBuilt mathEvent = new RoomBuilt();
-   mathEvent.setId(\"12:00:01\");
-   mathEvent.setBlockId(\"math\");
-   mathEvent.setCredits(\"23\");
-   mathEvent.setUni(\"StudyRight\");
-   mathEvent.setDoors(\"[modeling algebra]\");
-   apply(mathEvent);
-
-   RoomBuilt modelingEvent = new RoomBuilt();
-   modelingEvent.setId(\"12:00:02\");
-   modelingEvent.setBlockId(\"modeling\");
-   modelingEvent.setUni(\"StudyRight\");
-   modelingEvent.setCredits(\"42\");
-   modelingEvent.setDoors(\"[math algebra exam]\");
-   apply(modelingEvent);
-
-   RoomBuilt algebraEvent = new RoomBuilt();
-   algebraEvent.setId(\"12:00:03\");
-   algebraEvent.setBlockId(\"algebra\");
-   algebraEvent.setUni(\"StudyRight\");
-   algebraEvent.setCredits(\"12\");
-   apply(algebraEvent);
-
-   RoomBuilt examEvent = new RoomBuilt();
-   examEvent.setId(\"12:00:04\");
-   examEvent.setBlockId(\"exam\");
-   examEvent.setCredits(\"0\");
-   examEvent.setUni(\"StudyRight\");
-   apply(examEvent);
-
-   StudentBuilt carliEvent = new StudentBuilt();
-   carliEvent.setId(\"12:00:05\");
-   carliEvent.setBlockId(\"carli\");
-   carliEvent.setName(\"Carli\");
-   carliEvent.setBirthYear(\"1970\");
-   carliEvent.setStudentId(\"stud42\");
-   carliEvent.setUni(\"StudyRight\");
-   apply(carliEvent);
-
-
-   RoomsLoaded e120006 = new RoomsLoaded();
-
-   e120006.setId(\"12:00:06\");
-   apply(e120006);
-
-   FindTours e1201 = new FindTours();
-
-   e1201.setId(\"12:01\");
-   apply(e1201);
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleDemoLoadRooms
-  paramsString: 	"LoadRooms event"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleDemoLoadRooms(LoadRooms)"
-
-- studyRightService_handleFindTours: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleFindTours(Event e)"
-  id: 	StudyRightService_handleFindTours
-  methodBody: 	"// no fulib
-FindTours event = (FindTours) e;
-handleDemoFindTours(event);
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleFindTours
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleFindTours(Event)"
-
-- studyRightService_handleDemoFindTours: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleDemoFindTours(FindTours event)"
-  id: 	StudyRightService_handleDemoFindTours
-  methodBody: 	"if (event.getId().equals(\"12:01\")) {
-   TourListBuilt allToursEvent = new TourListBuilt();
-   allToursEvent.setId(\"12:01:00\");
-   allToursEvent.setBlockId(\"allTours\");
-   apply(allToursEvent);
-
-   StopBuilt s01Event = new StopBuilt();
-   s01Event.setId(\"12:01:01\");
-   s01Event.setBlockId(\"s01\");
-   s01Event.setMotivation(\"77\");
-   apply(s01Event);
-
-
-   VisitRoom e1202 = new VisitRoom();
-
-   e1202.setId(\"12:02\");
-   e1202.setRoom(\"math\");
-   e1202.setPreviousStop(\"s01\");
-   apply(e1202);
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleDemoFindTours
-  paramsString: 	"FindTours event"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleDemoFindTours(FindTours)"
-
-- studyRightService_handleVisitRoom: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleVisitRoom(Event e)"
-  id: 	StudyRightService_handleVisitRoom
-  methodBody: 	"// no fulib
-VisitRoom event = (VisitRoom) e;
-handleDemoVisitRoom(event);
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleVisitRoom
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleVisitRoom(Event)"
-
-- studyRightService_handleDemoVisitRoom: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleDemoVisitRoom(VisitRoom event)"
-  id: 	StudyRightService_handleDemoVisitRoom
-  methodBody: 	"if (event.getId().equals(\"12:02\")) {
-   StopBuilt s02Event = new StopBuilt();
-   s02Event.setId(\"12:02:01\");
-   s02Event.setBlockId(\"s02\");
-   s02Event.setRoom(\"math\");
-   s02Event.setMotivation(\"54\");
-   s02Event.setPreviousStop(\"s01\");
-   apply(s02Event);
-
-
-   VisitRoom e1203 = new VisitRoom();
-
-   e1203.setId(\"12:03\");
-   e1203.setRoom(\"algebra\");
-   e1203.setPreviousStop(\"s02\");
-   apply(e1203);
-
-   VisitRoom e1204 = new VisitRoom();
-
-   e1204.setId(\"12:04\");
-   e1204.setRoom(\"modeling\");
-   e1204.setPreviousStop(\"s02\");
-   apply(e1204);
-}
-if (event.getId().equals(\"12:03\")) {
-   StopBuilt s03Event = new StopBuilt();
-   s03Event.setId(\"12:03:01\");
-   s03Event.setBlockId(\"s03\");
-   s03Event.setRoom(\"algebra\");
-   s03Event.setPreviousStop(\"s02\");
-   s03Event.setMotivation(\"42\");
-   apply(s03Event);
-
-
-   VisitRoom e1205 = new VisitRoom();
-
-   e1205.setId(\"12:05\");
-   e1205.setPreviousStop(\"s03\");
-   e1205.setRoom(\"modeling\");
-   apply(e1205);
-
-   VisitRoom e1206 = new VisitRoom();
-
-   e1206.setId(\"12:06\");
-   e1206.setPreviousStop(\"s03\");
-   e1206.setRoom(\"math\");
-   apply(e1206);
-}
-if (event.getId().equals(\"12:05\")) {
-   StopBuilt s05Event = new StopBuilt();
-   s05Event.setId(\"12:05:01\");
-   s05Event.setBlockId(\"s05\");
-   s05Event.setRoom(\"modeling\");
-   s05Event.setPreviousStop(\"s03\");
-   s05Event.setMotivation(\"0\");
-   apply(s05Event);
-
-
-   VisitRoom e1207 = new VisitRoom();
-
-   e1207.setId(\"12:07\");
-   e1207.setPreviousStop(\"s05\");
-   e1207.setRoom(\"math\");
-   apply(e1207);
-
-   VisitRoom e1208 = new VisitRoom();
-
-   e1208.setId(\"12:08\");
-   e1208.setPreviousStop(\"s05\");
-   e1208.setRoom(\"exam\");
-   apply(e1208);
-}
-if (event.getId().equals(\"12:07\")) {
-   StopBuilt s07Event = new StopBuilt();
-   s07Event.setId(\"12:07:01\");
-   s07Event.setBlockId(\"s07\");
-   s07Event.setRoom(\"math\");
-   s07Event.setPreviousStop(\"s05\");
-   s07Event.setMotivation(\"-23\");
-   apply(s07Event);
-
-
-   TourFailed e120702 = new TourFailed();
-
-   e120702.setId(\"12:07:02\");
-   e120702.setStop(\"s07\");
-   e120702.setRoom(\"math\");
-   e120702.setCredits(\"-23\");
-   apply(e120702);
-}
-if (event.getId().equals(\"12:08\")) {
-   StopBuilt s08Event = new StopBuilt();
-   s08Event.setId(\"12:08:01\");
-   s08Event.setBlockId(\"s08\");
-   s08Event.setRoom(\"exam\");
-   s08Event.setPreviousStop(\"s05\");
-   s08Event.setMotivation(\"0\");
-   apply(s08Event);
-
-
-   CollectTourStops e1209 = new CollectTourStops();
-
-   e1209.setId(\"12:09\");
-   e1209.setStop(\"s08\");
-   e1209.setTour(\"tour1\");
-   apply(e1209);
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleDemoVisitRoom
-  paramsString: 	"VisitRoom event"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleDemoVisitRoom(VisitRoom)"
-
-- studyRightService_handleCollectTourStops: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleCollectTourStops(Event e)"
-  id: 	StudyRightService_handleCollectTourStops
-  methodBody: 	"// no fulib
-CollectTourStops event = (CollectTourStops) e;
-handleDemoCollectTourStops(event);
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleCollectTourStops
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleCollectTourStops(Event)"
-
-- studyRightService_handleDemoCollectTourStops: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleDemoCollectTourStops(CollectTourStops event)"
-  id: 	StudyRightService_handleDemoCollectTourStops
-  methodBody: 	"if (event.getId().equals(\"12:09\")) {
-   TourBuilt tour1Event = new TourBuilt();
-   tour1Event.setId(\"12:09:02\");
-   tour1Event.setBlockId(\"tour1\");
-   tour1Event.setTourList(\"allTours\");
-   tour1Event.setStops(\"exam\");
-   apply(tour1Event);
-
-
-   CollectTourStops e1210 = new CollectTourStops();
-
-   e1210.setId(\"12:10\");
-   e1210.setStop(\"s05\");
-   e1210.setTour(\"tour1\");
-   apply(e1210);
-}
-if (event.getId().equals(\"12:10\")) {
-   TourBuilt tour1Event = new TourBuilt();
-   tour1Event.setId(\"12:10:01\");
-   tour1Event.setBlockId(\"tour1\");
-   tour1Event.setStops(\"modeling exam\");
-   apply(tour1Event);
-
-
-   CollectTourStops e1211 = new CollectTourStops();
-
-   e1211.setId(\"12:11\");
-   e1211.setStop(\"s03\");
-   e1211.setTour(\"tour1\");
-   apply(e1211);
-}
-if (event.getId().equals(\"12:11\")) {
-   TourBuilt tour1Event = new TourBuilt();
-   tour1Event.setId(\"12:11:01\");
-   tour1Event.setBlockId(\"tour1\");
-   tour1Event.setStops(\"algebra modeling exam\");
-   apply(tour1Event);
-
-
-   CollectTourStops e1212 = new CollectTourStops();
-
-   e1212.setId(\"12:12\");
-   e1212.setStop(\"s02\");
-   e1212.setTour(\"tour1\");
-   apply(e1212);
-}
-if (event.getId().equals(\"12:12\")) {
-   TourBuilt tour1Event = new TourBuilt();
-   tour1Event.setId(\"12:12:01\");
-   tour1Event.setBlockId(\"tour1\");
-   tour1Event.setStops(\"math algebra modeling exam\");
-   apply(tour1Event);
-
-
-   TourFound e1213 = new TourFound();
-
-   e1213.setId(\"12:13\");
-   e1213.setTour(\"tour1\");
-   apply(e1213);
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleDemoCollectTourStops
-  paramsString: 	"CollectTourStops event"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleDemoCollectTourStops(CollectTourStops)"
-
-- studyRightService_handleUniversityBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleUniversityBuilt(Event e)"
-  id: 	StudyRightService_handleUniversityBuilt
-  methodBody: 	"UniversityBuilt event = (UniversityBuilt) e;
-University object = model.getOrCreateUniversity(event.getBlockId());
-for (String name : stripBrackets(event.getRooms()).split(\"\\s+\")) {
-   if (name.equals(\"\")) continue;
-   object.withRooms(model.getOrCreateRoom(name));
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleUniversityBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleUniversityBuilt(Event)"
-
-- studyRightService_handleRoomBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleRoomBuilt(Event e)"
-  id: 	StudyRightService_handleRoomBuilt
-  methodBody: 	"RoomBuilt event = (RoomBuilt) e;
-Room object = model.getOrCreateRoom(event.getBlockId());
-object.setCredits(event.getCredits());
-object.setUni(model.getOrCreateUniversity(event.getUni()));
-for (String name : stripBrackets(event.getDoors()).split(\"\\s+\")) {
-   if (name.equals(\"\")) continue;
-   object.withDoors(model.getOrCreateRoom(name));
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleRoomBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleRoomBuilt(Event)"
-
-- studyRightService_handleStudentBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleStudentBuilt(Event e)"
-  id: 	StudyRightService_handleStudentBuilt
-  methodBody: 	"StudentBuilt event = (StudentBuilt) e;
-Student object = model.getOrCreateStudent(event.getBlockId());
-object.setName(event.getName());
-object.setBirthYear(Integer.parseInt(event.getBirthYear()));
-object.setStudentId(event.getStudentId());
-object.setUni(model.getOrCreateUniversity(event.getUni()));
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleStudentBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleStudentBuilt(Event)"
-
-- studyRightService_handleTourListBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleTourListBuilt(Event e)"
-  id: 	StudyRightService_handleTourListBuilt
-  methodBody: 	"TourListBuilt event = (TourListBuilt) e;
-TourList object = model.getOrCreateTourList(event.getBlockId());
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleTourListBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleTourListBuilt(Event)"
-
-- studyRightService_handleStopBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleStopBuilt(Event e)"
-  id: 	StudyRightService_handleStopBuilt
-  methodBody: 	"StopBuilt event = (StopBuilt) e;
-Stop object = model.getOrCreateStop(event.getBlockId());
-object.setMotivation(event.getMotivation());
-object.setRoom(event.getRoom());
-object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleStopBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleStopBuilt(Event)"
-
-- studyRightService_handleTourBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void handleTourBuilt(Event e)"
-  id: 	StudyRightService_handleTourBuilt
-  methodBody: 	"TourBuilt event = (TourBuilt) e;
-Tour object = model.getOrCreateTour(event.getBlockId());
-object.setTourList(model.getOrCreateTourList(event.getTourList()));
-object.setStops(event.getStops());
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleTourBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/handleTourBuilt(Event)"
-
-- studyRightService_initEventHandlerMap: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	studyRightService
-  declaration: 	"private void initEventHandlerMap()"
-  id: 	StudyRightService_initEventHandlerMap
-  methodBody: 	"if (handlerMap == null) {
-   handlerMap = new LinkedHashMap<>();
-   handlerMap.put(LoadRooms.class, this::handleLoadRooms);
-   handlerMap.put(FindTours.class, this::handleFindTours);
-   handlerMap.put(VisitRoom.class, this::handleVisitRoom);
-   handlerMap.put(CollectTourStops.class, this::handleCollectTourStops);
-   handlerMap.put(UniversityBuilt.class, this::handleUniversityBuilt);
-   handlerMap.put(RoomBuilt.class, this::handleRoomBuilt);
-   handlerMap.put(StudentBuilt.class, this::handleStudentBuilt);
-   handlerMap.put(TourListBuilt.class, this::handleTourListBuilt);
-   handlerMap.put(StopBuilt.class, this::handleStopBuilt);
-   handlerMap.put(TourBuilt.class, this::handleTourBuilt);
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	initEventHandlerMap
-  paramsString: 	""
-  returnType: 	void
-  signature: 	"class/StudyRightService/method/initEventHandlerMap()"
 
 - studyRightService_ignoreEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -949,26 +1013,15 @@ catch (UnirestException e) {
   returnType: 	String
   signature: 	"class/StudyRightService/method/postApply(Request,Response)"
 
-- studyRightService_stripBrackets: 	org.fulib.classmodel.FMethod
-  annotations: 	""
+- studyRightService_businessLogic: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
   clazz: 	studyRightService
-  declaration: 	"public String stripBrackets(String back)"
-  id: 	StudyRightService_stripBrackets
-  methodBody: 	"      if (back == null) {
-         return \"\";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;"
+  id: 	StudyRightService_businessLogic
   modified: 	false
-  modifiers: 	public
-  name: 	stripBrackets
-  paramsString: 	"String back"
-  returnType: 	String
-  signature: 	"class/StudyRightService/method/stripBrackets(String)"
+  name: 	businessLogic
+  other: 	studyRightBusinessLogic_service
+  propertyStyle: 	Bean
 
 - university_id: 	org.fulib.classmodel.Attribute
   clazz: 	university

@@ -1,7 +1,7 @@
 package uks.debuggen.studyright.events;
 import java.util.Objects;
 
-public class TourFailed extends Event
+public class TourFailedEvent extends Event
 {
    public static final String PROPERTY_STOP = "stop";
    public static final String PROPERTY_ROOM = "room";
@@ -15,7 +15,7 @@ public class TourFailed extends Event
       return this.stop;
    }
 
-   public TourFailed setStop(String value)
+   public TourFailedEvent setStop(String value)
    {
       if (Objects.equals(value, this.stop))
       {
@@ -33,7 +33,7 @@ public class TourFailed extends Event
       return this.room;
    }
 
-   public TourFailed setRoom(String value)
+   public TourFailedEvent setRoom(String value)
    {
       if (Objects.equals(value, this.room))
       {
@@ -51,7 +51,7 @@ public class TourFailed extends Event
       return this.credits;
    }
 
-   public TourFailed setCredits(String value)
+   public TourFailedEvent setCredits(String value)
    {
       if (Objects.equals(value, this.credits))
       {

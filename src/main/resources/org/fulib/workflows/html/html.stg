@@ -18,8 +18,8 @@ page(content, width) ::= <<
         .box \{
             position: relative;
             float: left;
-            margin: 3px;
-            padding: 4px;
+            margin: 6px;
+            padding: 12px;
         \}
 
         .placeholder \{
