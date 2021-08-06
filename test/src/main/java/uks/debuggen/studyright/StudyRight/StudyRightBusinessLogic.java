@@ -193,6 +193,11 @@ public class StudyRightBusinessLogic
       }
    }
 
+   private void ignoreEvent(Event event)
+   {
+      // empty
+   }
+
    public String idPrefix = "e";
    public int idNumber = 0;
 
@@ -578,6 +583,11 @@ public class StudyRightBusinessLogic
          e1213.setTour("tour1");
          service.apply(e1213);
       }
+   }
+
+   public Consumer<Event> getHandler(Event event)
+   {
+      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
    }
 
    public void initEventHandlerMap()

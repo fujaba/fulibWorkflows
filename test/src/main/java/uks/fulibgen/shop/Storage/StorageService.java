@@ -209,15 +209,10 @@ public class StorageService
          return;
       }
       businessLogic.initEventHandlerMap();
-      Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+      Consumer<Event> handler = businessLogic.getHandler(event);
       handler.accept(event);
       history.put(event.getId(), event);
       publish(event);
-   }
-
-   private void ignoreEvent(Event event)
-   {
-      // empty
    }
 
    public void publish(Event event)

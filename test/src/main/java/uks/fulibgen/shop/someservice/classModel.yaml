@@ -21,7 +21,7 @@
   attributes: 	someserviceBusinessLogic_model 	someserviceBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	someserviceBusinessLogic_handleProductStoredEvent 	someserviceBusinessLogic_handleDemoProductStoredEvent 	someserviceBusinessLogic_initEventHandlerMap
+  methods: 	someserviceBusinessLogic_handleProductStoredEvent 	someserviceBusinessLogic_handleDemoProductStoredEvent 	someserviceBusinessLogic_initEventHandlerMap 	someserviceBusinessLogic_ignoreEvent 	someserviceBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	someserviceBusinessLogic
@@ -43,7 +43,7 @@
   attributes: 	someserviceService_history 	someserviceService_port 	someserviceService_spark 	someserviceService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	someserviceService_start 	someserviceService_getHello 	someserviceService_subscribeAndLoadOldEvents 	someserviceService_apply 	someserviceService_getPage 	someserviceService_getDemoPage 	someserviceService_ignoreEvent 	someserviceService_publish 	someserviceService_postApply
+  methods: 	someserviceService_start 	someserviceService_getHello 	someserviceService_subscribeAndLoadOldEvents 	someserviceService_apply 	someserviceService_getPage 	someserviceService_getDemoPage 	someserviceService_publish 	someserviceService_postApply
   model: 	c
   modified: 	false
   name: 	someserviceService
@@ -162,6 +162,34 @@ handleDemoProductStoredEvent(event);
   paramsString: 	""
   returnType: 	void
   signature: 	"class/someserviceBusinessLogic/method/initEventHandlerMap()"
+
+- someserviceBusinessLogic_ignoreEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceBusinessLogic
+  declaration: 	"private void ignoreEvent(Event event)"
+  id: 	someserviceBusinessLogic_ignoreEvent
+  methodBody: 	"// empty
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	ignoreEvent
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/someserviceBusinessLogic/method/ignoreEvent(Event)"
+
+- someserviceBusinessLogic_getHandler: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceBusinessLogic
+  declaration: 	"public Consumer<Event> getHandler(Event event)"
+  id: 	someserviceBusinessLogic_getHandler
+  methodBody: 	"return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getHandler
+  paramsString: 	"Event event"
+  returnType: 	"Consumer<Event>"
+  signature: 	"class/someserviceBusinessLogic/method/getHandler(Event)"
 
 - someserviceBusinessLogic_builder: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
@@ -367,7 +395,7 @@ catch (UnirestException e) {
    return;
 }
 businessLogic.initEventHandlerMap();
-Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+Consumer<Event> handler = businessLogic.getHandler(event);
 handler.accept(event);
 history.put(event.getId(), event);
 publish(event);"
@@ -413,20 +441,6 @@ return html.toString();"
   paramsString: 	"Request request, Response response"
   returnType: 	String
   signature: 	"class/someserviceService/method/getDemoPage(Request,Response)"
-
-- someserviceService_ignoreEvent: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	someserviceService
-  declaration: 	"private void ignoreEvent(Event event)"
-  id: 	someserviceService_ignoreEvent
-  methodBody: 	"// empty
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	ignoreEvent
-  paramsString: 	"Event event"
-  returnType: 	void
-  signature: 	"class/someserviceService/method/ignoreEvent(Event)"
 
 - someserviceService_publish: 	org.fulib.classmodel.FMethod
   annotations: 	""

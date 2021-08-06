@@ -21,7 +21,7 @@
   attributes: 	storageBusinessLogic_model 	storageBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	storageBusinessLogic_handleProductStoredEvent 	storageBusinessLogic_handleDemoProductStoredEvent 	storageBusinessLogic_handleOrderRegisteredCommand 	storageBusinessLogic_handleDemoOrderRegisteredCommand 	storageBusinessLogic_handleOrderPickedEvent 	storageBusinessLogic_handleDemoOrderPickedEvent 	storageBusinessLogic_handleOrderRegisteredEvent 	storageBusinessLogic_handleDemoOrderRegisteredEvent 	storageBusinessLogic_initEventHandlerMap
+  methods: 	storageBusinessLogic_handleProductStoredEvent 	storageBusinessLogic_handleDemoProductStoredEvent 	storageBusinessLogic_handleOrderRegisteredCommand 	storageBusinessLogic_handleDemoOrderRegisteredCommand 	storageBusinessLogic_handleOrderPickedEvent 	storageBusinessLogic_handleDemoOrderPickedEvent 	storageBusinessLogic_handleOrderRegisteredEvent 	storageBusinessLogic_handleDemoOrderRegisteredEvent 	storageBusinessLogic_initEventHandlerMap 	storageBusinessLogic_ignoreEvent 	storageBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	StorageBusinessLogic
@@ -43,7 +43,7 @@
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_ignoreEvent 	storageService_publish 	storageService_postApply
+  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_publish 	storageService_postApply
   model: 	c
   modified: 	false
   name: 	StorageService
@@ -317,6 +317,34 @@ handleDemoOrderRegisteredEvent(event);
   returnType: 	void
   signature: 	"class/StorageBusinessLogic/method/initEventHandlerMap()"
 
+- storageBusinessLogic_ignoreEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBusinessLogic
+  declaration: 	"private void ignoreEvent(Event event)"
+  id: 	StorageBusinessLogic_ignoreEvent
+  methodBody: 	"// empty
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	ignoreEvent
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/StorageBusinessLogic/method/ignoreEvent(Event)"
+
+- storageBusinessLogic_getHandler: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBusinessLogic
+  declaration: 	"public Consumer<Event> getHandler(Event event)"
+  id: 	StorageBusinessLogic_getHandler
+  methodBody: 	"return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getHandler
+  paramsString: 	"Event event"
+  returnType: 	"Consumer<Event>"
+  signature: 	"class/StorageBusinessLogic/method/getHandler(Event)"
+
 - storageBusinessLogic_builder: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
@@ -542,7 +570,7 @@ catch (UnirestException e) {
    return;
 }
 businessLogic.initEventHandlerMap();
-Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+Consumer<Event> handler = businessLogic.getHandler(event);
 handler.accept(event);
 history.put(event.getId(), event);
 publish(event);"
@@ -588,20 +616,6 @@ return html.toString();"
   paramsString: 	"Request request, Response response"
   returnType: 	String
   signature: 	"class/StorageService/method/getDemoPage(Request,Response)"
-
-- storageService_ignoreEvent: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageService
-  declaration: 	"private void ignoreEvent(Event event)"
-  id: 	StorageService_ignoreEvent
-  methodBody: 	"// empty
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	ignoreEvent
-  paramsString: 	"Event event"
-  returnType: 	void
-  signature: 	"class/StorageService/method/ignoreEvent(Event)"
 
 - storageService_publish: 	org.fulib.classmodel.FMethod
   annotations: 	""

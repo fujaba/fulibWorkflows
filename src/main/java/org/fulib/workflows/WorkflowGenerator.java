@@ -161,7 +161,13 @@ public class WorkflowGenerator
          declaration = "private void ignoreEvent(Event event)";
          body.setLength(0);
          body.append("// empty\n");
-         modelManager.haveMethod(serviceClazz, declaration, body.toString());
+         modelManager.haveMethod(logicClass, declaration, body.toString());
+
+         // getHandlerMethod
+         declaration = "public Consumer<Event> getHandler(Event event)";
+         body.setLength(0);
+         body.append("return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);\n");
+         modelManager.haveMethod(logicClass, declaration, body.toString());
 
          // publish method
          declaration = "public void publish(Event event)";

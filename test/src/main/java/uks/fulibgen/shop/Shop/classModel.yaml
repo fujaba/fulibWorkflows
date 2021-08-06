@@ -21,7 +21,7 @@
   attributes: 	shopBusinessLogic_model 	shopBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	shopBusinessLogic_handleOrderRegisteredCommand 	shopBusinessLogic_handleDemoOrderRegisteredCommand 	shopBusinessLogic_handleOrderApprovedEvent 	shopBusinessLogic_handleDemoOrderApprovedEvent 	shopBusinessLogic_handleOrderPickedEvent 	shopBusinessLogic_handleDemoOrderPickedEvent 	shopBusinessLogic_handleOrderRegisteredEvent 	shopBusinessLogic_handleDemoOrderRegisteredEvent 	shopBusinessLogic_handleOrderDeclinedEvent 	shopBusinessLogic_handleDemoOrderDeclinedEvent 	shopBusinessLogic_initEventHandlerMap
+  methods: 	shopBusinessLogic_handleOrderRegisteredCommand 	shopBusinessLogic_handleDemoOrderRegisteredCommand 	shopBusinessLogic_handleOrderApprovedEvent 	shopBusinessLogic_handleDemoOrderApprovedEvent 	shopBusinessLogic_handleOrderPickedEvent 	shopBusinessLogic_handleDemoOrderPickedEvent 	shopBusinessLogic_handleOrderRegisteredEvent 	shopBusinessLogic_handleDemoOrderRegisteredEvent 	shopBusinessLogic_handleOrderDeclinedEvent 	shopBusinessLogic_handleDemoOrderDeclinedEvent 	shopBusinessLogic_initEventHandlerMap 	shopBusinessLogic_ignoreEvent 	shopBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	ShopBusinessLogic
@@ -43,7 +43,7 @@
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_ignoreEvent 	shopService_publish 	shopService_postApply
+  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_publish 	shopService_postApply
   model: 	c
   modified: 	false
   name: 	ShopService
@@ -355,6 +355,34 @@ handleDemoOrderDeclinedEvent(event);
   returnType: 	void
   signature: 	"class/ShopBusinessLogic/method/initEventHandlerMap()"
 
+- shopBusinessLogic_ignoreEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBusinessLogic
+  declaration: 	"private void ignoreEvent(Event event)"
+  id: 	ShopBusinessLogic_ignoreEvent
+  methodBody: 	"// empty
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	ignoreEvent
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/ShopBusinessLogic/method/ignoreEvent(Event)"
+
+- shopBusinessLogic_getHandler: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBusinessLogic
+  declaration: 	"public Consumer<Event> getHandler(Event event)"
+  id: 	ShopBusinessLogic_getHandler
+  methodBody: 	"return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getHandler
+  paramsString: 	"Event event"
+  returnType: 	"Consumer<Event>"
+  signature: 	"class/ShopBusinessLogic/method/getHandler(Event)"
+
 - shopBusinessLogic_builder: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
@@ -577,7 +605,7 @@ catch (UnirestException e) {
    return;
 }
 businessLogic.initEventHandlerMap();
-Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+Consumer<Event> handler = businessLogic.getHandler(event);
 handler.accept(event);
 history.put(event.getId(), event);
 publish(event);"
@@ -671,20 +699,6 @@ return html.toString();"
   paramsString: 	"Request request, Response response"
   returnType: 	String
   signature: 	"class/ShopService/method/getDemoPage(Request,Response)"
-
-- shopService_ignoreEvent: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopService
-  declaration: 	"private void ignoreEvent(Event event)"
-  id: 	ShopService_ignoreEvent
-  methodBody: 	"// empty
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	ignoreEvent
-  paramsString: 	"Event event"
-  returnType: 	void
-  signature: 	"class/ShopService/method/ignoreEvent(Event)"
 
 - shopService_publish: 	org.fulib.classmodel.FMethod
   annotations: 	""

@@ -161,4 +161,14 @@ public class someserviceBusinessLogic
       this.setBuilder(null);
       this.setService(null);
    }
+
+   private void ignoreEvent(Event event)
+   {
+      // empty
+   }
+
+   public Consumer<Event> getHandler(Event event)
+   {
+      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+   }
 }
