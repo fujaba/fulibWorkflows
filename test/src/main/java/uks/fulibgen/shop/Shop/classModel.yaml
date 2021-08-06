@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	shopModel 	shopBusinessLogic 	shopService 	order 	customer
+  classes: 	shopModel 	shopBusinessLogic 	shopBuilder 	shopService 	order 	customer
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -21,12 +21,23 @@
   attributes: 	shopBusinessLogic_model 	shopBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	shopBusinessLogic_handleOrderRegisteredCommand 	shopBusinessLogic_handleDemoOrderRegisteredCommand 	shopBusinessLogic_handleOrderApprovedEvent 	shopBusinessLogic_handleDemoOrderApprovedEvent 	shopBusinessLogic_handleOrderPickedEvent 	shopBusinessLogic_handleDemoOrderPickedEvent 	shopBusinessLogic_handleOrderRegisteredEvent 	shopBusinessLogic_handleDemoOrderRegisteredEvent 	shopBusinessLogic_handleOrderDeclinedEvent 	shopBusinessLogic_handleDemoOrderDeclinedEvent 	shopBusinessLogic_handleOrderBuilt 	shopBusinessLogic_handleCustomerBuilt 	shopBusinessLogic_initEventHandlerMap 	shopBusinessLogic_stripBrackets
+  methods: 	shopBusinessLogic_handleOrderRegisteredCommand 	shopBusinessLogic_handleDemoOrderRegisteredCommand 	shopBusinessLogic_handleOrderApprovedEvent 	shopBusinessLogic_handleDemoOrderApprovedEvent 	shopBusinessLogic_handleOrderPickedEvent 	shopBusinessLogic_handleDemoOrderPickedEvent 	shopBusinessLogic_handleOrderRegisteredEvent 	shopBusinessLogic_handleDemoOrderRegisteredEvent 	shopBusinessLogic_handleOrderDeclinedEvent 	shopBusinessLogic_handleDemoOrderDeclinedEvent 	shopBusinessLogic_initEventHandlerMap
   model: 	c
   modified: 	false
   name: 	ShopBusinessLogic
   propertyStyle: 	Bean
-  roles: 	shopBusinessLogic_service
+  roles: 	shopBusinessLogic_builder 	shopBusinessLogic_service
+
+- shopBuilder: 	org.fulib.classmodel.Clazz
+  attributes: 	shopBuilder_model
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
+  methods: 	shopBuilder_handleOrderBuilt 	shopBuilder_handleCustomerBuilt 	shopBuilder_stripBrackets
+  model: 	c
+  modified: 	false
+  name: 	ShopBuilder
+  propertyStyle: 	Bean
+  roles: 	shopBuilder_businessLogic
 
 - shopService: 	org.fulib.classmodel.Clazz
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model
@@ -321,41 +332,6 @@ handleDemoOrderDeclinedEvent(event);
   returnType: 	void
   signature: 	"class/ShopBusinessLogic/method/handleDemoOrderDeclinedEvent(OrderDeclinedEvent)"
 
-- shopBusinessLogic_handleOrderBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopBusinessLogic
-  declaration: 	"private void handleOrderBuilt(Event e)"
-  id: 	ShopBusinessLogic_handleOrderBuilt
-  methodBody: 	"OrderBuilt event = (OrderBuilt) e;
-Order object = model.getOrCreateOrder(event.getBlockId());
-object.setProduct(event.getProduct());
-object.setCustomer(event.getCustomer());
-object.setAddress(event.getAddress());
-object.setState(event.getState());
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleOrderBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopBusinessLogic/method/handleOrderBuilt(Event)"
-
-- shopBusinessLogic_handleCustomerBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopBusinessLogic
-  declaration: 	"private void handleCustomerBuilt(Event e)"
-  id: 	ShopBusinessLogic_handleCustomerBuilt
-  methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
-Customer object = model.getOrCreateCustomer(event.getBlockId());
-object.setOrders(event.getOrders());
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleCustomerBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopBusinessLogic/method/handleCustomerBuilt(Event)"
-
 - shopBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBusinessLogic
@@ -368,8 +344,8 @@ object.setOrders(event.getOrders());
    handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
    handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
    handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-   handlerMap.put(OrderBuilt.class, this::handleOrderBuilt);
-   handlerMap.put(CustomerBuilt.class, this::handleCustomerBuilt);
+   handlerMap.put(OrderBuilt.class, builder::handleOrderBuilt);
+   handlerMap.put(CustomerBuilt.class, builder::handleCustomerBuilt);
 }
 "
   modified: 	false
@@ -379,11 +355,75 @@ object.setOrders(event.getOrders());
   returnType: 	void
   signature: 	"class/ShopBusinessLogic/method/initEventHandlerMap()"
 
-- shopBusinessLogic_stripBrackets: 	org.fulib.classmodel.FMethod
-  annotations: 	""
+- shopBusinessLogic_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
   clazz: 	shopBusinessLogic
+  id: 	ShopBusinessLogic_builder
+  modified: 	false
+  name: 	builder
+  other: 	shopBuilder_businessLogic
+  propertyStyle: 	Bean
+
+- shopBusinessLogic_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	shopBusinessLogic
+  id: 	ShopBusinessLogic_service
+  modified: 	false
+  name: 	service
+  other: 	shopService_businessLogic
+  propertyStyle: 	Bean
+
+- shopBuilder_model: 	org.fulib.classmodel.Attribute
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_model
+  modified: 	false
+  name: 	model
+  propertyStyle: 	Bean
+  type: 	ShopModel
+  typeSignature: 	ShopModel
+
+- shopBuilder_handleOrderBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public void handleOrderBuilt(Event e)"
+  id: 	ShopBuilder_handleOrderBuilt
+  methodBody: 	"OrderBuilt event = (OrderBuilt) e;
+Order object = model.getOrCreateOrder(event.getBlockId());
+object.setProduct(event.getProduct());
+object.setCustomer(event.getCustomer());
+object.setAddress(event.getAddress());
+object.setState(event.getState());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handleOrderBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/handleOrderBuilt(Event)"
+
+- shopBuilder_handleCustomerBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public void handleCustomerBuilt(Event e)"
+  id: 	ShopBuilder_handleCustomerBuilt
+  methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
+Customer object = model.getOrCreateCustomer(event.getBlockId());
+object.setOrders(event.getOrders());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handleCustomerBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/handleCustomerBuilt(Event)"
+
+- shopBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
   declaration: 	"public String stripBrackets(String back)"
-  id: 	ShopBusinessLogic_stripBrackets
+  id: 	ShopBuilder_stripBrackets
   methodBody: 	"      if (back == null) {
          return \"\";
       }
@@ -398,16 +438,16 @@ object.setOrders(event.getOrders());
   name: 	stripBrackets
   paramsString: 	"String back"
   returnType: 	String
-  signature: 	"class/ShopBusinessLogic/method/stripBrackets(String)"
+  signature: 	"class/ShopBuilder/method/stripBrackets(String)"
 
-- shopBusinessLogic_service: 	org.fulib.classmodel.AssocRole
+- shopBuilder_businessLogic: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
-  clazz: 	shopBusinessLogic
-  id: 	ShopBusinessLogic_service
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_businessLogic
   modified: 	false
-  name: 	service
-  other: 	shopService_businessLogic
+  name: 	businessLogic
+  other: 	shopBusinessLogic_builder
   propertyStyle: 	Bean
 
 - shopService_history: 	org.fulib.classmodel.Attribute
@@ -455,6 +495,7 @@ object.setOrders(event.getOrders());
   id: 	ShopService_start
   methodBody: 	"model = new ShopModel();
 setBusinessLogic(new ShopBusinessLogic());
+businessLogic.setBuilder(new ShopBuilder().setModel(model));
 businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();

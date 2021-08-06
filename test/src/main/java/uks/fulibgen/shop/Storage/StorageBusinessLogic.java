@@ -11,10 +11,12 @@ public class StorageBusinessLogic
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
    public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_BUILDER = "builder";
    private StorageModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
    private StorageService service;
    protected PropertyChangeSupport listeners;
+   private StorageBuilder builder;
 
    public StorageModel getModel()
    {
@@ -76,6 +78,33 @@ public class StorageBusinessLogic
          value.setBusinessLogic(this);
       }
       this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
+   }
+
+   public StorageBuilder getBuilder()
+   {
+      return this.builder;
+   }
+
+   public StorageBusinessLogic setBuilder(StorageBuilder value)
+   {
+      if (this.builder == value)
+      {
+         return this;
+      }
+
+      final StorageBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setBusinessLogic(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setBusinessLogic(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
       return this;
    }
 
@@ -173,26 +202,6 @@ public class StorageBusinessLogic
       }
    }
 
-   private void handleBoxBuilt(Event e)
-   {
-      BoxBuilt event = (BoxBuilt) e;
-      Box object = model.getOrCreateBox(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setPlace(event.getPlace());
-   }
-
-   private void handlePickTaskBuilt(Event e)
-   {
-      PickTaskBuilt event = (PickTaskBuilt) e;
-      PickTask object = model.getOrCreatePickTask(event.getBlockId());
-      object.setOrder(event.getOrder());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
-      object.setBox(event.getBox());
-   }
-
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
@@ -201,8 +210,8 @@ public class StorageBusinessLogic
          handlerMap.put(OrderRegisteredCommand.class, this::handleOrderRegisteredCommand);
          handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
          handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
-         handlerMap.put(BoxBuilt.class, this::handleBoxBuilt);
-         handlerMap.put(PickTaskBuilt.class, this::handlePickTaskBuilt);
+         handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
+         handlerMap.put(PickTaskBuilt.class, builder::handlePickTaskBuilt);
       }
    }
 
@@ -227,19 +236,7 @@ public class StorageBusinessLogic
 
    public void removeYou()
    {
+      this.setBuilder(null);
       this.setService(null);
-   }
-
-   public String stripBrackets(String back)
-   {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
    }
 }

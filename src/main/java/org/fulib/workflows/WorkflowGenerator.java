@@ -39,6 +39,7 @@ public class WorkflowGenerator
    private StringBuilder testBody;
    private Clazz serviceClazz;
    private Clazz logicClass;
+   private Clazz builderClass;
 
    public EventModel getEventModel()
    {
@@ -102,6 +103,17 @@ public class WorkflowGenerator
          // add business logic class
          logicClass = modelManager.haveClass(serviceName + "BusinessLogic");
          modelManager.haveAttribute(logicClass, "model", serviceName + "Model");
+         logicClass.withImports("import java.util.LinkedHashMap;",
+               "import java.util.function.Consumer;",
+               "import " + em.getClassModel().getPackageName() + ".*;");
+
+         builderClass = modelManager.haveClass(serviceName + "Builder");
+         modelManager.haveAttribute(builderClass, "model", serviceName + "Model");
+         builderClass.withImports("import java.util.LinkedHashMap;",
+               "import java.util.function.Consumer;",
+               "import " + em.getClassModel().getPackageName() + ".*;");
+
+         modelManager.associate(logicClass, "builder", Type.ONE, builderClass, "businessLogic", Type.ONE);
 
          // add ServiceClass
          serviceClazz = modelManager.haveClass(serviceName + "Service");
@@ -129,9 +141,7 @@ public class WorkflowGenerator
          modelManager.associate(serviceClazz, "businessLogic", Type.ONE, logicClass, "service", Type.ONE);
          modelManager.haveAttribute(logicClass, "handlerMap",
                "LinkedHashMap<Class, Consumer<Event>>", null);
-         logicClass.withImports("import java.util.LinkedHashMap;",
-               "import java.util.function.Consumer;",
-               "import " + em.getClassModel().getPackageName() + ".*;");
+
 
 
          String declaration;
@@ -172,7 +182,7 @@ public class WorkflowGenerator
          body.setLength(0);
          st = group.getInstanceOf("stripBrackets");
          body.append(st.render());
-         modelManager.haveMethod(logicClass, declaration, body.toString());
+         modelManager.haveMethod(builderClass, declaration, body.toString());
 
       }
    }
@@ -308,6 +318,7 @@ public class WorkflowGenerator
       declaration = "public void start()";
       body.append(String.format("model = new %sModel();\n", serviceName));
       body.append(String.format("setBusinessLogic(new %sBusinessLogic());\n", serviceName));
+      body.append(String.format("businessLogic.setBuilder(new %sBuilder().setModel(model));\n", serviceName));
       body.append("businessLogic.setModel(model);\n");
       body.append("ExecutorService executor = Executors.newSingleThreadExecutor();\n");
       body.append("spark = Service.ignite();\n");
@@ -346,7 +357,7 @@ public class WorkflowGenerator
 
       for (DataType dataType : serviceNote.getHandledDataTypes()) {
          String eventTypeName = dataType.getDataTypeName() + "Built";
-         body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
+         body.append(String.format("   handlerMap.put(%s.class, builder::handle%s);\n",
                eventTypeName, eventTypeName));
          addDataEventHandlerMethod(modelManager, serviceNote, dataType);
       }
@@ -357,7 +368,7 @@ public class WorkflowGenerator
       StringBuilder body = new StringBuilder();
       String dataTypeName = dataType.getDataTypeName();
       String eventTypeName = dataTypeName + "Built";
-      String declaration = String.format("private void handle%s(Event e)", eventTypeName);
+      String declaration = String.format("public void handle%s(Event e)", eventTypeName);
       body.append(String.format("%s event = (%1$s) e;\n", eventTypeName));
       body.append(String.format("%s object = model.getOrCreate%1$s(event.getBlockId());\n", dataTypeName));
 
@@ -395,7 +406,7 @@ public class WorkflowGenerator
             }
          }
       }
-      modelManager.haveMethod(logicClass, declaration, body.toString());
+      modelManager.haveMethod(builderClass, declaration, body.toString());
    }
 
    private void addEventHandlerMethod(ClassModelManager modelManager, ServiceNote serviceNote, EventType eventType)

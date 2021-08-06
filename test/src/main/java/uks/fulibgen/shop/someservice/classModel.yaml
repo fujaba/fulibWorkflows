@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	someserviceModel 	someserviceBusinessLogic 	someserviceService 	box
+  classes: 	someserviceModel 	someserviceBusinessLogic 	someserviceBuilder 	someserviceService 	box
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -21,12 +21,23 @@
   attributes: 	someserviceBusinessLogic_model 	someserviceBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	someserviceBusinessLogic_handleProductStoredEvent 	someserviceBusinessLogic_handleDemoProductStoredEvent 	someserviceBusinessLogic_handleBoxBuilt 	someserviceBusinessLogic_initEventHandlerMap 	someserviceBusinessLogic_stripBrackets
+  methods: 	someserviceBusinessLogic_handleProductStoredEvent 	someserviceBusinessLogic_handleDemoProductStoredEvent 	someserviceBusinessLogic_initEventHandlerMap
   model: 	c
   modified: 	false
   name: 	someserviceBusinessLogic
   propertyStyle: 	Bean
-  roles: 	someserviceBusinessLogic_service
+  roles: 	someserviceBusinessLogic_builder 	someserviceBusinessLogic_service
+
+- someserviceBuilder: 	org.fulib.classmodel.Clazz
+  attributes: 	someserviceBuilder_model
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
+  methods: 	someserviceBuilder_handleBoxBuilt 	someserviceBuilder_stripBrackets
+  model: 	c
+  modified: 	false
+  name: 	someserviceBuilder
+  propertyStyle: 	Bean
+  roles: 	someserviceBuilder_businessLogic
 
 - someserviceService: 	org.fulib.classmodel.Clazz
   attributes: 	someserviceService_history 	someserviceService_port 	someserviceService_spark 	someserviceService_model
@@ -134,23 +145,6 @@ handleDemoProductStoredEvent(event);
   returnType: 	void
   signature: 	"class/someserviceBusinessLogic/method/handleDemoProductStoredEvent(ProductStoredEvent)"
 
-- someserviceBusinessLogic_handleBoxBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	someserviceBusinessLogic
-  declaration: 	"private void handleBoxBuilt(Event e)"
-  id: 	someserviceBusinessLogic_handleBoxBuilt
-  methodBody: 	"BoxBuilt event = (BoxBuilt) e;
-Box object = model.getOrCreateBox(event.getBlockId());
-object.setProduct(event.getProduct());
-object.setPlace(event.getPlace());
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleBoxBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/someserviceBusinessLogic/method/handleBoxBuilt(Event)"
-
 - someserviceBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	someserviceBusinessLogic
@@ -159,7 +153,7 @@ object.setPlace(event.getPlace());
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(ProductStoredEvent.class, this::handleProductStoredEvent);
-   handlerMap.put(BoxBuilt.class, this::handleBoxBuilt);
+   handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
 }
 "
   modified: 	false
@@ -169,11 +163,57 @@ object.setPlace(event.getPlace());
   returnType: 	void
   signature: 	"class/someserviceBusinessLogic/method/initEventHandlerMap()"
 
-- someserviceBusinessLogic_stripBrackets: 	org.fulib.classmodel.FMethod
-  annotations: 	""
+- someserviceBusinessLogic_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
   clazz: 	someserviceBusinessLogic
+  id: 	someserviceBusinessLogic_builder
+  modified: 	false
+  name: 	builder
+  other: 	someserviceBuilder_businessLogic
+  propertyStyle: 	Bean
+
+- someserviceBusinessLogic_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	someserviceBusinessLogic
+  id: 	someserviceBusinessLogic_service
+  modified: 	false
+  name: 	service
+  other: 	someserviceService_businessLogic
+  propertyStyle: 	Bean
+
+- someserviceBuilder_model: 	org.fulib.classmodel.Attribute
+  clazz: 	someserviceBuilder
+  id: 	someserviceBuilder_model
+  modified: 	false
+  name: 	model
+  propertyStyle: 	Bean
+  type: 	someserviceModel
+  typeSignature: 	someserviceModel
+
+- someserviceBuilder_handleBoxBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceBuilder
+  declaration: 	"public void handleBoxBuilt(Event e)"
+  id: 	someserviceBuilder_handleBoxBuilt
+  methodBody: 	"BoxBuilt event = (BoxBuilt) e;
+Box object = model.getOrCreateBox(event.getBlockId());
+object.setProduct(event.getProduct());
+object.setPlace(event.getPlace());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handleBoxBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/someserviceBuilder/method/handleBoxBuilt(Event)"
+
+- someserviceBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceBuilder
   declaration: 	"public String stripBrackets(String back)"
-  id: 	someserviceBusinessLogic_stripBrackets
+  id: 	someserviceBuilder_stripBrackets
   methodBody: 	"      if (back == null) {
          return \"\";
       }
@@ -188,16 +228,16 @@ object.setPlace(event.getPlace());
   name: 	stripBrackets
   paramsString: 	"String back"
   returnType: 	String
-  signature: 	"class/someserviceBusinessLogic/method/stripBrackets(String)"
+  signature: 	"class/someserviceBuilder/method/stripBrackets(String)"
 
-- someserviceBusinessLogic_service: 	org.fulib.classmodel.AssocRole
+- someserviceBuilder_businessLogic: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
-  clazz: 	someserviceBusinessLogic
-  id: 	someserviceBusinessLogic_service
+  clazz: 	someserviceBuilder
+  id: 	someserviceBuilder_businessLogic
   modified: 	false
-  name: 	service
-  other: 	someserviceService_businessLogic
+  name: 	businessLogic
+  other: 	someserviceBusinessLogic_builder
   propertyStyle: 	Bean
 
 - someserviceService_history: 	org.fulib.classmodel.Attribute
@@ -245,6 +285,7 @@ object.setPlace(event.getPlace());
   id: 	someserviceService_start
   methodBody: 	"model = new someserviceModel();
 setBusinessLogic(new someserviceBusinessLogic());
+businessLogic.setBuilder(new someserviceBuilder().setModel(model));
 businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();

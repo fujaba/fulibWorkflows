@@ -11,10 +11,12 @@ public class someserviceBusinessLogic
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
    public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_BUILDER = "builder";
    private someserviceModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
    private someserviceService service;
    protected PropertyChangeSupport listeners;
+   private someserviceBuilder builder;
 
    public someserviceModel getModel()
    {
@@ -79,6 +81,33 @@ public class someserviceBusinessLogic
       return this;
    }
 
+   public someserviceBuilder getBuilder()
+   {
+      return this.builder;
+   }
+
+   public someserviceBusinessLogic setBuilder(someserviceBuilder value)
+   {
+      if (this.builder == value)
+      {
+         return this;
+      }
+
+      final someserviceBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setBusinessLogic(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setBusinessLogic(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
+      return this;
+   }
+
    private void handleProductStoredEvent(Event e)
    {
       // no fulib
@@ -99,20 +128,12 @@ public class someserviceBusinessLogic
       }
    }
 
-   private void handleBoxBuilt(Event e)
-   {
-      BoxBuilt event = (BoxBuilt) e;
-      Box object = model.getOrCreateBox(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setPlace(event.getPlace());
-   }
-
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(ProductStoredEvent.class, this::handleProductStoredEvent);
-         handlerMap.put(BoxBuilt.class, this::handleBoxBuilt);
+         handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
       }
    }
 
@@ -137,19 +158,7 @@ public class someserviceBusinessLogic
 
    public void removeYou()
    {
+      this.setBuilder(null);
       this.setService(null);
-   }
-
-   public String stripBrackets(String back)
-   {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
    }
 }

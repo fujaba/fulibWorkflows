@@ -134,6 +134,7 @@ public class ShopService
    {
       model = new ShopModel();
       setBusinessLogic(new ShopBusinessLogic());
+      businessLogic.setBuilder(new ShopBuilder().setModel(model));
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();

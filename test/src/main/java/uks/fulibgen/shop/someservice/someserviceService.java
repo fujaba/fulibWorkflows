@@ -134,6 +134,7 @@ public class someserviceService
    {
       model = new someserviceModel();
       setBusinessLogic(new someserviceBusinessLogic());
+      businessLogic.setBuilder(new someserviceBuilder().setModel(model));
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();

@@ -11,10 +11,12 @@ public class ShopBusinessLogic
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
    public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_BUILDER = "builder";
    private ShopModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
    private ShopService service;
    protected PropertyChangeSupport listeners;
+   private ShopBuilder builder;
 
    public ShopModel getModel()
    {
@@ -76,6 +78,33 @@ public class ShopBusinessLogic
          value.setBusinessLogic(this);
       }
       this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
+   }
+
+   public ShopBuilder getBuilder()
+   {
+      return this.builder;
+   }
+
+   public ShopBusinessLogic setBuilder(ShopBuilder value)
+   {
+      if (this.builder == value)
+      {
+         return this;
+      }
+
+      final ShopBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setBusinessLogic(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setBusinessLogic(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
       return this;
    }
 
@@ -192,23 +221,6 @@ public class ShopBusinessLogic
       }
    }
 
-   private void handleOrderBuilt(Event e)
-   {
-      OrderBuilt event = (OrderBuilt) e;
-      Order object = model.getOrCreateOrder(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
-   }
-
-   private void handleCustomerBuilt(Event e)
-   {
-      CustomerBuilt event = (CustomerBuilt) e;
-      Customer object = model.getOrCreateCustomer(event.getBlockId());
-      object.setOrders(event.getOrders());
-   }
-
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
@@ -218,8 +230,8 @@ public class ShopBusinessLogic
          handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
          handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
          handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-         handlerMap.put(OrderBuilt.class, this::handleOrderBuilt);
-         handlerMap.put(CustomerBuilt.class, this::handleCustomerBuilt);
+         handlerMap.put(OrderBuilt.class, builder::handleOrderBuilt);
+         handlerMap.put(CustomerBuilt.class, builder::handleCustomerBuilt);
       }
    }
 
@@ -244,19 +256,7 @@ public class ShopBusinessLogic
 
    public void removeYou()
    {
+      this.setBuilder(null);
       this.setService(null);
-   }
-
-   public String stripBrackets(String back)
-   {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
    }
 }

@@ -138,6 +138,7 @@ public class StudyRightService
    {
       model = new StudyRightModel();
       setBusinessLogic(new StudyRightBusinessLogic());
+      businessLogic.setBuilder(new StudyRightBuilder().setModel(model));
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();

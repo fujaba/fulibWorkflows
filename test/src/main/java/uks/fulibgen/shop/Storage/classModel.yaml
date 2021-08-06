@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	storageModel 	storageBusinessLogic 	storageService 	box 	pickTask
+  classes: 	storageModel 	storageBusinessLogic 	storageBuilder 	storageService 	box 	pickTask
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -21,12 +21,23 @@
   attributes: 	storageBusinessLogic_model 	storageBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	storageBusinessLogic_handleProductStoredEvent 	storageBusinessLogic_handleDemoProductStoredEvent 	storageBusinessLogic_handleOrderRegisteredCommand 	storageBusinessLogic_handleDemoOrderRegisteredCommand 	storageBusinessLogic_handleOrderPickedEvent 	storageBusinessLogic_handleDemoOrderPickedEvent 	storageBusinessLogic_handleOrderRegisteredEvent 	storageBusinessLogic_handleDemoOrderRegisteredEvent 	storageBusinessLogic_handleBoxBuilt 	storageBusinessLogic_handlePickTaskBuilt 	storageBusinessLogic_initEventHandlerMap 	storageBusinessLogic_stripBrackets
+  methods: 	storageBusinessLogic_handleProductStoredEvent 	storageBusinessLogic_handleDemoProductStoredEvent 	storageBusinessLogic_handleOrderRegisteredCommand 	storageBusinessLogic_handleDemoOrderRegisteredCommand 	storageBusinessLogic_handleOrderPickedEvent 	storageBusinessLogic_handleDemoOrderPickedEvent 	storageBusinessLogic_handleOrderRegisteredEvent 	storageBusinessLogic_handleDemoOrderRegisteredEvent 	storageBusinessLogic_initEventHandlerMap
   model: 	c
   modified: 	false
   name: 	StorageBusinessLogic
   propertyStyle: 	Bean
-  roles: 	storageBusinessLogic_service
+  roles: 	storageBusinessLogic_builder 	storageBusinessLogic_service
+
+- storageBuilder: 	org.fulib.classmodel.Clazz
+  attributes: 	storageBuilder_model
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
+  methods: 	storageBuilder_handleBoxBuilt 	storageBuilder_handlePickTaskBuilt 	storageBuilder_stripBrackets
+  model: 	c
+  modified: 	false
+  name: 	StorageBuilder
+  propertyStyle: 	Bean
+  roles: 	storageBuilder_businessLogic
 
 - storageService: 	org.fulib.classmodel.Clazz
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model
@@ -284,44 +295,6 @@ handleDemoOrderRegisteredEvent(event);
   returnType: 	void
   signature: 	"class/StorageBusinessLogic/method/handleDemoOrderRegisteredEvent(OrderRegisteredEvent)"
 
-- storageBusinessLogic_handleBoxBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBusinessLogic
-  declaration: 	"private void handleBoxBuilt(Event e)"
-  id: 	StorageBusinessLogic_handleBoxBuilt
-  methodBody: 	"BoxBuilt event = (BoxBuilt) e;
-Box object = model.getOrCreateBox(event.getBlockId());
-object.setProduct(event.getProduct());
-object.setPlace(event.getPlace());
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleBoxBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StorageBusinessLogic/method/handleBoxBuilt(Event)"
-
-- storageBusinessLogic_handlePickTaskBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBusinessLogic
-  declaration: 	"private void handlePickTaskBuilt(Event e)"
-  id: 	StorageBusinessLogic_handlePickTaskBuilt
-  methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
-PickTask object = model.getOrCreatePickTask(event.getBlockId());
-object.setOrder(event.getOrder());
-object.setProduct(event.getProduct());
-object.setCustomer(event.getCustomer());
-object.setAddress(event.getAddress());
-object.setState(event.getState());
-object.setBox(event.getBox());
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handlePickTaskBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StorageBusinessLogic/method/handlePickTaskBuilt(Event)"
-
 - storageBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBusinessLogic
@@ -333,8 +306,8 @@ object.setBox(event.getBox());
    handlerMap.put(OrderRegisteredCommand.class, this::handleOrderRegisteredCommand);
    handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
    handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
-   handlerMap.put(BoxBuilt.class, this::handleBoxBuilt);
-   handlerMap.put(PickTaskBuilt.class, this::handlePickTaskBuilt);
+   handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
+   handlerMap.put(PickTaskBuilt.class, builder::handlePickTaskBuilt);
 }
 "
   modified: 	false
@@ -344,11 +317,78 @@ object.setBox(event.getBox());
   returnType: 	void
   signature: 	"class/StorageBusinessLogic/method/initEventHandlerMap()"
 
-- storageBusinessLogic_stripBrackets: 	org.fulib.classmodel.FMethod
-  annotations: 	""
+- storageBusinessLogic_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
   clazz: 	storageBusinessLogic
+  id: 	StorageBusinessLogic_builder
+  modified: 	false
+  name: 	builder
+  other: 	storageBuilder_businessLogic
+  propertyStyle: 	Bean
+
+- storageBusinessLogic_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	storageBusinessLogic
+  id: 	StorageBusinessLogic_service
+  modified: 	false
+  name: 	service
+  other: 	storageService_businessLogic
+  propertyStyle: 	Bean
+
+- storageBuilder_model: 	org.fulib.classmodel.Attribute
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_model
+  modified: 	false
+  name: 	model
+  propertyStyle: 	Bean
+  type: 	StorageModel
+  typeSignature: 	StorageModel
+
+- storageBuilder_handleBoxBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public void handleBoxBuilt(Event e)"
+  id: 	StorageBuilder_handleBoxBuilt
+  methodBody: 	"BoxBuilt event = (BoxBuilt) e;
+Box object = model.getOrCreateBox(event.getBlockId());
+object.setProduct(event.getProduct());
+object.setPlace(event.getPlace());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handleBoxBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StorageBuilder/method/handleBoxBuilt(Event)"
+
+- storageBuilder_handlePickTaskBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public void handlePickTaskBuilt(Event e)"
+  id: 	StorageBuilder_handlePickTaskBuilt
+  methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
+PickTask object = model.getOrCreatePickTask(event.getBlockId());
+object.setOrder(event.getOrder());
+object.setProduct(event.getProduct());
+object.setCustomer(event.getCustomer());
+object.setAddress(event.getAddress());
+object.setState(event.getState());
+object.setBox(event.getBox());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handlePickTaskBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StorageBuilder/method/handlePickTaskBuilt(Event)"
+
+- storageBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
   declaration: 	"public String stripBrackets(String back)"
-  id: 	StorageBusinessLogic_stripBrackets
+  id: 	StorageBuilder_stripBrackets
   methodBody: 	"      if (back == null) {
          return \"\";
       }
@@ -363,16 +403,16 @@ object.setBox(event.getBox());
   name: 	stripBrackets
   paramsString: 	"String back"
   returnType: 	String
-  signature: 	"class/StorageBusinessLogic/method/stripBrackets(String)"
+  signature: 	"class/StorageBuilder/method/stripBrackets(String)"
 
-- storageBusinessLogic_service: 	org.fulib.classmodel.AssocRole
+- storageBuilder_businessLogic: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
-  clazz: 	storageBusinessLogic
-  id: 	StorageBusinessLogic_service
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_businessLogic
   modified: 	false
-  name: 	service
-  other: 	storageService_businessLogic
+  name: 	businessLogic
+  other: 	storageBusinessLogic_builder
   propertyStyle: 	Bean
 
 - storageService_history: 	org.fulib.classmodel.Attribute
@@ -420,6 +460,7 @@ object.setBox(event.getBox());
   id: 	StorageService_start
   methodBody: 	"model = new StorageModel();
 setBusinessLogic(new StorageBusinessLogic());
+businessLogic.setBuilder(new StorageBuilder().setModel(model));
 businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();

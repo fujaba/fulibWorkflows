@@ -4,17 +4,18 @@ import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 import uks.debuggen.studyright.events.*;
-import static org.fulib.workflows.StrUtil.stripBrackets;
 
 public class StudyRightBusinessLogic
 {
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_SERVICE = "service";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
+   public static final String PROPERTY_BUILDER = "builder";
    private StudyRightModel model;
    protected PropertyChangeSupport listeners;
    private StudyRightService service;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
+   private StudyRightBuilder builder;
 
    public StudyRightModel getModel()
    {
@@ -79,6 +80,33 @@ public class StudyRightBusinessLogic
       return this;
    }
 
+   public StudyRightBuilder getBuilder()
+   {
+      return this.builder;
+   }
+
+   public StudyRightBusinessLogic setBuilder(StudyRightBuilder value)
+   {
+      if (this.builder == value)
+      {
+         return this;
+      }
+
+      final StudyRightBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setBusinessLogic(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setBusinessLogic(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -100,6 +128,7 @@ public class StudyRightBusinessLogic
 
    public void removeYou()
    {
+      this.setBuilder(null);
       this.setService(null);
    }
 
@@ -211,19 +240,6 @@ public class StudyRightBusinessLogic
       examEvent.setCredits("0");
       examEvent.setUni("StudyRight");
       service.apply(examEvent);
-   }
-
-   public String stripBrackets(String back)
-   {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
    }
 
    private void handleFindToursCommand(Event e)
@@ -564,61 +580,6 @@ public class StudyRightBusinessLogic
       }
    }
 
-   private void handleUniversityBuilt(Event e)
-   {
-      UniversityBuilt event = (UniversityBuilt) e;
-      University object = model.getOrCreateUniversity(event.getBlockId());
-      for (String name : stripBrackets(event.getRooms()).split("\\s+")) {
-         if (name.equals("")) continue;
-         object.withRooms(model.getOrCreateRoom(name));
-      }
-   }
-
-   private void handleRoomBuilt(Event e)
-   {
-      RoomBuilt event = (RoomBuilt) e;
-      Room object = model.getOrCreateRoom(event.getBlockId());
-      object.setCredits(event.getCredits());
-      object.setUni(model.getOrCreateUniversity(event.getUni()));
-      for (String name : stripBrackets(event.getDoors()).split("\\s+")) {
-         if (name.equals("")) continue;
-         object.withDoors(model.getOrCreateRoom(name));
-      }
-   }
-
-   private void handleStudentBuilt(Event e)
-   {
-      StudentBuilt event = (StudentBuilt) e;
-      Student object = model.getOrCreateStudent(event.getBlockId());
-      object.setName(event.getName());
-      object.setBirthYear(Integer.parseInt(event.getBirthYear()));
-      object.setStudentId(event.getStudentId());
-      object.setUni(model.getOrCreateUniversity(event.getUni()));
-   }
-
-   private void handleTourListBuilt(Event e)
-   {
-      TourListBuilt event = (TourListBuilt) e;
-      TourList object = model.getOrCreateTourList(event.getBlockId());
-   }
-
-   private void handleStopBuilt(Event e)
-   {
-      StopBuilt event = (StopBuilt) e;
-      Stop object = model.getOrCreateStop(event.getBlockId());
-      object.setMotivation(event.getMotivation());
-      object.setRoom(event.getRoom());
-      object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
-   }
-
-   private void handleTourBuilt(Event e)
-   {
-      TourBuilt event = (TourBuilt) e;
-      Tour object = model.getOrCreateTour(event.getBlockId());
-      object.setTourList(model.getOrCreateTourList(event.getTourList()));
-      object.setStops(event.getStops());
-   }
-
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
@@ -627,12 +588,12 @@ public class StudyRightBusinessLogic
          handlerMap.put(FindToursCommand.class, this::handleFindToursCommand);
          handlerMap.put(VisitRoomCommand.class, this::handleVisitRoomCommand);
          handlerMap.put(CollectTourStopsCommand.class, this::handleCollectTourStopsCommand);
-         handlerMap.put(UniversityBuilt.class, this::handleUniversityBuilt);
-         handlerMap.put(RoomBuilt.class, this::handleRoomBuilt);
-         handlerMap.put(StudentBuilt.class, this::handleStudentBuilt);
-         handlerMap.put(TourListBuilt.class, this::handleTourListBuilt);
-         handlerMap.put(StopBuilt.class, this::handleStopBuilt);
-         handlerMap.put(TourBuilt.class, this::handleTourBuilt);
+         handlerMap.put(UniversityBuilt.class, builder::handleUniversityBuilt);
+         handlerMap.put(RoomBuilt.class, builder::handleRoomBuilt);
+         handlerMap.put(StudentBuilt.class, builder::handleStudentBuilt);
+         handlerMap.put(TourListBuilt.class, builder::handleTourListBuilt);
+         handlerMap.put(StopBuilt.class, builder::handleStopBuilt);
+         handlerMap.put(TourBuilt.class, builder::handleTourBuilt);
       }
    }
 }

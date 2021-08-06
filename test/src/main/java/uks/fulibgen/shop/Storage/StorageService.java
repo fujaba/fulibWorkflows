@@ -134,6 +134,7 @@ public class StorageService
    {
       model = new StorageModel();
       setBusinessLogic(new StorageBusinessLogic());
+      businessLogic.setBuilder(new StorageBuilder().setModel(model));
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();

@@ -1,8 +1,8 @@
-<svg width="768px" height="219px"
- viewBox="0.00 0.00 767.50 219.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 215)">
+<svg width="593px" height="320px"
+ viewBox="0.00 0.00 592.50 320.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 316)">
 <title>uks.fulibgen.shop.someservice</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-215 763.5,-215 763.5,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-316 588.5,-316 588.5,4 -4,4"/>
 <!-- Box -->
 <g id="node1" class="node"><title>Box</title>
 <polygon fill="none" stroke="black" points="8.5,-55 8.5,-76 99.5,-76 99.5,-55 8.5,-55"/>
@@ -12,36 +12,49 @@
 <text text-anchor="start" x="11.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
 <text text-anchor="start" x="11.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">place :String</text>
 </g>
+<!-- someserviceBuilder -->
+<g id="node2" class="node"><title>someserviceBuilder</title>
+<polygon fill="none" stroke="black" points="133.5,-40 133.5,-61 286.5,-61 286.5,-40 133.5,-40"/>
+<text text-anchor="start" x="155.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">someserviceBuilder</text>
+<polygon fill="none" stroke="black" points="133.5,-19 133.5,-40 286.5,-40 286.5,-19 133.5,-19"/>
+<text text-anchor="start" x="136.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">model :someserviceModel</text>
+</g>
 <!-- someserviceBusinessLogic -->
-<g id="node2" class="node"><title>someserviceBusinessLogic</title>
-<polygon fill="none" stroke="black" points="133.5,-47 133.5,-68 461.5,-68 461.5,-47 133.5,-47"/>
-<text text-anchor="start" x="222" y="-53.8" font-family="Times New Roman,serif" font-size="14.00">someserviceBusinessLogic</text>
-<polygon fill="none" stroke="black" points="133.5,-11 133.5,-47 461.5,-47 461.5,-11 133.5,-11"/>
-<text text-anchor="start" x="136.5" y="-32.8" font-family="Times New Roman,serif" font-size="14.00">model :someserviceModel</text>
-<text text-anchor="start" x="136.5" y="-17.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+<g id="node3" class="node"><title>someserviceBusinessLogic</title>
+<polygon fill="none" stroke="black" points="45.5,-155.5 45.5,-176.5 373.5,-176.5 373.5,-155.5 45.5,-155.5"/>
+<text text-anchor="start" x="134" y="-162.3" font-family="Times New Roman,serif" font-size="14.00">someserviceBusinessLogic</text>
+<polygon fill="none" stroke="black" points="45.5,-119.5 45.5,-155.5 373.5,-155.5 373.5,-119.5 45.5,-119.5"/>
+<text text-anchor="start" x="48.5" y="-141.3" font-family="Times New Roman,serif" font-size="14.00">model :someserviceModel</text>
+<text text-anchor="start" x="48.5" y="-126.3" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+</g>
+<!-- someserviceBuilder&#45;&gt;someserviceBusinessLogic -->
+<g id="edge1" class="edge"><title>someserviceBuilder&#45;&gt;someserviceBusinessLogic</title>
+<path fill="none" stroke="black" d="M209.5,-65.1665C209.5,-80.141 209.5,-99.5419 209.5,-115.749"/>
+<text text-anchor="middle" x="169" y="-104.549" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
+<text text-anchor="middle" x="190" y="-68.9665" font-family="Times New Roman,serif" font-size="14.00">builder</text>
 </g>
 <!-- someserviceService -->
-<g id="node4" class="node"><title>someserviceService</title>
-<polygon fill="none" stroke="black" points="183.5,-185.5 183.5,-206.5 412.5,-206.5 412.5,-185.5 183.5,-185.5"/>
-<text text-anchor="start" x="242.5" y="-192.3" font-family="Times New Roman,serif" font-size="14.00">someserviceService</text>
-<polygon fill="none" stroke="black" points="183.5,-119.5 183.5,-185.5 412.5,-185.5 412.5,-119.5 183.5,-119.5"/>
-<text text-anchor="start" x="186.5" y="-171.3" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
-<text text-anchor="start" x="186.5" y="-156.3" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
-<text text-anchor="start" x="186.5" y="-141.3" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
-<text text-anchor="start" x="186.5" y="-126.3" font-family="Times New Roman,serif" font-size="14.00">model :someserviceModel</text>
+<g id="node5" class="node"><title>someserviceService</title>
+<polygon fill="none" stroke="black" points="95.5,-286.5 95.5,-307.5 324.5,-307.5 324.5,-286.5 95.5,-286.5"/>
+<text text-anchor="start" x="154.5" y="-293.3" font-family="Times New Roman,serif" font-size="14.00">someserviceService</text>
+<polygon fill="none" stroke="black" points="95.5,-220.5 95.5,-286.5 324.5,-286.5 324.5,-220.5 95.5,-220.5"/>
+<text text-anchor="start" x="98.5" y="-272.3" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="98.5" y="-257.3" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="98.5" y="-242.3" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="98.5" y="-227.3" font-family="Times New Roman,serif" font-size="14.00">model :someserviceModel</text>
 </g>
 <!-- someserviceBusinessLogic&#45;&gt;someserviceService -->
-<g id="edge1" class="edge"><title>someserviceBusinessLogic&#45;&gt;someserviceService</title>
-<path fill="none" stroke="black" d="M297.5,-72.6055C297.5,-85.8242 297.5,-101.456 297.5,-115.946"/>
-<text text-anchor="middle" x="277.5" y="-104.746" font-family="Times New Roman,serif" font-size="14.00">service</text>
-<text text-anchor="middle" x="257" y="-76.4055" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
+<g id="edge2" class="edge"><title>someserviceBusinessLogic&#45;&gt;someserviceService</title>
+<path fill="none" stroke="black" d="M209.5,-181.255C209.5,-192.324 209.5,-204.983 209.5,-216.998"/>
+<text text-anchor="middle" x="189.5" y="-205.798" font-family="Times New Roman,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="169" y="-185.055" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
 </g>
 <!-- someserviceModel -->
-<g id="node3" class="node"><title>someserviceModel</title>
-<polygon fill="none" stroke="black" points="495.5,-40 495.5,-61 751.5,-61 751.5,-40 495.5,-40"/>
-<text text-anchor="start" x="570.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">someserviceModel</text>
-<polygon fill="none" stroke="black" points="495.5,-19 495.5,-40 751.5,-40 751.5,-19 495.5,-19"/>
-<text text-anchor="start" x="498.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+<g id="node4" class="node"><title>someserviceModel</title>
+<polygon fill="none" stroke="black" points="320.5,-40 320.5,-61 576.5,-61 576.5,-40 320.5,-40"/>
+<text text-anchor="start" x="395.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">someserviceModel</text>
+<polygon fill="none" stroke="black" points="320.5,-19 320.5,-40 576.5,-40 576.5,-19 320.5,-19"/>
+<text text-anchor="start" x="323.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
 </g>
 </g>
 </svg>
