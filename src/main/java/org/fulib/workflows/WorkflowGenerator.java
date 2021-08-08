@@ -200,8 +200,8 @@ public class WorkflowGenerator
 
       declaration = "public String getPage(Request request, Response response)";
       body.setLength(0);
-      body.append("// no fulib\n");
-      body.append("// add your page handling here\n");
+      body.append("// to protect manuel changes to this method insert a 'no' in front of fulib in the next line\n");
+      body.append("// fulib\n");
       body.append("return getDemoPage(request, response);\n");
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
 
@@ -420,7 +420,8 @@ public class WorkflowGenerator
       StringBuilder body = new StringBuilder();
       String eventTypeName = eventType.getEventTypeName();
       String declaration = String.format("private void handle%s(Event e)", eventTypeName);
-      body.append("// no fulib\n");
+      body.append("// to protect manuel changes to this method insert a 'no' in front of fulib in the next line\n");
+      body.append("// fulib\n");
       body.append(String.format("%s event = (%s) e;\n", eventTypeName, eventTypeName));
       body.append(String.format("handleDemo%s(event);\n", eventTypeName));
       modelManager.haveMethod(logicClass, declaration, body.toString());

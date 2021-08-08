@@ -134,7 +134,8 @@ return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
   clazz: 	storageBusinessLogic
   declaration: 	"private void handleStoreBoxCommand(Event e)"
   id: 	StorageBusinessLogic_handleStoreBoxCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 StoreBoxCommand event = (StoreBoxCommand) e;
 handleDemoStoreBoxCommand(event);
 "
@@ -180,7 +181,8 @@ handleDemoStoreBoxCommand(event);
   clazz: 	storageBusinessLogic
   declaration: 	"private void handleOrderRegisteredEvent(Event e)"
   id: 	StorageBusinessLogic_handleOrderRegisteredEvent
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 OrderRegisteredEvent event = (OrderRegisteredEvent) e;
 handleDemoOrderRegisteredEvent(event);
 "
@@ -235,7 +237,8 @@ if (event.getId().equals(\"13:14\")) {
   clazz: 	storageBusinessLogic
   declaration: 	"private void handlePickOrderCommand(Event e)"
   id: 	StorageBusinessLogic_handlePickOrderCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 PickOrderCommand event = (PickOrderCommand) e;
 handleDemoPickOrderCommand(event);
 "
@@ -572,8 +575,8 @@ publish(event);"
   clazz: 	storageService
   declaration: 	"public String getPage(Request request, Response response)"
   id: 	StorageService_getPage
-  methodBody: 	"// no fulib
-// add your page handling here
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 return getDemoPage(request, response);
 "
   modified: 	false

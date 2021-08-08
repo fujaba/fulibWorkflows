@@ -134,7 +134,8 @@ return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleSubmitOrderCommand(Event e)"
   id: 	ShopBusinessLogic_handleSubmitOrderCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 SubmitOrderCommand event = (SubmitOrderCommand) e;
 handleDemoSubmitOrderCommand(event);
 "
@@ -216,7 +217,8 @@ if (event.getId().equals(\"13:11\")) {
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleOrderApprovedEvent(Event e)"
   id: 	ShopBusinessLogic_handleOrderApprovedEvent
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 OrderApprovedEvent event = (OrderApprovedEvent) e;
 handleDemoOrderApprovedEvent(event);
 "
@@ -253,7 +255,8 @@ handleDemoOrderApprovedEvent(event);
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleOrderPickedEvent(Event e)"
   id: 	ShopBusinessLogic_handleOrderPickedEvent
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 OrderPickedEvent event = (OrderPickedEvent) e;
 handleDemoOrderPickedEvent(event);
 "
@@ -290,7 +293,8 @@ handleDemoOrderPickedEvent(event);
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleOrderDeclinedEvent(Event e)"
   id: 	ShopBusinessLogic_handleOrderDeclinedEvent
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 OrderDeclinedEvent event = (OrderDeclinedEvent) e;
 handleDemoOrderDeclinedEvent(event);
 "
@@ -610,8 +614,8 @@ publish(event);"
   clazz: 	shopService
   declaration: 	"public String getPage(Request request, Response response)"
   id: 	ShopService_getPage
-  methodBody: 	"// no fulib
-// add your page handling here
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 return getDemoPage(request, response);
 "
   modified: 	false

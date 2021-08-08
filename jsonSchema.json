@@ -6,6 +6,19 @@
   "type": "array",
   "additionalItems": false,
   "$defs": {
+    "boardItem": {
+      "description": "The name of the overall project",
+      "type": "object",
+      "properties": {
+        "board": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "board"
+      ],
+      "additionalProperties": false
+    },
     "workflowItem": {
       "description": "The title of your current workflow",
       "type": "object",
@@ -36,8 +49,20 @@
       ],
       "additionalProperties": false
     },
+    "commandItem": {
+      "description": "A command send by a user",
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "command"
+      ]
+    },
     "eventItem": {
-      "description": "The title of your current workflow",
+      "description": "An event signalling that some system state is reached",
       "type": "object",
       "properties": {
         "event": {
@@ -49,7 +74,7 @@
       ]
     },
     "policyItem": {
-      "description": "Action performed by user",
+      "description": "The following steps define the reaction of a service to some triggering command or event",
       "type": "object",
       "properties": {
         "policy": {
@@ -65,8 +90,20 @@
       ],
       "additionalProperties": false
     },
+    "classItem": {
+      "description": "class for data within a service",
+      "type": "object",
+      "properties": {
+        "class": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "class"
+      ]
+    },
     "dataItem": {
-      "description": "Action performed by user",
+      "description": "data object created within a service",
       "type": "object",
       "properties": {
         "data": {
@@ -176,7 +213,13 @@
   "items": {
     "oneOf": [
       {
+        "$ref": "#/$defs/boardItem"
+      },
+      {
         "$ref": "#/$defs/workflowItem"
+      },
+      {
+        "$ref": "#/$defs/commandItem"
       },
       {
         "$ref": "#/$defs/eventItem"
@@ -186,6 +229,9 @@
       },
       {
         "$ref": "#/$defs/serviceItem"
+      },
+      {
+        "$ref": "#/$defs/classItem"
       },
       {
         "$ref": "#/$defs/dataItem"
