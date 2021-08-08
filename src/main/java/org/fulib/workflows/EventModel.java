@@ -195,6 +195,9 @@ public class EventModel
                }
             }
          }
+         else if (entry.getKey().equalsIgnoreCase("board")) {
+            getEventStormingBoard().setName(map.get("board"));
+         }
          else {
             Logger.getGlobal().severe("Unknown event type " + getEventType(map));
          }

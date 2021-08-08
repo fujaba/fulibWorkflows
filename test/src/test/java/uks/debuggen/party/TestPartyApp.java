@@ -5,15 +5,15 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.yaml.Yaml;
 import org.junit.Test;
+import uks.debuggen.party.PartyApp.PartyAppService;
 import uks.debuggen.party.events.*;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
-import uks.debuggen.party.Party.PartyService;
 
-public class TestSomeEventStorming
+public class TestPartyApp
 {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
    private EventBroker eventBroker;
@@ -24,7 +24,7 @@ public class TestSomeEventStorming
       return this.eventBroker;
    }
 
-   public TestSomeEventStorming setEventBroker(EventBroker value)
+   public TestPartyApp setEventBroker(EventBroker value)
    {
       if (Objects.equals(value, this.eventBroker))
       {
@@ -38,15 +38,15 @@ public class TestSomeEventStorming
    }
 
    @Test
-   public void SomeEventStorming()
+   public void PartyApp()
    {
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
 
       // start service
-      PartyService party = new PartyService();
-      party.start();
+      PartyAppService partyApp = new PartyAppService();
+      partyApp.start();
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -61,6 +61,11 @@ public class TestSomeEventStorming
       $("#ok").click();
 
       open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 12_01:"));
+
+      // check PartyApp
+      open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 12_01:"));
 

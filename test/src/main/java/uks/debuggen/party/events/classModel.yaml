@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	serviceSubscribed 	command 	loginCommand
+  classes: 	event 	dataEvent 	serviceSubscribed 	command 	loginCommand 	loginSucceededEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	serviceSubscribed 	command
+  subClasses: 	dataEvent 	serviceSubscribed 	command 	loginSucceededEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -46,6 +46,14 @@
   name: 	LoginCommand
   propertyStyle: 	Bean
   superClass: 	command
+
+- loginSucceededEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	loginSucceededEvent_name
+  model: 	c
+  modified: 	false
+  name: 	LoginSucceededEvent
+  propertyStyle: 	Bean
+  superClass: 	event
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -84,6 +92,15 @@
 - loginCommand_name: 	org.fulib.classmodel.Attribute
   clazz: 	loginCommand
   id: 	LoginCommand_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- loginSucceededEvent_name: 	org.fulib.classmodel.Attribute
+  clazz: 	loginSucceededEvent
+  id: 	LoginSucceededEvent_name
   modified: 	false
   name: 	name
   propertyStyle: 	Bean

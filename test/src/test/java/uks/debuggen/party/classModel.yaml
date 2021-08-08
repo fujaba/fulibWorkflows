@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	testSomeEventStorming
+  classes: 	testPartyApp
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -7,14 +7,14 @@
   packageName: 	uks.debuggen.party
   packageSrcFolder: 	"test/src/test/java/uks/debuggen/party"
 
-- testSomeEventStorming: 	org.fulib.classmodel.Clazz
-  attributes: 	testSomeEventStorming_eventBroker
-  importList: 	"import org.junit.Test;" 	"import uks.debuggen.party.events.*;" 	"import uks.debuggen.party.Party.PartyService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
-  imports: 	"import org.junit.Test;" 	"import uks.debuggen.party.events.*;" 	"import uks.debuggen.party.Party.PartyService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
-  methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
+- testPartyApp: 	org.fulib.classmodel.Clazz
+  attributes: 	testPartyApp_eventBroker
+  importList: 	"import org.junit.Test;" 	"import uks.debuggen.party.events.*;" 	"import uks.debuggen.party.PartyApp.PartyAppService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import uks.debuggen.party.events.*;" 	"import uks.debuggen.party.PartyApp.PartyAppService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
+  methods: 	testPartyApp_PartyApp 	testPartyApp_publish
   model: 	c
   modified: 	false
-  name: 	TestSomeEventStorming
+  name: 	TestPartyApp
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -24,28 +24,28 @@
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
 
-- testSomeEventStorming_eventBroker: 	org.fulib.classmodel.Attribute
-  clazz: 	testSomeEventStorming
-  id: 	TestSomeEventStorming_eventBroker
+- testPartyApp_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testPartyApp
+  id: 	TestPartyApp_eventBroker
   modified: 	false
   name: 	eventBroker
   propertyStyle: 	Bean
   type: 	EventBroker
   typeSignature: 	EventBroker
 
-- testSomeEventStorming_SomeEventStorming: 	org.fulib.classmodel.FMethod
+- testPartyApp_PartyApp: 	org.fulib.classmodel.FMethod
   annotations: 	"@Test"
-  clazz: 	testSomeEventStorming
+  clazz: 	testPartyApp
   declaration: 	"@Test
-public void SomeEventStorming()"
-  id: 	TestSomeEventStorming_SomeEventStorming
+public void PartyApp()"
+  id: 	TestPartyApp_PartyApp
   methodBody: 	"// start the event broker
 eventBroker = new EventBroker();
 eventBroker.start();
 
 // start service
-PartyService party = new PartyService();
-party.start();
+PartyAppService partyApp = new PartyAppService();
+partyApp.start();
 
 open(\"http://localhost:42000\");
 $(\"body\").shouldHave(text(\"event broker\"));
@@ -63,20 +63,25 @@ open(\"http://localhost:42000\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 12_01:\"));
 
+// check PartyApp
+open(\"http://localhost:42001\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_01:\"));
+
 System.out.println();
 "
   modified: 	false
   modifiers: 	public
-  name: 	SomeEventStorming
+  name: 	PartyApp
   paramsString: 	""
   returnType: 	void
-  signature: 	"class/TestSomeEventStorming/method/SomeEventStorming()"
+  signature: 	"class/TestPartyApp/method/PartyApp()"
 
-- testSomeEventStorming_publish: 	org.fulib.classmodel.FMethod
+- testPartyApp_publish: 	org.fulib.classmodel.FMethod
   annotations: 	""
-  clazz: 	testSomeEventStorming
+  clazz: 	testPartyApp
   declaration: 	"public void publish(Event event)"
-  id: 	TestSomeEventStorming_publish
+  id: 	TestPartyApp_publish
   methodBody: 	"String yaml = Yaml.encode(event);
 
 try {
@@ -92,5 +97,5 @@ catch (UnirestException e) {
   name: 	publish
   paramsString: 	"Event event"
   returnType: 	void
-  signature: 	"class/TestSomeEventStorming/method/publish(Event)"
+  signature: 	"class/TestPartyApp/method/publish(Event)"
 
