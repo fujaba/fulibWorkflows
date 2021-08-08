@@ -154,6 +154,7 @@ public class ShopService
    {
       model = new ShopModel();
       setBusinessLogic(new ShopBusinessLogic());
+      businessLogic.setBuilder(new ShopBuilder().setModel(model));
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
@@ -216,15 +217,10 @@ public class ShopService
          return;
       }
       businessLogic.initEventHandlerMap();
-      Consumer<Event> handler = businessLogic.getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+      Consumer<Event> handler = businessLogic.getHandler(event);
       handler.accept(event);
       history.put(event.getId(), event);
       publish(event);
-   }
-
-   private void ignoreEvent(Event event)
-   {
-      // empty
    }
 
    public void publish(Event event)
@@ -258,12 +254,31 @@ public class ShopService
       return "apply done";
    }
 
-
    public String getDemoPage(Request request, Response response)
    {
       StringBuilder html = new StringBuilder();
       String id = request.params("id");
       String event = request.queryParams("event");
+
+      if ("select product 12:51".equals(event)) {
+
+         // create SelectProductCommand: select product 12:51
+         SelectProductCommand e1251 = new SelectProductCommand();
+         e1251.setId("12:51");
+         apply(e1251);
+      }
+
+      if ("submit order 13:01".equals(event)) {
+
+         // create SubmitOrderCommand: submit order 13:01
+         SubmitOrderCommand e1301 = new SubmitOrderCommand();
+         e1301.setId("13:01");
+         e1301.setProduct(request.queryParams("product"));
+         e1301.setName(request.queryParams("name"));
+         e1301.setAddress(request.queryParams("address"));
+         apply(e1301);
+      }
+
 
 
       // 12:50
@@ -272,6 +287,7 @@ public class ShopService
          // Shop 12:50
          html.append("   <p>Welcome to the event shop</p>\n");
          html.append("   <p>What do you want?</p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"select product 12:51\"></p>\n");
          html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
          html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
          html.append("</form>\n");
@@ -286,6 +302,7 @@ public class ShopService
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
          html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"submit order 13:01\"></p>\n");
          html.append("   <p><input id=\"OK\" name=\"button\" type=\"submit\" value=\"OK\"></p>\n");
          html.append("</form>\n");
          return html.toString();

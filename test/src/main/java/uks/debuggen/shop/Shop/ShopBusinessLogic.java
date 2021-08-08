@@ -10,10 +10,12 @@ public class ShopBusinessLogic
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
    public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_BUILDER = "builder";
    private ShopModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
    private ShopService service;
    protected PropertyChangeSupport listeners;
+   private ShopBuilder builder;
 
    public ShopModel getModel()
    {
@@ -78,33 +80,34 @@ public class ShopBusinessLogic
       return this;
    }
 
-   private void handleOrderRegisteredCommand(Event e)
+   public ShopBuilder getBuilder()
    {
-      // no fulib
-      OrderRegisteredCommand event = (OrderRegisteredCommand) e;
-      handleDemoOrderRegisteredCommand(event);
+      return this.builder;
    }
 
-   private void handleDemoOrderRegisteredCommand(OrderRegisteredCommand event)
+   public ShopBusinessLogic setBuilder(ShopBuilder value)
    {
-      if (event.getId().equals("13:01")) {
-         OrderBuilt order1300Event = new OrderBuilt();
-         order1300Event.setId("13:02");
-         order1300Event.setBlockId("order1300");
-         order1300Event.setProduct("shoes");
-         order1300Event.setCustomer("Alice");
-         order1300Event.setAddress("Wonderland 1");
-         order1300Event.setState("pending");
-         service.apply(order1300Event);
-
-         CustomerBuilt aliceEvent = new CustomerBuilt();
-         aliceEvent.setId("13:03");
-         aliceEvent.setBlockId("Alice");
-         aliceEvent.setOrders("[ order1300 ]");
-         service.apply(aliceEvent);
-
+      if (this.builder == value)
+      {
+         return this;
       }
+
+      final ShopBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setBusinessLogic(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setBusinessLogic(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
+      return this;
    }
+
+
 
    private void handleOrderApprovedEvent(Event e)
    {
@@ -115,7 +118,7 @@ public class ShopBusinessLogic
 
    private void handleDemoOrderApprovedEvent(OrderApprovedEvent event)
    {
-      if (event.getId().equals("13:05")) {
+      if (event.getId().equals("13:06")) {
          OrderBuilt order1300Event = new OrderBuilt();
          order1300Event.setId("13:06");
          order1300Event.setBlockId("order1300");
@@ -134,40 +137,12 @@ public class ShopBusinessLogic
 
    private void handleDemoOrderPickedEvent(OrderPickedEvent event)
    {
-      if (event.getId().equals("14:00")) {
+      if (event.getId().equals("14:03")) {
          OrderBuilt order1300Event = new OrderBuilt();
-         order1300Event.setId("14:03");
+         order1300Event.setId("14:04");
          order1300Event.setBlockId("order1300");
          order1300Event.setState("shipping");
          service.apply(order1300Event);
-
-      }
-   }
-
-   private void handleOrderRegisteredEvent(Event e)
-   {
-      // no fulib
-      OrderRegisteredEvent event = (OrderRegisteredEvent) e;
-      handleDemoOrderRegisteredEvent(event);
-   }
-
-   private void handleDemoOrderRegisteredEvent(OrderRegisteredEvent event)
-   {
-      if (event.getId().equals("13:11")) {
-         OrderBuilt order1310Event = new OrderBuilt();
-         order1310Event.setId("13:12");
-         order1310Event.setBlockId("order1310");
-         order1310Event.setProduct("tshirt");
-         order1310Event.setCustomer("Alice");
-         order1310Event.setAddress("Wonderland 1");
-         order1310Event.setState("pending");
-         service.apply(order1310Event);
-
-         CustomerBuilt aliceEvent = new CustomerBuilt();
-         aliceEvent.setId("13:13");
-         aliceEvent.setBlockId("Alice");
-         aliceEvent.setOrders("[ order1300 order1310 ]");
-         service.apply(aliceEvent);
 
       }
    }
@@ -181,9 +156,9 @@ public class ShopBusinessLogic
 
    private void handleDemoOrderDeclinedEvent(OrderDeclinedEvent event)
    {
-      if (event.getId().equals("13:14")) {
+      if (event.getId().equals("13:15")) {
          OrderBuilt order1310Event = new OrderBuilt();
-         order1310Event.setId("13:12");
+         order1310Event.setId("13:16");
          order1310Event.setBlockId("order1310");
          order1310Event.setState("out of stock");
          service.apply(order1310Event);
@@ -191,48 +166,17 @@ public class ShopBusinessLogic
       }
    }
 
-   private void handleOrderBuilt(Event e)
-   {
-      OrderBuilt event = (OrderBuilt) e;
-      Order object = model.getOrCreateOrder(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
-   }
-
-   private void handleCustomerBuilt(Event e)
-   {
-      CustomerBuilt event = (CustomerBuilt) e;
-      Customer object = model.getOrCreateCustomer(event.getBlockId());
-      object.setOrders(event.getOrders());
-   }
-
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(OrderRegisteredCommand.class, this::handleOrderRegisteredCommand);
+         handlerMap.put(SubmitOrderCommand.class, this::handleSubmitOrderCommand);
          handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
          handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
-         handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
          handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-         handlerMap.put(OrderBuilt.class, this::handleOrderBuilt);
-         handlerMap.put(CustomerBuilt.class, this::handleCustomerBuilt);
+         handlerMap.put(OrderBuilt.class, builder::handleOrderBuilt);
+         handlerMap.put(CustomerBuilt.class, builder::handleCustomerBuilt);
       }
-   }
-
-   public String stripBrackets(String back)
-   {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
    }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
@@ -256,6 +200,81 @@ public class ShopBusinessLogic
 
    public void removeYou()
    {
+      this.setBuilder(null);
       this.setService(null);
+   }
+
+   private void ignoreEvent(Event event)
+   {
+      // empty
+   }
+
+   public Consumer<Event> getHandler(Event event)
+   {
+      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+   }
+
+   private void handleSubmitOrderCommand(Event e)
+   {
+      // no fulib
+      SubmitOrderCommand event = (SubmitOrderCommand) e;
+      handleDemoSubmitOrderCommand(event);
+   }
+
+   private void handleDemoSubmitOrderCommand(SubmitOrderCommand event)
+   {
+      if (event.getId().equals("13:01")) {
+         OrderBuilt order1300Event = new OrderBuilt();
+         order1300Event.setId("13:02");
+         order1300Event.setBlockId("order1300");
+         order1300Event.setProduct("shoes");
+         order1300Event.setCustomer("Alice");
+         order1300Event.setAddress("Wonderland 1");
+         order1300Event.setState("pending");
+         service.apply(order1300Event);
+
+         CustomerBuilt aliceEvent = new CustomerBuilt();
+         aliceEvent.setId("13:03");
+         aliceEvent.setBlockId("Alice");
+         aliceEvent.setOrders("[order1300]");
+         service.apply(aliceEvent);
+
+
+         OrderRegisteredEvent e1304 = new OrderRegisteredEvent();
+
+         e1304.setId("13:04");
+         e1304.setOrder("order1300");
+         e1304.setProduct("shoes");
+         e1304.setCustomer("Alice");
+         e1304.setAddress("Wonderland 1");
+         service.apply(e1304);
+      }
+      if (event.getId().equals("13:11")) {
+         OrderBuilt order1310Event = new OrderBuilt();
+         order1310Event.setId("13:12");
+         order1310Event.setBlockId("order1310");
+         order1310Event.setProduct("tshirt");
+         order1310Event.setCustomer("Alice");
+         order1310Event.setAddress("Wonderland 1");
+         order1310Event.setState("pending");
+         service.apply(order1310Event);
+
+         CustomerBuilt aliceEvent = new CustomerBuilt();
+         aliceEvent.setId("13:13");
+         aliceEvent.setBlockId("Alice");
+         aliceEvent.setOrders("[ order1300 order1310 ]");
+         service.apply(aliceEvent);
+
+
+         OrderRegisteredEvent e1314 = new OrderRegisteredEvent();
+
+         e1314.setId("13:14");
+         e1314.setOrder("order1310");
+         e1314.setTrigger("button OK");
+         e1314.setProduct("tshirt");
+         e1314.setCustomer("Alice");
+         e1314.setAddress("Wonderland 1");
+         service.apply(e1314);
+      }
    }
 }

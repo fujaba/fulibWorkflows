@@ -6,13 +6,7 @@
   port: 42100
 
 # send event by default user somebody
-- event: product stored 12:00
-  box: box23
-  product: shoes
-  place: shelf23
-
-# handle event by default service someservice
-- data: 12:01
+- command: store box 12:00
   box: box23
   product: shoes
   place: shelf23
@@ -22,7 +16,12 @@
 - policy: Storage
   trigger: 12:00
 
-- data: 12:02
+- data: 12:01
+  box: box23
+  product: shoes
+  place: shelf23
+
+- event: product stored 12:02
   box: box23
   product: shoes
   place: shelf23
@@ -35,7 +34,7 @@
     - label: Welcome to the event shop
     - label: What do you want?
     - button: shoes
-      command: Shop shoes selected 12:51
+      command: select product 12:51
     - button: tshirt
 
 - page:
@@ -48,7 +47,7 @@
     - input: address
       fill: Wonderland 1
     - button: OK
-      command: order registered 13:01
+      command: submit order 13:01
 
 # policy notes tell that the following actions are executed by a sertain service triggered by a certain event
 
@@ -64,12 +63,18 @@
 
 - data: 13:03
   customer: Alice
-  orders: [ order1300 ]
+  orders: [order1300]
+
+- event: order registered 13:04
+  order: order1300
+  product: shoes
+  customer: Alice
+  address: Wonderland 1
 
 - policy: Storage
-  trigger: 13:01
+  trigger: 13:04
 
-- data: 13:04
+- data: 13:05
   pickTask: pick1300
   order: order1300
   product: shoes
@@ -77,11 +82,11 @@
   address: Wonderland 1
   state: todo
 
-- event: order approved 13:05
+- event: order approved 13:06
   order: order1300
 
 - policy: Shop
-  trigger: 13:05
+  trigger: 13:06
 
 - data: 13:06
   order: order1300
@@ -89,7 +94,7 @@
 
 - action: Bob
 
-- event: order picked 14:00
+- command: pick order 14:00
   pickTask: pick1300
   box: box23
   user: Bob
@@ -106,10 +111,15 @@
   box: box23
   place: shipping
 
-- policy: Shop
-  trigger: 14:00
+- event: order picked 14:03
+  pickTask: pick1300
+  box: box23
+  user: Bob
 
-- data: 14:03
+- policy: Shop
+  trigger: 14:03
+
+- data: 14:04
   order: order1300
   state: shipping
 
@@ -118,7 +128,7 @@
 
 - action: Alice
 
-- event: order registered 13:11
+- command: submit order 13:11
   trigger: button OK
   product: tshirt
   customer: Alice
@@ -138,15 +148,23 @@
   customer: Alice
   orders: [ order1300 order1310 ]
 
-- policy: Storage
-  trigger: 13:11
+- event: order registered 13:14
+  order: order1310
+  trigger: button OK
+  product: tshirt
+  customer: Alice
+  address: Wonderland 1
 
-- event: order declined 13:14
+
+- policy: Storage
+  trigger: 13:14
+
+- event: order declined 13:15
   order: order1310
 
 - policy: Shop
-  trigger: 13:14
+  trigger: 13:15
 
-- data: 13:12
+- data: 13:16
   order: order1310
   state: out of stock

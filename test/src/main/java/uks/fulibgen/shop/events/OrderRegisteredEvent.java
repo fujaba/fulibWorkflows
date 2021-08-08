@@ -7,10 +7,12 @@ public class OrderRegisteredEvent extends Event
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
+   public static final String PROPERTY_ORDER = "order";
    private String trigger;
    private String product;
    private String customer;
    private String address;
+   private String order;
 
    public String getTrigger()
    {
@@ -84,14 +86,33 @@ public class OrderRegisteredEvent extends Event
       return this;
    }
 
+   public String getOrder()
+   {
+      return this.order;
+   }
+
+   public OrderRegisteredEvent setOrder(String value)
+   {
+      if (Objects.equals(value, this.order))
+      {
+         return this;
+      }
+
+      final String oldValue = this.order;
+      this.order = value;
+      this.firePropertyChange(PROPERTY_ORDER, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getTrigger());
+      result.append(' ').append(this.getOrder());
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
+      result.append(' ').append(this.getTrigger());
       return result.toString();
    }
 }

@@ -707,6 +707,7 @@ public class WorkflowGenerator
                "package " + em.getClassModel().getPackageName() + ";");
          String eventBrokerName = getPackageDirName(em) + "/EventBroker.java";
          Logger.getGlobal().info("EventBroker file generated " + eventBrokerName);
+         Files.createDirectories(Path.of(getPackageDirName(em)));
          Files.write(Path.of(eventBrokerName), content.getBytes(StandardCharsets.UTF_8));
       }
       catch (IOException e) {

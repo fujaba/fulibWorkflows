@@ -1,25 +1,23 @@
-package uks.debuggen.shop.Storage;
-import uks.debuggen.shop.events.Event;
-
-import java.util.LinkedHashMap;
-import java.util.Objects;
-import java.beans.PropertyChangeSupport;
-import uks.debuggen.shop.events.*;
-import spark.Service;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import spark.Request;
-import spark.Response;
-import org.fulib.yaml.Yaml;
-import java.util.logging.Logger;
-import java.util.logging.Level;
+package uks.debuggen.party.Party;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.fulib.yaml.Yaml;
+import spark.Request;
+import spark.Response;
+import spark.Service;
+import uks.debuggen.party.events.*;
+import java.util.Objects;
+import java.beans.PropertyChangeSupport;
 
-public class StorageService
+public class PartyService
 {
    public static final String PROPERTY_HISTORY = "history";
    public static final String PROPERTY_PORT = "port";
@@ -27,18 +25,18 @@ public class StorageService
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
-   protected PropertyChangeSupport listeners;
-   private int port = 42002;
+   private int port = 42001;
    private Service spark;
-   private StorageModel model;
-   private StorageBusinessLogic businessLogic;
+   private PartyModel model;
+   private PartyBusinessLogic businessLogic;
+   protected PropertyChangeSupport listeners;
 
    public LinkedHashMap<String, Event> getHistory()
    {
       return this.history;
    }
 
-   public StorageService setHistory(LinkedHashMap<String, Event> value)
+   public PartyService setHistory(LinkedHashMap<String, Event> value)
    {
       if (Objects.equals(value, this.history))
       {
@@ -56,7 +54,7 @@ public class StorageService
       return this.port;
    }
 
-   public StorageService setPort(int value)
+   public PartyService setPort(int value)
    {
       if (value == this.port)
       {
@@ -74,7 +72,7 @@ public class StorageService
       return this.spark;
    }
 
-   public StorageService setSpark(Service value)
+   public PartyService setSpark(Service value)
    {
       if (Objects.equals(value, this.spark))
       {
@@ -87,37 +85,37 @@ public class StorageService
       return this;
    }
 
-   public StorageModel getModel()
+   public PartyModel getModel()
    {
       return this.model;
    }
 
-   public StorageService setModel(StorageModel value)
+   public PartyService setModel(PartyModel value)
    {
       if (Objects.equals(value, this.model))
       {
          return this;
       }
 
-      final StorageModel oldValue = this.model;
+      final PartyModel oldValue = this.model;
       this.model = value;
       this.firePropertyChange(PROPERTY_MODEL, oldValue, value);
       return this;
    }
 
-   public StorageBusinessLogic getBusinessLogic()
+   public PartyBusinessLogic getBusinessLogic()
    {
       return this.businessLogic;
    }
 
-   public StorageService setBusinessLogic(StorageBusinessLogic value)
+   public PartyService setBusinessLogic(PartyBusinessLogic value)
    {
       if (this.businessLogic == value)
       {
          return this;
       }
 
-      final StorageBusinessLogic oldValue = this.businessLogic;
+      final PartyBusinessLogic oldValue = this.businessLogic;
       if (this.businessLogic != null)
       {
          this.businessLogic = null;
@@ -132,30 +130,11 @@ public class StorageService
       return this;
    }
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
-      {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
-      }
-      return false;
-   }
-
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
-      {
-         this.listeners = new PropertyChangeSupport(this);
-      }
-      return this.listeners;
-   }
-
    public void start()
    {
-      model = new StorageModel();
-      setBusinessLogic(new StorageBusinessLogic());
-      businessLogic.setBuilder(new StorageBuilder().setModel(model));
+      model = new PartyModel();
+      setBusinessLogic(new PartyBusinessLogic());
+      businessLogic.setBuilder(new PartyBuilder().setModel(model));
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
@@ -164,7 +143,7 @@ public class StorageService
       spark.get("/", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
       executor.submit(this::subscribeAndLoadOldEvents);
-      Logger.getGlobal().info("Storage service is up and running on port " + port);
+      Logger.getGlobal().info("Party service is up and running on port " + port);
    }
 
    private String getHello(Request req, Response res)
@@ -172,21 +151,21 @@ public class StorageService
       try {
          String events = Yaml.encode(getHistory().values().toArray());
          String objects = Yaml.encode(model.getModelMap().values().toArray());
-         return "<p id='Storage'>This is the Storage service. </p>\n" +
+         return "<p id='Party'>This is the Party service. </p>\n" +
                "<pre id=\"history\">" + events + "</pre>\n" +
                "<pre id=\"data\">" + objects + "</pre>\n" +
                "";
       }
       catch (Exception e) {
          Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
-         return "Storage Error " + e.getMessage();
+         return "Party Error " + e.getMessage();
       }
    }
 
    private void subscribeAndLoadOldEvents()
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-            .setServiceUrl("http://localhost:42002/apply");
+            .setServiceUrl("http://localhost:42001/apply");
       String json = Yaml.encode(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
@@ -215,6 +194,49 @@ public class StorageService
       handler.accept(event);
       history.put(event.getId(), event);
       publish(event);
+   }
+
+   public String getPage(Request request, Response response)
+   {
+      // no fulib
+      // add your page handling here
+      return getDemoPage(request, response);
+   }
+
+   public String getDemoPage(Request request, Response response)
+   {
+      StringBuilder html = new StringBuilder();
+      String id = request.params("id");
+      String event = request.queryParams("event");
+
+      if ("login 12:01".equals(event)) {
+
+         // create LoginCommand: login 12:01
+         LoginCommand e1201 = new LoginCommand();
+         e1201.setId("12:01");
+         e1201.setName(request.queryParams("name"));
+         apply(e1201);
+      }
+
+
+
+      // 12:00
+      if (id.equals("12_00")) {
+         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         // Party App 12:00
+         html.append("   <p>Welcome to the parties</p>\n");
+         html.append("   <p>What's your name?</p>\n");
+         html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"login 12:01\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+
+
+      html.append("This is the Shop Service page " + id + "\n");
+      return html.toString();
    }
 
    public void publish(Event event)
@@ -248,28 +270,27 @@ public class StorageService
       return "apply done";
    }
 
-   public String getPage(Request request, Response response)
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      // no fulib
-      // add your page handling here
-      return getDemoPage(request, response);
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
    }
 
-   public String getDemoPage(Request request, Response response)
+   public PropertyChangeSupport listeners()
    {
-      StringBuilder html = new StringBuilder();
-      String id = request.params("id");
-      String event = request.queryParams("event");
-
-
-
-      html.append("This is the Shop Service page " + id + "\n");
-      return html.toString();
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
    }
 
    public void removeYou()
    {
       this.setBusinessLogic(null);
    }
-
 }

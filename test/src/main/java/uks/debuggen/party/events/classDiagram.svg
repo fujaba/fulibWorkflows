@@ -1,0 +1,61 @@
+<svg width="376px" height="230px"
+ viewBox="0.00 0.00 375.50 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 226)">
+<title>uks.debuggen.party.events</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-226 371.5,-226 371.5,4 -4,4"/>
+<!-- Command -->
+<g id="node1" class="node"><title>Command</title>
+<polygon fill="none" stroke="black" points="279,-103 279,-124 344,-124 344,-103 279,-103"/>
+<text text-anchor="start" x="282" y="-109.8" font-family="Times New Roman,serif" font-size="14.00">Command</text>
+<polygon fill="none" stroke="black" points="279,-97 279,-103 344,-103 344,-97 279,-97"/>
+</g>
+<!-- Event -->
+<g id="node3" class="node"><title>Event</title>
+<polygon fill="none" stroke="black" points="160,-197 160,-218 217,-218 217,-197 160,-197"/>
+<text text-anchor="start" x="172.5" y="-203.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
+<polygon fill="none" stroke="black" points="160,-176 160,-197 217,-197 217,-176 160,-176"/>
+<text text-anchor="start" x="163" y="-182.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+</g>
+<!-- Command&#45;&gt;Event -->
+<g id="edge1" class="edge"><title>Command&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M285.812,-129.201C270.35,-139.761 250.116,-153.579 232.067,-165.906"/>
+<polygon fill="none" stroke="black" points="229.696,-163.286 223.412,-171.816 233.644,-169.067 229.696,-163.286"/>
+</g>
+<!-- DataEvent -->
+<g id="node2" class="node"><title>DataEvent</title>
+<polygon fill="none" stroke="black" points="8,-111 8,-132 98,-132 98,-111 8,-111"/>
+<text text-anchor="start" x="24" y="-117.8" font-family="Times New Roman,serif" font-size="14.00">DataEvent</text>
+<polygon fill="none" stroke="black" points="8,-90 8,-111 98,-111 98,-90 8,-90"/>
+<text text-anchor="start" x="11" y="-96.8" font-family="Times New Roman,serif" font-size="14.00">blockId :String</text>
+</g>
+<!-- DataEvent&#45;&gt;Event -->
+<g id="edge2" class="edge"><title>DataEvent&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M91.6856,-136.071C107.463,-145.888 125.827,-157.314 142.262,-167.541"/>
+<polygon fill="none" stroke="black" points="140.827,-170.77 151.166,-173.081 144.525,-164.827 140.827,-170.77"/>
+</g>
+<!-- LoginCommand -->
+<g id="node4" class="node"><title>LoginCommand</title>
+<polygon fill="none" stroke="black" points="263,-25 263,-46 360,-46 360,-25 263,-25"/>
+<text text-anchor="start" x="266" y="-31.8" font-family="Times New Roman,serif" font-size="14.00">LoginCommand</text>
+<polygon fill="none" stroke="black" points="263,-4 263,-25 360,-25 360,-4 263,-4"/>
+<text text-anchor="start" x="276.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- LoginCommand&#45;&gt;Command -->
+<g id="edge3" class="edge"><title>LoginCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M311,-50.2963C311,-60.4375 311,-72.2643 311,-82.704"/>
+<polygon fill="none" stroke="black" points="307.5,-82.9523 311,-92.9523 314.5,-82.9524 307.5,-82.9523"/>
+</g>
+<!-- ServiceSubscribed -->
+<g id="node5" class="node"><title>ServiceSubscribed</title>
+<polygon fill="none" stroke="black" points="132,-111 132,-132 244,-132 244,-111 132,-111"/>
+<text text-anchor="start" x="135" y="-117.8" font-family="Times New Roman,serif" font-size="14.00">ServiceSubscribed</text>
+<polygon fill="none" stroke="black" points="132,-90 132,-111 244,-111 244,-90 132,-90"/>
+<text text-anchor="start" x="139.5" y="-96.8" font-family="Times New Roman,serif" font-size="14.00">serviceUrl :String</text>
+</g>
+<!-- ServiceSubscribed&#45;&gt;Event -->
+<g id="edge4" class="edge"><title>ServiceSubscribed&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M188,-136.296C188,-144.219 188,-153.171 188,-161.686"/>
+<polygon fill="none" stroke="black" points="184.5,-161.758 188,-171.758 191.5,-161.758 184.5,-161.758"/>
+</g>
+</g>
+</svg>

@@ -259,18 +259,18 @@ public class ShopService
       String id = request.params("id");
       String event = request.queryParams("event");
 
-      if ("Shop shoes selected 12:51".equals(event)) {
+      if ("select product 12:51".equals(event)) {
 
-         // create ShopShoesSelectedCommand: Shop shoes selected 12:51
-         ShopShoesSelectedCommand e1251 = new ShopShoesSelectedCommand();
+         // create SelectProductCommand: select product 12:51
+         SelectProductCommand e1251 = new SelectProductCommand();
          e1251.setId("12:51");
          apply(e1251);
       }
 
-      if ("order registered 13:01".equals(event)) {
+      if ("submit order 13:01".equals(event)) {
 
-         // create OrderRegisteredCommand: order registered 13:01
-         OrderRegisteredCommand e1301 = new OrderRegisteredCommand();
+         // create SubmitOrderCommand: submit order 13:01
+         SubmitOrderCommand e1301 = new SubmitOrderCommand();
          e1301.setId("13:01");
          e1301.setProduct(request.queryParams("product"));
          e1301.setName(request.queryParams("name"));
@@ -286,7 +286,7 @@ public class ShopService
          // Shop 12:50
          html.append("   <p>Welcome to the event shop</p>\n");
          html.append("   <p>What do you want?</p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Shop shoes selected 12:51\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"select product 12:51\"></p>\n");
          html.append("   <p><input id=\"shoes\" name=\"button\" type=\"submit\" value=\"shoes\"></p>\n");
          html.append("   <p><input id=\"tshirt\" name=\"button\" type=\"submit\" value=\"tshirt\"></p>\n");
          html.append("</form>\n");
@@ -301,7 +301,7 @@ public class ShopService
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
          html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"order registered 13:01\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"submit order 13:01\"></p>\n");
          html.append("   <p><input id=\"OK\" name=\"button\" type=\"submit\" value=\"OK\"></p>\n");
          html.append("</form>\n");
          return html.toString();

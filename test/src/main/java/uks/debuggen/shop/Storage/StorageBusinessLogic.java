@@ -10,10 +10,12 @@ public class StorageBusinessLogic
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
    public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_BUILDER = "builder";
    private StorageModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
    private StorageService service;
    protected PropertyChangeSupport listeners;
+   private StorageBuilder builder;
 
    public StorageModel getModel()
    {
@@ -78,80 +80,34 @@ public class StorageBusinessLogic
       return this;
    }
 
-   private void handleProductStoredEvent(Event e)
+   public StorageBuilder getBuilder()
    {
-      // no fulib
-      ProductStoredEvent event = (ProductStoredEvent) e;
-      handleDemoProductStoredEvent(event);
+      return this.builder;
    }
 
-   private void handleDemoProductStoredEvent(ProductStoredEvent event)
+   public StorageBusinessLogic setBuilder(StorageBuilder value)
    {
-      if (event.getId().equals("12:00")) {
-         BoxBuilt box23Event = new BoxBuilt();
-         box23Event.setId("12:02");
-         box23Event.setBlockId("box23");
-         box23Event.setProduct("shoes");
-         box23Event.setPlace("shelf23");
-         service.apply(box23Event);
-
+      if (this.builder == value)
+      {
+         return this;
       }
-   }
 
-   private void handleOrderRegisteredCommand(Event e)
-   {
-      // no fulib
-      OrderRegisteredCommand event = (OrderRegisteredCommand) e;
-      handleDemoOrderRegisteredCommand(event);
-   }
-
-   private void handleDemoOrderRegisteredCommand(OrderRegisteredCommand event)
-   {
-      if (event.getId().equals("13:01")) {
-         PickTaskBuilt pick1300Event = new PickTaskBuilt();
-         pick1300Event.setId("13:04");
-         pick1300Event.setBlockId("pick1300");
-         pick1300Event.setOrder("order1300");
-         pick1300Event.setProduct("shoes");
-         pick1300Event.setCustomer("Alice");
-         pick1300Event.setAddress("Wonderland 1");
-         pick1300Event.setState("todo");
-         service.apply(pick1300Event);
-
-
-         OrderApprovedEvent e1305 = new OrderApprovedEvent();
-
-         e1305.setId("13:05");
-         e1305.setOrder("order1300");
-         service.apply(e1305);
+      final StorageBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setBusinessLogic(null);
       }
-   }
-
-   private void handleOrderPickedEvent(Event e)
-   {
-      // no fulib
-      OrderPickedEvent event = (OrderPickedEvent) e;
-      handleDemoOrderPickedEvent(event);
-   }
-
-   private void handleDemoOrderPickedEvent(OrderPickedEvent event)
-   {
-      if (event.getId().equals("14:00")) {
-         PickTaskBuilt pick1300Event = new PickTaskBuilt();
-         pick1300Event.setId("14:01");
-         pick1300Event.setBlockId("pick1300");
-         pick1300Event.setState("done");
-         pick1300Event.setBox("box23");
-         service.apply(pick1300Event);
-
-         BoxBuilt box23Event = new BoxBuilt();
-         box23Event.setId("14:02");
-         box23Event.setBlockId("box23");
-         box23Event.setPlace("shipping");
-         service.apply(box23Event);
-
+      this.builder = value;
+      if (value != null)
+      {
+         value.setBusinessLogic(this);
       }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
+      return this;
    }
+
+
 
    private void handleOrderRegisteredEvent(Event e)
    {
@@ -162,60 +118,44 @@ public class StorageBusinessLogic
 
    private void handleDemoOrderRegisteredEvent(OrderRegisteredEvent event)
    {
-      if (event.getId().equals("13:11")) {
+      if (event.getId().equals("13:04")) {
+         PickTaskBuilt pick1300Event = new PickTaskBuilt();
+         pick1300Event.setId("13:05");
+         pick1300Event.setBlockId("pick1300");
+         pick1300Event.setOrder("order1300");
+         pick1300Event.setProduct("shoes");
+         pick1300Event.setCustomer("Alice");
+         pick1300Event.setAddress("Wonderland 1");
+         pick1300Event.setState("todo");
+         service.apply(pick1300Event);
 
-         OrderDeclinedEvent e1314 = new OrderDeclinedEvent();
 
-         e1314.setId("13:14");
-         e1314.setOrder("order1310");
-         service.apply(e1314);
+         OrderApprovedEvent e1306 = new OrderApprovedEvent();
+
+         e1306.setId("13:06");
+         e1306.setOrder("order1300");
+         service.apply(e1306);
       }
-   }
+      if (event.getId().equals("13:14")) {
 
-   private void handleBoxBuilt(Event e)
-   {
-      BoxBuilt event = (BoxBuilt) e;
-      Box object = model.getOrCreateBox(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setPlace(event.getPlace());
-   }
+         OrderDeclinedEvent e1315 = new OrderDeclinedEvent();
 
-   private void handlePickTaskBuilt(Event e)
-   {
-      PickTaskBuilt event = (PickTaskBuilt) e;
-      PickTask object = model.getOrCreatePickTask(event.getBlockId());
-      object.setOrder(event.getOrder());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
-      object.setBox(event.getBox());
+         e1315.setId("13:15");
+         e1315.setOrder("order1310");
+         service.apply(e1315);
+      }
    }
 
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(ProductStoredEvent.class, this::handleProductStoredEvent);
-         handlerMap.put(OrderRegisteredCommand.class, this::handleOrderRegisteredCommand);
-         handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
+         handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
          handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
-         handlerMap.put(BoxBuilt.class, this::handleBoxBuilt);
-         handlerMap.put(PickTaskBuilt.class, this::handlePickTaskBuilt);
+         handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
+         handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
+         handlerMap.put(PickTaskBuilt.class, builder::handlePickTaskBuilt);
       }
-   }
-
-   public String stripBrackets(String back)
-   {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
    }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
@@ -239,6 +179,80 @@ public class StorageBusinessLogic
 
    public void removeYou()
    {
+      this.setBuilder(null);
       this.setService(null);
+   }
+
+   private void handleStoreBoxCommand(Event e)
+   {
+      // no fulib
+      StoreBoxCommand event = (StoreBoxCommand) e;
+      handleDemoStoreBoxCommand(event);
+   }
+
+   private void handleDemoStoreBoxCommand(StoreBoxCommand event)
+   {
+      if (event.getId().equals("12:00")) {
+         BoxBuilt box23Event = new BoxBuilt();
+         box23Event.setId("12:01");
+         box23Event.setBlockId("box23");
+         box23Event.setProduct("shoes");
+         box23Event.setPlace("shelf23");
+         service.apply(box23Event);
+
+
+         ProductStoredEvent e1202 = new ProductStoredEvent();
+
+         e1202.setId("12:02");
+         e1202.setBox("box23");
+         e1202.setProduct("shoes");
+         e1202.setPlace("shelf23");
+         service.apply(e1202);
+      }
+   }
+
+   private void ignoreEvent(Event event)
+   {
+      // empty
+   }
+
+   public Consumer<Event> getHandler(Event event)
+   {
+      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+   }
+
+
+   private void handlePickOrderCommand(Event e)
+   {
+      // no fulib
+      PickOrderCommand event = (PickOrderCommand) e;
+      handleDemoPickOrderCommand(event);
+   }
+
+   private void handleDemoPickOrderCommand(PickOrderCommand event)
+   {
+      if (event.getId().equals("14:00")) {
+         PickTaskBuilt pick1300Event = new PickTaskBuilt();
+         pick1300Event.setId("14:01");
+         pick1300Event.setBlockId("pick1300");
+         pick1300Event.setState("done");
+         pick1300Event.setBox("box23");
+         service.apply(pick1300Event);
+
+         BoxBuilt box23Event = new BoxBuilt();
+         box23Event.setId("14:02");
+         box23Event.setBlockId("box23");
+         box23Event.setPlace("shipping");
+         service.apply(box23Event);
+
+
+         OrderPickedEvent e1403 = new OrderPickedEvent();
+
+         e1403.setId("14:03");
+         e1403.setPickTask("pick1300");
+         e1403.setBox("box23");
+         e1403.setUser("Bob");
+         service.apply(e1403);
+      }
    }
 }

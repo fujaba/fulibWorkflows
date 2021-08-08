@@ -21,7 +21,7 @@
   attributes: 	storageBusinessLogic_model 	storageBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	storageBusinessLogic_handleProductStoredEvent 	storageBusinessLogic_handleDemoProductStoredEvent 	storageBusinessLogic_handleOrderRegisteredCommand 	storageBusinessLogic_handleDemoOrderRegisteredCommand 	storageBusinessLogic_handleOrderPickedEvent 	storageBusinessLogic_handleDemoOrderPickedEvent 	storageBusinessLogic_handleOrderRegisteredEvent 	storageBusinessLogic_handleDemoOrderRegisteredEvent 	storageBusinessLogic_initEventHandlerMap 	storageBusinessLogic_ignoreEvent 	storageBusinessLogic_getHandler
+  methods: 	storageBusinessLogic_handleStoreBoxCommand 	storageBusinessLogic_handleDemoStoreBoxCommand 	storageBusinessLogic_handleOrderRegisteredEvent 	storageBusinessLogic_handleDemoOrderRegisteredEvent 	storageBusinessLogic_handlePickOrderCommand 	storageBusinessLogic_handleDemoPickOrderCommand 	storageBusinessLogic_initEventHandlerMap 	storageBusinessLogic_ignoreEvent 	storageBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	StorageBusinessLogic
@@ -129,134 +129,51 @@ return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
   type: 	"LinkedHashMap<Class, Consumer<Event>>"
   typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
 
-- storageBusinessLogic_handleProductStoredEvent: 	org.fulib.classmodel.FMethod
+- storageBusinessLogic_handleStoreBoxCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBusinessLogic
-  declaration: 	"private void handleProductStoredEvent(Event e)"
-  id: 	StorageBusinessLogic_handleProductStoredEvent
+  declaration: 	"private void handleStoreBoxCommand(Event e)"
+  id: 	StorageBusinessLogic_handleStoreBoxCommand
   methodBody: 	"// no fulib
-ProductStoredEvent event = (ProductStoredEvent) e;
-handleDemoProductStoredEvent(event);
+StoreBoxCommand event = (StoreBoxCommand) e;
+handleDemoStoreBoxCommand(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleProductStoredEvent
+  name: 	handleStoreBoxCommand
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StorageBusinessLogic/method/handleProductStoredEvent(Event)"
+  signature: 	"class/StorageBusinessLogic/method/handleStoreBoxCommand(Event)"
 
-- storageBusinessLogic_handleDemoProductStoredEvent: 	org.fulib.classmodel.FMethod
+- storageBusinessLogic_handleDemoStoreBoxCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBusinessLogic
-  declaration: 	"private void handleDemoProductStoredEvent(ProductStoredEvent event)"
-  id: 	StorageBusinessLogic_handleDemoProductStoredEvent
+  declaration: 	"private void handleDemoStoreBoxCommand(StoreBoxCommand event)"
+  id: 	StorageBusinessLogic_handleDemoStoreBoxCommand
   methodBody: 	"if (event.getId().equals(\"12:00\")) {
    BoxBuilt box23Event = new BoxBuilt();
-   box23Event.setId(\"12:02\");
+   box23Event.setId(\"12:01\");
    box23Event.setBlockId(\"box23\");
    box23Event.setProduct(\"shoes\");
    box23Event.setPlace(\"shelf23\");
    service.apply(box23Event);
 
+
+   ProductStoredEvent e1202 = new ProductStoredEvent();
+
+   e1202.setId(\"12:02\");
+   e1202.setBox(\"box23\");
+   e1202.setProduct(\"shoes\");
+   e1202.setPlace(\"shelf23\");
+   service.apply(e1202);
 }
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoProductStoredEvent
-  paramsString: 	"ProductStoredEvent event"
+  name: 	handleDemoStoreBoxCommand
+  paramsString: 	"StoreBoxCommand event"
   returnType: 	void
-  signature: 	"class/StorageBusinessLogic/method/handleDemoProductStoredEvent(ProductStoredEvent)"
-
-- storageBusinessLogic_handleOrderRegisteredCommand: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBusinessLogic
-  declaration: 	"private void handleOrderRegisteredCommand(Event e)"
-  id: 	StorageBusinessLogic_handleOrderRegisteredCommand
-  methodBody: 	"// no fulib
-OrderRegisteredCommand event = (OrderRegisteredCommand) e;
-handleDemoOrderRegisteredCommand(event);
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleOrderRegisteredCommand
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StorageBusinessLogic/method/handleOrderRegisteredCommand(Event)"
-
-- storageBusinessLogic_handleDemoOrderRegisteredCommand: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBusinessLogic
-  declaration: 	"private void handleDemoOrderRegisteredCommand(OrderRegisteredCommand event)"
-  id: 	StorageBusinessLogic_handleDemoOrderRegisteredCommand
-  methodBody: 	"if (event.getId().equals(\"13:01\")) {
-   PickTaskBuilt pick1300Event = new PickTaskBuilt();
-   pick1300Event.setId(\"13:04\");
-   pick1300Event.setBlockId(\"pick1300\");
-   pick1300Event.setOrder(\"order1300\");
-   pick1300Event.setProduct(\"shoes\");
-   pick1300Event.setCustomer(\"Alice\");
-   pick1300Event.setAddress(\"Wonderland 1\");
-   pick1300Event.setState(\"todo\");
-   service.apply(pick1300Event);
-
-
-   OrderApprovedEvent e1305 = new OrderApprovedEvent();
-
-   e1305.setId(\"13:05\");
-   e1305.setOrder(\"order1300\");
-   service.apply(e1305);
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleDemoOrderRegisteredCommand
-  paramsString: 	"OrderRegisteredCommand event"
-  returnType: 	void
-  signature: 	"class/StorageBusinessLogic/method/handleDemoOrderRegisteredCommand(OrderRegisteredCommand)"
-
-- storageBusinessLogic_handleOrderPickedEvent: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBusinessLogic
-  declaration: 	"private void handleOrderPickedEvent(Event e)"
-  id: 	StorageBusinessLogic_handleOrderPickedEvent
-  methodBody: 	"// no fulib
-OrderPickedEvent event = (OrderPickedEvent) e;
-handleDemoOrderPickedEvent(event);
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleOrderPickedEvent
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StorageBusinessLogic/method/handleOrderPickedEvent(Event)"
-
-- storageBusinessLogic_handleDemoOrderPickedEvent: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBusinessLogic
-  declaration: 	"private void handleDemoOrderPickedEvent(OrderPickedEvent event)"
-  id: 	StorageBusinessLogic_handleDemoOrderPickedEvent
-  methodBody: 	"if (event.getId().equals(\"14:00\")) {
-   PickTaskBuilt pick1300Event = new PickTaskBuilt();
-   pick1300Event.setId(\"14:01\");
-   pick1300Event.setBlockId(\"pick1300\");
-   pick1300Event.setState(\"done\");
-   pick1300Event.setBox(\"box23\");
-   service.apply(pick1300Event);
-
-   BoxBuilt box23Event = new BoxBuilt();
-   box23Event.setId(\"14:02\");
-   box23Event.setBlockId(\"box23\");
-   box23Event.setPlace(\"shipping\");
-   service.apply(box23Event);
-
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleDemoOrderPickedEvent
-  paramsString: 	"OrderPickedEvent event"
-  returnType: 	void
-  signature: 	"class/StorageBusinessLogic/method/handleDemoOrderPickedEvent(OrderPickedEvent)"
+  signature: 	"class/StorageBusinessLogic/method/handleDemoStoreBoxCommand(StoreBoxCommand)"
 
 - storageBusinessLogic_handleOrderRegisteredEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -279,13 +196,31 @@ handleDemoOrderRegisteredEvent(event);
   clazz: 	storageBusinessLogic
   declaration: 	"private void handleDemoOrderRegisteredEvent(OrderRegisteredEvent event)"
   id: 	StorageBusinessLogic_handleDemoOrderRegisteredEvent
-  methodBody: 	"if (event.getId().equals(\"13:11\")) {
+  methodBody: 	"if (event.getId().equals(\"13:04\")) {
+   PickTaskBuilt pick1300Event = new PickTaskBuilt();
+   pick1300Event.setId(\"13:05\");
+   pick1300Event.setBlockId(\"pick1300\");
+   pick1300Event.setOrder(\"order1300\");
+   pick1300Event.setProduct(\"shoes\");
+   pick1300Event.setCustomer(\"Alice\");
+   pick1300Event.setAddress(\"Wonderland 1\");
+   pick1300Event.setState(\"todo\");
+   service.apply(pick1300Event);
 
-   OrderDeclinedEvent e1314 = new OrderDeclinedEvent();
 
-   e1314.setId(\"13:14\");
-   e1314.setOrder(\"order1310\");
-   service.apply(e1314);
+   OrderApprovedEvent e1306 = new OrderApprovedEvent();
+
+   e1306.setId(\"13:06\");
+   e1306.setOrder(\"order1300\");
+   service.apply(e1306);
+}
+if (event.getId().equals(\"13:14\")) {
+
+   OrderDeclinedEvent e1315 = new OrderDeclinedEvent();
+
+   e1315.setId(\"13:15\");
+   e1315.setOrder(\"order1310\");
+   service.apply(e1315);
 }
 "
   modified: 	false
@@ -295,6 +230,58 @@ handleDemoOrderRegisteredEvent(event);
   returnType: 	void
   signature: 	"class/StorageBusinessLogic/method/handleDemoOrderRegisteredEvent(OrderRegisteredEvent)"
 
+- storageBusinessLogic_handlePickOrderCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBusinessLogic
+  declaration: 	"private void handlePickOrderCommand(Event e)"
+  id: 	StorageBusinessLogic_handlePickOrderCommand
+  methodBody: 	"// no fulib
+PickOrderCommand event = (PickOrderCommand) e;
+handleDemoPickOrderCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handlePickOrderCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StorageBusinessLogic/method/handlePickOrderCommand(Event)"
+
+- storageBusinessLogic_handleDemoPickOrderCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBusinessLogic
+  declaration: 	"private void handleDemoPickOrderCommand(PickOrderCommand event)"
+  id: 	StorageBusinessLogic_handleDemoPickOrderCommand
+  methodBody: 	"if (event.getId().equals(\"14:00\")) {
+   PickTaskBuilt pick1300Event = new PickTaskBuilt();
+   pick1300Event.setId(\"14:01\");
+   pick1300Event.setBlockId(\"pick1300\");
+   pick1300Event.setState(\"done\");
+   pick1300Event.setBox(\"box23\");
+   service.apply(pick1300Event);
+
+   BoxBuilt box23Event = new BoxBuilt();
+   box23Event.setId(\"14:02\");
+   box23Event.setBlockId(\"box23\");
+   box23Event.setPlace(\"shipping\");
+   service.apply(box23Event);
+
+
+   OrderPickedEvent e1403 = new OrderPickedEvent();
+
+   e1403.setId(\"14:03\");
+   e1403.setPickTask(\"pick1300\");
+   e1403.setBox(\"box23\");
+   e1403.setUser(\"Bob\");
+   service.apply(e1403);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoPickOrderCommand
+  paramsString: 	"PickOrderCommand event"
+  returnType: 	void
+  signature: 	"class/StorageBusinessLogic/method/handleDemoPickOrderCommand(PickOrderCommand)"
+
 - storageBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBusinessLogic
@@ -302,10 +289,9 @@ handleDemoOrderRegisteredEvent(event);
   id: 	StorageBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
-   handlerMap.put(ProductStoredEvent.class, this::handleProductStoredEvent);
-   handlerMap.put(OrderRegisteredCommand.class, this::handleOrderRegisteredCommand);
-   handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
+   handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
    handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
+   handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
    handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
    handlerMap.put(PickTaskBuilt.class, builder::handlePickTaskBuilt);
 }
@@ -456,7 +442,7 @@ object.setBox(event.getBox());
 - storageService_port: 	org.fulib.classmodel.Attribute
   clazz: 	storageService
   id: 	StorageService_port
-  initialization: 	42003
+  initialization: 	42002
   modified: 	false
   name: 	port
   propertyStyle: 	Bean
@@ -537,7 +523,7 @@ catch (Exception e) {
   declaration: 	"private void subscribeAndLoadOldEvents()"
   id: 	StorageService_subscribeAndLoadOldEvents
   methodBody: 	"ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-      .setServiceUrl(\"http://localhost:42003/apply\");
+      .setServiceUrl(\"http://localhost:42002/apply\");
 String json = Yaml.encode(serviceSubscribed);
 try {
    String url = \"http://localhost:42000/subscribe\";

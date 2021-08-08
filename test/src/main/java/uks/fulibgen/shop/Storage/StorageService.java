@@ -25,7 +25,7 @@ public class StorageService
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
-   private int port = 42003;
+   private int port = 42002;
    private Service spark;
    private StorageModel model;
    protected PropertyChangeSupport listeners;
@@ -184,7 +184,7 @@ public class StorageService
    private void subscribeAndLoadOldEvents()
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-            .setServiceUrl("http://localhost:42003/apply");
+            .setServiceUrl("http://localhost:42002/apply");
       String json = Yaml.encode(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";

@@ -21,7 +21,7 @@
   attributes: 	shopBusinessLogic_model 	shopBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	shopBusinessLogic_handleOrderRegisteredCommand 	shopBusinessLogic_handleDemoOrderRegisteredCommand 	shopBusinessLogic_handleOrderApprovedEvent 	shopBusinessLogic_handleDemoOrderApprovedEvent 	shopBusinessLogic_handleOrderPickedEvent 	shopBusinessLogic_handleDemoOrderPickedEvent 	shopBusinessLogic_handleOrderRegisteredEvent 	shopBusinessLogic_handleDemoOrderRegisteredEvent 	shopBusinessLogic_handleOrderDeclinedEvent 	shopBusinessLogic_handleDemoOrderDeclinedEvent 	shopBusinessLogic_initEventHandlerMap 	shopBusinessLogic_ignoreEvent 	shopBusinessLogic_getHandler
+  methods: 	shopBusinessLogic_handleSubmitOrderCommand 	shopBusinessLogic_handleDemoSubmitOrderCommand 	shopBusinessLogic_handleOrderApprovedEvent 	shopBusinessLogic_handleDemoOrderApprovedEvent 	shopBusinessLogic_handleOrderPickedEvent 	shopBusinessLogic_handleDemoOrderPickedEvent 	shopBusinessLogic_handleOrderDeclinedEvent 	shopBusinessLogic_handleDemoOrderDeclinedEvent 	shopBusinessLogic_initEventHandlerMap 	shopBusinessLogic_ignoreEvent 	shopBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	ShopBusinessLogic
@@ -129,27 +129,27 @@ return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
   type: 	"LinkedHashMap<Class, Consumer<Event>>"
   typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
 
-- shopBusinessLogic_handleOrderRegisteredCommand: 	org.fulib.classmodel.FMethod
+- shopBusinessLogic_handleSubmitOrderCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBusinessLogic
-  declaration: 	"private void handleOrderRegisteredCommand(Event e)"
-  id: 	ShopBusinessLogic_handleOrderRegisteredCommand
+  declaration: 	"private void handleSubmitOrderCommand(Event e)"
+  id: 	ShopBusinessLogic_handleSubmitOrderCommand
   methodBody: 	"// no fulib
-OrderRegisteredCommand event = (OrderRegisteredCommand) e;
-handleDemoOrderRegisteredCommand(event);
+SubmitOrderCommand event = (SubmitOrderCommand) e;
+handleDemoSubmitOrderCommand(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleOrderRegisteredCommand
+  name: 	handleSubmitOrderCommand
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/ShopBusinessLogic/method/handleOrderRegisteredCommand(Event)"
+  signature: 	"class/ShopBusinessLogic/method/handleSubmitOrderCommand(Event)"
 
-- shopBusinessLogic_handleDemoOrderRegisteredCommand: 	org.fulib.classmodel.FMethod
+- shopBusinessLogic_handleDemoSubmitOrderCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBusinessLogic
-  declaration: 	"private void handleDemoOrderRegisteredCommand(OrderRegisteredCommand event)"
-  id: 	ShopBusinessLogic_handleDemoOrderRegisteredCommand
+  declaration: 	"private void handleDemoSubmitOrderCommand(SubmitOrderCommand event)"
+  id: 	ShopBusinessLogic_handleDemoSubmitOrderCommand
   methodBody: 	"if (event.getId().equals(\"13:01\")) {
    OrderBuilt order1300Event = new OrderBuilt();
    order1300Event.setId(\"13:02\");
@@ -163,17 +163,53 @@ handleDemoOrderRegisteredCommand(event);
    CustomerBuilt aliceEvent = new CustomerBuilt();
    aliceEvent.setId(\"13:03\");
    aliceEvent.setBlockId(\"Alice\");
-   aliceEvent.setOrders(\"[ order1300 ]\");
+   aliceEvent.setOrders(\"[order1300]\");
    service.apply(aliceEvent);
 
+
+   OrderRegisteredEvent e1304 = new OrderRegisteredEvent();
+
+   e1304.setId(\"13:04\");
+   e1304.setOrder(\"order1300\");
+   e1304.setProduct(\"shoes\");
+   e1304.setCustomer(\"Alice\");
+   e1304.setAddress(\"Wonderland 1\");
+   service.apply(e1304);
+}
+if (event.getId().equals(\"13:11\")) {
+   OrderBuilt order1310Event = new OrderBuilt();
+   order1310Event.setId(\"13:12\");
+   order1310Event.setBlockId(\"order1310\");
+   order1310Event.setProduct(\"tshirt\");
+   order1310Event.setCustomer(\"Alice\");
+   order1310Event.setAddress(\"Wonderland 1\");
+   order1310Event.setState(\"pending\");
+   service.apply(order1310Event);
+
+   CustomerBuilt aliceEvent = new CustomerBuilt();
+   aliceEvent.setId(\"13:13\");
+   aliceEvent.setBlockId(\"Alice\");
+   aliceEvent.setOrders(\"[ order1300 order1310 ]\");
+   service.apply(aliceEvent);
+
+
+   OrderRegisteredEvent e1314 = new OrderRegisteredEvent();
+
+   e1314.setId(\"13:14\");
+   e1314.setOrder(\"order1310\");
+   e1314.setTrigger(\"button OK\");
+   e1314.setProduct(\"tshirt\");
+   e1314.setCustomer(\"Alice\");
+   e1314.setAddress(\"Wonderland 1\");
+   service.apply(e1314);
 }
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoOrderRegisteredCommand
-  paramsString: 	"OrderRegisteredCommand event"
+  name: 	handleDemoSubmitOrderCommand
+  paramsString: 	"SubmitOrderCommand event"
   returnType: 	void
-  signature: 	"class/ShopBusinessLogic/method/handleDemoOrderRegisteredCommand(OrderRegisteredCommand)"
+  signature: 	"class/ShopBusinessLogic/method/handleDemoSubmitOrderCommand(SubmitOrderCommand)"
 
 - shopBusinessLogic_handleOrderApprovedEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -196,7 +232,7 @@ handleDemoOrderApprovedEvent(event);
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleDemoOrderApprovedEvent(OrderApprovedEvent event)"
   id: 	ShopBusinessLogic_handleDemoOrderApprovedEvent
-  methodBody: 	"if (event.getId().equals(\"13:05\")) {
+  methodBody: 	"if (event.getId().equals(\"13:06\")) {
    OrderBuilt order1300Event = new OrderBuilt();
    order1300Event.setId(\"13:06\");
    order1300Event.setBlockId(\"order1300\");
@@ -233,9 +269,9 @@ handleDemoOrderPickedEvent(event);
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleDemoOrderPickedEvent(OrderPickedEvent event)"
   id: 	ShopBusinessLogic_handleDemoOrderPickedEvent
-  methodBody: 	"if (event.getId().equals(\"14:00\")) {
+  methodBody: 	"if (event.getId().equals(\"14:03\")) {
    OrderBuilt order1300Event = new OrderBuilt();
-   order1300Event.setId(\"14:03\");
+   order1300Event.setId(\"14:04\");
    order1300Event.setBlockId(\"order1300\");
    order1300Event.setState(\"shipping\");
    service.apply(order1300Event);
@@ -248,52 +284,6 @@ handleDemoOrderPickedEvent(event);
   paramsString: 	"OrderPickedEvent event"
   returnType: 	void
   signature: 	"class/ShopBusinessLogic/method/handleDemoOrderPickedEvent(OrderPickedEvent)"
-
-- shopBusinessLogic_handleOrderRegisteredEvent: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopBusinessLogic
-  declaration: 	"private void handleOrderRegisteredEvent(Event e)"
-  id: 	ShopBusinessLogic_handleOrderRegisteredEvent
-  methodBody: 	"// no fulib
-OrderRegisteredEvent event = (OrderRegisteredEvent) e;
-handleDemoOrderRegisteredEvent(event);
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleOrderRegisteredEvent
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopBusinessLogic/method/handleOrderRegisteredEvent(Event)"
-
-- shopBusinessLogic_handleDemoOrderRegisteredEvent: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	shopBusinessLogic
-  declaration: 	"private void handleDemoOrderRegisteredEvent(OrderRegisteredEvent event)"
-  id: 	ShopBusinessLogic_handleDemoOrderRegisteredEvent
-  methodBody: 	"if (event.getId().equals(\"13:11\")) {
-   OrderBuilt order1310Event = new OrderBuilt();
-   order1310Event.setId(\"13:12\");
-   order1310Event.setBlockId(\"order1310\");
-   order1310Event.setProduct(\"tshirt\");
-   order1310Event.setCustomer(\"Alice\");
-   order1310Event.setAddress(\"Wonderland 1\");
-   order1310Event.setState(\"pending\");
-   service.apply(order1310Event);
-
-   CustomerBuilt aliceEvent = new CustomerBuilt();
-   aliceEvent.setId(\"13:13\");
-   aliceEvent.setBlockId(\"Alice\");
-   aliceEvent.setOrders(\"[ order1300 order1310 ]\");
-   service.apply(aliceEvent);
-
-}
-"
-  modified: 	false
-  modifiers: 	private
-  name: 	handleDemoOrderRegisteredEvent
-  paramsString: 	"OrderRegisteredEvent event"
-  returnType: 	void
-  signature: 	"class/ShopBusinessLogic/method/handleDemoOrderRegisteredEvent(OrderRegisteredEvent)"
 
 - shopBusinessLogic_handleOrderDeclinedEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -316,9 +306,9 @@ handleDemoOrderDeclinedEvent(event);
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleDemoOrderDeclinedEvent(OrderDeclinedEvent event)"
   id: 	ShopBusinessLogic_handleDemoOrderDeclinedEvent
-  methodBody: 	"if (event.getId().equals(\"13:14\")) {
+  methodBody: 	"if (event.getId().equals(\"13:15\")) {
    OrderBuilt order1310Event = new OrderBuilt();
-   order1310Event.setId(\"13:12\");
+   order1310Event.setId(\"13:16\");
    order1310Event.setBlockId(\"order1310\");
    order1310Event.setState(\"out of stock\");
    service.apply(order1310Event);
@@ -339,10 +329,9 @@ handleDemoOrderDeclinedEvent(event);
   id: 	ShopBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
-   handlerMap.put(OrderRegisteredCommand.class, this::handleOrderRegisteredCommand);
+   handlerMap.put(SubmitOrderCommand.class, this::handleSubmitOrderCommand);
    handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
    handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
-   handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
    handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
    handlerMap.put(OrderBuilt.class, builder::handleOrderBuilt);
    handlerMap.put(CustomerBuilt.class, builder::handleCustomerBuilt);
@@ -641,18 +630,18 @@ return getDemoPage(request, response);
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
 
-if (\"Shop shoes selected 12:51\".equals(event)) {
+if (\"select product 12:51\".equals(event)) {
 
-   // create ShopShoesSelectedCommand: Shop shoes selected 12:51
-   ShopShoesSelectedCommand e1251 = new ShopShoesSelectedCommand();
+   // create SelectProductCommand: select product 12:51
+   SelectProductCommand e1251 = new SelectProductCommand();
    e1251.setId(\"12:51\");
    apply(e1251);
 }
 
-if (\"order registered 13:01\".equals(event)) {
+if (\"submit order 13:01\".equals(event)) {
 
-   // create OrderRegisteredCommand: order registered 13:01
-   OrderRegisteredCommand e1301 = new OrderRegisteredCommand();
+   // create SubmitOrderCommand: submit order 13:01
+   SubmitOrderCommand e1301 = new SubmitOrderCommand();
    e1301.setId(\"13:01\");
    e1301.setProduct(request.queryParams(\"product\"));
    e1301.setName(request.queryParams(\"name\"));
@@ -668,7 +657,7 @@ if (id.equals(\"12_50\")) {
    // Shop 12:50
    html.append(\"   <p>Welcome to the event shop</p>\n\");
    html.append(\"   <p>What do you want?</p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"Shop shoes selected 12:51\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"select product 12:51\\"></p>\n\");
    html.append(\"   <p><input id=\\"shoes\\" name=\\"button\\" type=\\"submit\\" value=\\"shoes\\"></p>\n\");
    html.append(\"   <p><input id=\\"tshirt\\" name=\\"button\\" type=\\"submit\\" value=\\"tshirt\\"></p>\n\");
    html.append(\"</form>\n\");
@@ -683,7 +672,7 @@ if (id.equals(\"13_00\")) {
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
    html.append(\"   <p><input id=\\"name\\" name=\\"name\\" placeholder=\\"name?\\"></p>\n\");
    html.append(\"   <p><input id=\\"address\\" name=\\"address\\" placeholder=\\"address?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"order registered 13:01\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"submit order 13:01\\"></p>\n\");
    html.append(\"   <p><input id=\\"OK\\" name=\\"button\\" type=\\"submit\\" value=\\"OK\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();

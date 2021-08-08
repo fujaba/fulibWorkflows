@@ -86,10 +86,6 @@ public class TestSomeEventStorming
       shop.start();
 
       // start service
-      someserviceService someservice = new someserviceService();
-      someservice.start();
-
-      // start service
       StorageService storage = new StorageService();
       storage.start();
 
@@ -99,11 +95,10 @@ public class TestSomeEventStorming
       SelenideElement pre = $("pre");
       pre.shouldHave(text("http://localhost:42100/apply"));
       pre.shouldHave(text("http://localhost:42002/apply"));
-      pre.shouldHave(text("http://localhost:42003/apply"));
 
       // workflow working smoothly
-      // create ProductStoredEvent: product stored 12:00
-      ProductStoredEvent e1200 = new ProductStoredEvent();
+      // create StoreBoxCommand: store box 12:00
+      StoreBoxCommand e1200 = new StoreBoxCommand();
       e1200.setId("12:00");
       e1200.setBox("box23");
       e1200.setProduct("shoes");
@@ -114,21 +109,11 @@ public class TestSomeEventStorming
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
 
-      // check someservice
+      // check Storage
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
       // check data note 12:01
-      pre = $("#data");
-      pre.shouldHave(text("- box23:"));
-      pre.shouldHave(text("product: shoes"));
-      pre.shouldHave(text("place: shelf23"));
-
-      // check Storage
-      open("http://localhost:42003");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_00:"));
-      // check data note 12:02
       pre = $("#data");
       pre.shouldHave(text("- box23:"));
       pre.shouldHave(text("product: shoes"));
@@ -163,10 +148,10 @@ public class TestSomeEventStorming
       pre.shouldHave(text("state: picking"));
 
       // check Storage
-      open("http://localhost:42003");
+      open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
-      // check data note 13:04
+      // check data note 13:05
       pre = $("#data");
       pre.shouldHave(text("- pick1300:"));
       pre.shouldHave(text("order: order1300"));
@@ -175,8 +160,8 @@ public class TestSomeEventStorming
       pre.shouldHave(text("address: \"Wonderland 1\""));
       pre.shouldHave(text("state: todo"));
 
-      // create OrderPickedEvent: order picked 14:00
-      OrderPickedEvent e1400 = new OrderPickedEvent();
+      // create PickOrderCommand: pick order 14:00
+      PickOrderCommand e1400 = new PickOrderCommand();
       e1400.setId("14:00");
       e1400.setPickTask("pick1300");
       e1400.setBox("box23");
@@ -188,7 +173,7 @@ public class TestSomeEventStorming
       pre.shouldHave(text("- 14_00:"));
 
       // check Storage
-      open("http://localhost:42003");
+      open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
       // check data note 14:01
@@ -205,14 +190,14 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
-      // check data note 14:03
+      // check data note 14:04
       pre = $("#data");
       pre.shouldHave(text("- order1300:"));
       pre.shouldHave(text("state: shipping"));
 
       // workflow OrderOutOfStocks
-      // create OrderRegisteredEvent: order registered 13:11
-      OrderRegisteredEvent e1311 = new OrderRegisteredEvent();
+      // create SubmitOrderCommand: submit order 13:11
+      SubmitOrderCommand e1311 = new SubmitOrderCommand();
       e1311.setId("13:11");
       e1311.setTrigger("button OK");
       e1311.setProduct("tshirt");
@@ -228,13 +213,13 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 13_11:"));
-      // check data note 13:12
+      // check data note 13:16
       pre = $("#data");
       pre.shouldHave(text("- order1310:"));
       pre.shouldHave(text("state: \"out of stock\""));
 
       // check Storage
-      open("http://localhost:42003");
+      open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 13_11:"));
 
