@@ -101,47 +101,12 @@ public class WorkflowGenerator
 
 
          // add business logic class
-         logicClass = modelManager.haveClass(serviceName + "BusinessLogic");
-         modelManager.haveAttribute(logicClass, "model", serviceName + "Model");
-         logicClass.withImports("import java.util.LinkedHashMap;",
-               "import java.util.function.Consumer;",
-               "import " + em.getClassModel().getPackageName() + ".*;");
+         addBusinessLogicClass(modelManager, serviceName);
 
-         builderClass = modelManager.haveClass(serviceName + "Builder");
-         modelManager.haveAttribute(builderClass, "model", serviceName + "Model");
-         builderClass.withImports("import java.util.LinkedHashMap;",
-               "import java.util.function.Consumer;",
-               "import " + em.getClassModel().getPackageName() + ".*;");
-
-         modelManager.associate(logicClass, "builder", Type.ONE, builderClass, "businessLogic", Type.ONE);
+         addBuilderClass(modelManager, serviceName);
 
          // add ServiceClass
-         serviceClazz = modelManager.haveClass(serviceName + "Service");
-         serviceClazz.withImports("import java.util.LinkedHashMap;",
-               "import java.util.Map;",
-               "import java.util.function.Consumer;",
-               "import " + em.getClassModel().getPackageName() + ".*;",
-               "import org.fulib.yaml.Yaml;",
-               "import spark.Service;",
-               "import spark.Request;",
-               "import spark.Response;",
-               "import com.mashape.unirest.http.HttpResponse;",
-               "import com.mashape.unirest.http.Unirest;",
-               "import com.mashape.unirest.http.exceptions.UnirestException;",
-               "import java.util.concurrent.ExecutorService;",
-               "import java.util.concurrent.Executors;",
-               "import java.util.logging.Logger;",
-               "import java.util.logging.Level;");
-         modelManager.haveAttribute(serviceClazz, "history",
-               "LinkedHashMap<String, Event>",
-               "new LinkedHashMap<>()");
-         modelManager.haveAttribute(serviceClazz, "port", Type.INT, port);
-         modelManager.haveAttribute(serviceClazz, "spark", "Service");
-         modelManager.haveAttribute(serviceClazz, "model", serviceName + "Model");
-         modelManager.associate(serviceClazz, "businessLogic", Type.ONE, logicClass, "service", Type.ONE);
-         modelManager.haveAttribute(logicClass, "handlerMap",
-               "LinkedHashMap<Class, Consumer<Event>>", null);
-
+         addServiceClass(modelManager, port, serviceName);
 
 
          String declaration;
@@ -191,6 +156,69 @@ public class WorkflowGenerator
          modelManager.haveMethod(builderClass, declaration, body.toString());
 
       }
+   }
+
+   private void addBuilderClass(ClassModelManager modelManager, String serviceName)
+   {
+      builderClass = modelManager.haveClass(serviceName + "Builder");
+      modelManager.haveAttribute(builderClass, "model", serviceName + "Model");
+      builderClass.withImports("import java.util.LinkedHashMap;",
+            "import java.util.function.Consumer;",
+            "import " + em.getClassModel().getPackageName() + ".*;");
+
+      modelManager.associate(logicClass, "builder", Type.ONE, builderClass, "businessLogic", Type.ONE);
+
+      modelManager.haveAttribute(builderClass, "eventStore", "LinkedHashMap<String, DataEvent>", "new LinkedHashMap<>()");
+
+      ST st;
+      String declaration = "private boolean outdated(DataEvent event)";
+      st = group.getInstanceOf("builderOutdated");
+      String builderBody = st.render();
+      modelManager.haveMethod(builderClass, declaration, builderBody);
+   }
+
+   private void addBusinessLogicClass(ClassModelManager modelManager, String serviceName)
+   {
+      logicClass = modelManager.haveClass(serviceName + "BusinessLogic");
+      modelManager.haveAttribute(logicClass, "model", serviceName + "Model");
+      logicClass.withImports("import java.util.LinkedHashMap;",
+            "import java.util.function.Consumer;",
+            "import " + em.getClassModel().getPackageName() + ".*;");
+   }
+
+   private void addServiceClass(ClassModelManager modelManager, String port, String serviceName)
+   {
+      serviceClazz = modelManager.haveClass(serviceName + "Service");
+      serviceClazz.withImports("import java.util.LinkedHashMap;",
+            "import java.util.Map;",
+            "import java.util.function.Consumer;",
+            "import " + em.getClassModel().getPackageName() + ".*;",
+            "import org.fulib.yaml.Yaml;",
+            "import spark.Service;",
+            "import spark.Request;",
+            "import spark.Response;",
+            "import com.mashape.unirest.http.HttpResponse;",
+            "import com.mashape.unirest.http.Unirest;",
+            "import com.mashape.unirest.http.exceptions.UnirestException;",
+            "import java.util.concurrent.ExecutorService;",
+            "import java.util.concurrent.Executors;",
+            "import java.util.logging.Logger;",
+            "import java.util.logging.Level;");
+      modelManager.haveAttribute(serviceClazz, "history",
+            "LinkedHashMap<String, Event>",
+            "new LinkedHashMap<>()");
+      modelManager.haveAttribute(serviceClazz, "port", Type.INT, port);
+      modelManager.haveAttribute(serviceClazz, "spark", "Service");
+      modelManager.haveAttribute(serviceClazz, "model", serviceName + "Model");
+      modelManager.associate(serviceClazz, "businessLogic", Type.ONE, logicClass, "service", Type.ONE);
+      modelManager.associate(serviceClazz, "builder", Type.ONE, builderClass, "service", Type.ONE);
+      modelManager.haveAttribute(logicClass, "handlerMap",
+            "LinkedHashMap<Class, Consumer<Event>>", null);
+
+      String declaration = "public Query query(Query query)";
+      ST st = group.getInstanceOf("serviceQuery");
+      String queryBody = st.render();
+      modelManager.haveMethod(serviceClazz, declaration, queryBody);
    }
 
    private void buildGetPageMethod(ClassModelManager modelManager, Clazz serviceClazz, String serviceName, StringBuilder body)
@@ -267,6 +295,14 @@ public class WorkflowGenerator
             continue;
          }
 
+         if (firstTag.equals("password")) {
+            String key = line.getMap().get("password");
+            content.append(String.format(
+                  "   html.append(\"   <p><input id=\\\"%s\\\" name=\\\"%1$s\\\" type=\\\"password\\\" placeholder=\\\"%1$s?\\\"></p>\\n\");\n",
+                  key));
+            continue;
+         }
+
          content.append(String.format("   // %s\n", line.getMap().entrySet().iterator().next().getValue()));
       }
       content.append("   html.append(\"</form>\\n\");\n");
@@ -323,8 +359,9 @@ public class WorkflowGenerator
       // add start method
       declaration = "public void start()";
       body.append(String.format("model = new %sModel();\n", serviceName));
+      body.append(String.format("setBuilder(new %sBuilder().setModel(model));\n", serviceName));
       body.append(String.format("setBusinessLogic(new %sBusinessLogic());\n", serviceName));
-      body.append(String.format("businessLogic.setBuilder(new %sBuilder().setModel(model));\n", serviceName));
+      body.append("businessLogic.setBuilder(getBuilder());\n");
       body.append("businessLogic.setModel(model);\n");
       body.append("ExecutorService executor = Executors.newSingleThreadExecutor();\n");
       body.append("spark = Service.ignite();\n");
@@ -376,6 +413,9 @@ public class WorkflowGenerator
       String eventTypeName = dataTypeName + "Built";
       String declaration = String.format("public void handle%s(Event e)", eventTypeName);
       body.append(String.format("%s event = (%1$s) e;\n", eventTypeName));
+      body.append("if (outdated(event)) {\n");
+      body.append("   return;\n");
+      body.append("}\n");
       body.append(String.format("%s object = model.getOrCreate%1$s(event.getBlockId());\n", dataTypeName));
 
       Clazz dataClazz = modelManager.haveClass(dataTypeName);
@@ -466,6 +506,11 @@ public class WorkflowGenerator
          else if (note instanceof ClassNote) {
             ClassNote classNote = (ClassNote) note;
             addModelClassForClassNote(modelManager, serviceNote, classNote);
+         }
+         else if (note instanceof QueryNote) {
+            QueryNote classNote = (QueryNote) note;
+            // add to query demo method
+            System.out.println();
          }
          else {
             // fire event
@@ -749,6 +794,9 @@ public class WorkflowGenerator
                   String fill = line.getMap().get("fill");
                   if (fill != null) {
                      String id = line.getMap().get("input");
+                     if (id == null) {
+                        id = line.getMap().get("password");
+                     }
                      testBody.append(String.format("$(\"#%s\").setValue(\"%s\");\n", id, fill));
                   }
                }
@@ -785,6 +833,7 @@ public class WorkflowGenerator
             "import static com.codeborne.selenide.Selenide.open;",
             "import static com.codeborne.selenide.Selenide.$;",
             "import static com.codeborne.selenide.Condition.text;",
+            "import static com.codeborne.selenide.Condition.matchText;",
             "import com.codeborne.selenide.SelenideElement;");
    }
 
@@ -876,7 +925,7 @@ public class WorkflowGenerator
                   else if (value.indexOf(" ") > 0) {
                      value = "\\\"" + value + "\\\"";
                   }
-                  check.append(String.format("pre.shouldHave(text(\"%s: %s\"));\n",
+                  check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",
                         key, value));
                }
             }
@@ -951,9 +1000,22 @@ public class WorkflowGenerator
 
       Clazz event = em.haveClass("Event");
       em.haveAttribute(event, "id", Type.STRING);
+
       Clazz dataEvent = em.haveClass("DataEvent");
       dataEvent.setSuperClass(event);
       em.haveAttribute(dataEvent, "blockId", Type.STRING);
+
+      Clazz dataGroup = em.haveClass("DataGroup");
+      dataGroup.setSuperClass(dataEvent);
+
+      em.associate(dataGroup, "elements", Type.MANY, dataEvent, "sagas", Type.MANY);
+
+      Clazz query = em.haveClass("Query");
+      query.setSuperClass(event);
+      em.haveAttribute(query, "key", Type.STRING);
+      em.associate(query, "results", Type.MANY, dataEvent);
+
+
       Clazz serviceSubscribed = em.haveClass("ServiceSubscribed");
       serviceSubscribed.setSuperClass(event);
       em.haveAttribute(serviceSubscribed, "serviceUrl", Type.STRING);

@@ -107,30 +107,13 @@ public class PartyAppBusinessLogic
       return this;
    }
 
-   private void handleLoginCommand(Event e)
-   {
-      // no fulib
-      LoginCommand event = (LoginCommand) e;
-      handleDemoLoginCommand(event);
-   }
-
-   private void handleDemoLoginCommand(LoginCommand event)
-   {
-      if (event.getId().equals("12:01")) {
-
-         LoginSucceededEvent e1210 = new LoginSucceededEvent();
-
-         e1210.setId("12:10");
-         e1210.setName("Alice");
-         service.apply(e1210);
-      }
-   }
-
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(LoginCommand.class, this::handleLoginCommand);
+         handlerMap.put(GetUserNameCommand.class, this::handleGetUserNameCommand);
+         handlerMap.put(GetPasswordCommand.class, this::handleGetPasswordCommand);
+         handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
       }
    }
 
@@ -167,5 +150,49 @@ public class PartyAppBusinessLogic
    {
       this.setBuilder(null);
       this.setService(null);
+   }
+
+   private void handleGetUserNameCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      GetUserNameCommand event = (GetUserNameCommand) e;
+      handleDemoGetUserNameCommand(event);
+   }
+
+   private void handleDemoGetUserNameCommand(GetUserNameCommand event)
+   {
+      if (event.getId().equals("12:01")) {
+      }
+      if (event.getId().equals("13:01")) {
+      }
+   }
+
+   private void handleGetPasswordCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      GetPasswordCommand event = (GetPasswordCommand) e;
+      handleDemoGetPasswordCommand(event);
+   }
+
+   private void handleDemoGetPasswordCommand(GetPasswordCommand event)
+   {
+      if (event.getId().equals("12:07")) {
+         UserBuilt aliceEvent = new UserBuilt();
+         aliceEvent.setId("12:07:01");
+         aliceEvent.setBlockId("Alice");
+         aliceEvent.setName("Alice");
+         aliceEvent.setEmail("a@b.de");
+         aliceEvent.setPassword("secret");
+         service.apply(aliceEvent);
+
+
+         LoginSucceededEvent e1210 = new LoginSucceededEvent();
+
+         e1210.setId("12:10");
+         e1210.setName("Alice");
+         service.apply(e1210);
+      }
    }
 }

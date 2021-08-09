@@ -1,7 +1,7 @@
 package uks.debuggen.party.events;
 import java.util.Objects;
 
-public class LoginCommand extends Command
+public class GetUserNameCommand extends Command
 {
    public static final String PROPERTY_NAME = "name";
    private String name;
@@ -11,7 +11,7 @@ public class LoginCommand extends Command
       return this.name;
    }
 
-   public LoginCommand setName(String value)
+   public GetUserNameCommand setName(String value)
    {
       if (Objects.equals(value, this.name))
       {

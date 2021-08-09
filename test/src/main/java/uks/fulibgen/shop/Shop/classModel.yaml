@@ -29,26 +29,26 @@
   roles: 	shopBusinessLogic_builder 	shopBusinessLogic_service
 
 - shopBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	shopBuilder_model
+  attributes: 	shopBuilder_model 	shopBuilder_eventStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	shopBuilder_handleOrderBuilt 	shopBuilder_handleCustomerBuilt 	shopBuilder_stripBrackets
+  methods: 	shopBuilder_outdated 	shopBuilder_handleOrderBuilt 	shopBuilder_handleCustomerBuilt 	shopBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	ShopBuilder
   propertyStyle: 	Bean
-  roles: 	shopBuilder_businessLogic
+  roles: 	shopBuilder_businessLogic 	shopBuilder_service
 
 - shopService: 	org.fulib.classmodel.Clazz
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_publish 	shopService_postApply
+  methods: 	shopService_query 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_publish 	shopService_postApply
   model: 	c
   modified: 	false
   name: 	ShopService
   propertyStyle: 	Bean
-  roles: 	shopService_businessLogic
+  roles: 	shopService_businessLogic 	shopService_builder
 
 - order: 	org.fulib.classmodel.Clazz
   attributes: 	order_id 	order_product 	order_customer 	order_address 	order_state
@@ -405,12 +405,50 @@ handleDemoOrderDeclinedEvent(event);
   type: 	ShopModel
   typeSignature: 	ShopModel
 
+- shopBuilder_eventStore: 	org.fulib.classmodel.Attribute
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_eventStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	eventStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, DataEvent>"
+  typeSignature: 	"LinkedHashMap<String,DataEvent>"
+
+- shopBuilder_outdated: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"private boolean outdated(DataEvent event)"
+  id: 	ShopBuilder_outdated
+  methodBody: 	"      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;"
+  modified: 	false
+  modifiers: 	private
+  name: 	outdated
+  paramsString: 	"DataEvent event"
+  returnType: 	boolean
+  signature: 	"class/ShopBuilder/method/outdated(DataEvent)"
+
 - shopBuilder_handleOrderBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBuilder
   declaration: 	"public void handleOrderBuilt(Event e)"
   id: 	ShopBuilder_handleOrderBuilt
   methodBody: 	"OrderBuilt event = (OrderBuilt) e;
+if (outdated(event)) {
+   return;
+}
 Order object = model.getOrCreateOrder(event.getBlockId());
 object.setProduct(event.getProduct());
 object.setCustomer(event.getCustomer());
@@ -430,6 +468,9 @@ object.setState(event.getState());
   declaration: 	"public void handleCustomerBuilt(Event e)"
   id: 	ShopBuilder_handleCustomerBuilt
   methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
+if (outdated(event)) {
+   return;
+}
 Customer object = model.getOrCreateCustomer(event.getBlockId());
 object.setOrders(event.getOrders());
 "
@@ -471,6 +512,16 @@ object.setOrders(event.getOrders());
   other: 	shopBusinessLogic_builder
   propertyStyle: 	Bean
 
+- shopBuilder_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_service
+  modified: 	false
+  name: 	service
+  other: 	shopService_builder
+  propertyStyle: 	Bean
+
 - shopService_history: 	org.fulib.classmodel.Attribute
   clazz: 	shopService
   id: 	ShopService_history
@@ -509,14 +560,42 @@ object.setOrders(event.getOrders());
   type: 	ShopModel
   typeSignature: 	ShopModel
 
+- shopService_query: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopService
+  declaration: 	"public Query query(Query query)"
+  id: 	ShopService_query
+  methodBody: 	"      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;"
+  modified: 	false
+  modifiers: 	public
+  name: 	query
+  paramsString: 	"Query query"
+  returnType: 	Query
+  signature: 	"class/ShopService/method/query(Query)"
+
 - shopService_start: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopService
   declaration: 	"public void start()"
   id: 	ShopService_start
   methodBody: 	"model = new ShopModel();
+setBuilder(new ShopBuilder().setModel(model));
 setBusinessLogic(new ShopBusinessLogic());
-businessLogic.setBuilder(new ShopBuilder().setModel(model));
+businessLogic.setBuilder(getBuilder());
 businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
@@ -748,6 +827,16 @@ catch (UnirestException e) {
   modified: 	false
   name: 	businessLogic
   other: 	shopBusinessLogic_service
+  propertyStyle: 	Bean
+
+- shopService_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	shopService
+  id: 	ShopService_builder
+  modified: 	false
+  name: 	builder
+  other: 	shopBuilder_service
   propertyStyle: 	Bean
 
 - order_id: 	org.fulib.classmodel.Attribute

@@ -9,9 +9,13 @@ public class ShopBuilder
 {
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
+   public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_EVENT_STORE = "eventStore";
    private ShopModel model;
    private ShopBusinessLogic businessLogic;
    protected PropertyChangeSupport listeners;
+   private ShopService service;
+   private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
 
    public ShopModel getModel()
    {
@@ -58,9 +62,57 @@ public class ShopBuilder
       return this;
    }
 
+   public ShopService getService()
+   {
+      return this.service;
+   }
+
+   public ShopBuilder setService(ShopService value)
+   {
+      if (this.service == value)
+      {
+         return this;
+      }
+
+      final ShopService oldValue = this.service;
+      if (this.service != null)
+      {
+         this.service = null;
+         oldValue.setBuilder(null);
+      }
+      this.service = value;
+      if (value != null)
+      {
+         value.setBuilder(this);
+      }
+      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, DataEvent> getEventStore()
+   {
+      return this.eventStore;
+   }
+
+   public ShopBuilder setEventStore(LinkedHashMap<String, DataEvent> value)
+   {
+      if (Objects.equals(value, this.eventStore))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, DataEvent> oldValue = this.eventStore;
+      this.eventStore = value;
+      this.firePropertyChange(PROPERTY_EVENT_STORE, oldValue, value);
+      return this;
+   }
+
    public void handleOrderBuilt(Event e)
    {
       OrderBuilt event = (OrderBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
       Order object = model.getOrCreateOrder(event.getBlockId());
       object.setProduct(event.getProduct());
       object.setCustomer(event.getCustomer());
@@ -71,6 +123,9 @@ public class ShopBuilder
    public void handleCustomerBuilt(Event e)
    {
       CustomerBuilt event = (CustomerBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
       Customer object = model.getOrCreateCustomer(event.getBlockId());
       object.setOrders(event.getOrders());
    }
@@ -110,5 +165,23 @@ public class ShopBuilder
    public void removeYou()
    {
       this.setBusinessLogic(null);
+      this.setService(null);
+   }
+
+   private boolean outdated(DataEvent event)
+   {
+      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;
    }
 }

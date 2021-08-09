@@ -1,7 +1,11 @@
 package uks.debuggen.party.PartyApp;
+
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.Consumer;
+
 import uks.debuggen.party.events.*;
+
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
@@ -9,9 +13,12 @@ public class PartyAppBuilder
 {
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
+   public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_EVENT_STORE = "eventStore";
    private PartyAppModel model;
    private PartyAppBusinessLogic businessLogic;
    protected PropertyChangeSupport listeners;
+   private PartyAppService service;
 
    public PartyAppModel getModel()
    {
@@ -58,6 +65,46 @@ public class PartyAppBuilder
       return this;
    }
 
+   public PartyAppService getService()
+   {
+      return this.service;
+   }
+
+   public PartyAppBuilder setService(PartyAppService value)
+   {
+      if (this.service == value)
+      {
+         return this;
+      }
+
+      final PartyAppService oldValue = this.service;
+      if (this.service != null)
+      {
+         this.service = null;
+         oldValue.setBuilder(null);
+      }
+      this.service = value;
+      if (value != null)
+      {
+         value.setBuilder(this);
+      }
+      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
+   }
+
+   public PartyAppBuilder setEventStore(LinkedHashMap<String, DataEvent> value)
+   {
+      if (Objects.equals(value, this.eventStore))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, DataEvent> oldValue = this.eventStore;
+      this.eventStore = value;
+      this.firePropertyChange(PROPERTY_EVENT_STORE, oldValue, value);
+      return this;
+   }
+
    public String stripBrackets(String back)
    {
       if (back == null) {
@@ -93,5 +140,42 @@ public class PartyAppBuilder
    public void removeYou()
    {
       this.setBusinessLogic(null);
+      this.setService(null);
+   }
+
+   public void handleUserBuilt(Event e)
+   {
+      UserBuilt event = (UserBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      User object = model.getOrCreateUser(event.getBlockId());
+      object.setName(event.getName());
+      object.setEmail(event.getEmail());
+      object.setPassword(event.getPassword());
+   }
+
+   private boolean outdated(DataEvent event)
+   {
+      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;
+   }
+
+   private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
+
+   public LinkedHashMap<String, DataEvent> getEventStore()
+   {
+      return this.eventStore;
    }
 }

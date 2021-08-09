@@ -1,6 +1,8 @@
 
 - board: PartyApp
 
+- workflow: register new user
+
 - action: Alice
 
 - page:
@@ -10,10 +12,86 @@
     - input: name
       fill: Alice
     - button: ok
-      command: login 12:01
+      command: get user name 12:01
 
 - policy: PartyApp
   trigger: 12:01
 
+- query: Alice 12:02
+  result: []
+
+- action: Alice
+
+- page:
+    - name: PartyApp 12:05
+    - label: Welcome Alice
+    - label: You are new to parties
+    - label: We need your email
+    - input: email
+      fill: a@b.de
+    - button: ok
+      command: get email 12:04
+
+- page:
+    - name: PartyApp 12:06
+    - label: Welcome Alice
+    - label: Choose a password
+    - password: password
+      fill: secret
+    - button: ok
+      command: get password 12:07
+
+
+- policy: PartyApp
+  trigger: 12:07
+
+- data: 12:07:01
+  user: Alice
+  name: Alice
+  email: a@b.de
+  password: secret
+
 - event: login succeeded 12:10
   name: Alice
+
+- action: Alice
+
+- page:
+    - name: PartyApp 12:11
+    - label: Welcome Alice
+    - label: Choose a party
+    - input: party
+      fill: SE BBQ
+    - button: ok
+      command: get party 12:12
+
+
+# ======================================================
+- workflow: login old user
+
+- page:
+    - name: PartyApp 13:00
+    - label: Welcome to the parties
+    - label: What's your name?
+    - input: name
+      fill: Alice
+    - button: ok
+      command: get user name 13:01
+
+- policy: PartyApp
+  trigger: 13:01
+
+- query: Alice 13:02
+  result: [Alice]
+
+- action: Alice
+
+- page:
+    - name: PartyApp 13:06
+    - label: Welcome Alice
+    - label: Provide a password
+    - password: password
+      fill: secret
+    - button: ok
+      command: get password 13:07
+

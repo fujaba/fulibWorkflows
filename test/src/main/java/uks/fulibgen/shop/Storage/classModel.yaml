@@ -29,26 +29,26 @@
   roles: 	storageBusinessLogic_builder 	storageBusinessLogic_service
 
 - storageBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	storageBuilder_model
+  attributes: 	storageBuilder_model 	storageBuilder_eventStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	storageBuilder_handleBoxBuilt 	storageBuilder_handlePickTaskBuilt 	storageBuilder_stripBrackets
+  methods: 	storageBuilder_outdated 	storageBuilder_handleBoxBuilt 	storageBuilder_handlePickTaskBuilt 	storageBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	StorageBuilder
   propertyStyle: 	Bean
-  roles: 	storageBuilder_businessLogic
+  roles: 	storageBuilder_businessLogic 	storageBuilder_service
 
 - storageService: 	org.fulib.classmodel.Clazz
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_publish 	storageService_postApply
+  methods: 	storageService_query 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_publish 	storageService_postApply
   model: 	c
   modified: 	false
   name: 	StorageService
   propertyStyle: 	Bean
-  roles: 	storageService_businessLogic
+  roles: 	storageService_businessLogic 	storageService_builder
 
 - box: 	org.fulib.classmodel.Clazz
   attributes: 	box_id 	box_product 	box_place
@@ -363,12 +363,50 @@ handleDemoPickOrderCommand(event);
   type: 	StorageModel
   typeSignature: 	StorageModel
 
+- storageBuilder_eventStore: 	org.fulib.classmodel.Attribute
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_eventStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	eventStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, DataEvent>"
+  typeSignature: 	"LinkedHashMap<String,DataEvent>"
+
+- storageBuilder_outdated: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"private boolean outdated(DataEvent event)"
+  id: 	StorageBuilder_outdated
+  methodBody: 	"      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;"
+  modified: 	false
+  modifiers: 	private
+  name: 	outdated
+  paramsString: 	"DataEvent event"
+  returnType: 	boolean
+  signature: 	"class/StorageBuilder/method/outdated(DataEvent)"
+
 - storageBuilder_handleBoxBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
   declaration: 	"public void handleBoxBuilt(Event e)"
   id: 	StorageBuilder_handleBoxBuilt
   methodBody: 	"BoxBuilt event = (BoxBuilt) e;
+if (outdated(event)) {
+   return;
+}
 Box object = model.getOrCreateBox(event.getBlockId());
 object.setProduct(event.getProduct());
 object.setPlace(event.getPlace());
@@ -386,6 +424,9 @@ object.setPlace(event.getPlace());
   declaration: 	"public void handlePickTaskBuilt(Event e)"
   id: 	StorageBuilder_handlePickTaskBuilt
   methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
+if (outdated(event)) {
+   return;
+}
 PickTask object = model.getOrCreatePickTask(event.getBlockId());
 object.setOrder(event.getOrder());
 object.setProduct(event.getProduct());
@@ -432,6 +473,16 @@ object.setBox(event.getBox());
   other: 	storageBusinessLogic_builder
   propertyStyle: 	Bean
 
+- storageBuilder_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_service
+  modified: 	false
+  name: 	service
+  other: 	storageService_builder
+  propertyStyle: 	Bean
+
 - storageService_history: 	org.fulib.classmodel.Attribute
   clazz: 	storageService
   id: 	StorageService_history
@@ -470,14 +521,42 @@ object.setBox(event.getBox());
   type: 	StorageModel
   typeSignature: 	StorageModel
 
+- storageService_query: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"public Query query(Query query)"
+  id: 	StorageService_query
+  methodBody: 	"      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;"
+  modified: 	false
+  modifiers: 	public
+  name: 	query
+  paramsString: 	"Query query"
+  returnType: 	Query
+  signature: 	"class/StorageService/method/query(Query)"
+
 - storageService_start: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageService
   declaration: 	"public void start()"
   id: 	StorageService_start
   methodBody: 	"model = new StorageModel();
+setBuilder(new StorageBuilder().setModel(model));
 setBusinessLogic(new StorageBusinessLogic());
-businessLogic.setBuilder(new StorageBuilder().setModel(model));
+businessLogic.setBuilder(getBuilder());
 businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
@@ -661,6 +740,16 @@ catch (UnirestException e) {
   modified: 	false
   name: 	businessLogic
   other: 	storageBusinessLogic_service
+  propertyStyle: 	Bean
+
+- storageService_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	storageService
+  id: 	StorageService_builder
+  modified: 	false
+  name: 	builder
+  other: 	storageBuilder_service
   propertyStyle: 	Bean
 
 - box_id: 	org.fulib.classmodel.Attribute

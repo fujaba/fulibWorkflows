@@ -24,12 +24,14 @@ public class ShopService
    public static final String PROPERTY_SPARK = "spark";
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
+   public static final String PROPERTY_BUILDER = "builder";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
    private int port = 42100;
    private Service spark;
    private ShopModel model;
    protected PropertyChangeSupport listeners;
    private ShopBusinessLogic businessLogic;
+   private ShopBuilder builder;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -130,11 +132,39 @@ public class ShopService
       return this;
    }
 
+   public ShopBuilder getBuilder()
+   {
+      return this.builder;
+   }
+
+   public ShopService setBuilder(ShopBuilder value)
+   {
+      if (this.builder == value)
+      {
+         return this;
+      }
+
+      final ShopBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setService(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setService(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
+      return this;
+   }
+
    public void start()
    {
       model = new ShopModel();
+      setBuilder(new ShopBuilder().setModel(model));
       setBusinessLogic(new ShopBusinessLogic());
-      businessLogic.setBuilder(new ShopBuilder().setModel(model));
+      businessLogic.setBuilder(getBuilder());
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
@@ -316,5 +346,25 @@ public class ShopService
    public void removeYou()
    {
       this.setBusinessLogic(null);
+      this.setBuilder(null);
+   }
+
+   public Query query(Query query)
+   {
+      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;
    }
 }

@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	commandNote 	eventType 	eventStormingBoard 	note 	dataEvent 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	note 	dataEvent 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -76,7 +76,7 @@
   name: 	WorkflowNote
   propertyStyle: 	Bean
   roles: 	workflowNote_interaction 	workflowNote_workflow
-  subClasses: 	dataNote 	classNote 	pageNote 	eventNote
+  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	eventNote
   superClass: 	note
 
 - dataNote: 	org.fulib.classmodel.Clazz
@@ -118,6 +118,14 @@
   name: 	PageNote
   propertyStyle: 	Bean
   roles: 	pageNote_lines 	pageNote_service 	pageNote_previousPage 	pageNote_nextPage 	pageNote_raisedEvent
+  superClass: 	workflowNote
+
+- queryNote: 	org.fulib.classmodel.Clazz
+  attributes: 	queryNote_key 	queryNote_result
+  model: 	c
+  modified: 	false
+  name: 	QueryNote
+  propertyStyle: 	Bean
   superClass: 	workflowNote
 
 - commandNote: 	org.fulib.classmodel.Clazz
@@ -651,6 +659,24 @@
   name: 	raisedEvent
   other: 	eventNote_raisingPage
   propertyStyle: 	Bean
+
+- queryNote_key: 	org.fulib.classmodel.Attribute
+  clazz: 	queryNote
+  id: 	QueryNote_key
+  modified: 	false
+  name: 	key
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- queryNote_result: 	org.fulib.classmodel.Attribute
+  clazz: 	queryNote
+  id: 	QueryNote_result
+  modified: 	false
+  name: 	result
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 
 - eventType_eventTypeName: 	org.fulib.classmodel.Attribute
   clazz: 	eventType

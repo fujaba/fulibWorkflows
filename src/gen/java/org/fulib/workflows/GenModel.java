@@ -129,6 +129,11 @@ public class GenModel implements ClassModelDecorator
 
    }
 
+   class QueryNote extends WorkflowNote {
+      String key;
+      String result;
+   }
+
    class PageNote extends WorkflowNote
    {
       String buttonId;

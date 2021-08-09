@@ -88,36 +88,7 @@ public class EventModel
             addToStepsOfLastActor(classNote);
          }
          else if (entry.getKey().equalsIgnoreCase("Data")) {
-            String value = entry.getValue();
-            String[] split = StrUtil.split(value);
-            String className;
-            String objectId;
-            if (split.length == 1) {
-               Map.Entry<String, String> typeEntry = iterator.next();
-               className = StrUtil.cap(typeEntry.getKey());
-               objectId = typeEntry.getValue();
-
-            }
-            else {
-               className = StrUtil.cap(split[0]);
-               objectId = split[1];
-               value = split[2];
-            }
-
-            DataNote note = new DataNote();
-            note.setTime(value);
-            note.setBlockId(objectId);
-            note.setMap(map);
-            note.setWorkflow(getRootWorkflow());
-            note.setDataType(className);
-            addToStepsOfLastActor(note);
-            ServiceNote serviceNote = ((Policy) lastActor).getService();
-            serviceNote.getObjectMap().put(objectId, className);
-
-            DataType dataType = eventStormingBoard.getOrCreateDataType(note.getDataType());
-            dataType.withDataNotes(note);
-            serviceNote.withHandledDataTypes(dataType);
-
+            buildDataNote(map, iterator, entry);
          }
          else if (entry.getKey().equalsIgnoreCase("event")) {
             EventNote eventNote = new EventNote();
@@ -128,81 +99,135 @@ public class EventModel
             fillEventNote(map, commandNote);
          }
          else if (entry.getKey().equalsIgnoreCase("page")) {
-            PageNote pageNote = new PageNote();
-            pageNote.setWorkflow(getRootWorkflow());
-            pageNote.setMap(map);
-
-            // read multiline value
-            String multilineValue = entry.getValue();
-            ArrayList<LinkedHashMap<String, String>> lineMaps = new Yamler2().decodeList(multilineValue);
-            for (LinkedHashMap<String, String> lineMap : lineMaps) {
-               PageLine pageLine = new PageLine()
-                     .setPageNote(pageNote)
-                     .setMap(lineMap);
-               String nameValue = lineMap.get("name");
-               if (nameValue != null) {
-                  // its like name: ServiceName timestamp
-                  String[] split = nameValue.split("\\s+");
-                  String pageName = split[split.length - 1];
-                  String serviceName = split[0];
-                  pageNote.setTime(pageName);
-                  ServiceNote serviceNote = getEventStormingBoard().getOrCreateFromServices(serviceName);
-                  pageNote.setService(serviceNote);
-
-                  addToStepsOfLastActor(pageNote);
-                  PageNote previousPage = userLastPage.get(lastActor.getActorName());
-                  if (previousPage != null) {
-                     previousPage.setNextPage(pageNote);
-                  }
-                  userLastPage.put(lastActor.getActorName(), pageNote);
-               }
-               String command = lineMap.get("command");
-               if (command != null) {
-                  // store button name
-                  String buttonId = lineMap.get("button");
-                  pageNote.setButtonId(buttonId);
-
-                  // add an event note
-                  EventNote commandNote = new CommandNote();
-                  LinkedHashMap<String, String> eventMap = new LinkedHashMap<>();
-                  eventMap.put("command", command);
-                  for (PageLine line : pageNote.getLines()) {
-                     // add inputs as event attributes
-                     String input = line.getMap().get("input");
-                     if (input != null) {
-                        String fill = line.getMap().get("fill");
-                        if (fill == null) {
-                           fill = "somevalue";
-                        }
-                        eventMap.put(input, fill);
-                     }
-                  }
-                  String eventDescription = getEventId(eventMap);
-                  String eventTime = getEventTime(eventDescription);
-                  String eventTypeName = getEventTypeName(eventDescription) + "Command";
-                  commandNote.setTime(eventTime);
-                  commandNote.setEventTypeName(eventTypeName);
-                  commandNote.setWorkflow(getRootWorkflow());
-                  commandNote.setMap(eventMap);
-                  commandNote.setRaisingPage(pageNote);
-
-                  EventType eventType = getEventStormingBoard().getOrCreateEventType(commandNote.getEventTypeName());
-                  eventType.withEvents(commandNote);
-
-                  lastEvent = commandNote;
-                  addToStepsOfLastActor(commandNote);
-                  System.out.println();
-               }
-            }
+            buildPageNote(userLastPage, map, entry);
          }
          else if (entry.getKey().equalsIgnoreCase("board")) {
             getEventStormingBoard().setName(map.get("board"));
+         }
+         else if (entry.getKey().equalsIgnoreCase("query")) {
+            String value = entry.getValue();
+            String[] split = value.split("\\s+");
+            String key = split[0];
+            String time = split[1];
+
+            QueryNote queryNote = new QueryNote();
+            queryNote.setTime(time);
+            queryNote.setWorkflow(getRootWorkflow());
+            queryNote.setMap(map);
+            queryNote.setKey(key);
+            queryNote.setResult(map.get("result"));
+
+            addToStepsOfLastActor(queryNote);
+            // send a query
+            // validate result
          }
          else {
             Logger.getGlobal().severe("Unknown event type " + getEventType(map));
          }
       }
       return getEventStormingBoard();
+   }
+
+   private void buildDataNote(LinkedHashMap<String, String> map, Iterator<Map.Entry<String, String>> iterator, Map.Entry<String, String> entry)
+   {
+      String value = entry.getValue();
+      String[] split = StrUtil.split(value);
+      String className;
+      String objectId;
+      if (split.length == 1) {
+         Map.Entry<String, String> typeEntry = iterator.next();
+         className = StrUtil.cap(typeEntry.getKey());
+         objectId = typeEntry.getValue();
+
+      }
+      else {
+         className = StrUtil.cap(split[0]);
+         objectId = split[1];
+         value = split[2];
+      }
+
+      DataNote note = new DataNote();
+      note.setTime(value);
+      note.setBlockId(objectId);
+      note.setMap(map);
+      note.setWorkflow(getRootWorkflow());
+      note.setDataType(className);
+      addToStepsOfLastActor(note);
+      ServiceNote serviceNote = ((Policy) lastActor).getService();
+      serviceNote.getObjectMap().put(objectId, className);
+
+      DataType dataType = eventStormingBoard.getOrCreateDataType(note.getDataType());
+      dataType.withDataNotes(note);
+      serviceNote.withHandledDataTypes(dataType);
+   }
+
+   private void buildPageNote(LinkedHashMap<String, PageNote> userLastPage, LinkedHashMap<String, String> map, Map.Entry<String, String> entry)
+   {
+      PageNote pageNote = new PageNote();
+      pageNote.setWorkflow(getRootWorkflow());
+      pageNote.setMap(map);
+
+      // read multiline value
+      String multilineValue = entry.getValue();
+      ArrayList<LinkedHashMap<String, String>> lineMaps = new Yamler2().decodeList(multilineValue);
+      for (LinkedHashMap<String, String> lineMap : lineMaps) {
+         PageLine pageLine = new PageLine()
+               .setPageNote(pageNote)
+               .setMap(lineMap);
+         String nameValue = lineMap.get("name");
+         if (nameValue != null) {
+            // its like name: ServiceName timestamp
+            String[] split = nameValue.split("\\s+");
+            String pageName = split[split.length - 1];
+            String serviceName = split[0];
+            pageNote.setTime(pageName);
+            ServiceNote serviceNote = getEventStormingBoard().getOrCreateFromServices(serviceName);
+            pageNote.setService(serviceNote);
+
+            addToStepsOfLastActor(pageNote);
+            PageNote previousPage = userLastPage.get(lastActor.getActorName());
+            if (previousPage != null) {
+               previousPage.setNextPage(pageNote);
+            }
+            userLastPage.put(lastActor.getActorName(), pageNote);
+         }
+         String command = lineMap.get("command");
+         if (command != null) {
+            // store button name
+            String buttonId = lineMap.get("button");
+            pageNote.setButtonId(buttonId);
+
+            // add an event note
+            EventNote commandNote = new CommandNote();
+            LinkedHashMap<String, String> eventMap = new LinkedHashMap<>();
+            eventMap.put("command", command);
+            for (PageLine line : pageNote.getLines()) {
+               // add inputs as event attributes
+               String input = line.getMap().get("input");
+               if (input != null) {
+                  String fill = line.getMap().get("fill");
+                  if (fill == null) {
+                     fill = "somevalue";
+                  }
+                  eventMap.put(input, fill);
+               }
+            }
+            String eventDescription = getEventId(eventMap);
+            String eventTime = getEventTime(eventDescription);
+            String eventTypeName = getEventTypeName(eventDescription) + "Command";
+            commandNote.setTime(eventTime);
+            commandNote.setEventTypeName(eventTypeName);
+            commandNote.setWorkflow(getRootWorkflow());
+            commandNote.setMap(eventMap);
+            commandNote.setRaisingPage(pageNote);
+
+            EventType eventType = getEventStormingBoard().getOrCreateEventType(commandNote.getEventTypeName());
+            eventType.withEvents(commandNote);
+
+            lastEvent = commandNote;
+            addToStepsOfLastActor(commandNote);
+         }
+      }
    }
 
    private void fillEventNote(LinkedHashMap<String, String> map, EventNote eventNote)
@@ -253,7 +278,7 @@ public class EventModel
 
          }
       }
-      else if ((note instanceof DataNote) || (note instanceof ClassNote)) {
+      else if ((note instanceof DataNote) || (note instanceof ClassNote) || (note instanceof QueryNote)) {
          if (lastActor == null || !(lastActor instanceof Policy)) {
             ServiceNote someservice = getEventStormingBoard().getOrCreateFromServices("someservice");
             Interaction someaction = new Policy()

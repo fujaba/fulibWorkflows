@@ -1,7 +1,12 @@
 package uks.debuggen.party.PartyApp;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -9,11 +14,14 @@ import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.fulib.workflows.QueryNote;
 import org.fulib.yaml.Yaml;
 import spark.Request;
 import spark.Response;
 import spark.Service;
 import uks.debuggen.party.events.*;
+
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
@@ -24,12 +32,14 @@ public class PartyAppService
    public static final String PROPERTY_SPARK = "spark";
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
+   public static final String PROPERTY_BUILDER = "builder";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
    private int port = 42001;
    private Service spark;
    private PartyAppModel model;
    private PartyAppBusinessLogic businessLogic;
    protected PropertyChangeSupport listeners;
+   private PartyAppBuilder builder;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -130,11 +140,39 @@ public class PartyAppService
       return this;
    }
 
+   public PartyAppBuilder getBuilder()
+   {
+      return this.builder;
+   }
+
+   public PartyAppService setBuilder(PartyAppBuilder value)
+   {
+      if (this.builder == value)
+      {
+         return this;
+      }
+
+      final PartyAppBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setService(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setService(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
+      return this;
+   }
+
    public void start()
    {
       model = new PartyAppModel();
+      setBuilder(new PartyAppBuilder().setModel(model));
       setBusinessLogic(new PartyAppBusinessLogic());
-      businessLogic.setBuilder(new PartyAppBuilder().setModel(model));
+      businessLogic.setBuilder(getBuilder());
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
@@ -184,6 +222,25 @@ public class PartyAppService
       }
    }
 
+   public Query query(Query query)
+   {
+      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;
+   }
+
    public void apply(Event event)
    {
       if (history.get(event.getId()) != null) {
@@ -200,7 +257,105 @@ public class PartyAppService
    {
       // no fulib
       // add your page handling here
+      try {
+         String id = request.params("id");
+         StringBuilder html = new StringBuilder();
+
+         if (id.equals("getUserName")) {
+            pageGetUserName(html);
+            return html.toString();
+         }
+
+         if (id.equals("withUserName")) {
+            String name = request.queryParams("name");
+            Query query = new Query().setKey(name);
+            query(query);
+
+            if (query.getResults().size() == 0) {
+               // getEmail
+               pageGetEmail(html, name);
+            }
+            else
+            {
+               // getPassword
+
+            }
+
+            return html.toString();
+         }
+
+         if (id.equals("withEmail")) {
+            String name = request.queryParams("name");
+            String email = request.queryParams("email");
+            pageGetPassword(html, name, email);
+            return html.toString();
+         }
+
+         if (id.equals("withPassword")) {
+            String name = request.queryParams("name");
+            String email = request.queryParams("email");
+            String password = request.queryParams("password");
+
+            if (email.equals("")) {
+               // check password
+            }
+            else {
+               // create user
+               UserBuilt userBuilt = new UserBuilt();
+               userBuilt.setId(DateTimeFormatter.ISO_INSTANT.format(Instant.now()));
+               userBuilt.setBlockId(name);
+               userBuilt.setName(name)
+                     .setEmail(email)
+                     .setPassword(password);
+               apply(userBuilt);
+
+               return "choose party";
+            }
+         }
+      }
+      catch (Exception e) {
+         e.printStackTrace();
+         return "exception " + e;
+      }
+
+
       return getDemoPage(request, response);
+   }
+
+   private void pageGetPassword(StringBuilder html, String name, String email)
+   {
+      html.append("<form action=\"/page/withPassword\" method=\"get\">\n");
+      html.append(String.format("   <p>Welcome %s</p>\n", name));
+      html.append("   <p>Provide password</p>\n");
+      html.append("   <p><input id=\"password\" name=\"password\" type=\"password\" placeholder=\"password?\"></p>\n");
+      html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
+      html.append(String.format("   <p><input id=\"email\" name=\"email\" type=\"hidden\" value=\"%s\"></p>\n", email));
+      html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+      html.append("</form>\n");
+   }
+
+   private void pageGetEmail(StringBuilder html, String name)
+   {
+      html.append("<form action=\"/page/withEmail\" method=\"get\">\n");
+      // PartyApp 12:05
+      html.append(String.format("   <p>Welcome %s</p>\n", name));
+      html.append("   <p>You are new to parties</p>\n");
+      html.append("   <p>We need your email</p>\n");
+      html.append("   <p><input id=\"email\" name=\"email\" placeholder=\"email?\"></p>\n");
+      html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
+      html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+      html.append("</form>\n");
+   }
+
+   private void pageGetUserName(StringBuilder html)
+   {
+      html.append("<form action=\"/page/withUserName\" method=\"get\">\n");
+      // PartyApp 12:00
+      html.append("   <p>Welcome to the parties</p>\n");
+      html.append("   <p>What's your name?</p>\n");
+      html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
+      html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+      html.append("</form>\n");
    }
 
    public String getDemoPage(Request request, Response response)
@@ -209,25 +364,134 @@ public class PartyAppService
       String id = request.params("id");
       String event = request.queryParams("event");
 
-      if ("login 12:01".equals(event)) {
+      if ("get user name 12:01".equals(event)) {
 
-         // create LoginCommand: login 12:01
-         LoginCommand e1201 = new LoginCommand();
+         // create GetUserNameCommand: get user name 12:01
+         GetUserNameCommand e1201 = new GetUserNameCommand();
          e1201.setId("12:01");
          e1201.setName(request.queryParams("name"));
          apply(e1201);
+      }
+
+      if ("get email 12:04".equals(event)) {
+
+         // create GetEmailCommand: get email 12:04
+         GetEmailCommand e1204 = new GetEmailCommand();
+         e1204.setId("12:04");
+         e1204.setEmail(request.queryParams("email"));
+         apply(e1204);
+      }
+
+      if ("get password 12:07".equals(event)) {
+
+         // create GetPasswordCommand: get password 12:07
+         GetPasswordCommand e1207 = new GetPasswordCommand();
+         e1207.setId("12:07");
+         apply(e1207);
+      }
+
+      if ("get party 12:12".equals(event)) {
+
+         // create GetPartyCommand: get party 12:12
+         GetPartyCommand e1212 = new GetPartyCommand();
+         e1212.setId("12:12");
+         e1212.setParty(request.queryParams("party"));
+         apply(e1212);
+      }
+
+      if ("get user name 13:01".equals(event)) {
+
+         // create GetUserNameCommand: get user name 13:01
+         GetUserNameCommand e1301 = new GetUserNameCommand();
+         e1301.setId("13:01");
+         e1301.setName(request.queryParams("name"));
+         apply(e1301);
+      }
+
+      if ("get password 13:07".equals(event)) {
+
+         // create GetPasswordCommand: get password 13:07
+         GetPasswordCommand e1307 = new GetPasswordCommand();
+         e1307.setId("13:07");
+         apply(e1307);
       }
 
 
 
       // 12:00
       if (id.equals("12_00")) {
-         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         html.append("<form action=\"/page/12_05\" method=\"get\">\n");
          // PartyApp 12:00
          html.append("   <p>Welcome to the parties</p>\n");
          html.append("   <p>What's your name?</p>\n");
          html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"login 12:01\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get user name 12:01\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:05
+      if (id.equals("12_05")) {
+         html.append("<form action=\"/page/12_06\" method=\"get\">\n");
+         // PartyApp 12:05
+         html.append("   <p>Welcome Alice</p>\n");
+         html.append("   <p>You are new to parties</p>\n");
+         html.append("   <p>We need your email</p>\n");
+         html.append("   <p><input id=\"email\" name=\"email\" placeholder=\"email?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get email 12:04\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:06
+      if (id.equals("12_06")) {
+         html.append("<form action=\"/page/12_11\" method=\"get\">\n");
+         // PartyApp 12:06
+         html.append("   <p>Welcome Alice</p>\n");
+         html.append("   <p>Choose a password</p>\n");
+         html.append("   <p><input id=\"password\" name=\"password\" type=\"password\" placeholder=\"password?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get password 12:07\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:11
+      if (id.equals("12_11")) {
+         html.append("<form action=\"/page/13_00\" method=\"get\">\n");
+         // PartyApp 12:11
+         html.append("   <p>Welcome Alice</p>\n");
+         html.append("   <p>Choose a party</p>\n");
+         html.append("   <p><input id=\"party\" name=\"party\" placeholder=\"party?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get party 12:12\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 13:00
+      if (id.equals("13_00")) {
+         html.append("<form action=\"/page/13_06\" method=\"get\">\n");
+         // PartyApp 13:00
+         html.append("   <p>Welcome to the parties</p>\n");
+         html.append("   <p>What's your name?</p>\n");
+         html.append("   <p><input id=\"name\" name=\"name\" placeholder=\"name?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get user name 13:01\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 13:06
+      if (id.equals("13_06")) {
+         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         // PartyApp 13:06
+         html.append("   <p>Welcome Alice</p>\n");
+         html.append("   <p>Provide a password</p>\n");
+         html.append("   <p><input id=\"password\" name=\"password\" type=\"password\" placeholder=\"password?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get password 13:07\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
@@ -292,5 +556,6 @@ public class PartyAppService
    public void removeYou()
    {
       this.setBusinessLogic(null);
+      this.setBuilder(null);
    }
 }

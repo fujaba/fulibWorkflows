@@ -146,6 +146,9 @@
               },
               {
                 "$ref": "#/$defs/inputItem"
+              },
+              {
+                "$ref": "#/$defs/passwordItem"
               }
             ]
           }
@@ -207,6 +210,21 @@
       },
       "required": [
         "input"
+      ]
+    },
+    "passwordItem": {
+      "description": "Defines a password input with optional fill",
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "fill": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "password"
       ]
     }
   },

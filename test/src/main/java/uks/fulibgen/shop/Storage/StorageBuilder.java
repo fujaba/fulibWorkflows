@@ -9,9 +9,13 @@ public class StorageBuilder
 {
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
+   public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_EVENT_STORE = "eventStore";
    private StorageModel model;
    private StorageBusinessLogic businessLogic;
    protected PropertyChangeSupport listeners;
+   private StorageService service;
+   private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
 
    public StorageModel getModel()
    {
@@ -58,9 +62,57 @@ public class StorageBuilder
       return this;
    }
 
+   public StorageService getService()
+   {
+      return this.service;
+   }
+
+   public StorageBuilder setService(StorageService value)
+   {
+      if (this.service == value)
+      {
+         return this;
+      }
+
+      final StorageService oldValue = this.service;
+      if (this.service != null)
+      {
+         this.service = null;
+         oldValue.setBuilder(null);
+      }
+      this.service = value;
+      if (value != null)
+      {
+         value.setBuilder(this);
+      }
+      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, DataEvent> getEventStore()
+   {
+      return this.eventStore;
+   }
+
+   public StorageBuilder setEventStore(LinkedHashMap<String, DataEvent> value)
+   {
+      if (Objects.equals(value, this.eventStore))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, DataEvent> oldValue = this.eventStore;
+      this.eventStore = value;
+      this.firePropertyChange(PROPERTY_EVENT_STORE, oldValue, value);
+      return this;
+   }
+
    public void handleBoxBuilt(Event e)
    {
       BoxBuilt event = (BoxBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
       Box object = model.getOrCreateBox(event.getBlockId());
       object.setProduct(event.getProduct());
       object.setPlace(event.getPlace());
@@ -69,6 +121,9 @@ public class StorageBuilder
    public void handlePickTaskBuilt(Event e)
    {
       PickTaskBuilt event = (PickTaskBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
       PickTask object = model.getOrCreatePickTask(event.getBlockId());
       object.setOrder(event.getOrder());
       object.setProduct(event.getProduct());
@@ -113,5 +168,23 @@ public class StorageBuilder
    public void removeYou()
    {
       this.setBusinessLogic(null);
+      this.setService(null);
+   }
+
+   private boolean outdated(DataEvent event)
+   {
+      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;
    }
 }

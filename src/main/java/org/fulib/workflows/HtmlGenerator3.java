@@ -95,6 +95,9 @@ public class HtmlGenerator3
          else if (note instanceof CommandNote) {
             noteType = "command";
          }
+         else if (note instanceof QueryNote) {
+            noteType = "command";
+         }
 
 
          String noteContent;
@@ -159,6 +162,15 @@ public class HtmlGenerator3
             String fill = line.getMap().get("fill");
             if (fill != null) {
                value = fill;
+            }
+            String html = String.format("<div class=\"center\"><u>%s</u></div>\n", value);
+            pageBody.append(html);
+         }
+         else if (firstTag.equalsIgnoreCase("password")) {
+            String value = line.getMap().get("password") + "?";
+            String fill = line.getMap().get("fill");
+            if (fill != null) {
+               value = fill.replaceAll(".", "*");
             }
             String html = String.format("<div class=\"center\"><u>%s</u></div>\n", value);
             pageBody.append(html);

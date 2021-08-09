@@ -45,4 +45,10 @@ public class PartyAppModel
       }
       return this.listeners;
    }
+
+   public User getOrCreateUser(String id)
+   {
+      if (id == null) return null;
+      return (User) modelMap.computeIfAbsent(id, k -> new User().setId(k));
+   }
 }
