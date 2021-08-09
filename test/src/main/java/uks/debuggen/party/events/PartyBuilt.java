@@ -1,28 +1,28 @@
 package uks.debuggen.party.events;
 import java.util.Objects;
 
-public class GetPartyCommand extends Command
+public class PartyBuilt extends DataEvent
 {
-   public static final String PROPERTY_PARTY = "party";
+   public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_LOCATION = "location";
-   private String party;
+   private String name;
    private String location;
 
-   public String getParty()
+   public String getName()
    {
-      return this.party;
+      return this.name;
    }
 
-   public GetPartyCommand setParty(String value)
+   public PartyBuilt setName(String value)
    {
-      if (Objects.equals(value, this.party))
+      if (Objects.equals(value, this.name))
       {
          return this;
       }
 
-      final String oldValue = this.party;
-      this.party = value;
-      this.firePropertyChange(PROPERTY_PARTY, oldValue, value);
+      final String oldValue = this.name;
+      this.name = value;
+      this.firePropertyChange(PROPERTY_NAME, oldValue, value);
       return this;
    }
 
@@ -31,7 +31,7 @@ public class GetPartyCommand extends Command
       return this.location;
    }
 
-   public GetPartyCommand setLocation(String value)
+   public PartyBuilt setLocation(String value)
    {
       if (Objects.equals(value, this.location))
       {
@@ -48,7 +48,7 @@ public class GetPartyCommand extends Command
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getParty());
+      result.append(' ').append(this.getName());
       result.append(' ').append(this.getLocation());
       return result.toString();
    }

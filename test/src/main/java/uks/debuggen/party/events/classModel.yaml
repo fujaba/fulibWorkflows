@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	userBuilt 	loginSucceededEvent 	getPartyCommand
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	userBuilt 	loginSucceededEvent 	getPartyCommand 	partyBuilt 	addItemCommand 	buildItemCommand 	itemBuilt 	guestBuilt
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -22,7 +22,7 @@
   name: 	DataEvent
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
-  subClasses: 	dataGroup 	userBuilt
+  subClasses: 	dataGroup 	userBuilt 	partyBuilt 	itemBuilt 	guestBuilt
   superClass: 	event
 
 - dataGroup: 	org.fulib.classmodel.Clazz
@@ -55,7 +55,7 @@
   modified: 	false
   name: 	Command
   propertyStyle: 	Bean
-  subClasses: 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	getPartyCommand
+  subClasses: 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	getPartyCommand 	addItemCommand 	buildItemCommand
   superClass: 	event
 
 - getUserNameCommand: 	org.fulib.classmodel.Clazz
@@ -98,12 +98,51 @@
   superClass: 	event
 
 - getPartyCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	getPartyCommand_party
+  attributes: 	getPartyCommand_party 	getPartyCommand_location
   model: 	c
   modified: 	false
   name: 	GetPartyCommand
   propertyStyle: 	Bean
   superClass: 	command
+
+- partyBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	partyBuilt_name 	partyBuilt_location
+  model: 	c
+  modified: 	false
+  name: 	PartyBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- addItemCommand: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	AddItemCommand
+  propertyStyle: 	Bean
+  superClass: 	command
+
+- buildItemCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	buildItemCommand_item 	buildItemCommand_price 	buildItemCommand_buyer
+  model: 	c
+  modified: 	false
+  name: 	BuildItemCommand
+  propertyStyle: 	Bean
+  superClass: 	command
+
+- itemBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	itemBuilt_name 	itemBuilt_price 	itemBuilt_buyer 	itemBuilt_party
+  model: 	c
+  modified: 	false
+  name: 	ItemBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- guestBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	guestBuilt_name 	guestBuilt_party
+  model: 	c
+  modified: 	false
+  name: 	GuestBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -251,6 +290,114 @@
 - getPartyCommand_party: 	org.fulib.classmodel.Attribute
   clazz: 	getPartyCommand
   id: 	GetPartyCommand_party
+  modified: 	false
+  name: 	party
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- getPartyCommand_location: 	org.fulib.classmodel.Attribute
+  clazz: 	getPartyCommand
+  id: 	GetPartyCommand_location
+  modified: 	false
+  name: 	location
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- partyBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	partyBuilt
+  id: 	PartyBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- partyBuilt_location: 	org.fulib.classmodel.Attribute
+  clazz: 	partyBuilt
+  id: 	PartyBuilt_location
+  modified: 	false
+  name: 	location
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- buildItemCommand_item: 	org.fulib.classmodel.Attribute
+  clazz: 	buildItemCommand
+  id: 	BuildItemCommand_item
+  modified: 	false
+  name: 	item
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- buildItemCommand_price: 	org.fulib.classmodel.Attribute
+  clazz: 	buildItemCommand
+  id: 	BuildItemCommand_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- buildItemCommand_buyer: 	org.fulib.classmodel.Attribute
+  clazz: 	buildItemCommand
+  id: 	BuildItemCommand_buyer
+  modified: 	false
+  name: 	buyer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- itemBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	itemBuilt
+  id: 	ItemBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- itemBuilt_price: 	org.fulib.classmodel.Attribute
+  clazz: 	itemBuilt
+  id: 	ItemBuilt_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- itemBuilt_buyer: 	org.fulib.classmodel.Attribute
+  clazz: 	itemBuilt
+  id: 	ItemBuilt_buyer
+  modified: 	false
+  name: 	buyer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- itemBuilt_party: 	org.fulib.classmodel.Attribute
+  clazz: 	itemBuilt
+  id: 	ItemBuilt_party
+  modified: 	false
+  name: 	party
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- guestBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	guestBuilt
+  id: 	GuestBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- guestBuilt_party: 	org.fulib.classmodel.Attribute
+  clazz: 	guestBuilt
+  id: 	GuestBuilt_party
   modified: 	false
   name: 	party
   propertyStyle: 	Bean

@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	partyAppModel 	partyAppBusinessLogic 	partyAppBuilder 	partyAppService 	user
+  classes: 	partyAppModel 	partyAppBusinessLogic 	partyAppBuilder 	partyAppService 	user 	party 	item 	guest
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	partyAppModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	partyAppModel_getOrCreateUser
+  methods: 	partyAppModel_getOrCreateUser 	partyAppModel_getOrCreateParty 	partyAppModel_getOrCreateItem 	partyAppModel_getOrCreateGuest
   model: 	c
   modified: 	false
   name: 	PartyAppModel
@@ -21,7 +21,7 @@
   attributes: 	partyAppBusinessLogic_model 	partyAppBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;"
-  methods: 	partyAppBusinessLogic_handleGetUserNameCommand 	partyAppBusinessLogic_handleDemoGetUserNameCommand 	partyAppBusinessLogic_handleGetPasswordCommand 	partyAppBusinessLogic_handleDemoGetPasswordCommand 	partyAppBusinessLogic_initEventHandlerMap 	partyAppBusinessLogic_ignoreEvent 	partyAppBusinessLogic_getHandler
+  methods: 	partyAppBusinessLogic_handleGetUserNameCommand 	partyAppBusinessLogic_handleDemoGetUserNameCommand 	partyAppBusinessLogic_handleGetPasswordCommand 	partyAppBusinessLogic_handleDemoGetPasswordCommand 	partyAppBusinessLogic_handleGetPartyCommand 	partyAppBusinessLogic_handleDemoGetPartyCommand 	partyAppBusinessLogic_handleBuildItemCommand 	partyAppBusinessLogic_handleDemoBuildItemCommand 	partyAppBusinessLogic_initEventHandlerMap 	partyAppBusinessLogic_ignoreEvent 	partyAppBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	PartyAppBusinessLogic
@@ -32,7 +32,7 @@
   attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;"
-  methods: 	partyAppBuilder_outdated 	partyAppBuilder_handleUserBuilt 	partyAppBuilder_stripBrackets
+  methods: 	partyAppBuilder_outdated 	partyAppBuilder_handleUserBuilt 	partyAppBuilder_handlePartyBuilt 	partyAppBuilder_handleItemBuilt 	partyAppBuilder_handleGuestBuilt 	partyAppBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	PartyAppBuilder
@@ -56,6 +56,30 @@
   modified: 	false
   name: 	User
   propertyStyle: 	Bean
+
+- party: 	org.fulib.classmodel.Clazz
+  attributes: 	party_id 	party_name 	party_location
+  model: 	c
+  modified: 	false
+  name: 	Party
+  propertyStyle: 	Bean
+  roles: 	party_items 	party_guests
+
+- item: 	org.fulib.classmodel.Clazz
+  attributes: 	item_id 	item_name 	item_price
+  model: 	c
+  modified: 	false
+  name: 	Item
+  propertyStyle: 	Bean
+  roles: 	item_buyer 	item_party
+
+- guest: 	org.fulib.classmodel.Clazz
+  attributes: 	guest_id 	guest_name
+  model: 	c
+  modified: 	false
+  name: 	Guest
+  propertyStyle: 	Bean
+  roles: 	guest_items 	guest_party
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -88,6 +112,51 @@ return (User) modelMap.computeIfAbsent(id, k -> new User().setId(k));
   paramsString: 	"String id"
   returnType: 	User
   signature: 	"class/PartyAppModel/method/getOrCreateUser(String)"
+
+- partyAppModel_getOrCreateParty: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppModel
+  declaration: 	"public Party getOrCreateParty(String id)"
+  id: 	PartyAppModel_getOrCreateParty
+  methodBody: 	"if (id == null) return null;
+return (Party) modelMap.computeIfAbsent(id, k -> new Party().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateParty
+  paramsString: 	"String id"
+  returnType: 	Party
+  signature: 	"class/PartyAppModel/method/getOrCreateParty(String)"
+
+- partyAppModel_getOrCreateItem: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppModel
+  declaration: 	"public Item getOrCreateItem(String id)"
+  id: 	PartyAppModel_getOrCreateItem
+  methodBody: 	"if (id == null) return null;
+return (Item) modelMap.computeIfAbsent(id, k -> new Item().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateItem
+  paramsString: 	"String id"
+  returnType: 	Item
+  signature: 	"class/PartyAppModel/method/getOrCreateItem(String)"
+
+- partyAppModel_getOrCreateGuest: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppModel
+  declaration: 	"public Guest getOrCreateGuest(String id)"
+  id: 	PartyAppModel_getOrCreateGuest
+  methodBody: 	"if (id == null) return null;
+return (Guest) modelMap.computeIfAbsent(id, k -> new Guest().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateGuest
+  paramsString: 	"String id"
+  returnType: 	Guest
+  signature: 	"class/PartyAppModel/method/getOrCreateGuest(String)"
 
 - partyAppBusinessLogic_model: 	org.fulib.classmodel.Attribute
   clazz: 	partyAppBusinessLogic
@@ -187,6 +256,111 @@ handleDemoGetPasswordCommand(event);
   returnType: 	void
   signature: 	"class/PartyAppBusinessLogic/method/handleDemoGetPasswordCommand(GetPasswordCommand)"
 
+- partyAppBusinessLogic_handleGetPartyCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBusinessLogic
+  declaration: 	"private void handleGetPartyCommand(Event e)"
+  id: 	PartyAppBusinessLogic_handleGetPartyCommand
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+GetPartyCommand event = (GetPartyCommand) e;
+handleDemoGetPartyCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleGetPartyCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBusinessLogic/method/handleGetPartyCommand(Event)"
+
+- partyAppBusinessLogic_handleDemoGetPartyCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBusinessLogic
+  declaration: 	"private void handleDemoGetPartyCommand(GetPartyCommand event)"
+  id: 	PartyAppBusinessLogic_handleDemoGetPartyCommand
+  methodBody: 	"if (event.getId().equals(\"14:01\")) {
+   PartyBuilt sE_BBQEvent = new PartyBuilt();
+   sE_BBQEvent.setId(\"14:02\");
+   sE_BBQEvent.setBlockId(\"sE_BBQ\");
+   sE_BBQEvent.setName(\"SE BBQ\");
+   sE_BBQEvent.setLocation(\"Uni\");
+   service.apply(sE_BBQEvent);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoGetPartyCommand
+  paramsString: 	"GetPartyCommand event"
+  returnType: 	void
+  signature: 	"class/PartyAppBusinessLogic/method/handleDemoGetPartyCommand(GetPartyCommand)"
+
+- partyAppBusinessLogic_handleBuildItemCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBusinessLogic
+  declaration: 	"private void handleBuildItemCommand(Event e)"
+  id: 	PartyAppBusinessLogic_handleBuildItemCommand
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+BuildItemCommand event = (BuildItemCommand) e;
+handleDemoBuildItemCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleBuildItemCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBusinessLogic/method/handleBuildItemCommand(Event)"
+
+- partyAppBusinessLogic_handleDemoBuildItemCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBusinessLogic
+  declaration: 	"private void handleDemoBuildItemCommand(BuildItemCommand event)"
+  id: 	PartyAppBusinessLogic_handleDemoBuildItemCommand
+  methodBody: 	"if (event.getId().equals(\"14:13\")) {
+   ItemBuilt beerEvent = new ItemBuilt();
+   beerEvent.setId(\"14:14\");
+   beerEvent.setBlockId(\"beer\");
+   beerEvent.setName(\"beer\");
+   beerEvent.setPrice(\"12.00\");
+   beerEvent.setBuyer(\"sE_BBQ_Bob\");
+   beerEvent.setParty(\"sE_BBQ\");
+   service.apply(beerEvent);
+
+   GuestBuilt sE_BBQ_BobEvent = new GuestBuilt();
+   sE_BBQ_BobEvent.setId(\"14:15\");
+   sE_BBQ_BobEvent.setBlockId(\"sE_BBQ_Bob\");
+   sE_BBQ_BobEvent.setName(\"Bob\");
+   sE_BBQ_BobEvent.setParty(\"sE_BBQ\");
+   service.apply(sE_BBQ_BobEvent);
+
+}
+if (event.getId().equals(\"14:23\")) {
+   ItemBuilt meatEvent = new ItemBuilt();
+   meatEvent.setId(\"14:24\");
+   meatEvent.setBlockId(\"meat\");
+   meatEvent.setName(\"meat\");
+   meatEvent.setPrice(\"21.00\");
+   meatEvent.setBuyer(\"sE_BBQ_Alice\");
+   meatEvent.setParty(\"sE_BBQ\");
+   service.apply(meatEvent);
+
+   GuestBuilt sE_BBQ_AliceEvent = new GuestBuilt();
+   sE_BBQ_AliceEvent.setId(\"14:25\");
+   sE_BBQ_AliceEvent.setBlockId(\"sE_BBQ_Alice\");
+   sE_BBQ_AliceEvent.setName(\"Alice\");
+   sE_BBQ_AliceEvent.setParty(\"sE_BBQ\");
+   service.apply(sE_BBQ_AliceEvent);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoBuildItemCommand
+  paramsString: 	"BuildItemCommand event"
+  returnType: 	void
+  signature: 	"class/PartyAppBusinessLogic/method/handleDemoBuildItemCommand(BuildItemCommand)"
+
 - partyAppBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBusinessLogic
@@ -196,7 +370,12 @@ handleDemoGetPasswordCommand(event);
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(GetUserNameCommand.class, this::handleGetUserNameCommand);
    handlerMap.put(GetPasswordCommand.class, this::handleGetPasswordCommand);
+   handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
+   handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
    handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
+   handlerMap.put(PartyBuilt.class, builder::handlePartyBuilt);
+   handlerMap.put(ItemBuilt.class, builder::handleItemBuilt);
+   handlerMap.put(GuestBuilt.class, builder::handleGuestBuilt);
 }
 "
   modified: 	false
@@ -318,6 +497,68 @@ object.setPassword(event.getPassword());
   paramsString: 	"Event e"
   returnType: 	void
   signature: 	"class/PartyAppBuilder/method/handleUserBuilt(Event)"
+
+- partyAppBuilder_handlePartyBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public void handlePartyBuilt(Event e)"
+  id: 	PartyAppBuilder_handlePartyBuilt
+  methodBody: 	"PartyBuilt event = (PartyBuilt) e;
+if (outdated(event)) {
+   return;
+}
+Party object = model.getOrCreateParty(event.getBlockId());
+object.setName(event.getName());
+object.setLocation(event.getLocation());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handlePartyBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/handlePartyBuilt(Event)"
+
+- partyAppBuilder_handleItemBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public void handleItemBuilt(Event e)"
+  id: 	PartyAppBuilder_handleItemBuilt
+  methodBody: 	"ItemBuilt event = (ItemBuilt) e;
+if (outdated(event)) {
+   return;
+}
+Item object = model.getOrCreateItem(event.getBlockId());
+object.setName(event.getName());
+object.setPrice(event.getPrice());
+object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
+object.setParty(model.getOrCreateParty(event.getParty()));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handleItemBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/handleItemBuilt(Event)"
+
+- partyAppBuilder_handleGuestBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public void handleGuestBuilt(Event e)"
+  id: 	PartyAppBuilder_handleGuestBuilt
+  methodBody: 	"GuestBuilt event = (GuestBuilt) e;
+if (outdated(event)) {
+   return;
+}
+Guest object = model.getOrCreateGuest(event.getBlockId());
+object.setName(event.getName());
+object.setParty(model.getOrCreateParty(event.getParty()));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handleGuestBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/handleGuestBuilt(Event)"
 
 - partyAppBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -603,6 +844,63 @@ if (\"get password 13:07\".equals(event)) {
    apply(e1307);
 }
 
+if (\"get party 13:12\".equals(event)) {
+
+   // create GetPartyCommand: get party 13:12
+   GetPartyCommand e1312 = new GetPartyCommand();
+   e1312.setId(\"13:12\");
+   e1312.setParty(request.queryParams(\"party\"));
+   apply(e1312);
+}
+
+if (\"get party 14:01\".equals(event)) {
+
+   // create GetPartyCommand: get party 14:01
+   GetPartyCommand e1401 = new GetPartyCommand();
+   e1401.setId(\"14:01\");
+   e1401.setParty(request.queryParams(\"party\"));
+   e1401.setLocation(request.queryParams(\"location\"));
+   apply(e1401);
+}
+
+if (\"add item 14:11\".equals(event)) {
+
+   // create AddItemCommand: add item 14:11
+   AddItemCommand e1411 = new AddItemCommand();
+   e1411.setId(\"14:11\");
+   apply(e1411);
+}
+
+if (\"build item 14:13\".equals(event)) {
+
+   // create BuildItemCommand: build item 14:13
+   BuildItemCommand e1413 = new BuildItemCommand();
+   e1413.setId(\"14:13\");
+   e1413.setItem(request.queryParams(\"item\"));
+   e1413.setPrice(request.queryParams(\"price\"));
+   e1413.setBuyer(request.queryParams(\"buyer\"));
+   apply(e1413);
+}
+
+if (\"add item 14:21\".equals(event)) {
+
+   // create AddItemCommand: add item 14:21
+   AddItemCommand e1421 = new AddItemCommand();
+   e1421.setId(\"14:21\");
+   apply(e1421);
+}
+
+if (\"build item 14:23\".equals(event)) {
+
+   // create BuildItemCommand: build item 14:23
+   BuildItemCommand e1423 = new BuildItemCommand();
+   e1423.setId(\"14:23\");
+   e1423.setItem(request.queryParams(\"item\"));
+   e1423.setPrice(request.queryParams(\"price\"));
+   e1423.setBuyer(request.queryParams(\"buyer\"));
+   apply(e1423);
+}
+
 
 
 // 12:00
@@ -673,13 +971,116 @@ if (id.equals(\"13_00\")) {
 
 // 13:06
 if (id.equals(\"13_06\")) {
-   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/13_11\\" method=\\"get\\">\n\");
    // PartyApp 13:06
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Provide a password</p>\n\");
    html.append(\"   <p><input id=\\"password\\" name=\\"password\\" type=\\"password\\" placeholder=\\"password?\\"></p>\n\");
    html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get password 13:07\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 13:11
+if (id.equals(\"13_11\")) {
+   html.append(\"<form action=\\"/page/14_00\\" method=\\"get\\">\n\");
+   // PartyApp 13:11
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>Choose a party</p>\n\");
+   html.append(\"   <p><input id=\\"party\\" name=\\"party\\" placeholder=\\"party?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get party 13:12\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 14:00
+if (id.equals(\"14_00\")) {
+   html.append(\"<form action=\\"/page/14_10\\" method=\\"get\\">\n\");
+   // PartyApp 14:00
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>Choose a party</p>\n\");
+   html.append(\"   <p><input id=\\"party\\" name=\\"party\\" placeholder=\\"party?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get party 14:01\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 14:10
+if (id.equals(\"14_10\")) {
+   html.append(\"<form action=\\"/page/14_12\\" method=\\"get\\">\n\");
+   // PartyApp 14:10
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>Let's do the SE BBQ</p>\n\");
+   html.append(\"   <p>no items yet</p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add item 14:11\\"></p>\n\");
+   html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 14:12
+if (id.equals(\"14_12\")) {
+   html.append(\"<form action=\\"/page/14_20\\" method=\\"get\\">\n\");
+   // PartyApp 14:12
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>Let's do the SE BBQ</p>\n\");
+   html.append(\"   <p><input id=\\"item\\" name=\\"item\\" placeholder=\\"item?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"price\\" name=\\"price\\" placeholder=\\"price?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"buyer\\" name=\\"buyer\\" placeholder=\\"buyer?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"build item 14:13\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 14:20
+if (id.equals(\"14_20\")) {
+   html.append(\"<form action=\\"/page/14_22\\" method=\\"get\\">\n\");
+   // PartyApp 14:20
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>Let's do the SE BBQ</p>\n\");
+   html.append(\"   <p>beer 12.00 Bob</p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add item 14:21\\"></p>\n\");
+   html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
+   html.append(\"   <p>Total 12.00</p>\n\");
+   html.append(\"   <p>Share 12.00</p>\n\");
+   html.append(\"   <p>Bob 0.00</p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 14:22
+if (id.equals(\"14_22\")) {
+   html.append(\"<form action=\\"/page/14_30\\" method=\\"get\\">\n\");
+   // PartyApp 14:22
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>Let's do the SE BBQ</p>\n\");
+   html.append(\"   <p><input id=\\"item\\" name=\\"item\\" placeholder=\\"item?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"price\\" name=\\"price\\" placeholder=\\"price?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"buyer\\" name=\\"buyer\\" placeholder=\\"buyer?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"build item 14:23\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 14:30
+if (id.equals(\"14_30\")) {
+   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   // PartyApp 14:30
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>Let's do the SE BBQ</p>\n\");
+   html.append(\"   <p>beer 12.00 Bob</p>\n\");
+   html.append(\"   <p>meat 21.00 Alice</p>\n\");
+   html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
+   html.append(\"   <p>Total 33.00</p>\n\");
+   html.append(\"   <p>Share 16.50</p>\n\");
+   html.append(\"   <p>Bob -4.50</p>\n\");
+   html.append(\"   <p>Alice +4.50</p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -797,4 +1198,142 @@ catch (UnirestException e) {
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- party_id: 	org.fulib.classmodel.Attribute
+  clazz: 	party
+  id: 	Party_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party_name: 	org.fulib.classmodel.Attribute
+  clazz: 	party
+  id: 	Party_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party_location: 	org.fulib.classmodel.Attribute
+  clazz: 	party
+  id: 	Party_location
+  modified: 	false
+  name: 	location
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party_items: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	party
+  collectionType: 	c1
+  id: 	Party_items
+  modified: 	false
+  name: 	items
+  other: 	item_party
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- party_guests: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	party
+  collectionType: 	c1
+  id: 	Party_guests
+  modified: 	false
+  name: 	guests
+  other: 	guest_party
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- item_id: 	org.fulib.classmodel.Attribute
+  clazz: 	item
+  id: 	Item_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- item_name: 	org.fulib.classmodel.Attribute
+  clazz: 	item
+  id: 	Item_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- item_price: 	org.fulib.classmodel.Attribute
+  clazz: 	item
+  id: 	Item_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- item_buyer: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	item
+  id: 	Item_buyer
+  modified: 	false
+  name: 	buyer
+  other: 	guest_items
+  propertyStyle: 	Bean
+
+- item_party: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	item
+  id: 	Item_party
+  modified: 	false
+  name: 	party
+  other: 	party_items
+  propertyStyle: 	Bean
+
+- guest_id: 	org.fulib.classmodel.Attribute
+  clazz: 	guest
+  id: 	Guest_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- guest_name: 	org.fulib.classmodel.Attribute
+  clazz: 	guest
+  id: 	Guest_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- guest_items: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	guest
+  collectionType: 	c1
+  id: 	Guest_items
+  modified: 	false
+  name: 	items
+  other: 	item_buyer
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- guest_party: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	guest
+  id: 	Guest_party
+  modified: 	false
+  name: 	party
+  other: 	party_guests
+  propertyStyle: 	Bean
 

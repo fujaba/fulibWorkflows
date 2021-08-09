@@ -113,7 +113,12 @@ public class PartyAppBusinessLogic
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(GetUserNameCommand.class, this::handleGetUserNameCommand);
          handlerMap.put(GetPasswordCommand.class, this::handleGetPasswordCommand);
+         handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
+         handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
          handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
+         handlerMap.put(PartyBuilt.class, builder::handlePartyBuilt);
+         handlerMap.put(ItemBuilt.class, builder::handleItemBuilt);
+         handlerMap.put(GuestBuilt.class, builder::handleGuestBuilt);
       }
    }
 
@@ -193,6 +198,75 @@ public class PartyAppBusinessLogic
          e1210.setId("12:10");
          e1210.setName("Alice");
          service.apply(e1210);
+      }
+   }
+
+   private void handleGetPartyCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      GetPartyCommand event = (GetPartyCommand) e;
+      handleDemoGetPartyCommand(event);
+   }
+
+   private void handleDemoGetPartyCommand(GetPartyCommand event)
+   {
+      if (event.getId().equals("14:01")) {
+         PartyBuilt sE_BBQEvent = new PartyBuilt();
+         sE_BBQEvent.setId("14:02");
+         sE_BBQEvent.setBlockId("sE_BBQ");
+         sE_BBQEvent.setName("SE BBQ");
+         sE_BBQEvent.setLocation("Uni");
+         service.apply(sE_BBQEvent);
+
+      }
+   }
+
+   private void handleBuildItemCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      BuildItemCommand event = (BuildItemCommand) e;
+      handleDemoBuildItemCommand(event);
+   }
+
+   private void handleDemoBuildItemCommand(BuildItemCommand event)
+   {
+      if (event.getId().equals("14:13")) {
+         ItemBuilt beerEvent = new ItemBuilt();
+         beerEvent.setId("14:14");
+         beerEvent.setBlockId("beer");
+         beerEvent.setName("beer");
+         beerEvent.setPrice("12.00");
+         beerEvent.setBuyer("sE_BBQ_Bob");
+         beerEvent.setParty("sE_BBQ");
+         service.apply(beerEvent);
+
+         GuestBuilt sE_BBQ_BobEvent = new GuestBuilt();
+         sE_BBQ_BobEvent.setId("14:15");
+         sE_BBQ_BobEvent.setBlockId("sE_BBQ_Bob");
+         sE_BBQ_BobEvent.setName("Bob");
+         sE_BBQ_BobEvent.setParty("sE_BBQ");
+         service.apply(sE_BBQ_BobEvent);
+
+      }
+      if (event.getId().equals("14:23")) {
+         ItemBuilt meatEvent = new ItemBuilt();
+         meatEvent.setId("14:24");
+         meatEvent.setBlockId("meat");
+         meatEvent.setName("meat");
+         meatEvent.setPrice("21.00");
+         meatEvent.setBuyer("sE_BBQ_Alice");
+         meatEvent.setParty("sE_BBQ");
+         service.apply(meatEvent);
+
+         GuestBuilt sE_BBQ_AliceEvent = new GuestBuilt();
+         sE_BBQ_AliceEvent.setId("14:25");
+         sE_BBQ_AliceEvent.setBlockId("sE_BBQ_Alice");
+         sE_BBQ_AliceEvent.setName("Alice");
+         sE_BBQ_AliceEvent.setParty("sE_BBQ");
+         service.apply(sE_BBQ_AliceEvent);
+
       }
    }
 }

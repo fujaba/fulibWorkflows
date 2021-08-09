@@ -1,157 +1,224 @@
-<svg width="932px" height="260px"
- viewBox="0.00 0.00 931.50 260.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 256)">
+<svg width="1529px" height="275px"
+ viewBox="0.00 0.00 1529.00 275.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 271)">
 <title>uks.debuggen.party.events</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-256 927.5,-256 927.5,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-271 1525,-271 1525,4 -4,4"/>
+<!-- AddItemCommand -->
+<g id="node1" class="node"><title>AddItemCommand</title>
+<polygon fill="none" stroke="black" points="770.5,-39.5 770.5,-60.5 885.5,-60.5 885.5,-39.5 770.5,-39.5"/>
+<text text-anchor="start" x="773.5" y="-46.3" font-family="Times New Roman,serif" font-size="14.00">AddItemCommand</text>
+<polygon fill="none" stroke="black" points="770.5,-33.5 770.5,-39.5 885.5,-39.5 885.5,-33.5 770.5,-33.5"/>
+</g>
 <!-- Command -->
-<g id="node1" class="node"><title>Command</title>
-<polygon fill="none" stroke="black" points="525.5,-133 525.5,-154 590.5,-154 590.5,-133 525.5,-133"/>
-<text text-anchor="start" x="528.5" y="-139.8" font-family="Times New Roman,serif" font-size="14.00">Command</text>
-<polygon fill="none" stroke="black" points="525.5,-127 525.5,-133 590.5,-133 590.5,-127 525.5,-127"/>
+<g id="node3" class="node"><title>Command</title>
+<polygon fill="none" stroke="black" points="946.5,-148 946.5,-169 1011.5,-169 1011.5,-148 946.5,-148"/>
+<text text-anchor="start" x="949.5" y="-154.8" font-family="Times New Roman,serif" font-size="14.00">Command</text>
+<polygon fill="none" stroke="black" points="946.5,-142 946.5,-148 1011.5,-148 1011.5,-142 946.5,-142"/>
+</g>
+<!-- AddItemCommand&#45;&gt;Command -->
+<g id="edge3" class="edge"><title>AddItemCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M851.761,-65.6111C877.297,-83.6219 917.641,-112.077 945.935,-132.032"/>
+<polygon fill="none" stroke="black" points="944.11,-135.028 954.299,-137.931 948.145,-129.308 944.11,-135.028"/>
+</g>
+<!-- BuildItemCommand -->
+<g id="node2" class="node"><title>BuildItemCommand</title>
+<polygon fill="none" stroke="black" points="919.5,-62.5 919.5,-83.5 1038.5,-83.5 1038.5,-62.5 919.5,-62.5"/>
+<text text-anchor="start" x="922.5" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">BuildItemCommand</text>
+<polygon fill="none" stroke="black" points="919.5,-11.5 919.5,-62.5 1038.5,-62.5 1038.5,-11.5 919.5,-11.5"/>
+<text text-anchor="start" x="943" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">item :String</text>
+<text text-anchor="start" x="943" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">price :String</text>
+<text text-anchor="start" x="943" y="-18.3" font-family="Times New Roman,serif" font-size="14.00">buyer :String</text>
+</g>
+<!-- BuildItemCommand&#45;&gt;Command -->
+<g id="edge4" class="edge"><title>BuildItemCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M978.5,-87.5519C978.5,-100.959 978.5,-115.662 978.5,-127.909"/>
+<polygon fill="none" stroke="black" points="975,-127.944 978.5,-137.944 982,-127.944 975,-127.944"/>
 </g>
 <!-- Event -->
-<g id="node4" class="node"><title>Event</title>
-<polygon fill="none" stroke="black" points="250.5,-227 250.5,-248 307.5,-248 307.5,-227 250.5,-227"/>
-<text text-anchor="start" x="263" y="-233.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
-<polygon fill="none" stroke="black" points="250.5,-206 250.5,-227 307.5,-227 307.5,-206 250.5,-206"/>
-<text text-anchor="start" x="253.5" y="-212.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<g id="node6" class="node"><title>Event</title>
+<polygon fill="none" stroke="black" points="598.5,-242 598.5,-263 655.5,-263 655.5,-242 598.5,-242"/>
+<text text-anchor="start" x="611" y="-248.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
+<polygon fill="none" stroke="black" points="598.5,-221 598.5,-242 655.5,-242 655.5,-221 598.5,-221"/>
+<text text-anchor="start" x="601.5" y="-227.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
 </g>
 <!-- Command&#45;&gt;Event -->
-<g id="edge3" class="edge"><title>Command&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M524.261,-159.038C518.739,-161.553 513.014,-163.976 507.5,-166 445.857,-188.633 371.957,-206.386 325.112,-216.535"/>
-<polygon fill="none" stroke="black" points="324.298,-213.129 315.252,-218.645 325.763,-219.974 324.298,-213.129"/>
+<g id="edge5" class="edge"><title>Command&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M937.777,-166.718C871.887,-182.442 742.298,-213.366 672.925,-229.921"/>
+<polygon fill="none" stroke="black" points="672.056,-226.53 663.142,-232.256 673.681,-233.339 672.056,-226.53"/>
 </g>
 <!-- DataEvent -->
-<g id="node2" class="node"><title>DataEvent</title>
-<polygon fill="none" stroke="black" points="50.5,-141 50.5,-162 140.5,-162 140.5,-141 50.5,-141"/>
-<text text-anchor="start" x="66.5" y="-147.8" font-family="Times New Roman,serif" font-size="14.00">DataEvent</text>
-<polygon fill="none" stroke="black" points="50.5,-120 50.5,-141 140.5,-141 140.5,-120 50.5,-120"/>
-<text text-anchor="start" x="53.5" y="-126.8" font-family="Times New Roman,serif" font-size="14.00">blockId :String</text>
+<g id="node4" class="node"><title>DataEvent</title>
+<polygon fill="none" stroke="black" points="307.5,-156 307.5,-177 397.5,-177 397.5,-156 307.5,-156"/>
+<text text-anchor="start" x="323.5" y="-162.8" font-family="Times New Roman,serif" font-size="14.00">DataEvent</text>
+<polygon fill="none" stroke="black" points="307.5,-135 307.5,-156 397.5,-156 397.5,-135 307.5,-135"/>
+<text text-anchor="start" x="310.5" y="-141.8" font-family="Times New Roman,serif" font-size="14.00">blockId :String</text>
 </g>
 <!-- DataGroup -->
-<g id="node3" class="node"><title>DataGroup</title>
-<polygon fill="none" stroke="black" points="61.5,-219 61.5,-240 130.5,-240 130.5,-219 61.5,-219"/>
-<text text-anchor="start" x="64.5" y="-225.8" font-family="Times New Roman,serif" font-size="14.00">DataGroup</text>
-<polygon fill="none" stroke="black" points="61.5,-213 61.5,-219 130.5,-219 130.5,-213 61.5,-213"/>
+<g id="node5" class="node"><title>DataGroup</title>
+<polygon fill="none" stroke="black" points="318.5,-234 318.5,-255 387.5,-255 387.5,-234 318.5,-234"/>
+<text text-anchor="start" x="321.5" y="-240.8" font-family="Times New Roman,serif" font-size="14.00">DataGroup</text>
+<polygon fill="none" stroke="black" points="318.5,-228 318.5,-234 387.5,-234 387.5,-228 318.5,-228"/>
 </g>
 <!-- DataEvent&#45;&gt;DataGroup -->
 <g id="edge1" class="edge"><title>DataEvent&#45;&gt;DataGroup</title>
-<path fill="none" stroke="black" d="M89.314,-166.296C88.3905,-179.96 88.6011,-196.684 89.946,-208.952"/>
-<text text-anchor="middle" x="68.946" y="-197.752" font-family="Times New Roman,serif" font-size="14.00">sagas *</text>
-<text text-anchor="middle" x="59.814" y="-170.096" font-family="Times New Roman,serif" font-size="14.00">elements *</text>
+<path fill="none" stroke="black" d="M346.314,-181.296C345.39,-194.96 345.601,-211.684 346.946,-223.952"/>
+<text text-anchor="middle" x="325.946" y="-212.752" font-family="Times New Roman,serif" font-size="14.00">sagas *</text>
+<text text-anchor="middle" x="316.814" y="-185.096" font-family="Times New Roman,serif" font-size="14.00">elements *</text>
 </g>
 <!-- DataEvent&#45;&gt;Event -->
-<g id="edge4" class="edge"><title>DataEvent&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M147.94,-166.071C174.655,-178.333 206.838,-193.106 232.567,-204.916"/>
-<polygon fill="none" stroke="black" points="231.184,-208.132 241.732,-209.123 234.104,-201.77 231.184,-208.132"/>
+<g id="edge6" class="edge"><title>DataEvent&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M405.655,-173.296C456.322,-188.829 531.85,-211.983 580.135,-226.786"/>
+<polygon fill="none" stroke="black" points="579.123,-230.136 589.709,-229.721 581.174,-223.444 579.123,-230.136"/>
 </g>
 <!-- DataGroup&#45;&gt;DataEvent -->
-<g id="edge5" class="edge"><title>DataGroup&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M101.054,-208.952C102.084,-199.56 102.448,-187.555 102.148,-176.311"/>
-<polygon fill="none" stroke="black" points="105.644,-176.124 101.686,-166.296 98.6511,-176.447 105.644,-176.124"/>
+<g id="edge7" class="edge"><title>DataGroup&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M358.054,-223.952C359.084,-214.56 359.448,-202.555 359.148,-191.311"/>
+<polygon fill="none" stroke="black" points="362.644,-191.124 358.686,-181.296 355.651,-191.447 362.644,-191.124"/>
 </g>
 <!-- GetEmailCommand -->
-<g id="node5" class="node"><title>GetEmailCommand</title>
-<polygon fill="none" stroke="black" points="296.5,-40 296.5,-61 412.5,-61 412.5,-40 296.5,-40"/>
-<text text-anchor="start" x="299.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">GetEmailCommand</text>
-<polygon fill="none" stroke="black" points="296.5,-19 296.5,-40 412.5,-40 412.5,-19 296.5,-19"/>
-<text text-anchor="start" x="320" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">email :String</text>
+<g id="node7" class="node"><title>GetEmailCommand</title>
+<polygon fill="none" stroke="black" points="1072.5,-47.5 1072.5,-68.5 1188.5,-68.5 1188.5,-47.5 1072.5,-47.5"/>
+<text text-anchor="start" x="1075.5" y="-54.3" font-family="Times New Roman,serif" font-size="14.00">GetEmailCommand</text>
+<polygon fill="none" stroke="black" points="1072.5,-26.5 1072.5,-47.5 1188.5,-47.5 1188.5,-26.5 1072.5,-26.5"/>
+<text text-anchor="start" x="1096" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">email :String</text>
 </g>
 <!-- GetEmailCommand&#45;&gt;Command -->
-<g id="edge6" class="edge"><title>GetEmailCommand&#45;&gt;Command</title>
-<path fill="none" stroke="black" d="M399.936,-65.063C409.649,-70.0843 419.881,-75.2825 429.5,-80 463.78,-96.8121 472.955,-99.7385 507.5,-116 509.264,-116.83 511.062,-117.68 512.877,-118.54"/>
-<polygon fill="none" stroke="black" points="511.489,-121.755 522.023,-122.89 514.496,-115.433 511.489,-121.755"/>
+<g id="edge8" class="edge"><title>GetEmailCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M1096.01,-72.6665C1070.62,-90.4535 1036.32,-114.486 1011.34,-131.993"/>
+<polygon fill="none" stroke="black" points="1009.1,-129.288 1002.92,-137.893 1013.11,-135.021 1009.1,-129.288"/>
 </g>
 <!-- GetPartyCommand -->
-<g id="node6" class="node"><title>GetPartyCommand</title>
-<polygon fill="none" stroke="black" points="447.5,-40 447.5,-61 562.5,-61 562.5,-40 447.5,-40"/>
-<text text-anchor="start" x="450.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">GetPartyCommand</text>
-<polygon fill="none" stroke="black" points="447.5,-19 447.5,-40 562.5,-40 562.5,-19 447.5,-19"/>
-<text text-anchor="start" x="470.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">party :String</text>
+<g id="node8" class="node"><title>GetPartyCommand</title>
+<polygon fill="none" stroke="black" points="1223.5,-54.5 1223.5,-75.5 1338.5,-75.5 1338.5,-54.5 1223.5,-54.5"/>
+<text text-anchor="start" x="1226.5" y="-61.3" font-family="Times New Roman,serif" font-size="14.00">GetPartyCommand</text>
+<polygon fill="none" stroke="black" points="1223.5,-18.5 1223.5,-54.5 1338.5,-54.5 1338.5,-18.5 1223.5,-18.5"/>
+<text text-anchor="start" x="1238.5" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">party :String</text>
+<text text-anchor="start" x="1238.5" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
 </g>
 <!-- GetPartyCommand&#45;&gt;Command -->
-<g id="edge7" class="edge"><title>GetPartyCommand&#45;&gt;Command</title>
-<path fill="none" stroke="black" d="M517.465,-65.2181C525.383,-80.0085 535.505,-98.9152 543.59,-114.017"/>
-<polygon fill="none" stroke="black" points="540.518,-115.694 548.323,-122.858 546.689,-112.39 540.518,-115.694"/>
+<g id="edge9" class="edge"><title>GetPartyCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M1234.04,-80.2327C1224.84,-85.6662 1215.07,-90.8789 1205.5,-95 1147.25,-120.088 1075.96,-136.843 1028.99,-146.128"/>
+<polygon fill="none" stroke="black" points="1028.21,-142.713 1019.06,-148.051 1029.55,-149.586 1028.21,-142.713"/>
 </g>
 <!-- GetPasswordCommand -->
-<g id="node7" class="node"><title>GetPasswordCommand</title>
-<polygon fill="none" stroke="black" points="596.5,-32 596.5,-53 737.5,-53 737.5,-32 596.5,-32"/>
-<text text-anchor="start" x="599.5" y="-38.8" font-family="Times New Roman,serif" font-size="14.00">GetPasswordCommand</text>
-<polygon fill="none" stroke="black" points="596.5,-26 596.5,-32 737.5,-32 737.5,-26 596.5,-26"/>
+<g id="node9" class="node"><title>GetPasswordCommand</title>
+<polygon fill="none" stroke="black" points="1372.5,-39.5 1372.5,-60.5 1513.5,-60.5 1513.5,-39.5 1372.5,-39.5"/>
+<text text-anchor="start" x="1375.5" y="-46.3" font-family="Times New Roman,serif" font-size="14.00">GetPasswordCommand</text>
+<polygon fill="none" stroke="black" points="1372.5,-33.5 1372.5,-39.5 1513.5,-39.5 1513.5,-33.5 1372.5,-33.5"/>
 </g>
 <!-- GetPasswordCommand&#45;&gt;Command -->
-<g id="edge8" class="edge"><title>GetPasswordCommand&#45;&gt;Command</title>
-<path fill="none" stroke="black" d="M647.514,-58.2445C629.852,-74.2859 603.377,-98.3322 583.706,-116.198"/>
-<polygon fill="none" stroke="black" points="581.318,-113.639 576.269,-122.953 586.024,-118.821 581.318,-113.639"/>
+<g id="edge10" class="edge"><title>GetPasswordCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M1416.12,-65.5897C1399.39,-75.6579 1376.93,-87.7957 1355.5,-95 1242.94,-132.846 1103.25,-147.107 1029.55,-152.258"/>
+<polygon fill="none" stroke="black" points="1028.91,-148.793 1019.17,-152.954 1029.38,-155.777 1028.91,-148.793"/>
 </g>
 <!-- GetUserNameCommand -->
-<g id="node8" class="node"><title>GetUserNameCommand</title>
-<polygon fill="none" stroke="black" points="771.5,-40 771.5,-61 915.5,-61 915.5,-40 771.5,-40"/>
-<text text-anchor="start" x="774.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">GetUserNameCommand</text>
-<polygon fill="none" stroke="black" points="771.5,-19 771.5,-40 915.5,-40 915.5,-19 771.5,-19"/>
-<text text-anchor="start" x="808.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<g id="node10" class="node"><title>GetUserNameCommand</title>
+<polygon fill="none" stroke="black" points="591.5,-47.5 591.5,-68.5 735.5,-68.5 735.5,-47.5 591.5,-47.5"/>
+<text text-anchor="start" x="594.5" y="-54.3" font-family="Times New Roman,serif" font-size="14.00">GetUserNameCommand</text>
+<polygon fill="none" stroke="black" points="591.5,-26.5 591.5,-47.5 735.5,-47.5 735.5,-26.5 591.5,-26.5"/>
+<text text-anchor="start" x="628.5" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
 </g>
 <!-- GetUserNameCommand&#45;&gt;Command -->
-<g id="edge9" class="edge"><title>GetUserNameCommand&#45;&gt;Command</title>
-<path fill="none" stroke="black" d="M791.209,-65.1316C779.254,-70.3073 766.525,-75.5517 754.5,-80 705.505,-98.1251 648.261,-115.106 608.147,-126.345"/>
-<polygon fill="none" stroke="black" points="607.028,-123.023 598.332,-129.075 608.905,-129.767 607.028,-123.023"/>
+<g id="edge11" class="edge"><title>GetUserNameCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M705.659,-72.6748C720.466,-80.5171 737.423,-88.7875 753.5,-95 811.819,-117.536 881.79,-134.74 928.05,-144.831"/>
+<polygon fill="none" stroke="black" points="927.324,-148.254 937.837,-146.936 928.797,-141.411 927.324,-148.254"/>
+</g>
+<!-- GuestBuilt -->
+<g id="node11" class="node"><title>GuestBuilt</title>
+<polygon fill="none" stroke="black" points="143.5,-54.5 143.5,-75.5 219.5,-75.5 219.5,-54.5 143.5,-54.5"/>
+<text text-anchor="start" x="152" y="-61.3" font-family="Times New Roman,serif" font-size="14.00">GuestBuilt</text>
+<polygon fill="none" stroke="black" points="143.5,-18.5 143.5,-54.5 219.5,-54.5 219.5,-18.5 143.5,-18.5"/>
+<text text-anchor="start" x="146.5" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="146.5" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">party :String</text>
+</g>
+<!-- GuestBuilt&#45;&gt;DataEvent -->
+<g id="edge12" class="edge"><title>GuestBuilt&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M216.682,-80.2257C223.085,-85.4193 229.849,-90.5504 236.5,-95 253.431,-106.326 272.764,-117.092 290.729,-126.296"/>
+<polygon fill="none" stroke="black" points="289.474,-129.583 299.979,-130.962 292.627,-123.333 289.474,-129.583"/>
+</g>
+<!-- ItemBuilt -->
+<g id="node12" class="node"><title>ItemBuilt</title>
+<polygon fill="none" stroke="black" points="253.5,-69.5 253.5,-90.5 331.5,-90.5 331.5,-69.5 253.5,-69.5"/>
+<text text-anchor="start" x="267" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">ItemBuilt</text>
+<polygon fill="none" stroke="black" points="253.5,-3.5 253.5,-69.5 331.5,-69.5 331.5,-3.5 253.5,-3.5"/>
+<text text-anchor="start" x="256.5" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="256.5" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">price :String</text>
+<text text-anchor="start" x="256.5" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">buyer :String</text>
+<text text-anchor="start" x="256.5" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">party :String</text>
+</g>
+<!-- ItemBuilt&#45;&gt;DataEvent -->
+<g id="edge13" class="edge"><title>ItemBuilt&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M318.817,-95.2125C323.904,-104.242 329.134,-113.526 333.911,-122.005"/>
+<polygon fill="none" stroke="black" points="330.931,-123.845 338.889,-130.84 337.029,-120.409 330.931,-123.845"/>
 </g>
 <!-- LoginSucceededEvent -->
-<g id="node9" class="node"><title>LoginSucceededEvent</title>
-<polygon fill="none" stroke="black" points="212.5,-141 212.5,-162 344.5,-162 344.5,-141 212.5,-141"/>
-<text text-anchor="start" x="215.5" y="-147.8" font-family="Times New Roman,serif" font-size="14.00">LoginSucceededEvent</text>
-<polygon fill="none" stroke="black" points="212.5,-120 212.5,-141 344.5,-141 344.5,-120 212.5,-120"/>
-<text text-anchor="start" x="243.5" y="-126.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<g id="node13" class="node"><title>LoginSucceededEvent</title>
+<polygon fill="none" stroke="black" points="560.5,-156 560.5,-177 692.5,-177 692.5,-156 560.5,-156"/>
+<text text-anchor="start" x="563.5" y="-162.8" font-family="Times New Roman,serif" font-size="14.00">LoginSucceededEvent</text>
+<polygon fill="none" stroke="black" points="560.5,-135 560.5,-156 692.5,-156 692.5,-135 560.5,-135"/>
+<text text-anchor="start" x="591.5" y="-141.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
 </g>
 <!-- LoginSucceededEvent&#45;&gt;Event -->
-<g id="edge10" class="edge"><title>LoginSucceededEvent&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M278.5,-166.296C278.5,-174.219 278.5,-183.171 278.5,-191.686"/>
-<polygon fill="none" stroke="black" points="275,-191.758 278.5,-201.758 282,-191.758 275,-191.758"/>
+<g id="edge14" class="edge"><title>LoginSucceededEvent&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M626.5,-181.296C626.5,-189.219 626.5,-198.171 626.5,-206.686"/>
+<polygon fill="none" stroke="black" points="623,-206.758 626.5,-216.758 630,-206.758 623,-206.758"/>
+</g>
+<!-- PartyBuilt -->
+<g id="node14" class="node"><title>PartyBuilt</title>
+<polygon fill="none" stroke="black" points="366.5,-54.5 366.5,-75.5 457.5,-75.5 457.5,-54.5 366.5,-54.5"/>
+<text text-anchor="start" x="384.5" y="-61.3" font-family="Times New Roman,serif" font-size="14.00">PartyBuilt</text>
+<polygon fill="none" stroke="black" points="366.5,-18.5 366.5,-54.5 457.5,-54.5 457.5,-18.5 366.5,-18.5"/>
+<text text-anchor="start" x="369.5" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="369.5" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
+</g>
+<!-- PartyBuilt&#45;&gt;DataEvent -->
+<g id="edge15" class="edge"><title>PartyBuilt&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M393.958,-80.1652C386.672,-93.3172 378.214,-108.584 370.845,-121.885"/>
+<polygon fill="none" stroke="black" points="367.73,-120.286 365.946,-130.729 373.853,-123.678 367.73,-120.286"/>
 </g>
 <!-- Query -->
-<g id="node10" class="node"><title>Query</title>
-<polygon fill="none" stroke="black" points="143.5,-40 143.5,-61 209.5,-61 209.5,-40 143.5,-40"/>
-<text text-anchor="start" x="159" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">Query</text>
-<polygon fill="none" stroke="black" points="143.5,-19 143.5,-40 209.5,-40 209.5,-19 143.5,-19"/>
-<text text-anchor="start" x="146.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">key :String</text>
+<g id="node15" class="node"><title>Query</title>
+<polygon fill="none" stroke="black" points="491.5,-47.5 491.5,-68.5 557.5,-68.5 557.5,-47.5 491.5,-47.5"/>
+<text text-anchor="start" x="507" y="-54.3" font-family="Times New Roman,serif" font-size="14.00">Query</text>
+<polygon fill="none" stroke="black" points="491.5,-26.5 491.5,-47.5 557.5,-47.5 557.5,-26.5 491.5,-26.5"/>
+<text text-anchor="start" x="494.5" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">key :String</text>
 </g>
 <!-- Query&#45;&gt;DataEvent -->
 <g id="edge2" class="edge"><title>Query&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M156.685,-65.2181C144.133,-80.5595 127.958,-100.33 115.391,-115.689"/>
-<text text-anchor="middle" x="91.891" y="-104.489" font-family="Times New Roman,serif" font-size="14.00">results *</text>
-<text text-anchor="middle" x="140.685" y="-69.0181" font-family="Times New Roman,serif" font-size="14.00">query</text>
+<path fill="none" stroke="black" d="M500.764,-72.678C492.54,-80.3446 482.995,-88.5069 473.5,-95 452.403,-109.427 427.336,-122.446 405.503,-132.64"/>
+<text text-anchor="middle" x="429.003" y="-121.44" font-family="Times New Roman,serif" font-size="14.00">results *</text>
+<text text-anchor="middle" x="484.764" y="-76.478" font-family="Times New Roman,serif" font-size="14.00">query</text>
 </g>
 <!-- Query&#45;&gt;Event -->
-<g id="edge11" class="edge"><title>Query&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M174.844,-65.4351C174.195,-92.0919 176.635,-135.082 195.5,-166 204.55,-180.832 218.784,-193.083 232.927,-202.563"/>
-<polygon fill="none" stroke="black" points="231.353,-205.709 241.673,-208.105 235.1,-199.796 231.353,-205.709"/>
+<g id="edge16" class="edge"><title>Query&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M522.533,-72.8617C521.434,-100.966 523.306,-147.588 543.5,-181 552.487,-195.87 566.707,-208.13 580.855,-217.606"/>
+<polygon fill="none" stroke="black" points="579.286,-220.755 589.608,-223.145 583.029,-214.84 579.286,-220.755"/>
 </g>
 <!-- ServiceSubscribed -->
-<g id="node11" class="node"><title>ServiceSubscribed</title>
-<polygon fill="none" stroke="black" points="378.5,-141 378.5,-162 490.5,-162 490.5,-141 378.5,-141"/>
-<text text-anchor="start" x="381.5" y="-147.8" font-family="Times New Roman,serif" font-size="14.00">ServiceSubscribed</text>
-<polygon fill="none" stroke="black" points="378.5,-120 378.5,-141 490.5,-141 490.5,-120 378.5,-120"/>
-<text text-anchor="start" x="386" y="-126.8" font-family="Times New Roman,serif" font-size="14.00">serviceUrl :String</text>
+<g id="node16" class="node"><title>ServiceSubscribed</title>
+<polygon fill="none" stroke="black" points="726.5,-156 726.5,-177 838.5,-177 838.5,-156 726.5,-156"/>
+<text text-anchor="start" x="729.5" y="-162.8" font-family="Times New Roman,serif" font-size="14.00">ServiceSubscribed</text>
+<polygon fill="none" stroke="black" points="726.5,-135 726.5,-156 838.5,-156 838.5,-135 726.5,-135"/>
+<text text-anchor="start" x="734" y="-141.8" font-family="Times New Roman,serif" font-size="14.00">serviceUrl :String</text>
 </g>
 <!-- ServiceSubscribed&#45;&gt;Event -->
-<g id="edge12" class="edge"><title>ServiceSubscribed&#45;&gt;Event</title>
-<path fill="none" stroke="black" d="M389.797,-166.071C369.17,-177.178 344.719,-190.344 323.996,-201.502"/>
-<polygon fill="none" stroke="black" points="322.21,-198.488 315.065,-206.311 325.529,-204.652 322.21,-198.488"/>
+<g id="edge17" class="edge"><title>ServiceSubscribed&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M737.797,-181.071C717.17,-192.178 692.719,-205.344 671.996,-216.502"/>
+<polygon fill="none" stroke="black" points="670.21,-213.488 663.065,-221.311 673.529,-219.652 670.21,-213.488"/>
 </g>
 <!-- UserBuilt -->
-<g id="node12" class="node"><title>UserBuilt</title>
-<polygon fill="none" stroke="black" points="8.5,-55 8.5,-76 109.5,-76 109.5,-55 8.5,-55"/>
-<text text-anchor="start" x="33" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">UserBuilt</text>
-<polygon fill="none" stroke="black" points="8.5,-4 8.5,-55 109.5,-55 109.5,-4 8.5,-4"/>
-<text text-anchor="start" x="11.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
-<text text-anchor="start" x="11.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">email :String</text>
-<text text-anchor="start" x="11.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">password :String</text>
+<g id="node17" class="node"><title>UserBuilt</title>
+<polygon fill="none" stroke="black" points="8.5,-62.5 8.5,-83.5 109.5,-83.5 109.5,-62.5 8.5,-62.5"/>
+<text text-anchor="start" x="33" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">UserBuilt</text>
+<polygon fill="none" stroke="black" points="8.5,-11.5 8.5,-62.5 109.5,-62.5 109.5,-11.5 8.5,-11.5"/>
+<text text-anchor="start" x="11.5" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="11.5" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">email :String</text>
+<text text-anchor="start" x="11.5" y="-18.3" font-family="Times New Roman,serif" font-size="14.00">password :String</text>
 </g>
 <!-- UserBuilt&#45;&gt;DataEvent -->
-<g id="edge13" class="edge"><title>UserBuilt&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M73.1234,-80.1274C76.3755,-88.829 79.795,-97.9784 82.9549,-106.433"/>
-<polygon fill="none" stroke="black" points="79.7403,-107.83 86.5197,-115.972 86.2973,-105.379 79.7403,-107.83"/>
+<g id="edge18" class="edge"><title>UserBuilt&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M112.087,-87.5274C116.849,-90.2573 121.689,-92.7958 126.5,-95 178.934,-119.025 242.777,-134.863 289.216,-144.202"/>
+<polygon fill="none" stroke="black" points="288.658,-147.659 299.146,-146.153 290.008,-140.791 288.658,-147.659"/>
 </g>
 </g>
 </svg>

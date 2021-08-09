@@ -58,7 +58,7 @@ public class Yamler2
    private LinkedHashMap<String, String> decodeObject()
    {
       currentObject = new LinkedHashMap<>();
-      trim = line.replace("-", "").trim();
+      trim = line.substring(line.indexOf("-") + 1).trim();
       while (true) {
          words = trim.split("\\s+");
          if (words[0].equals("-")) {

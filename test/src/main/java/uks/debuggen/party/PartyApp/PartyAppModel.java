@@ -51,4 +51,22 @@ public class PartyAppModel
       if (id == null) return null;
       return (User) modelMap.computeIfAbsent(id, k -> new User().setId(k));
    }
+
+   public Party getOrCreateParty(String id)
+   {
+      if (id == null) return null;
+      return (Party) modelMap.computeIfAbsent(id, k -> new Party().setId(k));
+   }
+
+   public Item getOrCreateItem(String id)
+   {
+      if (id == null) return null;
+      return (Item) modelMap.computeIfAbsent(id, k -> new Item().setId(k));
+   }
+
+   public Guest getOrCreateGuest(String id)
+   {
+      if (id == null) return null;
+      return (Guest) modelMap.computeIfAbsent(id, k -> new Guest().setId(k));
+   }
 }

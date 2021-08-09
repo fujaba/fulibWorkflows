@@ -172,6 +172,41 @@ public class PartyAppBuilder
       return true;
    }
 
+   public void handlePartyBuilt(Event e)
+   {
+      PartyBuilt event = (PartyBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      Party object = model.getOrCreateParty(event.getBlockId());
+      object.setName(event.getName());
+      object.setLocation(event.getLocation());
+   }
+
+   public void handleItemBuilt(Event e)
+   {
+      ItemBuilt event = (ItemBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      Item object = model.getOrCreateItem(event.getBlockId());
+      object.setName(event.getName());
+      object.setPrice(event.getPrice());
+      object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
+      object.setParty(model.getOrCreateParty(event.getParty()));
+   }
+
+   public void handleGuestBuilt(Event e)
+   {
+      GuestBuilt event = (GuestBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      Guest object = model.getOrCreateGuest(event.getBlockId());
+      object.setName(event.getName());
+      object.setParty(model.getOrCreateParty(event.getParty()));
+   }
+
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
 
    public LinkedHashMap<String, DataEvent> getEventStore()
