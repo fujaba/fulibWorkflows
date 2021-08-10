@@ -193,11 +193,17 @@ public class PartyAppBusinessLogic
          service.apply(aliceEvent);
 
 
-         LoginSucceededEvent e1210 = new LoginSucceededEvent();
+         UserRegisteredEvent e1210 = new UserRegisteredEvent();
 
          e1210.setId("12:10");
          e1210.setName("Alice");
          service.apply(e1210);
+
+         LoginSucceededEvent e1211 = new LoginSucceededEvent();
+
+         e1211.setId("12:11");
+         e1211.setName("Alice");
+         service.apply(e1211);
       }
    }
 

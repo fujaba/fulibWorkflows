@@ -113,6 +113,52 @@ public class TestPartyApp
       SelenideElement pre = $("pre");
       pre.shouldHave(text("http://localhost:42001/apply"));
 
+      // workflow Overview
+      // create UserRegisteredEvent: user registered 12:00
+      UserRegisteredEvent e1200 = new UserRegisteredEvent();
+      e1200.setId("12:00");
+      publish(e1200);
+
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 12_00:"));
+
+      // create LoginSucceededEvent: login succeeded 13:00
+      LoginSucceededEvent e1300 = new LoginSucceededEvent();
+      e1300.setId("13:00");
+      publish(e1300);
+
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 13_00:"));
+
+      // create PartyCreatedEvent: party created 14:00
+      PartyCreatedEvent e1400 = new PartyCreatedEvent();
+      e1400.setId("14:00");
+      publish(e1400);
+
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 14_00:"));
+
+      // create ItemBookedEvent: item booked 15:00
+      ItemBookedEvent e1500 = new ItemBookedEvent();
+      e1500.setId("15:00");
+      publish(e1500);
+
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 15_00:"));
+
+      // create SaldiComputedEvent: saldi computed 16:00
+      SaldiComputedEvent e1600 = new SaldiComputedEvent();
+      e1600.setId("16:00");
+      publish(e1600);
+
+      open("http://localhost:42000");
+      pre = $("#history");
+      pre.shouldHave(text("- 16_00:"));
+
       // workflow RegisterNewUser
       // page 12:00
       open("http://localhost:42001/page/12_00");

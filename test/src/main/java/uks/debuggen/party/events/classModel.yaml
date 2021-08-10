@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	userBuilt 	loginSucceededEvent 	getPartyCommand 	partyBuilt 	addItemCommand 	buildItemCommand 	itemBuilt 	guestBuilt
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	userRegisteredEvent 	loginSucceededEvent 	partyCreatedEvent 	itemBookedEvent 	saldiComputedEvent 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	userBuilt 	getPartyCommand 	partyBuilt 	addItemCommand 	buildItemCommand 	itemBuilt 	guestBuilt
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	loginSucceededEvent
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	userRegisteredEvent 	loginSucceededEvent 	partyCreatedEvent 	itemBookedEvent 	saldiComputedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -58,6 +58,43 @@
   subClasses: 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	getPartyCommand 	addItemCommand 	buildItemCommand
   superClass: 	event
 
+- userRegisteredEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	userRegisteredEvent_name
+  model: 	c
+  modified: 	false
+  name: 	UserRegisteredEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- loginSucceededEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	loginSucceededEvent_name
+  model: 	c
+  modified: 	false
+  name: 	LoginSucceededEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- partyCreatedEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	PartyCreatedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- itemBookedEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	ItemBookedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- saldiComputedEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	SaldiComputedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
 - getUserNameCommand: 	org.fulib.classmodel.Clazz
   attributes: 	getUserNameCommand_name
   model: 	c
@@ -88,14 +125,6 @@
   name: 	UserBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
-
-- loginSucceededEvent: 	org.fulib.classmodel.Clazz
-  attributes: 	loginSucceededEvent_name
-  model: 	c
-  modified: 	false
-  name: 	LoginSucceededEvent
-  propertyStyle: 	Bean
-  superClass: 	event
 
 - getPartyCommand: 	org.fulib.classmodel.Clazz
   attributes: 	getPartyCommand_party 	getPartyCommand_location
@@ -233,6 +262,24 @@
   type: 	String
   typeSignature: 	String
 
+- userRegisteredEvent_name: 	org.fulib.classmodel.Attribute
+  clazz: 	userRegisteredEvent
+  id: 	UserRegisteredEvent_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- loginSucceededEvent_name: 	org.fulib.classmodel.Attribute
+  clazz: 	loginSucceededEvent
+  id: 	LoginSucceededEvent_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - getUserNameCommand_name: 	org.fulib.classmodel.Attribute
   clazz: 	getUserNameCommand
   id: 	GetUserNameCommand_name
@@ -274,15 +321,6 @@
   id: 	UserBuilt_password
   modified: 	false
   name: 	password
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- loginSucceededEvent_name: 	org.fulib.classmodel.Attribute
-  clazz: 	loginSucceededEvent
-  id: 	LoginSucceededEvent_name
-  modified: 	false
-  name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
