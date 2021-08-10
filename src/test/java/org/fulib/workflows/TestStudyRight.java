@@ -32,7 +32,7 @@ public class TestStudyRight
 
          // java
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
-         workflowGenerator.loadWorkflow(mm, yaml);
+         workflowGenerator.loadWorkflow(mm, "", yaml);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/StudyRightModel.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());

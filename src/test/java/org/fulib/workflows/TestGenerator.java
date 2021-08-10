@@ -1,6 +1,5 @@
 package org.fulib.workflows;
 
-import org.fulib.Fulib;
 import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
 import org.junit.Test;
@@ -26,7 +25,7 @@ public class TestGenerator
 
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/shopboard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, yaml);
+         workflowGenerator.loadWorkflow(mm, "", yaml);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());
@@ -52,7 +51,7 @@ public class TestGenerator
 
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/guiboard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, yaml);
+         workflowGenerator.loadWorkflow(mm, "", yaml);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());

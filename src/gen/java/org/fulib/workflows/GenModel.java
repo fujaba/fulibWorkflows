@@ -91,6 +91,12 @@ public class GenModel implements ClassModelDecorator
       Interaction interaction;
    }
 
+   class SubprocessNote extends WorkflowNote
+   {
+      String subprocessName;
+      Workflow subprocess;
+   }
+
    class EventType
    {
       String eventTypeName;

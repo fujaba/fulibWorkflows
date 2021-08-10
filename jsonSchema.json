@@ -49,6 +49,18 @@
       ],
       "additionalProperties": false
     },
+    "subprocessItem": {
+      "description": "A subprocess which is defined in a seperate workflow",
+      "type": "object",
+      "properties": {
+        "subprocess": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "subprocess"
+      ]
+    },
     "commandItem": {
       "description": "A command send by a user",
       "type": "object",
@@ -124,6 +136,19 @@
       },
       "required": [
         "action"
+      ],
+      "additionalProperties": false
+    },
+    "queryItem": {
+      "description": "Defines a query on the current system state",
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
       ],
       "additionalProperties": false
     },
@@ -205,7 +230,7 @@
           "type": "string"
         },
         "fill": {
-          "type": "string"
+          "type": ["string", "number"]
         }
       },
       "required": [
@@ -220,7 +245,7 @@
           "type": "string"
         },
         "fill": {
-          "type": "string"
+          "type": ["string", "number"]
         }
       },
       "required": [
@@ -240,6 +265,9 @@
         "$ref": "#/$defs/commandItem"
       },
       {
+        "$ref": "#/$defs/subprocessItem"
+      },
+      {
         "$ref": "#/$defs/eventItem"
       },
       {
@@ -256,6 +284,9 @@
       },
       {
         "$ref": "#/$defs/actionItem"
+      },
+      {
+        "$ref": "#/$defs/queryItem"
       },
       {
         "$ref": "#/$defs/pageList"

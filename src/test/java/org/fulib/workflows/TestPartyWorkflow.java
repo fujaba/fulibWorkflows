@@ -22,18 +22,19 @@ public class TestPartyWorkflow
          mm.setMainJavaDir("test/src/main/java");
          mm.setPackageName("uks.debuggen.party");
 
-         String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/PartyWorkflow.es.yaml"));
+         String fileName = "test/src/gen/resources/workflows/PartyWorkflow.es.yaml";
+         String yaml = Files.readString(Path.of(fileName));
 
          // html
          HtmlGenerator3 generator = new HtmlGenerator3();
          generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-         String html = generator.generateHtml(yaml);
+         String html = generator.generateHtml(fileName);
          Files.write(Path.of("tmp/PartyEventStorming.html"), html.getBytes(StandardCharsets.UTF_8));
 
          // java
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/PartyBoard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, yaml);
+         workflowGenerator.loadWorkflow(mm, fileName, yaml);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/PartyEventStormingModel.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());

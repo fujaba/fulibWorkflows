@@ -33,7 +33,7 @@ public class TestShopWorkflow
          // java
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/shopboard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, yaml);
+         workflowGenerator.loadWorkflow(mm, "", yaml);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/ShopEventStormingModel.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());

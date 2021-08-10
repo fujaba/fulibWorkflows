@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	note 	dataEvent 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	subprocessNote 	note 	dataEvent 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -76,7 +76,7 @@
   name: 	WorkflowNote
   propertyStyle: 	Bean
   roles: 	workflowNote_interaction 	workflowNote_workflow
-  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	eventNote
+  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	eventNote 	subprocessNote
   superClass: 	note
 
 - dataNote: 	org.fulib.classmodel.Clazz
@@ -150,6 +150,14 @@
   name: 	EventStormingBoard
   propertyStyle: 	Bean
   roles: 	eventStormingBoard_dataTypes 	eventStormingBoard_eventTypes 	eventStormingBoard_services 	eventStormingBoard_users 	eventStormingBoard_workflows
+
+- subprocessNote: 	org.fulib.classmodel.Clazz
+  attributes: 	subprocessNote_subprocessName 	subprocessNote_subprocess
+  model: 	c
+  modified: 	false
+  name: 	SubprocessNote
+  propertyStyle: 	Bean
+  superClass: 	workflowNote
 
 - note: 	org.fulib.classmodel.Clazz
   attributes: 	note_map
@@ -789,6 +797,24 @@
   other: 	workflow_eventStormingBoard
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- subprocessNote_subprocessName: 	org.fulib.classmodel.Attribute
+  clazz: 	subprocessNote
+  id: 	SubprocessNote_subprocessName
+  modified: 	false
+  name: 	subprocessName
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- subprocessNote_subprocess: 	org.fulib.classmodel.Attribute
+  clazz: 	subprocessNote
+  id: 	SubprocessNote_subprocess
+  modified: 	false
+  name: 	subprocess
+  propertyStyle: 	Bean
+  type: 	Workflow
+  typeSignature: 	Workflow
 
 - note_map: 	org.fulib.classmodel.Attribute
   clazz: 	note

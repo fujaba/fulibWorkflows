@@ -3,6 +3,9 @@ package org.fulib.workflows;
 import org.fulib.builder.reflect.Link;
 import org.fulib.yaml.Yamler2;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -13,6 +16,7 @@ public class EventModel
    private Workflow rootWorkflow;
    private Interaction lastActor;
    private EventNote lastEvent;
+   private LinkedList<String> yamlList;
 
    public EventStormingBoard getEventStormingBoard()
    {
@@ -31,100 +35,135 @@ public class EventModel
       return rootWorkflow;
    }
 
-   public EventStormingBoard buildEventStormModel(String yaml)
+   public EventStormingBoard buildEventStormModel(String fileName, String yaml)
    {
-      ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(yaml);
-      LinkedHashMap<String, PageNote> userLastPage = new LinkedHashMap<>();
 
-      lastActor = null;
-
-      for (LinkedHashMap<String, String> map : maps) {
-         Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
-         Map.Entry<String, String> entry = iterator.next();
-         if (entry.getKey().equalsIgnoreCase("workflow")) {
-            workflowName = entry.getValue();
-            workflowName = StrUtil.toIdentifier(workflowName);
-            rootWorkflow = new Workflow().setName(workflowName);
-            rootWorkflow.setMap(map);
-            getEventStormingBoard().withWorkflows(rootWorkflow);
-            continue;
-         }
-         if (entry.getKey().equals("user")) {
-            UserNote userNote = new UserNote().setName(map.get("name"));
-            userNote.setMap(map);
-            userNote.setEventStormingBoard(getEventStormingBoard());
-         }
-         else if (entry.getKey().equalsIgnoreCase("service")) {
-            ServiceNote note = new ServiceNote();
-            note.setName(entry.getValue());
-            note.setPort(map.get("port"));
-            note.setMap(map);
-            note.withWorkflows(getRootWorkflow());
-            note.setEventStormingBoard(getEventStormingBoard());
-         }
-         else if (entry.getKey().equalsIgnoreCase("Action")) {
-            UserInteraction userInteraction = new UserInteraction();
-            userInteraction.setActorName(entry.getValue());
-            UserNote userNote = getEventStormingBoard().getOrCreateFromUsers(userInteraction.getActorName());
-            userNote.withInteractions(userInteraction);
-            lastActor = userInteraction;
-         }
-         else if (entry.getKey().equalsIgnoreCase("Policy")) {
-            Policy policy = new Policy();
-            policy.setActorName(entry.getValue());
-            policy.setWorkflow(getRootWorkflow());
-            ServiceNote service = getEventStormingBoard().getOrCreateFromServices(entry.getValue());
-            policy.setService(service);
-            EventNote trigger = (EventNote) getRootWorkflow().getFromNotes(map.get("trigger"));
-            policy.setTrigger(trigger);
-            EventType type = trigger.getType();
-            service.withHandledEventTypes(type);
-            lastActor = policy;
-         }
-         else if (entry.getKey().equalsIgnoreCase("class")) {
-            ClassNote classNote = new ClassNote();
-            classNote.setMap(map);
-            classNote.setWorkflow(getRootWorkflow());
-            addToStepsOfLastActor(classNote);
-         }
-         else if (entry.getKey().equalsIgnoreCase("Data")) {
-            buildDataNote(map, iterator, entry);
-         }
-         else if (entry.getKey().equalsIgnoreCase("event")) {
-            EventNote eventNote = new EventNote();
-            fillEventNote(map, eventNote);
-         }
-         else if (entry.getKey().equalsIgnoreCase("command")) {
-            CommandNote commandNote = new CommandNote();
-            fillEventNote(map, commandNote);
-         }
-         else if (entry.getKey().equalsIgnoreCase("page")) {
-            buildPageNote(userLastPage, map, entry);
-         }
-         else if (entry.getKey().equalsIgnoreCase("board")) {
-            getEventStormingBoard().setName(map.get("board"));
-         }
-         else if (entry.getKey().equalsIgnoreCase("query")) {
-            String value = entry.getValue();
-            String[] split = value.split("\\s+");
-            String key = split[0];
-            String time = split[1];
-
-            QueryNote queryNote = new QueryNote();
-            queryNote.setTime(time);
-            queryNote.setWorkflow(getRootWorkflow());
-            queryNote.setMap(map);
-            queryNote.setKey(key);
-            queryNote.setResult(map.get("result"));
-
-            addToStepsOfLastActor(queryNote);
-            // send a query
-            // validate result
-         }
-         else {
-            Logger.getGlobal().severe("Unknown event type " + getEventType(map));
+      try {
+         if ( ! fileName.isEmpty()) {
+            yaml = Files.readString(Path.of(fileName));
          }
       }
+      catch (IOException e) {
+         e.printStackTrace();
+      }
+      yamlList = new LinkedList<>();
+      yamlList.add(yaml);
+
+      while (!yamlList.isEmpty()) {
+         String oneYaml = yamlList.poll();
+
+         ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(oneYaml);
+         LinkedHashMap<String, PageNote> userLastPage = new LinkedHashMap<>();
+
+         lastActor = null;
+
+         for (LinkedHashMap<String, String> map : maps) {
+            Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+            Map.Entry<String, String> entry = iterator.next();
+            if (entry.getKey().equalsIgnoreCase("workflow")) {
+               workflowName = entry.getValue();
+               workflowName = StrUtil.toIdentifier(workflowName);
+               rootWorkflow = new Workflow().setName(workflowName);
+               rootWorkflow.setMap(map);
+               getEventStormingBoard().withWorkflows(rootWorkflow);
+               continue;
+            }
+            if (entry.getKey().equals("user")) {
+               UserNote userNote = new UserNote().setName(map.get("name"));
+               userNote.setMap(map);
+               userNote.setEventStormingBoard(getEventStormingBoard());
+            }
+            else if (entry.getKey().equalsIgnoreCase("service")) {
+               ServiceNote note = new ServiceNote();
+               note.setName(entry.getValue());
+               note.setPort(map.get("port"));
+               note.setMap(map);
+               note.withWorkflows(getRootWorkflow());
+               note.setEventStormingBoard(getEventStormingBoard());
+            }
+            else if (entry.getKey().equalsIgnoreCase("Action")) {
+               UserInteraction userInteraction = new UserInteraction();
+               userInteraction.setActorName(entry.getValue());
+               UserNote userNote = getEventStormingBoard().getOrCreateFromUsers(userInteraction.getActorName());
+               userNote.withInteractions(userInteraction);
+               lastActor = userInteraction;
+            }
+            else if (entry.getKey().equalsIgnoreCase("subprocess")) {
+               SubprocessNote subprocessNote = new SubprocessNote();
+               subprocessNote.setSubprocessName(StrUtil.toIdentifier(entry.getValue()));
+               subprocessNote.setTime(subprocessNote.getSubprocessName());
+               subprocessNote.setMap(map);
+               subprocessNote.setWorkflow(getRootWorkflow());
+
+               String subFileName = fileName.substring(0, fileName.lastIndexOf('/'));
+               subFileName = String.format("%s/%s.es.yaml", subFileName, subprocessNote.getSubprocessName());
+               try {
+                  String subYaml = Files.readString(Path.of(subFileName));
+                  yamlList.add(subYaml);
+               }
+               catch (IOException e) {
+                  e.printStackTrace();
+               }
+            }
+            else if (entry.getKey().equalsIgnoreCase("Policy")) {
+               Policy policy = new Policy();
+               policy.setActorName(entry.getValue());
+               policy.setWorkflow(getRootWorkflow());
+               ServiceNote service = getEventStormingBoard().getOrCreateFromServices(entry.getValue());
+               policy.setService(service);
+               EventNote trigger = (EventNote) getRootWorkflow().getFromNotes(map.get("trigger"));
+               policy.setTrigger(trigger);
+               EventType type = trigger.getType();
+               service.withHandledEventTypes(type);
+               lastActor = policy;
+            }
+            else if (entry.getKey().equalsIgnoreCase("class")) {
+               ClassNote classNote = new ClassNote();
+               classNote.setMap(map);
+               classNote.setWorkflow(getRootWorkflow());
+               addToStepsOfLastActor(classNote);
+            }
+            else if (entry.getKey().equalsIgnoreCase("Data")) {
+               buildDataNote(map, iterator, entry);
+            }
+            else if (entry.getKey().equalsIgnoreCase("event")) {
+               EventNote eventNote = new EventNote();
+               fillEventNote(map, eventNote);
+            }
+            else if (entry.getKey().equalsIgnoreCase("command")) {
+               CommandNote commandNote = new CommandNote();
+               fillEventNote(map, commandNote);
+            }
+            else if (entry.getKey().equalsIgnoreCase("page")) {
+               buildPageNote(userLastPage, map, entry);
+            }
+            else if (entry.getKey().equalsIgnoreCase("board")) {
+               getEventStormingBoard().setName(map.get("board"));
+            }
+            else if (entry.getKey().equalsIgnoreCase("query")) {
+               String value = entry.getValue();
+               String[] split = value.split("\\s+");
+               String key = split[0];
+               String time = split[1];
+
+               QueryNote queryNote = new QueryNote();
+               queryNote.setTime(time);
+               queryNote.setWorkflow(getRootWorkflow());
+               queryNote.setMap(map);
+               queryNote.setKey(key);
+               queryNote.setResult(map.get("result"));
+
+               addToStepsOfLastActor(queryNote);
+               // send a query
+               // validate result
+            }
+            else {
+               Logger.getGlobal().severe("Unknown event type " + getEventType(map));
+            }
+         }
+
+      }
+
       return getEventStormingBoard();
    }
 

@@ -1,7 +1,6 @@
 package org.fulib.workflows;
 
 import org.fulib.yaml.Yaml;
-import org.fulib.yaml.Yamler;
 import org.fulib.yaml.Yamler2;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
@@ -22,10 +21,11 @@ public class HtmlGenerator3
    private EventStormingBoard eventStormingBoard;
    private ArrayList<LinkedHashMap<String, String>> historyMaps;
 
-   public String generateHtml(String yaml)
+   public String generateHtml(String filename)
    {
+
       eventModel = new EventModel();
-      eventModel.buildEventStormModel(yaml);
+      eventModel.buildEventStormModel(filename, null);
       eventStormingBoard = eventModel.getEventStormingBoard();
       if (dumpObjectDiagram != null) {
          dumpObjectDiagram.accept("tmp/GuiEventStormingBoard.svg", eventStormingBoard);
@@ -44,7 +44,7 @@ public class HtmlGenerator3
 
       st = group.getInstanceOf("page");
       st.add("content", body.toString());
-      st.add("width", maxNotesPerLane * 200);
+      st.add("width", maxNotesPerLane * 220);
       body.setLength(0);
       body.append(st.render());
       return body.toString();
@@ -98,12 +98,19 @@ public class HtmlGenerator3
          else if (note instanceof QueryNote) {
             noteType = "command";
          }
+         else if (note instanceof SubprocessNote) {
+            noteType = "subprocess";
+         }
 
 
          String noteContent;
          if (eventType.equalsIgnoreCase("page")) {
             PageNote pageNote = (PageNote) note;
             noteContent = pageNote(pageNote);
+         }
+         else if (eventType.equalsIgnoreCase("subprocess")) {
+            noteContent = "<div class='center'><i class=\"fa fa-square fa-rotate-45\"></i></div>\n" +
+                  String.format("<div>%s</div>\n", note.getTime());
          }
          else {
             noteContent = eventNote(map);

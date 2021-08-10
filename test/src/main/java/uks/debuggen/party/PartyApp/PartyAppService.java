@@ -589,7 +589,7 @@ public class PartyAppService
 
       // 13:11
       if (id.equals("13_11")) {
-         html.append("<form action=\"/page/14_00\" method=\"get\">\n");
+         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
          // PartyApp 13:11
          html.append("   <p>Welcome Alice</p>\n");
          html.append("   <p>Choose a party</p>\n");
