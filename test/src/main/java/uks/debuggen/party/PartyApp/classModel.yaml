@@ -74,7 +74,7 @@
   roles: 	item_buyer 	item_party
 
 - guest: 	org.fulib.classmodel.Clazz
-  attributes: 	guest_id 	guest_name
+  attributes: 	guest_id 	guest_name 	guest_expenses
   model: 	c
   modified: 	false
   name: 	Guest
@@ -355,6 +355,7 @@ if (event.getId().equals(\"14:23\")) {
    sE_BBQ_AliceEvent.setId(\"14:25\");
    sE_BBQ_AliceEvent.setBlockId(\"sE_BBQ_Alice\");
    sE_BBQ_AliceEvent.setName(\"Alice\");
+   sE_BBQ_AliceEvent.setExpenses(\"0.00\");
    sE_BBQ_AliceEvent.setParty(\"sE_BBQ\");
    service.apply(sE_BBQ_AliceEvent);
 
@@ -558,6 +559,7 @@ if (outdated(event)) {
 Guest object = model.getOrCreateGuest(event.getBlockId());
 object.setName(event.getName());
 object.setParty(model.getOrCreateParty(event.getParty()));
+object.setExpenses(event.getExpenses());
 "
   modified: 	false
   modifiers: 	public
@@ -1317,6 +1319,15 @@ catch (UnirestException e) {
   id: 	Guest_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- guest_expenses: 	org.fulib.classmodel.Attribute
+  clazz: 	guest
+  id: 	Guest_expenses
+  modified: 	false
+  name: 	expenses
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

@@ -12,11 +12,13 @@ public class Guest
    public static final String PROPERTY_ITEMS = "items";
    public static final String PROPERTY_PARTY = "party";
    public static final String PROPERTY_NAME = "name";
+   public static final String PROPERTY_EXPENSES = "expenses";
    private String id;
    private List<Item> items;
    private Party party;
    protected PropertyChangeSupport listeners;
    private String name;
+   private String expenses;
 
    public String getId()
    {
@@ -147,6 +149,24 @@ public class Guest
       return this;
    }
 
+   public String getExpenses()
+   {
+      return this.expenses;
+   }
+
+   public Guest setExpenses(String value)
+   {
+      if (Objects.equals(value, this.expenses))
+      {
+         return this;
+      }
+
+      final String oldValue = this.expenses;
+      this.expenses = value;
+      this.firePropertyChange(PROPERTY_EXPENSES, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -172,6 +192,7 @@ public class Guest
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
+      result.append(' ').append(this.getExpenses());
       return result.substring(1);
    }
 

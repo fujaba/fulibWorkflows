@@ -6,9 +6,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -22,8 +20,10 @@ import spark.Response;
 import spark.Service;
 import uks.debuggen.party.events.*;
 
-import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class PartyAppService
 {
@@ -267,90 +267,313 @@ public class PartyAppService
          }
 
          if (id.equals("withUserName")) {
-            String name = request.queryParams("name");
-            Query query = new Query().setKey(name);
-            query(query);
-
-            if (query.getResults().size() == 0) {
-               // getEmail
-               pageGetEmail(html, name);
-            }
-            else {
-               // getPassword
-               pageGetPassword(html, name, "");
-            }
-
+            pageWithUserName(request, html);
             return html.toString();
          }
 
          if (id.equals("withEmail")) {
-            String name = request.queryParams("name");
-            String email = request.queryParams("email");
-
-            Object object = model.getModelMap().get(name);
-            if (object != null) {
-               User user = (User) object;
-               if (user.getEmail().equals(email)) {
-                  pageGetPassword(html, name, email);
-               }
-               else {
-                  pageGetEmail(html, name);
-                  html.append("Please use original email");
-               }
-            }
-            else {
-               pageGetPassword(html, name, email);
-            }
-
+            pageWithEmail(request, html);
             return html.toString();
          }
 
          if (id.equals("withPassword")) {
-            String name = request.queryParams("name");
-            String email = request.queryParams("email");
-            String password = request.queryParams("password");
-            String button = request.queryParams("button");
-
-            if (button.equals("change password")) {
-               pageGetEmail(html, name);
-               return html.toString();
-            }
-
-            if (email.equals("")) {
-               // check password
-               Object obj = model.getModelMap().get(name);
-               if (obj == null || !(obj instanceof User)) {
-                  pageGetEmail(html, name);
-                  return html.toString();
-               }
-
-               User user = (User) obj;
-               if (!user.getPassword().equals(password)) {
-                  pageGetPassword(html, name, email);
-                  html.append("Please try again");
-                  return html.toString();
-               }
-
-               return "choose party";
-            }
-            else {
-               // create user
-               UserBuilt userBuilt = new UserBuilt();
-               userBuilt.setId(DateTimeFormatter.ISO_INSTANT.format(Instant.now()));
-               userBuilt.setBlockId(name);
-               userBuilt.setName(name)
-                     .setEmail(email)
-                     .setPassword(password);
-               apply(userBuilt);
-
-               return "choose party";
-            }
+            pageWithPassword(request, html);
+            return html.toString();
          }
+
+         if (id.equals("withParty")) {
+            pageWithParty(request, html);
+            return html.toString();
+         }
+
+         if (id.equals("addItem")) {
+            pageAddItem(request, html);
+            return html.toString();
+         }
+
+         if (id.equals("withItem")) {
+            pageWithItem(request, html);
+            return html.toString();
+         }
+
          return getDemoPage(request, response);
       }
       catch (Exception e) {
          e.printStackTrace();
          return "exception " + e;
+      }
+   }
+
+   private void pageWithItem(Request request, StringBuilder html)
+   {
+      String name = request.queryParams("name");
+      String sessionId = request.queryParams("sessionId");
+      String partyName = request.queryParams("party");
+      String item = request.queryParams("item");
+      String price = request.queryParams("price");
+      String buyer = request.queryParams("buyer");
+
+      if (sessionId == null || !validSessionIds.contains(sessionId)) {
+         pageGetUserName(html);
+         html.append("Invalid session id, please login\n");
+      }
+      else {
+         Party party = model.getOrCreateParty(partyName);
+
+         ItemBuilt itemBuilt = new ItemBuilt();
+         itemBuilt.setId(isoNow());
+         String itemId = partyName + "#" + item;
+         itemBuilt.setBlockId(itemId);
+         itemBuilt.setName(item);
+         itemBuilt.setPrice(price);
+         itemBuilt.setParty(partyName);
+         String buyerId = partyName + "#" + buyer;
+         itemBuilt.setBuyer(buyerId);
+         apply(itemBuilt);
+
+         GuestBuilt guestBuilt = new GuestBuilt();
+         guestBuilt.setId(DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochMilli(System.currentTimeMillis() + 1)));
+         guestBuilt.setBlockId(buyerId);
+         guestBuilt.setName(buyer);
+         guestBuilt.setExpenses("0.00");
+         guestBuilt.setParty(partyName);
+         apply(guestBuilt);
+
+         pageGetOverview(request, html, party);
+      }
+   }
+
+   private void pageAddItem(Request request, StringBuilder html)
+   {
+      String name = request.queryParams("name");
+      String sessionId = request.queryParams("sessionId");
+      String partyName = request.queryParams("party");
+
+      if (sessionId == null || !validSessionIds.contains(sessionId)) {
+         pageGetUserName(html);
+         html.append("Invalid session id, please login\n");
+      }
+      else {
+         Party party = model.getOrCreateParty(partyName);
+         html.append("<form action=\"/page/withItem\" method=\"get\">\n");
+         html.append(String.format("   <p>Welcome %s</p>\n", name));
+         html.append(String.format("   <p>Let's do the %s</p>\n", party.getName()));
+
+         html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
+         html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
+         html.append("   <p><input id=\"buyer\" name=\"buyer\" placeholder=\"buyer?\"></p>\n");
+
+         html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
+         html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
+         html.append(String.format("   <p><input id=\"party\" name=\"party\" type=\"hidden\" value=\"%s\"></p>\n", party.getName()));
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+         html.append("</form>\n");
+      }
+   }
+
+   private void pageWithParty(Request request, StringBuilder html)
+   {
+      String name = request.queryParams("name");
+      String sessionId = request.queryParams("sessionId");
+      String partyName = request.queryParams("party");
+      String location = request.queryParams("location");
+
+      if (sessionId == null || !validSessionIds.contains(sessionId)) {
+         pageGetUserName(html);
+         html.append("Invalid session id, please login\n");
+      }
+      else {
+         Object obj = model.getModelMap().get(partyName);
+         Party party;
+         if (obj == null) {
+            PartyBuilt partyBuilt = new PartyBuilt();
+            partyBuilt.setId(isoNow());
+            partyBuilt.setBlockId(partyName);
+            partyBuilt.setName(partyName);
+            partyBuilt.setLocation(location);
+            apply(partyBuilt);
+            party = (Party) model.getModelMap().get(partyName);
+            pageGetOverview(request, html, party);
+         }
+         else if (!(obj instanceof Party)) {
+            pageGetParty(html, name, sessionId);
+            html.append("invalid party name");
+         }
+         else {
+            party = (Party) obj;
+
+            if (party.getLocation().equals(location)) {
+               pageGetOverview(request, html, party);
+            }
+            else {
+               pageGetParty(html, name, sessionId);
+               html.append("invalid location");
+            }
+         }
+      }
+   }
+
+   private void pageGetOverview(Request request, StringBuilder html, Party party)
+   {
+      String name = request.queryParams("name");
+      String sessionId = request.queryParams("sessionId");
+
+      html.append("<form action=\"/page/addItem\" method=\"get\">\n");
+      html.append(String.format("   <p>Welcome %s</p>\n", name));
+      html.append(String.format("   <p>Let's do the %s</p>\n", party.getName()));
+
+      if (party.getItems().isEmpty()) {
+         html.append("   <p>no items yet</p>\n");
+      }
+      else {
+         for (Guest guest : party.getGuests()) {
+            guest.setExpenses("0.00");
+         }
+         // list items
+         double total = 0.0;
+         for (Item item : party.getItems()) {
+            double p = toDouble(item.getPrice());
+            total += p;
+            Guest g = item.getBuyer();
+            double x = toDouble(g.getExpenses()) + p;
+            g.setExpenses(toString(x));
+            html.append(String.format("   <p>%s %s %s</p>\n",
+                  item.getName(), item.getPrice(), item.getBuyer().getName()));
+         }
+
+         html.append(String.format("   <p>total %s</p>\n", toString(total)));
+         double share = total / party.getGuests().size();
+         html.append(String.format("   <p>share %s</p>\n", toString(share)));
+
+         for (Guest guest : party.getGuests()) {
+            double saldo = toDouble(guest.getExpenses()) - share;
+            html.append(String.format("   <p>%s %s</p>\n", guest.getName(), toString(saldo)));
+         }
+
+      }
+
+      html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
+      html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
+      html.append(String.format("   <p><input id=\"party\" name=\"party\" type=\"hidden\" value=\"%s\"></p>\n", party.getName()));
+      html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+      html.append("</form>\n");
+   }
+
+   private double toDouble(String price)
+   {
+      return Double.parseDouble(price);
+   }
+
+   private String toString(double price) {
+      String result = String.format(Locale.ENGLISH, "%.2f", price);
+      return result;
+   }
+
+   private String isoNow()
+   {
+      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+   }
+
+   private LinkedHashSet<String> validSessionIds = new LinkedHashSet<>();
+
+   private void pageWithPassword(Request request, StringBuilder html)
+   {
+      String name = request.queryParams("name");
+      String email = request.queryParams("email");
+      String password = request.queryParams("password");
+      String button = request.queryParams("button");
+
+      if (button.equals("change password")) {
+         pageGetEmail(html, name);
+      }
+      else if (email.equals("")) {
+         // check password
+         Object obj = model.getModelMap().get(name);
+         if (obj == null || !(obj instanceof User)) {
+            pageGetEmail(html, name);
+         }
+         else {
+            User user = (User) obj;
+            if (!user.getPassword().equals(password)) {
+               pageGetPassword(html, name, email);
+               html.append("Please try again");
+            }
+            else {
+               String sessionId = name + "#" + isoNow();
+               validSessionIds.add(sessionId);
+               pageGetParty(html, name, sessionId);
+            }
+         }
+      }
+      else {
+         // create user
+         UserBuilt userBuilt = new UserBuilt();
+         userBuilt.setId(isoNow());
+         userBuilt.setBlockId(name);
+         userBuilt.setName(name)
+               .setEmail(email)
+               .setPassword(password);
+         apply(userBuilt);
+
+         String sessionId = name + "#" + isoNow();
+         validSessionIds.add(sessionId);
+         pageGetParty(html, name, sessionId);
+      }
+   }
+
+   private void pageGetParty(StringBuilder html, String name, String sessionId)
+   {
+      if (!validSessionIds.contains(sessionId)) {
+         pageGetUserName(html);
+         html.append("Invalid session id, please login\n");
+      }
+      else {
+         html.append("<form action=\"/page/withParty\" method=\"get\">\n");
+         html.append(String.format("   <p>Welcome %s</p>\n", name));
+         html.append("   <p>Choose a party</p>\n");
+         html.append("   <p><input id=\"party\" name=\"party\" placeholder=\"party?\"></p>\n");
+         html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
+         html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
+         html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+      }
+   }
+
+   private void pageWithEmail(Request request, StringBuilder html)
+   {
+      String name = request.queryParams("name");
+      String email = request.queryParams("email");
+
+      Object object = model.getModelMap().get(name);
+      if (object != null) {
+         User user = (User) object;
+         if (user.getEmail().equals(email)) {
+            pageGetPassword(html, name, email);
+         }
+         else {
+            pageGetEmail(html, name);
+            html.append("Please use original email");
+         }
+      }
+      else {
+         pageGetPassword(html, name, email);
+      }
+   }
+
+   private void pageWithUserName(Request request, StringBuilder html)
+   {
+      String name = request.queryParams("name");
+      Query query = new Query().setKey(name);
+      query(query);
+
+      if (query.getResults().size() == 0) {
+         // getEmail
+         pageGetEmail(html, name);
+      }
+      else {
+         // getPassword
+         pageGetPassword(html, name, "");
       }
    }
 

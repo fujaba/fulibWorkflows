@@ -270,6 +270,7 @@ public class PartyAppBusinessLogic
          sE_BBQ_AliceEvent.setId("14:25");
          sE_BBQ_AliceEvent.setBlockId("sE_BBQ_Alice");
          sE_BBQ_AliceEvent.setName("Alice");
+         sE_BBQ_AliceEvent.setExpenses("0.00");
          sE_BBQ_AliceEvent.setParty("sE_BBQ");
          service.apply(sE_BBQ_AliceEvent);
 

@@ -276,6 +276,7 @@ pre.shouldHave(matchText(\"party:.*sE_BBQ\"));
 pre = $(\"#data\");
 pre.shouldHave(text(\"- sE_BBQ_Alice:\"));
 pre.shouldHave(matchText(\"name:.*Alice\"));
+pre.shouldHave(matchText(\"expenses:.*0.00\"));
 pre.shouldHave(matchText(\"party:.*sE_BBQ\"));
 
 // page 14:30

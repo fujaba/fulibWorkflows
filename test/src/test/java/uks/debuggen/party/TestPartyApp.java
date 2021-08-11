@@ -52,6 +52,28 @@ public class TestPartyApp
 
       testLogin();
 
+      $("body").shouldHave(text("Choose a party"));
+      $("#party").setValue("SE BBQ");
+      $("#location").setValue("Uni");
+      $("#ok").click();
+
+      $("body").shouldHave(text("no items yet"));
+
+      $("#add").click();
+
+      $("body").shouldHave(text("Let's do the"));
+
+      $("#item").setValue("beer");
+      $("#price").setValue("12.00");
+      $("#buyer").setValue("Bob");
+      $("#ok").click();
+
+      $("#add").click();
+
+      $("#item").setValue("meat");
+      $("#price").setValue("21.00");
+      $("#buyer").setValue("Alice");
+      $("#ok").click();
 
       System.out.printf("");
    }
@@ -69,7 +91,7 @@ public class TestPartyApp
       $("#password").setValue("secret");
       $("#ok").click();
 
-      $("body").shouldHave(text("choose party"));
+      $("body").shouldHave(text("Choose a party"));
 
       // another login
       open("http://localhost:42001/page/getUserName");
@@ -336,6 +358,7 @@ public class TestPartyApp
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ_Alice:"));
       pre.shouldHave(matchText("name:.*Alice"));
+      pre.shouldHave(matchText("expenses:.*0.00"));
       pre.shouldHave(matchText("party:.*sE_BBQ"));
 
       // page 14:30

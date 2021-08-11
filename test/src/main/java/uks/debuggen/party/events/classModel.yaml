@@ -166,7 +166,7 @@
   superClass: 	dataEvent
 
 - guestBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	guestBuilt_name 	guestBuilt_party
+  attributes: 	guestBuilt_name 	guestBuilt_party 	guestBuilt_expenses
   model: 	c
   modified: 	false
   name: 	GuestBuilt
@@ -438,6 +438,15 @@
   id: 	GuestBuilt_party
   modified: 	false
   name: 	party
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- guestBuilt_expenses: 	org.fulib.classmodel.Attribute
+  clazz: 	guestBuilt
+  id: 	GuestBuilt_expenses
+  modified: 	false
+  name: 	expenses
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

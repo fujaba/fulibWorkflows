@@ -205,6 +205,7 @@ public class PartyAppBuilder
       Guest object = model.getOrCreateGuest(event.getBlockId());
       object.setName(event.getName());
       object.setParty(model.getOrCreateParty(event.getParty()));
+      object.setExpenses(event.getExpenses());
    }
 
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();

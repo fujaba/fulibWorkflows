@@ -103,6 +103,7 @@
 - data: 14:25
   guest: sE_BBQ_Alice
   name: Alice
+  expenses: 0.00
   party: sE_BBQ
 
 - action: Alice
