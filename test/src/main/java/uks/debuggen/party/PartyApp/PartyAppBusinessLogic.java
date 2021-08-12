@@ -157,56 +157,6 @@ public class PartyAppBusinessLogic
       this.setService(null);
    }
 
-   private void handleGetUserNameCommand(Event e)
-   {
-      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
-      // fulib
-      GetUserNameCommand event = (GetUserNameCommand) e;
-      handleDemoGetUserNameCommand(event);
-   }
-
-   private void handleDemoGetUserNameCommand(GetUserNameCommand event)
-   {
-      if (event.getId().equals("12:01")) {
-      }
-      if (event.getId().equals("13:01")) {
-      }
-   }
-
-   private void handleGetPasswordCommand(Event e)
-   {
-      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
-      // fulib
-      GetPasswordCommand event = (GetPasswordCommand) e;
-      handleDemoGetPasswordCommand(event);
-   }
-
-   private void handleDemoGetPasswordCommand(GetPasswordCommand event)
-   {
-      if (event.getId().equals("12:07")) {
-         UserBuilt aliceEvent = new UserBuilt();
-         aliceEvent.setId("12:07:01");
-         aliceEvent.setBlockId("Alice");
-         aliceEvent.setName("Alice");
-         aliceEvent.setEmail("a@b.de");
-         aliceEvent.setPassword("secret");
-         service.apply(aliceEvent);
-
-
-         UserRegisteredEvent e1210 = new UserRegisteredEvent();
-
-         e1210.setId("12:10");
-         e1210.setName("Alice");
-         service.apply(e1210);
-
-         LoginSucceededEvent e1211 = new LoginSucceededEvent();
-
-         e1211.setId("12:11");
-         e1211.setName("Alice");
-         service.apply(e1211);
-      }
-   }
-
    private void handleGetPartyCommand(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
@@ -274,6 +224,56 @@ public class PartyAppBusinessLogic
          sE_BBQ_AliceEvent.setParty("sE_BBQ");
          service.apply(sE_BBQ_AliceEvent);
 
+      }
+   }
+
+   private void handleGetUserNameCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      GetUserNameCommand event = (GetUserNameCommand) e;
+      handleDemoGetUserNameCommand(event);
+   }
+
+   private void handleDemoGetUserNameCommand(GetUserNameCommand event)
+   {
+      if (event.getId().equals("12:01")) {
+      }
+      if (event.getId().equals("13:01")) {
+      }
+   }
+
+   private void handleGetPasswordCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      GetPasswordCommand event = (GetPasswordCommand) e;
+      handleDemoGetPasswordCommand(event);
+   }
+
+   private void handleDemoGetPasswordCommand(GetPasswordCommand event)
+   {
+      if (event.getId().equals("12:07")) {
+         UserBuilt aliceEvent = new UserBuilt();
+         aliceEvent.setId("12:07:01");
+         aliceEvent.setBlockId("Alice");
+         aliceEvent.setName("Alice");
+         aliceEvent.setEmail("a@b.de");
+         aliceEvent.setPassword("secret");
+         service.apply(aliceEvent);
+
+
+         UserRegisteredEvent e1210 = new UserRegisteredEvent();
+
+         e1210.setId("12:10");
+         e1210.setName("Alice");
+         service.apply(e1210);
+
+         LoginSucceededEvent e1211 = new LoginSucceededEvent();
+
+         e1211.setId("12:11");
+         e1211.setName("Alice");
+         service.apply(e1211);
       }
    }
 }

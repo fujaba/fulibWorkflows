@@ -143,18 +143,6 @@ public class PartyAppBuilder
       this.setService(null);
    }
 
-   public void handleUserBuilt(Event e)
-   {
-      UserBuilt event = (UserBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-      User object = model.getOrCreateUser(event.getBlockId());
-      object.setName(event.getName());
-      object.setEmail(event.getEmail());
-      object.setPassword(event.getPassword());
-   }
-
    private boolean outdated(DataEvent event)
    {
       DataEvent oldEvent = getEventStore().get(event.getBlockId());
@@ -206,6 +194,18 @@ public class PartyAppBuilder
       object.setName(event.getName());
       object.setParty(model.getOrCreateParty(event.getParty()));
       object.setExpenses(event.getExpenses());
+   }
+
+   public void handleUserBuilt(Event e)
+   {
+      UserBuilt event = (UserBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      User object = model.getOrCreateUser(event.getBlockId());
+      object.setName(event.getName());
+      object.setEmail(event.getEmail());
+      object.setPassword(event.getPassword());
    }
 
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();

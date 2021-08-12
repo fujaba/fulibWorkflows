@@ -14,6 +14,7 @@ public class EventStormingBoard
    public static final String PROPERTY_EVENT_TYPES = "eventTypes";
    public static final String PROPERTY_USERS = "users";
    public static final String PROPERTY_DATA_TYPES = "dataTypes";
+   public static final String PROPERTY_SUBPROCESSES = "subprocesses";
    private List<Workflow> workflows;
    protected PropertyChangeSupport listeners;
    private List<ServiceNote> services;
@@ -21,6 +22,7 @@ public class EventStormingBoard
    private List<EventType> eventTypes;
    private List<UserNote> users;
    private List<DataType> dataTypes;
+   private List<SubprocessNote> subprocesses;
 
    public EventStormingBoard() {
       this.name = "some event storming";
@@ -374,6 +376,72 @@ public class EventStormingBoard
       return this;
    }
 
+   public List<SubprocessNote> getSubprocesses()
+   {
+      return this.subprocesses != null ? Collections.unmodifiableList(this.subprocesses) : Collections.emptyList();
+   }
+
+   public EventStormingBoard withSubprocesses(SubprocessNote value)
+   {
+      if (this.subprocesses == null)
+      {
+         this.subprocesses = new ArrayList<>();
+      }
+      if (!this.subprocesses.contains(value))
+      {
+         this.subprocesses.add(value);
+         value.setEventStormingBoard(this);
+         this.firePropertyChange(PROPERTY_SUBPROCESSES, null, value);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withSubprocesses(SubprocessNote... value)
+   {
+      for (final SubprocessNote item : value)
+      {
+         this.withSubprocesses(item);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withSubprocesses(Collection<? extends SubprocessNote> value)
+   {
+      for (final SubprocessNote item : value)
+      {
+         this.withSubprocesses(item);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withoutSubprocesses(SubprocessNote value)
+   {
+      if (this.subprocesses != null && this.subprocesses.remove(value))
+      {
+         value.setEventStormingBoard(null);
+         this.firePropertyChange(PROPERTY_SUBPROCESSES, value, null);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withoutSubprocesses(SubprocessNote... value)
+   {
+      for (final SubprocessNote item : value)
+      {
+         this.withoutSubprocesses(item);
+      }
+      return this;
+   }
+
+   public EventStormingBoard withoutSubprocesses(Collection<? extends SubprocessNote> value)
+   {
+      for (final SubprocessNote item : value)
+      {
+         this.withoutSubprocesses(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -397,6 +465,7 @@ public class EventStormingBoard
    {
       this.withoutDataTypes(new ArrayList<>(this.getDataTypes()));
       this.withoutEventTypes(new ArrayList<>(this.getEventTypes()));
+      this.withoutSubprocesses(new ArrayList<>(this.getSubprocesses()));
       this.withoutServices(new ArrayList<>(this.getServices()));
       this.withoutUsers(new ArrayList<>(this.getUsers()));
       this.withoutWorkflows(new ArrayList<>(this.getWorkflows()));
@@ -463,6 +532,16 @@ public class EventStormingBoard
       for (UserNote userNote : this.getUsers()) {
          if (userNote.getName().equals(user)) {
             return userNote;
+         }
+      }
+      return null;
+   }
+
+   public SubprocessNote getFromSubprocesses(String workflowName)
+   {
+      for (SubprocessNote subprocess : this.getSubprocesses()) {
+         if (subprocess.getSubprocessName().equals(workflowName)) {
+            return subprocess;
          }
       }
       return null;

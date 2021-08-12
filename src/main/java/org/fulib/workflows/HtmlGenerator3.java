@@ -36,9 +36,16 @@ public class HtmlGenerator3
          rootWorkflow = workflow;
          // workflow lane
          String notes = notes();
+         String workflowName = workflow.getName();
+         SubprocessNote subprocess = eventStormingBoard.getFromSubprocesses(workflowName);
+         String icon = "<i class=\"fa fa-cogs\">";
+         if (subprocess != null) {
+               icon = iconFor(subprocess);
+         }
          st = group.getInstanceOf("lane2");
          st.add("id", rootWorkflow.getName().replaceAll("\\s+|_", "<br>"));
          st.add("content", notes);
+         st.add("icon", icon);
          body.append(st.render());
       }
 
@@ -98,18 +105,17 @@ public class HtmlGenerator3
          else if (note instanceof QueryNote) {
             noteType = "command";
          }
-         else if (note instanceof SubprocessNote) {
-            noteType = "subprocess";
-         }
-
 
          String noteContent;
          if (eventType.equalsIgnoreCase("page")) {
             PageNote pageNote = (PageNote) note;
             noteContent = pageNote(pageNote);
          }
-         else if (eventType.equalsIgnoreCase("subprocess")) {
-            noteContent = "<div class='center'><i class=\"fa fa-square fa-rotate-45\"></i></div>\n" +
+         else if (note instanceof SubprocessNote) {
+            SubprocessNote subprocessNote = (SubprocessNote) note;
+            noteType = "subprocess";
+            String icon = iconFor(subprocessNote);
+            noteContent = String.format("<div class='center'>%s</i></div>\n", icon) +
                   String.format("<div>%s</div>\n", note.getTime());
          }
          else {
@@ -141,6 +147,18 @@ public class HtmlGenerator3
       }
 
       return buf.toString();
+   }
+
+   private String iconFor(SubprocessNote subprocessNote)
+   {
+      String icon;
+      if (subprocessNote.getKind().equals("subprocess")) {
+         icon = "<i class=\"fa fa-square fa-rotate-45\">";
+      }
+      else {
+         icon = "<i class=\"fa fa-cloud fa-cloud\" ></i>";
+      }
+      return icon;
    }
 
 

@@ -31,6 +31,8 @@ public class GenModel implements ClassModelDecorator
       @Link("eventStormingBoard")
       List<Workflow> workflows;
       @Link("eventStormingBoard")
+      List<SubprocessNote> subprocesses;
+      @Link("eventStormingBoard")
       List<ServiceNote> services;
       @Link("eventStormingBoard")
       List<EventType> eventTypes;
@@ -94,7 +96,10 @@ public class GenModel implements ClassModelDecorator
    class SubprocessNote extends WorkflowNote
    {
       String subprocessName;
+      String kind;
       Workflow subprocess;
+      @Link("subprocesses")
+      EventStormingBoard eventStormingBoard;
    }
 
    class EventType

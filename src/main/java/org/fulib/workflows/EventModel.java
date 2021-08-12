@@ -39,7 +39,7 @@ public class EventModel
    {
 
       try {
-         if ( ! fileName.isEmpty()) {
+         if (!fileName.isEmpty()) {
             yaml = Files.readString(Path.of(fileName));
          }
       }
@@ -88,12 +88,15 @@ public class EventModel
                userNote.withInteractions(userInteraction);
                lastActor = userInteraction;
             }
-            else if (entry.getKey().equalsIgnoreCase("subprocess")) {
+            else if (entry.getKey().equalsIgnoreCase("subprocess")
+                  || entry.getKey().equalsIgnoreCase("boundedcontext")) {
                SubprocessNote subprocessNote = new SubprocessNote();
                subprocessNote.setSubprocessName(StrUtil.toIdentifier(entry.getValue()));
                subprocessNote.setTime(subprocessNote.getSubprocessName());
                subprocessNote.setMap(map);
                subprocessNote.setWorkflow(getRootWorkflow());
+               subprocessNote.setKind(entry.getKey());
+               subprocessNote.setEventStormingBoard(getEventStormingBoard());
 
                String subFileName = fileName.substring(0, fileName.lastIndexOf('/'));
                subFileName = String.format("%s/%s.es.yaml", subFileName, subprocessNote.getSubprocessName());
