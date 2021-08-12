@@ -1,7 +1,7 @@
 package uks.debuggen.party.events;
 import java.util.Objects;
 
-public class GetEmailCommand extends Command
+public class CheckEmailCommand extends Command
 {
    public static final String PROPERTY_EMAIL = "email";
    private String email;
@@ -11,7 +11,7 @@ public class GetEmailCommand extends Command
       return this.email;
    }
 
-   public GetEmailCommand setEmail(String value)
+   public CheckEmailCommand setEmail(String value)
    {
       if (Objects.equals(value, this.email))
       {

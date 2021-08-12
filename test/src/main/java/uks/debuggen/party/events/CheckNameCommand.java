@@ -1,7 +1,7 @@
 package uks.debuggen.party.events;
 import java.util.Objects;
 
-public class GetUserNameCommand extends Command
+public class CheckNameCommand extends Command
 {
    public static final String PROPERTY_NAME = "name";
    private String name;
@@ -11,7 +11,7 @@ public class GetUserNameCommand extends Command
       return this.name;
    }
 
-   public GetUserNameCommand setName(String value)
+   public CheckNameCommand setName(String value)
    {
       if (Objects.equals(value, this.name))
       {

@@ -17,6 +17,8 @@ public class EventModel
    private Interaction lastActor;
    private EventNote lastEvent;
    private LinkedList<String> yamlList;
+   private UserInteraction lastUser;
+   private ServiceNote lastService;
 
    public EventStormingBoard getEventStormingBoard()
    {
@@ -56,6 +58,7 @@ public class EventModel
          LinkedHashMap<String, PageNote> userLastPage = new LinkedHashMap<>();
 
          lastActor = null;
+         lastUser = null;
 
          for (LinkedHashMap<String, String> map : maps) {
             Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
@@ -87,6 +90,7 @@ public class EventModel
                UserNote userNote = getEventStormingBoard().getOrCreateFromUsers(userInteraction.getActorName());
                userNote.withInteractions(userInteraction);
                lastActor = userInteraction;
+               lastUser = userInteraction;
             }
             else if (entry.getKey().equalsIgnoreCase("subprocess")
                   || entry.getKey().equalsIgnoreCase("boundedcontext")) {
@@ -118,6 +122,7 @@ public class EventModel
                policy.setTrigger(trigger);
                EventType type = trigger.getType();
                service.withHandledEventTypes(type);
+               lastService = service;
                lastActor = policy;
             }
             else if (entry.getKey().equalsIgnoreCase("class")) {
@@ -310,26 +315,32 @@ public class EventModel
    private void addToStepsOfLastActor(WorkflowNote note)
    {
       if (note instanceof EventNote || note instanceof PageNote) {
-         if (lastActor == null) {
+         if (lastUser == null) {
             UserNote somebody = getEventStormingBoard().getOrCreateFromUsers("somebody");
-            Interaction someaction = new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody).setActorName("somebody");
-            lastActor = someaction;
+            lastUser = (UserInteraction) new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody).setActorName("somebody");
+         }
+         if (lastActor == null) {
+            lastActor = lastUser;
+         }
+         if (lastActor instanceof Policy && note instanceof PageNote) {
+            lastActor = new UserInteraction().setWorkflow(getRootWorkflow()).setUser(lastUser.getUser()).setActorName(lastUser.getActorName());
          }
          if (note instanceof PageNote) {
             String actorName = lastActor.getActorName();
-
          }
       }
       else if ((note instanceof DataNote) || (note instanceof ClassNote) || (note instanceof QueryNote)) {
+         if (lastService == null) {
+            lastService = getEventStormingBoard().getOrCreateFromServices("someservice");
+         }
          if (lastActor == null || !(lastActor instanceof Policy)) {
-            ServiceNote someservice = getEventStormingBoard().getOrCreateFromServices("someservice");
-            Interaction someaction = new Policy()
+            Interaction action = new Policy()
                   .setWorkflow(getRootWorkflow())
-                  .setService(someservice)
+                  .setService(lastService)
                   .setTrigger(lastEvent)
-                  .setActorName("someservice");
-            someservice.withHandledEventTypes(lastEvent.getType());
-            lastActor = someaction;
+                  .setActorName(lastService.getName());
+            lastService.withHandledEventTypes(lastEvent.getType());
+            lastActor = action;
          }
       }
       else {

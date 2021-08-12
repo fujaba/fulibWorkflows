@@ -21,7 +21,7 @@
   attributes: 	partyAppBusinessLogic_model 	partyAppBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;"
-  methods: 	partyAppBusinessLogic_handleGetUserNameCommand 	partyAppBusinessLogic_handleDemoGetUserNameCommand 	partyAppBusinessLogic_handleGetPasswordCommand 	partyAppBusinessLogic_handleDemoGetPasswordCommand 	partyAppBusinessLogic_handleGetPartyCommand 	partyAppBusinessLogic_handleDemoGetPartyCommand 	partyAppBusinessLogic_handleBuildItemCommand 	partyAppBusinessLogic_handleDemoBuildItemCommand 	partyAppBusinessLogic_initEventHandlerMap 	partyAppBusinessLogic_ignoreEvent 	partyAppBusinessLogic_getHandler
+  methods: 	partyAppBusinessLogic_handleCheckNameCommand 	partyAppBusinessLogic_handleDemoCheckNameCommand 	partyAppBusinessLogic_handleCheckEmailCommand 	partyAppBusinessLogic_handleDemoCheckEmailCommand 	partyAppBusinessLogic_handleCheckPasswordCommand 	partyAppBusinessLogic_handleDemoCheckPasswordCommand 	partyAppBusinessLogic_handleGetPartyCommand 	partyAppBusinessLogic_handleDemoGetPartyCommand 	partyAppBusinessLogic_handleBuildItemCommand 	partyAppBusinessLogic_handleDemoBuildItemCommand 	partyAppBusinessLogic_initEventHandlerMap 	partyAppBusinessLogic_ignoreEvent 	partyAppBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	PartyAppBusinessLogic
@@ -176,28 +176,28 @@ return (Guest) modelMap.computeIfAbsent(id, k -> new Guest().setId(k));
   type: 	"LinkedHashMap<Class, Consumer<Event>>"
   typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
 
-- partyAppBusinessLogic_handleGetUserNameCommand: 	org.fulib.classmodel.FMethod
+- partyAppBusinessLogic_handleCheckNameCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBusinessLogic
-  declaration: 	"private void handleGetUserNameCommand(Event e)"
-  id: 	PartyAppBusinessLogic_handleGetUserNameCommand
+  declaration: 	"private void handleCheckNameCommand(Event e)"
+  id: 	PartyAppBusinessLogic_handleCheckNameCommand
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-GetUserNameCommand event = (GetUserNameCommand) e;
-handleDemoGetUserNameCommand(event);
+CheckNameCommand event = (CheckNameCommand) e;
+handleDemoCheckNameCommand(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleGetUserNameCommand
+  name: 	handleCheckNameCommand
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/PartyAppBusinessLogic/method/handleGetUserNameCommand(Event)"
+  signature: 	"class/PartyAppBusinessLogic/method/handleCheckNameCommand(Event)"
 
-- partyAppBusinessLogic_handleDemoGetUserNameCommand: 	org.fulib.classmodel.FMethod
+- partyAppBusinessLogic_handleDemoCheckNameCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBusinessLogic
-  declaration: 	"private void handleDemoGetUserNameCommand(GetUserNameCommand event)"
-  id: 	PartyAppBusinessLogic_handleDemoGetUserNameCommand
+  declaration: 	"private void handleDemoCheckNameCommand(CheckNameCommand event)"
+  id: 	PartyAppBusinessLogic_handleDemoCheckNameCommand
   methodBody: 	"if (event.getId().equals(\"12:01\")) {
 }
 if (event.getId().equals(\"13:01\")) {
@@ -205,36 +205,68 @@ if (event.getId().equals(\"13:01\")) {
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoGetUserNameCommand
-  paramsString: 	"GetUserNameCommand event"
+  name: 	handleDemoCheckNameCommand
+  paramsString: 	"CheckNameCommand event"
   returnType: 	void
-  signature: 	"class/PartyAppBusinessLogic/method/handleDemoGetUserNameCommand(GetUserNameCommand)"
+  signature: 	"class/PartyAppBusinessLogic/method/handleDemoCheckNameCommand(CheckNameCommand)"
 
-- partyAppBusinessLogic_handleGetPasswordCommand: 	org.fulib.classmodel.FMethod
+- partyAppBusinessLogic_handleCheckEmailCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBusinessLogic
-  declaration: 	"private void handleGetPasswordCommand(Event e)"
-  id: 	PartyAppBusinessLogic_handleGetPasswordCommand
+  declaration: 	"private void handleCheckEmailCommand(Event e)"
+  id: 	PartyAppBusinessLogic_handleCheckEmailCommand
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-GetPasswordCommand event = (GetPasswordCommand) e;
-handleDemoGetPasswordCommand(event);
+CheckEmailCommand event = (CheckEmailCommand) e;
+handleDemoCheckEmailCommand(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleGetPasswordCommand
+  name: 	handleCheckEmailCommand
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/PartyAppBusinessLogic/method/handleGetPasswordCommand(Event)"
+  signature: 	"class/PartyAppBusinessLogic/method/handleCheckEmailCommand(Event)"
 
-- partyAppBusinessLogic_handleDemoGetPasswordCommand: 	org.fulib.classmodel.FMethod
+- partyAppBusinessLogic_handleDemoCheckEmailCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBusinessLogic
-  declaration: 	"private void handleDemoGetPasswordCommand(GetPasswordCommand event)"
-  id: 	PartyAppBusinessLogic_handleDemoGetPasswordCommand
-  methodBody: 	"if (event.getId().equals(\"12:07\")) {
+  declaration: 	"private void handleDemoCheckEmailCommand(CheckEmailCommand event)"
+  id: 	PartyAppBusinessLogic_handleDemoCheckEmailCommand
+  methodBody: 	"if (event.getId().equals(\"12:03\")) {
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoCheckEmailCommand
+  paramsString: 	"CheckEmailCommand event"
+  returnType: 	void
+  signature: 	"class/PartyAppBusinessLogic/method/handleDemoCheckEmailCommand(CheckEmailCommand)"
+
+- partyAppBusinessLogic_handleCheckPasswordCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBusinessLogic
+  declaration: 	"private void handleCheckPasswordCommand(Event e)"
+  id: 	PartyAppBusinessLogic_handleCheckPasswordCommand
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+CheckPasswordCommand event = (CheckPasswordCommand) e;
+handleDemoCheckPasswordCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleCheckPasswordCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBusinessLogic/method/handleCheckPasswordCommand(Event)"
+
+- partyAppBusinessLogic_handleDemoCheckPasswordCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBusinessLogic
+  declaration: 	"private void handleDemoCheckPasswordCommand(CheckPasswordCommand event)"
+  id: 	PartyAppBusinessLogic_handleDemoCheckPasswordCommand
+  methodBody: 	"if (event.getId().equals(\"12:05\")) {
    UserBuilt aliceEvent = new UserBuilt();
-   aliceEvent.setId(\"12:07:01\");
+   aliceEvent.setId(\"12:05:02\");
    aliceEvent.setBlockId(\"Alice\");
    aliceEvent.setName(\"Alice\");
    aliceEvent.setEmail(\"a@b.de\");
@@ -242,25 +274,27 @@ handleDemoGetPasswordCommand(event);
    service.apply(aliceEvent);
 
 
-   UserRegisteredEvent e1210 = new UserRegisteredEvent();
+   UserRegisteredEvent e120503 = new UserRegisteredEvent();
 
-   e1210.setId(\"12:10\");
-   e1210.setName(\"Alice\");
-   service.apply(e1210);
+   e120503.setId(\"12:05:03\");
+   e120503.setName(\"Alice\");
+   service.apply(e120503);
 
-   LoginSucceededEvent e1211 = new LoginSucceededEvent();
+   LoginSucceededEvent e120504 = new LoginSucceededEvent();
 
-   e1211.setId(\"12:11\");
-   e1211.setName(\"Alice\");
-   service.apply(e1211);
+   e120504.setId(\"12:05:04\");
+   e120504.setName(\"Alice\");
+   service.apply(e120504);
+}
+if (event.getId().equals(\"13:03\")) {
 }
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoGetPasswordCommand
-  paramsString: 	"GetPasswordCommand event"
+  name: 	handleDemoCheckPasswordCommand
+  paramsString: 	"CheckPasswordCommand event"
   returnType: 	void
-  signature: 	"class/PartyAppBusinessLogic/method/handleDemoGetPasswordCommand(GetPasswordCommand)"
+  signature: 	"class/PartyAppBusinessLogic/method/handleDemoCheckPasswordCommand(CheckPasswordCommand)"
 
 - partyAppBusinessLogic_handleGetPartyCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -286,7 +320,7 @@ handleDemoGetPartyCommand(event);
   id: 	PartyAppBusinessLogic_handleDemoGetPartyCommand
   methodBody: 	"if (event.getId().equals(\"14:01\")) {
    PartyBuilt sE_BBQEvent = new PartyBuilt();
-   sE_BBQEvent.setId(\"14:02\");
+   sE_BBQEvent.setId(\"14:01:02\");
    sE_BBQEvent.setBlockId(\"sE_BBQ\");
    sE_BBQEvent.setName(\"SE BBQ\");
    sE_BBQEvent.setLocation(\"Uni\");
@@ -323,9 +357,9 @@ handleDemoBuildItemCommand(event);
   clazz: 	partyAppBusinessLogic
   declaration: 	"private void handleDemoBuildItemCommand(BuildItemCommand event)"
   id: 	PartyAppBusinessLogic_handleDemoBuildItemCommand
-  methodBody: 	"if (event.getId().equals(\"14:13\")) {
+  methodBody: 	"if (event.getId().equals(\"14:05\")) {
    ItemBuilt beerEvent = new ItemBuilt();
-   beerEvent.setId(\"14:14\");
+   beerEvent.setId(\"14:05:01\");
    beerEvent.setBlockId(\"beer\");
    beerEvent.setName(\"beer\");
    beerEvent.setPrice(\"12.00\");
@@ -334,16 +368,16 @@ handleDemoBuildItemCommand(event);
    service.apply(beerEvent);
 
    GuestBuilt sE_BBQ_BobEvent = new GuestBuilt();
-   sE_BBQ_BobEvent.setId(\"14:15\");
+   sE_BBQ_BobEvent.setId(\"14:05:02\");
    sE_BBQ_BobEvent.setBlockId(\"sE_BBQ_Bob\");
    sE_BBQ_BobEvent.setName(\"Bob\");
    sE_BBQ_BobEvent.setParty(\"sE_BBQ\");
    service.apply(sE_BBQ_BobEvent);
 
 }
-if (event.getId().equals(\"14:23\")) {
+if (event.getId().equals(\"14:09\")) {
    ItemBuilt meatEvent = new ItemBuilt();
-   meatEvent.setId(\"14:24\");
+   meatEvent.setId(\"14:09:01\");
    meatEvent.setBlockId(\"meat\");
    meatEvent.setName(\"meat\");
    meatEvent.setPrice(\"21.00\");
@@ -352,7 +386,7 @@ if (event.getId().equals(\"14:23\")) {
    service.apply(meatEvent);
 
    GuestBuilt sE_BBQ_AliceEvent = new GuestBuilt();
-   sE_BBQ_AliceEvent.setId(\"14:25\");
+   sE_BBQ_AliceEvent.setId(\"14:09:02\");
    sE_BBQ_AliceEvent.setBlockId(\"sE_BBQ_Alice\");
    sE_BBQ_AliceEvent.setName(\"Alice\");
    sE_BBQ_AliceEvent.setExpenses(\"0.00\");
@@ -375,8 +409,9 @@ if (event.getId().equals(\"14:23\")) {
   id: 	PartyAppBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
-   handlerMap.put(GetUserNameCommand.class, this::handleGetUserNameCommand);
-   handlerMap.put(GetPasswordCommand.class, this::handleGetPasswordCommand);
+   handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
+   handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
+   handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
    handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
    handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
    handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
@@ -800,65 +835,65 @@ return getDemoPage(request, response);
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
 
-if (\"get user name 12:01\".equals(event)) {
+if (\"check name 12:01\".equals(event)) {
 
-   // create GetUserNameCommand: get user name 12:01
-   GetUserNameCommand e1201 = new GetUserNameCommand();
+   // create CheckNameCommand: check name 12:01
+   CheckNameCommand e1201 = new CheckNameCommand();
    e1201.setId(\"12:01\");
    e1201.setName(request.queryParams(\"name\"));
    apply(e1201);
 }
 
-if (\"get email 12:04\".equals(event)) {
+if (\"check email 12:03\".equals(event)) {
 
-   // create GetEmailCommand: get email 12:04
-   GetEmailCommand e1204 = new GetEmailCommand();
-   e1204.setId(\"12:04\");
-   e1204.setEmail(request.queryParams(\"email\"));
-   apply(e1204);
+   // create CheckEmailCommand: check email 12:03
+   CheckEmailCommand e1203 = new CheckEmailCommand();
+   e1203.setId(\"12:03\");
+   e1203.setEmail(request.queryParams(\"email\"));
+   apply(e1203);
 }
 
-if (\"get password 12:07\".equals(event)) {
+if (\"check password 12:05\".equals(event)) {
 
-   // create GetPasswordCommand: get password 12:07
-   GetPasswordCommand e1207 = new GetPasswordCommand();
+   // create CheckPasswordCommand: check password 12:05
+   CheckPasswordCommand e1205 = new CheckPasswordCommand();
+   e1205.setId(\"12:05\");
+   apply(e1205);
+}
+
+if (\"check party 12:07\".equals(event)) {
+
+   // create CheckPartyCommand: check party 12:07
+   CheckPartyCommand e1207 = new CheckPartyCommand();
    e1207.setId(\"12:07\");
+   e1207.setParty(request.queryParams(\"party\"));
    apply(e1207);
 }
 
-if (\"get party 12:12\".equals(event)) {
+if (\"check name 13:01\".equals(event)) {
 
-   // create GetPartyCommand: get party 12:12
-   GetPartyCommand e1212 = new GetPartyCommand();
-   e1212.setId(\"12:12\");
-   e1212.setParty(request.queryParams(\"party\"));
-   apply(e1212);
-}
-
-if (\"get user name 13:01\".equals(event)) {
-
-   // create GetUserNameCommand: get user name 13:01
-   GetUserNameCommand e1301 = new GetUserNameCommand();
+   // create CheckNameCommand: check name 13:01
+   CheckNameCommand e1301 = new CheckNameCommand();
    e1301.setId(\"13:01\");
    e1301.setName(request.queryParams(\"name\"));
    apply(e1301);
 }
 
-if (\"get password 13:07\".equals(event)) {
+if (\"check password 13:03\".equals(event)) {
 
-   // create GetPasswordCommand: get password 13:07
-   GetPasswordCommand e1307 = new GetPasswordCommand();
-   e1307.setId(\"13:07\");
-   apply(e1307);
+   // create CheckPasswordCommand: check password 13:03
+   CheckPasswordCommand e1303 = new CheckPasswordCommand();
+   e1303.setId(\"13:03\");
+   apply(e1303);
 }
 
-if (\"get party 13:12\".equals(event)) {
+if (\"get party 13:05\".equals(event)) {
 
-   // create GetPartyCommand: get party 13:12
-   GetPartyCommand e1312 = new GetPartyCommand();
-   e1312.setId(\"13:12\");
-   e1312.setParty(request.queryParams(\"party\"));
-   apply(e1312);
+   // create GetPartyCommand: get party 13:05
+   GetPartyCommand e1305 = new GetPartyCommand();
+   e1305.setId(\"13:05\");
+   e1305.setParty(request.queryParams(\"party\"));
+   apply(e1305);
 }
 
 if (\"get party 14:01\".equals(event)) {
@@ -871,68 +906,81 @@ if (\"get party 14:01\".equals(event)) {
    apply(e1401);
 }
 
-if (\"add item 14:11\".equals(event)) {
+if (\"add item 14:03\".equals(event)) {
 
-   // create AddItemCommand: add item 14:11
-   AddItemCommand e1411 = new AddItemCommand();
-   e1411.setId(\"14:11\");
-   apply(e1411);
+   // create AddItemCommand: add item 14:03
+   AddItemCommand e1403 = new AddItemCommand();
+   e1403.setId(\"14:03\");
+   apply(e1403);
 }
 
-if (\"build item 14:13\".equals(event)) {
+if (\"build item 14:05\".equals(event)) {
 
-   // create BuildItemCommand: build item 14:13
-   BuildItemCommand e1413 = new BuildItemCommand();
-   e1413.setId(\"14:13\");
-   e1413.setItem(request.queryParams(\"item\"));
-   e1413.setPrice(request.queryParams(\"price\"));
-   e1413.setBuyer(request.queryParams(\"buyer\"));
-   apply(e1413);
+   // create BuildItemCommand: build item 14:05
+   BuildItemCommand e1405 = new BuildItemCommand();
+   e1405.setId(\"14:05\");
+   e1405.setItem(request.queryParams(\"item\"));
+   e1405.setPrice(request.queryParams(\"price\"));
+   e1405.setBuyer(request.queryParams(\"buyer\"));
+   apply(e1405);
 }
 
-if (\"add item 14:21\".equals(event)) {
+if (\"add item 14:07\".equals(event)) {
 
-   // create AddItemCommand: add item 14:21
-   AddItemCommand e1421 = new AddItemCommand();
-   e1421.setId(\"14:21\");
-   apply(e1421);
+   // create AddItemCommand: add item 14:07
+   AddItemCommand e1407 = new AddItemCommand();
+   e1407.setId(\"14:07\");
+   apply(e1407);
 }
 
-if (\"build item 14:23\".equals(event)) {
+if (\"build item 14:09\".equals(event)) {
 
-   // create BuildItemCommand: build item 14:23
-   BuildItemCommand e1423 = new BuildItemCommand();
-   e1423.setId(\"14:23\");
-   e1423.setItem(request.queryParams(\"item\"));
-   e1423.setPrice(request.queryParams(\"price\"));
-   e1423.setBuyer(request.queryParams(\"buyer\"));
-   apply(e1423);
+   // create BuildItemCommand: build item 14:09
+   BuildItemCommand e1409 = new BuildItemCommand();
+   e1409.setId(\"14:09\");
+   e1409.setItem(request.queryParams(\"item\"));
+   e1409.setPrice(request.queryParams(\"price\"));
+   e1409.setBuyer(request.queryParams(\"buyer\"));
+   apply(e1409);
 }
 
 
 
 // 12:00
 if (id.equals(\"12_00\")) {
-   html.append(\"<form action=\\"/page/12_05\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/12_02\\" method=\\"get\\">\n\");
    // PartyApp 12:00
    html.append(\"   <p>Welcome to the parties</p>\n\");
    html.append(\"   <p>What's your name?</p>\n\");
    html.append(\"   <p><input id=\\"name\\" name=\\"name\\" placeholder=\\"name?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get user name 12:01\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"check name 12:01\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
 
-// 12:05
-if (id.equals(\"12_05\")) {
-   html.append(\"<form action=\\"/page/12_06\\" method=\\"get\\">\n\");
-   // PartyApp 12:05
+// 12:02
+if (id.equals(\"12_02\")) {
+   html.append(\"<form action=\\"/page/12_04\\" method=\\"get\\">\n\");
+   // PartyApp 12:02
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>You are new to parties</p>\n\");
    html.append(\"   <p>We need your email</p>\n\");
    html.append(\"   <p><input id=\\"email\\" name=\\"email\\" placeholder=\\"email?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get email 12:04\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"check email 12:03\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:04
+if (id.equals(\"12_04\")) {
+   html.append(\"<form action=\\"/page/12_06\\" method=\\"get\\">\n\");
+   // PartyApp 12:04
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>Choose a password</p>\n\");
+   html.append(\"   <p><input id=\\"password\\" name=\\"password\\" type=\\"password\\" placeholder=\\"password?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"check password 12:05\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -940,25 +988,12 @@ if (id.equals(\"12_05\")) {
 
 // 12:06
 if (id.equals(\"12_06\")) {
-   html.append(\"<form action=\\"/page/12_11\\" method=\\"get\\">\n\");
-   // PartyApp 12:06
-   html.append(\"   <p>Welcome Alice</p>\n\");
-   html.append(\"   <p>Choose a password</p>\n\");
-   html.append(\"   <p><input id=\\"password\\" name=\\"password\\" type=\\"password\\" placeholder=\\"password?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get password 12:07\\"></p>\n\");
-   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
-   html.append(\"</form>\n\");
-   return html.toString();
-}
-
-// 12:11
-if (id.equals(\"12_11\")) {
    html.append(\"<form action=\\"/page/13_00\\" method=\\"get\\">\n\");
-   // PartyApp 12:11
+   // PartyApp 12:06
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Choose a party</p>\n\");
    html.append(\"   <p><input id=\\"party\\" name=\\"party\\" placeholder=\\"party?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get party 12:12\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"check party 12:07\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -966,38 +1001,38 @@ if (id.equals(\"12_11\")) {
 
 // 13:00
 if (id.equals(\"13_00\")) {
-   html.append(\"<form action=\\"/page/13_06\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/13_02\\" method=\\"get\\">\n\");
    // PartyApp 13:00
    html.append(\"   <p>Welcome to the parties</p>\n\");
    html.append(\"   <p>What's your name?</p>\n\");
    html.append(\"   <p><input id=\\"name\\" name=\\"name\\" placeholder=\\"name?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get user name 13:01\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"check name 13:01\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
 
-// 13:06
-if (id.equals(\"13_06\")) {
-   html.append(\"<form action=\\"/page/13_11\\" method=\\"get\\">\n\");
-   // PartyApp 13:06
+// 13:02
+if (id.equals(\"13_02\")) {
+   html.append(\"<form action=\\"/page/13_04\\" method=\\"get\\">\n\");
+   // PartyApp 13:02
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Provide a password</p>\n\");
    html.append(\"   <p><input id=\\"password\\" name=\\"password\\" type=\\"password\\" placeholder=\\"password?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get password 13:07\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"check password 13:03\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
 
-// 13:11
-if (id.equals(\"13_11\")) {
+// 13:04
+if (id.equals(\"13_04\")) {
    html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
-   // PartyApp 13:11
+   // PartyApp 13:04
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Choose a party</p>\n\");
    html.append(\"   <p><input id=\\"party\\" name=\\"party\\" placeholder=\\"party?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get party 13:12\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get party 13:05\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -1005,7 +1040,7 @@ if (id.equals(\"13_11\")) {
 
 // 14:00
 if (id.equals(\"14_00\")) {
-   html.append(\"<form action=\\"/page/14_10\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/14_02\\" method=\\"get\\">\n\");
    // PartyApp 14:00
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Choose a party</p>\n\");
@@ -1017,42 +1052,42 @@ if (id.equals(\"14_00\")) {
    return html.toString();
 }
 
-// 14:10
-if (id.equals(\"14_10\")) {
-   html.append(\"<form action=\\"/page/14_12\\" method=\\"get\\">\n\");
-   // PartyApp 14:10
+// 14:02
+if (id.equals(\"14_02\")) {
+   html.append(\"<form action=\\"/page/14_04\\" method=\\"get\\">\n\");
+   // PartyApp 14:02
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Let's do the SE BBQ</p>\n\");
    html.append(\"   <p>no items yet</p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add item 14:11\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add item 14:03\\"></p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
 
-// 14:12
-if (id.equals(\"14_12\")) {
-   html.append(\"<form action=\\"/page/14_20\\" method=\\"get\\">\n\");
-   // PartyApp 14:12
+// 14:04
+if (id.equals(\"14_04\")) {
+   html.append(\"<form action=\\"/page/14_06\\" method=\\"get\\">\n\");
+   // PartyApp 14:04
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Let's do the SE BBQ</p>\n\");
    html.append(\"   <p><input id=\\"item\\" name=\\"item\\" placeholder=\\"item?\\"></p>\n\");
    html.append(\"   <p><input id=\\"price\\" name=\\"price\\" placeholder=\\"price?\\"></p>\n\");
    html.append(\"   <p><input id=\\"buyer\\" name=\\"buyer\\" placeholder=\\"buyer?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"build item 14:13\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"build item 14:05\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
 
-// 14:20
-if (id.equals(\"14_20\")) {
-   html.append(\"<form action=\\"/page/14_22\\" method=\\"get\\">\n\");
-   // PartyApp 14:20
+// 14:06
+if (id.equals(\"14_06\")) {
+   html.append(\"<form action=\\"/page/14_08\\" method=\\"get\\">\n\");
+   // PartyApp 14:06
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Let's do the SE BBQ</p>\n\");
    html.append(\"   <p>beer 12.00 Bob</p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add item 14:21\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add item 14:07\\"></p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
    html.append(\"   <p>Total 12.00</p>\n\");
    html.append(\"   <p>Share 12.00</p>\n\");
@@ -1061,25 +1096,25 @@ if (id.equals(\"14_20\")) {
    return html.toString();
 }
 
-// 14:22
-if (id.equals(\"14_22\")) {
-   html.append(\"<form action=\\"/page/14_30\\" method=\\"get\\">\n\");
-   // PartyApp 14:22
+// 14:08
+if (id.equals(\"14_08\")) {
+   html.append(\"<form action=\\"/page/14_10\\" method=\\"get\\">\n\");
+   // PartyApp 14:08
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Let's do the SE BBQ</p>\n\");
    html.append(\"   <p><input id=\\"item\\" name=\\"item\\" placeholder=\\"item?\\"></p>\n\");
    html.append(\"   <p><input id=\\"price\\" name=\\"price\\" placeholder=\\"price?\\"></p>\n\");
    html.append(\"   <p><input id=\\"buyer\\" name=\\"buyer\\" placeholder=\\"buyer?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"build item 14:23\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"build item 14:09\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
 
-// 14:30
-if (id.equals(\"14_30\")) {
+// 14:10
+if (id.equals(\"14_10\")) {
    html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
-   // PartyApp 14:30
+   // PartyApp 14:10
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Let's do the SE BBQ</p>\n\");
    html.append(\"   <p>beer 12.00 Bob</p>\n\");

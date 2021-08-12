@@ -1,9 +1,11 @@
 package uks.debuggen.party;
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.yaml.Yaml;
+import org.junit.Before;
 import org.junit.Test;
 import uks.debuggen.party.PartyApp.PartyAppService;
 import uks.debuggen.party.events.*;
@@ -37,6 +39,12 @@ public class TestPartyApp
       this.eventBroker = value;
       this.firePropertyChange(PROPERTY_EVENT_BROKER, oldValue, value);
       return this;
+   }
+
+   @Before
+   public void setTimeOut() {
+      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.pageLoadTimeout = Configuration.timeout;
    }
 
    @Test
@@ -196,43 +204,48 @@ public class TestPartyApp
       pre = $("#history");
       pre.shouldHave(text("- 12_01:"));
 
-      // page 12:05
-      open("http://localhost:42001/page/12_05");
+      // page 12:02
+      open("http://localhost:42001/page/12_02");
       $("#email").setValue("a@b.de");
       $("#ok").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_04:"));
+      pre.shouldHave(text("- 12_03:"));
 
-      // page 12:06
-      open("http://localhost:42001/page/12_06");
+      // check PartyApp
+      open("http://localhost:42001");
+      pre = $("#history");
+      pre.shouldHave(text("- 12_03:"));
+
+      // page 12:04
+      open("http://localhost:42001/page/12_04");
       $("#password").setValue("secret");
       $("#ok").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_07:"));
+      pre.shouldHave(text("- 12_05:"));
 
       // check PartyApp
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 12_07:"));
-      // check data note 12:07:01
+      pre.shouldHave(text("- 12_05:"));
+      // check data note 12:05:02
       pre = $("#data");
       pre.shouldHave(text("- Alice:"));
       pre.shouldHave(matchText("name:.*Alice"));
       pre.shouldHave(matchText("email:.*a@b.de"));
       pre.shouldHave(matchText("password:.*secret"));
 
-      // page 12:11
-      open("http://localhost:42001/page/12_11");
+      // page 12:06
+      open("http://localhost:42001/page/12_06");
       $("#party").setValue("SE BBQ");
       $("#ok").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_12:"));
+      pre.shouldHave(text("- 12_07:"));
 
       // workflow LoginOldUser
       // page 13:00
@@ -249,23 +262,28 @@ public class TestPartyApp
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
 
-      // page 13:06
-      open("http://localhost:42001/page/13_06");
+      // page 13:02
+      open("http://localhost:42001/page/13_02");
       $("#password").setValue("secret");
       $("#ok").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 13_07:"));
+      pre.shouldHave(text("- 13_03:"));
 
-      // page 13:11
-      open("http://localhost:42001/page/13_11");
+      // check PartyApp
+      open("http://localhost:42001");
+      pre = $("#history");
+      pre.shouldHave(text("- 13_03:"));
+
+      // page 13:04
+      open("http://localhost:42001/page/13_04");
       $("#party").setValue("SE BBQ");
       $("#ok").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 13_12:"));
+      pre.shouldHave(text("- 13_05:"));
 
       // workflow StartParty
       // page 14:00
@@ -282,22 +300,22 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 14_01:"));
-      // check data note 14:02
+      // check data note 14:01:02
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ:"));
       pre.shouldHave(matchText("name:.*\"SE BBQ\""));
       pre.shouldHave(matchText("location:.*Uni"));
 
-      // page 14:10
-      open("http://localhost:42001/page/14_10");
+      // page 14:02
+      open("http://localhost:42001/page/14_02");
       $("#add").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 14_11:"));
+      pre.shouldHave(text("- 14_03:"));
 
-      // page 14:12
-      open("http://localhost:42001/page/14_12");
+      // page 14:04
+      open("http://localhost:42001/page/14_04");
       $("#item").setValue("beer");
       $("#price").setValue("12.00");
       $("#buyer").setValue("Bob");
@@ -305,35 +323,35 @@ public class TestPartyApp
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 14_13:"));
+      pre.shouldHave(text("- 14_05:"));
 
       // check PartyApp
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 14_13:"));
-      // check data note 14:14
+      pre.shouldHave(text("- 14_05:"));
+      // check data note 14:05:01
       pre = $("#data");
       pre.shouldHave(text("- beer:"));
       pre.shouldHave(matchText("name:.*beer"));
       pre.shouldHave(matchText("price:.*12.00"));
       pre.shouldHave(matchText("buyer:.*sE_BBQ_Bob"));
       pre.shouldHave(matchText("party:.*sE_BBQ"));
-      // check data note 14:15
+      // check data note 14:05:02
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ_Bob:"));
       pre.shouldHave(matchText("name:.*Bob"));
       pre.shouldHave(matchText("party:.*sE_BBQ"));
 
-      // page 14:20
-      open("http://localhost:42001/page/14_20");
+      // page 14:06
+      open("http://localhost:42001/page/14_06");
       $("#add").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 14_21:"));
+      pre.shouldHave(text("- 14_07:"));
 
-      // page 14:22
-      open("http://localhost:42001/page/14_22");
+      // page 14:08
+      open("http://localhost:42001/page/14_08");
       $("#item").setValue("meat");
       $("#price").setValue("21.00");
       $("#buyer").setValue("Alice");
@@ -341,28 +359,28 @@ public class TestPartyApp
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 14_23:"));
+      pre.shouldHave(text("- 14_09:"));
 
       // check PartyApp
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 14_23:"));
-      // check data note 14:24
+      pre.shouldHave(text("- 14_09:"));
+      // check data note 14:09:01
       pre = $("#data");
       pre.shouldHave(text("- meat:"));
       pre.shouldHave(matchText("name:.*meat"));
       pre.shouldHave(matchText("price:.*21.00"));
       pre.shouldHave(matchText("buyer:.*sE_BBQ_Alice"));
       pre.shouldHave(matchText("party:.*sE_BBQ"));
-      // check data note 14:25
+      // check data note 14:09:02
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ_Alice:"));
       pre.shouldHave(matchText("name:.*Alice"));
       pre.shouldHave(matchText("expenses:.*0.00"));
       pre.shouldHave(matchText("party:.*sE_BBQ"));
 
-      // page 14:30
-      open("http://localhost:42001/page/14_30");
+      // page 14:10
+      open("http://localhost:42001/page/14_10");
 
       System.out.println();
    }

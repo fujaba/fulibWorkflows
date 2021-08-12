@@ -11,61 +11,64 @@
     - input: name
       fill: Alice
     - button: ok
-      command: get user name 12:01
+      command: check name 12:01
 
 - policy: PartyApp
   trigger: 12:01
 
-- query: Alice 12:02
+- query: Alice 12:01:01
   result: []
 
-- action: Alice
 
 - page:
-    - name: PartyApp 12:05
+    - name: PartyApp 12:02
     - label: Welcome Alice
     - label: You are new to parties
     - label: We need your email
     - input: email
       fill: a@b.de
     - button: ok
-      command: get email 12:04
+      command: check email 12:03
+
+# - policy: PartyApp
+#   trigger: 12:03
+
+- query: Alice 12:03:01
+  result: []
+
 
 - page:
-    - name: PartyApp 12:06
+    - name: PartyApp 12:04
     - label: Welcome Alice
     - label: Choose a password
     - password: password
       fill: secret
     - button: ok
-      command: get password 12:07
+      command: check password 12:05
 
+- query: Alice 12:05:01
+  result: []
 
-- policy: PartyApp
-  trigger: 12:07
-
-- data: 12:07:01
+- data: 12:05:02
   user: Alice
   name: Alice
   email: a@b.de
   password: secret
 
-- event: user registered 12:10
+- event: user registered 12:05:03
   name: Alice
 
-- event: login succeeded 12:11
+- event: login succeeded 12:05:04
   name: Alice
-
-- action: Alice
 
 - page:
-    - name: PartyApp 12:11
+    - name: PartyApp 12:06
     - label: Welcome Alice
     - label: Choose a party
     - input: party
       fill: SE BBQ
     - button: ok
-      command: get party 12:12
+      command: check party 12:07
 
 
 # ======================================================
@@ -78,30 +81,30 @@
     - input: name
       fill: Alice
     - button: ok
-      command: get user name 13:01
+      command: check name 13:01
 
-- policy: PartyApp
-  trigger: 13:01
-
-- query: Alice 13:02
+- query: Alice 13:01:01
   result: [Alice]
 
 - action: Alice
 
 - page:
-    - name: PartyApp 13:06
+    - name: PartyApp 13:02
     - label: Welcome Alice
     - label: Provide a password
     - password: password
       fill: secret
     - button: ok
-      command: get password 13:07
+      command: check password 13:03
+
+- query: Alice 13:03:01
+  result: [Alice.secret]
 
 - page:
-    - name: PartyApp 13:11
+    - name: PartyApp 13:04
     - label: Welcome Alice
     - label: Choose a party
     - input: party
       fill: SE BBQ
     - button: ok
-      command: get party 13:12
+      command: get party 13:05

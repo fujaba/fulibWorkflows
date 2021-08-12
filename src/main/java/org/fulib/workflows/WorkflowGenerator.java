@@ -512,7 +512,7 @@ public class WorkflowGenerator
             // add to query demo method
             System.out.println();
          }
-         else {
+         else if (note instanceof EventNote) {
             // fire event
             EventNote eventNote = (EventNote) note;
             String varName = eventNote.getTime().replaceAll("\\:", "");
@@ -538,6 +538,9 @@ public class WorkflowGenerator
             }
             body.append(String.format("   service.apply(e%s);\n",
                   varName));
+         }
+         else {
+            Logger.getGlobal().severe("do not know how to deal with " + note);
          }
       }
    }

@@ -111,8 +111,9 @@ public class PartyAppBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(GetUserNameCommand.class, this::handleGetUserNameCommand);
-         handlerMap.put(GetPasswordCommand.class, this::handleGetPasswordCommand);
+         handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
+         handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
+         handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
          handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
          handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
          handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
@@ -169,7 +170,7 @@ public class PartyAppBusinessLogic
    {
       if (event.getId().equals("14:01")) {
          PartyBuilt sE_BBQEvent = new PartyBuilt();
-         sE_BBQEvent.setId("14:02");
+         sE_BBQEvent.setId("14:01:02");
          sE_BBQEvent.setBlockId("sE_BBQ");
          sE_BBQEvent.setName("SE BBQ");
          sE_BBQEvent.setLocation("Uni");
@@ -188,9 +189,9 @@ public class PartyAppBusinessLogic
 
    private void handleDemoBuildItemCommand(BuildItemCommand event)
    {
-      if (event.getId().equals("14:13")) {
+      if (event.getId().equals("14:05")) {
          ItemBuilt beerEvent = new ItemBuilt();
-         beerEvent.setId("14:14");
+         beerEvent.setId("14:05:01");
          beerEvent.setBlockId("beer");
          beerEvent.setName("beer");
          beerEvent.setPrice("12.00");
@@ -199,16 +200,16 @@ public class PartyAppBusinessLogic
          service.apply(beerEvent);
 
          GuestBuilt sE_BBQ_BobEvent = new GuestBuilt();
-         sE_BBQ_BobEvent.setId("14:15");
+         sE_BBQ_BobEvent.setId("14:05:02");
          sE_BBQ_BobEvent.setBlockId("sE_BBQ_Bob");
          sE_BBQ_BobEvent.setName("Bob");
          sE_BBQ_BobEvent.setParty("sE_BBQ");
          service.apply(sE_BBQ_BobEvent);
 
       }
-      if (event.getId().equals("14:23")) {
+      if (event.getId().equals("14:09")) {
          ItemBuilt meatEvent = new ItemBuilt();
-         meatEvent.setId("14:24");
+         meatEvent.setId("14:09:01");
          meatEvent.setBlockId("meat");
          meatEvent.setName("meat");
          meatEvent.setPrice("21.00");
@@ -217,7 +218,7 @@ public class PartyAppBusinessLogic
          service.apply(meatEvent);
 
          GuestBuilt sE_BBQ_AliceEvent = new GuestBuilt();
-         sE_BBQ_AliceEvent.setId("14:25");
+         sE_BBQ_AliceEvent.setId("14:09:02");
          sE_BBQ_AliceEvent.setBlockId("sE_BBQ_Alice");
          sE_BBQ_AliceEvent.setName("Alice");
          sE_BBQ_AliceEvent.setExpenses("0.00");
@@ -227,15 +228,15 @@ public class PartyAppBusinessLogic
       }
    }
 
-   private void handleGetUserNameCommand(Event e)
+   private void handleCheckNameCommand(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
       // fulib
-      GetUserNameCommand event = (GetUserNameCommand) e;
-      handleDemoGetUserNameCommand(event);
+      CheckNameCommand event = (CheckNameCommand) e;
+      handleDemoCheckNameCommand(event);
    }
 
-   private void handleDemoGetUserNameCommand(GetUserNameCommand event)
+   private void handleDemoCheckNameCommand(CheckNameCommand event)
    {
       if (event.getId().equals("12:01")) {
       }
@@ -243,19 +244,19 @@ public class PartyAppBusinessLogic
       }
    }
 
-   private void handleGetPasswordCommand(Event e)
+   private void handleCheckPasswordCommand(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
       // fulib
-      GetPasswordCommand event = (GetPasswordCommand) e;
-      handleDemoGetPasswordCommand(event);
+      CheckPasswordCommand event = (CheckPasswordCommand) e;
+      handleDemoCheckPasswordCommand(event);
    }
 
-   private void handleDemoGetPasswordCommand(GetPasswordCommand event)
+   private void handleDemoCheckPasswordCommand(CheckPasswordCommand event)
    {
-      if (event.getId().equals("12:07")) {
+      if (event.getId().equals("12:05")) {
          UserBuilt aliceEvent = new UserBuilt();
-         aliceEvent.setId("12:07:01");
+         aliceEvent.setId("12:05:02");
          aliceEvent.setBlockId("Alice");
          aliceEvent.setName("Alice");
          aliceEvent.setEmail("a@b.de");
@@ -263,17 +264,33 @@ public class PartyAppBusinessLogic
          service.apply(aliceEvent);
 
 
-         UserRegisteredEvent e1210 = new UserRegisteredEvent();
+         UserRegisteredEvent e120503 = new UserRegisteredEvent();
 
-         e1210.setId("12:10");
-         e1210.setName("Alice");
-         service.apply(e1210);
+         e120503.setId("12:05:03");
+         e120503.setName("Alice");
+         service.apply(e120503);
 
-         LoginSucceededEvent e1211 = new LoginSucceededEvent();
+         LoginSucceededEvent e120504 = new LoginSucceededEvent();
 
-         e1211.setId("12:11");
-         e1211.setName("Alice");
-         service.apply(e1211);
+         e120504.setId("12:05:04");
+         e120504.setName("Alice");
+         service.apply(e120504);
+      }
+      if (event.getId().equals("13:03")) {
+      }
+   }
+
+   private void handleCheckEmailCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      CheckEmailCommand event = (CheckEmailCommand) e;
+      handleDemoCheckEmailCommand(event);
+   }
+
+   private void handleDemoCheckEmailCommand(CheckEmailCommand event)
+   {
+      if (event.getId().equals("12:03")) {
       }
    }
 }

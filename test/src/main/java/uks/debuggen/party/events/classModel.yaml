@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	userRegisteredEvent 	loginSucceededEvent 	partyCreatedEvent 	itemBookedEvent 	saldiComputedEvent 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	userBuilt 	getPartyCommand 	partyBuilt 	addItemCommand 	buildItemCommand 	itemBuilt 	guestBuilt
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	userRegisteredEvent 	loginSucceededEvent 	partyCreatedEvent 	itemBookedEvent 	saldiComputedEvent 	checkNameCommand 	checkEmailCommand 	checkPasswordCommand 	userBuilt 	checkPartyCommand 	getPartyCommand 	partyBuilt 	addItemCommand 	buildItemCommand 	itemBuilt 	guestBuilt
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -55,7 +55,7 @@
   modified: 	false
   name: 	Command
   propertyStyle: 	Bean
-  subClasses: 	getUserNameCommand 	getEmailCommand 	getPasswordCommand 	getPartyCommand 	addItemCommand 	buildItemCommand
+  subClasses: 	checkNameCommand 	checkEmailCommand 	checkPasswordCommand 	checkPartyCommand 	getPartyCommand 	addItemCommand 	buildItemCommand
   superClass: 	event
 
 - userRegisteredEvent: 	org.fulib.classmodel.Clazz
@@ -95,26 +95,26 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- getUserNameCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	getUserNameCommand_name
+- checkNameCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	checkNameCommand_name
   model: 	c
   modified: 	false
-  name: 	GetUserNameCommand
+  name: 	CheckNameCommand
   propertyStyle: 	Bean
   superClass: 	command
 
-- getEmailCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	getEmailCommand_email
+- checkEmailCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	checkEmailCommand_email
   model: 	c
   modified: 	false
-  name: 	GetEmailCommand
+  name: 	CheckEmailCommand
   propertyStyle: 	Bean
   superClass: 	command
 
-- getPasswordCommand: 	org.fulib.classmodel.Clazz
+- checkPasswordCommand: 	org.fulib.classmodel.Clazz
   model: 	c
   modified: 	false
-  name: 	GetPasswordCommand
+  name: 	CheckPasswordCommand
   propertyStyle: 	Bean
   superClass: 	command
 
@@ -125,6 +125,14 @@
   name: 	UserBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
+
+- checkPartyCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	checkPartyCommand_party
+  model: 	c
+  modified: 	false
+  name: 	CheckPartyCommand
+  propertyStyle: 	Bean
+  superClass: 	command
 
 - getPartyCommand: 	org.fulib.classmodel.Clazz
   attributes: 	getPartyCommand_party 	getPartyCommand_location
@@ -280,18 +288,18 @@
   type: 	String
   typeSignature: 	String
 
-- getUserNameCommand_name: 	org.fulib.classmodel.Attribute
-  clazz: 	getUserNameCommand
-  id: 	GetUserNameCommand_name
+- checkNameCommand_name: 	org.fulib.classmodel.Attribute
+  clazz: 	checkNameCommand
+  id: 	CheckNameCommand_name
   modified: 	false
   name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- getEmailCommand_email: 	org.fulib.classmodel.Attribute
-  clazz: 	getEmailCommand
-  id: 	GetEmailCommand_email
+- checkEmailCommand_email: 	org.fulib.classmodel.Attribute
+  clazz: 	checkEmailCommand
+  id: 	CheckEmailCommand_email
   modified: 	false
   name: 	email
   propertyStyle: 	Bean
@@ -321,6 +329,15 @@
   id: 	UserBuilt_password
   modified: 	false
   name: 	password
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- checkPartyCommand_party: 	org.fulib.classmodel.Attribute
+  clazz: 	checkPartyCommand
+  id: 	CheckPartyCommand_party
+  modified: 	false
+  name: 	party
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
