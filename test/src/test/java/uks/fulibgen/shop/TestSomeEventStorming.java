@@ -196,7 +196,7 @@ public class TestSomeEventStorming
 
    public void publish(Event event)
    {
-      String yaml = Yaml.encode(event);
+      String yaml = Yaml.encodeSimple(event);
 
       try {
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")

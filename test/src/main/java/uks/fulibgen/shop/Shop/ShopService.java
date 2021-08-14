@@ -3,6 +3,7 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.fulib.yaml.Yaml;
+import org.fulib.yaml.YamlIdMap;
 import spark.Request;
 import spark.Response;
 import spark.Service;
@@ -179,8 +180,8 @@ public class ShopService
    private String getHello(Request req, Response res)
    {
       try {
-         String events = Yaml.encode(getHistory().values().toArray());
-         String objects = Yaml.encode(model.getModelMap().values().toArray());
+         String events = Yaml.encodeSimple(getHistory().values().toArray());
+         String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
          return "<p id='Shop'>This is the Shop service. </p>\n" +
                "<pre id=\"history\">" + events + "</pre>\n" +
                "<pre id=\"data\">" + objects + "</pre>\n" +
@@ -215,7 +216,7 @@ public class ShopService
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
             .setServiceUrl(String.format("http://localhost:%d/apply", port));
-      String json = Yaml.encode(serviceSubscribed);
+      String json = Yaml.encodeSimple(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
          HttpResponse<String> response = Unirest
@@ -223,7 +224,9 @@ public class ShopService
                .body(json)
                .asString();
          String body = response.getBody();
-         Map<String, Object> objectMap = Yaml.decode(body);
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
          for (Object obj : objectMap.values()) {
             apply((Event) obj);
          }
@@ -247,7 +250,7 @@ public class ShopService
 
    public void publish(Event event)
    {
-      String json = Yaml.encode(event);
+      String json = Yaml.encodeSimple(event);
 
       try {
          HttpResponse<String> response = Unirest
@@ -264,7 +267,9 @@ public class ShopService
    {
       try {
          String body = req.body();
-         Map<String, Object> map = Yaml.decode(body);
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
          for (Object value : map.values()) {
             Event event = (Event) value;
             apply(event);

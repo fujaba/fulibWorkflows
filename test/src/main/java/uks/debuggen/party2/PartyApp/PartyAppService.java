@@ -188,8 +188,8 @@ public class PartyAppService
    private String getHello(Request req, Response res)
    {
       try {
-         String events = Yaml.encode(getHistory().values().toArray());
-         String objects = Yaml.encode(model.getModelMap().values().toArray());
+         String events = Yaml.encodeSimple(getHistory().values().toArray());
+         String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
          return "<p id='PartyApp'>This is the PartyApp service. </p>\n" +
                "<pre id=\"history\">" + events + "</pre>\n" +
                "<pre id=\"data\">" + objects + "</pre>\n" +
@@ -213,7 +213,9 @@ public class PartyAppService
                .body(json)
                .asString();
          String body = response.getBody();
-         Map<String, Object> objectMap = Yaml.decode(body);
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
          for (Object obj : objectMap.values()) {
             apply((Event) obj);
          }

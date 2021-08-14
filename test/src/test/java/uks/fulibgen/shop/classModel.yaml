@@ -199,7 +199,7 @@ System.out.println();
   clazz: 	testSomeEventStorming
   declaration: 	"public void publish(Event event)"
   id: 	TestSomeEventStorming_publish
-  methodBody: 	"String yaml = Yaml.encode(event);
+  methodBody: 	"String yaml = Yaml.encodeSimple(event);
 
 try {
    HttpResponse<String> response = Unirest.post(\"http://localhost:42000/publish\")

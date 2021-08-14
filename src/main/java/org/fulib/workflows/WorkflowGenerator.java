@@ -194,6 +194,7 @@ public class WorkflowGenerator
             "import java.util.function.Consumer;",
             "import " + em.getClassModel().getPackageName() + ".*;",
             "import org.fulib.yaml.Yaml;",
+            "import org.fulib.yaml.YamlIdMap;",
             "import spark.Service;",
             "import spark.Request;",
             "import spark.Response;",
