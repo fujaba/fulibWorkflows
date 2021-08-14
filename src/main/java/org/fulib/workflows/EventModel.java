@@ -205,6 +205,11 @@ public class EventModel
 
       DataType dataType = eventStormingBoard.getOrCreateDataType(note.getDataType());
       dataType.withDataNotes(note);
+      String migratedTo = map.get("@migratedTo");
+      if (migratedTo != null) {
+         dataType.setMigratedTo(migratedTo);
+      }
+
       serviceNote.withHandledDataTypes(dataType);
    }
 

@@ -142,9 +142,8 @@ public class PartyAppBuilder
       if (outdated(event)) {
          return;
       }
-      Party object = model.getOrCreateParty(event.getBlockId());
-      object.setName(event.getName());
-      object.setLocation(event.getLocation());
+      // please insert a no before fulib in the next line and insert event upgrading code
+      // fulib
    }
 
    public void handleItemBuilt(Event e)
@@ -157,7 +156,7 @@ public class PartyAppBuilder
       object.setName(event.getName());
       object.setPrice(event.getPrice());
       object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
-      object.setParty(model.getOrCreateParty(event.getParty()));
+      object.setParty(model.getOrCreateParty2(event.getParty()));
    }
 
    public void handleGuestBuilt(Event e)
@@ -168,7 +167,7 @@ public class PartyAppBuilder
       }
       Guest object = model.getOrCreateGuest(event.getBlockId());
       object.setName(event.getName());
-      object.setParty(model.getOrCreateParty(event.getParty()));
+      object.setParty(model.getOrCreateParty2(event.getParty()));
       object.setExpenses(event.getExpenses());
    }
 
@@ -208,5 +207,26 @@ public class PartyAppBuilder
    {
       this.setBusinessLogic(null);
       this.setService(null);
+   }
+
+   public void handleRegionBuilt(Event e)
+   {
+      RegionBuilt event = (RegionBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      Region object = model.getOrCreateRegion(event.getBlockId());
+   }
+
+   public void handleParty2Built(Event e)
+   {
+      Party2Built event = (Party2Built) e;
+      if (outdated(event)) {
+         return;
+      }
+      Party2 object = model.getOrCreateParty2(event.getBlockId());
+      object.setName(event.getName());
+      object.setRegion(model.getOrCreateRegion(event.getRegion()));
+      object.setAddress(event.getAddress());
    }
 }

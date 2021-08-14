@@ -1,31 +1,165 @@
 package uks.debuggen.party2.PartyApp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Collections;
 import java.util.Collection;
 import java.beans.PropertyChangeSupport;
+import java.util.Objects;
 
-public class Party
+public class Party2
 {
-   public static final String PROPERTY_ID = "id";
-   public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_LOCATION = "location";
    public static final String PROPERTY_ITEMS = "items";
    public static final String PROPERTY_GUESTS = "guests";
-   private String id;
-   private String name;
-   private String location;
+   public static final String PROPERTY_ID = "id";
+   public static final String PROPERTY_NAME = "name";
+   public static final String PROPERTY_ADDRESS = "address";
+   public static final String PROPERTY_REGION = "region";
    private List<Item> items;
    private List<Guest> guests;
    protected PropertyChangeSupport listeners;
+   private String id;
+   private String name;
+   private String address;
+   private Region region;
+
+   public List<Item> getItems()
+   {
+      return this.items != null ? Collections.unmodifiableList(this.items) : Collections.emptyList();
+   }
+
+   public Party2 withItems(Item value)
+   {
+      if (this.items == null)
+      {
+         this.items = new ArrayList<>();
+      }
+      if (!this.items.contains(value))
+      {
+         this.items.add(value);
+         value.setParty(this);
+         this.firePropertyChange(PROPERTY_ITEMS, null, value);
+      }
+      return this;
+   }
+
+   public Party2 withItems(Item... value)
+   {
+      for (final Item item : value)
+      {
+         this.withItems(item);
+      }
+      return this;
+   }
+
+   public Party2 withItems(Collection<? extends Item> value)
+   {
+      for (final Item item : value)
+      {
+         this.withItems(item);
+      }
+      return this;
+   }
+
+   public Party2 withoutItems(Item value)
+   {
+      if (this.items != null && this.items.remove(value))
+      {
+         value.setParty(null);
+         this.firePropertyChange(PROPERTY_ITEMS, value, null);
+      }
+      return this;
+   }
+
+   public Party2 withoutItems(Item... value)
+   {
+      for (final Item item : value)
+      {
+         this.withoutItems(item);
+      }
+      return this;
+   }
+
+   public Party2 withoutItems(Collection<? extends Item> value)
+   {
+      for (final Item item : value)
+      {
+         this.withoutItems(item);
+      }
+      return this;
+   }
+
+   public List<Guest> getGuests()
+   {
+      return this.guests != null ? Collections.unmodifiableList(this.guests) : Collections.emptyList();
+   }
+
+   public Party2 withGuests(Guest value)
+   {
+      if (this.guests == null)
+      {
+         this.guests = new ArrayList<>();
+      }
+      if (!this.guests.contains(value))
+      {
+         this.guests.add(value);
+         value.setParty(this);
+         this.firePropertyChange(PROPERTY_GUESTS, null, value);
+      }
+      return this;
+   }
+
+   public Party2 withGuests(Guest... value)
+   {
+      for (final Guest item : value)
+      {
+         this.withGuests(item);
+      }
+      return this;
+   }
+
+   public Party2 withGuests(Collection<? extends Guest> value)
+   {
+      for (final Guest item : value)
+      {
+         this.withGuests(item);
+      }
+      return this;
+   }
+
+   public Party2 withoutGuests(Guest value)
+   {
+      if (this.guests != null && this.guests.remove(value))
+      {
+         value.setParty(null);
+         this.firePropertyChange(PROPERTY_GUESTS, value, null);
+      }
+      return this;
+   }
+
+   public Party2 withoutGuests(Guest... value)
+   {
+      for (final Guest item : value)
+      {
+         this.withoutGuests(item);
+      }
+      return this;
+   }
+
+   public Party2 withoutGuests(Collection<? extends Guest> value)
+   {
+      for (final Guest item : value)
+      {
+         this.withoutGuests(item);
+      }
+      return this;
+   }
 
    public String getId()
    {
       return this.id;
    }
 
-   public Party setId(String value)
+   public Party2 setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -43,7 +177,7 @@ public class Party
       return this.name;
    }
 
-   public Party setName(String value)
+   public Party2 setName(String value)
    {
       if (Objects.equals(value, this.name))
       {
@@ -56,153 +190,48 @@ public class Party
       return this;
    }
 
-   public String getLocation()
+   public String getAddress()
    {
-      return this.location;
+      return this.address;
    }
 
-   public Party setLocation(String value)
+   public Party2 setAddress(String value)
    {
-      if (Objects.equals(value, this.location))
+      if (Objects.equals(value, this.address))
       {
          return this;
       }
 
-      final String oldValue = this.location;
-      this.location = value;
-      this.firePropertyChange(PROPERTY_LOCATION, oldValue, value);
+      final String oldValue = this.address;
+      this.address = value;
+      this.firePropertyChange(PROPERTY_ADDRESS, oldValue, value);
       return this;
    }
 
-   public List<Item> getItems()
+   public Region getRegion()
    {
-      return this.items != null ? Collections.unmodifiableList(this.items) : Collections.emptyList();
+      return this.region;
    }
 
-   public Party withItems(Item value)
+   public Party2 setRegion(Region value)
    {
-      if (this.items == null)
+      if (this.region == value)
       {
-         this.items = new ArrayList<>();
+         return this;
       }
-      if (!this.items.contains(value))
-      {
-         this.items.add(value);
-         value.setParty(this);
-         this.firePropertyChange(PROPERTY_ITEMS, null, value);
-      }
-      return this;
-   }
 
-   public Party withItems(Item... value)
-   {
-      for (final Item item : value)
+      final Region oldValue = this.region;
+      if (this.region != null)
       {
-         this.withItems(item);
+         this.region = null;
+         oldValue.withoutParties(this);
       }
-      return this;
-   }
-
-   public Party withItems(Collection<? extends Item> value)
-   {
-      for (final Item item : value)
+      this.region = value;
+      if (value != null)
       {
-         this.withItems(item);
+         value.withParties(this);
       }
-      return this;
-   }
-
-   public Party withoutItems(Item value)
-   {
-      if (this.items != null && this.items.remove(value))
-      {
-         value.setParty(null);
-         this.firePropertyChange(PROPERTY_ITEMS, value, null);
-      }
-      return this;
-   }
-
-   public Party withoutItems(Item... value)
-   {
-      for (final Item item : value)
-      {
-         this.withoutItems(item);
-      }
-      return this;
-   }
-
-   public Party withoutItems(Collection<? extends Item> value)
-   {
-      for (final Item item : value)
-      {
-         this.withoutItems(item);
-      }
-      return this;
-   }
-
-   public List<Guest> getGuests()
-   {
-      return this.guests != null ? Collections.unmodifiableList(this.guests) : Collections.emptyList();
-   }
-
-   public Party withGuests(Guest value)
-   {
-      if (this.guests == null)
-      {
-         this.guests = new ArrayList<>();
-      }
-      if (!this.guests.contains(value))
-      {
-         this.guests.add(value);
-         value.setParty(this);
-         this.firePropertyChange(PROPERTY_GUESTS, null, value);
-      }
-      return this;
-   }
-
-   public Party withGuests(Guest... value)
-   {
-      for (final Guest item : value)
-      {
-         this.withGuests(item);
-      }
-      return this;
-   }
-
-   public Party withGuests(Collection<? extends Guest> value)
-   {
-      for (final Guest item : value)
-      {
-         this.withGuests(item);
-      }
-      return this;
-   }
-
-   public Party withoutGuests(Guest value)
-   {
-      if (this.guests != null && this.guests.remove(value))
-      {
-         value.setParty(null);
-         this.firePropertyChange(PROPERTY_GUESTS, value, null);
-      }
-      return this;
-   }
-
-   public Party withoutGuests(Guest... value)
-   {
-      for (final Guest item : value)
-      {
-         this.withoutGuests(item);
-      }
-      return this;
-   }
-
-   public Party withoutGuests(Collection<? extends Guest> value)
-   {
-      for (final Guest item : value)
-      {
-         this.withoutGuests(item);
-      }
+      this.firePropertyChange(PROPERTY_REGION, oldValue, value);
       return this;
    }
 
@@ -225,19 +254,20 @@ public class Party
       return this.listeners;
    }
 
+   public void removeYou()
+   {
+      this.setRegion(null);
+      this.withoutItems(new ArrayList<>(this.getItems()));
+      this.withoutGuests(new ArrayList<>(this.getGuests()));
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
-      result.append(' ').append(this.getLocation());
+      result.append(' ').append(this.getAddress());
       return result.substring(1);
-   }
-
-   public void removeYou()
-   {
-      this.withoutItems(new ArrayList<>(this.getItems()));
-      this.withoutGuests(new ArrayList<>(this.getGuests()));
    }
 }

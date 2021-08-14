@@ -184,11 +184,12 @@ public class PartyAppBusinessLogic
    private void handleDemoGetPartyCommand(GetPartyCommand event)
    {
       if (event.getId().equals("14:01")) {
-         PartyBuilt sE_BBQEvent = new PartyBuilt();
-         sE_BBQEvent.setId("14:01:02");
+         Party2Built sE_BBQEvent = new Party2Built();
+         sE_BBQEvent.setId("14:01:03");
          sE_BBQEvent.setBlockId("sE_BBQ");
          sE_BBQEvent.setName("SE BBQ");
-         sE_BBQEvent.setLocation("Uni");
+         sE_BBQEvent.setRegion("Kassel");
+         sE_BBQEvent.setAddress("Uni");
          service.apply(sE_BBQEvent);
 
       }
@@ -250,10 +251,13 @@ public class PartyAppBusinessLogic
          handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
          handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
          handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
+         handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
          handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
          handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
          handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
+         handlerMap.put(RegionBuilt.class, builder::handleRegionBuilt);
          handlerMap.put(PartyBuilt.class, builder::handlePartyBuilt);
+         handlerMap.put(Party2Built.class, builder::handleParty2Built);
          handlerMap.put(ItemBuilt.class, builder::handleItemBuilt);
          handlerMap.put(GuestBuilt.class, builder::handleGuestBuilt);
       }
@@ -292,5 +296,24 @@ public class PartyAppBusinessLogic
    {
       this.setBuilder(null);
       this.setService(null);
+   }
+
+   private void handleGetRegionCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      GetRegionCommand event = (GetRegionCommand) e;
+      handleDemoGetRegionCommand(event);
+   }
+
+   private void handleDemoGetRegionCommand(GetRegionCommand event)
+   {
+      if (event.getId().equals("13:56")) {
+         RegionBuilt kasselEvent = new RegionBuilt();
+         kasselEvent.setId("13:56:02");
+         kasselEvent.setBlockId("Kassel");
+         service.apply(kasselEvent);
+
+      }
    }
 }

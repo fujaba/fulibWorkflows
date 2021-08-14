@@ -12,11 +12,13 @@ public class DataType
    public static final String PROPERTY_DATA_NOTES = "dataNotes";
    public static final String PROPERTY_HANDLERS = "handlers";
    public static final String PROPERTY_EVENT_STORMING_BOARD = "eventStormingBoard";
+   public static final String PROPERTY_MIGRATED_TO = "migratedTo";
    private String dataTypeName;
    private List<DataNote> dataNotes;
    private List<ServiceNote> handlers;
    private EventStormingBoard eventStormingBoard;
    protected PropertyChangeSupport listeners;
+   private String migratedTo;
 
    public String getDataTypeName()
    {
@@ -195,6 +197,24 @@ public class DataType
       return this;
    }
 
+   public String getMigratedTo()
+   {
+      return this.migratedTo;
+   }
+
+   public DataType setMigratedTo(String value)
+   {
+      if (Objects.equals(value, this.migratedTo))
+      {
+         return this;
+      }
+
+      final String oldValue = this.migratedTo;
+      this.migratedTo = value;
+      this.firePropertyChange(PROPERTY_MIGRATED_TO, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -219,6 +239,7 @@ public class DataType
    {
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getDataTypeName());
+      result.append(' ').append(this.getMigratedTo());
       return result.substring(1);
    }
 

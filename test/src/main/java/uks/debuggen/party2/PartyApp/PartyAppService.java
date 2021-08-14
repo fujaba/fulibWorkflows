@@ -425,7 +425,7 @@ public class PartyAppService
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
 
-      Party party = model.getOrCreateParty(partyName);
+      Party2 party = model.getOrCreateParty2(partyName);
 
       StringBuilder html = new StringBuilder();
       html.append("<form action=\"/page/addItem\" method=\"get\">\n");
@@ -725,6 +725,15 @@ public class PartyAppService
          apply(e1305);
       }
 
+      if ("get region 13:56".equals(event)) {
+
+         // create GetRegionCommand: get region 13:56
+         GetRegionCommand e1356 = new GetRegionCommand();
+         e1356.setId("13:56");
+         e1356.setRegion(request.queryParams("region"));
+         apply(e1356);
+      }
+
       if ("get party 14:01".equals(event)) {
 
          // create GetPartyCommand: get party 14:01
@@ -862,6 +871,19 @@ public class PartyAppService
          html.append("   <p>Choose a party</p>\n");
          html.append("   <p><input id=\"party\" name=\"party\" placeholder=\"party?\"></p>\n");
          html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get party 13:05\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 13:55
+      if (id.equals("13_55")) {
+         html.append("<form action=\"/page/14_00\" method=\"get\">\n");
+         // PartyApp 13:55
+         html.append("   <p>Welcome Alice</p>\n");
+         html.append("   <p>In which region is your party</p>\n");
+         html.append("   <p><input id=\"region\" name=\"region\" placeholder=\"region?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get region 13:56\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();

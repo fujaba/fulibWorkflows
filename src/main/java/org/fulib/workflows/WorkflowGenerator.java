@@ -417,39 +417,45 @@ public class WorkflowGenerator
       body.append("if (outdated(event)) {\n");
       body.append("   return;\n");
       body.append("}\n");
-      body.append(String.format("%s object = model.getOrCreate%1$s(event.getBlockId());\n", dataTypeName));
+      if (dataType.getMigratedTo() != null) {
+         body.append("// please insert a no before fulib in the next line and insert event upgrading code\n" +
+               "// fulib\n");
+      }
+      else {
+         body.append(String.format("%s object = model.getOrCreate%1$s(event.getBlockId());\n", dataTypeName));
 
-      Clazz dataClazz = modelManager.haveClass(dataTypeName);
-      Clazz eventClazz = em.haveClass(eventTypeName);
+         Clazz dataClazz = modelManager.haveClass(dataTypeName);
+         Clazz eventClazz = em.haveClass(eventTypeName);
 
-      for (Attribute attribute : eventClazz.getAttributes()) {
-         String attrName = attribute.getName();
-         Attribute dataAttr = getAttribute(dataClazz, attrName);
-         if (dataAttr != null) {
-            // e.g.: object.setMotivation(event.getMotivation());
-            if (dataAttr.getType().equals(Type.STRING)) {
-               body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
-            }
-            else if (dataAttr.getType().equals(Type.INT)) {
-               body.append(String.format("object.set%s(Integer.parseInt(event.get%1$s()));\n", StrUtil.cap(attrName)));
-            }
-            else if (dataAttr.getType().equals(Type.DOUBLE)) {
-               body.append(String.format("object.set%s(Double.parseDouble(event.get%1$s()));\n", StrUtil.cap(attrName)));
-            }
-         }
-         else {
-            // e.g.: event.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
-            AssocRole role = getRole(dataClazz, attrName);
-            AssocRole other = role.getOther();
-            Clazz otherClazz = other.getClazz();
-            if (role.getCardinality() <= 1) {
-               body.append(String.format("object.set%s(model.getOrCreate%s(event.get%1$s()));\n", StrUtil.cap(attrName), otherClazz.getName()));
+         for (Attribute attribute : eventClazz.getAttributes()) {
+            String attrName = attribute.getName();
+            Attribute dataAttr = getAttribute(dataClazz, attrName);
+            if (dataAttr != null) {
+               // e.g.: object.setMotivation(event.getMotivation());
+               if (dataAttr.getType().equals(Type.STRING)) {
+                  body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
+               }
+               else if (dataAttr.getType().equals(Type.INT)) {
+                  body.append(String.format("object.set%s(Integer.parseInt(event.get%1$s()));\n", StrUtil.cap(attrName)));
+               }
+               else if (dataAttr.getType().equals(Type.DOUBLE)) {
+                  body.append(String.format("object.set%s(Double.parseDouble(event.get%1$s()));\n", StrUtil.cap(attrName)));
+               }
             }
             else {
-               body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\"\\\\s+\")) {\n", StrUtil.cap(attrName)));
-               body.append("   if (name.equals(\"\")) continue;\n");
-               body.append(String.format("   object.with%s(model.getOrCreate%s(name));\n", StrUtil.cap(attrName), otherClazz.getName()));
-               body.append("}\n");
+               // e.g.: event.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
+               AssocRole role = getRole(dataClazz, attrName);
+               AssocRole other = role.getOther();
+               Clazz otherClazz = other.getClazz();
+               if (role.getCardinality() <= 1) {
+                  body.append(String.format("object.set%s(model.getOrCreate%s(event.get%1$s()));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               }
+               else {
+                  body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\"\\\\s+\")) {\n", StrUtil.cap(attrName)));
+                  body.append("   if (name.equals(\"\")) continue;\n");
+                  body.append(String.format("   object.with%s(model.getOrCreate%s(name));\n", StrUtil.cap(attrName), otherClazz.getName()));
+                  body.append("}\n");
+               }
             }
          }
       }
@@ -498,6 +504,9 @@ public class WorkflowGenerator
             //        product: shoes
             //        place: shelf23
             DataNote dataNote = (DataNote) note;
+            if (dataNote.getType().getMigratedTo() != null) {
+               continue;
+            }
             LinkedHashMap<String, String> map = note.getMap();
             LinkedHashMap<String, String> mockup = getMockup(map);
             addModelClassForDataNote(modelManager, serviceNote, mockup);
@@ -580,6 +589,10 @@ public class WorkflowGenerator
 
    private void addModelClassForDataNote(ClassModelManager modelManager, ServiceNote serviceNote, LinkedHashMap<String, String> map)
    {
+      if (map.get("@migratedTo") != null) {
+         // no model class for migrated events
+         return;
+      }
       Iterator<Map.Entry<String, String>> iter = map.entrySet().iterator();
       Map.Entry<String, String> entry = iter.next();
       String type = entry.getKey();
@@ -731,6 +744,10 @@ public class WorkflowGenerator
 
          String attrName = entry.getKey();
          if (attrName.endsWith(".back")) {
+            continue;
+         }
+
+         if (attrName.startsWith("@")) {
             continue;
          }
 
@@ -1056,6 +1073,9 @@ public class WorkflowGenerator
       keys.remove(StrUtil.decap(dataType));
       for (String key : keys) {
          if (key.endsWith(".back")) {
+            continue;
+         }
+         if (key.startsWith("@")) {
             continue;
          }
          mm.haveAttribute(clazz, key, "String");

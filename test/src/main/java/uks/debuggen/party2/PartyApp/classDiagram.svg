@@ -1,8 +1,8 @@
-<svg width="931px" height="350px"
- viewBox="0.00 0.00 930.50 350.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 346)">
+<svg width="931px" height="436px"
+ viewBox="0.00 0.00 930.50 436.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 432)">
 <title>uks.debuggen.party2.PartyApp</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-346 926.5,-346 926.5,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-432 926.5,-432 926.5,4 -4,4"/>
 <!-- Guest -->
 <g id="node1" class="node"><title>Guest</title>
 <polygon fill="none" stroke="black" points="51,-62.5 51,-83.5 148,-83.5 148,-62.5 51,-62.5"/>
@@ -27,26 +27,39 @@
 <text text-anchor="middle" x="43.0293" y="-119.761" font-family="Times New Roman,serif" font-size="14.00">items *</text>
 <text text-anchor="middle" x="65.9387" y="-91.4122" font-family="Times New Roman,serif" font-size="14.00">buyer</text>
 </g>
-<!-- Party -->
-<g id="node3" class="node"><title>Party</title>
-<polygon fill="none" stroke="black" points="38,-309.5 38,-330.5 129,-330.5 129,-309.5 38,-309.5"/>
-<text text-anchor="start" x="68.5" y="-316.3" font-family="Times New Roman,serif" font-size="14.00">Party</text>
-<polygon fill="none" stroke="black" points="38,-258.5 38,-309.5 129,-309.5 129,-258.5 38,-258.5"/>
+<!-- Party2 -->
+<g id="node3" class="node"><title>Party2</title>
+<polygon fill="none" stroke="black" points="38,-309.5 38,-330.5 128,-330.5 128,-309.5 38,-309.5"/>
+<text text-anchor="start" x="64.5" y="-316.3" font-family="Times New Roman,serif" font-size="14.00">Party2</text>
+<polygon fill="none" stroke="black" points="38,-258.5 38,-309.5 128,-309.5 128,-258.5 38,-258.5"/>
 <text text-anchor="start" x="41" y="-295.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
 <text text-anchor="start" x="41" y="-280.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
-<text text-anchor="start" x="41" y="-265.3" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
+<text text-anchor="start" x="41" y="-265.3" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
 </g>
-<!-- Guest&#45;&gt;Party -->
-<g id="edge5" class="edge"><title>Guest&#45;&gt;Party</title>
+<!-- Guest&#45;&gt;Party2 -->
+<g id="edge5" class="edge"><title>Guest&#45;&gt;Party2</title>
 <path fill="none" stroke="black" d="M102.098,-87.6975C104.08,-120.689 105.522,-169.063 101,-211 99.4599,-225.284 96.4611,-240.722 93.3461,-254.337"/>
 <text text-anchor="middle" x="78.8461" y="-243.137" font-family="Times New Roman,serif" font-size="14.00">party</text>
 <text text-anchor="middle" x="125.098" y="-91.4975" font-family="Times New Roman,serif" font-size="14.00">guests *</text>
 </g>
-<!-- Item&#45;&gt;Party -->
-<g id="edge6" class="edge"><title>Item&#45;&gt;Party</title>
+<!-- Item&#45;&gt;Party2 -->
+<g id="edge6" class="edge"><title>Item&#45;&gt;Party2</title>
 <path fill="none" stroke="black" d="M57.9107,-211.112C62.1358,-224.986 66.8884,-240.593 71.1116,-254.461"/>
 <text text-anchor="middle" x="56.6116" y="-243.261" font-family="Times New Roman,serif" font-size="14.00">party</text>
 <text text-anchor="middle" x="37.9107" y="-214.912" font-family="Times New Roman,serif" font-size="14.00">items *</text>
+</g>
+<!-- Region -->
+<g id="node8" class="node"><title>Region</title>
+<polygon fill="none" stroke="black" points="55,-403 55,-424 112,-424 112,-403 55,-403"/>
+<text text-anchor="start" x="63.5" y="-409.8" font-family="Times New Roman,serif" font-size="14.00">Region</text>
+<polygon fill="none" stroke="black" points="55,-382 55,-403 112,-403 112,-382 55,-382"/>
+<text text-anchor="start" x="58" y="-388.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+</g>
+<!-- Party2&#45;&gt;Region -->
+<g id="edge7" class="edge"><title>Party2&#45;&gt;Region</title>
+<path fill="none" stroke="black" d="M83,-334.552C83,-349.037 83,-365.034 83,-377.813"/>
+<text text-anchor="middle" x="65.5" y="-366.613" font-family="Times New Roman,serif" font-size="14.00">region</text>
+<text text-anchor="middle" x="59" y="-338.352" font-family="Times New Roman,serif" font-size="14.00">parties *</text>
 </g>
 <!-- PartyAppBuilder -->
 <g id="node4" class="node"><title>PartyAppBuilder</title>
@@ -100,7 +113,7 @@
 <text text-anchor="start" x="526" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
 </g>
 <!-- User -->
-<g id="node8" class="node"><title>User</title>
+<g id="node9" class="node"><title>User</title>
 <polygon fill="none" stroke="black" points="814,-69.5 814,-90.5 915,-90.5 915,-69.5 814,-69.5"/>
 <text text-anchor="start" x="851" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">User</text>
 <polygon fill="none" stroke="black" points="814,-3.5 814,-69.5 915,-69.5 915,-3.5 814,-3.5"/>

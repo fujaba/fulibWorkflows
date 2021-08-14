@@ -89,7 +89,7 @@
   superClass: 	workflowNote
 
 - dataType: 	org.fulib.classmodel.Clazz
-  attributes: 	dataType_dataTypeName
+  attributes: 	dataType_dataTypeName 	dataType_migratedTo
   model: 	c
   modified: 	false
   name: 	DataType
@@ -551,6 +551,15 @@
   id: 	DataType_dataTypeName
   modified: 	false
   name: 	dataTypeName
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- dataType_migratedTo: 	org.fulib.classmodel.Attribute
+  clazz: 	dataType
+  id: 	DataType_migratedTo
+  modified: 	false
+  name: 	migratedTo
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

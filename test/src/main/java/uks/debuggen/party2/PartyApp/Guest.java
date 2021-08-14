@@ -17,8 +17,8 @@ public class Guest
    private String name;
    private String expenses;
    private List<Item> items;
-   private Party party;
    protected PropertyChangeSupport listeners;
+   private Party2 party;
 
    public String getId()
    {
@@ -140,19 +140,19 @@ public class Guest
       return this;
    }
 
-   public Party getParty()
+   public Party2 getParty()
    {
       return this.party;
    }
 
-   public Guest setParty(Party value)
+   public Guest setParty(Party2 value)
    {
       if (this.party == value)
       {
          return this;
       }
 
-      final Party oldValue = this.party;
+      final Party2 oldValue = this.party;
       if (this.party != null)
       {
          this.party = null;

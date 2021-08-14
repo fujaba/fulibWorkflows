@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	partyAppModel 	partyAppBusinessLogic 	partyAppBuilder 	partyAppService 	user 	party 	item 	guest
+  classes: 	partyAppModel 	partyAppBusinessLogic 	partyAppBuilder 	partyAppService 	user 	region 	party2 	item 	guest
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	partyAppModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	partyAppModel_getOrCreateUser 	partyAppModel_getOrCreateParty 	partyAppModel_getOrCreateItem 	partyAppModel_getOrCreateGuest
+  methods: 	partyAppModel_getOrCreateUser 	partyAppModel_getOrCreateRegion 	partyAppModel_getOrCreateParty2 	partyAppModel_getOrCreateItem 	partyAppModel_getOrCreateGuest
   model: 	c
   modified: 	false
   name: 	PartyAppModel
@@ -21,7 +21,7 @@
   attributes: 	partyAppBusinessLogic_model 	partyAppBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;"
-  methods: 	partyAppBusinessLogic_handleCheckNameCommand 	partyAppBusinessLogic_handleDemoCheckNameCommand 	partyAppBusinessLogic_handleCheckEmailCommand 	partyAppBusinessLogic_handleDemoCheckEmailCommand 	partyAppBusinessLogic_handleCheckPasswordCommand 	partyAppBusinessLogic_handleDemoCheckPasswordCommand 	partyAppBusinessLogic_handleGetPartyCommand 	partyAppBusinessLogic_handleDemoGetPartyCommand 	partyAppBusinessLogic_handleBuildItemCommand 	partyAppBusinessLogic_handleDemoBuildItemCommand 	partyAppBusinessLogic_initEventHandlerMap 	partyAppBusinessLogic_ignoreEvent 	partyAppBusinessLogic_getHandler
+  methods: 	partyAppBusinessLogic_handleCheckNameCommand 	partyAppBusinessLogic_handleDemoCheckNameCommand 	partyAppBusinessLogic_handleCheckEmailCommand 	partyAppBusinessLogic_handleDemoCheckEmailCommand 	partyAppBusinessLogic_handleCheckPasswordCommand 	partyAppBusinessLogic_handleDemoCheckPasswordCommand 	partyAppBusinessLogic_handleGetRegionCommand 	partyAppBusinessLogic_handleDemoGetRegionCommand 	partyAppBusinessLogic_handleGetPartyCommand 	partyAppBusinessLogic_handleDemoGetPartyCommand 	partyAppBusinessLogic_handleBuildItemCommand 	partyAppBusinessLogic_handleDemoBuildItemCommand 	partyAppBusinessLogic_initEventHandlerMap 	partyAppBusinessLogic_ignoreEvent 	partyAppBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	PartyAppBusinessLogic
@@ -32,7 +32,7 @@
   attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;"
-  methods: 	partyAppBuilder_outdated 	partyAppBuilder_handleUserBuilt 	partyAppBuilder_handlePartyBuilt 	partyAppBuilder_handleItemBuilt 	partyAppBuilder_handleGuestBuilt 	partyAppBuilder_stripBrackets
+  methods: 	partyAppBuilder_outdated 	partyAppBuilder_handleUserBuilt 	partyAppBuilder_handleRegionBuilt 	partyAppBuilder_handlePartyBuilt 	partyAppBuilder_handleParty2Built 	partyAppBuilder_handleItemBuilt 	partyAppBuilder_handleGuestBuilt 	partyAppBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	PartyAppBuilder
@@ -57,13 +57,21 @@
   name: 	User
   propertyStyle: 	Bean
 
-- party: 	org.fulib.classmodel.Clazz
-  attributes: 	party_id 	party_name 	party_location
+- region: 	org.fulib.classmodel.Clazz
+  attributes: 	region_id
   model: 	c
   modified: 	false
-  name: 	Party
+  name: 	Region
   propertyStyle: 	Bean
-  roles: 	party_items 	party_guests
+  roles: 	region_parties
+
+- party2: 	org.fulib.classmodel.Clazz
+  attributes: 	party2_id 	party2_name 	party2_address
+  model: 	c
+  modified: 	false
+  name: 	Party2
+  propertyStyle: 	Bean
+  roles: 	party2_region 	party2_items 	party2_guests
 
 - item: 	org.fulib.classmodel.Clazz
   attributes: 	item_id 	item_name 	item_price
@@ -113,20 +121,35 @@ return (User) modelMap.computeIfAbsent(id, k -> new User().setId(k));
   returnType: 	User
   signature: 	"class/PartyAppModel/method/getOrCreateUser(String)"
 
-- partyAppModel_getOrCreateParty: 	org.fulib.classmodel.FMethod
+- partyAppModel_getOrCreateRegion: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppModel
-  declaration: 	"public Party getOrCreateParty(String id)"
-  id: 	PartyAppModel_getOrCreateParty
+  declaration: 	"public Region getOrCreateRegion(String id)"
+  id: 	PartyAppModel_getOrCreateRegion
   methodBody: 	"if (id == null) return null;
-return (Party) modelMap.computeIfAbsent(id, k -> new Party().setId(k));
+return (Region) modelMap.computeIfAbsent(id, k -> new Region().setId(k));
 "
   modified: 	false
   modifiers: 	public
-  name: 	getOrCreateParty
+  name: 	getOrCreateRegion
   paramsString: 	"String id"
-  returnType: 	Party
-  signature: 	"class/PartyAppModel/method/getOrCreateParty(String)"
+  returnType: 	Region
+  signature: 	"class/PartyAppModel/method/getOrCreateRegion(String)"
+
+- partyAppModel_getOrCreateParty2: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppModel
+  declaration: 	"public Party2 getOrCreateParty2(String id)"
+  id: 	PartyAppModel_getOrCreateParty2
+  methodBody: 	"if (id == null) return null;
+return (Party2) modelMap.computeIfAbsent(id, k -> new Party2().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateParty2
+  paramsString: 	"String id"
+  returnType: 	Party2
+  signature: 	"class/PartyAppModel/method/getOrCreateParty2(String)"
 
 - partyAppModel_getOrCreateItem: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -296,6 +319,43 @@ if (event.getId().equals(\"13:03\")) {
   returnType: 	void
   signature: 	"class/PartyAppBusinessLogic/method/handleDemoCheckPasswordCommand(CheckPasswordCommand)"
 
+- partyAppBusinessLogic_handleGetRegionCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBusinessLogic
+  declaration: 	"private void handleGetRegionCommand(Event e)"
+  id: 	PartyAppBusinessLogic_handleGetRegionCommand
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+GetRegionCommand event = (GetRegionCommand) e;
+handleDemoGetRegionCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleGetRegionCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBusinessLogic/method/handleGetRegionCommand(Event)"
+
+- partyAppBusinessLogic_handleDemoGetRegionCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBusinessLogic
+  declaration: 	"private void handleDemoGetRegionCommand(GetRegionCommand event)"
+  id: 	PartyAppBusinessLogic_handleDemoGetRegionCommand
+  methodBody: 	"if (event.getId().equals(\"13:56\")) {
+   RegionBuilt kasselEvent = new RegionBuilt();
+   kasselEvent.setId(\"13:56:02\");
+   kasselEvent.setBlockId(\"Kassel\");
+   service.apply(kasselEvent);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoGetRegionCommand
+  paramsString: 	"GetRegionCommand event"
+  returnType: 	void
+  signature: 	"class/PartyAppBusinessLogic/method/handleDemoGetRegionCommand(GetRegionCommand)"
+
 - partyAppBusinessLogic_handleGetPartyCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBusinessLogic
@@ -319,11 +379,12 @@ handleDemoGetPartyCommand(event);
   declaration: 	"private void handleDemoGetPartyCommand(GetPartyCommand event)"
   id: 	PartyAppBusinessLogic_handleDemoGetPartyCommand
   methodBody: 	"if (event.getId().equals(\"14:01\")) {
-   PartyBuilt sE_BBQEvent = new PartyBuilt();
-   sE_BBQEvent.setId(\"14:01:02\");
+   Party2Built sE_BBQEvent = new Party2Built();
+   sE_BBQEvent.setId(\"14:01:03\");
    sE_BBQEvent.setBlockId(\"sE_BBQ\");
    sE_BBQEvent.setName(\"SE BBQ\");
-   sE_BBQEvent.setLocation(\"Uni\");
+   sE_BBQEvent.setRegion(\"Kassel\");
+   sE_BBQEvent.setAddress(\"Uni\");
    service.apply(sE_BBQEvent);
 
 }
@@ -412,10 +473,13 @@ if (event.getId().equals(\"14:09\")) {
    handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
    handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
    handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
+   handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
    handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
    handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
    handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
+   handlerMap.put(RegionBuilt.class, builder::handleRegionBuilt);
    handlerMap.put(PartyBuilt.class, builder::handlePartyBuilt);
+   handlerMap.put(Party2Built.class, builder::handleParty2Built);
    handlerMap.put(ItemBuilt.class, builder::handleItemBuilt);
    handlerMap.put(GuestBuilt.class, builder::handleGuestBuilt);
 }
@@ -540,6 +604,24 @@ object.setPassword(event.getPassword());
   returnType: 	void
   signature: 	"class/PartyAppBuilder/method/handleUserBuilt(Event)"
 
+- partyAppBuilder_handleRegionBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public void handleRegionBuilt(Event e)"
+  id: 	PartyAppBuilder_handleRegionBuilt
+  methodBody: 	"RegionBuilt event = (RegionBuilt) e;
+if (outdated(event)) {
+   return;
+}
+Region object = model.getOrCreateRegion(event.getBlockId());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handleRegionBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/handleRegionBuilt(Event)"
+
 - partyAppBuilder_handlePartyBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
@@ -549,9 +631,8 @@ object.setPassword(event.getPassword());
 if (outdated(event)) {
    return;
 }
-Party object = model.getOrCreateParty(event.getBlockId());
-object.setName(event.getName());
-object.setLocation(event.getLocation());
+// please insert a no before fulib in the next line and insert event upgrading code
+// fulib
 "
   modified: 	false
   modifiers: 	public
@@ -559,6 +640,27 @@ object.setLocation(event.getLocation());
   paramsString: 	"Event e"
   returnType: 	void
   signature: 	"class/PartyAppBuilder/method/handlePartyBuilt(Event)"
+
+- partyAppBuilder_handleParty2Built: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public void handleParty2Built(Event e)"
+  id: 	PartyAppBuilder_handleParty2Built
+  methodBody: 	"Party2Built event = (Party2Built) e;
+if (outdated(event)) {
+   return;
+}
+Party2 object = model.getOrCreateParty2(event.getBlockId());
+object.setName(event.getName());
+object.setRegion(model.getOrCreateRegion(event.getRegion()));
+object.setAddress(event.getAddress());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	handleParty2Built
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/handleParty2Built(Event)"
 
 - partyAppBuilder_handleItemBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -573,7 +675,7 @@ Item object = model.getOrCreateItem(event.getBlockId());
 object.setName(event.getName());
 object.setPrice(event.getPrice());
 object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
-object.setParty(model.getOrCreateParty(event.getParty()));
+object.setParty(model.getOrCreateParty2(event.getParty()));
 "
   modified: 	false
   modifiers: 	public
@@ -593,7 +695,7 @@ if (outdated(event)) {
 }
 Guest object = model.getOrCreateGuest(event.getBlockId());
 object.setName(event.getName());
-object.setParty(model.getOrCreateParty(event.getParty()));
+object.setParty(model.getOrCreateParty2(event.getParty()));
 object.setExpenses(event.getExpenses());
 "
   modified: 	false
@@ -898,6 +1000,15 @@ if (\"get party 13:05\".equals(event)) {
    apply(e1305);
 }
 
+if (\"get region 13:56\".equals(event)) {
+
+   // create GetRegionCommand: get region 13:56
+   GetRegionCommand e1356 = new GetRegionCommand();
+   e1356.setId(\"13:56\");
+   e1356.setRegion(request.queryParams(\"region\"));
+   apply(e1356);
+}
+
 if (\"get party 14:01\".equals(event)) {
 
    // create GetPartyCommand: get party 14:01
@@ -1035,6 +1146,19 @@ if (id.equals(\"13_04\")) {
    html.append(\"   <p>Choose a party</p>\n\");
    html.append(\"   <p><input id=\\"party\\" name=\\"party\\" placeholder=\\"party?\\"></p>\n\");
    html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get party 13:05\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 13:55
+if (id.equals(\"13_55\")) {
+   html.append(\"<form action=\\"/page/14_00\\" method=\\"get\\">\n\");
+   // PartyApp 13:55
+   html.append(\"   <p>Welcome Alice</p>\n\");
+   html.append(\"   <p>In which region is your party</p>\n\");
+   html.append(\"   <p><input id=\\"region\\" name=\\"region\\" placeholder=\\"region?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get region 13:56\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -1246,51 +1370,82 @@ catch (UnirestException e) {
   type: 	String
   typeSignature: 	String
 
-- party_id: 	org.fulib.classmodel.Attribute
-  clazz: 	party
-  id: 	Party_id
+- region_id: 	org.fulib.classmodel.Attribute
+  clazz: 	region
+  id: 	Region_id
   modified: 	false
   name: 	id
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- party_name: 	org.fulib.classmodel.Attribute
-  clazz: 	party
-  id: 	Party_name
+- region_parties: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	region
+  collectionType: 	c1
+  id: 	Region_parties
+  modified: 	false
+  name: 	parties
+  other: 	party2_region
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- party2_id: 	org.fulib.classmodel.Attribute
+  clazz: 	party2
+  id: 	Party2_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party2_name: 	org.fulib.classmodel.Attribute
+  clazz: 	party2
+  id: 	Party2_name
   modified: 	false
   name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- party_location: 	org.fulib.classmodel.Attribute
-  clazz: 	party
-  id: 	Party_location
+- party2_address: 	org.fulib.classmodel.Attribute
+  clazz: 	party2
+  id: 	Party2_address
   modified: 	false
-  name: 	location
+  name: 	address
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- party_items: 	org.fulib.classmodel.AssocRole
+- party2_region: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	party2
+  id: 	Party2_region
+  modified: 	false
+  name: 	region
+  other: 	region_parties
+  propertyStyle: 	Bean
+
+- party2_items: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
-  clazz: 	party
+  clazz: 	party2
   collectionType: 	c1
-  id: 	Party_items
+  id: 	Party2_items
   modified: 	false
   name: 	items
   other: 	item_party
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- party_guests: 	org.fulib.classmodel.AssocRole
+- party2_guests: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
-  clazz: 	party
+  clazz: 	party2
   collectionType: 	c1
-  id: 	Party_guests
+  id: 	Party2_guests
   modified: 	false
   name: 	guests
   other: 	guest_party
@@ -1341,7 +1496,7 @@ catch (UnirestException e) {
   id: 	Item_party
   modified: 	false
   name: 	party
-  other: 	party_items
+  other: 	party2_items
   propertyStyle: 	Bean
 
 - guest_id: 	org.fulib.classmodel.Attribute
@@ -1390,6 +1545,6 @@ catch (UnirestException e) {
   id: 	Guest_party
   modified: 	false
   name: 	party
-  other: 	party_guests
+  other: 	party2_guests
   propertyStyle: 	Bean
 

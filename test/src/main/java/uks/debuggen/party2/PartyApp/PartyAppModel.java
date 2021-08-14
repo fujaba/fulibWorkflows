@@ -33,12 +33,6 @@ public class PartyAppModel
       return (User) modelMap.computeIfAbsent(id, k -> new User().setId(k));
    }
 
-   public Party getOrCreateParty(String id)
-   {
-      if (id == null) return null;
-      return (Party) modelMap.computeIfAbsent(id, k -> new Party().setId(k));
-   }
-
    public Item getOrCreateItem(String id)
    {
       if (id == null) return null;
@@ -68,5 +62,17 @@ public class PartyAppModel
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
+   }
+
+   public Region getOrCreateRegion(String id)
+   {
+      if (id == null) return null;
+      return (Region) modelMap.computeIfAbsent(id, k -> new Region().setId(k));
+   }
+
+   public Party2 getOrCreateParty2(String id)
+   {
+      if (id == null) return null;
+      return (Party2) modelMap.computeIfAbsent(id, k -> new Party2().setId(k));
    }
 }

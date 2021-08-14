@@ -122,6 +122,7 @@ public class GenModel implements ClassModelDecorator
       List<ServiceNote> handlers;
       @Link("dataTypes")
       EventStormingBoard eventStormingBoard;
+      String migratedTo;
    }
 
    class EventNote extends WorkflowNote

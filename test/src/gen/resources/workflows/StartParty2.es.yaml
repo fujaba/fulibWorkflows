@@ -5,6 +5,24 @@
 - action: Alice
 
 - page:
+    - name: PartyApp 13:55
+    - label: Welcome Alice
+    - label: In which region is your party
+    - input: region
+      fill: Kassel
+    - button: ok
+      command: get region 13:56
+
+- policy: PartyApp
+  trigger: 13:56
+
+- query: sE_BBQ 13:56:01
+  result: []
+
+- data: 13:56:02
+  region: Kassel
+
+- page:
     - name: PartyApp 14:00
     - label: Welcome Alice
     - label: Choose a party
@@ -15,9 +33,6 @@
     - button: ok
       command: get party 14:01
 
-- policy: PartyApp
-  trigger: 14:01
-
 - query: sE_BBQ 14:01:01
   result: []
 
@@ -25,6 +40,15 @@
   Party: sE_BBQ
   name: SE BBQ
   location: Uni
+  @migratedTo: Party2
+
+- data: 14:01:03
+  Party2: sE_BBQ
+  name: SE BBQ
+  region: Kassel
+  region.back: [parties]
+  address: Uni
+
 
 - page:
     - name: PartyApp 14:02
