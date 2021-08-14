@@ -13,6 +13,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.yaml.Yaml;
+import org.fulib.yaml.YamlIdMap;
 import spark.Request;
 import spark.Response;
 import spark.Service;
@@ -50,11 +51,11 @@ public class EventBroker
             "post to /subscribe a ServiceSubcribed event. <br>\n" +
             "post to /publish any event you want other services to know about<br>\n");
 
-      String yaml = Yaml.encode(subscribersMap.values().toArray());
+      String yaml = Yaml.encodeSimple(subscribersMap.values().toArray());
       String pre = String.format("<pre>%s</pre>", yaml);
       buf.append(pre);
 
-      yaml = Yaml.encode(getHistory().values().toArray());
+      yaml = Yaml.encodeSimple(getHistory().values().toArray());
       pre = String.format("<pre id=\"history\">%s</pre>", yaml);
       buf.append(pre);
       return buf.toString();
@@ -64,7 +65,11 @@ public class EventBroker
    {
       try {
          String body = req.body();
-         Map<String, Object> map = Yaml.decode(body);
+
+         YamlIdMap idMap = new YamlIdMap(new String[]{Event.class.getPackage().getName()});
+
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
 
          for (Object value : map.values()) {
             ServiceSubscribed serviceSubscribed = (ServiceSubscribed) value;
@@ -72,7 +77,7 @@ public class EventBroker
 
             // reply with list of all events
             Collection<Event> values = getHistory().values();
-            String yaml = Yaml.encode(values.toArray());
+            String yaml = Yaml.encodeSimple(values.toArray());
             return yaml;
          }
       }
@@ -93,7 +98,9 @@ public class EventBroker
       try {
          String body = req.body();
 
-         Map<String, Object> newEvents = Yaml.decode(body);
+         YamlIdMap idMap = new YamlIdMap(new String[]{Event.class.getPackage().getName()});
+         idMap.decode(body);
+         Map<String, Object> newEvents = idMap.getObjIdMap();
 
          for (Object obj : newEvents.values()) {
             Event newEvent = (Event) obj;
@@ -114,14 +121,12 @@ public class EventBroker
    private void publish(Event newEvent)
    {
       Unirest.setTimeouts(3*60*1000, 3*60*1000);
-      String yaml = Yaml.encode(newEvent);
+      String yaml = Yaml.encodeSimple(newEvent);
       for (ServiceSubscribed service : subscribersMap.values()) {
          try {
             HttpResponse<String> response = Unirest.post(service.getServiceUrl())
                   .body(yaml)
                   .asString();
-            // System.out.println(response.getBody());
-            // System.out.println();
          }
          catch (UnirestException e) {
             e.printStackTrace();
@@ -129,7 +134,7 @@ public class EventBroker
       }
    }
 
-   public LinkedHashMap<String, Event> getHistory() // no fulib
+   public LinkedHashMap<String, Event> getHistory()
    {
       if (history == null) {
          history = new LinkedHashMap<>();

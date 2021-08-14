@@ -1,0 +1,22 @@
+
+# ==================================================
+- board: PartyApp
+
+- workflow: overview
+
+- subprocess: register new user
+
+- event: user registered 12:00
+
+- event: login succeeded 13:00
+
+- boundedcontext: start party2
+
+- event: party created 14:00
+
+- event: item booked 15:00
+
+- event: saldi computed 16:00
+
+
+

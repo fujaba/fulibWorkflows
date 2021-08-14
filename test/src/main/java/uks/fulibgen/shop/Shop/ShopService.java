@@ -214,7 +214,7 @@ public class ShopService
    private void subscribeAndLoadOldEvents()
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-            .setServiceUrl("http://localhost:42100/apply");
+            .setServiceUrl(String.format("http://localhost:%d/apply", port));
       String json = Yaml.encode(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";

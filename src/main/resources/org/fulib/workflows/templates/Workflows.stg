@@ -41,7 +41,7 @@ catch (Exception e) {
 
 serviceSubscribeAndLoadOldEvents(port) ::= <<
 ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-      .setServiceUrl("http://localhost:%port%/apply");
+      .setServiceUrl(String.format("http://localhost:\%d/apply", port));
 String json = Yaml.encode(serviceSubscribed);
 try {
    String url = "http://localhost:42000/subscribe";

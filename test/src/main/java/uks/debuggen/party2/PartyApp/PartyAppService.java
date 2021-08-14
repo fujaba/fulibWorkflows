@@ -1,4 +1,4 @@
-package uks.debuggen.party.PartyApp;
+package uks.debuggen.party2.PartyApp;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
@@ -19,7 +19,7 @@ import org.fulib.yaml.YamlIdMap;
 import spark.Request;
 import spark.Response;
 import spark.Service;
-import uks.debuggen.party.events.*;
+import uks.debuggen.party2.events.*;
 
 import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
