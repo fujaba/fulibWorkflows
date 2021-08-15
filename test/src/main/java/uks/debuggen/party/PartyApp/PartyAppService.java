@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.fulib.yaml.ReflectorMap;
 import org.fulib.yaml.Yaml;
 import org.fulib.yaml.YamlIdMap;
 import spark.Request;
@@ -49,8 +50,7 @@ public class PartyAppService
 
    public PartyAppService setHistory(LinkedHashMap<String, Event> value)
    {
-      if (Objects.equals(value, this.history))
-      {
+      if (Objects.equals(value, this.history)) {
          return this;
       }
 
@@ -67,8 +67,7 @@ public class PartyAppService
 
    public PartyAppService setPort(int value)
    {
-      if (value == this.port)
-      {
+      if (value == this.port) {
          return this;
       }
 
@@ -85,8 +84,7 @@ public class PartyAppService
 
    public PartyAppService setSpark(Service value)
    {
-      if (Objects.equals(value, this.spark))
-      {
+      if (Objects.equals(value, this.spark)) {
          return this;
       }
 
@@ -103,8 +101,7 @@ public class PartyAppService
 
    public PartyAppService setModel(PartyAppModel value)
    {
-      if (Objects.equals(value, this.model))
-      {
+      if (Objects.equals(value, this.model)) {
          return this;
       }
 
@@ -121,20 +118,17 @@ public class PartyAppService
 
    public PartyAppService setBusinessLogic(PartyAppBusinessLogic value)
    {
-      if (this.businessLogic == value)
-      {
+      if (this.businessLogic == value) {
          return this;
       }
 
       final PartyAppBusinessLogic oldValue = this.businessLogic;
-      if (this.businessLogic != null)
-      {
+      if (this.businessLogic != null) {
          this.businessLogic = null;
          oldValue.setService(null);
       }
       this.businessLogic = value;
-      if (value != null)
-      {
+      if (value != null) {
          value.setService(this);
       }
       this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
@@ -148,20 +142,17 @@ public class PartyAppService
 
    public PartyAppService setBuilder(PartyAppBuilder value)
    {
-      if (this.builder == value)
-      {
+      if (this.builder == value) {
          return this;
       }
 
       final PartyAppBuilder oldValue = this.builder;
-      if (this.builder != null)
-      {
+      if (this.builder != null) {
          this.builder = null;
          oldValue.setService(null);
       }
       this.builder = value;
-      if (value != null)
-      {
+      if (value != null) {
          value.setService(this);
       }
       this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
@@ -774,7 +765,6 @@ public class PartyAppService
       }
 
 
-
       // 12:00
       if (id.equals("12_00")) {
          html.append("<form action=\"/page/12_02\" method=\"get\">\n");
@@ -958,7 +948,6 @@ public class PartyAppService
       }
 
 
-
       html.append("This is the Shop Service page " + id + "\n");
       return html.toString();
    }
@@ -980,8 +969,8 @@ public class PartyAppService
 
    private String postApply(Request req, Response res)
    {
+      String body = req.body();
       try {
-         String body = req.body();
          YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
          idMap.decode(body);
          Map<String, Object> map = idMap.getObjIdMap();
@@ -991,15 +980,20 @@ public class PartyAppService
          }
       }
       catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
       }
       return "apply done";
    }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      if (this.listeners != null)
-      {
+      if (this.listeners != null) {
          this.listeners.firePropertyChange(propertyName, oldValue, newValue);
          return true;
       }
@@ -1008,8 +1002,7 @@ public class PartyAppService
 
    public PropertyChangeSupport listeners()
    {
-      if (this.listeners == null)
-      {
+      if (this.listeners == null) {
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;

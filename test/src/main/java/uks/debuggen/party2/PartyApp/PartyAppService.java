@@ -25,6 +25,10 @@ import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.time.Instant;
+import java.time.Instant;
+;
+;
 
 public class PartyAppService
 {
@@ -253,6 +257,7 @@ public class PartyAppService
       Consumer<Event> handler = businessLogic.getHandler(event);
       handler.accept(event);
       history.put(event.getId(), event);
+      firePropertyChange(PROPERTY_HISTORY, null, event);
       publish(event);
    }
 
@@ -293,6 +298,7 @@ public class PartyAppService
          pageHandlerMap.put("withParty", this::pageWithParty);
          pageHandlerMap.put("addItem", this::pageAddItem);
          pageHandlerMap.put("withItem", this::pageWithItem);
+         pageHandlerMap.put("withRegion", this::pageWithRegion);
       }
    }
 
@@ -345,6 +351,7 @@ public class PartyAppService
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
+      String regionName = request.queryParams("region");
 
       StringBuilder html = new StringBuilder();
       if (sessionId == null || !validSessionIds.contains(sessionId)) {
@@ -355,15 +362,15 @@ public class PartyAppService
 
       Query query = new Query().setKey(partyName);
       query(query);
-      if (query.getResults().isEmpty() || !(query.getResults().get(0) instanceof PartyBuilt)) {
+      if (query.getResults().isEmpty() || !(query.getResults().get(0) instanceof Party2Built)) {
          return pageGetParty(request, response, sessionId);
       }
 
-      PartyBuilt partyBuilt = (PartyBuilt) query.getResults().get(0);
+      Party2Built partyBuilt = (Party2Built) query.getResults().get(0);
       html.append("<form action=\"/page/withItem\" method=\"get\">\n");
       html.append(String.format("   <p>Welcome %s</p>\n", name));
-      html.append(String.format("   <p>Let's do the %s</p>\n", partyBuilt.getName()));
-
+      html.append(String.format("   <p>Let's do the %s in </p>\n", partyBuilt.getName(), regionName));
+      html.append("   <p>Book an item</p>\n");
       html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
       html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
       html.append("   <p><input id=\"buyer\" name=\"buyer\" placeholder=\"buyer?\"></p>\n");
@@ -371,17 +378,21 @@ public class PartyAppService
       html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
       html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
       html.append(String.format("   <p><input id=\"party\" name=\"party\" type=\"hidden\" value=\"%s\"></p>\n", partyBuilt.getName()));
+      html.append(String.format("   <p><input id=\"region\" name=\"region\" type=\"hidden\" value=\"%s\"></p>\n", regionName));
       html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
       html.append("</form>\n");
 
       return html.toString();
    }
 
+
+
    private String pageWithParty(Request request, Response response)
    {
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
+      String regionName = request.queryParams("region");
       String location = request.queryParams("location");
 
       StringBuilder html = new StringBuilder();
@@ -391,26 +402,34 @@ public class PartyAppService
          return html.toString();
       }
 
-      Query query = new Query().setKey(partyName);
-      query(query);
-      if (query.getResults().isEmpty()) {
-         PartyBuilt partyBuilt = new PartyBuilt();
+      DataEvent dataEvent = builder.getEventStore().get(partyName);
+      if (dataEvent != null) {
+         // there is an old party with that name
+         // go for it
+      }
+      else {
+         dataEvent = builder.getEventStore().get(regionName + "." + partyName);
+      }
+
+      if (dataEvent == null) {
+         Party2Built partyBuilt = new Party2Built();
          partyBuilt.setId(isoNow());
-         partyBuilt.setBlockId(partyName);
+         partyBuilt.setBlockId(regionName + "." + partyName);
          partyBuilt.setName(partyName);
-         partyBuilt.setLocation(location);
+         partyBuilt.setAddress(location);
+         partyBuilt.setRegion(regionName);
          apply(partyBuilt);
          return pageGetOverview(request, response);
       }
 
-      if (!(query.getResults().get(0) instanceof PartyBuilt)) {
+      if (!(dataEvent instanceof Party2Built)) {
          html.append(pageGetParty(request, response, sessionId));
          html.append("invalid party name");
          return html.toString();
       }
 
-      PartyBuilt partyBuilt = (PartyBuilt) query.getResults().get(0);
-      if (partyBuilt.getLocation().equals(location)) {
+      Party2Built partyBuilt = (Party2Built) dataEvent;
+      if (partyBuilt.getAddress().equals(location)) {
          return pageGetOverview(request, response);
       }
 
@@ -424,13 +443,14 @@ public class PartyAppService
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
+      String regionName = request.queryParams("region");
 
       Party2 party = model.getOrCreateParty2(partyName);
 
       StringBuilder html = new StringBuilder();
       html.append("<form action=\"/page/addItem\" method=\"get\">\n");
       html.append(String.format("   <p>Welcome %s</p>\n", name));
-      html.append(String.format("   <p>Let's do the %s</p>\n", party.getName()));
+      html.append(String.format("   <p>Let's do the %s in %s</p>\n", party.getName(), regionName));
 
       if (party.getItems().isEmpty()) {
          html.append("   <p>no items yet</p>\n");
@@ -465,6 +485,7 @@ public class PartyAppService
       html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
       html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
       html.append(String.format("   <p><input id=\"party\" name=\"party\" type=\"hidden\" value=\"%s\"></p>\n", party.getName()));
+      html.append(String.format("   <p><input id=\"region\" name=\"region\" type=\"hidden\" value=\"%s\"></p>\n", regionName));
       html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
       html.append("</form>\n");
 
@@ -482,7 +503,7 @@ public class PartyAppService
       return result;
    }
 
-   private String isoNow()
+   public String isoNow()
    {
       return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
    }
@@ -521,7 +542,7 @@ public class PartyAppService
 
          String sessionId = name + "#" + isoNow();
          validSessionIds.add(sessionId);
-         return pageGetParty(request, response, sessionId);
+         return pageGetRegion(request, response, sessionId);
       }
 
       // create user
@@ -535,10 +556,11 @@ public class PartyAppService
 
       String sessionId = name + "#" + isoNow();
       validSessionIds.add(sessionId);
-      return pageGetParty(request, response, sessionId);
+      return pageGetRegion(request, response, sessionId);
    }
 
-   private String pageGetParty(Request request, Response response, String sessionId)
+
+   private String pageGetRegion(Request request, Response response, String sessionId)
    {
       String name = request.queryParams("name");
 
@@ -549,13 +571,61 @@ public class PartyAppService
          return html.toString();
       }
 
+      html.append("<form action=\"/page/withRegion\" method=\"get\">\n");
+      html.append(String.format("   <p>Welcome %s</p>\n", name));
+      html.append("   <p>In which region is your party</p>\n");
+      html.append("   <p><input id=\"region\" name=\"region\" placeholder=\"region?\"></p>\n");
+      html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
+      html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
+      html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+      html.append("</form>\n");
+
+      return html.toString();
+   }
+
+
+   private String pageWithRegion(Request request, Response response) {
+      String name = request.queryParams("name");
+      String sessionId = request.queryParams("sessionId");
+      String regionName = request.queryParams("region");
+
+      StringBuilder html = new StringBuilder();
+      if (!validSessionIds.contains(sessionId)) {
+         html.append(pageGetUserName(request, response));
+         html.append("Invalid session id, please login\n");
+         return html.toString();
+      }
+
+      // just build the region
+      RegionBuilt regionBuilt = new RegionBuilt();
+      regionBuilt.setId(isoNow());
+      regionBuilt.setBlockId(regionName);
+      apply(regionBuilt);
+
+      return pageGetParty(request, response, sessionId);
+   }
+
+
+   private String pageGetParty(Request request, Response response, String sessionId)
+   {
+      String name = request.queryParams("name");
+      String regionName = request.queryParams("region");
+
+      StringBuilder html = new StringBuilder();
+      if (!validSessionIds.contains(sessionId)) {
+         html.append(pageGetUserName(request, response));
+         html.append("Invalid session id, please login\n");
+         return html.toString();
+      }
+
       html.append("<form action=\"/page/withParty\" method=\"get\">\n");
       html.append(String.format("   <p>Welcome %s</p>\n", name));
-      html.append("   <p>Choose a party</p>\n");
+      html.append(String.format("   <p>Choose a party in %s</p>\n", regionName));
       html.append("   <p><input id=\"party\" name=\"party\" placeholder=\"party?\"></p>\n");
       html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
       html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
       html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
+      html.append(String.format("   <p><input id=\"region\" name=\"region\" type=\"hidden\" value=\"%s\"></p>\n", regionName));
       html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
       html.append("</form>\n");
 

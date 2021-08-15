@@ -190,6 +190,8 @@ public class WorkflowGenerator
    {
       serviceClazz = modelManager.haveClass(serviceName + "Service");
       serviceClazz.withImports("import java.util.LinkedHashMap;",
+            "import java.time.Instant;\n",
+            "import java.time.format.DateTimeFormatter;",
             "import java.util.Map;",
             "import java.util.function.Consumer;",
             "import " + em.getClassModel().getPackageName() + ".*;",
@@ -220,6 +222,11 @@ public class WorkflowGenerator
       ST st = group.getInstanceOf("serviceQuery");
       String queryBody = st.render();
       modelManager.haveMethod(serviceClazz, declaration, queryBody);
+
+      declaration = "public String isoNow()";
+      String isNowBody = "return DateTimeFormatter.ISO_INSTANT.format(Instant.now());\n";
+      modelManager.haveMethod(serviceClazz, declaration, isNowBody);
+
    }
 
    private void buildGetPageMethod(ClassModelManager modelManager, Clazz serviceClazz, String serviceName, StringBuilder body)

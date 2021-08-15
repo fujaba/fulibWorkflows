@@ -138,12 +138,22 @@ public class PartyAppBuilder
 
    public void handlePartyBuilt(Event e)
    {
+      // no fulib
       PartyBuilt event = (PartyBuilt) e;
-      if (outdated(event)) {
-         return;
+
+      // upgrade to new version
+      Party2Built party2Built = new Party2Built();
+      party2Built.setId(service.isoNow());
+      party2Built.setBlockId(event.getBlockId());
+      party2Built.setName(event.getName());
+      party2Built.setAddress(event.getLocation());
+
+      // do I have a region
+      Party2Built oldParty2Built = (Party2Built) getEventStore().get(event.getBlockId());
+      if (oldParty2Built != null) {
+         party2Built.setRegion(oldParty2Built.getRegion());
       }
-      // please insert a no before fulib in the next line and insert event upgrading code
-      // fulib
+      service.apply(party2Built);
    }
 
    public void handleItemBuilt(Event e)

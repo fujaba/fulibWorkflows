@@ -1,4 +1,6 @@
 package uks.fulibgen.shop.Shop;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,6 +19,14 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.time.Instant;
+import java.time.Instant;
+import java.time.Instant;
+import java.time.Instant;
+;
+;
+;
+;
 
 public class ShopService
 {
@@ -371,5 +381,10 @@ public class ShopService
       }
 
       return query;
+   }
+
+   public String isoNow()
+   {
+      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
    }
 }

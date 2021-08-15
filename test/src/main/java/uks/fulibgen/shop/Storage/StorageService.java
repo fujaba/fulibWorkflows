@@ -17,6 +17,15 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.fulib.yaml.YamlIdMap;
+import java.time.Instant;
+;
+import java.time.format.DateTimeFormatter;
+import java.time.Instant;
+import java.time.Instant;
+import java.time.Instant;
+;
+;
+;
 
 public class StorageService
 {
@@ -323,5 +332,10 @@ public class StorageService
       }
 
       return query;
+   }
+
+   public String isoNow()
+   {
+      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
    }
 }

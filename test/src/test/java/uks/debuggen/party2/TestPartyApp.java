@@ -13,14 +13,31 @@ import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.concurrent.LinkedBlockingQueue;
 
-public class TestPartyApp
+public class TestPartyApp implements PropertyChangeListener
 {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
+   private LinkedBlockingQueue party2EventQueue = new LinkedBlockingQueue();
+
+   @Override
+   public void propertyChange(PropertyChangeEvent evt)
+   {
+      try {
+         party2EventQueue.put(evt.getNewValue());
+      }
+      catch (InterruptedException e) {
+         e.printStackTrace();
+      }
+   }
 
    public EventBroker getEventBroker()
    {
@@ -44,6 +61,7 @@ public class TestPartyApp
    public void setTimeOut() {
       Configuration.timeout = 10 * 60 * 1000;
       Configuration.pageLoadTimeout = Configuration.timeout;
+      Configuration.browserPosition = "-3500x10";
    }
 
    @Test
@@ -54,43 +72,86 @@ public class TestPartyApp
       eventBroker.start();
 
       // start old service
-      uks.debuggen.party.PartyApp.PartyAppService partyApp = new uks.debuggen.party.PartyApp.PartyAppService();
-      partyApp.start();
+      uks.debuggen.party.PartyApp.PartyAppService aliceOldPartyApp = new uks.debuggen.party.PartyApp.PartyAppService();
+      aliceOldPartyApp.start();
 
       // start new service
-      PartyAppService partyApp2 = new PartyAppService().setPort(42002);
-      partyApp2.start();
+      PartyAppService bobNewPartyApp2 = new PartyAppService().setPort(42002);
+      bobNewPartyApp2.listeners().addPropertyChangeListener(PartyAppService.PROPERTY_HISTORY, this);
+      bobNewPartyApp2.start();
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
+      login("http://localhost:42001/page/getUserName", "Alice", "a@b.de");
+      login("http://localhost:42002/page/getUserName", "Bob", "b@b.de");
 
-      // Alice login to old party app
-      open("http://localhost:42001/page/getUserName");
-      $("#name").setValue("Alice");
+      // Alice create SE BBQ in old app
+      open("http://localhost:42001/page/withPassword?password=secret&name=Alice&email=a%40b.de&button=ok");
+      $("body").shouldHave(text("Choose a party"));
+      $("#party").setValue("SE BBQ");
+      $("#location").setValue("Uni");
       $("#ok").click();
 
-      $("#email").setValue("a@b.de");
+      // check
+      Object oldBBQ = aliceOldPartyApp.getModel().getModelMap().get("SE BBQ");
+      assertThat(oldBBQ).isNotNull();
+
+      // bob should be informed about the SE BBQ
+      Party2Built party2Built = (Party2Built) retrieveBuiltEventFromParty2("SE BBQ");
+
+      assertThat(party2Built).isNotNull();
+
+      // bob adds region kassel
+      open("http://localhost:42002/page/withPassword?password=secret&name=Bob&email=b%40b.de&button=ok");
+      $("body").shouldHave(text("In which region is your party"));
+      $("#region").setValue("Kassel");
       $("#ok").click();
 
-      $("#password").setValue("secret");
+      $("body").shouldHave(text("Choose a party in Kassel"));
+      $("#party").setValue("SE BBQ");
+      $("#location").setValue("Uni");
       $("#ok").click();
 
-
-      // Bob login to new party app
-      open("http://localhost:42002/page/getUserName");
-      $("#name").setValue("Bob");
-      $("#ok").click();
-
-      $("#email").setValue("b@b.de");
-      $("#ok").click();
-
-      $("#password").setValue("secret");
-      $("#ok").click();
+      $("#add").click();
 
       System.out.println();
    }
 
-      @Test
+   private DataEvent retrieveBuiltEventFromParty2(String blockId)
+   {
+      DataEvent dataEvent = null;
+      while (true) {
+         try {
+            Object e = party2EventQueue.take();
+            if (e instanceof DataEvent) {
+               dataEvent = (DataEvent) e;
+               if (dataEvent.getBlockId().equals(blockId)) {
+                  break;
+               }
+            }
+         }
+         catch (InterruptedException ex) {
+            ex.printStackTrace();
+         }
+      }
+      return dataEvent;
+   }
+
+   private void login(String s, String alice, String s2)
+   {
+      // Alice login to old party app
+      open(s);
+      $("#name").setValue(alice);
+      $("#ok").click();
+
+      $("#email").setValue(s2);
+      $("#ok").click();
+
+      $("#password").setValue("secret");
+      $("#ok").click();
+   }
+
+   @Test
    public void PartyApp()
    {
       // start the event broker
@@ -405,4 +466,6 @@ public class TestPartyApp
       }
       return this.listeners;
    }
+
+
 }
