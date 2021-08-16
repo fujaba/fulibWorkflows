@@ -23,6 +23,10 @@ import java.time.Instant;
 import java.time.Instant;
 import java.time.Instant;
 import java.time.Instant;
+import java.time.Instant;
+import java.time.Instant;
+;
+;
 ;
 ;
 ;
@@ -255,6 +259,7 @@ public class ShopService
       Consumer<Event> handler = businessLogic.getHandler(event);
       handler.accept(event);
       history.put(event.getId(), event);
+      firePropertyChange(PROPERTY_HISTORY, null, event);
       publish(event);
    }
 
@@ -275,8 +280,8 @@ public class ShopService
 
    private String postApply(Request req, Response res)
    {
+      String body = req.body();
       try {
-         String body = req.body();
          YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
          idMap.decode(body);
          Map<String, Object> map = idMap.getObjIdMap();
@@ -286,7 +291,13 @@ public class ShopService
          }
       }
       catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
       }
       return "apply done";
    }

@@ -26,6 +26,12 @@ import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.time.Instant;
+import java.time.Instant;
+import java.time.Instant;
+;
+;
+;
 
 public class PartyAppService
 {
@@ -50,7 +56,8 @@ public class PartyAppService
 
    public PartyAppService setHistory(LinkedHashMap<String, Event> value)
    {
-      if (Objects.equals(value, this.history)) {
+      if (Objects.equals(value, this.history))
+      {
          return this;
       }
 
@@ -67,7 +74,8 @@ public class PartyAppService
 
    public PartyAppService setPort(int value)
    {
-      if (value == this.port) {
+      if (value == this.port)
+      {
          return this;
       }
 
@@ -84,7 +92,8 @@ public class PartyAppService
 
    public PartyAppService setSpark(Service value)
    {
-      if (Objects.equals(value, this.spark)) {
+      if (Objects.equals(value, this.spark))
+      {
          return this;
       }
 
@@ -101,7 +110,8 @@ public class PartyAppService
 
    public PartyAppService setModel(PartyAppModel value)
    {
-      if (Objects.equals(value, this.model)) {
+      if (Objects.equals(value, this.model))
+      {
          return this;
       }
 
@@ -118,17 +128,20 @@ public class PartyAppService
 
    public PartyAppService setBusinessLogic(PartyAppBusinessLogic value)
    {
-      if (this.businessLogic == value) {
+      if (this.businessLogic == value)
+      {
          return this;
       }
 
       final PartyAppBusinessLogic oldValue = this.businessLogic;
-      if (this.businessLogic != null) {
+      if (this.businessLogic != null)
+      {
          this.businessLogic = null;
          oldValue.setService(null);
       }
       this.businessLogic = value;
-      if (value != null) {
+      if (value != null)
+      {
          value.setService(this);
       }
       this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
@@ -142,17 +155,20 @@ public class PartyAppService
 
    public PartyAppService setBuilder(PartyAppBuilder value)
    {
-      if (this.builder == value) {
+      if (this.builder == value)
+      {
          return this;
       }
 
       final PartyAppBuilder oldValue = this.builder;
-      if (this.builder != null) {
+      if (this.builder != null)
+      {
          this.builder = null;
          oldValue.setService(null);
       }
       this.builder = value;
-      if (value != null) {
+      if (value != null)
+      {
          value.setService(this);
       }
       this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
@@ -244,6 +260,7 @@ public class PartyAppService
       Consumer<Event> handler = businessLogic.getHandler(event);
       handler.accept(event);
       history.put(event.getId(), event);
+      firePropertyChange(PROPERTY_HISTORY, null, event);
       publish(event);
    }
 
@@ -473,7 +490,7 @@ public class PartyAppService
       return result;
    }
 
-   private String isoNow()
+   public String isoNow()
    {
       return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
    }
@@ -765,6 +782,7 @@ public class PartyAppService
       }
 
 
+
       // 12:00
       if (id.equals("12_00")) {
          html.append("<form action=\"/page/12_02\" method=\"get\">\n");
@@ -948,6 +966,7 @@ public class PartyAppService
       }
 
 
+
       html.append("This is the Shop Service page " + id + "\n");
       return html.toString();
    }
@@ -993,7 +1012,8 @@ public class PartyAppService
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      if (this.listeners != null) {
+      if (this.listeners != null)
+      {
          this.listeners.firePropertyChange(propertyName, oldValue, newValue);
          return true;
       }
@@ -1002,7 +1022,8 @@ public class PartyAppService
 
    public PropertyChangeSupport listeners()
    {
-      if (this.listeners == null) {
+      if (this.listeners == null)
+      {
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;

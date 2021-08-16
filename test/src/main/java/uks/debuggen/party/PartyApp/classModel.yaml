@@ -41,9 +41,11 @@
 
 - partyAppService: 	org.fulib.classmodel.Clazz
   attributes: 	partyAppService_history 	partyAppService_port 	partyAppService_spark 	partyAppService_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	partyAppService_query 	partyAppService_start 	partyAppService_getHello 	partyAppService_subscribeAndLoadOldEvents 	partyAppService_apply 	partyAppService_getPage 	partyAppService_getDemoPage 	partyAppService_publish 	partyAppService_postApply
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;
+" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;
+" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  methods: 	partyAppService_query 	partyAppService_isoNow 	partyAppService_start 	partyAppService_getHello 	partyAppService_subscribeAndLoadOldEvents 	partyAppService_apply 	partyAppService_getPage 	partyAppService_getDemoPage 	partyAppService_publish 	partyAppService_postApply
   model: 	c
   modified: 	false
   name: 	PartyAppService
@@ -709,6 +711,20 @@ object.setExpenses(event.getExpenses());
   returnType: 	Query
   signature: 	"class/PartyAppService/method/query(Query)"
 
+- partyAppService_isoNow: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppService
+  declaration: 	"public String isoNow()"
+  id: 	PartyAppService_isoNow
+  methodBody: 	"return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	isoNow
+  paramsString: 	""
+  returnType: 	String
+  signature: 	"class/PartyAppService/method/isoNow()"
+
 - partyAppService_start: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppService
@@ -804,6 +820,7 @@ businessLogic.initEventHandlerMap();
 Consumer<Event> handler = businessLogic.getHandler(event);
 handler.accept(event);
 history.put(event.getId(), event);
+firePropertyChange(PROPERTY_HISTORY, null, event);
 publish(event);"
   modified: 	false
   modifiers: 	public
@@ -1169,8 +1186,8 @@ catch (UnirestException e) {
   clazz: 	partyAppService
   declaration: 	"private String postApply(Request req, Response res)"
   id: 	PartyAppService_postApply
-  methodBody: 	"      try {
-         String body = req.body();
+  methodBody: 	"      String body = req.body();
+      try {
          YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
          idMap.decode(body);
          Map<String, Object> map = idMap.getObjIdMap();
@@ -1180,7 +1197,13 @@ catch (UnirestException e) {
          }
       }
       catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         String message = e.getMessage();
+         if (message.contains(\"ReflectorMap could not find class description\")) {
+            Logger.getGlobal().info(\"post apply ignores unknown event \" + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         }
       }
       return \"apply done\";"
   modified: 	false

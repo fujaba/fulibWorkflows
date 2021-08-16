@@ -27,6 +27,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.time.Instant;
 import java.time.Instant;
+import java.time.Instant;
+import java.time.Instant;
+import java.time.Instant;
+;
+;
+;
 ;
 ;
 
@@ -307,6 +313,7 @@ public class PartyAppService
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
+      String regionName = request.queryParams("region");
       String item = request.queryParams("item");
       String price = request.queryParams("price");
       String buyer = request.queryParams("buyer");
@@ -318,20 +325,20 @@ public class PartyAppService
          return html.toString();
       }
 
-      Query query = new Query().setKey(partyName);
-      query(query);
-      if (query.getResults().isEmpty() || !(query.getResults().get(0) instanceof PartyBuilt)) {
+      DataEvent dataEvent = getParty2BuiltEvent(regionName, partyName);
+      if (dataEvent == null || !(dataEvent instanceof Party2Built)) {
          return pageGetParty(request, response, sessionId);
       }
 
+      String fullPartyName = dataEvent.getBlockId();
       ItemBuilt itemBuilt = new ItemBuilt();
       itemBuilt.setId(isoNow());
-      String itemId = partyName + "#" + item;
+      String itemId = fullPartyName + "#" + item;
       itemBuilt.setBlockId(itemId);
       itemBuilt.setName(item);
       itemBuilt.setPrice(price);
-      itemBuilt.setParty(partyName);
-      String buyerId = partyName + "#" + buyer;
+      itemBuilt.setParty(fullPartyName);
+      String buyerId = fullPartyName + "#" + buyer;
       itemBuilt.setBuyer(buyerId);
       apply(itemBuilt);
 
@@ -340,7 +347,7 @@ public class PartyAppService
       guestBuilt.setBlockId(buyerId);
       guestBuilt.setName(buyer);
       guestBuilt.setExpenses("0.00");
-      guestBuilt.setParty(partyName);
+      guestBuilt.setParty(fullPartyName);
       apply(guestBuilt);
 
       return pageGetOverview(request, response);
@@ -360,16 +367,15 @@ public class PartyAppService
          return html.toString();
       }
 
-      Query query = new Query().setKey(partyName);
-      query(query);
-      if (query.getResults().isEmpty() || !(query.getResults().get(0) instanceof Party2Built)) {
+      DataEvent dataEvent = getParty2BuiltEvent(regionName, partyName);
+      if (dataEvent == null || !(dataEvent instanceof Party2Built)) {
          return pageGetParty(request, response, sessionId);
       }
 
-      Party2Built partyBuilt = (Party2Built) query.getResults().get(0);
+      Party2Built partyBuilt = (Party2Built) dataEvent;
       html.append("<form action=\"/page/withItem\" method=\"get\">\n");
       html.append(String.format("   <p>Welcome %s</p>\n", name));
-      html.append(String.format("   <p>Let's do the %s in </p>\n", partyBuilt.getName(), regionName));
+      html.append(String.format("   <p>Let's do the %s in %s</p>\n", partyBuilt.getName(), regionName));
       html.append("   <p>Book an item</p>\n");
       html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
       html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
@@ -384,8 +390,6 @@ public class PartyAppService
 
       return html.toString();
    }
-
-
 
    private String pageWithParty(Request request, Response response)
    {
@@ -402,14 +406,7 @@ public class PartyAppService
          return html.toString();
       }
 
-      DataEvent dataEvent = builder.getEventStore().get(partyName);
-      if (dataEvent != null) {
-         // there is an old party with that name
-         // go for it
-      }
-      else {
-         dataEvent = builder.getEventStore().get(regionName + "." + partyName);
-      }
+      DataEvent dataEvent = getParty2BuiltEvent(regionName, partyName);
 
       if (dataEvent == null) {
          Party2Built partyBuilt = new Party2Built();
@@ -438,6 +435,19 @@ public class PartyAppService
       return html.toString();
    }
 
+   private DataEvent getParty2BuiltEvent(String regionName, String partyName)
+   {
+      DataEvent dataEvent = builder.getEventStore().get(partyName);
+      if (dataEvent != null) {
+         // there is an old party with that name
+         // go for it
+      }
+      else {
+         dataEvent = builder.getEventStore().get(regionName + "." + partyName);
+      }
+      return dataEvent;
+   }
+
    private String pageGetOverview(Request request, Response response)
    {
       String name = request.queryParams("name");
@@ -445,7 +455,8 @@ public class PartyAppService
       String partyName = request.queryParams("party");
       String regionName = request.queryParams("region");
 
-      Party2 party = model.getOrCreateParty2(partyName);
+      DataEvent dataEvent = getParty2BuiltEvent(regionName, partyName);
+      Party2 party = model.getOrCreateParty2(dataEvent.getBlockId());
 
       StringBuilder html = new StringBuilder();
       html.append("<form action=\"/page/addItem\" method=\"get\">\n");
@@ -471,9 +482,9 @@ public class PartyAppService
                   item.getName(), item.getPrice(), item.getBuyer().getName()));
          }
 
-         html.append(String.format("   <p>total %s</p>\n", toString(total)));
+         html.append(String.format("   <p>Total: %s</p>\n", toString(total)));
          double share = total / party.getGuests().size();
-         html.append(String.format("   <p>share %s</p>\n", toString(share)));
+         html.append(String.format("   <p>Share: %s</p>\n", toString(share)));
 
          for (Guest guest : party.getGuests()) {
             double saldo = toDouble(guest.getExpenses()) - share;
@@ -559,7 +570,6 @@ public class PartyAppService
       return pageGetRegion(request, response, sessionId);
    }
 
-
    private String pageGetRegion(Request request, Response response, String sessionId)
    {
       String name = request.queryParams("name");
@@ -583,7 +593,6 @@ public class PartyAppService
       return html.toString();
    }
 
-
    private String pageWithRegion(Request request, Response response) {
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
@@ -604,7 +613,6 @@ public class PartyAppService
 
       return pageGetParty(request, response, sessionId);
    }
-
 
    private String pageGetParty(Request request, Response response, String sessionId)
    {
@@ -1072,8 +1080,8 @@ public class PartyAppService
 
    private String postApply(Request req, Response res)
    {
+      String body = req.body();
       try {
-         String body = req.body();
          YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
          idMap.decode(body);
          Map<String, Object> map = idMap.getObjIdMap();
@@ -1083,7 +1091,13 @@ public class PartyAppService
          }
       }
       catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
       }
       return "apply done";
    }

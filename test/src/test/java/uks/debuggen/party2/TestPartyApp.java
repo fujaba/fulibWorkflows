@@ -26,6 +26,7 @@ public class TestPartyApp implements PropertyChangeListener
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
+   private LinkedBlockingQueue party1EventQueue = new LinkedBlockingQueue();
    private LinkedBlockingQueue party2EventQueue = new LinkedBlockingQueue();
 
    @Override
@@ -36,6 +37,21 @@ public class TestPartyApp implements PropertyChangeListener
       }
       catch (InterruptedException e) {
          e.printStackTrace();
+      }
+   }
+
+   class AliceListener implements PropertyChangeListener {
+
+      @Override
+      public void propertyChange(PropertyChangeEvent evt)
+      {
+         try {
+            System.out.println("Alice listener got " + evt.getNewValue());
+            party1EventQueue.put(evt.getNewValue());
+         }
+         catch (InterruptedException e) {
+            e.printStackTrace();
+         }
       }
    }
 
@@ -73,6 +89,7 @@ public class TestPartyApp implements PropertyChangeListener
 
       // start old service
       uks.debuggen.party.PartyApp.PartyAppService aliceOldPartyApp = new uks.debuggen.party.PartyApp.PartyAppService();
+      aliceOldPartyApp.listeners().addPropertyChangeListener(new AliceListener());
       aliceOldPartyApp.start();
 
       // start new service
@@ -86,11 +103,7 @@ public class TestPartyApp implements PropertyChangeListener
       login("http://localhost:42002/page/getUserName", "Bob", "b@b.de");
 
       // Alice create SE BBQ in old app
-      open("http://localhost:42001/page/withPassword?password=secret&name=Alice&email=a%40b.de&button=ok");
-      $("body").shouldHave(text("Choose a party"));
-      $("#party").setValue("SE BBQ");
-      $("#location").setValue("Uni");
-      $("#ok").click();
+      aliceOpenSEBBQ();
 
       // check
       Object oldBBQ = aliceOldPartyApp.getModel().getModelMap().get("SE BBQ");
@@ -102,19 +115,90 @@ public class TestPartyApp implements PropertyChangeListener
       assertThat(party2Built).isNotNull();
 
       // bob adds region kassel
+      bobOpenKasselParty("SE BBQ", "Uni");
+
+      $("#add").click();
+
+      $("body").shouldHave(text("Book an item"));
+      $("#item").setValue("beer");
+      $("#price").setValue("12.00");
+      $("#buyer").setValue("Bob");
+      $("#ok").click();
+
+      retrieveBuiltEventFromParty1("SE BBQ#beer");
+
+      // Alice Buys meat for the SE BBQ on the old app
+      aliceOpenSEBBQ();
+
+      $("body").shouldHave(text("beer 12.00 Bob"));
+      bookItem("meat", "21.00", "Alice");
+
+      $("body").shouldHave(text("meat 21.00 Alice"));
+
+      bobOpenKasselParty("SE BBQ", "Uni");
+
+      $("body").shouldHave(text("meat 21.00 Alice"));
+
+      // bob starts the Finals party at the Fritze in Kassel
+      bobOpenKasselParty("Finals", "Fritze");
+
+      bookItem("Wine", "9.99", "Carli");
+
+      uks.debuggen.party.events.DataEvent dataEvent = retrieveBuiltEventFromParty1("Kassel.Finals#Wine");
+
+      System.out.println();
+   }
+
+   private void bookItem(String item, String price, String buyer)
+   {
+      $("#add").click();
+
+      $("#item").setValue(item);
+      $("#price").setValue(price);
+      $("#buyer").setValue(buyer);
+      $("#ok").click();
+   }
+
+   private void bobOpenKasselParty(String partyName, String location)
+   {
       open("http://localhost:42002/page/withPassword?password=secret&name=Bob&email=b%40b.de&button=ok");
       $("body").shouldHave(text("In which region is your party"));
       $("#region").setValue("Kassel");
       $("#ok").click();
 
       $("body").shouldHave(text("Choose a party in Kassel"));
+      $("#party").setValue(partyName);
+      $("#location").setValue(location);
+      $("#ok").click();
+   }
+
+   private void aliceOpenSEBBQ()
+   {
+      open("http://localhost:42001/page/withPassword?password=secret&name=Alice&email=a%40b.de&button=ok");
+      $("body").shouldHave(text("Choose a party"));
       $("#party").setValue("SE BBQ");
       $("#location").setValue("Uni");
       $("#ok").click();
+   }
 
-      $("#add").click();
-
-      System.out.println();
+   private uks.debuggen.party.events.DataEvent retrieveBuiltEventFromParty1(String blockId)
+   {
+      uks.debuggen.party.events.DataEvent dataEvent = null;
+      while (true) {
+         try {
+            Object e = party1EventQueue.take();
+            if (e instanceof uks.debuggen.party.events.DataEvent) {
+               dataEvent = (uks.debuggen.party.events.DataEvent) e;
+               if (dataEvent.getBlockId().equals(blockId)) {
+                  break;
+               }
+            }
+         }
+         catch (InterruptedException ex) {
+            ex.printStackTrace();
+         }
+      }
+      return dataEvent;
    }
 
    private DataEvent retrieveBuiltEventFromParty2(String blockId)
@@ -466,6 +550,5 @@ public class TestPartyApp implements PropertyChangeListener
       }
       return this.listeners;
    }
-
 
 }
