@@ -279,6 +279,10 @@ public class HtmlGenerator3
          LinkedHashSet<String> keySet = new LinkedHashSet<>(map.keySet());
 
          String time = map.get("id");
+         if (time != null) {
+            time = time.replaceAll("\"", "");
+         }
+         else
          keySet.remove("id");
          keySet.remove(time);
 
@@ -286,6 +290,9 @@ public class HtmlGenerator3
          keySet.remove("blockId");
 
          String eventTypeName = map.get(time);
+         if (eventTypeName == null) {
+            eventTypeName = map.values().iterator().next();
+         }
          eventTypeName = StrUtil.simpleName(eventTypeName);
          String noteType = block == null ? "event" : "data";
          noteContent.append(String.format("<div>%s</div>\n", time));

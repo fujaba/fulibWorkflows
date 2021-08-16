@@ -4,6 +4,8 @@ import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.fulib.FulibTools;
+import org.fulib.workflows.HtmlGenerator3;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -81,7 +87,7 @@ public class TestPartyApp implements PropertyChangeListener
    }
 
    @Test
-   public void testMigration()
+   public void testMigration() throws IOException
    {
       // start the event broker
       eventBroker = new EventBroker();
@@ -145,6 +151,15 @@ public class TestPartyApp implements PropertyChangeListener
       bookItem("Wine", "9.99", "Carli");
 
       uks.debuggen.party.events.DataEvent dataEvent = retrieveBuiltEventFromParty1("Kassel.Finals#Wine");
+
+      FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsOld.svg", aliceOldPartyApp.getBuilder().getModel().getModelMap().values());
+      FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsNew.svg", bobNewPartyApp2.getBuilder().getModel().getModelMap().values());
+
+      String oldHistory = new HtmlGenerator3().generateHtml(aliceOldPartyApp.getHistory());
+      Files.write(Path.of("tmp/oldHistory.html"), oldHistory.getBytes(StandardCharsets.UTF_8));
+
+      String newHistory = new HtmlGenerator3().generateHtml(bobNewPartyApp2.getHistory());
+      Files.write(Path.of("tmp/newHistory.html"), newHistory.getBytes(StandardCharsets.UTF_8));
 
       System.out.println();
    }

@@ -415,7 +415,7 @@ public class PartyAppService
          partyBuilt.setName(partyName);
          partyBuilt.setAddress(location);
          partyBuilt.setRegion(regionName);
-         apply(partyBuilt);
+         downgradeAndApply(partyBuilt);
          return pageGetOverview(request, response);
       }
 
@@ -433,6 +433,19 @@ public class PartyAppService
       html.append(pageGetParty(request, response, sessionId));
       html.append("invalid location");
       return html.toString();
+   }
+
+   private void downgradeAndApply(Party2Built event)
+   {
+      apply(event);
+
+      // downgrade for old version
+      PartyBuilt old = new PartyBuilt();
+      old.setId(event.getId() + "b");
+      old.setBlockId(event.getBlockId());
+      old.setName(event.getName());
+      old.setLocation(event.getAddress());
+      apply(old);
    }
 
    private DataEvent getParty2BuiltEvent(String regionName, String partyName)
