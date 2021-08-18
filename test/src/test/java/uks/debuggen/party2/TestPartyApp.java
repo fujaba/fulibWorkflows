@@ -9,7 +9,9 @@ import org.fulib.workflows.HtmlGenerator3;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
+import uks.debuggen.party2.PartyApp.Party2;
 import uks.debuggen.party2.PartyApp.PartyAppService;
+import uks.debuggen.party2.PartyApp.User;
 import uks.debuggen.party2.events.*;
 import static com.codeborne.selenide.Condition.matchText;
 import static com.codeborne.selenide.Condition.text;
@@ -85,6 +87,50 @@ public class TestPartyApp implements PropertyChangeListener
       Configuration.pageLoadTimeout = Configuration.timeout;
       Configuration.browserPosition = "-3500x10";
    }
+
+   @Test
+   public void testLoadAndStoreConcept() throws IOException
+   {
+      // start the event broker
+      eventBroker = new EventBroker();
+      eventBroker.start();
+
+      PartyAppService bobNewPartyApp2 = new PartyAppService().setPort(42002);
+      bobNewPartyApp2.listeners().addPropertyChangeListener(PartyAppService.PROPERTY_HISTORY, this);
+      bobNewPartyApp2.start();
+
+      open("http://localhost:42000");
+      $("body").shouldHave(text("event broker"));
+      login("http://localhost:42002/page/getUserName", "Bob", "b@b.de");
+
+      User bob = (User) bobNewPartyApp2.getBuilder().load("Bob");
+      assertThat(bob.getEmail()).isEqualTo("b@b.de");
+
+      $("body").shouldHave(text("In which region is your party"));
+      $("#region").setValue("Kassel");
+      $("#ok").click();
+
+      $("body").shouldHave(text("Choose a party in Kassel"));
+      $("#party").setValue("Finals");
+      $("#location").setValue("Fritze");
+      $("#ok").click();
+
+      Party2 party = (Party2) bobNewPartyApp2.getBuilder().load("Kassel.Finals");
+      assertThat(party.getRegion().getId()).isEqualTo("Kassel");
+
+      $("body").shouldHave(text("Let's do the Finals in Kassel"));
+
+      bookItem("Wine", "9.99", "Bob");
+
+      party = (Party2) bobNewPartyApp2.getBuilder().load("Kassel.Finals");
+      assertThat(party.getItems().size()).isEqualTo(1);
+
+      FulibTools.objectDiagrams().dumpSVG("tmp/FinalsParty.svg", party);
+
+      System.out.println();
+   }
+
+
 
    @Test
    public void testMigration() throws IOException

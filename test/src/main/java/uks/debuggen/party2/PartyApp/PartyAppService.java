@@ -25,11 +25,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
 ;
 ;
 ;
@@ -59,8 +54,7 @@ public class PartyAppService
 
    public PartyAppService setHistory(LinkedHashMap<String, Event> value)
    {
-      if (Objects.equals(value, this.history))
-      {
+      if (Objects.equals(value, this.history)) {
          return this;
       }
 
@@ -77,8 +71,7 @@ public class PartyAppService
 
    public PartyAppService setPort(int value)
    {
-      if (value == this.port)
-      {
+      if (value == this.port) {
          return this;
       }
 
@@ -95,8 +88,7 @@ public class PartyAppService
 
    public PartyAppService setSpark(Service value)
    {
-      if (Objects.equals(value, this.spark))
-      {
+      if (Objects.equals(value, this.spark)) {
          return this;
       }
 
@@ -113,8 +105,7 @@ public class PartyAppService
 
    public PartyAppService setModel(PartyAppModel value)
    {
-      if (Objects.equals(value, this.model))
-      {
+      if (Objects.equals(value, this.model)) {
          return this;
       }
 
@@ -131,20 +122,17 @@ public class PartyAppService
 
    public PartyAppService setBusinessLogic(PartyAppBusinessLogic value)
    {
-      if (this.businessLogic == value)
-      {
+      if (this.businessLogic == value) {
          return this;
       }
 
       final PartyAppBusinessLogic oldValue = this.businessLogic;
-      if (this.businessLogic != null)
-      {
+      if (this.businessLogic != null) {
          this.businessLogic = null;
          oldValue.setService(null);
       }
       this.businessLogic = value;
-      if (value != null)
-      {
+      if (value != null) {
          value.setService(this);
       }
       this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
@@ -158,20 +146,17 @@ public class PartyAppService
 
    public PartyAppService setBuilder(PartyAppBuilder value)
    {
-      if (this.builder == value)
-      {
+      if (this.builder == value) {
          return this;
       }
 
       final PartyAppBuilder oldValue = this.builder;
-      if (this.builder != null)
-      {
+      if (this.builder != null) {
          this.builder = null;
          oldValue.setService(null);
       }
       this.builder = value;
-      if (value != null)
-      {
+      if (value != null) {
          value.setService(this);
       }
       this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
@@ -325,12 +310,13 @@ public class PartyAppService
          return html.toString();
       }
 
-      DataEvent dataEvent = getParty2BuiltEvent(regionName, partyName);
-      if (dataEvent == null || !(dataEvent instanceof Party2Built)) {
+      Object object = getParty2(regionName, partyName);
+      if (object == null || !(object instanceof Party2)) {
          return pageGetParty(request, response, sessionId);
       }
 
-      String fullPartyName = dataEvent.getBlockId();
+      Party2 party = (Party2) object;
+      String fullPartyName = party.getId();
       ItemBuilt itemBuilt = new ItemBuilt();
       itemBuilt.setId(isoNow());
       String itemId = fullPartyName + "#" + item;
@@ -367,15 +353,15 @@ public class PartyAppService
          return html.toString();
       }
 
-      DataEvent dataEvent = getParty2BuiltEvent(regionName, partyName);
-      if (dataEvent == null || !(dataEvent instanceof Party2Built)) {
+      Object object = getParty2(regionName, partyName);
+      if (object == null || !(object instanceof Party2)) {
          return pageGetParty(request, response, sessionId);
       }
 
-      Party2Built partyBuilt = (Party2Built) dataEvent;
+      Party2 party = (Party2) object;
       html.append("<form action=\"/page/withItem\" method=\"get\">\n");
       html.append(String.format("   <p>Welcome %s</p>\n", name));
-      html.append(String.format("   <p>Let's do the %s in %s</p>\n", partyBuilt.getName(), regionName));
+      html.append(String.format("   <p>Let's do the %s in %s</p>\n", party.getName(), regionName));
       html.append("   <p>Book an item</p>\n");
       html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
       html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
@@ -383,7 +369,7 @@ public class PartyAppService
 
       html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
       html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
-      html.append(String.format("   <p><input id=\"party\" name=\"party\" type=\"hidden\" value=\"%s\"></p>\n", partyBuilt.getName()));
+      html.append(String.format("   <p><input id=\"party\" name=\"party\" type=\"hidden\" value=\"%s\"></p>\n", party.getName()));
       html.append(String.format("   <p><input id=\"region\" name=\"region\" type=\"hidden\" value=\"%s\"></p>\n", regionName));
       html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
       html.append("</form>\n");
@@ -406,27 +392,27 @@ public class PartyAppService
          return html.toString();
       }
 
-      DataEvent dataEvent = getParty2BuiltEvent(regionName, partyName);
+      Object object = getParty2(regionName, partyName);
 
-      if (dataEvent == null) {
+      if (object == null) {
          Party2Built partyBuilt = new Party2Built();
          partyBuilt.setId(isoNow());
          partyBuilt.setBlockId(regionName + "." + partyName);
          partyBuilt.setName(partyName);
          partyBuilt.setAddress(location);
          partyBuilt.setRegion(regionName);
-         downgradeAndApply(partyBuilt);
+         apply(partyBuilt);
          return pageGetOverview(request, response);
       }
 
-      if (!(dataEvent instanceof Party2Built)) {
+      if (!(object instanceof Party2)) {
          html.append(pageGetParty(request, response, sessionId));
          html.append("invalid party name");
          return html.toString();
       }
 
-      Party2Built partyBuilt = (Party2Built) dataEvent;
-      if (partyBuilt.getAddress().equals(location)) {
+      Party2 party = (Party2) object;
+      if (party.getAddress().equals(location)) {
          return pageGetOverview(request, response);
       }
 
@@ -435,30 +421,16 @@ public class PartyAppService
       return html.toString();
    }
 
-   private void downgradeAndApply(Party2Built event)
+   private Object getParty2(String regionName, String partyName)
    {
-      apply(event);
-
-      // downgrade for old version
-      PartyBuilt old = new PartyBuilt();
-      old.setId(event.getId() + "b");
-      old.setBlockId(event.getBlockId());
-      old.setName(event.getName());
-      old.setLocation(event.getAddress());
-      apply(old);
-   }
-
-   private DataEvent getParty2BuiltEvent(String regionName, String partyName)
-   {
-      DataEvent dataEvent = builder.getEventStore().get(partyName);
-      if (dataEvent != null) {
+      Object object = builder.load(partyName);
+      if (object != null) {
          // there is an old party with that name
          // go for it
+         return object;
       }
-      else {
-         dataEvent = builder.getEventStore().get(regionName + "." + partyName);
-      }
-      return dataEvent;
+      object = builder.load(regionName + "." + partyName);
+      return object;
    }
 
    private String pageGetOverview(Request request, Response response)
@@ -468,8 +440,7 @@ public class PartyAppService
       String partyName = request.queryParams("party");
       String regionName = request.queryParams("region");
 
-      DataEvent dataEvent = getParty2BuiltEvent(regionName, partyName);
-      Party2 party = model.getOrCreateParty2(dataEvent.getBlockId());
+      Party2 party = (Party2) getParty2(regionName, partyName);
 
       StringBuilder html = new StringBuilder();
       html.append("<form action=\"/page/addItem\" method=\"get\">\n");
@@ -550,14 +521,12 @@ public class PartyAppService
 
       if (email.equals("null")) {
          // check password
-         Query query = new Query().setKey(name);
-         query(query);
+         User user = (User) builder.load(name);
 
-         if (query.getResults().isEmpty() || !(query.getResults().get(0) instanceof UserBuilt)) {
+         if (user == null) {
             return pageGetEmail(request, response);
          }
 
-         UserBuilt user = (UserBuilt) query.getResults().get(0);
          if (!user.getPassword().equals(password)) {
             html.append(pageGetPassword(request, response));
             html.append("Please try again");
@@ -606,7 +575,8 @@ public class PartyAppService
       return html.toString();
    }
 
-   private String pageWithRegion(Request request, Response response) {
+   private String pageWithRegion(Request request, Response response)
+   {
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
       String regionName = request.queryParams("region");
@@ -619,10 +589,13 @@ public class PartyAppService
       }
 
       // just build the region
-      RegionBuilt regionBuilt = new RegionBuilt();
-      regionBuilt.setId(isoNow());
-      regionBuilt.setBlockId(regionName);
-      apply(regionBuilt);
+      Object region = builder.load(regionName);
+      if (region == null) {
+         RegionBuilt regionBuilt = new RegionBuilt();
+         regionBuilt.setId(isoNow());
+         regionBuilt.setBlockId(regionName);
+         apply(regionBuilt);
+      }
 
       return pageGetParty(request, response, sessionId);
    }
@@ -660,7 +633,7 @@ public class PartyAppService
 
       StringBuilder html = new StringBuilder();
 
-      Object object = model.getModelMap().get(name);
+      Object object = builder.load(name);
       if (object != null) {
          User user = (User) object;
          if (user.getEmail().equals(email)) {
@@ -679,11 +652,10 @@ public class PartyAppService
       StringBuilder html = new StringBuilder();
       String name = request.queryParams("name");
 
-      Query query = new Query().setKey(name);
-      query(query);
+      Object user = builder.load(name);
 
-      if (query.getResults().size() == 0) {
-         // getEmail
+      if (user == null) {
+         // new name, register, ask getEmail
          return pageGetEmail(request, response);
       }
 
@@ -716,8 +688,6 @@ public class PartyAppService
       String name = request.queryParams("name");
       StringBuilder html = new StringBuilder();
 
-      Query query = new Query().setKey(name);
-      query(query);
 
       html.append("<form action=\"/page/withEmail\" method=\"get\">\n");
       // PartyApp 12:05
@@ -729,7 +699,9 @@ public class PartyAppService
       html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
       html.append("</form>\n");
 
-      if (query.getResults().size() > 0) {
+      // old user just changing password?
+      Object user = builder.load(name);
+      if (user != null) {
          html.append("Please use original email");
       }
 
@@ -872,7 +844,6 @@ public class PartyAppService
          e1409.setBuyer(request.queryParams("buyer"));
          apply(e1409);
       }
-
 
 
       // 12:00
@@ -1071,7 +1042,6 @@ public class PartyAppService
       }
 
 
-
       html.append("This is the Shop Service page " + id + "\n");
       return html.toString();
    }
@@ -1117,8 +1087,7 @@ public class PartyAppService
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      if (this.listeners != null)
-      {
+      if (this.listeners != null) {
          this.listeners.firePropertyChange(propertyName, oldValue, newValue);
          return true;
       }
@@ -1127,8 +1096,7 @@ public class PartyAppService
 
    public PropertyChangeSupport listeners()
    {
-      if (this.listeners == null)
-      {
+      if (this.listeners == null) {
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
