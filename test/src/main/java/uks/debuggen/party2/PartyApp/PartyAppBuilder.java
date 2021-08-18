@@ -15,6 +15,7 @@ public class PartyAppBuilder
    public static final String PROPERTY_EVENT_STORE = "eventStore";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    public static final String PROPERTY_SERVICE = "service";
+   public static final String PROPERTY_LOADER_MAP = "loaderMap";
    private PartyAppModel model;
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
    private LinkedHashMap<String, LinkedHashMap<String, DataEvent>> groupStore = new LinkedHashMap<>();
@@ -104,6 +105,23 @@ public class PartyAppBuilder
       return this;
    }
 
+   public LinkedHashMap<Class, Function<Event, Object>> getLoaderMap()
+   {
+      return this.loaderMap;
+   }
+
+   public PartyAppBuilder setLoaderMap(LinkedHashMap<Class, Function<Event, Object>> value)
+   {
+      if (Objects.equals(value, this.loaderMap)) {
+         return this;
+      }
+
+      final LinkedHashMap<Class, Function<Event, Object>> oldValue = this.loaderMap;
+      this.loaderMap = value;
+      this.firePropertyChange(PROPERTY_LOADER_MAP, oldValue, value);
+      return this;
+   }
+
    private boolean outdated(DataEvent event)
    {
       DataEvent oldEvent = getEventStore().get(event.getBlockId());
@@ -121,17 +139,7 @@ public class PartyAppBuilder
       return true;
    }
 
-   public void handleUserBuilt(Event e)
-   {
-      // no fulib
-      UserBuilt event = (UserBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-      // perhabs add to group store
-   }
-
-   private User loadUserBuilt(Event e)
+   public User loadUserBuilt(Event e)
    {
       UserBuilt event = (UserBuilt) e;
       User object = model.getOrCreateUser(event.getBlockId());
@@ -141,38 +149,7 @@ public class PartyAppBuilder
       return object;
    }
 
-   public void handlePartyBuilt(Event e)
-   {
-      // no fulib
-      PartyBuilt event = (PartyBuilt) e;
-
-      // upgrade to new version
-      Party2Built party2Built = new Party2Built();
-      party2Built.setId(event.getId() + "V2");
-      party2Built.setBlockId(event.getBlockId());
-      party2Built.setName(event.getName());
-      party2Built.setAddress(event.getLocation());
-
-      // do I have a region
-      Party2Built oldParty2Built = (Party2Built) getEventStore().get(event.getBlockId());
-      if (oldParty2Built != null) {
-         party2Built.setRegion(oldParty2Built.getRegion());
-      }
-      service.apply(party2Built);
-   }
-
-   public void handleItemBuilt(Event e)
-   {
-      // no fulib
-      ItemBuilt event = (ItemBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-
-      addToGroup(event.getParty(), event.getBlockId());
-   }
-
-   private Item loadItemBuilt(Event e)
+   public Item loadItemBuilt(Event e)
    {
       ItemBuilt event = (ItemBuilt) e;
       Item object = model.getOrCreateItem(event.getBlockId());
@@ -183,18 +160,7 @@ public class PartyAppBuilder
       return object;
    }
 
-   public void handleGuestBuilt(Event e)
-   {
-      // no fulib
-      GuestBuilt event = (GuestBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-
-      addToGroup(event.getParty(), event.getBlockId());
-   }
-
-   private Guest loadGuestBuilt(Event e)
+   public Guest loadGuestBuilt(Event e)
    {
       GuestBuilt event = (GuestBuilt) e;
       Guest object = model.getOrCreateGuest(event.getBlockId());
@@ -240,48 +206,14 @@ public class PartyAppBuilder
       this.setService(null);
    }
 
-   public void handleRegionBuilt(Event e)
-   {
-      // no fulib
-      RegionBuilt event = (RegionBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-   }
-
    public Region loadRegionBuilt(Event e)
    {
       RegionBuilt event = (RegionBuilt) e;
-      Region region = model.getOrCreateRegion(event.getBlockId());
-      return region;
+      Region object = model.getOrCreateRegion(event.getBlockId());
+      return object;
    }
 
-   public void handleParty2Built(Event e)
-   {
-      // no fulib
-      Party2Built event = (Party2Built) e;
-      if (outdated(event)) {
-         return;
-      }
-
-      // add region to groupStore
-      addToGroup(event.getBlockId(), event.getRegion());
-
-      if (event.getId().endsWith("V2")) {
-         // this event is an upgrade from an old version
-         return;
-      }
-
-      // downgrade for old version
-      PartyBuilt old = new PartyBuilt();
-      old.setId(event.getId() + "V1");
-      old.setBlockId(event.getBlockId());
-      old.setName(event.getName());
-      old.setLocation(event.getAddress());
-      service.apply(old);
-   }
-
-   private Party2 loadParty2Built(Event e)
+   public Party2 loadParty2Built(Event e)
    {
       Party2Built event = (Party2Built) e;
       Party2 object = model.getOrCreateParty2(event.getBlockId());
@@ -324,7 +256,97 @@ public class PartyAppBuilder
       return object;
    }
 
-   private LinkedHashMap<Class, Function<Event, Object>> loaderMap = null;
+   public void storeUserBuilt(Event e)
+   {
+      UserBuilt event = (UserBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public void storeRegionBuilt(Event e)
+   {
+      RegionBuilt event = (RegionBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public void storePartyBuilt(Event e)
+   {
+      PartyBuilt event = (PartyBuilt) e;
+      // please insert a no before fulib in the next line and insert event upgrading code
+      // no fulib
+      // upgrade to new version
+      Party2Built party2Built = new Party2Built();
+      party2Built.setId(event.getId() + "V2");
+      party2Built.setBlockId(event.getBlockId());
+      party2Built.setName(event.getName());
+      party2Built.setAddress(event.getLocation());
+
+      // do I have a region
+      Party2Built oldParty2Built = (Party2Built) getEventStore().get(event.getBlockId());
+      if (oldParty2Built != null) {
+         party2Built.setRegion(oldParty2Built.getRegion());
+      }
+      service.apply(party2Built);
+   }
+
+   public void storeParty2Built(Event e)
+   {
+      Party2Built event = (Party2Built) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // no fulib
+
+      // add region to groupStore
+      addToGroup(event.getBlockId(), event.getRegion());
+
+      if (event.getId().endsWith("V2")) {
+         // this event is an upgrade from an old version
+         return;
+      }
+
+      // downgrade for old version
+      PartyBuilt old = new PartyBuilt();
+      old.setId(event.getId() + "V1");
+      old.setBlockId(event.getBlockId());
+      old.setName(event.getName());
+      old.setLocation(event.getAddress());
+      service.apply(old);
+   }
+
+   public void storeItemBuilt(Event e)
+   {
+      ItemBuilt event = (ItemBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // no fulib
+
+      addToGroup(event.getParty(), event.getBlockId());
+   }
+
+   public void storeGuestBuilt(Event e)
+   {
+      GuestBuilt event = (GuestBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // no fulib
+
+      addToGroup(event.getParty(), event.getBlockId());
+   }
+
+   private LinkedHashMap<Class, Function<Event, Object>> loaderMap;
 
    private void initLoaderMap()
    {
@@ -338,17 +360,4 @@ public class PartyAppBuilder
       }
    }
 
-   public void store(DataEvent event)
-   {
-      DataEvent oldEvent = getEventStore().get(event.getBlockId());
-
-      if (oldEvent == null) {
-         eventStore.put(event.getBlockId(), event);
-      }
-      else if (oldEvent.getId().compareTo(event.getId()) < 0) {
-         eventStore.put(event.getBlockId(), event);
-      }
-
-      // store in group?
-   }
 }

@@ -130,8 +130,6 @@ public class TestPartyApp implements PropertyChangeListener
       System.out.println();
    }
 
-
-
    @Test
    public void testMigration() throws IOException
    {

@@ -116,10 +116,10 @@ public class PartyAppBusinessLogic
          handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
          handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
          handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
-         handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
-         handlerMap.put(PartyBuilt.class, builder::handlePartyBuilt);
-         handlerMap.put(ItemBuilt.class, builder::handleItemBuilt);
-         handlerMap.put(GuestBuilt.class, builder::handleGuestBuilt);
+         handlerMap.put(UserBuilt.class, builder::storeUserBuilt);
+         handlerMap.put(PartyBuilt.class, builder::storePartyBuilt);
+         handlerMap.put(ItemBuilt.class, builder::storeItemBuilt);
+         handlerMap.put(GuestBuilt.class, builder::storeGuestBuilt);
       }
    }
 

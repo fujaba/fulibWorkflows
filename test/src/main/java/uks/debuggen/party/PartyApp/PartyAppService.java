@@ -26,12 +26,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-;
-;
-;
+
 
 public class PartyAppService
 {
@@ -320,9 +315,8 @@ public class PartyAppService
          return html.toString();
       }
 
-      Query query = new Query().setKey(partyName);
-      query(query);
-      if (query.getResults().isEmpty() || !(query.getResults().get(0) instanceof PartyBuilt)) {
+      Object object = builder.load(partyName);
+      if (object == null || !(object instanceof Party)) {
          return pageGetParty(request, response, sessionId);
       }
 
@@ -353,6 +347,7 @@ public class PartyAppService
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
+      String regionName = request.queryParams("region");
 
       StringBuilder html = new StringBuilder();
       if (sessionId == null || !validSessionIds.contains(sessionId)) {
@@ -361,24 +356,24 @@ public class PartyAppService
          return html.toString();
       }
 
-      Query query = new Query().setKey(partyName);
-      query(query);
-      if (query.getResults().isEmpty() || !(query.getResults().get(0) instanceof PartyBuilt)) {
+      Object object = builder.load(partyName);
+      if (object == null || !(object instanceof Party)) {
          return pageGetParty(request, response, sessionId);
       }
 
-      PartyBuilt partyBuilt = (PartyBuilt) query.getResults().get(0);
+      Party party = (Party) object;
       html.append("<form action=\"/page/withItem\" method=\"get\">\n");
       html.append(String.format("   <p>Welcome %s</p>\n", name));
-      html.append(String.format("   <p>Let's do the %s</p>\n", partyBuilt.getName()));
-
+      html.append(String.format("   <p>Let's do the %s in %s</p>\n", party.getName(), regionName));
+      html.append("   <p>Book an item</p>\n");
       html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
       html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
       html.append("   <p><input id=\"buyer\" name=\"buyer\" placeholder=\"buyer?\"></p>\n");
 
       html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
       html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
-      html.append(String.format("   <p><input id=\"party\" name=\"party\" type=\"hidden\" value=\"%s\"></p>\n", partyBuilt.getName()));
+      html.append(String.format("   <p><input id=\"party\" name=\"party\" type=\"hidden\" value=\"%s\"></p>\n", party.getName()));
+      html.append(String.format("   <p><input id=\"region\" name=\"region\" type=\"hidden\" value=\"%s\"></p>\n", regionName));
       html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
       html.append("</form>\n");
 
@@ -399,9 +394,9 @@ public class PartyAppService
          return html.toString();
       }
 
-      Query query = new Query().setKey(partyName);
-      query(query);
-      if (query.getResults().isEmpty()) {
+      Object object = builder.load(partyName);
+
+      if (object == null) {
          PartyBuilt partyBuilt = new PartyBuilt();
          partyBuilt.setId(isoNow());
          partyBuilt.setBlockId(partyName);
@@ -411,14 +406,14 @@ public class PartyAppService
          return pageGetOverview(request, response);
       }
 
-      if (!(query.getResults().get(0) instanceof PartyBuilt)) {
+      if (!(object instanceof Party)) {
          html.append(pageGetParty(request, response, sessionId));
          html.append("invalid party name");
          return html.toString();
       }
 
-      PartyBuilt partyBuilt = (PartyBuilt) query.getResults().get(0);
-      if (partyBuilt.getLocation().equals(location)) {
+      Party party = (Party) object;
+      if (party.getLocation().equals(location)) {
          return pageGetOverview(request, response);
       }
 
@@ -433,7 +428,7 @@ public class PartyAppService
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
 
-      Party party = model.getOrCreateParty(partyName);
+      Party party = (Party) builder.load(partyName);
 
       StringBuilder html = new StringBuilder();
       html.append("<form action=\"/page/addItem\" method=\"get\">\n");
@@ -513,14 +508,12 @@ public class PartyAppService
 
       if (email.equals("null")) {
          // check password
-         Query query = new Query().setKey(name);
-         query(query);
+         User user = (User) builder.load(name);
 
-         if (query.getResults().isEmpty() || !(query.getResults().get(0) instanceof UserBuilt)) {
+         if (user == null) {
             return pageGetEmail(request, response);
          }
 
-         UserBuilt user = (UserBuilt) query.getResults().get(0);
          if (!user.getPassword().equals(password)) {
             html.append(pageGetPassword(request, response));
             html.append("Please try again");
@@ -577,7 +570,7 @@ public class PartyAppService
 
       StringBuilder html = new StringBuilder();
 
-      Object object = model.getModelMap().get(name);
+      Object object = builder.load(name);
       if (object != null) {
          User user = (User) object;
          if (user.getEmail().equals(email)) {
@@ -596,10 +589,9 @@ public class PartyAppService
       StringBuilder html = new StringBuilder();
       String name = request.queryParams("name");
 
-      Query query = new Query().setKey(name);
-      query(query);
+      Object user = builder.load(name);
 
-      if (query.getResults().size() == 0) {
+      if (user == null) {
          // getEmail
          return pageGetEmail(request, response);
       }
@@ -646,9 +638,12 @@ public class PartyAppService
       html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
       html.append("</form>\n");
 
-      if (query.getResults().size() > 0) {
+      // old user just changing password?
+      Object user = builder.load(name);
+      if (user != null) {
          html.append("Please use original email");
       }
+
 
       return html.toString();
    }

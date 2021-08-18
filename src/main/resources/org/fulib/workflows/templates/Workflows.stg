@@ -159,6 +159,40 @@ builderOutdated() ::=
       return true;
 >>
 
+builderLoad() ::=
+<<
+      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;
+>>
+
+builderAddToGroup() ::=
+<<
+      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format("could not find element event \%s for group \%s ", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);
+>>
+
+
 serviceQuery() ::=
 <<
       DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());

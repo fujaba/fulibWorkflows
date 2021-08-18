@@ -152,8 +152,8 @@ public class StorageBusinessLogic
          handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
          handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
          handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
-         handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
-         handlerMap.put(PickTaskBuilt.class, builder::handlePickTaskBuilt);
+         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+         handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
       }
    }
 

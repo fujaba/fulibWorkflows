@@ -29,10 +29,10 @@
   roles: 	shopBusinessLogic_builder 	shopBusinessLogic_service
 
 - shopBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	shopBuilder_model 	shopBuilder_eventStore
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	shopBuilder_outdated 	shopBuilder_handleOrderBuilt 	shopBuilder_handleCustomerBuilt 	shopBuilder_stripBrackets
+  attributes: 	shopBuilder_model 	shopBuilder_eventStore 	shopBuilder_loaderMap 	shopBuilder_groupStore
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import java.util.function.Function;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import java.util.function.Function;"
+  methods: 	shopBuilder_outdated 	shopBuilder_storeOrderBuilt 	shopBuilder_loadOrderBuilt 	shopBuilder_storeCustomerBuilt 	shopBuilder_loadCustomerBuilt 	shopBuilder_load 	shopBuilder_initLoaderMap 	shopBuilder_addToGroup 	shopBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	ShopBuilder
@@ -339,8 +339,8 @@ handleDemoOrderDeclinedEvent(event);
    handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
    handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
    handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-   handlerMap.put(OrderBuilt.class, builder::handleOrderBuilt);
-   handlerMap.put(CustomerBuilt.class, builder::handleCustomerBuilt);
+   handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
+   handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
 }
 "
   modified: 	false
@@ -417,6 +417,25 @@ handleDemoOrderDeclinedEvent(event);
   type: 	"LinkedHashMap<String, DataEvent>"
   typeSignature: 	"LinkedHashMap<String,DataEvent>"
 
+- shopBuilder_loaderMap: 	org.fulib.classmodel.Attribute
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_loaderMap
+  modified: 	false
+  name: 	loaderMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Function<Event, Object>>"
+  typeSignature: 	"LinkedHashMap<Class,Function<Event,Object>>"
+
+- shopBuilder_groupStore: 	org.fulib.classmodel.Attribute
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_groupStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	groupStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, LinkedHashMap<String, DataEvent>>"
+  typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
+
 - shopBuilder_outdated: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBuilder
@@ -442,46 +461,147 @@ handleDemoOrderDeclinedEvent(event);
   returnType: 	boolean
   signature: 	"class/ShopBuilder/method/outdated(DataEvent)"
 
-- shopBuilder_handleOrderBuilt: 	org.fulib.classmodel.FMethod
+- shopBuilder_storeOrderBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBuilder
-  declaration: 	"public void handleOrderBuilt(Event e)"
-  id: 	ShopBuilder_handleOrderBuilt
+  declaration: 	"public void storeOrderBuilt(Event e)"
+  id: 	ShopBuilder_storeOrderBuilt
   methodBody: 	"OrderBuilt event = (OrderBuilt) e;
 if (outdated(event)) {
    return;
 }
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeOrderBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/storeOrderBuilt(Event)"
+
+- shopBuilder_loadOrderBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public Order loadOrderBuilt(Event e)"
+  id: 	ShopBuilder_loadOrderBuilt
+  methodBody: 	"OrderBuilt event = (OrderBuilt) e;
 Order object = model.getOrCreateOrder(event.getBlockId());
 object.setProduct(event.getProduct());
 object.setCustomer(event.getCustomer());
 object.setAddress(event.getAddress());
 object.setState(event.getState());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleOrderBuilt
+  name: 	loadOrderBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopBuilder/method/handleOrderBuilt(Event)"
+  returnType: 	Order
+  signature: 	"class/ShopBuilder/method/loadOrderBuilt(Event)"
 
-- shopBuilder_handleCustomerBuilt: 	org.fulib.classmodel.FMethod
+- shopBuilder_storeCustomerBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBuilder
-  declaration: 	"public void handleCustomerBuilt(Event e)"
-  id: 	ShopBuilder_handleCustomerBuilt
+  declaration: 	"public void storeCustomerBuilt(Event e)"
+  id: 	ShopBuilder_storeCustomerBuilt
   methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
 if (outdated(event)) {
    return;
 }
-Customer object = model.getOrCreateCustomer(event.getBlockId());
-object.setOrders(event.getOrders());
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleCustomerBuilt
+  name: 	storeCustomerBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/ShopBuilder/method/handleCustomerBuilt(Event)"
+  signature: 	"class/ShopBuilder/method/storeCustomerBuilt(Event)"
+
+- shopBuilder_loadCustomerBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public Customer loadCustomerBuilt(Event e)"
+  id: 	ShopBuilder_loadCustomerBuilt
+  methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
+Customer object = model.getOrCreateCustomer(event.getBlockId());
+object.setOrders(event.getOrders());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadCustomerBuilt
+  paramsString: 	"Event e"
+  returnType: 	Customer
+  signature: 	"class/ShopBuilder/method/loadCustomerBuilt(Event)"
+
+- shopBuilder_load: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public Object load(String blockId)"
+  id: 	ShopBuilder_load
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;"
+  modified: 	false
+  modifiers: 	public
+  name: 	load
+  paramsString: 	"String blockId"
+  returnType: 	Object
+  signature: 	"class/ShopBuilder/method/load(String)"
+
+- shopBuilder_initLoaderMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"private void initLoaderMap()"
+  id: 	ShopBuilder_initLoaderMap
+  methodBody: 	"if (loaderMap == null) {
+   loaderMap = new LinkedHashMap<>();
+   loaderMap.put(OrderBuilt.class, this::loadOrderBuilt);
+   loaderMap.put(CustomerBuilt.class, this::loadCustomerBuilt);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	initLoaderMap
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/initLoaderMap()"
+
+- shopBuilder_addToGroup: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"private void addToGroup(String groupId, String elementId)"
+  id: 	ShopBuilder_addToGroup
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format(\"could not find element event %s for group %s \", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);"
+  modified: 	false
+  modifiers: 	private
+  name: 	addToGroup
+  paramsString: 	"String groupId, String elementId"
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/addToGroup(String,String)"
 
 - shopBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
   annotations: 	""

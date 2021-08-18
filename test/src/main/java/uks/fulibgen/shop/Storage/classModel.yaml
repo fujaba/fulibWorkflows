@@ -29,10 +29,10 @@
   roles: 	storageBusinessLogic_builder 	storageBusinessLogic_service
 
 - storageBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	storageBuilder_model 	storageBuilder_eventStore
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;"
-  methods: 	storageBuilder_outdated 	storageBuilder_handleBoxBuilt 	storageBuilder_handlePickTaskBuilt 	storageBuilder_stripBrackets
+  attributes: 	storageBuilder_model 	storageBuilder_eventStore 	storageBuilder_loaderMap 	storageBuilder_groupStore
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import java.util.function.Function;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import java.util.function.Function;"
+  methods: 	storageBuilder_outdated 	storageBuilder_storeBoxBuilt 	storageBuilder_loadBoxBuilt 	storageBuilder_storePickTaskBuilt 	storageBuilder_loadPickTaskBuilt 	storageBuilder_load 	storageBuilder_initLoaderMap 	storageBuilder_addToGroup 	storageBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	StorageBuilder
@@ -297,8 +297,8 @@ handleDemoPickOrderCommand(event);
    handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
    handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
    handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
-   handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
-   handlerMap.put(PickTaskBuilt.class, builder::handlePickTaskBuilt);
+   handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+   handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
 }
 "
   modified: 	false
@@ -375,6 +375,25 @@ handleDemoPickOrderCommand(event);
   type: 	"LinkedHashMap<String, DataEvent>"
   typeSignature: 	"LinkedHashMap<String,DataEvent>"
 
+- storageBuilder_loaderMap: 	org.fulib.classmodel.Attribute
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_loaderMap
+  modified: 	false
+  name: 	loaderMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Function<Event, Object>>"
+  typeSignature: 	"LinkedHashMap<Class,Function<Event,Object>>"
+
+- storageBuilder_groupStore: 	org.fulib.classmodel.Attribute
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_groupStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	groupStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, LinkedHashMap<String, DataEvent>>"
+  typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
+
 - storageBuilder_outdated: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
@@ -400,35 +419,68 @@ handleDemoPickOrderCommand(event);
   returnType: 	boolean
   signature: 	"class/StorageBuilder/method/outdated(DataEvent)"
 
-- storageBuilder_handleBoxBuilt: 	org.fulib.classmodel.FMethod
+- storageBuilder_storeBoxBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
-  declaration: 	"public void handleBoxBuilt(Event e)"
-  id: 	StorageBuilder_handleBoxBuilt
+  declaration: 	"public void storeBoxBuilt(Event e)"
+  id: 	StorageBuilder_storeBoxBuilt
   methodBody: 	"BoxBuilt event = (BoxBuilt) e;
 if (outdated(event)) {
    return;
 }
-Box object = model.getOrCreateBox(event.getBlockId());
-object.setProduct(event.getProduct());
-object.setPlace(event.getPlace());
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleBoxBuilt
+  name: 	storeBoxBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StorageBuilder/method/handleBoxBuilt(Event)"
+  signature: 	"class/StorageBuilder/method/storeBoxBuilt(Event)"
 
-- storageBuilder_handlePickTaskBuilt: 	org.fulib.classmodel.FMethod
+- storageBuilder_loadBoxBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
-  declaration: 	"public void handlePickTaskBuilt(Event e)"
-  id: 	StorageBuilder_handlePickTaskBuilt
+  declaration: 	"public Box loadBoxBuilt(Event e)"
+  id: 	StorageBuilder_loadBoxBuilt
+  methodBody: 	"BoxBuilt event = (BoxBuilt) e;
+Box object = model.getOrCreateBox(event.getBlockId());
+object.setProduct(event.getProduct());
+object.setPlace(event.getPlace());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadBoxBuilt
+  paramsString: 	"Event e"
+  returnType: 	Box
+  signature: 	"class/StorageBuilder/method/loadBoxBuilt(Event)"
+
+- storageBuilder_storePickTaskBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public void storePickTaskBuilt(Event e)"
+  id: 	StorageBuilder_storePickTaskBuilt
   methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
 if (outdated(event)) {
    return;
 }
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storePickTaskBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StorageBuilder/method/storePickTaskBuilt(Event)"
+
+- storageBuilder_loadPickTaskBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public PickTask loadPickTaskBuilt(Event e)"
+  id: 	StorageBuilder_loadPickTaskBuilt
+  methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
 PickTask object = model.getOrCreatePickTask(event.getBlockId());
 object.setOrder(event.getOrder());
 object.setProduct(event.getProduct());
@@ -436,13 +488,81 @@ object.setCustomer(event.getCustomer());
 object.setAddress(event.getAddress());
 object.setState(event.getState());
 object.setBox(event.getBox());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handlePickTaskBuilt
+  name: 	loadPickTaskBuilt
   paramsString: 	"Event e"
+  returnType: 	PickTask
+  signature: 	"class/StorageBuilder/method/loadPickTaskBuilt(Event)"
+
+- storageBuilder_load: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public Object load(String blockId)"
+  id: 	StorageBuilder_load
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;"
+  modified: 	false
+  modifiers: 	public
+  name: 	load
+  paramsString: 	"String blockId"
+  returnType: 	Object
+  signature: 	"class/StorageBuilder/method/load(String)"
+
+- storageBuilder_initLoaderMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"private void initLoaderMap()"
+  id: 	StorageBuilder_initLoaderMap
+  methodBody: 	"if (loaderMap == null) {
+   loaderMap = new LinkedHashMap<>();
+   loaderMap.put(BoxBuilt.class, this::loadBoxBuilt);
+   loaderMap.put(PickTaskBuilt.class, this::loadPickTaskBuilt);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	initLoaderMap
+  paramsString: 	""
   returnType: 	void
-  signature: 	"class/StorageBuilder/method/handlePickTaskBuilt(Event)"
+  signature: 	"class/StorageBuilder/method/initLoaderMap()"
+
+- storageBuilder_addToGroup: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"private void addToGroup(String groupId, String elementId)"
+  id: 	StorageBuilder_addToGroup
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format(\"could not find element event %s for group %s \", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);"
+  modified: 	false
+  modifiers: 	private
+  name: 	addToGroup
+  paramsString: 	"String groupId, String elementId"
+  returnType: 	void
+  signature: 	"class/StorageBuilder/method/addToGroup(String,String)"
 
 - storageBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
   annotations: 	""

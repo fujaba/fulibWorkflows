@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import uks.fulibgen.shop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.function.Function;
 
 public class ShopBuilder
 {
@@ -11,11 +12,15 @@ public class ShopBuilder
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    public static final String PROPERTY_SERVICE = "service";
    public static final String PROPERTY_EVENT_STORE = "eventStore";
+   public static final String PROPERTY_LOADER_MAP = "loaderMap";
+   public static final String PROPERTY_GROUP_STORE = "groupStore";
    private ShopModel model;
    private ShopBusinessLogic businessLogic;
    protected PropertyChangeSupport listeners;
    private ShopService service;
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
+   private LinkedHashMap<Class, Function<Event, Object>> loaderMap;
+   private LinkedHashMap<String, LinkedHashMap<String, DataEvent>> groupStore = new LinkedHashMap<>();
 
    public ShopModel getModel()
    {
@@ -107,27 +112,40 @@ public class ShopBuilder
       return this;
    }
 
-   public void handleOrderBuilt(Event e)
+   public LinkedHashMap<Class, Function<Event, Object>> getLoaderMap()
    {
-      OrderBuilt event = (OrderBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-      Order object = model.getOrCreateOrder(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
+      return this.loaderMap;
    }
 
-   public void handleCustomerBuilt(Event e)
+   public ShopBuilder setLoaderMap(LinkedHashMap<Class, Function<Event, Object>> value)
    {
-      CustomerBuilt event = (CustomerBuilt) e;
-      if (outdated(event)) {
-         return;
+      if (Objects.equals(value, this.loaderMap))
+      {
+         return this;
       }
-      Customer object = model.getOrCreateCustomer(event.getBlockId());
-      object.setOrders(event.getOrders());
+
+      final LinkedHashMap<Class, Function<Event, Object>> oldValue = this.loaderMap;
+      this.loaderMap = value;
+      this.firePropertyChange(PROPERTY_LOADER_MAP, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, LinkedHashMap<String, DataEvent>> getGroupStore()
+   {
+      return this.groupStore;
+   }
+
+   public ShopBuilder setGroupStore(LinkedHashMap<String, LinkedHashMap<String, DataEvent>> value)
+   {
+      if (Objects.equals(value, this.groupStore))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, LinkedHashMap<String, DataEvent>> oldValue = this.groupStore;
+      this.groupStore = value;
+      this.firePropertyChange(PROPERTY_GROUP_STORE, oldValue, value);
+      return this;
    }
 
    public String stripBrackets(String back)
@@ -183,5 +201,86 @@ public class ShopBuilder
       }
 
       return true;
+   }
+
+   public void storeOrderBuilt(Event e)
+   {
+      OrderBuilt event = (OrderBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public Order loadOrderBuilt(Event e)
+   {
+      OrderBuilt event = (OrderBuilt) e;
+      Order object = model.getOrCreateOrder(event.getBlockId());
+      object.setProduct(event.getProduct());
+      object.setCustomer(event.getCustomer());
+      object.setAddress(event.getAddress());
+      object.setState(event.getState());
+      return object;
+   }
+
+   public void storeCustomerBuilt(Event e)
+   {
+      CustomerBuilt event = (CustomerBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public Customer loadCustomerBuilt(Event e)
+   {
+      CustomerBuilt event = (CustomerBuilt) e;
+      Customer object = model.getOrCreateCustomer(event.getBlockId());
+      object.setOrders(event.getOrders());
+      return object;
+   }
+
+   public Object load(String blockId)
+   {
+      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;
+   }
+
+   private void initLoaderMap()
+   {
+      if (loaderMap == null) {
+         loaderMap = new LinkedHashMap<>();
+         loaderMap.put(OrderBuilt.class, this::loadOrderBuilt);
+         loaderMap.put(CustomerBuilt.class, this::loadCustomerBuilt);
+      }
+   }
+
+   private void addToGroup(String groupId, String elementId)
+   {
+      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format("could not find element event %s for group %s ", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);
    }
 }

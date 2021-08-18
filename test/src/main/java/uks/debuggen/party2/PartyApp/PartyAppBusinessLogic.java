@@ -254,12 +254,12 @@ public class PartyAppBusinessLogic
          handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
          handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
          handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
-         handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
-         handlerMap.put(RegionBuilt.class, builder::handleRegionBuilt);
-         handlerMap.put(PartyBuilt.class, builder::handlePartyBuilt);
-         handlerMap.put(Party2Built.class, builder::handleParty2Built);
-         handlerMap.put(ItemBuilt.class, builder::handleItemBuilt);
-         handlerMap.put(GuestBuilt.class, builder::handleGuestBuilt);
+         handlerMap.put(UserBuilt.class, builder::storeUserBuilt);
+         handlerMap.put(RegionBuilt.class, builder::storeRegionBuilt);
+         handlerMap.put(PartyBuilt.class, builder::storePartyBuilt);
+         handlerMap.put(Party2Built.class, builder::storeParty2Built);
+         handlerMap.put(ItemBuilt.class, builder::storeItemBuilt);
+         handlerMap.put(GuestBuilt.class, builder::storeGuestBuilt);
       }
    }
 

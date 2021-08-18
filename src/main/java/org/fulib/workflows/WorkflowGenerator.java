@@ -121,6 +121,7 @@ public class WorkflowGenerator
          buildGetPageMethod(modelManager, serviceClazz, serviceName, body);
 
          buildInitEventHandlerMapMethod(modelManager, serviceNote, body);
+         buildLoadAndInitLoaderMap(modelManager, serviceNote);
 
          // ignoreEvents method
          declaration = "private void ignoreEvent(Event event)";
@@ -157,6 +158,8 @@ public class WorkflowGenerator
 
       }
    }
+
+
 
    private void addBuilderClass(ClassModelManager modelManager, String serviceName)
    {
@@ -384,6 +387,42 @@ public class WorkflowGenerator
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
    }
 
+
+   private void buildLoadAndInitLoaderMap(ClassModelManager modelManager, ServiceNote serviceNote)
+   {
+      String declaration = "public Object load(String blockId)";
+      StringBuilder body = new StringBuilder();
+      ST st = group.getInstanceOf("builderLoad");
+      body.append(st.render());
+
+      modelManager.haveMethod(builderClass, declaration, body.toString());
+
+      modelManager.haveAttribute(builderClass, "loaderMap", "LinkedHashMap<Class, Function<Event, Object>>");
+      modelManager.haveAttribute(builderClass, "groupStore",
+            "LinkedHashMap<String, LinkedHashMap<String, DataEvent>>",
+            "new LinkedHashMap<>()");
+      modelManager.haveImport(builderClass, "import java.util.function.Function;");
+
+      declaration = "private void initLoaderMap()";
+      body.setLength(0);
+      body.append("if (loaderMap == null) {\n");
+      body.append("   loaderMap = new LinkedHashMap<>();\n");
+      for (DataType dataType : serviceNote.getHandledDataTypes()) {
+         String eventTypeName = dataType.getDataTypeName() + "Built";
+         body.append(String.format("   loaderMap.put(%s.class, this::load%s);\n",
+               eventTypeName, eventTypeName));
+      }
+      body.append("}\n");
+
+      modelManager.haveMethod(builderClass, declaration, body.toString());
+
+      declaration = "private void addToGroup(String groupId, String elementId)";
+      body.setLength(0);
+      st = group.getInstanceOf("builderAddToGroup");
+      body.append(st.render());
+      modelManager.haveMethod(builderClass, declaration, body.toString());
+   }
+
    private void buildInitEventHandlerMapMethod(ClassModelManager modelManager, ServiceNote serviceNote, StringBuilder body)
    {
       String declaration;
@@ -408,7 +447,7 @@ public class WorkflowGenerator
 
       for (DataType dataType : serviceNote.getHandledDataTypes()) {
          String eventTypeName = dataType.getDataTypeName() + "Built";
-         body.append(String.format("   handlerMap.put(%s.class, builder::handle%s);\n",
+         body.append(String.format("   handlerMap.put(%s.class, builder::store%s);\n",
                eventTypeName, eventTypeName));
          addDataEventHandlerMethod(modelManager, serviceNote, dataType);
       }
@@ -419,54 +458,70 @@ public class WorkflowGenerator
       StringBuilder body = new StringBuilder();
       String dataTypeName = dataType.getDataTypeName();
       String eventTypeName = dataTypeName + "Built";
-      String declaration = String.format("public void handle%s(Event e)", eventTypeName);
+      String declaration = String.format("public void store%s(Event e)", eventTypeName);
       body.append(String.format("%s event = (%1$s) e;\n", eventTypeName));
-      body.append("if (outdated(event)) {\n");
-      body.append("   return;\n");
-      body.append("}\n");
+
       if (dataType.getMigratedTo() != null) {
          body.append("// please insert a no before fulib in the next line and insert event upgrading code\n" +
                "// fulib\n");
       }
       else {
-         body.append(String.format("%s object = model.getOrCreate%1$s(event.getBlockId());\n", dataTypeName));
+         body.append("if (outdated(event)) {\n");
+         body.append("   return;\n");
+         body.append("}\n");
+         body.append("// please insert a no before fulib in the next line and insert addToGroup commands as necessary\n" +
+               "// fulib\n");
+      }
 
-         Clazz dataClazz = modelManager.haveClass(dataTypeName);
-         Clazz eventClazz = em.haveClass(eventTypeName);
+      modelManager.haveMethod(builderClass, declaration, body.toString());
 
-         for (Attribute attribute : eventClazz.getAttributes()) {
-            String attrName = attribute.getName();
-            Attribute dataAttr = getAttribute(dataClazz, attrName);
-            if (dataAttr != null) {
-               // e.g.: object.setMotivation(event.getMotivation());
-               if (dataAttr.getType().equals(Type.STRING)) {
-                  body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
-               }
-               else if (dataAttr.getType().equals(Type.INT)) {
-                  body.append(String.format("object.set%s(Integer.parseInt(event.get%1$s()));\n", StrUtil.cap(attrName)));
-               }
-               else if (dataAttr.getType().equals(Type.DOUBLE)) {
-                  body.append(String.format("object.set%s(Double.parseDouble(event.get%1$s()));\n", StrUtil.cap(attrName)));
-               }
+      if (dataType.getMigratedTo() != null) {
+         return;
+      }
+
+      declaration = String.format("public %s load%s(Event e)", dataTypeName, eventTypeName);
+      body.setLength(0);
+      body.append(String.format("%s event = (%1$s) e;\n", eventTypeName));
+      body.append(String.format("%s object = model.getOrCreate%1$s(event.getBlockId());\n", dataTypeName));
+
+      Clazz dataClazz = modelManager.haveClass(dataTypeName);
+      Clazz eventClazz = em.haveClass(eventTypeName);
+
+      for (Attribute attribute : eventClazz.getAttributes()) {
+         String attrName = attribute.getName();
+         Attribute dataAttr = getAttribute(dataClazz, attrName);
+         if (dataAttr != null) {
+            // e.g.: object.setMotivation(event.getMotivation());
+            if (dataAttr.getType().equals(Type.STRING)) {
+               body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
+            }
+            else if (dataAttr.getType().equals(Type.INT)) {
+               body.append(String.format("object.set%s(Integer.parseInt(event.get%1$s()));\n", StrUtil.cap(attrName)));
+            }
+            else if (dataAttr.getType().equals(Type.DOUBLE)) {
+               body.append(String.format("object.set%s(Double.parseDouble(event.get%1$s()));\n", StrUtil.cap(attrName)));
+            }
+         }
+         else {
+            // e.g.: event.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
+            AssocRole role = getRole(dataClazz, attrName);
+            AssocRole other = role.getOther();
+            Clazz otherClazz = other.getClazz();
+            if (role.getCardinality() <= 1) {
+               body.append(String.format("object.set%s(model.getOrCreate%s(event.get%1$s()));\n", StrUtil.cap(attrName), otherClazz.getName()));
             }
             else {
-               // e.g.: event.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
-               AssocRole role = getRole(dataClazz, attrName);
-               AssocRole other = role.getOther();
-               Clazz otherClazz = other.getClazz();
-               if (role.getCardinality() <= 1) {
-                  body.append(String.format("object.set%s(model.getOrCreate%s(event.get%1$s()));\n", StrUtil.cap(attrName), otherClazz.getName()));
-               }
-               else {
-                  body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\"\\\\s+\")) {\n", StrUtil.cap(attrName)));
-                  body.append("   if (name.equals(\"\")) continue;\n");
-                  body.append(String.format("   object.with%s(model.getOrCreate%s(name));\n", StrUtil.cap(attrName), otherClazz.getName()));
-                  body.append("}\n");
-               }
+               body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\"\\\\s+\")) {\n", StrUtil.cap(attrName)));
+               body.append("   if (name.equals(\"\")) continue;\n");
+               body.append(String.format("   object.with%s(model.getOrCreate%s(name));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append("}\n");
             }
          }
       }
+      body.append("return object;\n");
+
       modelManager.haveMethod(builderClass, declaration, body.toString());
+
    }
 
    private void addEventHandlerMethod(ClassModelManager modelManager, ServiceNote serviceNote, EventType eventType)

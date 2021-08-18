@@ -173,8 +173,8 @@ public class ShopBusinessLogic
          handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
          handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
          handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-         handlerMap.put(OrderBuilt.class, builder::handleOrderBuilt);
-         handlerMap.put(CustomerBuilt.class, builder::handleCustomerBuilt);
+         handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
+         handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
       }
    }
 

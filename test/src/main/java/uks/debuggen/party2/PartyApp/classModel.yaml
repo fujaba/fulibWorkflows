@@ -29,10 +29,10 @@
   roles: 	partyAppBusinessLogic_builder 	partyAppBusinessLogic_service
 
 - partyAppBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore
+  attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore 	partyAppBuilder_loaderMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;"
-  methods: 	partyAppBuilder_outdated 	partyAppBuilder_handleUserBuilt 	partyAppBuilder_handleRegionBuilt 	partyAppBuilder_handlePartyBuilt 	partyAppBuilder_handleParty2Built 	partyAppBuilder_handleItemBuilt 	partyAppBuilder_handleGuestBuilt 	partyAppBuilder_stripBrackets
+  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storeRegionBuilt 	partyAppBuilder_loadRegionBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_storeParty2Built 	partyAppBuilder_loadParty2Built 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	PartyAppBuilder
@@ -478,12 +478,12 @@ if (event.getId().equals(\"14:09\")) {
    handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
    handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
    handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
-   handlerMap.put(UserBuilt.class, builder::handleUserBuilt);
-   handlerMap.put(RegionBuilt.class, builder::handleRegionBuilt);
-   handlerMap.put(PartyBuilt.class, builder::handlePartyBuilt);
-   handlerMap.put(Party2Built.class, builder::handleParty2Built);
-   handlerMap.put(ItemBuilt.class, builder::handleItemBuilt);
-   handlerMap.put(GuestBuilt.class, builder::handleGuestBuilt);
+   handlerMap.put(UserBuilt.class, builder::storeUserBuilt);
+   handlerMap.put(RegionBuilt.class, builder::storeRegionBuilt);
+   handlerMap.put(PartyBuilt.class, builder::storePartyBuilt);
+   handlerMap.put(Party2Built.class, builder::storeParty2Built);
+   handlerMap.put(ItemBuilt.class, builder::storeItemBuilt);
+   handlerMap.put(GuestBuilt.class, builder::storeGuestBuilt);
 }
 "
   modified: 	false
@@ -560,6 +560,15 @@ if (event.getId().equals(\"14:09\")) {
   type: 	"LinkedHashMap<String, DataEvent>"
   typeSignature: 	"LinkedHashMap<String,DataEvent>"
 
+- partyAppBuilder_loaderMap: 	org.fulib.classmodel.Attribute
+  clazz: 	partyAppBuilder
+  id: 	PartyAppBuilder_loaderMap
+  modified: 	false
+  name: 	loaderMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Function<Event, Object>>"
+  typeSignature: 	"LinkedHashMap<Class,Function<Event,Object>>"
+
 - partyAppBuilder_outdated: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
@@ -585,127 +594,237 @@ if (event.getId().equals(\"14:09\")) {
   returnType: 	boolean
   signature: 	"class/PartyAppBuilder/method/outdated(DataEvent)"
 
-- partyAppBuilder_handleUserBuilt: 	org.fulib.classmodel.FMethod
+- partyAppBuilder_storeUserBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
-  declaration: 	"public void handleUserBuilt(Event e)"
-  id: 	PartyAppBuilder_handleUserBuilt
+  declaration: 	"public void storeUserBuilt(Event e)"
+  id: 	PartyAppBuilder_storeUserBuilt
   methodBody: 	"UserBuilt event = (UserBuilt) e;
 if (outdated(event)) {
    return;
 }
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeUserBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/storeUserBuilt(Event)"
+
+- partyAppBuilder_loadUserBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public User loadUserBuilt(Event e)"
+  id: 	PartyAppBuilder_loadUserBuilt
+  methodBody: 	"UserBuilt event = (UserBuilt) e;
 User object = model.getOrCreateUser(event.getBlockId());
 object.setName(event.getName());
 object.setEmail(event.getEmail());
 object.setPassword(event.getPassword());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleUserBuilt
+  name: 	loadUserBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/PartyAppBuilder/method/handleUserBuilt(Event)"
+  returnType: 	User
+  signature: 	"class/PartyAppBuilder/method/loadUserBuilt(Event)"
 
-- partyAppBuilder_handleRegionBuilt: 	org.fulib.classmodel.FMethod
+- partyAppBuilder_storeRegionBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
-  declaration: 	"public void handleRegionBuilt(Event e)"
-  id: 	PartyAppBuilder_handleRegionBuilt
+  declaration: 	"public void storeRegionBuilt(Event e)"
+  id: 	PartyAppBuilder_storeRegionBuilt
   methodBody: 	"RegionBuilt event = (RegionBuilt) e;
 if (outdated(event)) {
    return;
 }
-Region object = model.getOrCreateRegion(event.getBlockId());
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleRegionBuilt
+  name: 	storeRegionBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/PartyAppBuilder/method/handleRegionBuilt(Event)"
+  signature: 	"class/PartyAppBuilder/method/storeRegionBuilt(Event)"
 
-- partyAppBuilder_handlePartyBuilt: 	org.fulib.classmodel.FMethod
+- partyAppBuilder_loadRegionBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
-  declaration: 	"public void handlePartyBuilt(Event e)"
-  id: 	PartyAppBuilder_handlePartyBuilt
+  declaration: 	"public Region loadRegionBuilt(Event e)"
+  id: 	PartyAppBuilder_loadRegionBuilt
+  methodBody: 	"RegionBuilt event = (RegionBuilt) e;
+Region object = model.getOrCreateRegion(event.getBlockId());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadRegionBuilt
+  paramsString: 	"Event e"
+  returnType: 	Region
+  signature: 	"class/PartyAppBuilder/method/loadRegionBuilt(Event)"
+
+- partyAppBuilder_storePartyBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public void storePartyBuilt(Event e)"
+  id: 	PartyAppBuilder_storePartyBuilt
   methodBody: 	"PartyBuilt event = (PartyBuilt) e;
-if (outdated(event)) {
-   return;
-}
 // please insert a no before fulib in the next line and insert event upgrading code
 // fulib
 "
   modified: 	false
   modifiers: 	public
-  name: 	handlePartyBuilt
+  name: 	storePartyBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/PartyAppBuilder/method/handlePartyBuilt(Event)"
+  signature: 	"class/PartyAppBuilder/method/storePartyBuilt(Event)"
 
-- partyAppBuilder_handleParty2Built: 	org.fulib.classmodel.FMethod
+- partyAppBuilder_storeParty2Built: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
-  declaration: 	"public void handleParty2Built(Event e)"
-  id: 	PartyAppBuilder_handleParty2Built
+  declaration: 	"public void storeParty2Built(Event e)"
+  id: 	PartyAppBuilder_storeParty2Built
   methodBody: 	"Party2Built event = (Party2Built) e;
 if (outdated(event)) {
    return;
 }
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeParty2Built
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/storeParty2Built(Event)"
+
+- partyAppBuilder_loadParty2Built: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public Party2 loadParty2Built(Event e)"
+  id: 	PartyAppBuilder_loadParty2Built
+  methodBody: 	"Party2Built event = (Party2Built) e;
 Party2 object = model.getOrCreateParty2(event.getBlockId());
 object.setName(event.getName());
 object.setRegion(model.getOrCreateRegion(event.getRegion()));
 object.setAddress(event.getAddress());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleParty2Built
+  name: 	loadParty2Built
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/PartyAppBuilder/method/handleParty2Built(Event)"
+  returnType: 	Party2
+  signature: 	"class/PartyAppBuilder/method/loadParty2Built(Event)"
 
-- partyAppBuilder_handleItemBuilt: 	org.fulib.classmodel.FMethod
+- partyAppBuilder_storeItemBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
-  declaration: 	"public void handleItemBuilt(Event e)"
-  id: 	PartyAppBuilder_handleItemBuilt
+  declaration: 	"public void storeItemBuilt(Event e)"
+  id: 	PartyAppBuilder_storeItemBuilt
   methodBody: 	"ItemBuilt event = (ItemBuilt) e;
 if (outdated(event)) {
    return;
 }
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeItemBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/storeItemBuilt(Event)"
+
+- partyAppBuilder_loadItemBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public Item loadItemBuilt(Event e)"
+  id: 	PartyAppBuilder_loadItemBuilt
+  methodBody: 	"ItemBuilt event = (ItemBuilt) e;
 Item object = model.getOrCreateItem(event.getBlockId());
 object.setName(event.getName());
 object.setPrice(event.getPrice());
 object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
 object.setParty(model.getOrCreateParty2(event.getParty()));
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleItemBuilt
+  name: 	loadItemBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/PartyAppBuilder/method/handleItemBuilt(Event)"
+  returnType: 	Item
+  signature: 	"class/PartyAppBuilder/method/loadItemBuilt(Event)"
 
-- partyAppBuilder_handleGuestBuilt: 	org.fulib.classmodel.FMethod
+- partyAppBuilder_storeGuestBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
-  declaration: 	"public void handleGuestBuilt(Event e)"
-  id: 	PartyAppBuilder_handleGuestBuilt
+  declaration: 	"public void storeGuestBuilt(Event e)"
+  id: 	PartyAppBuilder_storeGuestBuilt
   methodBody: 	"GuestBuilt event = (GuestBuilt) e;
 if (outdated(event)) {
    return;
 }
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeGuestBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/storeGuestBuilt(Event)"
+
+- partyAppBuilder_loadGuestBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public Guest loadGuestBuilt(Event e)"
+  id: 	PartyAppBuilder_loadGuestBuilt
+  methodBody: 	"GuestBuilt event = (GuestBuilt) e;
 Guest object = model.getOrCreateGuest(event.getBlockId());
 object.setName(event.getName());
 object.setParty(model.getOrCreateParty2(event.getParty()));
 object.setExpenses(event.getExpenses());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleGuestBuilt
+  name: 	loadGuestBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/PartyAppBuilder/method/handleGuestBuilt(Event)"
+  returnType: 	Guest
+  signature: 	"class/PartyAppBuilder/method/loadGuestBuilt(Event)"
+
+- partyAppBuilder_load: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public Object load(String blockId)"
+  id: 	PartyAppBuilder_load
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;"
+  modified: 	false
+  modifiers: 	public
+  name: 	load
+  paramsString: 	"String blockId"
+  returnType: 	Object
+  signature: 	"class/PartyAppBuilder/method/load(String)"
 
 - partyAppBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
   annotations: 	""

@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import uks.fulibgen.shop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.function.Function;
 
 public class StorageBuilder
 {
@@ -11,11 +12,15 @@ public class StorageBuilder
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    public static final String PROPERTY_SERVICE = "service";
    public static final String PROPERTY_EVENT_STORE = "eventStore";
+   public static final String PROPERTY_LOADER_MAP = "loaderMap";
+   public static final String PROPERTY_GROUP_STORE = "groupStore";
    private StorageModel model;
    private StorageBusinessLogic businessLogic;
    protected PropertyChangeSupport listeners;
    private StorageService service;
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
+   private LinkedHashMap<Class, Function<Event, Object>> loaderMap;
+   private LinkedHashMap<String, LinkedHashMap<String, DataEvent>> groupStore = new LinkedHashMap<>();
 
    public StorageModel getModel()
    {
@@ -107,30 +112,40 @@ public class StorageBuilder
       return this;
    }
 
-   public void handleBoxBuilt(Event e)
+   public LinkedHashMap<Class, Function<Event, Object>> getLoaderMap()
    {
-      BoxBuilt event = (BoxBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-      Box object = model.getOrCreateBox(event.getBlockId());
-      object.setProduct(event.getProduct());
-      object.setPlace(event.getPlace());
+      return this.loaderMap;
    }
 
-   public void handlePickTaskBuilt(Event e)
+   public StorageBuilder setLoaderMap(LinkedHashMap<Class, Function<Event, Object>> value)
    {
-      PickTaskBuilt event = (PickTaskBuilt) e;
-      if (outdated(event)) {
-         return;
+      if (Objects.equals(value, this.loaderMap))
+      {
+         return this;
       }
-      PickTask object = model.getOrCreatePickTask(event.getBlockId());
-      object.setOrder(event.getOrder());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
-      object.setAddress(event.getAddress());
-      object.setState(event.getState());
-      object.setBox(event.getBox());
+
+      final LinkedHashMap<Class, Function<Event, Object>> oldValue = this.loaderMap;
+      this.loaderMap = value;
+      this.firePropertyChange(PROPERTY_LOADER_MAP, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, LinkedHashMap<String, DataEvent>> getGroupStore()
+   {
+      return this.groupStore;
+   }
+
+   public StorageBuilder setGroupStore(LinkedHashMap<String, LinkedHashMap<String, DataEvent>> value)
+   {
+      if (Objects.equals(value, this.groupStore))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, LinkedHashMap<String, DataEvent>> oldValue = this.groupStore;
+      this.groupStore = value;
+      this.firePropertyChange(PROPERTY_GROUP_STORE, oldValue, value);
+      return this;
    }
 
    public String stripBrackets(String back)
@@ -186,5 +201,89 @@ public class StorageBuilder
       }
 
       return true;
+   }
+
+   public void storeBoxBuilt(Event e)
+   {
+      BoxBuilt event = (BoxBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public Box loadBoxBuilt(Event e)
+   {
+      BoxBuilt event = (BoxBuilt) e;
+      Box object = model.getOrCreateBox(event.getBlockId());
+      object.setProduct(event.getProduct());
+      object.setPlace(event.getPlace());
+      return object;
+   }
+
+   public void storePickTaskBuilt(Event e)
+   {
+      PickTaskBuilt event = (PickTaskBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public PickTask loadPickTaskBuilt(Event e)
+   {
+      PickTaskBuilt event = (PickTaskBuilt) e;
+      PickTask object = model.getOrCreatePickTask(event.getBlockId());
+      object.setOrder(event.getOrder());
+      object.setProduct(event.getProduct());
+      object.setCustomer(event.getCustomer());
+      object.setAddress(event.getAddress());
+      object.setState(event.getState());
+      object.setBox(event.getBox());
+      return object;
+   }
+
+   public Object load(String blockId)
+   {
+      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;
+   }
+
+   private void initLoaderMap()
+   {
+      if (loaderMap == null) {
+         loaderMap = new LinkedHashMap<>();
+         loaderMap.put(BoxBuilt.class, this::loadBoxBuilt);
+         loaderMap.put(PickTaskBuilt.class, this::loadPickTaskBuilt);
+      }
+   }
+
+   private void addToGroup(String groupId, String elementId)
+   {
+      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format("could not find element event %s for group %s ", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);
    }
 }
