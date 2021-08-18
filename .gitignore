@@ -20,3 +20,5 @@ gradle-app.setting
 /tmp/
 /test/build/
 /test/tmp/
+
+.idea
