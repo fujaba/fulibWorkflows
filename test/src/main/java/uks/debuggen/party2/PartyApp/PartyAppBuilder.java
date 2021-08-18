@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.function.Consumer;
 
 public class PartyAppBuilder
 {
@@ -16,6 +17,7 @@ public class PartyAppBuilder
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    public static final String PROPERTY_SERVICE = "service";
    public static final String PROPERTY_LOADER_MAP = "loaderMap";
+   public static final String PROPERTY_GROUP_STORE = "groupStore";
    private PartyAppModel model;
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
    private LinkedHashMap<String, LinkedHashMap<String, DataEvent>> groupStore = new LinkedHashMap<>();
@@ -30,7 +32,8 @@ public class PartyAppBuilder
 
    public PartyAppBuilder setModel(PartyAppModel value)
    {
-      if (Objects.equals(value, this.model)) {
+      if (Objects.equals(value, this.model))
+      {
          return this;
       }
 
@@ -47,7 +50,8 @@ public class PartyAppBuilder
 
    public PartyAppBuilder setEventStore(LinkedHashMap<String, DataEvent> value)
    {
-      if (Objects.equals(value, this.eventStore)) {
+      if (Objects.equals(value, this.eventStore))
+      {
          return this;
       }
 
@@ -64,17 +68,20 @@ public class PartyAppBuilder
 
    public PartyAppBuilder setBusinessLogic(PartyAppBusinessLogic value)
    {
-      if (this.businessLogic == value) {
+      if (this.businessLogic == value)
+      {
          return this;
       }
 
       final PartyAppBusinessLogic oldValue = this.businessLogic;
-      if (this.businessLogic != null) {
+      if (this.businessLogic != null)
+      {
          this.businessLogic = null;
          oldValue.setBuilder(null);
       }
       this.businessLogic = value;
-      if (value != null) {
+      if (value != null)
+      {
          value.setBuilder(this);
       }
       this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
@@ -88,17 +95,20 @@ public class PartyAppBuilder
 
    public PartyAppBuilder setService(PartyAppService value)
    {
-      if (this.service == value) {
+      if (this.service == value)
+      {
          return this;
       }
 
       final PartyAppService oldValue = this.service;
-      if (this.service != null) {
+      if (this.service != null)
+      {
          this.service = null;
          oldValue.setBuilder(null);
       }
       this.service = value;
-      if (value != null) {
+      if (value != null)
+      {
          value.setBuilder(this);
       }
       this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
@@ -112,13 +122,32 @@ public class PartyAppBuilder
 
    public PartyAppBuilder setLoaderMap(LinkedHashMap<Class, Function<Event, Object>> value)
    {
-      if (Objects.equals(value, this.loaderMap)) {
+      if (Objects.equals(value, this.loaderMap))
+      {
          return this;
       }
 
       final LinkedHashMap<Class, Function<Event, Object>> oldValue = this.loaderMap;
       this.loaderMap = value;
       this.firePropertyChange(PROPERTY_LOADER_MAP, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, LinkedHashMap<String, DataEvent>> getGroupStore()
+   {
+      return this.groupStore;
+   }
+
+   public PartyAppBuilder setGroupStore(LinkedHashMap<String, LinkedHashMap<String, DataEvent>> value)
+   {
+      if (Objects.equals(value, this.groupStore))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, LinkedHashMap<String, DataEvent>> oldValue = this.groupStore;
+      this.groupStore = value;
+      this.firePropertyChange(PROPERTY_GROUP_STORE, oldValue, value);
       return this;
    }
 
@@ -185,7 +214,8 @@ public class PartyAppBuilder
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      if (this.listeners != null) {
+      if (this.listeners != null)
+      {
          this.listeners.firePropertyChange(propertyName, oldValue, newValue);
          return true;
       }
@@ -194,7 +224,8 @@ public class PartyAppBuilder
 
    public PropertyChangeSupport listeners()
    {
-      if (this.listeners == null) {
+      if (this.listeners == null)
+      {
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
@@ -228,7 +259,7 @@ public class PartyAppBuilder
       DataEvent dataEvent = eventStore.get(elementId);
 
       if (dataEvent == null) {
-         Logger.getGlobal().severe(String.format("could not find element event %s for group %s ", elementId, groupId));
+         java.util.logging.Logger.getGlobal().severe(String.format("could not find element event %s for group %s ", elementId, groupId));
          return;
       }
 

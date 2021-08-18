@@ -29,10 +29,10 @@
   roles: 	partyAppBusinessLogic_builder 	partyAppBusinessLogic_service
 
 - partyAppBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore 	partyAppBuilder_loaderMap
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;"
-  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storeRegionBuilt 	partyAppBuilder_loadRegionBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_storeParty2Built 	partyAppBuilder_loadParty2Built 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_stripBrackets
+  attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore 	partyAppBuilder_loaderMap 	partyAppBuilder_groupStore
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;" 	"import java.util.function.Function;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;" 	"import java.util.function.Function;"
+  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storeRegionBuilt 	partyAppBuilder_loadRegionBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_storeParty2Built 	partyAppBuilder_loadParty2Built 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_initLoaderMap 	partyAppBuilder_addToGroup 	partyAppBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	PartyAppBuilder
@@ -41,10 +41,8 @@
 
 - partyAppService: 	org.fulib.classmodel.Clazz
   attributes: 	partyAppService_history 	partyAppService_port 	partyAppService_spark 	partyAppService_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;
-" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;
-" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   methods: 	partyAppService_query 	partyAppService_isoNow 	partyAppService_start 	partyAppService_getHello 	partyAppService_subscribeAndLoadOldEvents 	partyAppService_apply 	partyAppService_getPage 	partyAppService_getDemoPage 	partyAppService_publish 	partyAppService_postApply
   model: 	c
   modified: 	false
@@ -569,6 +567,16 @@ if (event.getId().equals(\"14:09\")) {
   type: 	"LinkedHashMap<Class, Function<Event, Object>>"
   typeSignature: 	"LinkedHashMap<Class,Function<Event,Object>>"
 
+- partyAppBuilder_groupStore: 	org.fulib.classmodel.Attribute
+  clazz: 	partyAppBuilder
+  id: 	PartyAppBuilder_groupStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	groupStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, LinkedHashMap<String, DataEvent>>"
+  typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
+
 - partyAppBuilder_outdated: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
@@ -825,6 +833,48 @@ return object;
   paramsString: 	"String blockId"
   returnType: 	Object
   signature: 	"class/PartyAppBuilder/method/load(String)"
+
+- partyAppBuilder_initLoaderMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"private void initLoaderMap()"
+  id: 	PartyAppBuilder_initLoaderMap
+  methodBody: 	"if (loaderMap == null) {
+   loaderMap = new LinkedHashMap<>();
+   loaderMap.put(UserBuilt.class, this::loadUserBuilt);
+   loaderMap.put(RegionBuilt.class, this::loadRegionBuilt);
+   loaderMap.put(Party2Built.class, this::loadParty2Built);
+   loaderMap.put(ItemBuilt.class, this::loadItemBuilt);
+   loaderMap.put(GuestBuilt.class, this::loadGuestBuilt);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	initLoaderMap
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/initLoaderMap()"
+
+- partyAppBuilder_addToGroup: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"private void addToGroup(String groupId, String elementId)"
+  id: 	PartyAppBuilder_addToGroup
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format(\"could not find element event %s for group %s \", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);"
+  modified: 	false
+  modifiers: 	private
+  name: 	addToGroup
+  paramsString: 	"String groupId, String elementId"
+  returnType: 	void
+  signature: 	"class/PartyAppBuilder/method/addToGroup(String,String)"
 
 - partyAppBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
   annotations: 	""

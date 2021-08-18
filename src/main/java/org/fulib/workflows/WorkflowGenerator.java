@@ -193,7 +193,7 @@ public class WorkflowGenerator
    {
       serviceClazz = modelManager.haveClass(serviceName + "Service");
       serviceClazz.withImports("import java.util.LinkedHashMap;",
-            "import java.time.Instant;\n",
+            "import java.time.Instant;",
             "import java.time.format.DateTimeFormatter;",
             "import java.util.Map;",
             "import java.util.function.Consumer;",
@@ -408,6 +408,9 @@ public class WorkflowGenerator
       body.append("if (loaderMap == null) {\n");
       body.append("   loaderMap = new LinkedHashMap<>();\n");
       for (DataType dataType : serviceNote.getHandledDataTypes()) {
+         if (dataType.getMigratedTo() != null) {
+            continue;
+         }
          String eventTypeName = dataType.getDataTypeName() + "Built";
          body.append(String.format("   loaderMap.put(%s.class, this::load%s);\n",
                eventTypeName, eventTypeName));
