@@ -14,6 +14,7 @@ public class Party2
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_REGION = "region";
+   public static final String PROPERTY_DATE = "date";
    private List<Item> items;
    private List<Guest> guests;
    protected PropertyChangeSupport listeners;
@@ -21,6 +22,7 @@ public class Party2
    private String name;
    private String address;
    private Region region;
+   private String date;
 
    public List<Item> getItems()
    {
@@ -235,6 +237,24 @@ public class Party2
       return this;
    }
 
+   public String getDate()
+   {
+      return this.date;
+   }
+
+   public Party2 setDate(String value)
+   {
+      if (Objects.equals(value, this.date))
+      {
+         return this;
+      }
+
+      final String oldValue = this.date;
+      this.date = value;
+      this.firePropertyChange(PROPERTY_DATE, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -267,6 +287,7 @@ public class Party2
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
+      result.append(' ').append(this.getDate());
       result.append(' ').append(this.getAddress());
       return result.substring(1);
    }

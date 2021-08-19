@@ -387,6 +387,7 @@ public class PartyAppService
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
+      String date = request.queryParams("date");
       String regionName = request.queryParams("region");
       String location = request.queryParams("location");
 
@@ -404,6 +405,7 @@ public class PartyAppService
          partyBuilt.setId(isoNow());
          partyBuilt.setBlockId(regionName + "." + partyName);
          partyBuilt.setName(partyName);
+         partyBuilt.setDate(date);
          partyBuilt.setAddress(location);
          partyBuilt.setRegion(regionName);
          apply(partyBuilt);
@@ -450,7 +452,7 @@ public class PartyAppService
       StringBuilder html = new StringBuilder();
       html.append("<form action=\"/page/addItem\" method=\"get\">\n");
       html.append(String.format("   <p>Welcome %s</p>\n", name));
-      html.append(String.format("   <p>Let's do the %s in %s</p>\n", party.getName(), regionName));
+      html.append(String.format("   <p>Let's do the %s on %s in %s</p>\n", party.getName(), party.getDate(), regionName));
 
       if (party.getItems().isEmpty()) {
          html.append("   <p>no items yet</p>\n");
@@ -621,6 +623,7 @@ public class PartyAppService
       html.append(String.format("   <p>Welcome %s</p>\n", name));
       html.append(String.format("   <p>Choose a party in %s</p>\n", regionName));
       html.append("   <p><input id=\"party\" name=\"party\" placeholder=\"party?\"></p>\n");
+      html.append("   <p><input id=\"date\" name=\"date\" placeholder=\"date?\"></p>\n");
       html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
       html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
       html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
@@ -808,6 +811,7 @@ public class PartyAppService
          GetPartyCommand e1401 = new GetPartyCommand();
          e1401.setId("14:01");
          e1401.setParty(request.queryParams("party"));
+         e1401.setDate(request.queryParams("date"));
          e1401.setLocation(request.queryParams("location"));
          apply(e1401);
       }
@@ -964,6 +968,7 @@ public class PartyAppService
          html.append("   <p>Welcome Alice</p>\n");
          html.append("   <p>Choose a party</p>\n");
          html.append("   <p><input id=\"party\" name=\"party\" placeholder=\"party?\"></p>\n");
+         html.append("   <p><input id=\"date\" name=\"date\" placeholder=\"date?\"></p>\n");
          html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
          html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get party 14:01\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");

@@ -6,9 +6,11 @@ public class Party2Built extends DataEvent
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_REGION = "region";
    public static final String PROPERTY_ADDRESS = "address";
+   public static final String PROPERTY_DATE = "date";
    private String name;
    private String region;
    private String address;
+   private String date;
 
    public String getName()
    {
@@ -64,12 +66,31 @@ public class Party2Built extends DataEvent
       return this;
    }
 
+   public String getDate()
+   {
+      return this.date;
+   }
+
+   public Party2Built setDate(String value)
+   {
+      if (Objects.equals(value, this.date))
+      {
+         return this;
+      }
+
+      final String oldValue = this.date;
+      this.date = value;
+      this.firePropertyChange(PROPERTY_DATE, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getName());
       result.append(' ').append(this.getRegion());
+      result.append(' ').append(this.getDate());
       result.append(' ').append(this.getAddress());
       return result.toString();
    }

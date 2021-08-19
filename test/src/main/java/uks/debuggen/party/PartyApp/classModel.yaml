@@ -41,10 +41,8 @@
 
 - partyAppService: 	org.fulib.classmodel.Clazz
   attributes: 	partyAppService_history 	partyAppService_port 	partyAppService_spark 	partyAppService_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;
-" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;
-" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   methods: 	partyAppService_query 	partyAppService_isoNow 	partyAppService_start 	partyAppService_getHello 	partyAppService_subscribeAndLoadOldEvents 	partyAppService_apply 	partyAppService_getPage 	partyAppService_getDemoPage 	partyAppService_publish 	partyAppService_postApply
   model: 	c
   modified: 	false
@@ -60,7 +58,7 @@
   propertyStyle: 	Bean
 
 - party: 	org.fulib.classmodel.Clazz
-  attributes: 	party_id 	party_name 	party_location
+  attributes: 	party_id 	party_name 	party_date 	party_location
   model: 	c
   modified: 	false
   name: 	Party
@@ -325,6 +323,7 @@ handleDemoGetPartyCommand(event);
    sE_BBQEvent.setId(\"14:01:02\");
    sE_BBQEvent.setBlockId(\"sE_BBQ\");
    sE_BBQEvent.setName(\"SE BBQ\");
+   sE_BBQEvent.setDate(\"Friday\");
    sE_BBQEvent.setLocation(\"Uni\");
    service.apply(sE_BBQEvent);
 
@@ -605,6 +604,7 @@ if (outdated(event)) {
   methodBody: 	"PartyBuilt event = (PartyBuilt) e;
 Party object = model.getOrCreateParty(event.getBlockId());
 object.setName(event.getName());
+object.setDate(event.getDate());
 object.setLocation(event.getLocation());
 return object;
 "
@@ -1077,6 +1077,7 @@ if (\"get party 14:01\".equals(event)) {
    GetPartyCommand e1401 = new GetPartyCommand();
    e1401.setId(\"14:01\");
    e1401.setParty(request.queryParams(\"party\"));
+   e1401.setDate(request.queryParams(\"date\"));
    e1401.setLocation(request.queryParams(\"location\"));
    apply(e1401);
 }
@@ -1220,6 +1221,7 @@ if (id.equals(\"14_00\")) {
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Choose a party</p>\n\");
    html.append(\"   <p><input id=\\"party\\" name=\\"party\\" placeholder=\\"party?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"date\\" name=\\"date\\" placeholder=\\"date?\\"></p>\n\");
    html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
    html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get party 14:01\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
@@ -1232,7 +1234,7 @@ if (id.equals(\"14_02\")) {
    html.append(\"<form action=\\"/page/14_04\\" method=\\"get\\">\n\");
    // PartyApp 14:02
    html.append(\"   <p>Welcome Alice</p>\n\");
-   html.append(\"   <p>Let's do the SE BBQ</p>\n\");
+   html.append(\"   <p>Let's do the SE BBQ on Friday</p>\n\");
    html.append(\"   <p>no items yet</p>\n\");
    html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add item 14:03\\"></p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
@@ -1245,7 +1247,7 @@ if (id.equals(\"14_04\")) {
    html.append(\"<form action=\\"/page/14_06\\" method=\\"get\\">\n\");
    // PartyApp 14:04
    html.append(\"   <p>Welcome Alice</p>\n\");
-   html.append(\"   <p>Let's do the SE BBQ</p>\n\");
+   html.append(\"   <p>Let's do the SE BBQ on Friday</p>\n\");
    html.append(\"   <p><input id=\\"item\\" name=\\"item\\" placeholder=\\"item?\\"></p>\n\");
    html.append(\"   <p><input id=\\"price\\" name=\\"price\\" placeholder=\\"price?\\"></p>\n\");
    html.append(\"   <p><input id=\\"buyer\\" name=\\"buyer\\" placeholder=\\"buyer?\\"></p>\n\");
@@ -1439,6 +1441,15 @@ catch (UnirestException e) {
   id: 	Party_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party_date: 	org.fulib.classmodel.Attribute
+  clazz: 	party
+  id: 	Party_date
+  modified: 	false
+  name: 	date
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

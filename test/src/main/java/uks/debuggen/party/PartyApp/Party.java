@@ -13,12 +13,14 @@ public class Party
    public static final String PROPERTY_LOCATION = "location";
    public static final String PROPERTY_ITEMS = "items";
    public static final String PROPERTY_GUESTS = "guests";
+   public static final String PROPERTY_DATE = "date";
    private String id;
    private String name;
    private String location;
    protected PropertyChangeSupport listeners;
    private List<Item> items;
    private List<Guest> guests;
+   private String date;
 
    public String getId()
    {
@@ -206,6 +208,24 @@ public class Party
       return this;
    }
 
+   public String getDate()
+   {
+      return this.date;
+   }
+
+   public Party setDate(String value)
+   {
+      if (Objects.equals(value, this.date))
+      {
+         return this;
+      }
+
+      final String oldValue = this.date;
+      this.date = value;
+      this.firePropertyChange(PROPERTY_DATE, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -231,6 +251,7 @@ public class Party
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
+      result.append(' ').append(this.getDate());
       result.append(' ').append(this.getLocation());
       return result.substring(1);
    }

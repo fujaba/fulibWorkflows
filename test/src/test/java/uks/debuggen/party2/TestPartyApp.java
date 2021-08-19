@@ -9,6 +9,7 @@ import org.fulib.workflows.HtmlGenerator3;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
+import uks.debuggen.party.PartyApp.Party;
 import uks.debuggen.party2.PartyApp.Party2;
 import uks.debuggen.party2.PartyApp.PartyAppService;
 import uks.debuggen.party2.PartyApp.User;
@@ -156,16 +157,18 @@ public class TestPartyApp implements PropertyChangeListener
       aliceOpenSEBBQ();
 
       // check
-      Object oldBBQ = aliceOldPartyApp.getModel().getModelMap().get("SE BBQ");
+      Party oldBBQ = (Party) aliceOldPartyApp.getBuilder().load("SE BBQ");
       assertThat(oldBBQ).isNotNull();
+      assertThat(oldBBQ.getDate()).isEqualTo("Friday");
 
       // bob should be informed about the SE BBQ
       Party2Built party2Built = (Party2Built) retrieveBuiltEventFromParty2("SE BBQ");
 
       assertThat(party2Built).isNotNull();
+      assertThat(party2Built.getDate()).isEqualTo("Friday");
 
       // bob adds region kassel
-      bobOpenKasselParty("SE BBQ", "Uni");
+      bobOpenKasselParty("SE BBQ", "Friday", "Uni");
 
       $("#add").click();
 
@@ -185,12 +188,12 @@ public class TestPartyApp implements PropertyChangeListener
 
       $("body").shouldHave(text("meat 21.00 Alice"));
 
-      bobOpenKasselParty("SE BBQ", "Uni");
+      bobOpenKasselParty("SE BBQ", "Friday", "Uni");
 
       $("body").shouldHave(text("meat 21.00 Alice"));
 
       // bob starts the Finals party at the Fritze in Kassel
-      bobOpenKasselParty("Finals", "Fritze");
+      bobOpenKasselParty("Finals", "Saturday", "Fritze");
 
       bookItem("Wine", "9.99", "Carli");
 
@@ -218,7 +221,7 @@ public class TestPartyApp implements PropertyChangeListener
       $("#ok").click();
    }
 
-   private void bobOpenKasselParty(String partyName, String location)
+   private void bobOpenKasselParty(String partyName, String date, String location)
    {
       open("http://localhost:42002/page/withPassword?password=secret&name=Bob&email=b%40b.de&button=ok");
       $("body").shouldHave(text("In which region is your party"));
@@ -227,6 +230,7 @@ public class TestPartyApp implements PropertyChangeListener
 
       $("body").shouldHave(text("Choose a party in Kassel"));
       $("#party").setValue(partyName);
+      $("#date").setValue(date);
       $("#location").setValue(location);
       $("#ok").click();
    }
@@ -236,6 +240,7 @@ public class TestPartyApp implements PropertyChangeListener
       open("http://localhost:42001/page/withPassword?password=secret&name=Alice&email=a%40b.de&button=ok");
       $("body").shouldHave(text("Choose a party"));
       $("#party").setValue("SE BBQ");
+      $("#date").setValue("Friday");
       $("#location").setValue("Uni");
       $("#ok").click();
    }
@@ -474,6 +479,7 @@ public class TestPartyApp implements PropertyChangeListener
       // page 14:00
       open("http://localhost:42001/page/14_00");
       $("#party").setValue("SE BBQ");
+      $("#date").setValue("after work");
       $("#location").setValue("Uni");
       $("#ok").click();
 
@@ -489,6 +495,7 @@ public class TestPartyApp implements PropertyChangeListener
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ:"));
       pre.shouldHave(matchText("name:.*\"SE BBQ\""));
+      pre.shouldHave(matchText("date:.*\"after work\""));
       pre.shouldHave(matchText("location:.*Uni"));
       pre.shouldHave(matchText("@migratedTo:.*Party2"));
       // check data note 14:01:03
@@ -496,6 +503,7 @@ public class TestPartyApp implements PropertyChangeListener
       pre.shouldHave(text("- sE_BBQ:"));
       pre.shouldHave(matchText("name:.*\"SE BBQ\""));
       pre.shouldHave(matchText("region:.*Kassel"));
+      pre.shouldHave(matchText("date:.*\"after work\""));
       pre.shouldHave(matchText("address:.*Uni"));
 
       // page 14:02

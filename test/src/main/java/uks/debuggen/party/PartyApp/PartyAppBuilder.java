@@ -235,6 +235,7 @@ public class PartyAppBuilder
       PartyBuilt event = (PartyBuilt) e;
       Party object = model.getOrCreateParty(event.getBlockId());
       object.setName(event.getName());
+      object.setDate(event.getDate());
       object.setLocation(event.getLocation());
       return object;
    }

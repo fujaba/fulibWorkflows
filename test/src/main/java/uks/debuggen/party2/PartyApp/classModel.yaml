@@ -66,7 +66,7 @@
   roles: 	region_parties
 
 - party2: 	org.fulib.classmodel.Clazz
-  attributes: 	party2_id 	party2_name 	party2_address
+  attributes: 	party2_id 	party2_name 	party2_date 	party2_address
   model: 	c
   modified: 	false
   name: 	Party2
@@ -384,6 +384,7 @@ handleDemoGetPartyCommand(event);
    sE_BBQEvent.setBlockId(\"sE_BBQ\");
    sE_BBQEvent.setName(\"SE BBQ\");
    sE_BBQEvent.setRegion(\"Kassel\");
+   sE_BBQEvent.setDate(\"after work\");
    sE_BBQEvent.setAddress(\"Uni\");
    service.apply(sE_BBQEvent);
 
@@ -719,6 +720,7 @@ if (outdated(event)) {
 Party2 object = model.getOrCreateParty2(event.getBlockId());
 object.setName(event.getName());
 object.setRegion(model.getOrCreateRegion(event.getRegion()));
+object.setDate(event.getDate());
 object.setAddress(event.getAddress());
 return object;
 "
@@ -1201,6 +1203,7 @@ if (\"get party 14:01\".equals(event)) {
    GetPartyCommand e1401 = new GetPartyCommand();
    e1401.setId(\"14:01\");
    e1401.setParty(request.queryParams(\"party\"));
+   e1401.setDate(request.queryParams(\"date\"));
    e1401.setLocation(request.queryParams(\"location\"));
    apply(e1401);
 }
@@ -1357,6 +1360,7 @@ if (id.equals(\"14_00\")) {
    html.append(\"   <p>Welcome Alice</p>\n\");
    html.append(\"   <p>Choose a party</p>\n\");
    html.append(\"   <p><input id=\\"party\\" name=\\"party\\" placeholder=\\"party?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"date\\" name=\\"date\\" placeholder=\\"date?\\"></p>\n\");
    html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
    html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"get party 14:01\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
@@ -1597,6 +1601,15 @@ catch (UnirestException e) {
   id: 	Party2_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party2_date: 	org.fulib.classmodel.Attribute
+  clazz: 	party2
+  id: 	Party2_date
+  modified: 	false
+  name: 	date
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

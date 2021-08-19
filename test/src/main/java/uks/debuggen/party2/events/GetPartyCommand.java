@@ -5,8 +5,10 @@ public class GetPartyCommand extends Command
 {
    public static final String PROPERTY_PARTY = "party";
    public static final String PROPERTY_LOCATION = "location";
+   public static final String PROPERTY_DATE = "date";
    private String party;
    private String location;
+   private String date;
 
    public String getParty()
    {
@@ -44,11 +46,30 @@ public class GetPartyCommand extends Command
       return this;
    }
 
+   public String getDate()
+   {
+      return this.date;
+   }
+
+   public GetPartyCommand setDate(String value)
+   {
+      if (Objects.equals(value, this.date))
+      {
+         return this;
+      }
+
+      final String oldValue = this.date;
+      this.date = value;
+      this.firePropertyChange(PROPERTY_DATE, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getParty());
+      result.append(' ').append(this.getDate());
       result.append(' ').append(this.getLocation());
       return result.toString();
    }

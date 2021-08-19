@@ -289,6 +289,7 @@ public class TestPartyApp
       // page 14:00
       open("http://localhost:42001/page/14_00");
       $("#party").setValue("SE BBQ");
+      $("#date").setValue("Friday");
       $("#location").setValue("Uni");
       $("#ok").click();
 
@@ -304,6 +305,7 @@ public class TestPartyApp
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ:"));
       pre.shouldHave(matchText("name:.*\"SE BBQ\""));
+      pre.shouldHave(matchText("date:.*Friday"));
       pre.shouldHave(matchText("location:.*Uni"));
 
       // page 14:02

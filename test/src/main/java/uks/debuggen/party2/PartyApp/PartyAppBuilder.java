@@ -250,6 +250,7 @@ public class PartyAppBuilder
       Party2 object = model.getOrCreateParty2(event.getBlockId());
       object.setName(event.getName());
       object.setRegion(model.getOrCreateRegion(event.getRegion()));
+      object.setDate(event.getDate());
       object.setAddress(event.getAddress());
       return object;
    }
@@ -313,10 +314,17 @@ public class PartyAppBuilder
       // please insert a no before fulib in the next line and insert event upgrading code
       // no fulib
       // upgrade to new version
+
+      if (event.getId().endsWith("V1")) {
+         // its a downgrade, no need to upgrade again
+         return;
+      }
+
       Party2Built party2Built = new Party2Built();
       party2Built.setId(event.getId() + "V2");
       party2Built.setBlockId(event.getBlockId());
       party2Built.setName(event.getName());
+      party2Built.setDate(event.getDate());
       party2Built.setAddress(event.getLocation());
 
       // do I have a region
@@ -349,6 +357,7 @@ public class PartyAppBuilder
       old.setId(event.getId() + "V1");
       old.setBlockId(event.getBlockId());
       old.setName(event.getName());
+      old.setDate(event.getDate());
       old.setLocation(event.getAddress());
       service.apply(old);
    }

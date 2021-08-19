@@ -173,6 +173,7 @@ public class PartyAppBusinessLogic
          sE_BBQEvent.setId("14:01:02");
          sE_BBQEvent.setBlockId("sE_BBQ");
          sE_BBQEvent.setName("SE BBQ");
+         sE_BBQEvent.setDate("Friday");
          sE_BBQEvent.setLocation("Uni");
          service.apply(sE_BBQEvent);
 

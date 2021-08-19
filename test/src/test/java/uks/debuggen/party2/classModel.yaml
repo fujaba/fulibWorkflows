@@ -216,6 +216,7 @@ pre.shouldHave(text(\"- Kassel:\"));
 // page 14:00
 open(\"http://localhost:42001/page/14_00\");
 $(\"#party\").setValue(\"SE BBQ\");
+$(\"#date\").setValue(\"after work\");
 $(\"#location\").setValue(\"Uni\");
 $(\"#ok\").click();
 
@@ -231,6 +232,7 @@ pre.shouldHave(text(\"- 14_01:\"));
 pre = $(\"#data\");
 pre.shouldHave(text(\"- sE_BBQ:\"));
 pre.shouldHave(matchText(\"name:.*\\"SE BBQ\\"\"));
+pre.shouldHave(matchText(\"date:.*\\"after work\\"\"));
 pre.shouldHave(matchText(\"location:.*Uni\"));
 pre.shouldHave(matchText(\"@migratedTo:.*Party2\"));
 // check data note 14:01:03
@@ -238,6 +240,7 @@ pre = $(\"#data\");
 pre.shouldHave(text(\"- sE_BBQ:\"));
 pre.shouldHave(matchText(\"name:.*\\"SE BBQ\\"\"));
 pre.shouldHave(matchText(\"region:.*Kassel\"));
+pre.shouldHave(matchText(\"date:.*\\"after work\\"\"));
 pre.shouldHave(matchText(\"address:.*Uni\"));
 
 // page 14:02

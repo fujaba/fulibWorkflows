@@ -29,23 +29,24 @@
 </g>
 <!-- Party -->
 <g id="node3" class="node"><title>Party</title>
-<polygon fill="none" stroke="black" points="38,-309.5 38,-330.5 129,-330.5 129,-309.5 38,-309.5"/>
-<text text-anchor="start" x="68.5" y="-316.3" font-family="Times New Roman,serif" font-size="14.00">Party</text>
-<polygon fill="none" stroke="black" points="38,-258.5 38,-309.5 129,-309.5 129,-258.5 38,-258.5"/>
-<text text-anchor="start" x="41" y="-295.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="41" y="-280.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
-<text text-anchor="start" x="41" y="-265.3" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
+<polygon fill="none" stroke="black" points="38,-316.5 38,-337.5 129,-337.5 129,-316.5 38,-316.5"/>
+<text text-anchor="start" x="68.5" y="-323.3" font-family="Times New Roman,serif" font-size="14.00">Party</text>
+<polygon fill="none" stroke="black" points="38,-250.5 38,-316.5 129,-316.5 129,-250.5 38,-250.5"/>
+<text text-anchor="start" x="41" y="-302.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="41" y="-287.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="41" y="-272.3" font-family="Times New Roman,serif" font-size="14.00">date :String</text>
+<text text-anchor="start" x="41" y="-257.3" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
 </g>
 <!-- Guest&#45;&gt;Party -->
 <g id="edge5" class="edge"><title>Guest&#45;&gt;Party</title>
-<path fill="none" stroke="black" d="M93.3461,-87.6634C96.4611,-101.278 99.4599,-116.716 101,-131 104.812,-166.351 104.812,-175.649 101,-211 99.4599,-225.284 96.4611,-240.722 93.3461,-254.337"/>
-<text text-anchor="middle" x="78.8461" y="-243.137" font-family="Times New Roman,serif" font-size="14.00">party</text>
+<path fill="none" stroke="black" d="M93.3461,-87.6634C96.4611,-101.278 99.4599,-116.716 101,-131 104.812,-166.351 104.812,-175.649 101,-211 99.7428,-222.66 97.5135,-235.09 95.0425,-246.668"/>
+<text text-anchor="middle" x="80.5425" y="-235.468" font-family="Times New Roman,serif" font-size="14.00">party</text>
 <text text-anchor="middle" x="116.346" y="-91.4634" font-family="Times New Roman,serif" font-size="14.00">guests *</text>
 </g>
 <!-- Item&#45;&gt;Party -->
 <g id="edge6" class="edge"><title>Item&#45;&gt;Party</title>
-<path fill="none" stroke="black" d="M57.9107,-211.112C62.1358,-224.986 66.8884,-240.593 71.1116,-254.461"/>
-<text text-anchor="middle" x="56.6116" y="-243.261" font-family="Times New Roman,serif" font-size="14.00">party</text>
+<path fill="none" stroke="black" d="M57.9107,-211.112C61.3753,-222.489 65.1945,-235.031 68.7858,-246.824"/>
+<text text-anchor="middle" x="54.2858" y="-235.624" font-family="Times New Roman,serif" font-size="14.00">party</text>
 <text text-anchor="middle" x="37.9107" y="-214.912" font-family="Times New Roman,serif" font-size="14.00">items *</text>
 </g>
 <!-- PartyAppBuilder -->

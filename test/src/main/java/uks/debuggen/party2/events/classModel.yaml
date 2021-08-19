@@ -135,7 +135,7 @@
   superClass: 	command
 
 - getPartyCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	getPartyCommand_party 	getPartyCommand_location
+  attributes: 	getPartyCommand_party 	getPartyCommand_date 	getPartyCommand_location
   model: 	c
   modified: 	false
   name: 	GetPartyCommand
@@ -158,7 +158,7 @@
   superClass: 	dataEvent
 
 - partyBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	partyBuilt_name 	partyBuilt_location
+  attributes: 	partyBuilt_name 	partyBuilt_date 	partyBuilt_location
   model: 	c
   modified: 	false
   name: 	PartyBuilt
@@ -166,7 +166,7 @@
   superClass: 	dataEvent
 
 - party2Built: 	org.fulib.classmodel.Clazz
-  attributes: 	party2Built_name 	party2Built_region 	party2Built_address
+  attributes: 	party2Built_name 	party2Built_region 	party2Built_date 	party2Built_address
   model: 	c
   modified: 	false
   name: 	Party2Built
@@ -374,6 +374,15 @@
   type: 	String
   typeSignature: 	String
 
+- getPartyCommand_date: 	org.fulib.classmodel.Attribute
+  clazz: 	getPartyCommand
+  id: 	GetPartyCommand_date
+  modified: 	false
+  name: 	date
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - getPartyCommand_location: 	org.fulib.classmodel.Attribute
   clazz: 	getPartyCommand
   id: 	GetPartyCommand_location
@@ -401,6 +410,15 @@
   type: 	String
   typeSignature: 	String
 
+- partyBuilt_date: 	org.fulib.classmodel.Attribute
+  clazz: 	partyBuilt
+  id: 	PartyBuilt_date
+  modified: 	false
+  name: 	date
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - partyBuilt_location: 	org.fulib.classmodel.Attribute
   clazz: 	partyBuilt
   id: 	PartyBuilt_location
@@ -424,6 +442,15 @@
   id: 	Party2Built_region
   modified: 	false
   name: 	region
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party2Built_date: 	org.fulib.classmodel.Attribute
+  clazz: 	party2Built
+  id: 	Party2Built_date
+  modified: 	false
+  name: 	date
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

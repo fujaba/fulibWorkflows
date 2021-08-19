@@ -135,7 +135,7 @@
   superClass: 	command
 
 - getPartyCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	getPartyCommand_party 	getPartyCommand_location
+  attributes: 	getPartyCommand_party 	getPartyCommand_date 	getPartyCommand_location
   model: 	c
   modified: 	false
   name: 	GetPartyCommand
@@ -143,7 +143,7 @@
   superClass: 	command
 
 - partyBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	partyBuilt_name 	partyBuilt_location
+  attributes: 	partyBuilt_name 	partyBuilt_date 	partyBuilt_location
   model: 	c
   modified: 	false
   name: 	PartyBuilt
@@ -351,6 +351,15 @@
   type: 	String
   typeSignature: 	String
 
+- getPartyCommand_date: 	org.fulib.classmodel.Attribute
+  clazz: 	getPartyCommand
+  id: 	GetPartyCommand_date
+  modified: 	false
+  name: 	date
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - getPartyCommand_location: 	org.fulib.classmodel.Attribute
   clazz: 	getPartyCommand
   id: 	GetPartyCommand_location
@@ -365,6 +374,15 @@
   id: 	PartyBuilt_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- partyBuilt_date: 	org.fulib.classmodel.Attribute
+  clazz: 	partyBuilt
+  id: 	PartyBuilt_date
+  modified: 	false
+  name: 	date
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

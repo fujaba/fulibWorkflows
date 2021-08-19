@@ -10,6 +10,8 @@
     - label: Choose a party
     - input: party
       fill: SE BBQ
+    - input: date
+      fill: Friday
     - input: location
       fill: Uni
     - button: ok
@@ -24,12 +26,13 @@
 - data: 14:01:02
   Party: sE_BBQ
   name: SE BBQ
+  date: Friday
   location: Uni
 
 - page:
     - name: PartyApp 14:02
     - label: Welcome Alice
-    - label: Let's do the SE BBQ
+    - label: Let's do the SE BBQ on Friday
     - label: no items yet
     - button: add
       command: add item 14:03
@@ -37,7 +40,7 @@
 - page:
     - name: PartyApp 14:04
     - label: Welcome Alice
-    - label: Let's do the SE BBQ
+    - label: Let's do the SE BBQ on Friday
     - input: item
       fill: beer
     - input: price

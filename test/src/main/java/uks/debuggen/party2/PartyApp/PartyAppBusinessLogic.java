@@ -189,6 +189,7 @@ public class PartyAppBusinessLogic
          sE_BBQEvent.setBlockId("sE_BBQ");
          sE_BBQEvent.setName("SE BBQ");
          sE_BBQEvent.setRegion("Kassel");
+         sE_BBQEvent.setDate("after work");
          sE_BBQEvent.setAddress("Uni");
          service.apply(sE_BBQEvent);
 

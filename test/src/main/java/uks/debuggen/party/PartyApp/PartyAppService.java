@@ -26,7 +26,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-
+import java.time.Instant;
+;
 
 public class PartyAppService
 {
@@ -385,6 +386,7 @@ public class PartyAppService
       String name = request.queryParams("name");
       String sessionId = request.queryParams("sessionId");
       String partyName = request.queryParams("party");
+      String date = request.queryParams("date");
       String location = request.queryParams("location");
 
       StringBuilder html = new StringBuilder();
@@ -396,11 +398,12 @@ public class PartyAppService
 
       Object object = builder.load(partyName);
 
-      if (object == null) {
+      if (object == null || (object instanceof Party && ((Party) object).getDate().equals(date)) ) {
          PartyBuilt partyBuilt = new PartyBuilt();
          partyBuilt.setId(isoNow());
          partyBuilt.setBlockId(partyName);
          partyBuilt.setName(partyName);
+         partyBuilt.setDate(date) ;
          partyBuilt.setLocation(location);
          apply(partyBuilt);
          return pageGetOverview(request, response);
@@ -412,13 +415,8 @@ public class PartyAppService
          return html.toString();
       }
 
-      Party party = (Party) object;
-      if (party.getLocation().equals(location)) {
-         return pageGetOverview(request, response);
-      }
-
       html.append(pageGetParty(request, response, sessionId));
-      html.append("invalid location");
+      html.append("invalid date");
       return html.toString();
    }
 
@@ -433,7 +431,7 @@ public class PartyAppService
       StringBuilder html = new StringBuilder();
       html.append("<form action=\"/page/addItem\" method=\"get\">\n");
       html.append(String.format("   <p>Welcome %s</p>\n", name));
-      html.append(String.format("   <p>Let's do the %s</p>\n", party.getName()));
+      html.append(String.format("   <p>Let's do the %s on %s</p>\n", party.getName(), party.getDate()));
 
       if (party.getItems().isEmpty()) {
          html.append("   <p>no items yet</p>\n");
@@ -554,6 +552,7 @@ public class PartyAppService
       html.append(String.format("   <p>Welcome %s</p>\n", name));
       html.append("   <p>Choose a party</p>\n");
       html.append("   <p><input id=\"party\" name=\"party\" placeholder=\"party?\"></p>\n");
+      html.append("   <p><input id=\"date\" name=\"date\" placeholder=\"date?\"></p>\n");
       html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
       html.append(String.format("   <p><input id=\"name\" name=\"name\" type=\"hidden\" value=\"%s\"></p>\n", name));
       html.append(String.format("   <p><input id=\"sessionId\" name=\"sessionId\" type=\"hidden\" value=\"%s\"></p>\n", sessionId));
@@ -734,6 +733,7 @@ public class PartyAppService
          GetPartyCommand e1401 = new GetPartyCommand();
          e1401.setId("14:01");
          e1401.setParty(request.queryParams("party"));
+         e1401.setDate(request.queryParams("date"));
          e1401.setLocation(request.queryParams("location"));
          apply(e1401);
       }
@@ -877,6 +877,7 @@ public class PartyAppService
          html.append("   <p>Welcome Alice</p>\n");
          html.append("   <p>Choose a party</p>\n");
          html.append("   <p><input id=\"party\" name=\"party\" placeholder=\"party?\"></p>\n");
+         html.append("   <p><input id=\"date\" name=\"date\" placeholder=\"date?\"></p>\n");
          html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
          html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"get party 14:01\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
@@ -889,7 +890,7 @@ public class PartyAppService
          html.append("<form action=\"/page/14_04\" method=\"get\">\n");
          // PartyApp 14:02
          html.append("   <p>Welcome Alice</p>\n");
-         html.append("   <p>Let's do the SE BBQ</p>\n");
+         html.append("   <p>Let's do the SE BBQ on Friday</p>\n");
          html.append("   <p>no items yet</p>\n");
          html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"add item 14:03\"></p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
@@ -902,7 +903,7 @@ public class PartyAppService
          html.append("<form action=\"/page/14_06\" method=\"get\">\n");
          // PartyApp 14:04
          html.append("   <p>Welcome Alice</p>\n");
-         html.append("   <p>Let's do the SE BBQ</p>\n");
+         html.append("   <p>Let's do the SE BBQ on Friday</p>\n");
          html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
          html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
          html.append("   <p><input id=\"buyer\" name=\"buyer\" placeholder=\"buyer?\"></p>\n");

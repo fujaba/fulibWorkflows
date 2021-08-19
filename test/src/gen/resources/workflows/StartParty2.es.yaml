@@ -28,6 +28,8 @@
     - label: Choose a party
     - input: party
       fill: SE BBQ
+    - input: date
+      fill: after work
     - input: location
       fill: Uni
     - button: ok
@@ -39,6 +41,7 @@
 - data: 14:01:02
   Party: sE_BBQ
   name: SE BBQ
+  date: after work
   location: Uni
   @migratedTo: Party2
 
@@ -47,6 +50,7 @@
   name: SE BBQ
   region: Kassel
   region.back: [parties]
+  date: after work
   address: Uni
 
 
