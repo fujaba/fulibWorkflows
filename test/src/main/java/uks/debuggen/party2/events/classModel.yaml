@@ -82,6 +82,7 @@
   superClass: 	event
 
 - itemBookedEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	itemBookedEvent_name 	itemBookedEvent_price 	itemBookedEvent_buyer 	itemBookedEvent_party
   model: 	c
   modified: 	false
   name: 	ItemBookedEvent
@@ -307,6 +308,42 @@
   id: 	LoginSucceededEvent_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- itemBookedEvent_name: 	org.fulib.classmodel.Attribute
+  clazz: 	itemBookedEvent
+  id: 	ItemBookedEvent_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- itemBookedEvent_price: 	org.fulib.classmodel.Attribute
+  clazz: 	itemBookedEvent
+  id: 	ItemBookedEvent_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- itemBookedEvent_buyer: 	org.fulib.classmodel.Attribute
+  clazz: 	itemBookedEvent
+  id: 	ItemBookedEvent_buyer
+  modified: 	false
+  name: 	buyer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- itemBookedEvent_party: 	org.fulib.classmodel.Attribute
+  clazz: 	itemBookedEvent
+  id: 	ItemBookedEvent_party
+  modified: 	false
+  name: 	party
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

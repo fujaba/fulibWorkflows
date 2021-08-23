@@ -24,14 +24,14 @@
   room: math
   credits: 23
   uni: StudyRight
-  doors: [modeling algebra]
+  doors: [modeling, algebra]
   doors.back: [doors]
 
 - data: 12:00:02
   room: modeling
   uni: StudyRight
   credits: 42
-  doors: [math algebra exam]
+  doors: [math, algebra, exam]
 
 - data: 12:00:03
   room: algebra

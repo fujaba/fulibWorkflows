@@ -16,7 +16,7 @@ public class EventModel
    private Workflow rootWorkflow;
    private Interaction lastActor;
    private EventNote lastEvent;
-   private LinkedList<String> yamlList;
+   private LinkedList<String> yamlFileList;
    private UserInteraction lastUser;
    private ServiceNote lastService;
 
@@ -37,22 +37,23 @@ public class EventModel
       return rootWorkflow;
    }
 
-   public EventStormingBoard buildEventStormModel(String fileName, String yaml)
+   public EventStormingBoard buildEventStormModel(String fileName)
    {
+      yamlFileList = new LinkedList<>();
+      yamlFileList.add(fileName);
 
-      try {
-         if (!fileName.isEmpty()) {
-            yaml = Files.readString(Path.of(fileName));
+
+      while (!yamlFileList.isEmpty()) {
+         fileName = yamlFileList.poll();
+
+         String oneYaml = null;
+
+         try {
+            oneYaml = Files.readString(Path.of(fileName));
          }
-      }
-      catch (IOException e) {
-         e.printStackTrace();
-      }
-      yamlList = new LinkedList<>();
-      yamlList.add(yaml);
-
-      while (!yamlList.isEmpty()) {
-         String oneYaml = yamlList.poll();
+         catch (IOException e) {
+            continue;
+         }
 
          ArrayList<LinkedHashMap<String, String>> maps = new Yamler2().decodeList(oneYaml);
          LinkedHashMap<String, PageNote> userLastPage = new LinkedHashMap<>();
@@ -102,15 +103,14 @@ public class EventModel
                subprocessNote.setKind(entry.getKey());
                subprocessNote.setEventStormingBoard(getEventStormingBoard());
 
-               String subFileName = fileName.substring(0, fileName.lastIndexOf('/'));
-               subFileName = String.format("%s/%s.es.yaml", subFileName, subprocessNote.getSubprocessName());
-               try {
-                  String subYaml = Files.readString(Path.of(subFileName));
-                  yamlList.add(subYaml);
-               }
-               catch (IOException e) {
-                  e.printStackTrace();
-               }
+               addSubFile(fileName, subprocessNote);
+            }
+            else if (entry.getKey().equalsIgnoreCase("broker")) {
+               BrokerNote brokerNote = new BrokerNote();
+               brokerNote.setBrokerName(StrUtil.toIdentifier(entry.getValue()));
+               brokerNote.setTime(brokerNote.getBrokerName());
+               brokerNote.setMap(map);
+               brokerNote.setWorkflow(getRootWorkflow());
             }
             else if (entry.getKey().equalsIgnoreCase("Policy")) {
                Policy policy = new Policy();
@@ -173,6 +173,28 @@ public class EventModel
       }
 
       return getEventStormingBoard();
+   }
+
+   private void addSubFile(String fileName, SubprocessNote subprocessNote)
+   {
+      ArrayList<String> fileNameTries = new ArrayList<>();
+      String subFileName = fileName.substring(0, fileName.lastIndexOf('/'));
+      subFileName = String.format("%s/%s.es.yaml", subFileName, subprocessNote.getSubprocessName());
+      if (Files.exists(Path.of(subFileName))) {
+         yamlFileList.add(subFileName);
+         return;
+      }
+
+      subFileName = fileName.substring(0, fileName.lastIndexOf('/'));
+      subFileName = String.format("%s/%s/%2$s.es.yaml", subFileName, subprocessNote.getSubprocessName());
+      if (Files.exists(Path.of(subFileName))) {
+         yamlFileList.add(subFileName);
+         return;
+      }
+
+      Logger.getGlobal().info("No file for subprocess or bounded context " + subprocessNote.getSubprocessName());
+
+
    }
 
    private void buildDataNote(LinkedHashMap<String, String> map, Iterator<Map.Entry<String, String>> iterator, Map.Entry<String, String> entry)

@@ -25,7 +25,7 @@ public class HtmlGenerator3
    {
 
       eventModel = new EventModel();
-      eventModel.buildEventStormModel(filename, null);
+      eventModel.buildEventStormModel(filename);
       eventStormingBoard = eventModel.getEventStormingBoard();
       if (dumpObjectDiagram != null) {
          dumpObjectDiagram.accept("tmp/GuiEventStormingBoard.svg", eventStormingBoard);
@@ -40,7 +40,7 @@ public class HtmlGenerator3
          SubprocessNote subprocess = eventStormingBoard.getFromSubprocesses(workflowName);
          String icon = "<i class=\"fa fa-cogs\">";
          if (subprocess != null) {
-               icon = iconFor(subprocess);
+            icon = iconFor(subprocess);
          }
          st = group.getInstanceOf("lane2");
          st.add("id", rootWorkflow.getName().replaceAll("\\s+|_", "<br>"));
@@ -117,6 +117,18 @@ public class HtmlGenerator3
             String icon = iconFor(subprocessNote);
             noteContent = String.format("<div class='center'>%s</i></div>\n", icon) +
                   String.format("<div>%s</div>\n", note.getTime());
+         }
+         else if (note instanceof BrokerNote) {
+            BrokerNote subprocessNote = (BrokerNote) note;
+            noteType = "broker";
+            StringBuilder lines = new StringBuilder();
+            lines.append(String.format("<div class='box event center'>%s</i></div>\n", "E"));
+            String value = map.get("broker");
+            String[] split = value.split("\\s+");
+            for (String word : split) {
+               lines.append(String.format("<div class='center'>%s</i></div>\n", word));
+            }
+            noteContent = lines.toString();
          }
          else {
             noteContent = eventNote(map);
@@ -283,7 +295,7 @@ public class HtmlGenerator3
             time = time.replaceAll("\"", "");
          }
          else
-         keySet.remove("id");
+            keySet.remove("id");
          keySet.remove(time);
 
          String block = map.get("blockId");

@@ -16,52 +16,38 @@ public class TestGenerator
    @Test
    public void testStartGenerator()
    {
-      try {
-         mm = new ClassModelManager();
-         mm.setMainJavaDir("test/src/main/java");
-         mm.setPackageName("uks.debuggen.shop");
+      mm = new ClassModelManager();
+      mm.setMainJavaDir("test/src/main/java");
+      mm.setPackageName("uks.debuggen.shop");
 
-         String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow2.yaml"));
+      WorkflowGenerator workflowGenerator = new WorkflowGenerator();
+      workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/shopboard.svg", o); };
+      workflowGenerator.loadWorkflow(mm, "test/src/gen/resources/workflows/ShopWorkflow2.yaml");
 
-         WorkflowGenerator workflowGenerator = new WorkflowGenerator();
-         workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/shopboard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, "", yaml);
+      FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
+            workflowGenerator.getEventModel().getEventStormingBoard());
 
-         FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
-               workflowGenerator.getEventModel().getEventStormingBoard());
+      workflowGenerator.generate();
 
-         workflowGenerator.generate();
-
-         System.out.println();
-      }
-      catch (IOException e) {
-         e.printStackTrace();
-      }
+      System.out.println();
    }
 
    @Test
    public void testGeneratorWithPages()
    {
-      try {
-         mm = new ClassModelManager();
-         mm.setMainJavaDir("test/src/main/java");
-         mm.setPackageName("uks.debuggen.page");
+      mm = new ClassModelManager();
+      mm.setMainJavaDir("test/src/main/java");
+      mm.setPackageName("uks.debuggen.page");
 
-         String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/GUI.yaml"));
+      WorkflowGenerator workflowGenerator = new WorkflowGenerator();
+      workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/guiboard.svg", o); };
+      workflowGenerator.loadWorkflow(mm, "test/src/gen/resources/workflows/GUI.yaml");
 
-         WorkflowGenerator workflowGenerator = new WorkflowGenerator();
-         workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/guiboard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, "", yaml);
+      FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
+            workflowGenerator.getEventModel().getEventStormingBoard());
 
-         FulibTools.objectDiagrams().dumpSVG("tmp/EventStorming.svg",
-               workflowGenerator.getEventModel().getEventStormingBoard());
+      workflowGenerator.generate();
 
-         workflowGenerator.generate();
-
-         System.out.println();
-      }
-      catch (IOException e) {
-         e.printStackTrace();
-      }
+      System.out.println();
    }
 }

@@ -16,9 +16,6 @@
 - policy: PartyApp
   trigger: 13:56
 
-- query: sE_BBQ 13:56:01
-  result: []
-
 - data: 13:56:02
   region: Kassel
 
@@ -119,6 +116,12 @@
   name: meat
   price: 21.00
   buyer: sE_BBQ_Alice
+  party: sE_BBQ
+
+- event: item booked 14:09:03
+  name: meat
+  price: 21.00
+  buyer: Alice
   party: sE_BBQ
 
 - data: 14:09:02

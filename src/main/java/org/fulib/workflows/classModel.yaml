@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	subprocessNote 	note 	dataEvent 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	brokerNote 	subprocessNote 	note 	dataEvent 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -76,7 +76,7 @@
   name: 	WorkflowNote
   propertyStyle: 	Bean
   roles: 	workflowNote_interaction 	workflowNote_workflow
-  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	eventNote 	subprocessNote
+  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	eventNote 	brokerNote 	subprocessNote
   superClass: 	note
 
 - dataNote: 	org.fulib.classmodel.Clazz
@@ -150,6 +150,14 @@
   name: 	EventStormingBoard
   propertyStyle: 	Bean
   roles: 	eventStormingBoard_dataTypes 	eventStormingBoard_eventTypes 	eventStormingBoard_subprocesses 	eventStormingBoard_services 	eventStormingBoard_users 	eventStormingBoard_workflows
+
+- brokerNote: 	org.fulib.classmodel.Clazz
+  attributes: 	brokerNote_brokerName
+  model: 	c
+  modified: 	false
+  name: 	BrokerNote
+  propertyStyle: 	Bean
+  superClass: 	workflowNote
 
 - subprocessNote: 	org.fulib.classmodel.Clazz
   attributes: 	subprocessNote_subprocessName 	subprocessNote_kind 	subprocessNote_subprocess
@@ -819,6 +827,15 @@
   other: 	workflow_eventStormingBoard
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- brokerNote_brokerName: 	org.fulib.classmodel.Attribute
+  clazz: 	brokerNote
+  id: 	BrokerNote_brokerName
+  modified: 	false
+  name: 	brokerName
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 
 - subprocessNote_subprocessName: 	org.fulib.classmodel.Attribute
   clazz: 	subprocessNote

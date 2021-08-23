@@ -22,18 +22,17 @@ public class TestShopWorkflow
          mm.setMainJavaDir("test/src/main/java");
          mm.setPackageName("uks.debuggen.shop");
 
-         String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow2.yaml"));
-
          // html
          HtmlGenerator3 generator = new HtmlGenerator3();
          generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-         String html = generator.generateHtml(yaml);
+         String filename = "test/src/gen/resources/workflows/ShopWorkflow2.yaml";
+         String html = generator.generateHtml(filename);
          Files.write(Path.of("tmp/ShopEventStorming.html"), html.getBytes(StandardCharsets.UTF_8));
 
          // java
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/shopboard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, "", yaml);
+         workflowGenerator.loadWorkflow(mm, filename);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/ShopEventStormingModel.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());

@@ -234,6 +234,15 @@ public class PartyAppBusinessLogic
          meatEvent.setParty("sE_BBQ");
          service.apply(meatEvent);
 
+
+         ItemBookedEvent e140903 = new ItemBookedEvent();
+
+         e140903.setId("14:09:03");
+         e140903.setName("meat");
+         e140903.setPrice("21.00");
+         e140903.setBuyer("Alice");
+         e140903.setParty("sE_BBQ");
+         service.apply(e140903);
          GuestBuilt sE_BBQ_AliceEvent = new GuestBuilt();
          sE_BBQ_AliceEvent.setId("14:09:02");
          sE_BBQ_AliceEvent.setBlockId("sE_BBQ_Alice");

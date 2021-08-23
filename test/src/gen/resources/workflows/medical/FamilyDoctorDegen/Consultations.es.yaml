@@ -1,0 +1,32 @@
+
+- workflow: consultations
+
+- event: patient registered 14:01
+  name: Alice
+  address: Wonderland 1
+  birthDate: 1970-01-01
+
+- event: consultation registered 14:02
+  patient: Alice
+  date: 2021-06-02T11:00
+
+- event: symptom validated 14:02:01
+  symptom: cough
+  consultation: Alice#2021-06-02T11:00
+
+- event: symptom validated 14:02:02
+  symptom: runny nose
+  consultation: Alice#2021-06-02T11:00
+
+- event: test done 14:03
+  test: temperature
+  result: 39.8 Celsius
+  consultation: Alice#2021-06-02T11:00
+
+- event: diagnosis done 14:04
+  diagnosis: common cold
+  consultation: Alice#2021-06-02T11:00
+
+- event: treatment initiated 14:05:01
+  treatment: ibuprofen 400 1-1-1
+  consultation: Alice#2021-06-02T11:00

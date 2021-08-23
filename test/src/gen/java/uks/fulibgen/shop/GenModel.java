@@ -16,15 +16,6 @@ public class GenModel implements ClassModelDecorator
    @Override
    public void decorate(ClassModelManager mm)
    {
-      try {
-         String yaml = Files.readString(Path.of("src/gen/resources/workflows/ShopWorkflow2.yaml"));
-
-         new WorkflowGenerator().generateWorkflow(mm, yaml);
-      }
-      catch (IOException e) {
-         e.printStackTrace();
-      }
-
-
+      new WorkflowGenerator().generateWorkflow(mm, "src/gen/resources/workflows/ShopWorkflow2.yaml");
    }
 }

@@ -86,7 +86,7 @@ public class TestPartyApp implements PropertyChangeListener
    public void setTimeOut() {
       Configuration.timeout = 10 * 60 * 1000;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = "-3500x10";
+      // Configuration.browserPosition = "-3500x10";
    }
 
    @Test

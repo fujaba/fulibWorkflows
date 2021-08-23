@@ -1,0 +1,17 @@
+
+- workflow: stiko
+
+# import health knowledge
+- broker: marburg health knowledge
+
+# publish covid risks
+- broker: stiko covid data
+
+- event: covid risk registered 16:00
+  disease: common cold
+  risk: 2.0
+
+- event: covid risk registered 16:01
+  disease: influenza
+  risk: 4.0
+

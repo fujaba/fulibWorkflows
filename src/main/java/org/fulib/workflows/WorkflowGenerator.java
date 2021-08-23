@@ -46,14 +46,14 @@ public class WorkflowGenerator
       return eventModel;
    }
 
-   public WorkflowGenerator generateWorkflow(ClassModelManager mm, String yaml)
+   public WorkflowGenerator generateWorkflow(ClassModelManager mm, String fileName)
    {
-      loadWorkflow(mm, "", yaml);
+      loadWorkflow(mm, fileName);
       generate();
       return this;
    }
 
-   public WorkflowGenerator loadWorkflow(ClassModelManager mm, String fileName, String yaml)
+   public WorkflowGenerator loadWorkflow(ClassModelManager mm, String fileName)
    {
       this.mm = mm;
 
@@ -61,7 +61,7 @@ public class WorkflowGenerator
 
       // event map
       eventModel = new EventModel();
-      eventStormingBoard = eventModel.buildEventStormModel(fileName, yaml);
+      eventStormingBoard = eventModel.buildEventStormModel(fileName);
       // dumpObjectDiagram.accept("tmp/afterBuildEventStormModel.svg", rootWorkflow);
       buildClassModelManagerMap(mm);
       buildEventBroker();

@@ -23,7 +23,6 @@ public class TestPartyWorkflow
          mm.setPackageName("uks.debuggen.party2");
 
          String fileName = "test/src/gen/resources/workflows/PartyWorkflow2.es.yaml";
-         String yaml = Files.readString(Path.of(fileName));
 
          // html
          HtmlGenerator3 generator = new HtmlGenerator3();
@@ -34,7 +33,7 @@ public class TestPartyWorkflow
          // java
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/PartyBoard2.svg", o); };
-         workflowGenerator.loadWorkflow(mm, fileName, yaml);
+         workflowGenerator.loadWorkflow(mm, fileName);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/PartyEventStormingModel2.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());
@@ -57,7 +56,6 @@ public class TestPartyWorkflow
          mm.setPackageName("uks.debuggen.party");
 
          String fileName = "test/src/gen/resources/workflows/PartyWorkflow.es.yaml";
-         String yaml = Files.readString(Path.of(fileName));
 
          // html
          HtmlGenerator3 generator = new HtmlGenerator3();
@@ -68,7 +66,7 @@ public class TestPartyWorkflow
          // java
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/PartyBoard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, fileName, yaml);
+         workflowGenerator.loadWorkflow(mm, fileName);
 
          FulibTools.objectDiagrams().dumpSVG("tmp/PartyEventStormingModel.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());
