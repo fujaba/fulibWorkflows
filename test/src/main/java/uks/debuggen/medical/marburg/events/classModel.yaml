@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	loadDiseasesCommand 	nameBuilt
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	loadDiseasesCommand 	diseaseBuilt
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -22,7 +22,7 @@
   name: 	DataEvent
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
-  subClasses: 	dataGroup 	nameBuilt
+  subClasses: 	dataGroup 	diseaseBuilt
   superClass: 	event
 
 - dataGroup: 	org.fulib.classmodel.Clazz
@@ -66,11 +66,11 @@
   propertyStyle: 	Bean
   superClass: 	command
 
-- nameBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	nameBuilt_symptoms 	nameBuilt_counterSymptoms
+- diseaseBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	diseaseBuilt_name 	diseaseBuilt_symptoms 	diseaseBuilt_counterSymptoms
   model: 	c
   modified: 	false
-  name: 	NameBuilt
+  name: 	DiseaseBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
@@ -172,18 +172,27 @@
   type: 	String
   typeSignature: 	String
 
-- nameBuilt_symptoms: 	org.fulib.classmodel.Attribute
-  clazz: 	nameBuilt
-  id: 	NameBuilt_symptoms
+- diseaseBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	diseaseBuilt
+  id: 	DiseaseBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- diseaseBuilt_symptoms: 	org.fulib.classmodel.Attribute
+  clazz: 	diseaseBuilt
+  id: 	DiseaseBuilt_symptoms
   modified: 	false
   name: 	symptoms
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- nameBuilt_counterSymptoms: 	org.fulib.classmodel.Attribute
-  clazz: 	nameBuilt
-  id: 	NameBuilt_counterSymptoms
+- diseaseBuilt_counterSymptoms: 	org.fulib.classmodel.Attribute
+  clazz: 	diseaseBuilt
+  id: 	DiseaseBuilt_counterSymptoms
   modified: 	false
   name: 	counterSymptoms
   propertyStyle: 	Bean

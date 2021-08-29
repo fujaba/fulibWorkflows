@@ -118,23 +118,26 @@ public class MarburgHealthSystemBusinessLogic
    private void handleDemoLoadDiseasesCommand(LoadDiseasesCommand event)
    {
       if (event.getId().equals("12:00")) {
-         NameBuilt common coldEvent = new NameBuilt();
-         common coldEvent.setId("Disease");
-         common coldEvent.setBlockId("common cold");
-         common coldEvent.setSymptoms("[cough, runny nose, hoarseness, fever]");
-         common coldEvent.setCounterSymptoms("[chills, joint pain]");
-         service.apply(common coldEvent);
+         DiseaseBuilt commonColdEvent = new DiseaseBuilt();
+         commonColdEvent.setId("12:00:01");
+         commonColdEvent.setBlockId("commonCold");
+         commonColdEvent.setName("common cold");
+         commonColdEvent.setSymptoms("[cough, runny nose, hoarseness, fever]");
+         commonColdEvent.setCounterSymptoms("[chills, joint pain]");
+         service.apply(commonColdEvent);
 
-         NameBuilt influenzaEvent = new NameBuilt();
-         influenzaEvent.setId("Disease");
+         DiseaseBuilt influenzaEvent = new DiseaseBuilt();
+         influenzaEvent.setId("12:00:02");
          influenzaEvent.setBlockId("influenza");
+         influenzaEvent.setName("influenza");
          influenzaEvent.setSymptoms("[cough, medium fever, chills, joint pain, headache]");
          influenzaEvent.setCounterSymptoms("[lung noises]");
          service.apply(influenzaEvent);
 
-         NameBuilt pneumoniaEvent = new NameBuilt();
-         pneumoniaEvent.setId("Disease");
+         DiseaseBuilt pneumoniaEvent = new DiseaseBuilt();
+         pneumoniaEvent.setId("12:00:03");
          pneumoniaEvent.setBlockId("pneumonia");
+         pneumoniaEvent.setName("pneumonia");
          pneumoniaEvent.setSymptoms("[cough, medium fever, chills, joint pain, headache, lung noises]");
          service.apply(pneumoniaEvent);
 
@@ -146,7 +149,7 @@ public class MarburgHealthSystemBusinessLogic
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(LoadDiseasesCommand.class, this::handleLoadDiseasesCommand);
-         handlerMap.put(NameBuilt.class, builder::storeNameBuilt);
+         handlerMap.put(DiseaseBuilt.class, builder::storeDiseaseBuilt);
       }
    }
 

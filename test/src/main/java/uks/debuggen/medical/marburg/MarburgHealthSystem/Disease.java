@@ -2,12 +2,14 @@ package uks.debuggen.medical.marburg.MarburgHealthSystem;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class Name
+public class Disease
 {
    public static final String PROPERTY_ID = "id";
+   public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_SYMPTOMS = "symptoms";
    public static final String PROPERTY_COUNTER_SYMPTOMS = "counterSymptoms";
    private String id;
+   private String name;
    private String symptoms;
    private String counterSymptoms;
    protected PropertyChangeSupport listeners;
@@ -17,7 +19,7 @@ public class Name
       return this.id;
    }
 
-   public Name setId(String value)
+   public Disease setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -30,12 +32,30 @@ public class Name
       return this;
    }
 
+   public String getName()
+   {
+      return this.name;
+   }
+
+   public Disease setName(String value)
+   {
+      if (Objects.equals(value, this.name))
+      {
+         return this;
+      }
+
+      final String oldValue = this.name;
+      this.name = value;
+      this.firePropertyChange(PROPERTY_NAME, oldValue, value);
+      return this;
+   }
+
    public String getSymptoms()
    {
       return this.symptoms;
    }
 
-   public Name setSymptoms(String value)
+   public Disease setSymptoms(String value)
    {
       if (Objects.equals(value, this.symptoms))
       {
@@ -53,7 +73,7 @@ public class Name
       return this.counterSymptoms;
    }
 
-   public Name setCounterSymptoms(String value)
+   public Disease setCounterSymptoms(String value)
    {
       if (Objects.equals(value, this.counterSymptoms))
       {
@@ -90,6 +110,7 @@ public class Name
    {
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
+      result.append(' ').append(this.getName());
       result.append(' ').append(this.getSymptoms());
       result.append(' ').append(this.getCounterSymptoms());
       return result.substring(1);

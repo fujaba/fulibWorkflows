@@ -118,10 +118,13 @@ public class EventModel
                policy.setWorkflow(getRootWorkflow());
                ServiceNote service = getEventStormingBoard().getOrCreateFromServices(entry.getValue());
                policy.setService(service);
-               EventNote trigger = (EventNote) getRootWorkflow().getFromNotes(map.get("trigger"));
-               policy.setTrigger(trigger);
-               EventType type = trigger.getType();
-               service.withHandledEventTypes(type);
+               String triggerTime = map.get("trigger");
+               if (triggerTime != null) {
+                  EventNote trigger = (EventNote) getRootWorkflow().getFromNotes(triggerTime);
+                  policy.setTrigger(trigger);
+                  EventType type = trigger.getType();
+                  service.withHandledEventTypes(type);
+               }
                lastService = service;
                lastActor = policy;
             }
@@ -203,11 +206,30 @@ public class EventModel
       String[] split = StrUtil.split(value);
       String className;
       String objectId;
+      String time = split[split.length - 1];
+
+      if (time.indexOf(':') < 0) {
+         // no time given, use auto time and set class name
+         time = getRootWorkflow().addToTime("00:00:01");
+         value = value + " " + time;
+         split = StrUtil.split(value);
+      }
+
       if (split.length == 1) {
+         // just 12:00, get class and id from next line
+         value = split[0];
          Map.Entry<String, String> typeEntry = iterator.next();
          className = StrUtil.cap(typeEntry.getKey());
          objectId = typeEntry.getValue();
-
+      }
+      else if (split.length == 2) {
+         // class name and 12:00
+         className = split[0];
+         value = split[1];
+         Map.Entry<String, String> typeEntry = iterator.next();
+         objectId = typeEntry.getValue();
+         objectId = getVarName(objectId);
+         map.put("data", String.format("%s %s %s", className, objectId, value));
       }
       else {
          className = StrUtil.cap(split[0]);
@@ -334,6 +356,16 @@ public class EventModel
       String[] split2 = value.split("\\s");
       String eventTypeName = "";
       for (int i = 0; i < split2.length - 1; i++) {
+         eventTypeName += org.fulib.StrUtil.cap(split2[i]);
+      }
+      return eventTypeName;
+   }
+
+   private String getVarName(String value)
+   {
+      String[] split2 = value.split("\\s");
+      String eventTypeName = split2[0];
+      for (int i = 1; i < split2.length; ++i) {
          eventTypeName += org.fulib.StrUtil.cap(split2[i]);
       }
       return eventTypeName;

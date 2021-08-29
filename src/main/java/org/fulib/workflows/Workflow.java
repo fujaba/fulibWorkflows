@@ -1,4 +1,5 @@
 package org.fulib.workflows;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -356,5 +357,34 @@ public class Workflow extends Note
       }
       return null;
    }
-   
+
+   public String addToTime(String delta)
+   {
+      String[] deltaSplit = delta.split("\\:");
+      String[] currentSplit = currentTime.split("\\:");
+      String hours = addOneTimePart(currentSplit[0], deltaSplit[0]);
+      String mins = addOneTimePart(currentSplit[1], deltaSplit[1]);
+      String secs = "00";
+      if (currentSplit.length >= 3) {
+         secs = currentSplit[2];
+      }
+      secs = addOneTimePart(secs, deltaSplit[2]);
+
+      if (secs.equals("00")) {
+         currentTime = String.format("%s:%s", hours, mins);
+      } else {
+         currentTime = String.format("%s:%s:%s", hours, mins, secs);
+      }
+
+      return currentTime;
+   }
+
+   private String addOneTimePart(String s1, String s2)
+   {
+      int t1 = Integer.parseInt(s1);
+      int t2 = Integer.parseInt(s2);
+      int sum = t1 + t2;
+      String result = String.format("%02d", sum);
+      return result;
+   }
 }

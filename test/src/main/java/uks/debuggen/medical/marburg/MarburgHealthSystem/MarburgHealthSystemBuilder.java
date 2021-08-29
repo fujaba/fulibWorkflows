@@ -165,25 +165,6 @@ public class MarburgHealthSystemBuilder
       return true;
    }
 
-   public void storeNameBuilt(Event e)
-   {
-      NameBuilt event = (NameBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
-      // fulib
-   }
-
-   public Name loadNameBuilt(Event e)
-   {
-      NameBuilt event = (NameBuilt) e;
-      Name object = model.getOrCreateName(event.getBlockId());
-      object.setSymptoms(event.getSymptoms());
-      object.setCounterSymptoms(event.getCounterSymptoms());
-      return object;
-   }
-
    public Object load(String blockId)
    {
       DataEvent dataEvent = eventStore.get(blockId);
@@ -208,7 +189,7 @@ public class MarburgHealthSystemBuilder
    {
       if (loaderMap == null) {
          loaderMap = new LinkedHashMap<>();
-         loaderMap.put(NameBuilt.class, this::loadNameBuilt);
+         loaderMap.put(DiseaseBuilt.class, this::loadDiseaseBuilt);
       }
    }
 
@@ -261,5 +242,25 @@ public class MarburgHealthSystemBuilder
    {
       this.setBusinessLogic(null);
       this.setService(null);
+   }
+
+   public void storeDiseaseBuilt(Event e)
+   {
+      DiseaseBuilt event = (DiseaseBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public Disease loadDiseaseBuilt(Event e)
+   {
+      DiseaseBuilt event = (DiseaseBuilt) e;
+      Disease object = model.getOrCreateDisease(event.getBlockId());
+      object.setName(event.getName());
+      object.setSymptoms(event.getSymptoms());
+      object.setCounterSymptoms(event.getCounterSymptoms());
+      return object;
    }
 }

@@ -27,12 +27,6 @@ public class MarburgHealthSystemModel
       return this;
    }
 
-   public Name getOrCreateName(String id)
-   {
-      if (id == null) return null;
-      return (Name) modelMap.computeIfAbsent(id, k -> new Name().setId(k));
-   }
-
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -50,5 +44,11 @@ public class MarburgHealthSystemModel
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
+   }
+
+   public Disease getOrCreateDisease(String id)
+   {
+      if (id == null) return null;
+      return (Disease) modelMap.computeIfAbsent(id, k -> new Disease().setId(k));
    }
 }

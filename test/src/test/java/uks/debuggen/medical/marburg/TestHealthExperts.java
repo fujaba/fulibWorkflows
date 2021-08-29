@@ -70,19 +70,22 @@ public class TestHealthExperts
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
-      // check data note Disease
+      // check data note 12:00:01
       pre = $("#data");
-      pre.shouldHave(text("- common cold:"));
+      pre.shouldHave(text("- commonCold:"));
+      pre.shouldHave(matchText("name:.*\"common cold\""));
       pre.shouldHave(matchText("symptoms:.*cough, runny nose, hoarseness, fever"));
       pre.shouldHave(matchText("counterSymptoms:.*chills, joint pain"));
-      // check data note Disease
+      // check data note 12:00:02
       pre = $("#data");
       pre.shouldHave(text("- influenza:"));
+      pre.shouldHave(matchText("name:.*influenza"));
       pre.shouldHave(matchText("symptoms:.*cough, medium fever, chills, joint pain, headache"));
       pre.shouldHave(matchText("counterSymptoms:.*lung noises"));
-      // check data note Disease
+      // check data note 12:00:03
       pre = $("#data");
       pre.shouldHave(text("- pneumonia:"));
+      pre.shouldHave(matchText("name:.*pneumonia"));
       pre.shouldHave(matchText("symptoms:.*cough, medium fever, chills, joint pain, headache, lung noises"));
 
       System.out.println();
