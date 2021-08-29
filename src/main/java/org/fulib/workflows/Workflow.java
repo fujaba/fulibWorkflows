@@ -19,6 +19,7 @@ public class Workflow extends Note
    private List<Policy> policies;
    private List<UserInteraction> userInteractions;
    private EventStormingBoard eventStormingBoard;
+   public String currentTime = "12:00";
 
    public String getName()
    {

@@ -1,4 +1,6 @@
 
+- board: FamilyDoctor
+
 - workflow: family doctor degen
 
 - boundedcontext: consultations

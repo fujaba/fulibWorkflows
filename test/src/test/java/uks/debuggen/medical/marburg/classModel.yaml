@@ -1,0 +1,116 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	testHealthExperts
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/test/java"
+  packageName: 	uks.debuggen.medical.marburg
+  packageSrcFolder: 	"test/src/test/java/uks/debuggen/medical/marburg"
+
+- testHealthExperts: 	org.fulib.classmodel.Clazz
+  attributes: 	testHealthExperts_eventBroker
+  importList: 	"import org.junit.Test;" 	"import uks.debuggen.medical.marburg.events.*;" 	"import uks.debuggen.medical.marburg.MarburgHealthSystem.MarburgHealthSystemService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import uks.debuggen.medical.marburg.events.*;" 	"import uks.debuggen.medical.marburg.MarburgHealthSystem.MarburgHealthSystemService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  methods: 	testHealthExperts_HealthExperts 	testHealthExperts_publish
+  model: 	c
+  modified: 	false
+  name: 	TestHealthExperts
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- testHealthExperts_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testHealthExperts
+  id: 	TestHealthExperts_eventBroker
+  modified: 	false
+  name: 	eventBroker
+  propertyStyle: 	Bean
+  type: 	EventBroker
+  typeSignature: 	EventBroker
+
+- testHealthExperts_HealthExperts: 	org.fulib.classmodel.FMethod
+  annotations: 	"@Test"
+  clazz: 	testHealthExperts
+  declaration: 	"@Test
+public void HealthExperts()"
+  id: 	TestHealthExperts_HealthExperts
+  methodBody: 	"// start the event broker
+eventBroker = new EventBroker();
+eventBroker.start();
+
+// start service
+MarburgHealthSystemService marburgHealthSystem = new MarburgHealthSystemService();
+marburgHealthSystem.start();
+
+open(\"http://localhost:42000\");
+$(\"body\").shouldHave(text(\"event broker\"));
+
+SelenideElement pre = $(\"pre\");
+pre.shouldHave(text(\"http://localhost:42001/apply\"));
+
+// workflow MarburgExpertSystem
+// create LoadDiseasesCommand: load diseases 12:00
+LoadDiseasesCommand e1200 = new LoadDiseasesCommand();
+e1200.setId(\"12:00\");
+e1200.setNames(\"[common cold, influenza, pneumonia]\");
+publish(e1200);
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_00:\"));
+
+// check MarburgHealthSystem
+open(\"http://localhost:42001\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_00:\"));
+// check data note Disease
+pre = $(\"#data\");
+pre.shouldHave(text(\"- common cold:\"));
+pre.shouldHave(matchText(\"symptoms:.*cough, runny nose, hoarseness, fever\"));
+pre.shouldHave(matchText(\"counterSymptoms:.*chills, joint pain\"));
+// check data note Disease
+pre = $(\"#data\");
+pre.shouldHave(text(\"- influenza:\"));
+pre.shouldHave(matchText(\"symptoms:.*cough, medium fever, chills, joint pain, headache\"));
+pre.shouldHave(matchText(\"counterSymptoms:.*lung noises\"));
+// check data note Disease
+pre = $(\"#data\");
+pre.shouldHave(text(\"- pneumonia:\"));
+pre.shouldHave(matchText(\"symptoms:.*cough, medium fever, chills, joint pain, headache, lung noises\"));
+
+System.out.println();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	HealthExperts
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/TestHealthExperts/method/HealthExperts()"
+
+- testHealthExperts_publish: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testHealthExperts
+  declaration: 	"public void publish(Event event)"
+  id: 	TestHealthExperts_publish
+  methodBody: 	"String yaml = Yaml.encodeSimple(event);
+
+try {
+   HttpResponse<String> response = Unirest.post(\"http://localhost:42000/publish\")
+         .body(yaml)
+         .asString();
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	public
+  name: 	publish
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/TestHealthExperts/method/publish(Event)"
+

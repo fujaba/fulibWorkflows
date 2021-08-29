@@ -1,6 +1,5 @@
 package org.fulib.workflows;
 
-import org.fulib.builder.reflect.Link;
 import org.fulib.yaml.Yamler2;
 
 import java.io.IOException;
@@ -105,12 +104,13 @@ public class EventModel
 
                addSubFile(fileName, subprocessNote);
             }
-            else if (entry.getKey().equalsIgnoreCase("broker")) {
-               BrokerNote brokerNote = new BrokerNote();
-               brokerNote.setBrokerName(StrUtil.toIdentifier(entry.getValue()));
-               brokerNote.setTime(brokerNote.getBrokerName());
-               brokerNote.setMap(map);
-               brokerNote.setWorkflow(getRootWorkflow());
+            else if (entry.getKey().equalsIgnoreCase("brokertopic")) {
+               BrokerTopicNote brokerTopicNote = new BrokerTopicNote();
+               brokerTopicNote.setBrokerName(StrUtil.toIdentifier(entry.getValue()));
+               brokerTopicNote.setTime(brokerTopicNote.getBrokerName());
+               brokerTopicNote.setMap(map);
+               brokerTopicNote.setWorkflow(getRootWorkflow());
+               addToStepsOfLastActor(brokerTopicNote);
             }
             else if (entry.getKey().equalsIgnoreCase("Policy")) {
                Policy policy = new Policy();
@@ -341,7 +341,7 @@ public class EventModel
 
    private void addToStepsOfLastActor(WorkflowNote note)
    {
-      if (note instanceof EventNote || note instanceof PageNote) {
+      if (note instanceof EventNote || note instanceof PageNote || note instanceof BrokerTopicNote) {
          if (lastUser == null) {
             UserNote somebody = getEventStormingBoard().getOrCreateFromUsers("somebody");
             lastUser = (UserInteraction) new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody).setActorName("somebody");

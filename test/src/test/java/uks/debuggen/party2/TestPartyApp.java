@@ -5,7 +5,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.FulibTools;
-import org.fulib.workflows.HtmlGenerator3;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
@@ -199,14 +198,15 @@ public class TestPartyApp implements PropertyChangeListener
 
       uks.debuggen.party.events.DataEvent dataEvent = retrieveBuiltEventFromParty1("Kassel.Finals#Wine");
 
+
       FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsOld.svg", aliceOldPartyApp.getBuilder().getModel().getModelMap().values());
       FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsNew.svg", bobNewPartyApp2.getBuilder().getModel().getModelMap().values());
 
-      String oldHistory = new HtmlGenerator3().generateHtml(aliceOldPartyApp.getHistory());
-      Files.write(Path.of("tmp/oldHistory.html"), oldHistory.getBytes(StandardCharsets.UTF_8));
-
-      String newHistory = new HtmlGenerator3().generateHtml(bobNewPartyApp2.getHistory());
-      Files.write(Path.of("tmp/newHistory.html"), newHistory.getBytes(StandardCharsets.UTF_8));
+//      String oldHistory = new HtmlGenerator3().generateHtml(aliceOldPartyApp.getHistory());
+//      Files.write(Path.of("tmp/oldHistory.html"), oldHistory.getBytes(StandardCharsets.UTF_8));
+//
+//      String newHistory = new HtmlGenerator3().generateHtml(bobNewPartyApp2.getHistory());
+//      Files.write(Path.of("tmp/newHistory.html"), newHistory.getBytes(StandardCharsets.UTF_8));
 
       System.out.println();
    }

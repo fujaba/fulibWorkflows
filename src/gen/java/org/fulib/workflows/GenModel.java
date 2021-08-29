@@ -102,7 +102,7 @@ public class GenModel implements ClassModelDecorator
       EventStormingBoard eventStormingBoard;
    }
 
-   class BrokerNote extends WorkflowNote
+   class BrokerTopicNote extends WorkflowNote
    {
       String brokerName;
    }

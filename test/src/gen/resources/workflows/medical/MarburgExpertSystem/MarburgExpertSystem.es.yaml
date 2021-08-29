@@ -1,18 +1,28 @@
 
+- board: health experts
+
 - workflow: marburg expert system
 
-- broker: marburg health knowledge
+- action: Dr Who
 
-- event: disease_registered 13:00
+- command: load diseases 12:00
+  names: [common cold, influenza, pneumonia]
+
+- policy: MarburgHealthSystem
+  trigger: 12:00
+
+- brokertopic: marburg health knowledge
+
+- data: Disease
   name: common cold
   symptoms: [cough, runny nose, hoarseness, fever]
   counterSymptoms: [chills, joint pain]
 
-- event: disease_registered 13:01
+- data: Disease
   name: influenza
   symptoms: [cough, medium fever, chills, joint pain, headache]
   counterSymptoms: [lung noises]
 
-- event: disease_registered 13:02
+- data: Disease
   name: pneumonia
   symptoms: [cough, medium fever, chills, joint pain, headache, lung noises]

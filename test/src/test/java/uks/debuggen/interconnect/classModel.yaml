@@ -1,0 +1,112 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	testInterconnect
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/test/java"
+  packageName: 	uks.debuggen.interconnect
+  packageSrcFolder: 	"test/src/test/java/uks/debuggen/interconnect"
+
+- testInterconnect: 	org.fulib.classmodel.Clazz
+  attributes: 	testInterconnect_eventBroker
+  importList: 	"import org.junit.Test;" 	"import uks.debuggen.interconnect.events.*;" 	"import uks.debuggen.interconnect.IonicKassel42.IonicKassel42Service;" 	"import uks.debuggen.interconnect.CityElectricsKassel.CityElectricsKasselService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import uks.debuggen.interconnect.events.*;" 	"import uks.debuggen.interconnect.IonicKassel42.IonicKassel42Service;" 	"import uks.debuggen.interconnect.CityElectricsKassel.CityElectricsKasselService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  methods: 	testInterconnect_Interconnect 	testInterconnect_publish
+  model: 	c
+  modified: 	false
+  name: 	TestInterconnect
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- testInterconnect_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testInterconnect
+  id: 	TestInterconnect_eventBroker
+  modified: 	false
+  name: 	eventBroker
+  propertyStyle: 	Bean
+  type: 	EventBroker
+  typeSignature: 	EventBroker
+
+- testInterconnect_Interconnect: 	org.fulib.classmodel.FMethod
+  annotations: 	"@Test"
+  clazz: 	testInterconnect
+  declaration: 	"@Test
+public void Interconnect()"
+  id: 	TestInterconnect_Interconnect
+  methodBody: 	"// start the event broker
+eventBroker = new EventBroker();
+eventBroker.start();
+
+// start service
+IonicKassel42Service ionicKassel42 = new IonicKassel42Service();
+ionicKassel42.start();
+
+// start service
+CityElectricsKasselService cityElectricsKassel = new CityElectricsKasselService();
+cityElectricsKassel.start();
+
+open(\"http://localhost:42000\");
+$(\"body\").shouldHave(text(\"event broker\"));
+
+SelenideElement pre = $(\"pre\");
+pre.shouldHave(text(\"http://localhost:42001/apply\"));
+pre.shouldHave(text(\"http://localhost:42002/apply\"));
+
+// workflow Overview
+// workflow UniKasselIonicCharger
+// create CarConnectedEvent: car connected 11:55
+CarConnectedEvent e1155 = new CarConnectedEvent();
+e1155.setId(\"11:55\");
+publish(e1155);
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 11_55:\"));
+
+// check IonicKassel42
+open(\"http://localhost:42001\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 11_55:\"));
+
+// check CityElectricsKassel
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 11_55:\"));
+
+System.out.println();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	Interconnect
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/TestInterconnect/method/Interconnect()"
+
+- testInterconnect_publish: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testInterconnect
+  declaration: 	"public void publish(Event event)"
+  id: 	TestInterconnect_publish
+  methodBody: 	"String yaml = Yaml.encodeSimple(event);
+
+try {
+   HttpResponse<String> response = Unirest.post(\"http://localhost:42000/publish\")
+         .body(yaml)
+         .asString();
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	public
+  name: 	publish
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/TestInterconnect/method/publish(Event)"
+

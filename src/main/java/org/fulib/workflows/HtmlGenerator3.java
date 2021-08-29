@@ -57,8 +57,7 @@ public class HtmlGenerator3
       return body.toString();
    }
 
-   private String notes()
-   {
+   private String notes() {
       String laneName = null;
       StringBuilder buf = new StringBuilder();
 
@@ -118,12 +117,12 @@ public class HtmlGenerator3
             noteContent = String.format("<div class='center'>%s</i></div>\n", icon) +
                   String.format("<div>%s</div>\n", note.getTime());
          }
-         else if (note instanceof BrokerNote) {
-            BrokerNote subprocessNote = (BrokerNote) note;
+         else if (note instanceof BrokerTopicNote) {
+            BrokerTopicNote subprocessNote = (BrokerTopicNote) note;
             noteType = "broker";
             StringBuilder lines = new StringBuilder();
             lines.append(String.format("<div class='box event center'>%s</i></div>\n", "E"));
-            String value = map.get("broker");
+            String value = map.get("brokertopic");
             String[] split = value.split("\\s+");
             for (String word : split) {
                lines.append(String.format("<div class='center'>%s</i></div>\n", word));

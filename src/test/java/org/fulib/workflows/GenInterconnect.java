@@ -1,4 +1,4 @@
-package org.fulib.workflows.medical;
+package org.fulib.workflows;
 
 import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
@@ -11,32 +11,32 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class GenMedicalSystem
+public class GenInterconnect
 {
    private ClassModelManager mm;
 
    @Test
-   public void generateMedicalSystem()
+   public void generateInterconnectSystem()
    {
       try {
          mm = new ClassModelManager();
          mm.setMainJavaDir("test/src/main/java");
-         mm.setPackageName("uks.debuggen.medical.marburg");
+         mm.setPackageName("uks.debuggen.interconnect");
 
-         String fileName = "test/src/gen/resources/workflows/medical/MarburgExpertSystem/MarburgExpertSystem.es.yaml";
+         String fileName = "test/src/gen/resources/workflows/interconnect/InterconnectOverview.es.yaml";
 
          // html
          HtmlGenerator3 generator = new HtmlGenerator3();
          generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
          String html = generator.generateHtml(fileName);
-         Files.write(Path.of("tmp/MedicalMarburgEventStorming.html"), html.getBytes(StandardCharsets.UTF_8));
+         Files.write(Path.of("tmp/InterconnectEventStorming.html"), html.getBytes(StandardCharsets.UTF_8));
 
          // java
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
-         workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/MedicalBoard.svg", o); };
+         workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/InterconnectBoard.svg", o); };
          workflowGenerator.loadWorkflow(mm, fileName);
 
-         FulibTools.objectDiagrams().dumpSVG("tmp/MedicalMarburgEventStormingModel.svg",
+         FulibTools.objectDiagrams().dumpSVG("tmp/InterconnectEventStormingModel.svg",
                workflowGenerator.getEventModel().getEventStormingBoard());
 
          workflowGenerator.generate();

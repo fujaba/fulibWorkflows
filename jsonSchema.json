@@ -19,6 +19,32 @@
       ],
       "additionalProperties": false
     },
+    "boundedcontext": {
+      "description": "The title of an subworkflow that becomes its own service",
+      "type": "object",
+      "properties": {
+        "boundedcontext": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "boundedcontext"
+      ],
+      "additionalProperties": false
+    },
+    "brokerItem": {
+      "description": "A stream of events provided by a broker under some topic",
+      "type": "object",
+      "properties": {
+        "brokertopic": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "brokertopic"
+      ],
+      "additionalProperties": false
+    },
     "workflowItem": {
       "description": "The title of your current workflow",
       "type": "object",
@@ -260,6 +286,12 @@
       },
       {
         "$ref": "#/$defs/workflowItem"
+      },
+      {
+        "$ref": "#/$defs/brokerItem"
+      },
+      {
+        "$ref": "#/$defs/boundedcontext"
       },
       {
         "$ref": "#/$defs/commandItem"

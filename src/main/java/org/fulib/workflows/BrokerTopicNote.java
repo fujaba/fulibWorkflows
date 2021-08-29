@@ -1,7 +1,7 @@
 package org.fulib.workflows;
 import java.util.Objects;
 
-public class BrokerNote extends WorkflowNote
+public class BrokerTopicNote extends WorkflowNote
 {
    public static final String PROPERTY_BROKER_NAME = "brokerName";
    private String brokerName;
@@ -11,7 +11,7 @@ public class BrokerNote extends WorkflowNote
       return this.brokerName;
    }
 
-   public BrokerNote setBrokerName(String value)
+   public BrokerTopicNote setBrokerName(String value)
    {
       if (Objects.equals(value, this.brokerName))
       {

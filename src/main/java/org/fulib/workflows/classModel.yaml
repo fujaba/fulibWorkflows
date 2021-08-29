@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	brokerNote 	subprocessNote 	note 	dataEvent 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	brokerTopicNote 	subprocessNote 	note 	dataEvent 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -76,7 +76,7 @@
   name: 	WorkflowNote
   propertyStyle: 	Bean
   roles: 	workflowNote_interaction 	workflowNote_workflow
-  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	eventNote 	brokerNote 	subprocessNote
+  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	eventNote 	brokerTopicNote 	subprocessNote
   superClass: 	note
 
 - dataNote: 	org.fulib.classmodel.Clazz
@@ -151,11 +151,11 @@
   propertyStyle: 	Bean
   roles: 	eventStormingBoard_dataTypes 	eventStormingBoard_eventTypes 	eventStormingBoard_subprocesses 	eventStormingBoard_services 	eventStormingBoard_users 	eventStormingBoard_workflows
 
-- brokerNote: 	org.fulib.classmodel.Clazz
-  attributes: 	brokerNote_brokerName
+- brokerTopicNote: 	org.fulib.classmodel.Clazz
+  attributes: 	brokerTopicNote_brokerName
   model: 	c
   modified: 	false
-  name: 	BrokerNote
+  name: 	BrokerTopicNote
   propertyStyle: 	Bean
   superClass: 	workflowNote
 
@@ -828,9 +828,9 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- brokerNote_brokerName: 	org.fulib.classmodel.Attribute
-  clazz: 	brokerNote
-  id: 	BrokerNote_brokerName
+- brokerTopicNote_brokerName: 	org.fulib.classmodel.Attribute
+  clazz: 	brokerTopicNote
+  id: 	BrokerTopicNote_brokerName
   modified: 	false
   name: 	brokerName
   propertyStyle: 	Bean
