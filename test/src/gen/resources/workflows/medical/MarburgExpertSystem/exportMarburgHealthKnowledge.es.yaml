@@ -1,55 +1,40 @@
-
-- board: health experts
-
-- workflow: marburg expert system
-
-- action: Dr Who
-
-- command: load diseases 12:00
-  names: [common cold, influenza, pneumonia]
-
-- policy: MarburgHealthSystem
-  trigger: 12:00
-
-- brokertopic: marburg health knowledge
-
-- data: Disease
+- data: Disease commonCold 12:00:01
   name: common cold
   symptoms: [runny nose, cough, hoarseness, medium fever]
   symptoms.back: [indicates]
   counterSymptoms: [chills, joint pain]
   counterSymptoms.back: [excludes]
 
-- data: Disease
+- data: Disease influenza 12:00:02
   name: influenza
   symptoms: [cough, medium fever, chills, joint pain, headache]
   counterSymptoms: [lung noises]
 
-- data: Disease
+- data: Disease pneumonia 12:00:03
   name: pneumonia
   symptoms: [cough, medium fever, chills, joint pain, headache, lung noises]
 
-- data: Symptom
+- data: Symptom cough 12:00:04
   name: cough
 
-- data: Symptom
+- data: Symptom runnyNose 12:00:05
   name: runny nose
 
-- data: Symptom
+- data: Symptom hoarseness 12:00:06
   name: hoarseness
 
-- data: Symptom
+- data: Symptom mediumFeverd 12:00:07
   name: medium feverd
 
-- data: Symptom
+- data: Symptom chills 12:00:08
   name: chills
 
-- data: Symptom
+- data: Symptom jointPain 12:00:09
   name: joint pain
 
-- data: Symptom
+- data: Symptom headache 12:00:10
   name: headache
 
-- data: Symptom
+- data: Symptom lungNoises 12:00:11
   name: lung noises
 

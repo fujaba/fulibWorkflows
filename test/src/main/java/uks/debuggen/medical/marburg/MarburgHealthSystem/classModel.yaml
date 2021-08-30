@@ -195,11 +195,11 @@ handleDemoLoadDiseasesCommand(event);
    hoarsenessEvent.setName(\"hoarseness\");
    service.apply(hoarsenessEvent);
 
-   SymptomBuilt mediumFeverEvent = new SymptomBuilt();
-   mediumFeverEvent.setId(\"12:00:07\");
-   mediumFeverEvent.setBlockId(\"mediumFever\");
-   mediumFeverEvent.setName(\"medium fever\");
-   service.apply(mediumFeverEvent);
+   SymptomBuilt mediumFeverdEvent = new SymptomBuilt();
+   mediumFeverdEvent.setId(\"12:00:07\");
+   mediumFeverdEvent.setBlockId(\"mediumFeverd\");
+   mediumFeverdEvent.setName(\"medium feverd\");
+   service.apply(mediumFeverdEvent);
 
    SymptomBuilt chillsEvent = new SymptomBuilt();
    chillsEvent.setId(\"12:00:08\");

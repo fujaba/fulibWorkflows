@@ -6,14 +6,15 @@
 - boundedcontext: consultations
 
 # import health knowledge
-- broker: marburg health knowledge
+- externalsystem: marburg health knowledge
+  events: 12:00 - 13:00
 
 # import accounting data
-- broker: health prices
+# - externalsystem: health prices
 
 
 # internal affairs
-- broker: doc degen office
+- brokertopic: doc degen office
 
 - boundedcontext: accounting
 

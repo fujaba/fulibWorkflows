@@ -221,8 +221,8 @@ public class TestHealthExperts
       pre.shouldHave(matchText("name:.*hoarseness"));
       // check data note 12:00:07
       pre = $("#data");
-      pre.shouldHave(text("- mediumFever:"));
-      pre.shouldHave(matchText("name:.*\"medium fever\""));
+      pre.shouldHave(text("- mediumFeverd:"));
+      pre.shouldHave(matchText("name:.*\"medium feverd\""));
       // check data note 12:00:08
       pre = $("#data");
       pre.shouldHave(text("- chills:"));

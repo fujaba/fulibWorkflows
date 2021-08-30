@@ -5,6 +5,7 @@ import org.fulib.yaml.Yamler2;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -175,7 +176,54 @@ public class EventModel
 
       }
 
+      generateExports(fileName);
+
       return getEventStormingBoard();
+   }
+
+   private void generateExports(String fileName)
+   {
+      StringBuilder body = new StringBuilder();
+      String currentTopic = null;
+      for (Workflow workflow : getEventStormingBoard().getWorkflows()) {
+         for (WorkflowNote note : workflow.getNotes()) {
+            if (note instanceof BrokerTopicNote) {
+               BrokerTopicNote brokerTopicNote = (BrokerTopicNote) note;
+               currentTopic = brokerTopicNote.getBrokerName();
+               continue;
+            }
+
+            if (note instanceof DataNote) {
+               String oneNote = mapToYaml(note.getMap());
+               body.append(oneNote);
+            }
+         }
+      }
+
+      if (currentTopic == null) {
+         return;
+      }
+
+      int lastIndexOf = fileName.lastIndexOf('/');
+      fileName = fileName.substring(0, lastIndexOf);
+      fileName = String.format("%s/export%s.es.yaml", fileName, currentTopic );
+      try {
+         Files.writeString(Path.of(fileName), body.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+      }
+      catch (IOException e) {
+         e.printStackTrace();
+      }
+   }
+
+   private String mapToYaml(LinkedHashMap<String, String> map)
+   {
+      StringBuilder body = new StringBuilder();
+      String indent = "- ";
+      for (Map.Entry<String, String> entry : map.entrySet()) {
+         body.append(String.format("%s%s: %s\n", indent, entry.getKey(), entry.getValue()));
+         indent = "  ";
+      }
+      return body.toString() + "\n";
    }
 
    private void addSubFile(String fileName, SubprocessNote subprocessNote)
