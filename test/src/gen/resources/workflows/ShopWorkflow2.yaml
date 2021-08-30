@@ -146,7 +146,7 @@
 
 - data: 13:13
   customer: Alice
-  orders: [ order1300 order1310 ]
+  orders: [order1300, order1310]
 
 - event: order registered 13:14
   order: order1310

@@ -17,7 +17,7 @@
 
 - data: 12:00:00
   university: StudyRight
-  rooms: [math exam]
+  rooms: [math, exam]
   rooms.back: uni
 
 - data: 12:00:01
