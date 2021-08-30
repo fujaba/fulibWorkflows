@@ -8,6 +8,8 @@ import uks.fulibgen.shop.Shop.ShopService;
 import uks.fulibgen.shop.Storage.StorageService;
 import uks.fulibgen.shop.events.*;
 import uks.fulibgen.shop.someservice.someserviceService;
+
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
@@ -63,6 +65,7 @@ public class TestSomeEventStorming
       SelenideElement pre = $("pre");
       pre.shouldHave(text("http://localhost:42100/apply"));
       pre.shouldHave(text("http://localhost:42002/apply"));
+      LinkedHashMap<String, Object> modelMap;
 
       // workflow working smoothly
       // create StoreBoxCommand: store box 12:00
@@ -81,6 +84,11 @@ public class TestSomeEventStorming
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
+      for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+         storage.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = storage.getBuilder().getModel().getModelMap();
+      open("http://localhost:42002");
       // check data note 12:01
       pre = $("#data");
       pre.shouldHave(text("- box23:"));
@@ -110,6 +118,11 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
+      for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+         shop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = shop.getBuilder().getModel().getModelMap();
+      open("http://localhost:42100");
       // check data note 13:06
       pre = $("#data");
       pre.shouldHave(text("- order1300:"));
@@ -119,6 +132,11 @@ public class TestSomeEventStorming
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
+      for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+         storage.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = storage.getBuilder().getModel().getModelMap();
+      open("http://localhost:42002");
       // check data note 13:05
       pre = $("#data");
       pre.shouldHave(text("- pick1300:"));
@@ -144,6 +162,11 @@ public class TestSomeEventStorming
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
+      for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+         storage.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = storage.getBuilder().getModel().getModelMap();
+      open("http://localhost:42002");
       // check data note 14:01
       pre = $("#data");
       pre.shouldHave(text("- pick1300:"));
@@ -158,6 +181,11 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
+      for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+         shop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = shop.getBuilder().getModel().getModelMap();
+      open("http://localhost:42100");
       // check data note 14:04
       pre = $("#data");
       pre.shouldHave(text("- order1300:"));
@@ -181,6 +209,11 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 13_11:"));
+      for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+         shop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = shop.getBuilder().getModel().getModelMap();
+      open("http://localhost:42100");
       // check data note 13:16
       pre = $("#data");
       pre.shouldHave(text("- order1310:"));
@@ -190,6 +223,11 @@ public class TestSomeEventStorming
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 13_11:"));
+      for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+         storage.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = storage.getBuilder().getModel().getModelMap();
+      open("http://localhost:42002");
 
       System.out.println();
    }

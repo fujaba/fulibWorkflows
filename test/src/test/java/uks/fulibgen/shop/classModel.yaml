@@ -9,8 +9,8 @@
 
 - testSomeEventStorming: 	org.fulib.classmodel.Clazz
   attributes: 	testSomeEventStorming_eventBroker
-  importList: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
-  imports: 	"import org.junit.Test;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.fulibgen.shop.events.*;" 	"import uks.fulibgen.shop.Shop.ShopService;" 	"import uks.fulibgen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
   methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
   model: 	c
   modified: 	false
@@ -57,6 +57,7 @@ $(\"body\").shouldHave(text(\"event broker\"));
 SelenideElement pre = $(\"pre\");
 pre.shouldHave(text(\"http://localhost:42100/apply\"));
 pre.shouldHave(text(\"http://localhost:42002/apply\"));
+LinkedHashMap<String, Object> modelMap;
 
 // workflow working smoothly
 // create StoreBoxCommand: store box 12:00
@@ -75,6 +76,11 @@ pre.shouldHave(text(\"- 12_00:\"));
 open(\"http://localhost:42002\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 12_00:\"));
+for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+   storage.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = storage.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42002\");
 // check data note 12:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- box23:\"));
@@ -104,6 +110,11 @@ pre.shouldHave(text(\"- 13_01:\"));
 open(\"http://localhost:42100\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 13_01:\"));
+for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+   shop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = shop.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42100\");
 // check data note 13:06
 pre = $(\"#data\");
 pre.shouldHave(text(\"- order1300:\"));
@@ -113,6 +124,11 @@ pre.shouldHave(matchText(\"state:.*picking\"));
 open(\"http://localhost:42002\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 13_01:\"));
+for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+   storage.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = storage.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42002\");
 // check data note 13:05
 pre = $(\"#data\");
 pre.shouldHave(text(\"- pick1300:\"));
@@ -138,6 +154,11 @@ pre.shouldHave(text(\"- 14_00:\"));
 open(\"http://localhost:42002\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 14_00:\"));
+for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+   storage.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = storage.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42002\");
 // check data note 14:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- pick1300:\"));
@@ -152,6 +173,11 @@ pre.shouldHave(matchText(\"place:.*shipping\"));
 open(\"http://localhost:42100\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 14_00:\"));
+for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+   shop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = shop.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42100\");
 // check data note 14:04
 pre = $(\"#data\");
 pre.shouldHave(text(\"- order1300:\"));
@@ -175,6 +201,11 @@ pre.shouldHave(text(\"- 13_11:\"));
 open(\"http://localhost:42100\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 13_11:\"));
+for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+   shop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = shop.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42100\");
 // check data note 13:16
 pre = $(\"#data\");
 pre.shouldHave(text(\"- order1310:\"));
@@ -184,6 +215,11 @@ pre.shouldHave(matchText(\"state:.*\\"out of stock\\"\"));
 open(\"http://localhost:42002\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 13_11:\"));
+for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+   storage.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = storage.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42002\");
 
 System.out.println();
 "

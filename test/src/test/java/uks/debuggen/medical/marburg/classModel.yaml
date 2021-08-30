@@ -9,8 +9,8 @@
 
 - testHealthExperts: 	org.fulib.classmodel.Clazz
   attributes: 	testHealthExperts_eventBroker
-  importList: 	"import org.junit.Test;" 	"import uks.debuggen.medical.marburg.events.*;" 	"import uks.debuggen.medical.marburg.MarburgHealthSystem.MarburgHealthSystemService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
-  imports: 	"import org.junit.Test;" 	"import uks.debuggen.medical.marburg.events.*;" 	"import uks.debuggen.medical.marburg.MarburgHealthSystem.MarburgHealthSystemService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.medical.marburg.events.*;" 	"import uks.debuggen.medical.marburg.MarburgHealthSystem.MarburgHealthSystemService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.medical.marburg.events.*;" 	"import uks.debuggen.medical.marburg.MarburgHealthSystem.MarburgHealthSystemService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
   methods: 	testHealthExperts_HealthExperts 	testHealthExperts_publish
   model: 	c
   modified: 	false
@@ -52,6 +52,7 @@ $(\"body\").shouldHave(text(\"event broker\"));
 
 SelenideElement pre = $(\"pre\");
 pre.shouldHave(text(\"http://localhost:42001/apply\"));
+LinkedHashMap<String, Object> modelMap;
 
 // workflow MarburgExpertSystem
 // create LoadDiseasesCommand: load diseases 12:00
@@ -68,6 +69,11 @@ pre.shouldHave(text(\"- 12_00:\"));
 open(\"http://localhost:42001\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 12_00:\"));
+for (DataEvent dataEvent : marburgHealthSystem.getBuilder().getEventStore().values()) {
+   marburgHealthSystem.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = marburgHealthSystem.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42001\");
 // check data note 12:00:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- commonCold:\"));

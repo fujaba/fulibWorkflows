@@ -160,7 +160,6 @@ public class WorkflowGenerator
    }
 
 
-
    private void addBuilderClass(ClassModelManager modelManager, String serviceName)
    {
       builderClass = modelManager.haveClass(serviceName + "Builder");
@@ -856,7 +855,8 @@ public class WorkflowGenerator
 
       String boardName = StrUtil.toIdentifier(eventStormingBoard.getName());
       testClazz = tm.haveClass("Test" + boardName);
-      testClazz.withImports("import org.junit.Test;");
+      testClazz.withImports("import org.junit.Test;",
+            "import java.util.LinkedHashMap;");
       testClazz.withImports(String.format("import %s;",
             em.getClassModel().getPackageName() + ".*"));
       tm.haveAttribute(testClazz, "eventBroker", "EventBroker");
@@ -945,6 +945,8 @@ public class WorkflowGenerator
          testBody.append(shouldHave);
       }
 
+      testBody.append("LinkedHashMap<String, Object> modelMap;\n");
+
    }
 
    private void testGenerateServiceStart(StringBuilder body, ServiceNote serviceNote)
@@ -988,6 +990,15 @@ public class WorkflowGenerator
          check.append(String.format("\n// check %s\n", service.getName()));
          check.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
          check.append(checkHistory);
+         // load data events
+         String loadDataEventsCode = String.format("" +
+               "for (DataEvent dataEvent : %s.getBuilder().getEventStore().values()) {\n" +
+               "   %1$s.getBuilder().load(dataEvent.getBlockId());\n" +
+               "}\n" +
+               "modelMap = %1$s.getBuilder().getModel().getModelMap();\n",
+               StrUtil.decap(service.getName()));
+         check.append(loadDataEventsCode);
+         check.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
          for (WorkflowNote step : policy.getSteps()) {
             if (step instanceof DataNote) {
                DataNote dataNote = (DataNote) step;
