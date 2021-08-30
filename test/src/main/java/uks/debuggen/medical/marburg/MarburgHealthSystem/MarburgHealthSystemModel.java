@@ -51,4 +51,10 @@ public class MarburgHealthSystemModel
       if (id == null) return null;
       return (Disease) modelMap.computeIfAbsent(id, k -> new Disease().setId(k));
    }
+
+   public Symptom getOrCreateSymptom(String id)
+   {
+      if (id == null) return null;
+      return (Symptom) modelMap.computeIfAbsent(id, k -> new Symptom().setId(k));
+   }
 }

@@ -351,7 +351,7 @@ public class EventModel
       return eventTime;
    }
 
-   private String getEventTypeName(String value)
+   public String getEventTypeName(String value)
    {
       String[] split2 = value.split("\\s");
       String eventTypeName = "";
@@ -361,7 +361,7 @@ public class EventModel
       return eventTypeName;
    }
 
-   private String getVarName(String value)
+   public String getVarName(String value)
    {
       String[] split2 = value.split("\\s");
       String eventTypeName = split2[0];

@@ -78,19 +78,51 @@ open(\"http://localhost:42001\");
 pre = $(\"#data\");
 pre.shouldHave(text(\"- commonCold:\"));
 pre.shouldHave(matchText(\"name:.*\\"common cold\\"\"));
-pre.shouldHave(matchText(\"symptoms:.*cough, runny nose, hoarseness, fever\"));
-pre.shouldHave(matchText(\"counterSymptoms:.*chills, joint pain\"));
+pre.shouldHave(matchText(\"symptoms:.*runnyNose.*cough.*hoarseness.*mediumFever.*\"));
+pre.shouldHave(matchText(\"counterSymptoms:.*chills.*jointPain.*\"));
 // check data note 12:00:02
 pre = $(\"#data\");
 pre.shouldHave(text(\"- influenza:\"));
 pre.shouldHave(matchText(\"name:.*influenza\"));
-pre.shouldHave(matchText(\"symptoms:.*cough, medium fever, chills, joint pain, headache\"));
-pre.shouldHave(matchText(\"counterSymptoms:.*lung noises\"));
+pre.shouldHave(matchText(\"symptoms:.*cough.*mediumFever.*chills.*jointPain.*headache.*\"));
+pre.shouldHave(matchText(\"counterSymptoms:.*lungNoises.*\"));
 // check data note 12:00:03
 pre = $(\"#data\");
 pre.shouldHave(text(\"- pneumonia:\"));
 pre.shouldHave(matchText(\"name:.*pneumonia\"));
-pre.shouldHave(matchText(\"symptoms:.*cough, medium fever, chills, joint pain, headache, lung noises\"));
+pre.shouldHave(matchText(\"symptoms:.*cough.*mediumFever.*chills.*jointPain.*headache.*lungNoises.*\"));
+// check data note 12:00:04
+pre = $(\"#data\");
+pre.shouldHave(text(\"- cough:\"));
+pre.shouldHave(matchText(\"name:.*cough\"));
+// check data note 12:00:05
+pre = $(\"#data\");
+pre.shouldHave(text(\"- runnyNose:\"));
+pre.shouldHave(matchText(\"name:.*\\"runny nose\\"\"));
+// check data note 12:00:06
+pre = $(\"#data\");
+pre.shouldHave(text(\"- hoarseness:\"));
+pre.shouldHave(matchText(\"name:.*hoarseness\"));
+// check data note 12:00:07
+pre = $(\"#data\");
+pre.shouldHave(text(\"- mediumFever:\"));
+pre.shouldHave(matchText(\"name:.*\\"medium fever\\"\"));
+// check data note 12:00:08
+pre = $(\"#data\");
+pre.shouldHave(text(\"- chills:\"));
+pre.shouldHave(matchText(\"name:.*chills\"));
+// check data note 12:00:09
+pre = $(\"#data\");
+pre.shouldHave(text(\"- jointPain:\"));
+pre.shouldHave(matchText(\"name:.*\\"joint pain\\"\"));
+// check data note 12:00:10
+pre = $(\"#data\");
+pre.shouldHave(text(\"- headache:\"));
+pre.shouldHave(matchText(\"name:.*headache\"));
+// check data note 12:00:11
+pre = $(\"#data\");
+pre.shouldHave(text(\"- lungNoises:\"));
+pre.shouldHave(matchText(\"name:.*\\"lung noises\\"\"));
 
 System.out.println();
 "

@@ -283,4 +283,14 @@ public class ShopBuilder
       LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
       group.put(elementId, dataEvent);
    }
+
+   public String getVarName(String value)
+   {
+      String[] split = value.split("\\s+");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;
+   }
 }

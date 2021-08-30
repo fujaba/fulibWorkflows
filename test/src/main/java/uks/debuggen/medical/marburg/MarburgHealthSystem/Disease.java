@@ -1,6 +1,10 @@
 package uks.debuggen.medical.marburg.MarburgHealthSystem;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
+import java.util.Collection;
 
 public class Disease
 {
@@ -10,9 +14,9 @@ public class Disease
    public static final String PROPERTY_COUNTER_SYMPTOMS = "counterSymptoms";
    private String id;
    private String name;
-   private String symptoms;
-   private String counterSymptoms;
    protected PropertyChangeSupport listeners;
+   private List<Symptom> symptoms;
+   private List<Symptom> counterSymptoms;
 
    public String getId()
    {
@@ -50,39 +54,135 @@ public class Disease
       return this;
    }
 
-   public String getSymptoms()
+   public List<Symptom> getSymptoms()
    {
-      return this.symptoms;
+      return this.symptoms != null ? Collections.unmodifiableList(this.symptoms) : Collections.emptyList();
    }
 
-   public Disease setSymptoms(String value)
+   public Disease withSymptoms(Symptom value)
    {
-      if (Objects.equals(value, this.symptoms))
+      if (this.symptoms == null)
       {
-         return this;
+         this.symptoms = new ArrayList<>();
       }
-
-      final String oldValue = this.symptoms;
-      this.symptoms = value;
-      this.firePropertyChange(PROPERTY_SYMPTOMS, oldValue, value);
+      if (!this.symptoms.contains(value))
+      {
+         this.symptoms.add(value);
+         value.withIndicates(this);
+         this.firePropertyChange(PROPERTY_SYMPTOMS, null, value);
+      }
       return this;
    }
 
-   public String getCounterSymptoms()
+   public Disease withSymptoms(Symptom... value)
    {
-      return this.counterSymptoms;
+      for (final Symptom item : value)
+      {
+         this.withSymptoms(item);
+      }
+      return this;
    }
 
-   public Disease setCounterSymptoms(String value)
+   public Disease withSymptoms(Collection<? extends Symptom> value)
    {
-      if (Objects.equals(value, this.counterSymptoms))
+      for (final Symptom item : value)
       {
-         return this;
+         this.withSymptoms(item);
       }
+      return this;
+   }
 
-      final String oldValue = this.counterSymptoms;
-      this.counterSymptoms = value;
-      this.firePropertyChange(PROPERTY_COUNTER_SYMPTOMS, oldValue, value);
+   public Disease withoutSymptoms(Symptom value)
+   {
+      if (this.symptoms != null && this.symptoms.remove(value))
+      {
+         value.withoutIndicates(this);
+         this.firePropertyChange(PROPERTY_SYMPTOMS, value, null);
+      }
+      return this;
+   }
+
+   public Disease withoutSymptoms(Symptom... value)
+   {
+      for (final Symptom item : value)
+      {
+         this.withoutSymptoms(item);
+      }
+      return this;
+   }
+
+   public Disease withoutSymptoms(Collection<? extends Symptom> value)
+   {
+      for (final Symptom item : value)
+      {
+         this.withoutSymptoms(item);
+      }
+      return this;
+   }
+
+   public List<Symptom> getCounterSymptoms()
+   {
+      return this.counterSymptoms != null ? Collections.unmodifiableList(this.counterSymptoms) : Collections.emptyList();
+   }
+
+   public Disease withCounterSymptoms(Symptom value)
+   {
+      if (this.counterSymptoms == null)
+      {
+         this.counterSymptoms = new ArrayList<>();
+      }
+      if (!this.counterSymptoms.contains(value))
+      {
+         this.counterSymptoms.add(value);
+         value.withExcludes(this);
+         this.firePropertyChange(PROPERTY_COUNTER_SYMPTOMS, null, value);
+      }
+      return this;
+   }
+
+   public Disease withCounterSymptoms(Symptom... value)
+   {
+      for (final Symptom item : value)
+      {
+         this.withCounterSymptoms(item);
+      }
+      return this;
+   }
+
+   public Disease withCounterSymptoms(Collection<? extends Symptom> value)
+   {
+      for (final Symptom item : value)
+      {
+         this.withCounterSymptoms(item);
+      }
+      return this;
+   }
+
+   public Disease withoutCounterSymptoms(Symptom value)
+   {
+      if (this.counterSymptoms != null && this.counterSymptoms.remove(value))
+      {
+         value.withoutExcludes(this);
+         this.firePropertyChange(PROPERTY_COUNTER_SYMPTOMS, value, null);
+      }
+      return this;
+   }
+
+   public Disease withoutCounterSymptoms(Symptom... value)
+   {
+      for (final Symptom item : value)
+      {
+         this.withoutCounterSymptoms(item);
+      }
+      return this;
+   }
+
+   public Disease withoutCounterSymptoms(Collection<? extends Symptom> value)
+   {
+      for (final Symptom item : value)
+      {
+         this.withoutCounterSymptoms(item);
+      }
       return this;
    }
 
@@ -111,8 +211,12 @@ public class Disease
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
-      result.append(' ').append(this.getSymptoms());
-      result.append(' ').append(this.getCounterSymptoms());
       return result.substring(1);
+   }
+
+   public void removeYou()
+   {
+      this.withoutSymptoms(new ArrayList<>(this.getSymptoms()));
+      this.withoutCounterSymptoms(new ArrayList<>(this.getCounterSymptoms()));
    }
 }

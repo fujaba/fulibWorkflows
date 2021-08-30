@@ -122,7 +122,7 @@ public class MarburgHealthSystemBusinessLogic
          commonColdEvent.setId("12:00:01");
          commonColdEvent.setBlockId("commonCold");
          commonColdEvent.setName("common cold");
-         commonColdEvent.setSymptoms("[cough, runny nose, hoarseness, fever]");
+         commonColdEvent.setSymptoms("[runny nose, cough, hoarseness, medium fever]");
          commonColdEvent.setCounterSymptoms("[chills, joint pain]");
          service.apply(commonColdEvent);
 
@@ -141,6 +141,54 @@ public class MarburgHealthSystemBusinessLogic
          pneumoniaEvent.setSymptoms("[cough, medium fever, chills, joint pain, headache, lung noises]");
          service.apply(pneumoniaEvent);
 
+         SymptomBuilt coughEvent = new SymptomBuilt();
+         coughEvent.setId("12:00:04");
+         coughEvent.setBlockId("cough");
+         coughEvent.setName("cough");
+         service.apply(coughEvent);
+
+         SymptomBuilt runnyNoseEvent = new SymptomBuilt();
+         runnyNoseEvent.setId("12:00:05");
+         runnyNoseEvent.setBlockId("runnyNose");
+         runnyNoseEvent.setName("runny nose");
+         service.apply(runnyNoseEvent);
+
+         SymptomBuilt hoarsenessEvent = new SymptomBuilt();
+         hoarsenessEvent.setId("12:00:06");
+         hoarsenessEvent.setBlockId("hoarseness");
+         hoarsenessEvent.setName("hoarseness");
+         service.apply(hoarsenessEvent);
+
+         SymptomBuilt mediumFeverEvent = new SymptomBuilt();
+         mediumFeverEvent.setId("12:00:07");
+         mediumFeverEvent.setBlockId("mediumFever");
+         mediumFeverEvent.setName("medium fever");
+         service.apply(mediumFeverEvent);
+
+         SymptomBuilt chillsEvent = new SymptomBuilt();
+         chillsEvent.setId("12:00:08");
+         chillsEvent.setBlockId("chills");
+         chillsEvent.setName("chills");
+         service.apply(chillsEvent);
+
+         SymptomBuilt jointPainEvent = new SymptomBuilt();
+         jointPainEvent.setId("12:00:09");
+         jointPainEvent.setBlockId("jointPain");
+         jointPainEvent.setName("joint pain");
+         service.apply(jointPainEvent);
+
+         SymptomBuilt headacheEvent = new SymptomBuilt();
+         headacheEvent.setId("12:00:10");
+         headacheEvent.setBlockId("headache");
+         headacheEvent.setName("headache");
+         service.apply(headacheEvent);
+
+         SymptomBuilt lungNoisesEvent = new SymptomBuilt();
+         lungNoisesEvent.setId("12:00:11");
+         lungNoisesEvent.setBlockId("lungNoises");
+         lungNoisesEvent.setName("lung noises");
+         service.apply(lungNoisesEvent);
+
       }
    }
 
@@ -150,6 +198,7 @@ public class MarburgHealthSystemBusinessLogic
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(LoadDiseasesCommand.class, this::handleLoadDiseasesCommand);
          handlerMap.put(DiseaseBuilt.class, builder::storeDiseaseBuilt);
+         handlerMap.put(SymptomBuilt.class, builder::storeSymptomBuilt);
       }
    }
 

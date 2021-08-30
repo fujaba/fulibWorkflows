@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	marburgHealthSystemModel 	marburgHealthSystemBusinessLogic 	marburgHealthSystemBuilder 	marburgHealthSystemService 	disease
+  classes: 	marburgHealthSystemModel 	marburgHealthSystemBusinessLogic 	marburgHealthSystemBuilder 	marburgHealthSystemService 	disease 	symptom
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	marburgHealthSystemModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	marburgHealthSystemModel_getOrCreateDisease
+  methods: 	marburgHealthSystemModel_getOrCreateDisease 	marburgHealthSystemModel_getOrCreateSymptom
   model: 	c
   modified: 	false
   name: 	MarburgHealthSystemModel
@@ -32,7 +32,7 @@
   attributes: 	marburgHealthSystemBuilder_model 	marburgHealthSystemBuilder_eventStore 	marburgHealthSystemBuilder_loaderMap 	marburgHealthSystemBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.marburg.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.marburg.events.*;" 	"import java.util.function.Function;"
-  methods: 	marburgHealthSystemBuilder_outdated 	marburgHealthSystemBuilder_storeDiseaseBuilt 	marburgHealthSystemBuilder_loadDiseaseBuilt 	marburgHealthSystemBuilder_load 	marburgHealthSystemBuilder_initLoaderMap 	marburgHealthSystemBuilder_addToGroup 	marburgHealthSystemBuilder_stripBrackets
+  methods: 	marburgHealthSystemBuilder_outdated 	marburgHealthSystemBuilder_storeDiseaseBuilt 	marburgHealthSystemBuilder_loadDiseaseBuilt 	marburgHealthSystemBuilder_storeSymptomBuilt 	marburgHealthSystemBuilder_loadSymptomBuilt 	marburgHealthSystemBuilder_load 	marburgHealthSystemBuilder_initLoaderMap 	marburgHealthSystemBuilder_getVarName 	marburgHealthSystemBuilder_addToGroup 	marburgHealthSystemBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	MarburgHealthSystemBuilder
@@ -51,11 +51,20 @@
   roles: 	marburgHealthSystemService_businessLogic 	marburgHealthSystemService_builder
 
 - disease: 	org.fulib.classmodel.Clazz
-  attributes: 	disease_id 	disease_name 	disease_symptoms 	disease_counterSymptoms
+  attributes: 	disease_id 	disease_name
   model: 	c
   modified: 	false
   name: 	Disease
   propertyStyle: 	Bean
+  roles: 	disease_symptoms 	disease_counterSymptoms
+
+- symptom: 	org.fulib.classmodel.Clazz
+  attributes: 	symptom_id 	symptom_name
+  model: 	c
+  modified: 	false
+  name: 	Symptom
+  propertyStyle: 	Bean
+  roles: 	symptom_indicates 	symptom_excludes
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -88,6 +97,21 @@ return (Disease) modelMap.computeIfAbsent(id, k -> new Disease().setId(k));
   paramsString: 	"String id"
   returnType: 	Disease
   signature: 	"class/MarburgHealthSystemModel/method/getOrCreateDisease(String)"
+
+- marburgHealthSystemModel_getOrCreateSymptom: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	marburgHealthSystemModel
+  declaration: 	"public Symptom getOrCreateSymptom(String id)"
+  id: 	MarburgHealthSystemModel_getOrCreateSymptom
+  methodBody: 	"if (id == null) return null;
+return (Symptom) modelMap.computeIfAbsent(id, k -> new Symptom().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateSymptom
+  paramsString: 	"String id"
+  returnType: 	Symptom
+  signature: 	"class/MarburgHealthSystemModel/method/getOrCreateSymptom(String)"
 
 - marburgHealthSystemBusinessLogic_model: 	org.fulib.classmodel.Attribute
   clazz: 	marburgHealthSystemBusinessLogic
@@ -134,7 +158,7 @@ handleDemoLoadDiseasesCommand(event);
    commonColdEvent.setId(\"12:00:01\");
    commonColdEvent.setBlockId(\"commonCold\");
    commonColdEvent.setName(\"common cold\");
-   commonColdEvent.setSymptoms(\"[cough, runny nose, hoarseness, fever]\");
+   commonColdEvent.setSymptoms(\"[runny nose, cough, hoarseness, medium fever]\");
    commonColdEvent.setCounterSymptoms(\"[chills, joint pain]\");
    service.apply(commonColdEvent);
 
@@ -152,6 +176,54 @@ handleDemoLoadDiseasesCommand(event);
    pneumoniaEvent.setName(\"pneumonia\");
    pneumoniaEvent.setSymptoms(\"[cough, medium fever, chills, joint pain, headache, lung noises]\");
    service.apply(pneumoniaEvent);
+
+   SymptomBuilt coughEvent = new SymptomBuilt();
+   coughEvent.setId(\"12:00:04\");
+   coughEvent.setBlockId(\"cough\");
+   coughEvent.setName(\"cough\");
+   service.apply(coughEvent);
+
+   SymptomBuilt runnyNoseEvent = new SymptomBuilt();
+   runnyNoseEvent.setId(\"12:00:05\");
+   runnyNoseEvent.setBlockId(\"runnyNose\");
+   runnyNoseEvent.setName(\"runny nose\");
+   service.apply(runnyNoseEvent);
+
+   SymptomBuilt hoarsenessEvent = new SymptomBuilt();
+   hoarsenessEvent.setId(\"12:00:06\");
+   hoarsenessEvent.setBlockId(\"hoarseness\");
+   hoarsenessEvent.setName(\"hoarseness\");
+   service.apply(hoarsenessEvent);
+
+   SymptomBuilt mediumFeverEvent = new SymptomBuilt();
+   mediumFeverEvent.setId(\"12:00:07\");
+   mediumFeverEvent.setBlockId(\"mediumFever\");
+   mediumFeverEvent.setName(\"medium fever\");
+   service.apply(mediumFeverEvent);
+
+   SymptomBuilt chillsEvent = new SymptomBuilt();
+   chillsEvent.setId(\"12:00:08\");
+   chillsEvent.setBlockId(\"chills\");
+   chillsEvent.setName(\"chills\");
+   service.apply(chillsEvent);
+
+   SymptomBuilt jointPainEvent = new SymptomBuilt();
+   jointPainEvent.setId(\"12:00:09\");
+   jointPainEvent.setBlockId(\"jointPain\");
+   jointPainEvent.setName(\"joint pain\");
+   service.apply(jointPainEvent);
+
+   SymptomBuilt headacheEvent = new SymptomBuilt();
+   headacheEvent.setId(\"12:00:10\");
+   headacheEvent.setBlockId(\"headache\");
+   headacheEvent.setName(\"headache\");
+   service.apply(headacheEvent);
+
+   SymptomBuilt lungNoisesEvent = new SymptomBuilt();
+   lungNoisesEvent.setId(\"12:00:11\");
+   lungNoisesEvent.setBlockId(\"lungNoises\");
+   lungNoisesEvent.setName(\"lung noises\");
+   service.apply(lungNoisesEvent);
 
 }
 "
@@ -171,6 +243,7 @@ handleDemoLoadDiseasesCommand(event);
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(LoadDiseasesCommand.class, this::handleLoadDiseasesCommand);
    handlerMap.put(DiseaseBuilt.class, builder::storeDiseaseBuilt);
+   handlerMap.put(SymptomBuilt.class, builder::storeSymptomBuilt);
 }
 "
   modified: 	false
@@ -318,8 +391,14 @@ if (outdated(event)) {
   methodBody: 	"DiseaseBuilt event = (DiseaseBuilt) e;
 Disease object = model.getOrCreateDisease(event.getBlockId());
 object.setName(event.getName());
-object.setSymptoms(event.getSymptoms());
-object.setCounterSymptoms(event.getCounterSymptoms());
+for (String name : stripBrackets(event.getSymptoms()).split(\",\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withSymptoms(model.getOrCreateSymptom(getVarName(name)));
+}
+for (String name : stripBrackets(event.getCounterSymptoms()).split(\",\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withCounterSymptoms(model.getOrCreateSymptom(getVarName(name)));
+}
 return object;
 "
   modified: 	false
@@ -328,6 +407,42 @@ return object;
   paramsString: 	"Event e"
   returnType: 	Disease
   signature: 	"class/MarburgHealthSystemBuilder/method/loadDiseaseBuilt(Event)"
+
+- marburgHealthSystemBuilder_storeSymptomBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	marburgHealthSystemBuilder
+  declaration: 	"public void storeSymptomBuilt(Event e)"
+  id: 	MarburgHealthSystemBuilder_storeSymptomBuilt
+  methodBody: 	"SymptomBuilt event = (SymptomBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeSymptomBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/MarburgHealthSystemBuilder/method/storeSymptomBuilt(Event)"
+
+- marburgHealthSystemBuilder_loadSymptomBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	marburgHealthSystemBuilder
+  declaration: 	"public Symptom loadSymptomBuilt(Event e)"
+  id: 	MarburgHealthSystemBuilder_loadSymptomBuilt
+  methodBody: 	"SymptomBuilt event = (SymptomBuilt) e;
+Symptom object = model.getOrCreateSymptom(event.getBlockId());
+object.setName(event.getName());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadSymptomBuilt
+  paramsString: 	"Event e"
+  returnType: 	Symptom
+  signature: 	"class/MarburgHealthSystemBuilder/method/loadSymptomBuilt(Event)"
 
 - marburgHealthSystemBuilder_load: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -365,6 +480,7 @@ return object;
   methodBody: 	"if (loaderMap == null) {
    loaderMap = new LinkedHashMap<>();
    loaderMap.put(DiseaseBuilt.class, this::loadDiseaseBuilt);
+   loaderMap.put(SymptomBuilt.class, this::loadSymptomBuilt);
 }
 "
   modified: 	false
@@ -373,6 +489,24 @@ return object;
   paramsString: 	""
   returnType: 	void
   signature: 	"class/MarburgHealthSystemBuilder/method/initLoaderMap()"
+
+- marburgHealthSystemBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	marburgHealthSystemBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	MarburgHealthSystemBuilder_getVarName
+  methodBody: 	"      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/MarburgHealthSystemBuilder/method/getVarName(String)"
 
 - marburgHealthSystemBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -748,21 +882,69 @@ catch (UnirestException e) {
   type: 	String
   typeSignature: 	String
 
-- disease_symptoms: 	org.fulib.classmodel.Attribute
+- disease_symptoms: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
   clazz: 	disease
+  collectionType: 	c1
   id: 	Disease_symptoms
   modified: 	false
   name: 	symptoms
+  other: 	symptom_indicates
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- disease_counterSymptoms: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	disease
+  collectionType: 	c1
+  id: 	Disease_counterSymptoms
+  modified: 	false
+  name: 	counterSymptoms
+  other: 	symptom_excludes
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- symptom_id: 	org.fulib.classmodel.Attribute
+  clazz: 	symptom
+  id: 	Symptom_id
+  modified: 	false
+  name: 	id
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- disease_counterSymptoms: 	org.fulib.classmodel.Attribute
-  clazz: 	disease
-  id: 	Disease_counterSymptoms
+- symptom_name: 	org.fulib.classmodel.Attribute
+  clazz: 	symptom
+  id: 	Symptom_name
   modified: 	false
-  name: 	counterSymptoms
+  name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- symptom_indicates: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	symptom
+  collectionType: 	c1
+  id: 	Symptom_indicates
+  modified: 	false
+  name: 	indicates
+  other: 	disease_symptoms
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- symptom_excludes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	symptom
+  collectionType: 	c1
+  id: 	Symptom_excludes
+  modified: 	false
+  name: 	excludes
+  other: 	disease_counterSymptoms
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
 

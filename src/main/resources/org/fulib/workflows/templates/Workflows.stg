@@ -192,6 +192,15 @@ builderAddToGroup() ::=
       group.put(elementId, dataEvent);
 >>
 
+builderGetVarName() ::=
+<<
+      String[] split = value.split("\\\\s+");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;
+>>
 
 serviceQuery() ::=
 <<

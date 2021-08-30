@@ -190,6 +190,7 @@ public class MarburgHealthSystemBuilder
       if (loaderMap == null) {
          loaderMap = new LinkedHashMap<>();
          loaderMap.put(DiseaseBuilt.class, this::loadDiseaseBuilt);
+         loaderMap.put(SymptomBuilt.class, this::loadSymptomBuilt);
       }
    }
 
@@ -259,8 +260,42 @@ public class MarburgHealthSystemBuilder
       DiseaseBuilt event = (DiseaseBuilt) e;
       Disease object = model.getOrCreateDisease(event.getBlockId());
       object.setName(event.getName());
-      object.setSymptoms(event.getSymptoms());
-      object.setCounterSymptoms(event.getCounterSymptoms());
+      for (String name : stripBrackets(event.getSymptoms()).split(",\\s+")) {
+         if (name.equals("")) continue;
+         object.withSymptoms(model.getOrCreateSymptom(getVarName(name)));
+      }
+      for (String name : stripBrackets(event.getCounterSymptoms()).split(",\\s+")) {
+         if (name.equals("")) continue;
+         object.withCounterSymptoms(model.getOrCreateSymptom(getVarName(name)));
+      }
+      return object;
+   }
+
+   public String getVarName(String value)
+   {
+      String[] split = value.split("\\s+");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;
+   }
+
+   public void storeSymptomBuilt(Event e)
+   {
+      SymptomBuilt event = (SymptomBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public Symptom loadSymptomBuilt(Event e)
+   {
+      SymptomBuilt event = (SymptomBuilt) e;
+      Symptom object = model.getOrCreateSymptom(event.getBlockId());
+      object.setName(event.getName());
       return object;
    }
 }

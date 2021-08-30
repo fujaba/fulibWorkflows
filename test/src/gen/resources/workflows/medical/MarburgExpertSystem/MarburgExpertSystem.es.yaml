@@ -15,8 +15,10 @@
 
 - data: Disease
   name: common cold
-  symptoms: [cough, runny nose, hoarseness, fever]
+  symptoms: [runny nose, cough, hoarseness, medium fever]
+  symptoms.back: [indicates]
   counterSymptoms: [chills, joint pain]
+  counterSymptoms.back: [excludes]
 
 - data: Disease
   name: influenza
@@ -26,3 +28,28 @@
 - data: Disease
   name: pneumonia
   symptoms: [cough, medium fever, chills, joint pain, headache, lung noises]
+
+- data: Symptom
+  name: cough
+
+- data: Symptom
+  name: runny nose
+
+- data: Symptom
+  name: hoarseness
+
+- data: Symptom
+  name: medium fever
+
+- data: Symptom
+  name: chills
+
+- data: Symptom
+  name: joint pain
+
+- data: Symptom
+  name: headache
+
+- data: Symptom
+  name: lung noises
+

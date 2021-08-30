@@ -32,7 +32,7 @@
   attributes: 	shopBuilder_model 	shopBuilder_eventStore 	shopBuilder_loaderMap 	shopBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import java.util.function.Function;"
-  methods: 	shopBuilder_outdated 	shopBuilder_storeOrderBuilt 	shopBuilder_loadOrderBuilt 	shopBuilder_storeCustomerBuilt 	shopBuilder_loadCustomerBuilt 	shopBuilder_load 	shopBuilder_initLoaderMap 	shopBuilder_addToGroup 	shopBuilder_stripBrackets
+  methods: 	shopBuilder_outdated 	shopBuilder_storeOrderBuilt 	shopBuilder_loadOrderBuilt 	shopBuilder_storeCustomerBuilt 	shopBuilder_loadCustomerBuilt 	shopBuilder_load 	shopBuilder_initLoaderMap 	shopBuilder_getVarName 	shopBuilder_addToGroup 	shopBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	ShopBuilder
@@ -579,6 +579,24 @@ return object;
   paramsString: 	""
   returnType: 	void
   signature: 	"class/ShopBuilder/method/initLoaderMap()"
+
+- shopBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	ShopBuilder_getVarName
+  methodBody: 	"      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/ShopBuilder/method/getVarName(String)"
 
 - shopBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""

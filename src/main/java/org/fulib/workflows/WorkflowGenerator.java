@@ -418,6 +418,12 @@ public class WorkflowGenerator
 
       modelManager.haveMethod(builderClass, declaration, body.toString());
 
+      declaration = "public String getVarName(String value)";
+      body.setLength(0);
+      st = group.getInstanceOf("builderGetVarName");
+      body.append(st.render());
+      modelManager.haveMethod(builderClass, declaration, body.toString());
+
       declaration = "private void addToGroup(String groupId, String elementId)";
       body.setLength(0);
       st = group.getInstanceOf("builderAddToGroup");
@@ -510,12 +516,12 @@ public class WorkflowGenerator
             AssocRole other = role.getOther();
             Clazz otherClazz = other.getClazz();
             if (role.getCardinality() <= 1) {
-               body.append(String.format("object.set%s(model.getOrCreate%s(event.get%1$s()));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append(String.format("object.set%s(model.getOrCreate%s(getVarName(event.get%1$s())));\n", StrUtil.cap(attrName), otherClazz.getName()));
             }
             else {
-               body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\"\\\\s+\")) {\n", StrUtil.cap(attrName)));
+               body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\",\\\\s+\")) {\n", StrUtil.cap(attrName)));
                body.append("   if (name.equals(\"\")) continue;\n");
-               body.append(String.format("   object.with%s(model.getOrCreate%s(name));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append(String.format("   object.with%s(model.getOrCreate%s(getVarName(name)));\n", StrUtil.cap(attrName), otherClazz.getName()));
                body.append("}\n");
             }
          }
@@ -679,7 +685,8 @@ public class WorkflowGenerator
          if (back != null) {
             // its an assoc
             int srcSize = value.startsWith("[") ? 42 : 1;
-            value = StrUtil.stripBrackets(value).split("\\s+")[0];
+            value = StrUtil.stripBrackets(value).split(",\\s+")[0];
+            value = eventModel.getVarName(value);
             // find other class
             String otherClassName = serviceNote.getObjectMap().get(value);
             Clazz otherClazz = modelManager.haveClass(otherClassName);
@@ -986,6 +993,7 @@ public class WorkflowGenerator
       while (!policyList.isEmpty()) {
          Policy policy = policyList.poll();
          ServiceNote service = policy.getService();
+         ClassModelManager serviceModelManager = managerMap.get(service.getName());
          StringBuilder check = new StringBuilder();
          check.append(String.format("\n// check %s\n", service.getName()));
          check.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
@@ -1008,6 +1016,7 @@ public class WorkflowGenerator
                Iterator<Map.Entry<String, String>> iterator = mockup.entrySet().iterator();
                Map.Entry<String, String> entry = iterator.next();
                String value = entry.getValue();
+               Clazz dataTypeClass = serviceModelManager.haveClass(dataNote.getDataType());
                check.append(String.format("pre.shouldHave(text(\"- %s:\"));\n", value));
                while (iterator.hasNext()) {
                   entry = iterator.next();
@@ -1015,12 +1024,29 @@ public class WorkflowGenerator
                   if (key.endsWith(".back")) {
                      continue;
                   }
+                  AssocRole role = dataTypeClass.getRole(key);
                   value = entry.getValue();
-                  if (value.startsWith("[")) {
-                     value = StrUtil.stripBrackets(value);
+                  if (role == null) {
+                     if (value.startsWith("[")) {
+                        value = StrUtil.stripBrackets(value);
+                     }
+                     else if (value.indexOf(" ") > 0) {
+                        value = "\\\"" + value + "\\\"";
+                     }
                   }
-                  else if (value.indexOf(" ") > 0) {
-                     value = "\\\"" + value + "\\\"";
+                  else {
+                     if (value.startsWith("[")) {
+                        value = StrUtil.stripBrackets(value);
+                        String[] split = value.split(",\\s+");
+                        value = "";
+                        for (String s : split) {
+                           value += eventModel.getVarName(s) + ".*";
+                        }
+                        value = value.strip();
+                     }
+                     else {
+                        value = eventModel.getVarName(value);
+                     }
                   }
                   check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",
                         key, value));
