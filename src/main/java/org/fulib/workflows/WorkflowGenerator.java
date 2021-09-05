@@ -446,18 +446,18 @@ public class WorkflowGenerator
 
    private void addHandlersToInitEventHandlerMap(ClassModelManager modelManager, ServiceNote serviceNote, StringBuilder body)
    {
-      for (EventType eventType : serviceNote.getHandledEventTypes()) {
-         String eventTypeName = eventType.getEventTypeName();
-         body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
-               eventTypeName, eventTypeName));
-         addEventHandlerMethod(modelManager, serviceNote, eventType);
-      }
-
       for (DataType dataType : serviceNote.getHandledDataTypes()) {
          String eventTypeName = dataType.getDataTypeName() + "Built";
          body.append(String.format("   handlerMap.put(%s.class, builder::store%s);\n",
                eventTypeName, eventTypeName));
          addDataEventHandlerMethod(modelManager, serviceNote, dataType);
+      }
+
+      for (EventType eventType : serviceNote.getHandledEventTypes()) {
+         String eventTypeName = eventType.getEventTypeName();
+         body.append(String.format("   handlerMap.put(%s.class, this::handle%s);\n",
+               eventTypeName, eventTypeName));
+         addEventHandlerMethod(modelManager, serviceNote, eventType);
       }
    }
 
@@ -491,6 +491,14 @@ public class WorkflowGenerator
       body.setLength(0);
       body.append(String.format("%s event = (%1$s) e;\n", eventTypeName));
       body.append(String.format("%s object = model.getOrCreate%1$s(event.getBlockId());\n", dataTypeName));
+
+      // ensure datClazz
+      for (DataNote note : dataType.getDataNotes()) {
+         LinkedHashMap<String, String> map = note.getMap();
+         LinkedHashMap<String, String> mockup = getMockup(map);
+         addModelClassForDataNote(modelManager, serviceNote, mockup);
+         addGetOrCreateMethodToServiceModel(modelManager, serviceNote.getName(), mockup);
+      }
 
       Clazz dataClazz = modelManager.haveClass(dataTypeName);
       Clazz eventClazz = em.haveClass(eventTypeName);
@@ -595,7 +603,7 @@ public class WorkflowGenerator
          else if (note instanceof EventNote) {
             // fire event
             EventNote eventNote = (EventNote) note;
-            String varName = eventNote.getTime().replaceAll("\\:", "");
+            String varName = eventNote.getTime().replaceAll("\\W+", "");
             body.append(String.format("\n   %s e%s = new %1$s();\n",
                   eventNote.getEventTypeName(), varName));
             body.append(String.format("\n   e%s.setId(\"%s\");\n",
@@ -801,6 +809,7 @@ public class WorkflowGenerator
             clazz = modelManager.haveClass(className);
             className = className + "Built";
             id = value;
+            id = id.replaceAll("\\W+", "");
             varName = org.fulib.StrUtil.downFirstChar(id) + "Event";
             statement = String.format("   %s %s = new %1$s();\n", className, varName);
             body.append(statement);
@@ -1000,10 +1009,10 @@ public class WorkflowGenerator
          check.append(checkHistory);
          // load data events
          String loadDataEventsCode = String.format("" +
-               "for (DataEvent dataEvent : %s.getBuilder().getEventStore().values()) {\n" +
-               "   %1$s.getBuilder().load(dataEvent.getBlockId());\n" +
-               "}\n" +
-               "modelMap = %1$s.getBuilder().getModel().getModelMap();\n",
+                     "for (DataEvent dataEvent : %s.getBuilder().getEventStore().values()) {\n" +
+                     "   %1$s.getBuilder().load(dataEvent.getBlockId());\n" +
+                     "}\n" +
+                     "modelMap = %1$s.getBuilder().getModel().getModelMap();\n",
                StrUtil.decap(service.getName()));
          check.append(loadDataEventsCode);
          check.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
@@ -1016,8 +1025,9 @@ public class WorkflowGenerator
                Iterator<Map.Entry<String, String>> iterator = mockup.entrySet().iterator();
                Map.Entry<String, String> entry = iterator.next();
                String value = entry.getValue();
+               String yamlId = StrUtil.decap(value.replaceAll("\\W+", "_"));
                Clazz dataTypeClass = serviceModelManager.haveClass(dataNote.getDataType());
-               check.append(String.format("pre.shouldHave(text(\"- %s:\"));\n", value));
+               check.append(String.format("pre.shouldHave(text(\"- %s:\"));\n", yamlId));
                while (iterator.hasNext()) {
                   entry = iterator.next();
                   String key = entry.getKey();
@@ -1040,12 +1050,12 @@ public class WorkflowGenerator
                         String[] split = value.split(",\\s+");
                         value = "";
                         for (String s : split) {
-                           value += eventModel.getVarName(s) + ".*";
+                           value += StrUtil.decap(s.replaceAll("\\W+", "_")) + ".*";
                         }
                         value = value.strip();
                      }
                      else {
-                        value = eventModel.getVarName(value);
+                        value = StrUtil.decap(eventModel.getVarName(value).replaceAll("\\W+", "_"));
                      }
                   }
                   check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",
@@ -1079,7 +1089,7 @@ public class WorkflowGenerator
             String time = note.getTime();
             eventTypeName = note.getEventTypeName();
             id = time;
-            varName = time.replaceAll("\\:", "");
+            varName = time.replaceAll("\\W+", "");
             if (!Character.isAlphabetic(varName.charAt(0))) {
                varName = "e" + varName;
             }

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 
 public class GenMedicalSystem
 {
@@ -18,25 +19,32 @@ public class GenMedicalSystem
    @Test
    public void generateMedicalSystem()
    {
+      genSystem("FamilyDoctorDegen");
+      genSystem("MarburgExpertSystem");
+   }
+
+   private void genSystem(String system)
+   {
+      String packageName = system.toLowerCase();
       try {
          mm = new ClassModelManager();
          mm.setMainJavaDir("test/src/main/java");
-         mm.setPackageName("uks.debuggen.medical.marburg");
+         mm.setPackageName("uks.debuggen.medical." + packageName);
 
-         String fileName = "test/src/gen/resources/workflows/medical/MarburgExpertSystem/MarburgExpertSystem.es.yaml";
+         String fileName = String.format("test/src/gen/resources/workflows/medical/%s/%1$s.es.yaml", system);
 
          // html
          HtmlGenerator3 generator = new HtmlGenerator3();
          generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
          String html = generator.generateHtml(fileName);
-         Files.write(Path.of("tmp/MedicalMarburgEventStorming.html"), html.getBytes(StandardCharsets.UTF_8));
+         Files.write(Path.of(String.format("tmp/%sEventStorming.html", system)), html.getBytes(StandardCharsets.UTF_8));
 
          // java
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
-         workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/MedicalBoard.svg", o); };
+         workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG(String.format("tmp/%s.svg", system), o); };
          workflowGenerator.loadWorkflow(mm, fileName);
 
-         FulibTools.objectDiagrams().dumpSVG("tmp/MedicalMarburgEventStormingModel.svg",
+         FulibTools.objectDiagrams().dumpSVG(String.format("tmp/%sEventStormingModel.svg", system),
                workflowGenerator.getEventModel().getEventStormingBoard());
 
          workflowGenerator.generate();

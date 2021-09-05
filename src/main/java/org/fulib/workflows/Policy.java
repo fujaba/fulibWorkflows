@@ -6,9 +6,11 @@ public class Policy extends Interaction
    public static final String PROPERTY_SERVICE = "service";
    public static final String PROPERTY_TRIGGER = "trigger";
    public static final String PROPERTY_WORKFLOW = "workflow";
+   public static final String PROPERTY_EXTERNAL_SYSTEM = "externalSystem";
    private ServiceNote service;
    private EventNote trigger;
    private Workflow workflow;
+   private ExternalSystemNote externalSystem;
 
    public ServiceNote getService()
    {
@@ -91,12 +93,40 @@ public class Policy extends Interaction
       return this;
    }
 
+   public ExternalSystemNote getExternalSystem()
+   {
+      return this.externalSystem;
+   }
+
+   public Policy setExternalSystem(ExternalSystemNote value)
+   {
+      if (this.externalSystem == value)
+      {
+         return this;
+      }
+
+      final ExternalSystemNote oldValue = this.externalSystem;
+      if (this.externalSystem != null)
+      {
+         this.externalSystem = null;
+         oldValue.withoutPolicies(this);
+      }
+      this.externalSystem = value;
+      if (value != null)
+      {
+         value.withPolicies(this);
+      }
+      this.firePropertyChange(PROPERTY_EXTERNAL_SYSTEM, oldValue, value);
+      return this;
+   }
+
    @Override
    public void removeYou()
    {
       super.removeYou();
       this.setService(null);
       this.setTrigger(null);
+      this.setExternalSystem(null);
       this.setWorkflow(null);
    }
 }

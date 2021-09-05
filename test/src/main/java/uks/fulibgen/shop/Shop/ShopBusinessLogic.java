@@ -169,12 +169,12 @@ public class ShopBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
+         handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
+         handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
          handlerMap.put(SubmitOrderCommand.class, this::handleSubmitOrderCommand);
          handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
          handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
          handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-         handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
-         handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
       }
    }
 
@@ -261,7 +261,7 @@ public class ShopBusinessLogic
          CustomerBuilt aliceEvent = new CustomerBuilt();
          aliceEvent.setId("13:13");
          aliceEvent.setBlockId("Alice");
-         aliceEvent.setOrders("[ order1300 order1310 ]");
+         aliceEvent.setOrders("[order1300, order1310]");
          service.apply(aliceEvent);
 
 

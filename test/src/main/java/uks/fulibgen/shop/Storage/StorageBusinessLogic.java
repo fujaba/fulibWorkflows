@@ -149,11 +149,11 @@ public class StorageBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
+         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+         handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
          handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
          handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
          handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
-         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
-         handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
       }
    }
 

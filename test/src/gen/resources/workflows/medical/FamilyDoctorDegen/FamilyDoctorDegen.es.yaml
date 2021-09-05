@@ -5,34 +5,8 @@
 
 - boundedcontext: consultations
 
-# import health knowledge
-- externalsystem: marburg health knowledge
-  events: 12:00 - 13:00
-
-# import accounting data
-# - externalsystem: health prices
-
-
-# internal affairs
-- brokertopic: doc degen office
-
 - boundedcontext: accounting
 
 - boundedcontext: covid vaccination
 
-- event: covid vaccination requested 14:10
-
-# import covid risks
-- broker: stiko covid data
-
-# publish covid related diagnosis
-
-- event: diagnosis done 14:20
-  disease: covid
-
-- event: treatment initiated 14:21
-  treatment: covid vaccination
-
-- event: diagnosis done 14:20:02
-  disease: fever from vaccination
 

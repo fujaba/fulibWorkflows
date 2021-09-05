@@ -141,6 +141,14 @@ public class GenModel implements ClassModelDecorator
       PageNote raisingPage;
    }
 
+   class ExternalSystemNote extends WorkflowNote
+   {
+      String systemName;
+      String timeInterval;
+      @Link("externalSystem")
+      List<Policy> policies;
+   }
+
    class CommandNote extends EventNote
    {
 
@@ -207,6 +215,8 @@ public class GenModel implements ClassModelDecorator
       ServiceNote service;
       @Link("policies")
       EventNote trigger;
+      @Link("policies")
+      ExternalSystemNote externalSystem;
       @Link("policies")
       Workflow workflow;
    }

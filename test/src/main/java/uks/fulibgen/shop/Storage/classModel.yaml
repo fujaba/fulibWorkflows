@@ -292,11 +292,11 @@ handleDemoPickOrderCommand(event);
   id: 	StorageBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
+   handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+   handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
    handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
    handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
    handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
-   handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
-   handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
 }
 "
   modified: 	false
@@ -546,7 +546,10 @@ return object;
   clazz: 	storageBuilder
   declaration: 	"public String getVarName(String value)"
   id: 	StorageBuilder_getVarName
-  methodBody: 	"      String[] split = value.split(\"\\s+\");
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
       String varName = split[0];
       for (int i = 1; i < split.length; i++) {
          varName += org.fulib.StrUtil.cap(split[i]);

@@ -1,32 +1,90 @@
 
-- workflow: consultations
+- workflow: import knowledge
 
-- event: patient registered 14:01
+# import health knowledge
+- externalsystem: marburg health knowledge
+  events: 12:00 - 13:00
+
+- policy: DocMedical
+  trigger: 12:00 - 13:00
+
+- workflow: simple consulting
+
+- action: Doc Degen
+
+- brokertopic: doc degen office
+
+- event: patient registered 14:00
   name: Alice
   address: Wonderland 1
   birthDate: 1970-01-01
 
-- event: consultation registered 14:02
+- data: Patient
+  name: Alice
+  address: Wonderland 1
+  birthDate: 1970-01-01
+
+- action: Doc Degen
+- event: consultation registered
   patient: Alice
-  date: 2021-06-02T11:00
+  date: 2021-06-02T14:00
 
-- event: symptom validated 14:02:01
+- data: Consultation
+  cid: Alice#2021-06-02T14:00
+  patient: Alice
+  patient.back: [consultations]
+
+- action: Doc Degen
+- event: symptom validated
   symptom: cough
-  consultation: Alice#2021-06-02T11:00
+  consultation: Alice#2021-06-02T14:00
 
-- event: symptom validated 14:02:02
+- data: Symptom
+  name: cough
+  consultations: [Alice#2021-06-02T14:00]
+  consultations.back: [symptoms]
+
+- action: Doc Degen
+- event: symptom validated
   symptom: runny nose
-  consultation: Alice#2021-06-02T11:00
+  consultations: [Alice#2021-06-02T14:00]
 
-- event: test done 14:03
+- data: Symptom
+  name: runny nose
+  consultations: [Alice#2021-06-02T14:00]
+
+- action: Doc Degen
+- event: test done
   test: temperature
   result: 39.8 Celsius
-  consultation: Alice#2021-06-02T11:00
+  consultation: [Alice#2021-06-02T14:00]
 
-- event: diagnosis done 14:04
+- data: Test
+  cid: Alice#t001#2021-06-02T14:00
+  kind: temperature
+  result: 39.8 Celsius
+  consultation: Alice#2021-06-02T14:00
+  consultation.back: [tests]
+
+- data: Symptom
+  name: fever
+  consultations: [Alice#2021-06-02T14:00]
+
+- action: Doc Degen
+- event: diagnosis done
   diagnosis: common cold
-  consultation: Alice#2021-06-02T11:00
+  consultation: Alice#2021-06-02T14:00
 
+- data: Consultation
+  cid: Alice#2021-06-02T14:00
+  diagnosis: common cold
+  diagnosis.back: [consultations]
+
+- action: Doc Degen
 - event: treatment initiated 14:05:01
   treatment: ibuprofen 400 1-1-1
-  consultation: Alice#2021-06-02T11:00
+  consultation: Alice#2021-06-02T14:00
+
+- data: Consultation
+  cid: Alice#2021-06-02T14:00
+  treatment: ibuprofen 400 1-1-1

@@ -190,7 +190,7 @@ if (event.getId().equals(\"13:11\")) {
    CustomerBuilt aliceEvent = new CustomerBuilt();
    aliceEvent.setId(\"13:13\");
    aliceEvent.setBlockId(\"Alice\");
-   aliceEvent.setOrders(\"[ order1300 order1310 ]\");
+   aliceEvent.setOrders(\"[order1300, order1310]\");
    service.apply(aliceEvent);
 
 
@@ -333,12 +333,12 @@ handleDemoOrderDeclinedEvent(event);
   id: 	ShopBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
+   handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
+   handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
    handlerMap.put(SubmitOrderCommand.class, this::handleSubmitOrderCommand);
    handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
    handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
    handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-   handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
-   handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
 }
 "
   modified: 	false
@@ -585,7 +585,10 @@ return object;
   clazz: 	shopBuilder
   declaration: 	"public String getVarName(String value)"
   id: 	ShopBuilder_getVarName
-  methodBody: 	"      String[] split = value.split(\"\\s+\");
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
       String varName = split[0];
       for (int i = 1; i < split.length; i++) {
          varName += org.fulib.StrUtil.cap(split[i]);

@@ -1,0 +1,1492 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	docMedicalModel 	docMedicalBusinessLogic 	docMedicalBuilder 	docMedicalService 	disease 	symptom 	consultation 	patient 	test
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/main/java"
+  packageName: 	uks.debuggen.medical.familydoctordegen.DocMedical
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/medical/familydoctordegen/DocMedical"
+
+- docMedicalModel: 	org.fulib.classmodel.Clazz
+  attributes: 	docMedicalModel_modelMap
+  importList: 	"import java.util.LinkedHashMap;"
+  imports: 	"import java.util.LinkedHashMap;"
+  methods: 	docMedicalModel_getOrCreateDisease 	docMedicalModel_getOrCreateSymptom 	docMedicalModel_getOrCreatePatient 	docMedicalModel_getOrCreateConsultation 	docMedicalModel_getOrCreateTest
+  model: 	c
+  modified: 	false
+  name: 	DocMedicalModel
+  propertyStyle: 	Bean
+
+- docMedicalBusinessLogic: 	org.fulib.classmodel.Clazz
+  attributes: 	docMedicalBusinessLogic_model 	docMedicalBusinessLogic_handlerMap
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;"
+  methods: 	docMedicalBusinessLogic_handlePatientRegisteredEvent 	docMedicalBusinessLogic_handleDemoPatientRegisteredEvent 	docMedicalBusinessLogic_handleConsultationEvent 	docMedicalBusinessLogic_handleDemoConsultationEvent 	docMedicalBusinessLogic_handleSymptomEvent 	docMedicalBusinessLogic_handleDemoSymptomEvent 	docMedicalBusinessLogic_handleTestEvent 	docMedicalBusinessLogic_handleDemoTestEvent 	docMedicalBusinessLogic_handleDiagnosisEvent 	docMedicalBusinessLogic_handleDemoDiagnosisEvent 	docMedicalBusinessLogic_handleTreatmentInitiatedEvent 	docMedicalBusinessLogic_handleDemoTreatmentInitiatedEvent 	docMedicalBusinessLogic_initEventHandlerMap 	docMedicalBusinessLogic_ignoreEvent 	docMedicalBusinessLogic_getHandler
+  model: 	c
+  modified: 	false
+  name: 	DocMedicalBusinessLogic
+  propertyStyle: 	Bean
+  roles: 	docMedicalBusinessLogic_builder 	docMedicalBusinessLogic_service
+
+- docMedicalBuilder: 	org.fulib.classmodel.Clazz
+  attributes: 	docMedicalBuilder_model 	docMedicalBuilder_eventStore 	docMedicalBuilder_loaderMap 	docMedicalBuilder_groupStore
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;" 	"import java.util.function.Function;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;" 	"import java.util.function.Function;"
+  methods: 	docMedicalBuilder_outdated 	docMedicalBuilder_storeDiseaseBuilt 	docMedicalBuilder_loadDiseaseBuilt 	docMedicalBuilder_storeSymptomBuilt 	docMedicalBuilder_loadSymptomBuilt 	docMedicalBuilder_storePatientBuilt 	docMedicalBuilder_loadPatientBuilt 	docMedicalBuilder_storeConsultationBuilt 	docMedicalBuilder_loadConsultationBuilt 	docMedicalBuilder_storeTestBuilt 	docMedicalBuilder_loadTestBuilt 	docMedicalBuilder_load 	docMedicalBuilder_initLoaderMap 	docMedicalBuilder_getVarName 	docMedicalBuilder_addToGroup 	docMedicalBuilder_stripBrackets
+  model: 	c
+  modified: 	false
+  name: 	DocMedicalBuilder
+  propertyStyle: 	Bean
+  roles: 	docMedicalBuilder_businessLogic 	docMedicalBuilder_service
+
+- docMedicalService: 	org.fulib.classmodel.Clazz
+  attributes: 	docMedicalService_history 	docMedicalService_port 	docMedicalService_spark 	docMedicalService_model
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  methods: 	docMedicalService_query 	docMedicalService_isoNow 	docMedicalService_start 	docMedicalService_getHello 	docMedicalService_subscribeAndLoadOldEvents 	docMedicalService_apply 	docMedicalService_getPage 	docMedicalService_getDemoPage 	docMedicalService_publish 	docMedicalService_postApply
+  model: 	c
+  modified: 	false
+  name: 	DocMedicalService
+  propertyStyle: 	Bean
+  roles: 	docMedicalService_businessLogic 	docMedicalService_builder
+
+- disease: 	org.fulib.classmodel.Clazz
+  attributes: 	disease_id 	disease_name
+  model: 	c
+  modified: 	false
+  name: 	Disease
+  propertyStyle: 	Bean
+  roles: 	disease_symptoms 	disease_counterSymptoms 	disease_consultations
+
+- symptom: 	org.fulib.classmodel.Clazz
+  attributes: 	symptom_id 	symptom_name
+  model: 	c
+  modified: 	false
+  name: 	Symptom
+  propertyStyle: 	Bean
+  roles: 	symptom_indicates 	symptom_excludes 	symptom_consultations
+
+- consultation: 	org.fulib.classmodel.Clazz
+  attributes: 	consultation_id 	consultation_cid 	consultation_treatment
+  model: 	c
+  modified: 	false
+  name: 	Consultation
+  propertyStyle: 	Bean
+  roles: 	consultation_symptoms 	consultation_patient 	consultation_diagnosis 	consultation_tests
+
+- patient: 	org.fulib.classmodel.Clazz
+  attributes: 	patient_id 	patient_name 	patient_address 	patient_birthDate
+  model: 	c
+  modified: 	false
+  name: 	Patient
+  propertyStyle: 	Bean
+  roles: 	patient_consultations
+
+- test: 	org.fulib.classmodel.Clazz
+  attributes: 	test_id 	test_cid 	test_kind 	test_result
+  model: 	c
+  modified: 	false
+  name: 	Test
+  propertyStyle: 	Bean
+  roles: 	test_consultation
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- docMedicalModel_modelMap: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalModel
+  id: 	DocMedicalModel_modelMap
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	modelMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, Object>"
+  typeSignature: 	"LinkedHashMap<String,Object>"
+
+- docMedicalModel_getOrCreateDisease: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalModel
+  declaration: 	"public Disease getOrCreateDisease(String id)"
+  id: 	DocMedicalModel_getOrCreateDisease
+  methodBody: 	"if (id == null) return null;
+return (Disease) modelMap.computeIfAbsent(id, k -> new Disease().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateDisease
+  paramsString: 	"String id"
+  returnType: 	Disease
+  signature: 	"class/DocMedicalModel/method/getOrCreateDisease(String)"
+
+- docMedicalModel_getOrCreateSymptom: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalModel
+  declaration: 	"public Symptom getOrCreateSymptom(String id)"
+  id: 	DocMedicalModel_getOrCreateSymptom
+  methodBody: 	"if (id == null) return null;
+return (Symptom) modelMap.computeIfAbsent(id, k -> new Symptom().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateSymptom
+  paramsString: 	"String id"
+  returnType: 	Symptom
+  signature: 	"class/DocMedicalModel/method/getOrCreateSymptom(String)"
+
+- docMedicalModel_getOrCreatePatient: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalModel
+  declaration: 	"public Patient getOrCreatePatient(String id)"
+  id: 	DocMedicalModel_getOrCreatePatient
+  methodBody: 	"if (id == null) return null;
+return (Patient) modelMap.computeIfAbsent(id, k -> new Patient().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreatePatient
+  paramsString: 	"String id"
+  returnType: 	Patient
+  signature: 	"class/DocMedicalModel/method/getOrCreatePatient(String)"
+
+- docMedicalModel_getOrCreateConsultation: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalModel
+  declaration: 	"public Consultation getOrCreateConsultation(String id)"
+  id: 	DocMedicalModel_getOrCreateConsultation
+  methodBody: 	"if (id == null) return null;
+return (Consultation) modelMap.computeIfAbsent(id, k -> new Consultation().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateConsultation
+  paramsString: 	"String id"
+  returnType: 	Consultation
+  signature: 	"class/DocMedicalModel/method/getOrCreateConsultation(String)"
+
+- docMedicalModel_getOrCreateTest: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalModel
+  declaration: 	"public Test getOrCreateTest(String id)"
+  id: 	DocMedicalModel_getOrCreateTest
+  methodBody: 	"if (id == null) return null;
+return (Test) modelMap.computeIfAbsent(id, k -> new Test().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateTest
+  paramsString: 	"String id"
+  returnType: 	Test
+  signature: 	"class/DocMedicalModel/method/getOrCreateTest(String)"
+
+- docMedicalBusinessLogic_model: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalBusinessLogic
+  id: 	DocMedicalBusinessLogic_model
+  modified: 	false
+  name: 	model
+  propertyStyle: 	Bean
+  type: 	DocMedicalModel
+  typeSignature: 	DocMedicalModel
+
+- docMedicalBusinessLogic_handlerMap: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalBusinessLogic
+  id: 	DocMedicalBusinessLogic_handlerMap
+  modified: 	false
+  name: 	handlerMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Consumer<Event>>"
+  typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
+
+- docMedicalBusinessLogic_handlePatientRegisteredEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handlePatientRegisteredEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handlePatientRegisteredEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+PatientRegisteredEvent event = (PatientRegisteredEvent) e;
+handleDemoPatientRegisteredEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handlePatientRegisteredEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handlePatientRegisteredEvent(Event)"
+
+- docMedicalBusinessLogic_handleDemoPatientRegisteredEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleDemoPatientRegisteredEvent(PatientRegisteredEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoPatientRegisteredEvent
+  methodBody: 	"if (event.getId().equals(\"14:00\")) {
+   PatientBuilt aliceEvent = new PatientBuilt();
+   aliceEvent.setId(\"12:00:01\");
+   aliceEvent.setBlockId(\"alice\");
+   aliceEvent.setName(\"Alice\");
+   aliceEvent.setAddress(\"Wonderland 1\");
+   aliceEvent.setBirthDate(\"1970-01-01\");
+   service.apply(aliceEvent);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoPatientRegisteredEvent
+  paramsString: 	"PatientRegisteredEvent event"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoPatientRegisteredEvent(PatientRegisteredEvent)"
+
+- docMedicalBusinessLogic_handleConsultationEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleConsultationEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleConsultationEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+ConsultationEvent event = (ConsultationEvent) e;
+handleDemoConsultationEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleConsultationEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleConsultationEvent(Event)"
+
+- docMedicalBusinessLogic_handleDemoConsultationEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleDemoConsultationEvent(ConsultationEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoConsultationEvent
+  methodBody: 	"if (event.getId().equals(\"12:00:02\")) {
+   ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
+   alice20210602T1400Event.setId(\"12:00:03\");
+   alice20210602T1400Event.setBlockId(\"alice#2021-06-02T14:00\");
+   alice20210602T1400Event.setCid(\"Alice#2021-06-02T14:00\");
+   alice20210602T1400Event.setPatient(\"Alice\");
+   service.apply(alice20210602T1400Event);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoConsultationEvent
+  paramsString: 	"ConsultationEvent event"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoConsultationEvent(ConsultationEvent)"
+
+- docMedicalBusinessLogic_handleSymptomEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleSymptomEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleSymptomEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+SymptomEvent event = (SymptomEvent) e;
+handleDemoSymptomEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleSymptomEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleSymptomEvent(Event)"
+
+- docMedicalBusinessLogic_handleDemoSymptomEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleDemoSymptomEvent(SymptomEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoSymptomEvent
+  methodBody: 	"if (event.getId().equals(\"12:00:04\")) {
+   SymptomBuilt coughEvent = new SymptomBuilt();
+   coughEvent.setId(\"12:00:05\");
+   coughEvent.setBlockId(\"cough\");
+   coughEvent.setName(\"cough\");
+   coughEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
+   service.apply(coughEvent);
+
+}
+if (event.getId().equals(\"12:00:06\")) {
+   SymptomBuilt runnyNoseEvent = new SymptomBuilt();
+   runnyNoseEvent.setId(\"12:00:07\");
+   runnyNoseEvent.setBlockId(\"runnyNose\");
+   runnyNoseEvent.setName(\"runny nose\");
+   runnyNoseEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
+   service.apply(runnyNoseEvent);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoSymptomEvent
+  paramsString: 	"SymptomEvent event"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoSymptomEvent(SymptomEvent)"
+
+- docMedicalBusinessLogic_handleTestEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleTestEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleTestEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+TestEvent event = (TestEvent) e;
+handleDemoTestEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleTestEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleTestEvent(Event)"
+
+- docMedicalBusinessLogic_handleDemoTestEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleDemoTestEvent(TestEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoTestEvent
+  methodBody: 	"if (event.getId().equals(\"12:00:08\")) {
+   TestBuilt alicet00120210602T1400Event = new TestBuilt();
+   alicet00120210602T1400Event.setId(\"12:00:09\");
+   alicet00120210602T1400Event.setBlockId(\"alice#t001#2021-06-02T14:00\");
+   alicet00120210602T1400Event.setCid(\"Alice#t001#2021-06-02T14:00\");
+   alicet00120210602T1400Event.setKind(\"temperature\");
+   alicet00120210602T1400Event.setResult(\"39.8 Celsius\");
+   alicet00120210602T1400Event.setConsultation(\"Alice#2021-06-02T14:00\");
+   service.apply(alicet00120210602T1400Event);
+
+   SymptomBuilt feverEvent = new SymptomBuilt();
+   feverEvent.setId(\"12:00:10\");
+   feverEvent.setBlockId(\"fever\");
+   feverEvent.setName(\"fever\");
+   feverEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
+   service.apply(feverEvent);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoTestEvent
+  paramsString: 	"TestEvent event"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoTestEvent(TestEvent)"
+
+- docMedicalBusinessLogic_handleDiagnosisEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleDiagnosisEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleDiagnosisEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+DiagnosisEvent event = (DiagnosisEvent) e;
+handleDemoDiagnosisEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDiagnosisEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDiagnosisEvent(Event)"
+
+- docMedicalBusinessLogic_handleDemoDiagnosisEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleDemoDiagnosisEvent(DiagnosisEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoDiagnosisEvent
+  methodBody: 	"if (event.getId().equals(\"12:00:11\")) {
+   ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
+   alice20210602T1400Event.setId(\"12:00:12\");
+   alice20210602T1400Event.setBlockId(\"alice#2021-06-02T14:00\");
+   alice20210602T1400Event.setCid(\"Alice#2021-06-02T14:00\");
+   alice20210602T1400Event.setDiagnosis(\"common cold\");
+   service.apply(alice20210602T1400Event);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoDiagnosisEvent
+  paramsString: 	"DiagnosisEvent event"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoDiagnosisEvent(DiagnosisEvent)"
+
+- docMedicalBusinessLogic_handleTreatmentInitiatedEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleTreatmentInitiatedEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleTreatmentInitiatedEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+TreatmentInitiatedEvent event = (TreatmentInitiatedEvent) e;
+handleDemoTreatmentInitiatedEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleTreatmentInitiatedEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleTreatmentInitiatedEvent(Event)"
+
+- docMedicalBusinessLogic_handleDemoTreatmentInitiatedEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void handleDemoTreatmentInitiatedEvent(TreatmentInitiatedEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoTreatmentInitiatedEvent
+  methodBody: 	"if (event.getId().equals(\"14:05:01\")) {
+   ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
+   alice20210602T1400Event.setId(\"12:00:13\");
+   alice20210602T1400Event.setBlockId(\"alice#2021-06-02T14:00\");
+   alice20210602T1400Event.setCid(\"Alice#2021-06-02T14:00\");
+   alice20210602T1400Event.setTreatment(\"ibuprofen 400 1-1-1\");
+   service.apply(alice20210602T1400Event);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoTreatmentInitiatedEvent
+  paramsString: 	"TreatmentInitiatedEvent event"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoTreatmentInitiatedEvent(TreatmentInitiatedEvent)"
+
+- docMedicalBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"public void initEventHandlerMap()"
+  id: 	DocMedicalBusinessLogic_initEventHandlerMap
+  methodBody: 	"if (handlerMap == null) {
+   handlerMap = new LinkedHashMap<>();
+   handlerMap.put(DiseaseBuilt.class, builder::storeDiseaseBuilt);
+   handlerMap.put(SymptomBuilt.class, builder::storeSymptomBuilt);
+   handlerMap.put(PatientBuilt.class, builder::storePatientBuilt);
+   handlerMap.put(ConsultationBuilt.class, builder::storeConsultationBuilt);
+   handlerMap.put(TestBuilt.class, builder::storeTestBuilt);
+   handlerMap.put(PatientRegisteredEvent.class, this::handlePatientRegisteredEvent);
+   handlerMap.put(ConsultationEvent.class, this::handleConsultationEvent);
+   handlerMap.put(SymptomEvent.class, this::handleSymptomEvent);
+   handlerMap.put(TestEvent.class, this::handleTestEvent);
+   handlerMap.put(DiagnosisEvent.class, this::handleDiagnosisEvent);
+   handlerMap.put(TreatmentInitiatedEvent.class, this::handleTreatmentInitiatedEvent);
+}
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	initEventHandlerMap
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/initEventHandlerMap()"
+
+- docMedicalBusinessLogic_ignoreEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"private void ignoreEvent(Event event)"
+  id: 	DocMedicalBusinessLogic_ignoreEvent
+  methodBody: 	"// empty
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	ignoreEvent
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/DocMedicalBusinessLogic/method/ignoreEvent(Event)"
+
+- docMedicalBusinessLogic_getHandler: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBusinessLogic
+  declaration: 	"public Consumer<Event> getHandler(Event event)"
+  id: 	DocMedicalBusinessLogic_getHandler
+  methodBody: 	"return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getHandler
+  paramsString: 	"Event event"
+  returnType: 	"Consumer<Event>"
+  signature: 	"class/DocMedicalBusinessLogic/method/getHandler(Event)"
+
+- docMedicalBusinessLogic_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	docMedicalBusinessLogic
+  id: 	DocMedicalBusinessLogic_builder
+  modified: 	false
+  name: 	builder
+  other: 	docMedicalBuilder_businessLogic
+  propertyStyle: 	Bean
+
+- docMedicalBusinessLogic_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	docMedicalBusinessLogic
+  id: 	DocMedicalBusinessLogic_service
+  modified: 	false
+  name: 	service
+  other: 	docMedicalService_businessLogic
+  propertyStyle: 	Bean
+
+- docMedicalBuilder_model: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalBuilder
+  id: 	DocMedicalBuilder_model
+  modified: 	false
+  name: 	model
+  propertyStyle: 	Bean
+  type: 	DocMedicalModel
+  typeSignature: 	DocMedicalModel
+
+- docMedicalBuilder_eventStore: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalBuilder
+  id: 	DocMedicalBuilder_eventStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	eventStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, DataEvent>"
+  typeSignature: 	"LinkedHashMap<String,DataEvent>"
+
+- docMedicalBuilder_loaderMap: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalBuilder
+  id: 	DocMedicalBuilder_loaderMap
+  modified: 	false
+  name: 	loaderMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Function<Event, Object>>"
+  typeSignature: 	"LinkedHashMap<Class,Function<Event,Object>>"
+
+- docMedicalBuilder_groupStore: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalBuilder
+  id: 	DocMedicalBuilder_groupStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	groupStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, LinkedHashMap<String, DataEvent>>"
+  typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
+
+- docMedicalBuilder_outdated: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"private boolean outdated(DataEvent event)"
+  id: 	DocMedicalBuilder_outdated
+  methodBody: 	"      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;"
+  modified: 	false
+  modifiers: 	private
+  name: 	outdated
+  paramsString: 	"DataEvent event"
+  returnType: 	boolean
+  signature: 	"class/DocMedicalBuilder/method/outdated(DataEvent)"
+
+- docMedicalBuilder_storeDiseaseBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public void storeDiseaseBuilt(Event e)"
+  id: 	DocMedicalBuilder_storeDiseaseBuilt
+  methodBody: 	"DiseaseBuilt event = (DiseaseBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeDiseaseBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBuilder/method/storeDiseaseBuilt(Event)"
+
+- docMedicalBuilder_loadDiseaseBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public Disease loadDiseaseBuilt(Event e)"
+  id: 	DocMedicalBuilder_loadDiseaseBuilt
+  methodBody: 	"DiseaseBuilt event = (DiseaseBuilt) e;
+Disease object = model.getOrCreateDisease(event.getBlockId());
+object.setName(event.getName());
+for (String name : stripBrackets(event.getSymptoms()).split(\",\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withSymptoms(model.getOrCreateSymptom(getVarName(name)));
+}
+for (String name : stripBrackets(event.getCounterSymptoms()).split(\",\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withCounterSymptoms(model.getOrCreateSymptom(getVarName(name)));
+}
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadDiseaseBuilt
+  paramsString: 	"Event e"
+  returnType: 	Disease
+  signature: 	"class/DocMedicalBuilder/method/loadDiseaseBuilt(Event)"
+
+- docMedicalBuilder_storeSymptomBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public void storeSymptomBuilt(Event e)"
+  id: 	DocMedicalBuilder_storeSymptomBuilt
+  methodBody: 	"SymptomBuilt event = (SymptomBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeSymptomBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBuilder/method/storeSymptomBuilt(Event)"
+
+- docMedicalBuilder_loadSymptomBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public Symptom loadSymptomBuilt(Event e)"
+  id: 	DocMedicalBuilder_loadSymptomBuilt
+  methodBody: 	"SymptomBuilt event = (SymptomBuilt) e;
+Symptom object = model.getOrCreateSymptom(event.getBlockId());
+object.setName(event.getName());
+for (String name : stripBrackets(event.getConsultations()).split(\",\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withConsultations(model.getOrCreateConsultation(getVarName(name)));
+}
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadSymptomBuilt
+  paramsString: 	"Event e"
+  returnType: 	Symptom
+  signature: 	"class/DocMedicalBuilder/method/loadSymptomBuilt(Event)"
+
+- docMedicalBuilder_storePatientBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public void storePatientBuilt(Event e)"
+  id: 	DocMedicalBuilder_storePatientBuilt
+  methodBody: 	"PatientBuilt event = (PatientBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storePatientBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBuilder/method/storePatientBuilt(Event)"
+
+- docMedicalBuilder_loadPatientBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public Patient loadPatientBuilt(Event e)"
+  id: 	DocMedicalBuilder_loadPatientBuilt
+  methodBody: 	"PatientBuilt event = (PatientBuilt) e;
+Patient object = model.getOrCreatePatient(event.getBlockId());
+object.setName(event.getName());
+object.setAddress(event.getAddress());
+object.setBirthDate(event.getBirthDate());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadPatientBuilt
+  paramsString: 	"Event e"
+  returnType: 	Patient
+  signature: 	"class/DocMedicalBuilder/method/loadPatientBuilt(Event)"
+
+- docMedicalBuilder_storeConsultationBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public void storeConsultationBuilt(Event e)"
+  id: 	DocMedicalBuilder_storeConsultationBuilt
+  methodBody: 	"ConsultationBuilt event = (ConsultationBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeConsultationBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBuilder/method/storeConsultationBuilt(Event)"
+
+- docMedicalBuilder_loadConsultationBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public Consultation loadConsultationBuilt(Event e)"
+  id: 	DocMedicalBuilder_loadConsultationBuilt
+  methodBody: 	"ConsultationBuilt event = (ConsultationBuilt) e;
+Consultation object = model.getOrCreateConsultation(event.getBlockId());
+object.setCid(event.getCid());
+object.setPatient(model.getOrCreatePatient(getVarName(event.getPatient())));
+object.setDiagnosis(model.getOrCreateDisease(getVarName(event.getDiagnosis())));
+object.setTreatment(event.getTreatment());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadConsultationBuilt
+  paramsString: 	"Event e"
+  returnType: 	Consultation
+  signature: 	"class/DocMedicalBuilder/method/loadConsultationBuilt(Event)"
+
+- docMedicalBuilder_storeTestBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public void storeTestBuilt(Event e)"
+  id: 	DocMedicalBuilder_storeTestBuilt
+  methodBody: 	"TestBuilt event = (TestBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeTestBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/DocMedicalBuilder/method/storeTestBuilt(Event)"
+
+- docMedicalBuilder_loadTestBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public Test loadTestBuilt(Event e)"
+  id: 	DocMedicalBuilder_loadTestBuilt
+  methodBody: 	"TestBuilt event = (TestBuilt) e;
+Test object = model.getOrCreateTest(event.getBlockId());
+object.setCid(event.getCid());
+object.setKind(event.getKind());
+object.setResult(event.getResult());
+object.setConsultation(model.getOrCreateConsultation(getVarName(event.getConsultation())));
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadTestBuilt
+  paramsString: 	"Event e"
+  returnType: 	Test
+  signature: 	"class/DocMedicalBuilder/method/loadTestBuilt(Event)"
+
+- docMedicalBuilder_load: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public Object load(String blockId)"
+  id: 	DocMedicalBuilder_load
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;"
+  modified: 	false
+  modifiers: 	public
+  name: 	load
+  paramsString: 	"String blockId"
+  returnType: 	Object
+  signature: 	"class/DocMedicalBuilder/method/load(String)"
+
+- docMedicalBuilder_initLoaderMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"private void initLoaderMap()"
+  id: 	DocMedicalBuilder_initLoaderMap
+  methodBody: 	"if (loaderMap == null) {
+   loaderMap = new LinkedHashMap<>();
+   loaderMap.put(DiseaseBuilt.class, this::loadDiseaseBuilt);
+   loaderMap.put(SymptomBuilt.class, this::loadSymptomBuilt);
+   loaderMap.put(PatientBuilt.class, this::loadPatientBuilt);
+   loaderMap.put(ConsultationBuilt.class, this::loadConsultationBuilt);
+   loaderMap.put(TestBuilt.class, this::loadTestBuilt);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	initLoaderMap
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/DocMedicalBuilder/method/initLoaderMap()"
+
+- docMedicalBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	DocMedicalBuilder_getVarName
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/DocMedicalBuilder/method/getVarName(String)"
+
+- docMedicalBuilder_addToGroup: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"private void addToGroup(String groupId, String elementId)"
+  id: 	DocMedicalBuilder_addToGroup
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format(\"could not find element event %s for group %s \", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);"
+  modified: 	false
+  modifiers: 	private
+  name: 	addToGroup
+  paramsString: 	"String groupId, String elementId"
+  returnType: 	void
+  signature: 	"class/DocMedicalBuilder/method/addToGroup(String,String)"
+
+- docMedicalBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalBuilder
+  declaration: 	"public String stripBrackets(String back)"
+  id: 	DocMedicalBuilder_stripBrackets
+  methodBody: 	"      if (back == null) {
+         return \"\";
+      }
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;"
+  modified: 	false
+  modifiers: 	public
+  name: 	stripBrackets
+  paramsString: 	"String back"
+  returnType: 	String
+  signature: 	"class/DocMedicalBuilder/method/stripBrackets(String)"
+
+- docMedicalBuilder_businessLogic: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	docMedicalBuilder
+  id: 	DocMedicalBuilder_businessLogic
+  modified: 	false
+  name: 	businessLogic
+  other: 	docMedicalBusinessLogic_builder
+  propertyStyle: 	Bean
+
+- docMedicalBuilder_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	docMedicalBuilder
+  id: 	DocMedicalBuilder_service
+  modified: 	false
+  name: 	service
+  other: 	docMedicalService_builder
+  propertyStyle: 	Bean
+
+- docMedicalService_history: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalService
+  id: 	DocMedicalService_history
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	history
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, Event>"
+  typeSignature: 	"LinkedHashMap<String,Event>"
+
+- docMedicalService_port: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalService
+  id: 	DocMedicalService_port
+  initialization: 	42001
+  modified: 	false
+  name: 	port
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- docMedicalService_spark: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalService
+  id: 	DocMedicalService_spark
+  modified: 	false
+  name: 	spark
+  propertyStyle: 	Bean
+  type: 	Service
+  typeSignature: 	Service
+
+- docMedicalService_model: 	org.fulib.classmodel.Attribute
+  clazz: 	docMedicalService
+  id: 	DocMedicalService_model
+  modified: 	false
+  name: 	model
+  propertyStyle: 	Bean
+  type: 	DocMedicalModel
+  typeSignature: 	DocMedicalModel
+
+- docMedicalService_query: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"public Query query(Query query)"
+  id: 	DocMedicalService_query
+  methodBody: 	"      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;"
+  modified: 	false
+  modifiers: 	public
+  name: 	query
+  paramsString: 	"Query query"
+  returnType: 	Query
+  signature: 	"class/DocMedicalService/method/query(Query)"
+
+- docMedicalService_isoNow: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"public String isoNow()"
+  id: 	DocMedicalService_isoNow
+  methodBody: 	"return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	isoNow
+  paramsString: 	""
+  returnType: 	String
+  signature: 	"class/DocMedicalService/method/isoNow()"
+
+- docMedicalService_start: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"public void start()"
+  id: 	DocMedicalService_start
+  methodBody: 	"model = new DocMedicalModel();
+setBuilder(new DocMedicalBuilder().setModel(model));
+setBusinessLogic(new DocMedicalBusinessLogic());
+businessLogic.setBuilder(getBuilder());
+businessLogic.setModel(model);
+ExecutorService executor = Executors.newSingleThreadExecutor();
+spark = Service.ignite();
+spark.port(port);
+spark.get(\"/page/:id\", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());
+spark.get(\"/\", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
+spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+executor.submit(this::subscribeAndLoadOldEvents);
+Logger.getGlobal().info(\"DocMedical service is up and running on port \" + port);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	start
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/DocMedicalService/method/start()"
+
+- docMedicalService_getHello: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"private String getHello(Request req, Response res)"
+  id: 	DocMedicalService_getHello
+  methodBody: 	"try {
+   String events = Yaml.encodeSimple(getHistory().values().toArray());
+   String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
+   return \"<p id='DocMedical'>This is the DocMedical service. </p>\n\" +
+         \"<pre id=\\"history\\">\" + events + \"</pre>\n\" +
+         \"<pre id=\\"data\\">\" + objects + \"</pre>\n\" +
+         \"\";
+}
+catch (Exception e) {
+   Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
+   return \"DocMedical Error \" + e.getMessage();
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	getHello
+  paramsString: 	"Request req, Response res"
+  returnType: 	String
+  signature: 	"class/DocMedicalService/method/getHello(Request,Response)"
+
+- docMedicalService_subscribeAndLoadOldEvents: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"private void subscribeAndLoadOldEvents()"
+  id: 	DocMedicalService_subscribeAndLoadOldEvents
+  methodBody: 	"ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+      .setServiceUrl(String.format(\"http://localhost:%d/apply\", port));
+String json = Yaml.encodeSimple(serviceSubscribed);
+try {
+   String url = \"http://localhost:42000/subscribe\";
+   HttpResponse<String> response = Unirest
+         .post(url)
+         .body(json)
+         .asString();
+   String body = response.getBody();
+   YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+   idMap.decode(body);
+   Map<String, Object> objectMap = idMap.getObjIdMap();
+   for (Object obj : objectMap.values()) {
+      apply((Event) obj);
+   }
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	private
+  name: 	subscribeAndLoadOldEvents
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/DocMedicalService/method/subscribeAndLoadOldEvents()"
+
+- docMedicalService_apply: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"public void apply(Event event)"
+  id: 	DocMedicalService_apply
+  methodBody: 	"if (history.get(event.getId()) != null) {
+   return;
+}
+businessLogic.initEventHandlerMap();
+Consumer<Event> handler = businessLogic.getHandler(event);
+handler.accept(event);
+history.put(event.getId(), event);
+firePropertyChange(PROPERTY_HISTORY, null, event);
+publish(event);"
+  modified: 	false
+  modifiers: 	public
+  name: 	apply
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/DocMedicalService/method/apply(Event)"
+
+- docMedicalService_getPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"public String getPage(Request request, Response response)"
+  id: 	DocMedicalService_getPage
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+return getDemoPage(request, response);
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/DocMedicalService/method/getPage(Request,Response)"
+
+- docMedicalService_getDemoPage: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"public String getDemoPage(Request request, Response response)"
+  id: 	DocMedicalService_getDemoPage
+  methodBody: 	"StringBuilder html = new StringBuilder();
+String id = request.params(\"id\");
+String event = request.queryParams(\"event\");
+
+
+
+html.append(\"This is the Shop Service page \" + id + \"\n\");
+return html.toString();"
+  modified: 	false
+  modifiers: 	public
+  name: 	getDemoPage
+  paramsString: 	"Request request, Response response"
+  returnType: 	String
+  signature: 	"class/DocMedicalService/method/getDemoPage(Request,Response)"
+
+- docMedicalService_publish: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"public void publish(Event event)"
+  id: 	DocMedicalService_publish
+  methodBody: 	"String json = Yaml.encodeSimple(event);
+
+try {
+   HttpResponse<String> response = Unirest
+         .post(\"http://localhost:42000/publish\")
+         .body(json)
+         .asString();
+}
+catch (UnirestException e) {
+   e.printStackTrace();
+}"
+  modified: 	false
+  modifiers: 	public
+  name: 	publish
+  paramsString: 	"Event event"
+  returnType: 	void
+  signature: 	"class/DocMedicalService/method/publish(Event)"
+
+- docMedicalService_postApply: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"private String postApply(Request req, Response res)"
+  id: 	DocMedicalService_postApply
+  methodBody: 	"      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            apply(event);
+         }
+      }
+      catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains(\"ReflectorMap could not find class description\")) {
+            Logger.getGlobal().info(\"post apply ignores unknown event \" + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         }
+      }
+      return \"apply done\";"
+  modified: 	false
+  modifiers: 	private
+  name: 	postApply
+  paramsString: 	"Request req, Response res"
+  returnType: 	String
+  signature: 	"class/DocMedicalService/method/postApply(Request,Response)"
+
+- docMedicalService_businessLogic: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	docMedicalService
+  id: 	DocMedicalService_businessLogic
+  modified: 	false
+  name: 	businessLogic
+  other: 	docMedicalBusinessLogic_service
+  propertyStyle: 	Bean
+
+- docMedicalService_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	docMedicalService
+  id: 	DocMedicalService_builder
+  modified: 	false
+  name: 	builder
+  other: 	docMedicalBuilder_service
+  propertyStyle: 	Bean
+
+- disease_id: 	org.fulib.classmodel.Attribute
+  clazz: 	disease
+  id: 	Disease_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- disease_name: 	org.fulib.classmodel.Attribute
+  clazz: 	disease
+  id: 	Disease_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- disease_symptoms: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	disease
+  collectionType: 	c1
+  id: 	Disease_symptoms
+  modified: 	false
+  name: 	symptoms
+  other: 	symptom_indicates
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- disease_counterSymptoms: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	disease
+  collectionType: 	c1
+  id: 	Disease_counterSymptoms
+  modified: 	false
+  name: 	counterSymptoms
+  other: 	symptom_excludes
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- disease_consultations: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	disease
+  collectionType: 	c1
+  id: 	Disease_consultations
+  modified: 	false
+  name: 	consultations
+  other: 	consultation_diagnosis
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- symptom_id: 	org.fulib.classmodel.Attribute
+  clazz: 	symptom
+  id: 	Symptom_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- symptom_name: 	org.fulib.classmodel.Attribute
+  clazz: 	symptom
+  id: 	Symptom_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- symptom_indicates: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	symptom
+  collectionType: 	c1
+  id: 	Symptom_indicates
+  modified: 	false
+  name: 	indicates
+  other: 	disease_symptoms
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- symptom_excludes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	symptom
+  collectionType: 	c1
+  id: 	Symptom_excludes
+  modified: 	false
+  name: 	excludes
+  other: 	disease_counterSymptoms
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- symptom_consultations: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	symptom
+  collectionType: 	c1
+  id: 	Symptom_consultations
+  modified: 	false
+  name: 	consultations
+  other: 	consultation_symptoms
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- consultation_id: 	org.fulib.classmodel.Attribute
+  clazz: 	consultation
+  id: 	Consultation_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultation_cid: 	org.fulib.classmodel.Attribute
+  clazz: 	consultation
+  id: 	Consultation_cid
+  modified: 	false
+  name: 	cid
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultation_treatment: 	org.fulib.classmodel.Attribute
+  clazz: 	consultation
+  id: 	Consultation_treatment
+  modified: 	false
+  name: 	treatment
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultation_symptoms: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	consultation
+  collectionType: 	c1
+  id: 	Consultation_symptoms
+  modified: 	false
+  name: 	symptoms
+  other: 	symptom_consultations
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- consultation_patient: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	consultation
+  id: 	Consultation_patient
+  modified: 	false
+  name: 	patient
+  other: 	patient_consultations
+  propertyStyle: 	Bean
+
+- consultation_diagnosis: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	consultation
+  id: 	Consultation_diagnosis
+  modified: 	false
+  name: 	diagnosis
+  other: 	disease_consultations
+  propertyStyle: 	Bean
+
+- consultation_tests: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	consultation
+  collectionType: 	c1
+  id: 	Consultation_tests
+  modified: 	false
+  name: 	tests
+  other: 	test_consultation
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- patient_id: 	org.fulib.classmodel.Attribute
+  clazz: 	patient
+  id: 	Patient_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patient_name: 	org.fulib.classmodel.Attribute
+  clazz: 	patient
+  id: 	Patient_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patient_address: 	org.fulib.classmodel.Attribute
+  clazz: 	patient
+  id: 	Patient_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patient_birthDate: 	org.fulib.classmodel.Attribute
+  clazz: 	patient
+  id: 	Patient_birthDate
+  modified: 	false
+  name: 	birthDate
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patient_consultations: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	patient
+  collectionType: 	c1
+  id: 	Patient_consultations
+  modified: 	false
+  name: 	consultations
+  other: 	consultation_patient
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- test_id: 	org.fulib.classmodel.Attribute
+  clazz: 	test
+  id: 	Test_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- test_cid: 	org.fulib.classmodel.Attribute
+  clazz: 	test
+  id: 	Test_cid
+  modified: 	false
+  name: 	cid
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- test_kind: 	org.fulib.classmodel.Attribute
+  clazz: 	test
+  id: 	Test_kind
+  modified: 	false
+  name: 	kind
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- test_result: 	org.fulib.classmodel.Attribute
+  clazz: 	test
+  id: 	Test_result
+  modified: 	false
+  name: 	result
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- test_consultation: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	test
+  id: 	Test_consultation
+  modified: 	false
+  name: 	consultation
+  other: 	consultation_tests
+  propertyStyle: 	Bean
+

@@ -39,7 +39,7 @@
   name: hoarseness
 
 - data: Symptom
-  name: medium feverd
+  name: medium fever
 
 - data: Symptom
   name: chills

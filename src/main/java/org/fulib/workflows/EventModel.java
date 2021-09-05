@@ -61,7 +61,8 @@ public class EventModel
          lastActor = null;
          lastUser = null;
 
-         for (LinkedHashMap<String, String> map : maps) {
+         while (!maps.isEmpty()) {
+            LinkedHashMap<String, String> map = maps.remove(0);
             Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
             Map.Entry<String, String> entry = iterator.next();
             if (entry.getKey().equalsIgnoreCase("workflow")) {
@@ -114,20 +115,8 @@ public class EventModel
                addToStepsOfLastActor(brokerTopicNote);
             }
             else if (entry.getKey().equalsIgnoreCase("Policy")) {
-               Policy policy = new Policy();
-               policy.setActorName(entry.getValue());
-               policy.setWorkflow(getRootWorkflow());
-               ServiceNote service = getEventStormingBoard().getOrCreateFromServices(entry.getValue());
-               policy.setService(service);
-               String triggerTime = map.get("trigger");
-               if (triggerTime != null) {
-                  EventNote trigger = (EventNote) getRootWorkflow().getFromNotes(triggerTime);
-                  policy.setTrigger(trigger);
-                  EventType type = trigger.getType();
-                  service.withHandledEventTypes(type);
-               }
-               lastService = service;
-               lastActor = policy;
+               maps = buildPolicy(fileName, maps, map, entry);
+               continue;
             }
             else if (entry.getKey().equalsIgnoreCase("class")) {
                ClassNote classNote = new ClassNote();
@@ -141,6 +130,16 @@ public class EventModel
             else if (entry.getKey().equalsIgnoreCase("event")) {
                EventNote eventNote = new EventNote();
                fillEventNote(map, eventNote);
+            }
+            else if (entry.getKey().equalsIgnoreCase("externalsystem")) {
+               String value = entry.getValue();
+               ExternalSystemNote externalSystemNote = new ExternalSystemNote();
+               String timeInterval = map.get("events");
+               externalSystemNote.setMap(map);
+               externalSystemNote.setTimeInterval(timeInterval);
+               externalSystemNote.setTime(timeInterval);
+               externalSystemNote.setWorkflow(getRootWorkflow());
+               externalSystemNote.setSystemName(getTypeName(value));
             }
             else if (entry.getKey().equalsIgnoreCase("command")) {
                CommandNote commandNote = new CommandNote();
@@ -181,6 +180,48 @@ public class EventModel
       return getEventStormingBoard();
    }
 
+   private ArrayList<LinkedHashMap<String, String>> buildPolicy(String fileName, ArrayList<LinkedHashMap<String, String>> maps, LinkedHashMap<String, String> map, Map.Entry<String, String> entry)
+   {
+      String oneYaml;
+      Policy policy = new Policy();
+      policy.setActorName(entry.getValue());
+      policy.setWorkflow(getRootWorkflow());
+      ServiceNote service = getEventStormingBoard().getOrCreateFromServices(entry.getValue());
+      policy.setService(service);
+      String triggerTime = map.get("trigger");
+      if (triggerTime != null) {
+         WorkflowNote trigger = getRootWorkflow().getFromNotes(triggerTime);
+         if (trigger instanceof EventNote) {
+            EventNote eventNote = (EventNote) trigger;
+            policy.setTrigger(eventNote);
+            EventType type = eventNote.getType();
+            service.withHandledEventTypes(type);
+         }
+         else {
+            ExternalSystemNote externalSystemNote = (ExternalSystemNote) trigger;
+            policy.setExternalSystem(externalSystemNote);
+
+            // insert imported data events
+            String importedFileName = fileName.substring(0, fileName.lastIndexOf('/'));
+            String exportName = externalSystemNote.getSystemName();
+            importedFileName = String.format("%s/export%s.es.yaml", importedFileName, exportName);
+            try {
+               oneYaml = Files.readString(Path.of(importedFileName));
+            }
+            catch (IOException e) {
+               return null;
+            }
+
+            ArrayList<LinkedHashMap<String, String>> importedMaps = new Yamler2().decodeList(oneYaml);
+            importedMaps.addAll(maps);
+            maps = importedMaps;
+         }
+      }
+      lastService = service;
+      lastActor = policy;
+      return maps;
+   }
+
    private void generateExports(String fileName)
    {
       StringBuilder body = new StringBuilder();
@@ -206,7 +247,7 @@ public class EventModel
 
       int lastIndexOf = fileName.lastIndexOf('/');
       fileName = fileName.substring(0, lastIndexOf);
-      fileName = String.format("%s/export%s.es.yaml", fileName, currentTopic );
+      fileName = String.format("%s/export%s.es.yaml", fileName, currentTopic);
       try {
          Files.writeString(Path.of(fileName), body.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
       }
@@ -396,6 +437,12 @@ public class EventModel
    {
       String[] split = value.split("\\s");
       String eventTime = split[split.length - 1];
+      if (eventTime.indexOf(':') < 0) {
+         // no time given, use auto time and set class name
+         eventTime = getRootWorkflow().addToTime("00:00:01");
+         value = value + " " + eventTime;
+         split = StrUtil.split(value);
+      }
       return eventTime;
    }
 
@@ -409,14 +456,24 @@ public class EventModel
       return eventTypeName;
    }
 
+   public String getTypeName(String value)
+   {
+      String[] split2 = value.split("\\s");
+      String typeName = "";
+      for (int i = 0; i < split2.length; ++i) {
+         typeName += org.fulib.StrUtil.cap(split2[i]);
+      }
+      return typeName;
+   }
+
    public String getVarName(String value)
    {
       String[] split2 = value.split("\\s");
-      String eventTypeName = split2[0];
+      String varName = StrUtil.decap(split2[0]);
       for (int i = 1; i < split2.length; ++i) {
-         eventTypeName += org.fulib.StrUtil.cap(split2[i]);
+         varName += org.fulib.StrUtil.cap(split2[i]);
       }
-      return eventTypeName;
+      return varName;
    }
 
    private void addToStepsOfLastActor(WorkflowNote note)

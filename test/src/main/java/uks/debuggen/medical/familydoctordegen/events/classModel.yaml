@@ -1,0 +1,546 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	diseaseBuilt 	symptomBuilt 	command 	patientRegisteredEvent 	patientBuilt 	consultationEvent 	consultationBuilt 	symptomEvent 	testEvent 	testBuilt 	diagnosisEvent 	treatmentInitiatedEvent 	invoiceSentEvent 	covidVaccinationRequestedEvent 	diagnosisDoneEvent
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/main/java"
+  packageName: 	uks.debuggen.medical.familydoctordegen.events
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/medical/familydoctordegen/events"
+
+- event: 	org.fulib.classmodel.Clazz
+  attributes: 	event_id
+  model: 	c
+  modified: 	false
+  name: 	Event
+  propertyStyle: 	Bean
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	patientRegisteredEvent 	consultationEvent 	symptomEvent 	testEvent 	diagnosisEvent 	treatmentInitiatedEvent 	invoiceSentEvent 	covidVaccinationRequestedEvent 	diagnosisDoneEvent
+
+- dataEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	dataEvent_blockId
+  model: 	c
+  modified: 	false
+  name: 	DataEvent
+  propertyStyle: 	Bean
+  roles: 	dataEvent_sagas 	dataEvent_query
+  subClasses: 	dataGroup 	diseaseBuilt 	symptomBuilt 	patientBuilt 	consultationBuilt 	testBuilt
+  superClass: 	event
+
+- dataGroup: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	DataGroup
+  propertyStyle: 	Bean
+  roles: 	dataGroup_elements
+  superClass: 	dataEvent
+
+- query: 	org.fulib.classmodel.Clazz
+  attributes: 	query_key
+  model: 	c
+  modified: 	false
+  name: 	Query
+  propertyStyle: 	Bean
+  roles: 	query_results
+  superClass: 	event
+
+- serviceSubscribed: 	org.fulib.classmodel.Clazz
+  attributes: 	serviceSubscribed_serviceUrl
+  model: 	c
+  modified: 	false
+  name: 	ServiceSubscribed
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- diseaseBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	diseaseBuilt_name 	diseaseBuilt_symptoms 	diseaseBuilt_counterSymptoms
+  model: 	c
+  modified: 	false
+  name: 	DiseaseBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- symptomBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	symptomBuilt_name 	symptomBuilt_consultations
+  model: 	c
+  modified: 	false
+  name: 	SymptomBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- command: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	Command
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- patientRegisteredEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	patientRegisteredEvent_name 	patientRegisteredEvent_address 	patientRegisteredEvent_birthDate
+  model: 	c
+  modified: 	false
+  name: 	PatientRegisteredEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- patientBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	patientBuilt_name 	patientBuilt_address 	patientBuilt_birthDate
+  model: 	c
+  modified: 	false
+  name: 	PatientBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- consultationEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	consultationEvent_patient 	consultationEvent_date
+  model: 	c
+  modified: 	false
+  name: 	ConsultationEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- consultationBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	consultationBuilt_cid 	consultationBuilt_patient 	consultationBuilt_diagnosis 	consultationBuilt_treatment
+  model: 	c
+  modified: 	false
+  name: 	ConsultationBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- symptomEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	symptomEvent_symptom 	symptomEvent_consultation 	symptomEvent_consultations
+  model: 	c
+  modified: 	false
+  name: 	SymptomEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- testEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	testEvent_test 	testEvent_result 	testEvent_consultation
+  model: 	c
+  modified: 	false
+  name: 	TestEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- testBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	testBuilt_cid 	testBuilt_kind 	testBuilt_result 	testBuilt_consultation
+  model: 	c
+  modified: 	false
+  name: 	TestBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- diagnosisEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	diagnosisEvent_diagnosis 	diagnosisEvent_consultation
+  model: 	c
+  modified: 	false
+  name: 	DiagnosisEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- treatmentInitiatedEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	treatmentInitiatedEvent_treatment 	treatmentInitiatedEvent_consultation
+  model: 	c
+  modified: 	false
+  name: 	TreatmentInitiatedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- invoiceSentEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	InvoiceSentEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- covidVaccinationRequestedEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	CovidVaccinationRequestedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- diagnosisDoneEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	diagnosisDoneEvent_disease
+  model: 	c
+  modified: 	false
+  name: 	DiagnosisDoneEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- event_id: 	org.fulib.classmodel.Attribute
+  clazz: 	event
+  id: 	Event_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- dataEvent_blockId: 	org.fulib.classmodel.Attribute
+  clazz: 	dataEvent
+  id: 	DataEvent_blockId
+  modified: 	false
+  name: 	blockId
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- dataEvent_sagas: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	dataEvent
+  collectionType: 	c1
+  id: 	DataEvent_sagas
+  modified: 	false
+  name: 	sagas
+  other: 	dataGroup_elements
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- dataEvent_query: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	dataEvent
+  id: 	DataEvent_query
+  modified: 	false
+  name: 	query
+  other: 	query_results
+  propertyStyle: 	Bean
+
+- dataGroup_elements: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	dataGroup
+  collectionType: 	c1
+  id: 	DataGroup_elements
+  modified: 	false
+  name: 	elements
+  other: 	dataEvent_sagas
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- query_key: 	org.fulib.classmodel.Attribute
+  clazz: 	query
+  id: 	Query_key
+  modified: 	false
+  name: 	key
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- query_results: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	query
+  collectionType: 	c1
+  id: 	Query_results
+  modified: 	false
+  name: 	results
+  other: 	dataEvent_query
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- serviceSubscribed_serviceUrl: 	org.fulib.classmodel.Attribute
+  clazz: 	serviceSubscribed
+  id: 	ServiceSubscribed_serviceUrl
+  modified: 	false
+  name: 	serviceUrl
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- diseaseBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	diseaseBuilt
+  id: 	DiseaseBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- diseaseBuilt_symptoms: 	org.fulib.classmodel.Attribute
+  clazz: 	diseaseBuilt
+  id: 	DiseaseBuilt_symptoms
+  modified: 	false
+  name: 	symptoms
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- diseaseBuilt_counterSymptoms: 	org.fulib.classmodel.Attribute
+  clazz: 	diseaseBuilt
+  id: 	DiseaseBuilt_counterSymptoms
+  modified: 	false
+  name: 	counterSymptoms
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- symptomBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	symptomBuilt
+  id: 	SymptomBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- symptomBuilt_consultations: 	org.fulib.classmodel.Attribute
+  clazz: 	symptomBuilt
+  id: 	SymptomBuilt_consultations
+  modified: 	false
+  name: 	consultations
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patientRegisteredEvent_name: 	org.fulib.classmodel.Attribute
+  clazz: 	patientRegisteredEvent
+  id: 	PatientRegisteredEvent_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patientRegisteredEvent_address: 	org.fulib.classmodel.Attribute
+  clazz: 	patientRegisteredEvent
+  id: 	PatientRegisteredEvent_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patientRegisteredEvent_birthDate: 	org.fulib.classmodel.Attribute
+  clazz: 	patientRegisteredEvent
+  id: 	PatientRegisteredEvent_birthDate
+  modified: 	false
+  name: 	birthDate
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patientBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	patientBuilt
+  id: 	PatientBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patientBuilt_address: 	org.fulib.classmodel.Attribute
+  clazz: 	patientBuilt
+  id: 	PatientBuilt_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- patientBuilt_birthDate: 	org.fulib.classmodel.Attribute
+  clazz: 	patientBuilt
+  id: 	PatientBuilt_birthDate
+  modified: 	false
+  name: 	birthDate
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultationEvent_patient: 	org.fulib.classmodel.Attribute
+  clazz: 	consultationEvent
+  id: 	ConsultationEvent_patient
+  modified: 	false
+  name: 	patient
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultationEvent_date: 	org.fulib.classmodel.Attribute
+  clazz: 	consultationEvent
+  id: 	ConsultationEvent_date
+  modified: 	false
+  name: 	date
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultationBuilt_cid: 	org.fulib.classmodel.Attribute
+  clazz: 	consultationBuilt
+  id: 	ConsultationBuilt_cid
+  modified: 	false
+  name: 	cid
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultationBuilt_patient: 	org.fulib.classmodel.Attribute
+  clazz: 	consultationBuilt
+  id: 	ConsultationBuilt_patient
+  modified: 	false
+  name: 	patient
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultationBuilt_diagnosis: 	org.fulib.classmodel.Attribute
+  clazz: 	consultationBuilt
+  id: 	ConsultationBuilt_diagnosis
+  modified: 	false
+  name: 	diagnosis
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultationBuilt_treatment: 	org.fulib.classmodel.Attribute
+  clazz: 	consultationBuilt
+  id: 	ConsultationBuilt_treatment
+  modified: 	false
+  name: 	treatment
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- symptomEvent_symptom: 	org.fulib.classmodel.Attribute
+  clazz: 	symptomEvent
+  id: 	SymptomEvent_symptom
+  modified: 	false
+  name: 	symptom
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- symptomEvent_consultation: 	org.fulib.classmodel.Attribute
+  clazz: 	symptomEvent
+  id: 	SymptomEvent_consultation
+  modified: 	false
+  name: 	consultation
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- symptomEvent_consultations: 	org.fulib.classmodel.Attribute
+  clazz: 	symptomEvent
+  id: 	SymptomEvent_consultations
+  modified: 	false
+  name: 	consultations
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- testEvent_test: 	org.fulib.classmodel.Attribute
+  clazz: 	testEvent
+  id: 	TestEvent_test
+  modified: 	false
+  name: 	test
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- testEvent_result: 	org.fulib.classmodel.Attribute
+  clazz: 	testEvent
+  id: 	TestEvent_result
+  modified: 	false
+  name: 	result
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- testEvent_consultation: 	org.fulib.classmodel.Attribute
+  clazz: 	testEvent
+  id: 	TestEvent_consultation
+  modified: 	false
+  name: 	consultation
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- testBuilt_cid: 	org.fulib.classmodel.Attribute
+  clazz: 	testBuilt
+  id: 	TestBuilt_cid
+  modified: 	false
+  name: 	cid
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- testBuilt_kind: 	org.fulib.classmodel.Attribute
+  clazz: 	testBuilt
+  id: 	TestBuilt_kind
+  modified: 	false
+  name: 	kind
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- testBuilt_result: 	org.fulib.classmodel.Attribute
+  clazz: 	testBuilt
+  id: 	TestBuilt_result
+  modified: 	false
+  name: 	result
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- testBuilt_consultation: 	org.fulib.classmodel.Attribute
+  clazz: 	testBuilt
+  id: 	TestBuilt_consultation
+  modified: 	false
+  name: 	consultation
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- diagnosisEvent_diagnosis: 	org.fulib.classmodel.Attribute
+  clazz: 	diagnosisEvent
+  id: 	DiagnosisEvent_diagnosis
+  modified: 	false
+  name: 	diagnosis
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- diagnosisEvent_consultation: 	org.fulib.classmodel.Attribute
+  clazz: 	diagnosisEvent
+  id: 	DiagnosisEvent_consultation
+  modified: 	false
+  name: 	consultation
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- treatmentInitiatedEvent_treatment: 	org.fulib.classmodel.Attribute
+  clazz: 	treatmentInitiatedEvent
+  id: 	TreatmentInitiatedEvent_treatment
+  modified: 	false
+  name: 	treatment
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- treatmentInitiatedEvent_consultation: 	org.fulib.classmodel.Attribute
+  clazz: 	treatmentInitiatedEvent
+  id: 	TreatmentInitiatedEvent_consultation
+  modified: 	false
+  name: 	consultation
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- diagnosisDoneEvent_disease: 	org.fulib.classmodel.Attribute
+  clazz: 	diagnosisDoneEvent
+  id: 	DiagnosisDoneEvent_disease
+  modified: 	false
+  name: 	disease
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+

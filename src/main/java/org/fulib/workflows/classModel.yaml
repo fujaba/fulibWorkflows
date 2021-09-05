@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	policy 	interaction 	serviceNote 	eventNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	brokerTopicNote 	subprocessNote 	note 	dataEvent 	event
+  classes: 	policy 	interaction 	serviceNote 	eventNote 	externalSystemNote 	workflow 	userInteraction 	userNote 	workflowNote 	dataNote 	dataType 	classNote 	pageLine 	pageNote 	queryNote 	commandNote 	eventType 	eventStormingBoard 	brokerTopicNote 	subprocessNote 	note 	dataEvent 	event
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -12,7 +12,7 @@
   modified: 	false
   name: 	Policy
   propertyStyle: 	Bean
-  roles: 	policy_service 	policy_trigger 	policy_workflow
+  roles: 	policy_service 	policy_trigger 	policy_externalSystem 	policy_workflow
   superClass: 	interaction
 
 - interaction: 	org.fulib.classmodel.Clazz
@@ -41,6 +41,15 @@
   propertyStyle: 	Bean
   roles: 	eventNote_policies 	eventNote_raisingPage 	eventNote_type
   subClasses: 	commandNote
+  superClass: 	workflowNote
+
+- externalSystemNote: 	org.fulib.classmodel.Clazz
+  attributes: 	externalSystemNote_systemName 	externalSystemNote_timeInterval
+  model: 	c
+  modified: 	false
+  name: 	ExternalSystemNote
+  propertyStyle: 	Bean
+  roles: 	externalSystemNote_policies
   superClass: 	workflowNote
 
 - workflow: 	org.fulib.classmodel.Clazz
@@ -76,7 +85,7 @@
   name: 	WorkflowNote
   propertyStyle: 	Bean
   roles: 	workflowNote_interaction 	workflowNote_workflow
-  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	eventNote 	brokerTopicNote 	subprocessNote
+  subClasses: 	dataNote 	classNote 	pageNote 	queryNote 	externalSystemNote 	eventNote 	brokerTopicNote 	subprocessNote
   superClass: 	note
 
 - dataNote: 	org.fulib.classmodel.Clazz
@@ -217,6 +226,16 @@
   modified: 	false
   name: 	trigger
   other: 	eventNote_policies
+  propertyStyle: 	Bean
+
+- policy_externalSystem: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	policy
+  id: 	Policy_externalSystem
+  modified: 	false
+  name: 	externalSystem
+  other: 	externalSystemNote_policies
   propertyStyle: 	Bean
 
 - policy_workflow: 	org.fulib.classmodel.AssocRole
@@ -378,6 +397,36 @@
   name: 	type
   other: 	eventType_events
   propertyStyle: 	Bean
+
+- externalSystemNote_systemName: 	org.fulib.classmodel.Attribute
+  clazz: 	externalSystemNote
+  id: 	ExternalSystemNote_systemName
+  modified: 	false
+  name: 	systemName
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- externalSystemNote_timeInterval: 	org.fulib.classmodel.Attribute
+  clazz: 	externalSystemNote
+  id: 	ExternalSystemNote_timeInterval
+  modified: 	false
+  name: 	timeInterval
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- externalSystemNote_policies: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	externalSystemNote
+  collectionType: 	c1
+  id: 	ExternalSystemNote_policies
+  modified: 	false
+  name: 	policies
+  other: 	policy_externalSystem
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
 
 - workflow_name: 	org.fulib.classmodel.Attribute
   clazz: 	workflow

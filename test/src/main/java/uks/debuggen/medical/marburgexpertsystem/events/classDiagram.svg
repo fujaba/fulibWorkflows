@@ -1,0 +1,122 @@
+<svg width="637px" height="260px"
+ viewBox="0.00 0.00 637.00 260.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 256)">
+<title>uks.debuggen.medical.marburgexpertsystem.events</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-256 633,-256 633,4 -4,4"/>
+<!-- Command -->
+<g id="node1" class="node"><title>Command</title>
+<polygon fill="none" stroke="black" points="517.5,-133 517.5,-154 582.5,-154 582.5,-133 517.5,-133"/>
+<text text-anchor="start" x="520.5" y="-139.8" font-family="Times New Roman,serif" font-size="14.00">Command</text>
+<polygon fill="none" stroke="black" points="517.5,-127 517.5,-133 582.5,-133 582.5,-127 517.5,-127"/>
+</g>
+<!-- Event -->
+<g id="node5" class="node"><title>Event</title>
+<polygon fill="none" stroke="black" points="356.5,-227 356.5,-248 413.5,-248 413.5,-227 356.5,-227"/>
+<text text-anchor="start" x="369" y="-233.8" font-family="Times New Roman,serif" font-size="14.00">Event</text>
+<polygon fill="none" stroke="black" points="356.5,-206 356.5,-227 413.5,-227 413.5,-206 356.5,-206"/>
+<text text-anchor="start" x="359.5" y="-212.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+</g>
+<!-- Command&#45;&gt;Event -->
+<g id="edge3" class="edge"><title>Command&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M515.712,-159.201C490.977,-171.793 457.141,-189.019 430.025,-202.824"/>
+<polygon fill="none" stroke="black" points="428.433,-199.707 421.109,-207.363 431.609,-205.945 428.433,-199.707"/>
+</g>
+<!-- DataEvent -->
+<g id="node2" class="node"><title>DataEvent</title>
+<polygon fill="none" stroke="black" points="200.5,-141 200.5,-162 290.5,-162 290.5,-141 200.5,-141"/>
+<text text-anchor="start" x="216.5" y="-147.8" font-family="Times New Roman,serif" font-size="14.00">DataEvent</text>
+<polygon fill="none" stroke="black" points="200.5,-120 200.5,-141 290.5,-141 290.5,-120 200.5,-120"/>
+<text text-anchor="start" x="203.5" y="-126.8" font-family="Times New Roman,serif" font-size="14.00">blockId :String</text>
+</g>
+<!-- DataGroup -->
+<g id="node3" class="node"><title>DataGroup</title>
+<polygon fill="none" stroke="black" points="211.5,-219 211.5,-240 280.5,-240 280.5,-219 211.5,-219"/>
+<text text-anchor="start" x="214.5" y="-225.8" font-family="Times New Roman,serif" font-size="14.00">DataGroup</text>
+<polygon fill="none" stroke="black" points="211.5,-213 211.5,-219 280.5,-219 280.5,-213 211.5,-213"/>
+</g>
+<!-- DataEvent&#45;&gt;DataGroup -->
+<g id="edge1" class="edge"><title>DataEvent&#45;&gt;DataGroup</title>
+<path fill="none" stroke="black" d="M239.314,-166.296C238.39,-179.96 238.601,-196.684 239.946,-208.952"/>
+<text text-anchor="middle" x="218.946" y="-197.752" font-family="Times New Roman,serif" font-size="14.00">sagas *</text>
+<text text-anchor="middle" x="209.814" y="-170.096" font-family="Times New Roman,serif" font-size="14.00">elements *</text>
+</g>
+<!-- DataEvent&#45;&gt;Event -->
+<g id="edge4" class="edge"><title>DataEvent&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M285.332,-166.071C302.137,-176.227 321.792,-188.104 339.151,-198.595"/>
+<polygon fill="none" stroke="black" points="337.623,-201.761 347.992,-203.938 341.244,-195.77 337.623,-201.761"/>
+</g>
+<!-- DataGroup&#45;&gt;DataEvent -->
+<g id="edge5" class="edge"><title>DataGroup&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M251.054,-208.952C252.084,-199.56 252.448,-187.555 252.148,-176.311"/>
+<polygon fill="none" stroke="black" points="255.644,-176.124 251.686,-166.296 248.651,-176.447 255.644,-176.124"/>
+</g>
+<!-- DiseaseBuilt -->
+<g id="node4" class="node"><title>DiseaseBuilt</title>
+<polygon fill="none" stroke="black" points="8.5,-55 8.5,-76 157.5,-76 157.5,-55 8.5,-55"/>
+<text text-anchor="start" x="48.5" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">DiseaseBuilt</text>
+<polygon fill="none" stroke="black" points="8.5,-4 8.5,-55 157.5,-55 157.5,-4 8.5,-4"/>
+<text text-anchor="start" x="11.5" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="11.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">symptoms :String</text>
+<text text-anchor="start" x="11.5" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">counterSymptoms :String</text>
+</g>
+<!-- DiseaseBuilt&#45;&gt;DataEvent -->
+<g id="edge6" class="edge"><title>DiseaseBuilt&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M146.922,-80.1274C163.74,-90.3424 181.575,-101.174 197.383,-110.776"/>
+<polygon fill="none" stroke="black" points="195.574,-113.772 205.938,-115.972 199.208,-107.789 195.574,-113.772"/>
+</g>
+<!-- LoadDiseasesCommand -->
+<g id="node6" class="node"><title>LoadDiseasesCommand</title>
+<polygon fill="none" stroke="black" points="478.5,-40 478.5,-61 621.5,-61 621.5,-40 478.5,-40"/>
+<text text-anchor="start" x="481.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">LoadDiseasesCommand</text>
+<polygon fill="none" stroke="black" points="478.5,-19 478.5,-40 621.5,-40 621.5,-19 478.5,-19"/>
+<text text-anchor="start" x="512" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">names :String</text>
+</g>
+<!-- LoadDiseasesCommand&#45;&gt;Command -->
+<g id="edge7" class="edge"><title>LoadDiseasesCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M549.5,-65.2181C549.5,-79.5899 549.5,-97.8483 549.5,-112.726"/>
+<polygon fill="none" stroke="black" points="546,-112.858 549.5,-122.858 553,-112.858 546,-112.858"/>
+</g>
+<!-- Query -->
+<g id="node7" class="node"><title>Query</title>
+<polygon fill="none" stroke="black" points="312.5,-40 312.5,-61 378.5,-61 378.5,-40 312.5,-40"/>
+<text text-anchor="start" x="328" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">Query</text>
+<polygon fill="none" stroke="black" points="312.5,-19 312.5,-40 378.5,-40 378.5,-19 312.5,-19"/>
+<text text-anchor="start" x="315.5" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">key :String</text>
+</g>
+<!-- Query&#45;&gt;DataEvent -->
+<g id="edge2" class="edge"><title>Query&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M321.037,-65.2181C305.541,-80.5595 285.571,-100.33 270.057,-115.689"/>
+<text text-anchor="middle" x="246.557" y="-104.489" font-family="Times New Roman,serif" font-size="14.00">results *</text>
+<text text-anchor="middle" x="305.037" y="-69.0181" font-family="Times New Roman,serif" font-size="14.00">query</text>
+</g>
+<!-- Query&#45;&gt;Event -->
+<g id="edge8" class="edge"><title>Query&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M344.138,-65.452C343.386,-91.0129 344.09,-132.052 353.5,-166 356.03,-175.127 360.05,-184.469 364.368,-192.98"/>
+<polygon fill="none" stroke="black" points="361.307,-194.678 369.114,-201.841 367.478,-191.373 361.307,-194.678"/>
+</g>
+<!-- ServiceSubscribed -->
+<g id="node8" class="node"><title>ServiceSubscribed</title>
+<polygon fill="none" stroke="black" points="370.5,-141 370.5,-162 482.5,-162 482.5,-141 370.5,-141"/>
+<text text-anchor="start" x="373.5" y="-147.8" font-family="Times New Roman,serif" font-size="14.00">ServiceSubscribed</text>
+<polygon fill="none" stroke="black" points="370.5,-120 370.5,-141 482.5,-141 482.5,-120 370.5,-120"/>
+<text text-anchor="start" x="378" y="-126.8" font-family="Times New Roman,serif" font-size="14.00">serviceUrl :String</text>
+</g>
+<!-- ServiceSubscribed&#45;&gt;Event -->
+<g id="edge9" class="edge"><title>ServiceSubscribed&#45;&gt;Event</title>
+<path fill="none" stroke="black" d="M414.352,-166.296C410.216,-174.568 405.52,-183.96 401.097,-192.807"/>
+<polygon fill="none" stroke="black" points="397.963,-191.249 396.621,-201.758 404.224,-194.379 397.963,-191.249"/>
+</g>
+<!-- SymptomBuilt -->
+<g id="node9" class="node"><title>SymptomBuilt</title>
+<polygon fill="none" stroke="black" points="191.5,-40 191.5,-61 278.5,-61 278.5,-40 191.5,-40"/>
+<text text-anchor="start" x="194.5" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">SymptomBuilt</text>
+<polygon fill="none" stroke="black" points="191.5,-19 191.5,-40 278.5,-40 278.5,-19 191.5,-19"/>
+<text text-anchor="start" x="200" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- SymptomBuilt&#45;&gt;DataEvent -->
+<g id="edge10" class="edge"><title>SymptomBuilt&#45;&gt;DataEvent</title>
+<path fill="none" stroke="black" d="M237.191,-65.2181C238.536,-77.3234 240.187,-92.1861 241.663,-105.463"/>
+<polygon fill="none" stroke="black" points="238.216,-106.136 242.799,-115.689 245.173,-105.363 238.216,-106.136"/>
+</g>
+</g>
+</svg>

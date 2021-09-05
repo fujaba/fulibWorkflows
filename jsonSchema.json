@@ -33,7 +33,7 @@
       "additionalProperties": false
     },
     "brokerItem": {
-      "description": "A stream of events provided by a broker under some topic",
+      "description": "Define a broker address and topic as target for subsequent events",
       "type": "object",
       "properties": {
         "brokertopic": {
@@ -42,6 +42,22 @@
       },
       "required": [
         "brokertopic"
+      ],
+      "additionalProperties": false
+    },
+    "externalSystemItem": {
+      "description": "A stream of events provided by a broker under some topic",
+      "type": "object",
+      "properties": {
+        "externalsystem": {
+          "type": "string"
+        },
+        "events": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "externalsystem"
       ],
       "additionalProperties": false
     },
@@ -289,6 +305,9 @@
       },
       {
         "$ref": "#/$defs/brokerItem"
+      },
+      {
+        "$ref": "#/$defs/externalSystemItem"
       },
       {
         "$ref": "#/$defs/boundedcontext"

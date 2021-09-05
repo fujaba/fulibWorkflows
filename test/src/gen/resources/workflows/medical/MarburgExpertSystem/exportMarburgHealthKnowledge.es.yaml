@@ -23,8 +23,8 @@
 - data: Symptom hoarseness 12:00:06
   name: hoarseness
 
-- data: Symptom mediumFeverd 12:00:07
-  name: medium feverd
+- data: Symptom mediumFever 12:00:07
+  name: medium fever
 
 - data: Symptom chills 12:00:08
   name: chills

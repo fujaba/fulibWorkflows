@@ -286,6 +286,9 @@ public class ShopBuilder
 
    public String getVarName(String value)
    {
+      if (value == null) {
+         return null;
+      }
       String[] split = value.split("\\s+");
       String varName = split[0];
       for (int i = 1; i < split.length; i++) {
