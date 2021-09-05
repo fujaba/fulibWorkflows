@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	diseaseBuilt 	symptomBuilt 	command 	patientRegisteredEvent 	patientBuilt 	consultationEvent 	consultationBuilt 	symptomEvent 	testEvent 	testBuilt 	diagnosisEvent 	treatmentInitiatedEvent 	invoiceSentEvent 	covidVaccinationRequestedEvent 	diagnosisDoneEvent
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	diseaseBuilt 	symptomBuilt 	command 	patientRegisteredEvent 	patientBuilt 	consultationEvent 	consultationBuilt 	symptomEvent 	testEvent 	testBuilt 	diagnosisEvent 	treatmentEvent 	invoiceSentEvent 	covidVaccinationRequestedEvent 	diagnosisDoneEvent 	treatmentInitiatedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	patientRegisteredEvent 	consultationEvent 	symptomEvent 	testEvent 	diagnosisEvent 	treatmentInitiatedEvent 	invoiceSentEvent 	covidVaccinationRequestedEvent 	diagnosisDoneEvent
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	patientRegisteredEvent 	consultationEvent 	symptomEvent 	testEvent 	diagnosisEvent 	treatmentEvent 	invoiceSentEvent 	covidVaccinationRequestedEvent 	diagnosisDoneEvent 	treatmentInitiatedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -137,11 +137,11 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- treatmentInitiatedEvent: 	org.fulib.classmodel.Clazz
-  attributes: 	treatmentInitiatedEvent_treatment 	treatmentInitiatedEvent_consultation
+- treatmentEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	treatmentEvent_treatment 	treatmentEvent_consultation
   model: 	c
   modified: 	false
-  name: 	TreatmentInitiatedEvent
+  name: 	TreatmentEvent
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -164,6 +164,14 @@
   model: 	c
   modified: 	false
   name: 	DiagnosisDoneEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- treatmentInitiatedEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	treatmentInitiatedEvent_treatment
+  model: 	c
+  modified: 	false
+  name: 	TreatmentInitiatedEvent
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -517,18 +525,18 @@
   type: 	String
   typeSignature: 	String
 
-- treatmentInitiatedEvent_treatment: 	org.fulib.classmodel.Attribute
-  clazz: 	treatmentInitiatedEvent
-  id: 	TreatmentInitiatedEvent_treatment
+- treatmentEvent_treatment: 	org.fulib.classmodel.Attribute
+  clazz: 	treatmentEvent
+  id: 	TreatmentEvent_treatment
   modified: 	false
   name: 	treatment
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- treatmentInitiatedEvent_consultation: 	org.fulib.classmodel.Attribute
-  clazz: 	treatmentInitiatedEvent
-  id: 	TreatmentInitiatedEvent_consultation
+- treatmentEvent_consultation: 	org.fulib.classmodel.Attribute
+  clazz: 	treatmentEvent
+  id: 	TreatmentEvent_consultation
   modified: 	false
   name: 	consultation
   propertyStyle: 	Bean
@@ -540,6 +548,15 @@
   id: 	DiagnosisDoneEvent_disease
   modified: 	false
   name: 	disease
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- treatmentInitiatedEvent_treatment: 	org.fulib.classmodel.Attribute
+  clazz: 	treatmentInitiatedEvent
+  id: 	TreatmentInitiatedEvent_treatment
+  modified: 	false
+  name: 	treatment
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

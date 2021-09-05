@@ -22,6 +22,16 @@ public class Workflow extends Note
    private EventStormingBoard eventStormingBoard;
    public String currentTime = "12:00";
 
+   public String getCurrentTime()
+   {
+      return currentTime;
+   }
+
+   public void setCurrentTime(String currentTime)
+   {
+      this.currentTime = currentTime;
+   }
+
    public String getName()
    {
       return this.name;
@@ -361,6 +371,7 @@ public class Workflow extends Note
    public String addToTime(String delta)
    {
       String[] deltaSplit = delta.split("\\:");
+      String deltaSecs = deltaSplit[2];
       String[] currentSplit = currentTime.split("\\:");
       String hours = addOneTimePart(currentSplit[0], deltaSplit[0]);
       String mins = addOneTimePart(currentSplit[1], deltaSplit[1]);
@@ -368,7 +379,12 @@ public class Workflow extends Note
       if (currentSplit.length >= 3) {
          secs = currentSplit[2];
       }
-      secs = addOneTimePart(secs, deltaSplit[2]);
+      if (deltaSecs.equals("00")) {
+         secs = deltaSecs;
+      }
+      else {
+         secs = addOneTimePart(secs, deltaSplit[2]);
+      }
 
       if (secs.equals("00")) {
          currentTime = String.format("%s:%s", hours, mins);

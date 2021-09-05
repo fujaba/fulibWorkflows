@@ -91,7 +91,7 @@ public class TestFamilyDoctor
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
       open("http://localhost:42001");
-      // check data note 12:00:01
+      // check data note 14:00:01
       pre = $("#data");
       pre.shouldHave(text("- alice:"));
       pre.shouldHave(matchText("name:.*Alice"));
@@ -99,164 +99,164 @@ public class TestFamilyDoctor
       pre.shouldHave(matchText("birthDate:.*1970-01-01"));
 
       // create ConsultationEvent: consultation registered
-      ConsultationEvent e120002 = new ConsultationEvent();
-      e120002.setId("12:00:02");
-      e120002.setPatient("Alice");
-      e120002.setDate("2021-06-02T14:00");
-      publish(e120002);
+      ConsultationEvent e1401 = new ConsultationEvent();
+      e1401.setId("14:01");
+      e1401.setPatient("Alice");
+      e1401.setDate("2021-06-02T14:00");
+      publish(e1401);
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_02:"));
+      pre.shouldHave(text("- 14_01:"));
 
       // check DocMedical
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_02:"));
+      pre.shouldHave(text("- 14_01:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
       open("http://localhost:42001");
-      // check data note 12:00:03
+      // check data note 14:01:01
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
       pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));
       pre.shouldHave(matchText("patient:.*alice"));
 
       // create SymptomEvent: symptom validated
-      SymptomEvent e120004 = new SymptomEvent();
-      e120004.setId("12:00:04");
-      e120004.setSymptom("cough");
-      e120004.setConsultation("Alice#2021-06-02T14:00");
-      publish(e120004);
+      SymptomEvent e1402 = new SymptomEvent();
+      e1402.setId("14:02");
+      e1402.setSymptom("cough");
+      e1402.setConsultation("Alice#2021-06-02T14:00");
+      publish(e1402);
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_04:"));
+      pre.shouldHave(text("- 14_02:"));
 
       // check DocMedical
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_04:"));
+      pre.shouldHave(text("- 14_02:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
       open("http://localhost:42001");
-      // check data note 12:00:05
+      // check data note 14:02:01
       pre = $("#data");
       pre.shouldHave(text("- cough:"));
       pre.shouldHave(matchText("name:.*cough"));
       pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
 
       // create SymptomEvent: symptom validated
-      SymptomEvent e120006 = new SymptomEvent();
-      e120006.setId("12:00:06");
-      e120006.setSymptom("runny nose");
-      e120006.setConsultations("[Alice#2021-06-02T14:00]");
-      publish(e120006);
+      SymptomEvent e1403 = new SymptomEvent();
+      e1403.setId("14:03");
+      e1403.setSymptom("runny nose");
+      e1403.setConsultations("[Alice#2021-06-02T14:00]");
+      publish(e1403);
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_06:"));
+      pre.shouldHave(text("- 14_03:"));
 
       // check DocMedical
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_06:"));
+      pre.shouldHave(text("- 14_03:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
       open("http://localhost:42001");
-      // check data note 12:00:07
+      // check data note 14:03:01
       pre = $("#data");
       pre.shouldHave(text("- runnyNose:"));
       pre.shouldHave(matchText("name:.*\"runny nose\""));
       pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
 
       // create TestEvent: test done
-      TestEvent e120008 = new TestEvent();
-      e120008.setId("12:00:08");
-      e120008.setTest("temperature");
-      e120008.setResult("39.8 Celsius");
-      e120008.setConsultation("[Alice#2021-06-02T14:00]");
-      publish(e120008);
+      TestEvent e1404 = new TestEvent();
+      e1404.setId("14:04");
+      e1404.setTest("temperature");
+      e1404.setResult("39.8 Celsius");
+      e1404.setConsultation("[Alice#2021-06-02T14:00]");
+      publish(e1404);
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_08:"));
+      pre.shouldHave(text("- 14_04:"));
 
       // check DocMedical
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_08:"));
+      pre.shouldHave(text("- 14_04:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
       open("http://localhost:42001");
-      // check data note 12:00:09
+      // check data note 14:04:01
       pre = $("#data");
       pre.shouldHave(text("- alice_t001_2021_06_02T14_00:"));
       pre.shouldHave(matchText("cid:.*Alice#t001#2021-06-02T14:00"));
       pre.shouldHave(matchText("kind:.*temperature"));
       pre.shouldHave(matchText("result:.*\"39.8 Celsius\""));
       pre.shouldHave(matchText("consultation:.*alice_2021_06_02T14_00"));
-      // check data note 12:00:10
+      // check data note 14:04:02
       pre = $("#data");
       pre.shouldHave(text("- fever:"));
       pre.shouldHave(matchText("name:.*fever"));
       pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
 
       // create DiagnosisEvent: diagnosis done
-      DiagnosisEvent e120011 = new DiagnosisEvent();
-      e120011.setId("12:00:11");
-      e120011.setDiagnosis("common cold");
-      e120011.setConsultation("Alice#2021-06-02T14:00");
-      publish(e120011);
+      DiagnosisEvent e1405 = new DiagnosisEvent();
+      e1405.setId("14:05");
+      e1405.setDiagnosis("common cold");
+      e1405.setConsultation("Alice#2021-06-02T14:00");
+      publish(e1405);
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_11:"));
+      pre.shouldHave(text("- 14_05:"));
 
       // check DocMedical
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 12_00_11:"));
+      pre.shouldHave(text("- 14_05:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
       open("http://localhost:42001");
-      // check data note 12:00:12
+      // check data note 14:05:01
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
       pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));
       pre.shouldHave(matchText("diagnosis:.*commonCold"));
 
-      // create TreatmentInitiatedEvent: treatment initiated 14:05:01
-      TreatmentInitiatedEvent e140501 = new TreatmentInitiatedEvent();
-      e140501.setId("14:05:01");
-      e140501.setTreatment("ibuprofen 400 1-1-1");
-      e140501.setConsultation("Alice#2021-06-02T14:00");
-      publish(e140501);
+      // create TreatmentEvent: treatment initiated
+      TreatmentEvent e1406 = new TreatmentEvent();
+      e1406.setId("14:06");
+      e1406.setTreatment("ibuprofen 400 1-1-1");
+      e1406.setConsultation("Alice#2021-06-02T14:00");
+      publish(e1406);
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 14_05_01:"));
+      pre.shouldHave(text("- 14_06:"));
 
       // check DocMedical
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 14_05_01:"));
+      pre.shouldHave(text("- 14_06:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
       open("http://localhost:42001");
-      // check data note 12:00:13
+      // check data note 14:06:01
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
       pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));

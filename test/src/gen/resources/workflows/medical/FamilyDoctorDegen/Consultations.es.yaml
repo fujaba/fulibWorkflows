@@ -81,7 +81,7 @@
   diagnosis.back: [consultations]
 
 - action: Doc Degen
-- event: treatment initiated 14:05:01
+- event: treatment initiated
   treatment: ibuprofen 400 1-1-1
   consultation: Alice#2021-06-02T14:00
 

@@ -398,7 +398,7 @@ public class EventModel
                }
             }
             String eventDescription = getEventId(eventMap);
-            String eventTime = getEventTime(eventDescription);
+            String eventTime = getEventTime(eventDescription, "00:00:01");
             String eventTypeName = getEventTypeName(eventDescription) + "Command";
             commandNote.setTime(eventTime);
             commandNote.setEventTypeName(eventTypeName);
@@ -418,7 +418,7 @@ public class EventModel
    private void fillEventNote(LinkedHashMap<String, String> map, EventNote eventNote)
    {
       String value = getEventId(map); // example value: product stored 12:00
-      String eventTime = getEventTime(value);
+      String eventTime = getEventTime(value, "00:01:00");
       eventNote.setTime(eventTime);
       String suffix = eventNote instanceof CommandNote ? "Command" : "Event";
       String eventTypeName = getEventTypeName(value) + suffix;
@@ -433,15 +433,18 @@ public class EventModel
       addToStepsOfLastActor(eventNote);
    }
 
-   private String getEventTime(String value)
+   private String getEventTime(String value, String delta)
    {
       String[] split = value.split("\\s");
       String eventTime = split[split.length - 1];
       if (eventTime.indexOf(':') < 0) {
          // no time given, use auto time and set class name
-         eventTime = getRootWorkflow().addToTime("00:00:01");
+         eventTime = getRootWorkflow().addToTime(delta);
          value = value + " " + eventTime;
          split = StrUtil.split(value);
+      }
+      else {
+         getRootWorkflow().setCurrentTime(eventTime);
       }
       return eventTime;
    }

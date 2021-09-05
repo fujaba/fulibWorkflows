@@ -1,17 +1,19 @@
 package uks.debuggen.medical.familydoctordegen.events;
 import java.util.Objects;
 
-public class TreatmentInitiatedEvent extends Event
+public class TreatmentEvent extends Event
 {
    public static final String PROPERTY_TREATMENT = "treatment";
+   public static final String PROPERTY_CONSULTATION = "consultation";
    private String treatment;
+   private String consultation;
 
    public String getTreatment()
    {
       return this.treatment;
    }
 
-   public TreatmentInitiatedEvent setTreatment(String value)
+   public TreatmentEvent setTreatment(String value)
    {
       if (Objects.equals(value, this.treatment))
       {
@@ -24,11 +26,30 @@ public class TreatmentInitiatedEvent extends Event
       return this;
    }
 
+   public String getConsultation()
+   {
+      return this.consultation;
+   }
+
+   public TreatmentEvent setConsultation(String value)
+   {
+      if (Objects.equals(value, this.consultation))
+      {
+         return this;
+      }
+
+      final String oldValue = this.consultation;
+      this.consultation = value;
+      this.firePropertyChange(PROPERTY_CONSULTATION, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getTreatment());
+      result.append(' ').append(this.getConsultation());
       return result.toString();
    }
 }

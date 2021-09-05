@@ -119,7 +119,7 @@ public class DocMedicalBusinessLogic
    {
       if (event.getId().equals("14:00")) {
          PatientBuilt aliceEvent = new PatientBuilt();
-         aliceEvent.setId("12:00:01");
+         aliceEvent.setId("14:00:01");
          aliceEvent.setBlockId("alice");
          aliceEvent.setName("Alice");
          aliceEvent.setAddress("Wonderland 1");
@@ -143,7 +143,7 @@ public class DocMedicalBusinessLogic
          handlerMap.put(SymptomEvent.class, this::handleSymptomEvent);
          handlerMap.put(TestEvent.class, this::handleTestEvent);
          handlerMap.put(DiagnosisEvent.class, this::handleDiagnosisEvent);
-         handlerMap.put(TreatmentInitiatedEvent.class, this::handleTreatmentInitiatedEvent);
+         handlerMap.put(TreatmentEvent.class, this::handleTreatmentEvent);
       }
    }
 
@@ -192,9 +192,9 @@ public class DocMedicalBusinessLogic
 
    private void handleDemoConsultationEvent(ConsultationEvent event)
    {
-      if (event.getId().equals("12:00:02")) {
+      if (event.getId().equals("14:01")) {
          ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-         alice20210602T1400Event.setId("12:00:03");
+         alice20210602T1400Event.setId("14:01:01");
          alice20210602T1400Event.setBlockId("alice#2021-06-02T14:00");
          alice20210602T1400Event.setCid("Alice#2021-06-02T14:00");
          alice20210602T1400Event.setPatient("Alice");
@@ -213,18 +213,18 @@ public class DocMedicalBusinessLogic
 
    private void handleDemoSymptomEvent(SymptomEvent event)
    {
-      if (event.getId().equals("12:00:04")) {
+      if (event.getId().equals("14:02")) {
          SymptomBuilt coughEvent = new SymptomBuilt();
-         coughEvent.setId("12:00:05");
+         coughEvent.setId("14:02:01");
          coughEvent.setBlockId("cough");
          coughEvent.setName("cough");
          coughEvent.setConsultations("[Alice#2021-06-02T14:00]");
          service.apply(coughEvent);
 
       }
-      if (event.getId().equals("12:00:06")) {
+      if (event.getId().equals("14:03")) {
          SymptomBuilt runnyNoseEvent = new SymptomBuilt();
-         runnyNoseEvent.setId("12:00:07");
+         runnyNoseEvent.setId("14:03:01");
          runnyNoseEvent.setBlockId("runnyNose");
          runnyNoseEvent.setName("runny nose");
          runnyNoseEvent.setConsultations("[Alice#2021-06-02T14:00]");
@@ -243,9 +243,9 @@ public class DocMedicalBusinessLogic
 
    private void handleDemoTestEvent(TestEvent event)
    {
-      if (event.getId().equals("12:00:08")) {
+      if (event.getId().equals("14:04")) {
          TestBuilt alicet00120210602T1400Event = new TestBuilt();
-         alicet00120210602T1400Event.setId("12:00:09");
+         alicet00120210602T1400Event.setId("14:04:01");
          alicet00120210602T1400Event.setBlockId("alice#t001#2021-06-02T14:00");
          alicet00120210602T1400Event.setCid("Alice#t001#2021-06-02T14:00");
          alicet00120210602T1400Event.setKind("temperature");
@@ -254,7 +254,7 @@ public class DocMedicalBusinessLogic
          service.apply(alicet00120210602T1400Event);
 
          SymptomBuilt feverEvent = new SymptomBuilt();
-         feverEvent.setId("12:00:10");
+         feverEvent.setId("14:04:02");
          feverEvent.setBlockId("fever");
          feverEvent.setName("fever");
          feverEvent.setConsultations("[Alice#2021-06-02T14:00]");
@@ -273,9 +273,9 @@ public class DocMedicalBusinessLogic
 
    private void handleDemoDiagnosisEvent(DiagnosisEvent event)
    {
-      if (event.getId().equals("12:00:11")) {
+      if (event.getId().equals("14:05")) {
          ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-         alice20210602T1400Event.setId("12:00:12");
+         alice20210602T1400Event.setId("14:05:01");
          alice20210602T1400Event.setBlockId("alice#2021-06-02T14:00");
          alice20210602T1400Event.setCid("Alice#2021-06-02T14:00");
          alice20210602T1400Event.setDiagnosis("common cold");
@@ -284,19 +284,19 @@ public class DocMedicalBusinessLogic
       }
    }
 
-   private void handleTreatmentInitiatedEvent(Event e)
+   private void handleTreatmentEvent(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
       // fulib
-      TreatmentInitiatedEvent event = (TreatmentInitiatedEvent) e;
-      handleDemoTreatmentInitiatedEvent(event);
+      TreatmentEvent event = (TreatmentEvent) e;
+      handleDemoTreatmentEvent(event);
    }
 
-   private void handleDemoTreatmentInitiatedEvent(TreatmentInitiatedEvent event)
+   private void handleDemoTreatmentEvent(TreatmentEvent event)
    {
-      if (event.getId().equals("14:05:01")) {
+      if (event.getId().equals("14:06")) {
          ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-         alice20210602T1400Event.setId("12:00:13");
+         alice20210602T1400Event.setId("14:06:01");
          alice20210602T1400Event.setBlockId("alice#2021-06-02T14:00");
          alice20210602T1400Event.setCid("Alice#2021-06-02T14:00");
          alice20210602T1400Event.setTreatment("ibuprofen 400 1-1-1");

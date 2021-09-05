@@ -130,7 +130,7 @@ public class HtmlGenerator3
             noteContent = lines.toString();
          }
          else {
-            noteContent = eventNote(map);
+            noteContent = eventNote(note, map);
          }
 
          if (noteType.equals("placeholder") && !previousActor.equals(targetActor)) {
@@ -227,18 +227,22 @@ public class HtmlGenerator3
       return noteContent;
    }
 
-   private String eventNote(Map<String, String> map)
+   private String eventNote(WorkflowNote note, Map<String, String> map)
    {
       StringBuilder attrs = new StringBuilder();
       for (Map.Entry<String, String> attr : map.entrySet()) {
          String key = attr.getKey();
+         String value = attr.getValue();
          if (key.equals("event")) {
             key = "";
+            if (! value.endsWith(note.getTime())) {
+               value = value + " " + note.getTime();
+            }
          }
          else {
             key += ":";
          }
-         String value = attr.getValue();
+
          String line = String.format("<div>%s %s</div>\n", key, value);
          attrs.append(line);
       }
