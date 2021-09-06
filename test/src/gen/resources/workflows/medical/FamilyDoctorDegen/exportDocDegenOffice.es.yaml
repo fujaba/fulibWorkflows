@@ -1,4 +1,4 @@
-- data: Disease commonCold 12:00:01
+- data: Disease common_cold 12:00:01
   name: common cold
   symptoms: [runny nose, cough, hoarseness, medium fever]
   symptoms.back: [indicates]
@@ -17,33 +17,33 @@
 - data: Symptom cough 12:00:04
   name: cough
 
-- data: Symptom runnyNose 12:00:05
+- data: Symptom runny_nose 12:00:05
   name: runny nose
 
 - data: Symptom hoarseness 12:00:06
   name: hoarseness
 
-- data: Symptom mediumFeverd 12:00:07
-  name: medium feverd
+- data: Symptom medium_fever 12:00:07
+  name: medium fever
 
 - data: Symptom chills 12:00:08
   name: chills
 
-- data: Symptom jointPain 12:00:09
+- data: Symptom joint_pain 12:00:09
   name: joint pain
 
 - data: Symptom headache 12:00:10
   name: headache
 
-- data: Symptom lungNoises 12:00:11
+- data: Symptom lung_noises 12:00:11
   name: lung noises
 
-- data: Patient alice 14:00:01
+- data: Patient Alice 14:00:01
   name: Alice
   address: Wonderland 1
   birthDate: 1970-01-01
 
-- data: Consultation alice#2021-06-02T14:00 14:01:01
+- data: Consultation Alice_2021_06_02T14_00 14:01:01
   cid: Alice#2021-06-02T14:00
   patient: Alice
   patient.back: [consultations]
@@ -53,11 +53,11 @@
   consultations: [Alice#2021-06-02T14:00]
   consultations.back: [symptoms]
 
-- data: Symptom runnyNose 14:03:01
+- data: Symptom runny_nose 14:03:01
   name: runny nose
   consultations: [Alice#2021-06-02T14:00]
 
-- data: Test alice#t001#2021-06-02T14:00 14:04:01
+- data: Test Alice_t001_2021_06_02T14_00 14:04:01
   cid: Alice#t001#2021-06-02T14:00
   kind: temperature
   result: 39.8 Celsius
@@ -68,12 +68,12 @@
   name: fever
   consultations: [Alice#2021-06-02T14:00]
 
-- data: Consultation alice#2021-06-02T14:00 14:05:01
+- data: Consultation Alice_2021_06_02T14_00 14:05:01
   cid: Alice#2021-06-02T14:00
   diagnosis: common cold
   diagnosis.back: [consultations]
 
-- data: Consultation alice#2021-06-02T14:00 14:06:01
+- data: Consultation Alice_2021_06_02T14_00 14:06:01
   cid: Alice#2021-06-02T14:00
   treatment: ibuprofen 400 1-1-1
 

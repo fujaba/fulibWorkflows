@@ -284,16 +284,11 @@ public class ShopBuilder
       group.put(elementId, dataEvent);
    }
 
-   public String getVarName(String value)
+   public String getObjectId(String value)
    {
       if (value == null) {
          return null;
       }
-      String[] split = value.split("\\s+");
-      String varName = split[0];
-      for (int i = 1; i < split.length; i++) {
-         varName += org.fulib.StrUtil.cap(split[i]);
-      }
-      return varName;
+      return value.replaceAll("\\W+", "_");
    }
 }

@@ -418,9 +418,9 @@ public class WorkflowGenerator
 
       modelManager.haveMethod(builderClass, declaration, body.toString());
 
-      declaration = "public String getVarName(String value)";
+      declaration = "public String getObjectId(String value)";
       body.setLength(0);
-      st = group.getInstanceOf("builderGetVarName");
+      st = group.getInstanceOf("builderGetObjectId");
       body.append(st.render());
       modelManager.haveMethod(builderClass, declaration, body.toString());
 
@@ -524,12 +524,12 @@ public class WorkflowGenerator
             AssocRole other = role.getOther();
             Clazz otherClazz = other.getClazz();
             if (role.getCardinality() <= 1) {
-               body.append(String.format("object.set%s(model.getOrCreate%s(getVarName(event.get%1$s())));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append(String.format("object.set%s(model.getOrCreate%s(getObjectId(event.get%1$s())));\n", StrUtil.cap(attrName), otherClazz.getName()));
             }
             else {
                body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\",\\\\s+\")) {\n", StrUtil.cap(attrName)));
                body.append("   if (name.equals(\"\")) continue;\n");
-               body.append(String.format("   object.with%s(model.getOrCreate%s(getVarName(name)));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append(String.format("   object.with%s(model.getOrCreate%s(getObjectId(name)));\n", StrUtil.cap(attrName), otherClazz.getName()));
                body.append("}\n");
             }
          }
@@ -694,7 +694,7 @@ public class WorkflowGenerator
             // its an assoc
             int srcSize = value.startsWith("[") ? 42 : 1;
             value = StrUtil.stripBrackets(value).split(",\\s+")[0];
-            value = eventModel.getVarName(value);
+            value = eventModel.getObjectId(value);
             // find other class
             String otherClassName = serviceNote.getObjectMap().get(value);
             Clazz otherClazz = modelManager.haveClass(otherClassName);
@@ -1012,9 +1012,11 @@ public class WorkflowGenerator
                      "for (DataEvent dataEvent : %s.getBuilder().getEventStore().values()) {\n" +
                      "   %1$s.getBuilder().load(dataEvent.getBlockId());\n" +
                      "}\n" +
-                     "modelMap = %1$s.getBuilder().getModel().getModelMap();\n",
-               StrUtil.decap(service.getName()));
+                     "modelMap = %1$s.getBuilder().getModel().getModelMap();\n" +
+                     "org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/%1$s%s.svg\", modelMap.values());\n\n",
+               StrUtil.decap(service.getName()), note.getTime().replaceAll("\\W+", "_"));
          check.append(loadDataEventsCode);
+         check.append("");
          check.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
          for (WorkflowNote step : policy.getSteps()) {
             if (step instanceof DataNote) {
@@ -1050,12 +1052,12 @@ public class WorkflowGenerator
                         String[] split = value.split(",\\s+");
                         value = "";
                         for (String s : split) {
-                           value += StrUtil.decap(s.replaceAll("\\W+", "_")) + ".*";
+                           value += StrUtil.decap(eventModel.getObjectId(s));
                         }
                         value = value.strip();
                      }
                      else {
-                        value = StrUtil.decap(eventModel.getVarName(value).replaceAll("\\W+", "_"));
+                        value = StrUtil.decap(eventModel.getObjectId(value));
                      }
                   }
                   check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",

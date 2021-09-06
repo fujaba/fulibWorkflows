@@ -120,7 +120,7 @@ public class DocMedicalBusinessLogic
       if (event.getId().equals("14:00")) {
          PatientBuilt aliceEvent = new PatientBuilt();
          aliceEvent.setId("14:00:01");
-         aliceEvent.setBlockId("alice");
+         aliceEvent.setBlockId("Alice");
          aliceEvent.setName("Alice");
          aliceEvent.setAddress("Wonderland 1");
          aliceEvent.setBirthDate("1970-01-01");
@@ -193,12 +193,12 @@ public class DocMedicalBusinessLogic
    private void handleDemoConsultationEvent(ConsultationEvent event)
    {
       if (event.getId().equals("14:01")) {
-         ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-         alice20210602T1400Event.setId("14:01:01");
-         alice20210602T1400Event.setBlockId("alice#2021-06-02T14:00");
-         alice20210602T1400Event.setCid("Alice#2021-06-02T14:00");
-         alice20210602T1400Event.setPatient("Alice");
-         service.apply(alice20210602T1400Event);
+         ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
+         alice_2021_06_02T14_00Event.setId("14:01:01");
+         alice_2021_06_02T14_00Event.setBlockId("Alice_2021_06_02T14_00");
+         alice_2021_06_02T14_00Event.setCid("Alice#2021-06-02T14:00");
+         alice_2021_06_02T14_00Event.setPatient("Alice");
+         service.apply(alice_2021_06_02T14_00Event);
 
       }
    }
@@ -223,12 +223,12 @@ public class DocMedicalBusinessLogic
 
       }
       if (event.getId().equals("14:03")) {
-         SymptomBuilt runnyNoseEvent = new SymptomBuilt();
-         runnyNoseEvent.setId("14:03:01");
-         runnyNoseEvent.setBlockId("runnyNose");
-         runnyNoseEvent.setName("runny nose");
-         runnyNoseEvent.setConsultations("[Alice#2021-06-02T14:00]");
-         service.apply(runnyNoseEvent);
+         SymptomBuilt runny_noseEvent = new SymptomBuilt();
+         runny_noseEvent.setId("14:03:01");
+         runny_noseEvent.setBlockId("runny_nose");
+         runny_noseEvent.setName("runny nose");
+         runny_noseEvent.setConsultations("[Alice#2021-06-02T14:00]");
+         service.apply(runny_noseEvent);
 
       }
    }
@@ -244,14 +244,14 @@ public class DocMedicalBusinessLogic
    private void handleDemoTestEvent(TestEvent event)
    {
       if (event.getId().equals("14:04")) {
-         TestBuilt alicet00120210602T1400Event = new TestBuilt();
-         alicet00120210602T1400Event.setId("14:04:01");
-         alicet00120210602T1400Event.setBlockId("alice#t001#2021-06-02T14:00");
-         alicet00120210602T1400Event.setCid("Alice#t001#2021-06-02T14:00");
-         alicet00120210602T1400Event.setKind("temperature");
-         alicet00120210602T1400Event.setResult("39.8 Celsius");
-         alicet00120210602T1400Event.setConsultation("Alice#2021-06-02T14:00");
-         service.apply(alicet00120210602T1400Event);
+         TestBuilt alice_t001_2021_06_02T14_00Event = new TestBuilt();
+         alice_t001_2021_06_02T14_00Event.setId("14:04:01");
+         alice_t001_2021_06_02T14_00Event.setBlockId("Alice_t001_2021_06_02T14_00");
+         alice_t001_2021_06_02T14_00Event.setCid("Alice#t001#2021-06-02T14:00");
+         alice_t001_2021_06_02T14_00Event.setKind("temperature");
+         alice_t001_2021_06_02T14_00Event.setResult("39.8 Celsius");
+         alice_t001_2021_06_02T14_00Event.setConsultation("Alice#2021-06-02T14:00");
+         service.apply(alice_t001_2021_06_02T14_00Event);
 
          SymptomBuilt feverEvent = new SymptomBuilt();
          feverEvent.setId("14:04:02");
@@ -274,12 +274,12 @@ public class DocMedicalBusinessLogic
    private void handleDemoDiagnosisEvent(DiagnosisEvent event)
    {
       if (event.getId().equals("14:05")) {
-         ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-         alice20210602T1400Event.setId("14:05:01");
-         alice20210602T1400Event.setBlockId("alice#2021-06-02T14:00");
-         alice20210602T1400Event.setCid("Alice#2021-06-02T14:00");
-         alice20210602T1400Event.setDiagnosis("common cold");
-         service.apply(alice20210602T1400Event);
+         ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
+         alice_2021_06_02T14_00Event.setId("14:05:01");
+         alice_2021_06_02T14_00Event.setBlockId("Alice_2021_06_02T14_00");
+         alice_2021_06_02T14_00Event.setCid("Alice#2021-06-02T14:00");
+         alice_2021_06_02T14_00Event.setDiagnosis("common cold");
+         service.apply(alice_2021_06_02T14_00Event);
 
       }
    }
@@ -295,12 +295,12 @@ public class DocMedicalBusinessLogic
    private void handleDemoTreatmentEvent(TreatmentEvent event)
    {
       if (event.getId().equals("14:06")) {
-         ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-         alice20210602T1400Event.setId("14:06:01");
-         alice20210602T1400Event.setBlockId("alice#2021-06-02T14:00");
-         alice20210602T1400Event.setCid("Alice#2021-06-02T14:00");
-         alice20210602T1400Event.setTreatment("ibuprofen 400 1-1-1");
-         service.apply(alice20210602T1400Event);
+         ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
+         alice_2021_06_02T14_00Event.setId("14:06:01");
+         alice_2021_06_02T14_00Event.setBlockId("Alice_2021_06_02T14_00");
+         alice_2021_06_02T14_00Event.setCid("Alice#2021-06-02T14:00");
+         alice_2021_06_02T14_00Event.setTreatment("ibuprofen 400 1-1-1");
+         service.apply(alice_2021_06_02T14_00Event);
 
       }
    }

@@ -5,6 +5,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.LinkedHashMap;
+
+import org.fulib.FulibTools;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +46,9 @@ public class TestFamilyDoctor
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = 1 * 60 * 1000;
+      // Configuration.timeout = 1 * 60 * 1000;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = "-3500x10";
+      // Configuration.browserPosition = "-3500x10";
    }
 
    @Test
@@ -90,6 +92,8 @@ public class TestFamilyDoctor
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/docMedical14_00.svg", modelMap.values());
+
       open("http://localhost:42001");
       // check data note 14:00:01
       pre = $("#data");
@@ -117,6 +121,8 @@ public class TestFamilyDoctor
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/docMedical14_01.svg", modelMap.values());
+
       open("http://localhost:42001");
       // check data note 14:01:01
       pre = $("#data");
@@ -143,12 +149,14 @@ public class TestFamilyDoctor
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/docMedical14_02.svg", modelMap.values());
+
       open("http://localhost:42001");
       // check data note 14:02:01
       pre = $("#data");
       pre.shouldHave(text("- cough:"));
       pre.shouldHave(matchText("name:.*cough"));
-      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
+      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00"));
 
       // create SymptomEvent: symptom validated
       SymptomEvent e1403 = new SymptomEvent();
@@ -169,12 +177,14 @@ public class TestFamilyDoctor
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/docMedical14_03.svg", modelMap.values());
+
       open("http://localhost:42001");
       // check data note 14:03:01
       pre = $("#data");
-      pre.shouldHave(text("- runnyNose:"));
+      pre.shouldHave(text("- runny_nose:"));
       pre.shouldHave(matchText("name:.*\"runny nose\""));
-      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
+      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00"));
 
       // create TestEvent: test done
       TestEvent e1404 = new TestEvent();
@@ -196,6 +206,8 @@ public class TestFamilyDoctor
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/docMedical14_04.svg", modelMap.values());
+
       open("http://localhost:42001");
       // check data note 14:04:01
       pre = $("#data");
@@ -208,7 +220,7 @@ public class TestFamilyDoctor
       pre = $("#data");
       pre.shouldHave(text("- fever:"));
       pre.shouldHave(matchText("name:.*fever"));
-      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
+      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00"));
 
       // create DiagnosisEvent: diagnosis done
       DiagnosisEvent e1405 = new DiagnosisEvent();
@@ -229,12 +241,14 @@ public class TestFamilyDoctor
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/docMedical14_05.svg", modelMap.values());
+
       open("http://localhost:42001");
       // check data note 14:05:01
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
       pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));
-      pre.shouldHave(matchText("diagnosis:.*commonCold"));
+      pre.shouldHave(matchText("diagnosis:.*common_cold"));
 
       // create TreatmentEvent: treatment initiated
       TreatmentEvent e1406 = new TreatmentEvent();
@@ -255,6 +269,8 @@ public class TestFamilyDoctor
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = docMedical.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/docMedical14_06.svg", modelMap.values());
+
       open("http://localhost:42001");
       // check data note 14:06:01
       pre = $("#data");

@@ -32,7 +32,7 @@
   attributes: 	storageBuilder_model 	storageBuilder_eventStore 	storageBuilder_loaderMap 	storageBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import java.util.function.Function;"
-  methods: 	storageBuilder_outdated 	storageBuilder_storeBoxBuilt 	storageBuilder_loadBoxBuilt 	storageBuilder_storePickTaskBuilt 	storageBuilder_loadPickTaskBuilt 	storageBuilder_load 	storageBuilder_initLoaderMap 	storageBuilder_getVarName 	storageBuilder_addToGroup 	storageBuilder_stripBrackets
+  methods: 	storageBuilder_outdated 	storageBuilder_storeBoxBuilt 	storageBuilder_loadBoxBuilt 	storageBuilder_storePickTaskBuilt 	storageBuilder_loadPickTaskBuilt 	storageBuilder_load 	storageBuilder_initLoaderMap 	storageBuilder_getObjectId 	storageBuilder_addToGroup 	storageBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	StorageBuilder
@@ -541,26 +541,21 @@ return object;
   returnType: 	void
   signature: 	"class/StorageBuilder/method/initLoaderMap()"
 
-- storageBuilder_getVarName: 	org.fulib.classmodel.FMethod
+- storageBuilder_getObjectId: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
-  declaration: 	"public String getVarName(String value)"
-  id: 	StorageBuilder_getVarName
+  declaration: 	"public String getObjectId(String value)"
+  id: 	StorageBuilder_getObjectId
   methodBody: 	"      if (value == null) {
          return null;
       }
-      String[] split = value.split(\"\\s+\");
-      String varName = split[0];
-      for (int i = 1; i < split.length; i++) {
-         varName += org.fulib.StrUtil.cap(split[i]);
-      }
-      return varName;"
+      return value.replaceAll(\"\\W+\", \"_\");"
   modified: 	false
   modifiers: 	public
-  name: 	getVarName
+  name: 	getObjectId
   paramsString: 	"String value"
   returnType: 	String
-  signature: 	"class/StorageBuilder/method/getVarName(String)"
+  signature: 	"class/StorageBuilder/method/getObjectId(String)"
 
 - storageBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""

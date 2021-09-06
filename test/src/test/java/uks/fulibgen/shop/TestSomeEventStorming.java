@@ -88,6 +88,8 @@ public class TestSomeEventStorming
          storage.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = storage.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage12_00.svg", modelMap.values());
+
       open("http://localhost:42002");
       // check data note 12:01
       pre = $("#data");
@@ -122,6 +124,8 @@ public class TestSomeEventStorming
          shop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = shop.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop13_01.svg", modelMap.values());
+
       open("http://localhost:42100");
       // check data note 13:06
       pre = $("#data");
@@ -136,6 +140,8 @@ public class TestSomeEventStorming
          storage.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = storage.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage13_01.svg", modelMap.values());
+
       open("http://localhost:42002");
       // check data note 13:05
       pre = $("#data");
@@ -166,6 +172,8 @@ public class TestSomeEventStorming
          storage.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = storage.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage14_00.svg", modelMap.values());
+
       open("http://localhost:42002");
       // check data note 14:01
       pre = $("#data");
@@ -185,6 +193,8 @@ public class TestSomeEventStorming
          shop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = shop.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop14_00.svg", modelMap.values());
+
       open("http://localhost:42100");
       // check data note 14:04
       pre = $("#data");
@@ -213,6 +223,8 @@ public class TestSomeEventStorming
          shop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = shop.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop13_11.svg", modelMap.values());
+
       open("http://localhost:42100");
       // check data note 13:16
       pre = $("#data");
@@ -227,6 +239,8 @@ public class TestSomeEventStorming
          storage.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = storage.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage13_11.svg", modelMap.values());
+
       open("http://localhost:42002");
 
       System.out.println();

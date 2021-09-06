@@ -317,7 +317,7 @@ public class EventModel
          value = split[1];
          Map.Entry<String, String> typeEntry = iterator.next();
          objectId = typeEntry.getValue();
-         objectId = getVarName(objectId);
+         objectId = getObjectId(objectId);
          map.put("data", String.format("%s %s %s", className, objectId, value));
       }
       else {
@@ -345,6 +345,8 @@ public class EventModel
 
       serviceNote.withHandledDataTypes(dataType);
    }
+
+
 
    private void buildPageNote(LinkedHashMap<String, PageNote> userLastPage, LinkedHashMap<String, String> map, Map.Entry<String, String> entry)
    {
@@ -477,6 +479,14 @@ public class EventModel
          varName += org.fulib.StrUtil.cap(split2[i]);
       }
       return varName;
+   }
+
+   public String getObjectId(String objectId)
+   {
+      if (objectId == null) {
+         return null;
+      }
+      return objectId.replaceAll("\\W+", "_");
    }
 
    private void addToStepsOfLastActor(WorkflowNote note)

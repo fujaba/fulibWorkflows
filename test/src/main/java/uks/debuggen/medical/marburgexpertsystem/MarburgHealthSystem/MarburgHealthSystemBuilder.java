@@ -182,11 +182,11 @@ public class MarburgHealthSystemBuilder
       object.setName(event.getName());
       for (String name : stripBrackets(event.getSymptoms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withSymptoms(model.getOrCreateSymptom(getVarName(name)));
+         object.withSymptoms(model.getOrCreateSymptom(getObjectId(name)));
       }
       for (String name : stripBrackets(event.getCounterSymptoms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withCounterSymptoms(model.getOrCreateSymptom(getVarName(name)));
+         object.withCounterSymptoms(model.getOrCreateSymptom(getObjectId(name)));
       }
       return object;
    }
@@ -238,19 +238,6 @@ public class MarburgHealthSystemBuilder
       }
    }
 
-   public String getVarName(String value)
-   {
-      if (value == null) {
-         return null;
-      }
-      String[] split = value.split("\\s+");
-      String varName = split[0];
-      for (int i = 1; i < split.length; i++) {
-         varName += org.fulib.StrUtil.cap(split[i]);
-      }
-      return varName;
-   }
-
    private void addToGroup(String groupId, String elementId)
    {
       DataEvent dataEvent = eventStore.get(elementId);
@@ -300,5 +287,13 @@ public class MarburgHealthSystemBuilder
    {
       this.setBusinessLogic(null);
       this.setService(null);
+   }
+
+   public String getObjectId(String value)
+   {
+      if (value == null) {
+         return null;
+      }
+      return value.replaceAll("\\W+", "_");
    }
 }
