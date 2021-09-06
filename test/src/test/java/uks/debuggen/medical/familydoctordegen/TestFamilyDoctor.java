@@ -46,7 +46,7 @@ public class TestFamilyDoctor
 
    @Before
    public void setTimeOut() {
-      // Configuration.timeout = 1 * 60 * 1000;
+      Configuration.timeout = 10 * 60 * 1000;
       Configuration.pageLoadTimeout = Configuration.timeout;
       // Configuration.browserPosition = "-3500x10";
    }
@@ -248,6 +248,7 @@ public class TestFamilyDoctor
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
       pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));
+      pre.shouldHave(matchText("patient:.*alice"));
       pre.shouldHave(matchText("diagnosis:.*common_cold"));
 
       // create TreatmentEvent: treatment initiated
@@ -276,6 +277,8 @@ public class TestFamilyDoctor
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
       pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));
+      pre.shouldHave(matchText("patient:.*alice"));
+      pre.shouldHave(matchText("diagnosis:.*common_cold"));
       pre.shouldHave(matchText("treatment:.*\"ibuprofen 400 1-1-1\""));
 
       // workflow Accounting

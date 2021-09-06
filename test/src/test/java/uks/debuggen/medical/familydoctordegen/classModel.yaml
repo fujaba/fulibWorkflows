@@ -233,6 +233,7 @@ open(\"http://localhost:42001\");
 pre = $(\"#data\");
 pre.shouldHave(text(\"- alice_2021_06_02T14_00:\"));
 pre.shouldHave(matchText(\"cid:.*Alice#2021-06-02T14:00\"));
+pre.shouldHave(matchText(\"patient:.*alice\"));
 pre.shouldHave(matchText(\"diagnosis:.*common_cold\"));
 
 // create TreatmentEvent: treatment initiated
@@ -261,6 +262,8 @@ open(\"http://localhost:42001\");
 pre = $(\"#data\");
 pre.shouldHave(text(\"- alice_2021_06_02T14_00:\"));
 pre.shouldHave(matchText(\"cid:.*Alice#2021-06-02T14:00\"));
+pre.shouldHave(matchText(\"patient:.*alice\"));
+pre.shouldHave(matchText(\"diagnosis:.*common_cold\"));
 pre.shouldHave(matchText(\"treatment:.*\\"ibuprofen 400 1-1-1\\"\"));
 
 // workflow Accounting

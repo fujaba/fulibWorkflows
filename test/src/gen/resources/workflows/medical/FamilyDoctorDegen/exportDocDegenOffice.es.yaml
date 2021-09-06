@@ -70,10 +70,14 @@
 
 - data: Consultation Alice_2021_06_02T14_00 14:05:01
   cid: Alice#2021-06-02T14:00
+  patient: Alice
   diagnosis: common cold
   diagnosis.back: [consultations]
+  patient.back: [consultations]
 
 - data: Consultation Alice_2021_06_02T14_00 14:06:01
   cid: Alice#2021-06-02T14:00
+  patient: Alice
+  diagnosis: common cold
   treatment: ibuprofen 400 1-1-1
 
