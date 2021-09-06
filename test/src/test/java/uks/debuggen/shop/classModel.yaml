@@ -9,8 +9,8 @@
 
 - testSomeEventStorming: 	org.fulib.classmodel.Clazz
   attributes: 	testSomeEventStorming_eventBroker
-  importList: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
-  imports: 	"import org.junit.Test;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
+  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.shop.events.*;" 	"import uks.debuggen.shop.Shop.ShopService;" 	"import uks.debuggen.shop.Storage.StorageService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
   methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
   model: 	c
   modified: 	false
@@ -57,6 +57,7 @@ $(\"body\").shouldHave(text(\"event broker\"));
 SelenideElement pre = $(\"pre\");
 pre.shouldHave(text(\"http://localhost:42100/apply\"));
 pre.shouldHave(text(\"http://localhost:42002/apply\"));
+LinkedHashMap<String, Object> modelMap;
 
 // workflow working smoothly
 // create StoreBoxCommand: store box 12:00
@@ -75,11 +76,16 @@ pre.shouldHave(text(\"- 12_00:\"));
 open(\"http://localhost:42002\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 12_00:\"));
+for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+   storage.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = storage.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42002\");
 // check data note 12:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- box23:\"));
-pre.shouldHave(text(\"product: shoes\"));
-pre.shouldHave(text(\"place: shelf23\"));
+pre.shouldHave(matchText(\"product:.*shoes\"));
+pre.shouldHave(matchText(\"place:.*shelf23\"));
 
 // page 12:50
 open(\"http://localhost:42100/page/12_50\");
@@ -104,23 +110,33 @@ pre.shouldHave(text(\"- 13_01:\"));
 open(\"http://localhost:42100\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 13_01:\"));
+for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+   shop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = shop.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42100\");
 // check data note 13:06
 pre = $(\"#data\");
 pre.shouldHave(text(\"- order1300:\"));
-pre.shouldHave(text(\"state: picking\"));
+pre.shouldHave(matchText(\"state:.*picking\"));
 
 // check Storage
 open(\"http://localhost:42002\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 13_01:\"));
+for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+   storage.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = storage.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42002\");
 // check data note 13:05
 pre = $(\"#data\");
 pre.shouldHave(text(\"- pick1300:\"));
-pre.shouldHave(text(\"order: order1300\"));
-pre.shouldHave(text(\"product: shoes\"));
-pre.shouldHave(text(\"customer: Alice\"));
-pre.shouldHave(text(\"address: \\"Wonderland 1\\"\"));
-pre.shouldHave(text(\"state: todo\"));
+pre.shouldHave(matchText(\"order:.*order1300\"));
+pre.shouldHave(matchText(\"product:.*shoes\"));
+pre.shouldHave(matchText(\"customer:.*Alice\"));
+pre.shouldHave(matchText(\"address:.*\\"Wonderland 1\\"\"));
+pre.shouldHave(matchText(\"state:.*todo\"));
 
 // create PickOrderCommand: pick order 14:00
 PickOrderCommand e1400 = new PickOrderCommand();
@@ -138,24 +154,34 @@ pre.shouldHave(text(\"- 14_00:\"));
 open(\"http://localhost:42002\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 14_00:\"));
+for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+   storage.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = storage.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42002\");
 // check data note 14:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- pick1300:\"));
-pre.shouldHave(text(\"state: done\"));
-pre.shouldHave(text(\"box: box23\"));
+pre.shouldHave(matchText(\"state:.*done\"));
+pre.shouldHave(matchText(\"box:.*box23\"));
 // check data note 14:02
 pre = $(\"#data\");
 pre.shouldHave(text(\"- box23:\"));
-pre.shouldHave(text(\"place: shipping\"));
+pre.shouldHave(matchText(\"place:.*shipping\"));
 
 // check Shop
 open(\"http://localhost:42100\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 14_00:\"));
+for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+   shop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = shop.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42100\");
 // check data note 14:04
 pre = $(\"#data\");
 pre.shouldHave(text(\"- order1300:\"));
-pre.shouldHave(text(\"state: shipping\"));
+pre.shouldHave(matchText(\"state:.*shipping\"));
 
 // workflow OrderOutOfStocks
 // create SubmitOrderCommand: submit order 13:11
@@ -175,15 +201,25 @@ pre.shouldHave(text(\"- 13_11:\"));
 open(\"http://localhost:42100\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 13_11:\"));
+for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+   shop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = shop.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42100\");
 // check data note 13:16
 pre = $(\"#data\");
 pre.shouldHave(text(\"- order1310:\"));
-pre.shouldHave(text(\"state: \\"out of stock\\"\"));
+pre.shouldHave(matchText(\"state:.*\\"out of stock\\"\"));
 
 // check Storage
 open(\"http://localhost:42002\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 13_11:\"));
+for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+   storage.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = storage.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42002\");
 
 System.out.println();
 "
@@ -199,7 +235,7 @@ System.out.println();
   clazz: 	testSomeEventStorming
   declaration: 	"public void publish(Event event)"
   id: 	TestSomeEventStorming_publish
-  methodBody: 	"String yaml = Yaml.encode(event);
+  methodBody: 	"String yaml = Yaml.encodeSimple(event);
 
 try {
    HttpResponse<String> response = Unirest.post(\"http://localhost:42000/publish\")

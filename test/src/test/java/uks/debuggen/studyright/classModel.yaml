@@ -9,8 +9,8 @@
 
 - testSomeEventStorming: 	org.fulib.classmodel.Clazz
   attributes: 	testSomeEventStorming_eventBroker
-  importList: 	"import org.junit.Test;" 	"import uks.debuggen.studyright.events.*;" 	"import uks.debuggen.studyright.StudyRight.StudyRightService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
-  imports: 	"import org.junit.Test;" 	"import uks.debuggen.studyright.events.*;" 	"import uks.debuggen.studyright.StudyRight.StudyRightService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import com.codeborne.selenide.SelenideElement;"
+  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.studyright.events.*;" 	"import uks.debuggen.studyright.StudyRight.StudyRightService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.studyright.events.*;" 	"import uks.debuggen.studyright.StudyRight.StudyRightService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
   methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
   model: 	c
   modified: 	false
@@ -52,6 +52,7 @@ $(\"body\").shouldHave(text(\"event broker\"));
 
 SelenideElement pre = $(\"pre\");
 pre.shouldHave(text(\"http://localhost:42400/apply\"));
+LinkedHashMap<String, Object> modelMap;
 
 // workflow working smoothly
 // page 11:00
@@ -66,10 +67,15 @@ pre.shouldHave(text(\"- 12_00:\"));
 open(\"http://localhost:42400\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 12_00:\"));
+for (DataEvent dataEvent : studyRight.getBuilder().getEventStore().values()) {
+   studyRight.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = studyRight.getBuilder().getModel().getModelMap();
+open(\"http://localhost:42400\");
 // check data note 12:12:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- tour1:\"));
-pre.shouldHave(text(\"stops: \\"math algebra modeling exam\\"\"));
+pre.shouldHave(matchText(\"stops:.*\\"math algebra modeling exam\\"\"));
 
 // page 12:13
 open(\"http://localhost:42400/page/12_13\");
@@ -88,7 +94,7 @@ System.out.println();
   clazz: 	testSomeEventStorming
   declaration: 	"public void publish(Event event)"
   id: 	TestSomeEventStorming_publish
-  methodBody: 	"String yaml = Yaml.encode(event);
+  methodBody: 	"String yaml = Yaml.encodeSimple(event);
 
 try {
    HttpResponse<String> response = Unirest.post(\"http://localhost:42000/publish\")

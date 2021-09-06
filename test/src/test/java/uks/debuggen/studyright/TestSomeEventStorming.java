@@ -4,8 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import org.fulib.FulibTools;
-import org.fulib.workflows.HtmlGenerator3;
+import org.fulib.workflows.html.HtmlGenerator3;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
-import uks.debuggen.studyright.Welcome.WelcomeService;
+import java.util.LinkedHashMap;
+import static com.codeborne.selenide.Condition.matchText;
 
 public class TestSomeEventStorming
 {
@@ -98,6 +98,7 @@ public class TestSomeEventStorming
 
       SelenideElement pre = $("pre");
       pre.shouldHave(text("http://localhost:42400/apply"));
+      LinkedHashMap<String, Object> modelMap;
 
       // workflow working smoothly
       // page 11:00
@@ -112,10 +113,15 @@ public class TestSomeEventStorming
       open("http://localhost:42400");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
+      for (DataEvent dataEvent : studyRight.getBuilder().getEventStore().values()) {
+         studyRight.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = studyRight.getBuilder().getModel().getModelMap();
+      open("http://localhost:42400");
       // check data note 12:12:01
       pre = $("#data");
       pre.shouldHave(text("- tour1:"));
-      pre.shouldHave(text("stops: \"math algebra modeling exam\""));
+      pre.shouldHave(matchText("stops:.*\"math algebra modeling exam\""));
 
       // page 12:13
       open("http://localhost:42400/page/12_13");
@@ -125,7 +131,7 @@ public class TestSomeEventStorming
 
    public void publish(Event event)
    {
-      String yaml = Yaml.encode(event);
+      String yaml = Yaml.encodeSimple(event);
 
       try {
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")

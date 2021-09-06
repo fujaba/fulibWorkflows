@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	serviceSubscribed 	command 	loadRoomsCommand 	universityBuilt 	roomBuilt 	studentBuilt 	roomsLoadedEvent 	findToursCommand 	tourListBuilt 	stopBuilt 	visitRoomCommand 	tourFailedEvent 	collectTourStopsCommand 	tourBuilt 	tourFoundEvent
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	loadRoomsCommand 	universityBuilt 	roomBuilt 	studentBuilt 	roomsLoadedEvent 	findToursCommand 	tourListBuilt 	stopBuilt 	visitRoomCommand 	tourFailedEvent 	collectTourStopsCommand 	tourBuilt 	tourFoundEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	serviceSubscribed 	command 	roomsLoadedEvent 	tourFailedEvent 	tourFoundEvent
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	roomsLoadedEvent 	tourFailedEvent 	tourFoundEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -21,7 +21,25 @@
   modified: 	false
   name: 	DataEvent
   propertyStyle: 	Bean
-  subClasses: 	universityBuilt 	roomBuilt 	studentBuilt 	tourListBuilt 	stopBuilt 	tourBuilt
+  roles: 	dataEvent_sagas 	dataEvent_query
+  subClasses: 	dataGroup 	universityBuilt 	roomBuilt 	studentBuilt 	tourListBuilt 	stopBuilt 	tourBuilt
+  superClass: 	event
+
+- dataGroup: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	DataGroup
+  propertyStyle: 	Bean
+  roles: 	dataGroup_elements
+  superClass: 	dataEvent
+
+- query: 	org.fulib.classmodel.Clazz
+  attributes: 	query_key
+  model: 	c
+  modified: 	false
+  name: 	Query
+  propertyStyle: 	Bean
+  roles: 	query_results
   superClass: 	event
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
@@ -164,6 +182,61 @@
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- dataEvent_sagas: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	dataEvent
+  collectionType: 	c1
+  id: 	DataEvent_sagas
+  modified: 	false
+  name: 	sagas
+  other: 	dataGroup_elements
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- dataEvent_query: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	dataEvent
+  id: 	DataEvent_query
+  modified: 	false
+  name: 	query
+  other: 	query_results
+  propertyStyle: 	Bean
+
+- dataGroup_elements: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	dataGroup
+  collectionType: 	c1
+  id: 	DataGroup_elements
+  modified: 	false
+  name: 	elements
+  other: 	dataEvent_sagas
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- query_key: 	org.fulib.classmodel.Attribute
+  clazz: 	query
+  id: 	Query_key
+  modified: 	false
+  name: 	key
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- query_results: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	query
+  collectionType: 	c1
+  id: 	Query_results
+  modified: 	false
+  name: 	results
+  other: 	dataEvent_query
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
 
 - serviceSubscribed_serviceUrl: 	org.fulib.classmodel.Attribute
   clazz: 	serviceSubscribed

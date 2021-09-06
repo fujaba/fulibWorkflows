@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	studyRightModel 	studyRightBusinessLogic 	studyRightBuilder 	studyRightService 	university 	room 	person 	student 	tourList 	stop 	tour
+  classes: 	studyRightModel 	studyRightBusinessLogic 	studyRightBuilder 	studyRightService 	university 	room 	student 	tourList 	stop 	tour 	person
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -29,26 +29,26 @@
   roles: 	studyRightBusinessLogic_builder 	studyRightBusinessLogic_service
 
 - studyRightBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	studyRightBuilder_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;"
-  methods: 	studyRightBuilder_handleUniversityBuilt 	studyRightBuilder_handleRoomBuilt 	studyRightBuilder_handleStudentBuilt 	studyRightBuilder_handleTourListBuilt 	studyRightBuilder_handleStopBuilt 	studyRightBuilder_handleTourBuilt 	studyRightBuilder_stripBrackets
+  attributes: 	studyRightBuilder_model 	studyRightBuilder_eventStore 	studyRightBuilder_loaderMap 	studyRightBuilder_groupStore
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import java.util.function.Function;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import java.util.function.Function;"
+  methods: 	studyRightBuilder_outdated 	studyRightBuilder_storeUniversityBuilt 	studyRightBuilder_loadUniversityBuilt 	studyRightBuilder_storeRoomBuilt 	studyRightBuilder_loadRoomBuilt 	studyRightBuilder_storeStudentBuilt 	studyRightBuilder_loadStudentBuilt 	studyRightBuilder_storeTourListBuilt 	studyRightBuilder_loadTourListBuilt 	studyRightBuilder_storeStopBuilt 	studyRightBuilder_loadStopBuilt 	studyRightBuilder_storeTourBuilt 	studyRightBuilder_loadTourBuilt 	studyRightBuilder_load 	studyRightBuilder_initLoaderMap 	studyRightBuilder_getVarName 	studyRightBuilder_addToGroup 	studyRightBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	StudyRightBuilder
   propertyStyle: 	Bean
-  roles: 	studyRightBuilder_businessLogic
+  roles: 	studyRightBuilder_businessLogic 	studyRightBuilder_service
 
 - studyRightService: 	org.fulib.classmodel.Clazz
   attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_publish 	studyRightService_postApply
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  methods: 	studyRightService_query 	studyRightService_isoNow 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_publish 	studyRightService_postApply
   model: 	c
   modified: 	false
   name: 	StudyRightService
   propertyStyle: 	Bean
-  roles: 	studyRightService_businessLogic
+  roles: 	studyRightService_businessLogic 	studyRightService_builder
 
 - university: 	org.fulib.classmodel.Clazz
   attributes: 	university_id
@@ -66,17 +66,8 @@
   propertyStyle: 	Bean
   roles: 	room_uni 	room_doors
 
-- person: 	org.fulib.classmodel.Clazz
-  attributes: 	person_id 	person_name 	person_birthYear
-  model: 	c
-  modified: 	false
-  name: 	Person
-  propertyStyle: 	Bean
-  roles: 	person_uni
-  subClasses: 	student
-
 - student: 	org.fulib.classmodel.Clazz
-  attributes: 	student_studentId
+  attributes: 	student_name 	student_birthYear 	student_studentId 	student_uni
   model: 	c
   modified: 	false
   name: 	Student
@@ -106,6 +97,15 @@
   name: 	Tour
   propertyStyle: 	Bean
   roles: 	tour_tourList
+
+- person: 	org.fulib.classmodel.Clazz
+  attributes: 	person_id 	person_name 	person_birthYear
+  model: 	c
+  modified: 	false
+  name: 	Person
+  propertyStyle: 	Bean
+  roles: 	person_uni
+  subClasses: 	student
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -237,7 +237,8 @@ return (Tour) modelMap.computeIfAbsent(id, k -> new Tour().setId(k));
   clazz: 	studyRightBusinessLogic
   declaration: 	"private void handleLoadRoomsCommand(Event e)"
   id: 	StudyRightBusinessLogic_handleLoadRoomsCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 LoadRoomsCommand event = (LoadRoomsCommand) e;
 handleDemoLoadRoomsCommand(event);
 "
@@ -257,7 +258,7 @@ handleDemoLoadRoomsCommand(event);
    UniversityBuilt studyRightEvent = new UniversityBuilt();
    studyRightEvent.setId(\"12:00:00\");
    studyRightEvent.setBlockId(\"StudyRight\");
-   studyRightEvent.setRooms(\"[math exam]\");
+   studyRightEvent.setRooms(\"[math, exam]\");
    service.apply(studyRightEvent);
 
    RoomBuilt mathEvent = new RoomBuilt();
@@ -265,7 +266,7 @@ handleDemoLoadRoomsCommand(event);
    mathEvent.setBlockId(\"math\");
    mathEvent.setCredits(\"23\");
    mathEvent.setUni(\"StudyRight\");
-   mathEvent.setDoors(\"[modeling algebra]\");
+   mathEvent.setDoors(\"[modeling, algebra]\");
    service.apply(mathEvent);
 
    RoomBuilt modelingEvent = new RoomBuilt();
@@ -273,7 +274,7 @@ handleDemoLoadRoomsCommand(event);
    modelingEvent.setBlockId(\"modeling\");
    modelingEvent.setUni(\"StudyRight\");
    modelingEvent.setCredits(\"42\");
-   modelingEvent.setDoors(\"[math algebra exam]\");
+   modelingEvent.setDoors(\"[math, algebra, exam]\");
    service.apply(modelingEvent);
 
    RoomBuilt algebraEvent = new RoomBuilt();
@@ -323,7 +324,8 @@ handleDemoLoadRoomsCommand(event);
   clazz: 	studyRightBusinessLogic
   declaration: 	"private void handleFindToursCommand(Event e)"
   id: 	StudyRightBusinessLogic_handleFindToursCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 FindToursCommand event = (FindToursCommand) e;
 handleDemoFindToursCommand(event);
 "
@@ -372,7 +374,8 @@ handleDemoFindToursCommand(event);
   clazz: 	studyRightBusinessLogic
   declaration: 	"private void handleVisitRoomCommand(Event e)"
   id: 	StudyRightBusinessLogic_handleVisitRoomCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 VisitRoomCommand event = (VisitRoomCommand) e;
 handleDemoVisitRoomCommand(event);
 "
@@ -508,7 +511,8 @@ if (event.getId().equals(\"12:08\")) {
   clazz: 	studyRightBusinessLogic
   declaration: 	"private void handleCollectTourStopsCommand(Event e)"
   id: 	StudyRightBusinessLogic_handleCollectTourStopsCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 CollectTourStopsCommand event = (CollectTourStopsCommand) e;
 handleDemoCollectTourStopsCommand(event);
 "
@@ -599,16 +603,16 @@ if (event.getId().equals(\"12:12\")) {
   id: 	StudyRightBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
+   handlerMap.put(UniversityBuilt.class, builder::storeUniversityBuilt);
+   handlerMap.put(RoomBuilt.class, builder::storeRoomBuilt);
+   handlerMap.put(StudentBuilt.class, builder::storeStudentBuilt);
+   handlerMap.put(TourListBuilt.class, builder::storeTourListBuilt);
+   handlerMap.put(StopBuilt.class, builder::storeStopBuilt);
+   handlerMap.put(TourBuilt.class, builder::storeTourBuilt);
    handlerMap.put(LoadRoomsCommand.class, this::handleLoadRoomsCommand);
    handlerMap.put(FindToursCommand.class, this::handleFindToursCommand);
    handlerMap.put(VisitRoomCommand.class, this::handleVisitRoomCommand);
    handlerMap.put(CollectTourStopsCommand.class, this::handleCollectTourStopsCommand);
-   handlerMap.put(UniversityBuilt.class, builder::handleUniversityBuilt);
-   handlerMap.put(RoomBuilt.class, builder::handleRoomBuilt);
-   handlerMap.put(StudentBuilt.class, builder::handleStudentBuilt);
-   handlerMap.put(TourListBuilt.class, builder::handleTourListBuilt);
-   handlerMap.put(StopBuilt.class, builder::handleStopBuilt);
-   handlerMap.put(TourBuilt.class, builder::handleTourBuilt);
 }
 "
   modified: 	false
@@ -675,114 +679,380 @@ if (event.getId().equals(\"12:12\")) {
   type: 	StudyRightModel
   typeSignature: 	StudyRightModel
 
-- studyRightBuilder_handleUniversityBuilt: 	org.fulib.classmodel.FMethod
+- studyRightBuilder_eventStore: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightBuilder
+  id: 	StudyRightBuilder_eventStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	eventStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, DataEvent>"
+  typeSignature: 	"LinkedHashMap<String,DataEvent>"
+
+- studyRightBuilder_loaderMap: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightBuilder
+  id: 	StudyRightBuilder_loaderMap
+  modified: 	false
+  name: 	loaderMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Function<Event, Object>>"
+  typeSignature: 	"LinkedHashMap<Class,Function<Event,Object>>"
+
+- studyRightBuilder_groupStore: 	org.fulib.classmodel.Attribute
+  clazz: 	studyRightBuilder
+  id: 	StudyRightBuilder_groupStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	groupStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, LinkedHashMap<String, DataEvent>>"
+  typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
+
+- studyRightBuilder_outdated: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightBuilder
-  declaration: 	"public void handleUniversityBuilt(Event e)"
-  id: 	StudyRightBuilder_handleUniversityBuilt
+  declaration: 	"private boolean outdated(DataEvent event)"
+  id: 	StudyRightBuilder_outdated
+  methodBody: 	"      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;"
+  modified: 	false
+  modifiers: 	private
+  name: 	outdated
+  paramsString: 	"DataEvent event"
+  returnType: 	boolean
+  signature: 	"class/StudyRightBuilder/method/outdated(DataEvent)"
+
+- studyRightBuilder_storeUniversityBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public void storeUniversityBuilt(Event e)"
+  id: 	StudyRightBuilder_storeUniversityBuilt
   methodBody: 	"UniversityBuilt event = (UniversityBuilt) e;
-University object = model.getOrCreateUniversity(event.getBlockId());
-for (String name : stripBrackets(event.getRooms()).split(\"\\s+\")) {
-   if (name.equals(\"\")) continue;
-   object.withRooms(model.getOrCreateRoom(name));
+if (outdated(event)) {
+   return;
 }
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleUniversityBuilt
+  name: 	storeUniversityBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightBuilder/method/handleUniversityBuilt(Event)"
+  signature: 	"class/StudyRightBuilder/method/storeUniversityBuilt(Event)"
 
-- studyRightBuilder_handleRoomBuilt: 	org.fulib.classmodel.FMethod
+- studyRightBuilder_loadUniversityBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightBuilder
-  declaration: 	"public void handleRoomBuilt(Event e)"
-  id: 	StudyRightBuilder_handleRoomBuilt
+  declaration: 	"public University loadUniversityBuilt(Event e)"
+  id: 	StudyRightBuilder_loadUniversityBuilt
+  methodBody: 	"UniversityBuilt event = (UniversityBuilt) e;
+University object = model.getOrCreateUniversity(event.getBlockId());
+for (String name : stripBrackets(event.getRooms()).split(\",\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withRooms(model.getOrCreateRoom(getVarName(name)));
+}
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadUniversityBuilt
+  paramsString: 	"Event e"
+  returnType: 	University
+  signature: 	"class/StudyRightBuilder/method/loadUniversityBuilt(Event)"
+
+- studyRightBuilder_storeRoomBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public void storeRoomBuilt(Event e)"
+  id: 	StudyRightBuilder_storeRoomBuilt
+  methodBody: 	"RoomBuilt event = (RoomBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeRoomBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBuilder/method/storeRoomBuilt(Event)"
+
+- studyRightBuilder_loadRoomBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public Room loadRoomBuilt(Event e)"
+  id: 	StudyRightBuilder_loadRoomBuilt
   methodBody: 	"RoomBuilt event = (RoomBuilt) e;
 Room object = model.getOrCreateRoom(event.getBlockId());
 object.setCredits(event.getCredits());
-object.setUni(model.getOrCreateUniversity(event.getUni()));
-for (String name : stripBrackets(event.getDoors()).split(\"\\s+\")) {
+object.setUni(model.getOrCreateUniversity(getVarName(event.getUni())));
+for (String name : stripBrackets(event.getDoors()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
-   object.withDoors(model.getOrCreateRoom(name));
+   object.withDoors(model.getOrCreateRoom(getVarName(name)));
 }
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleRoomBuilt
+  name: 	loadRoomBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightBuilder/method/handleRoomBuilt(Event)"
+  returnType: 	Room
+  signature: 	"class/StudyRightBuilder/method/loadRoomBuilt(Event)"
 
-- studyRightBuilder_handleStudentBuilt: 	org.fulib.classmodel.FMethod
+- studyRightBuilder_storeStudentBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightBuilder
-  declaration: 	"public void handleStudentBuilt(Event e)"
-  id: 	StudyRightBuilder_handleStudentBuilt
+  declaration: 	"public void storeStudentBuilt(Event e)"
+  id: 	StudyRightBuilder_storeStudentBuilt
+  methodBody: 	"StudentBuilt event = (StudentBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeStudentBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBuilder/method/storeStudentBuilt(Event)"
+
+- studyRightBuilder_loadStudentBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public Student loadStudentBuilt(Event e)"
+  id: 	StudyRightBuilder_loadStudentBuilt
   methodBody: 	"StudentBuilt event = (StudentBuilt) e;
 Student object = model.getOrCreateStudent(event.getBlockId());
 object.setName(event.getName());
-object.setBirthYear(Integer.parseInt(event.getBirthYear()));
+object.setBirthYear(event.getBirthYear());
 object.setStudentId(event.getStudentId());
-object.setUni(model.getOrCreateUniversity(event.getUni()));
+object.setUni(event.getUni());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleStudentBuilt
+  name: 	loadStudentBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightBuilder/method/handleStudentBuilt(Event)"
+  returnType: 	Student
+  signature: 	"class/StudyRightBuilder/method/loadStudentBuilt(Event)"
 
-- studyRightBuilder_handleTourListBuilt: 	org.fulib.classmodel.FMethod
+- studyRightBuilder_storeTourListBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightBuilder
-  declaration: 	"public void handleTourListBuilt(Event e)"
-  id: 	StudyRightBuilder_handleTourListBuilt
+  declaration: 	"public void storeTourListBuilt(Event e)"
+  id: 	StudyRightBuilder_storeTourListBuilt
+  methodBody: 	"TourListBuilt event = (TourListBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeTourListBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBuilder/method/storeTourListBuilt(Event)"
+
+- studyRightBuilder_loadTourListBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public TourList loadTourListBuilt(Event e)"
+  id: 	StudyRightBuilder_loadTourListBuilt
   methodBody: 	"TourListBuilt event = (TourListBuilt) e;
 TourList object = model.getOrCreateTourList(event.getBlockId());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleTourListBuilt
+  name: 	loadTourListBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightBuilder/method/handleTourListBuilt(Event)"
+  returnType: 	TourList
+  signature: 	"class/StudyRightBuilder/method/loadTourListBuilt(Event)"
 
-- studyRightBuilder_handleStopBuilt: 	org.fulib.classmodel.FMethod
+- studyRightBuilder_storeStopBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightBuilder
-  declaration: 	"public void handleStopBuilt(Event e)"
-  id: 	StudyRightBuilder_handleStopBuilt
+  declaration: 	"public void storeStopBuilt(Event e)"
+  id: 	StudyRightBuilder_storeStopBuilt
+  methodBody: 	"StopBuilt event = (StopBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeStopBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StudyRightBuilder/method/storeStopBuilt(Event)"
+
+- studyRightBuilder_loadStopBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public Stop loadStopBuilt(Event e)"
+  id: 	StudyRightBuilder_loadStopBuilt
   methodBody: 	"StopBuilt event = (StopBuilt) e;
 Stop object = model.getOrCreateStop(event.getBlockId());
 object.setMotivation(event.getMotivation());
 object.setRoom(event.getRoom());
-object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
+object.setPreviousStop(model.getOrCreateStop(getVarName(event.getPreviousStop())));
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleStopBuilt
+  name: 	loadStopBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StudyRightBuilder/method/handleStopBuilt(Event)"
+  returnType: 	Stop
+  signature: 	"class/StudyRightBuilder/method/loadStopBuilt(Event)"
 
-- studyRightBuilder_handleTourBuilt: 	org.fulib.classmodel.FMethod
+- studyRightBuilder_storeTourBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightBuilder
-  declaration: 	"public void handleTourBuilt(Event e)"
-  id: 	StudyRightBuilder_handleTourBuilt
+  declaration: 	"public void storeTourBuilt(Event e)"
+  id: 	StudyRightBuilder_storeTourBuilt
   methodBody: 	"TourBuilt event = (TourBuilt) e;
-Tour object = model.getOrCreateTour(event.getBlockId());
-object.setTourList(model.getOrCreateTourList(event.getTourList()));
-object.setStops(event.getStops());
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleTourBuilt
+  name: 	storeTourBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/StudyRightBuilder/method/handleTourBuilt(Event)"
+  signature: 	"class/StudyRightBuilder/method/storeTourBuilt(Event)"
+
+- studyRightBuilder_loadTourBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public Tour loadTourBuilt(Event e)"
+  id: 	StudyRightBuilder_loadTourBuilt
+  methodBody: 	"TourBuilt event = (TourBuilt) e;
+Tour object = model.getOrCreateTour(event.getBlockId());
+object.setTourList(model.getOrCreateTourList(getVarName(event.getTourList())));
+object.setStops(event.getStops());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadTourBuilt
+  paramsString: 	"Event e"
+  returnType: 	Tour
+  signature: 	"class/StudyRightBuilder/method/loadTourBuilt(Event)"
+
+- studyRightBuilder_load: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public Object load(String blockId)"
+  id: 	StudyRightBuilder_load
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;"
+  modified: 	false
+  modifiers: 	public
+  name: 	load
+  paramsString: 	"String blockId"
+  returnType: 	Object
+  signature: 	"class/StudyRightBuilder/method/load(String)"
+
+- studyRightBuilder_initLoaderMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"private void initLoaderMap()"
+  id: 	StudyRightBuilder_initLoaderMap
+  methodBody: 	"if (loaderMap == null) {
+   loaderMap = new LinkedHashMap<>();
+   loaderMap.put(UniversityBuilt.class, this::loadUniversityBuilt);
+   loaderMap.put(RoomBuilt.class, this::loadRoomBuilt);
+   loaderMap.put(StudentBuilt.class, this::loadStudentBuilt);
+   loaderMap.put(TourListBuilt.class, this::loadTourListBuilt);
+   loaderMap.put(StopBuilt.class, this::loadStopBuilt);
+   loaderMap.put(TourBuilt.class, this::loadTourBuilt);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	initLoaderMap
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/StudyRightBuilder/method/initLoaderMap()"
+
+- studyRightBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	StudyRightBuilder_getVarName
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/StudyRightBuilder/method/getVarName(String)"
+
+- studyRightBuilder_addToGroup: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"private void addToGroup(String groupId, String elementId)"
+  id: 	StudyRightBuilder_addToGroup
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format(\"could not find element event %s for group %s \", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);"
+  modified: 	false
+  modifiers: 	private
+  name: 	addToGroup
+  paramsString: 	"String groupId, String elementId"
+  returnType: 	void
+  signature: 	"class/StudyRightBuilder/method/addToGroup(String,String)"
 
 - studyRightBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -813,6 +1083,16 @@ object.setStops(event.getStops());
   modified: 	false
   name: 	businessLogic
   other: 	studyRightBusinessLogic_builder
+  propertyStyle: 	Bean
+
+- studyRightBuilder_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	studyRightBuilder
+  id: 	StudyRightBuilder_service
+  modified: 	false
+  name: 	service
+  other: 	studyRightService_builder
   propertyStyle: 	Bean
 
 - studyRightService_history: 	org.fulib.classmodel.Attribute
@@ -853,14 +1133,56 @@ object.setStops(event.getStops());
   type: 	StudyRightModel
   typeSignature: 	StudyRightModel
 
+- studyRightService_query: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"public Query query(Query query)"
+  id: 	StudyRightService_query
+  methodBody: 	"      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;"
+  modified: 	false
+  modifiers: 	public
+  name: 	query
+  paramsString: 	"Query query"
+  returnType: 	Query
+  signature: 	"class/StudyRightService/method/query(Query)"
+
+- studyRightService_isoNow: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"public String isoNow()"
+  id: 	StudyRightService_isoNow
+  methodBody: 	"return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	isoNow
+  paramsString: 	""
+  returnType: 	String
+  signature: 	"class/StudyRightService/method/isoNow()"
+
 - studyRightService_start: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	studyRightService
   declaration: 	"public void start()"
   id: 	StudyRightService_start
   methodBody: 	"model = new StudyRightModel();
+setBuilder(new StudyRightBuilder().setModel(model));
 setBusinessLogic(new StudyRightBusinessLogic());
-businessLogic.setBuilder(new StudyRightBuilder().setModel(model));
+businessLogic.setBuilder(getBuilder());
 businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
@@ -884,8 +1206,8 @@ Logger.getGlobal().info(\"StudyRight service is up and running on port \" + port
   declaration: 	"private String getHello(Request req, Response res)"
   id: 	StudyRightService_getHello
   methodBody: 	"try {
-   String events = Yaml.encode(getHistory().values().toArray());
-   String objects = Yaml.encode(model.getModelMap().values().toArray());
+   String events = Yaml.encodeSimple(getHistory().values().toArray());
+   String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
    return \"<p id='StudyRight'>This is the StudyRight service. </p>\n\" +
          \"<pre id=\\"history\\">\" + events + \"</pre>\n\" +
          \"<pre id=\\"data\\">\" + objects + \"</pre>\n\" +
@@ -909,8 +1231,8 @@ catch (Exception e) {
   declaration: 	"private void subscribeAndLoadOldEvents()"
   id: 	StudyRightService_subscribeAndLoadOldEvents
   methodBody: 	"ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-      .setServiceUrl(\"http://localhost:42400/apply\");
-String json = Yaml.encode(serviceSubscribed);
+      .setServiceUrl(String.format(\"http://localhost:%d/apply\", port));
+String json = Yaml.encodeSimple(serviceSubscribed);
 try {
    String url = \"http://localhost:42000/subscribe\";
    HttpResponse<String> response = Unirest
@@ -918,7 +1240,9 @@ try {
          .body(json)
          .asString();
    String body = response.getBody();
-   Map<String, Object> objectMap = Yaml.decode(body);
+   YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+   idMap.decode(body);
+   Map<String, Object> objectMap = idMap.getObjIdMap();
    for (Object obj : objectMap.values()) {
       apply((Event) obj);
    }
@@ -945,6 +1269,7 @@ businessLogic.initEventHandlerMap();
 Consumer<Event> handler = businessLogic.getHandler(event);
 handler.accept(event);
 history.put(event.getId(), event);
+firePropertyChange(PROPERTY_HISTORY, null, event);
 publish(event);"
   modified: 	false
   modifiers: 	public
@@ -958,8 +1283,8 @@ publish(event);"
   clazz: 	studyRightService
   declaration: 	"public String getPage(Request request, Response response)"
   id: 	StudyRightService_getPage
-  methodBody: 	"// no fulib
-// add your page handling here
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 return getDemoPage(request, response);
 "
   modified: 	false
@@ -1026,7 +1351,7 @@ return html.toString();"
   clazz: 	studyRightService
   declaration: 	"public void publish(Event event)"
   id: 	StudyRightService_publish
-  methodBody: 	"String json = Yaml.encode(event);
+  methodBody: 	"String json = Yaml.encodeSimple(event);
 
 try {
    HttpResponse<String> response = Unirest
@@ -1049,16 +1374,24 @@ catch (UnirestException e) {
   clazz: 	studyRightService
   declaration: 	"private String postApply(Request req, Response res)"
   id: 	StudyRightService_postApply
-  methodBody: 	"      try {
-         String body = req.body();
-         Map<String, Object> map = Yaml.decode(body);
+  methodBody: 	"      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
          for (Object value : map.values()) {
             Event event = (Event) value;
             apply(event);
          }
       }
       catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         String message = e.getMessage();
+         if (message.contains(\"ReflectorMap could not find class description\")) {
+            Logger.getGlobal().info(\"post apply ignores unknown event \" + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         }
       }
       return \"apply done\";"
   modified: 	false
@@ -1076,6 +1409,16 @@ catch (UnirestException e) {
   modified: 	false
   name: 	businessLogic
   other: 	studyRightBusinessLogic_service
+  propertyStyle: 	Bean
+
+- studyRightService_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	studyRightService
+  id: 	StudyRightService_builder
+  modified: 	false
+  name: 	builder
+  other: 	studyRightBuilder_service
   propertyStyle: 	Bean
 
 - university_id: 	org.fulib.classmodel.Attribute
@@ -1151,48 +1494,38 @@ catch (UnirestException e) {
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- person_id: 	org.fulib.classmodel.Attribute
-  clazz: 	person
-  id: 	Person_id
-  modified: 	false
-  name: 	id
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- person_name: 	org.fulib.classmodel.Attribute
-  clazz: 	person
-  id: 	Person_name
+- student_name: 	org.fulib.classmodel.Attribute
+  clazz: 	student
+  id: 	Student_name
   modified: 	false
   name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- person_birthYear: 	org.fulib.classmodel.Attribute
-  clazz: 	person
-  id: 	Person_birthYear
+- student_birthYear: 	org.fulib.classmodel.Attribute
+  clazz: 	student
+  id: 	Student_birthYear
   modified: 	false
   name: 	birthYear
   propertyStyle: 	Bean
-  type: 	int
-  typeSignature: 	int
-
-- person_uni: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	person
-  id: 	Person_uni
-  modified: 	false
-  name: 	uni
-  other: 	university_persons
-  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 
 - student_studentId: 	org.fulib.classmodel.Attribute
   clazz: 	student
   id: 	Student_studentId
   modified: 	false
   name: 	studentId
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- student_uni: 	org.fulib.classmodel.Attribute
+  clazz: 	student
+  id: 	Student_uni
+  modified: 	false
+  name: 	uni
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -1293,5 +1626,42 @@ catch (UnirestException e) {
   modified: 	false
   name: 	tourList
   other: 	tourList_alternatives
+  propertyStyle: 	Bean
+
+- person_id: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- person_name: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- person_birthYear: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_birthYear
+  modified: 	false
+  name: 	birthYear
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- person_uni: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	person
+  id: 	Person_uni
+  modified: 	false
+  name: 	uni
+  other: 	university_persons
   propertyStyle: 	Bean
 

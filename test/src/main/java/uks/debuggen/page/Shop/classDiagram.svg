@@ -1,25 +1,67 @@
-<svg width="642px" height="118px"
- viewBox="0.00 0.00 642.00 118.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 114)">
+<svg width="796px" height="355px"
+ viewBox="0.00 0.00 796.00 355.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 351)">
 <title>uks.debuggen.page.Shop</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-114 638,-114 638,4 -4,4"/>
-<!-- ShopModel -->
-<g id="node1" class="node"><title>ShopModel</title>
-<polygon fill="none" stroke="black" points="8,-55 8,-76 264,-76 264,-55 8,-55"/>
-<text text-anchor="start" x="102.5" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">ShopModel</text>
-<polygon fill="none" stroke="black" points="8,-34 8,-55 264,-55 264,-34 8,-34"/>
-<text text-anchor="start" x="11" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-351 792,-351 792,4 -4,4"/>
+<!-- ShopBuilder -->
+<g id="node1" class="node">
+<title>ShopBuilder</title>
+<polygon fill="none" stroke="black" points="59,-76.5 59,-98.5 488,-98.5 488,-76.5 59,-76.5"/>
+<text text-anchor="start" x="238.11" y="-82.9" font-family="Times,serif" font-size="14.00">ShopBuilder</text>
+<polygon fill="none" stroke="black" points="59,-3.5 59,-76.5 488,-76.5 488,-3.5 59,-3.5"/>
+<text text-anchor="start" x="62" y="-60.9" font-family="Times,serif" font-size="14.00">model :ShopModel</text>
+<text text-anchor="start" x="62" y="-44.1" font-family="Times,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
+<text text-anchor="start" x="62" y="-27.3" font-family="Times,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
+<text text-anchor="start" x="62" y="-10.5" font-family="Times,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
+</g>
+<!-- ShopBusinessLogic -->
+<g id="node2" class="node">
+<title>ShopBusinessLogic</title>
+<polygon fill="none" stroke="black" points="8,-181.5 8,-203.5 338,-203.5 338,-181.5 8,-181.5"/>
+<text text-anchor="start" x="117.39" y="-187.9" font-family="Times,serif" font-size="14.00">ShopBusinessLogic</text>
+<polygon fill="none" stroke="black" points="8,-142.5 8,-181.5 338,-181.5 338,-142.5 8,-142.5"/>
+<text text-anchor="start" x="11" y="-165.9" font-family="Times,serif" font-size="14.00">model :ShopModel</text>
+<text text-anchor="start" x="11" y="-149.1" font-family="Times,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+</g>
+<!-- ShopBuilder&#45;&gt;ShopBusinessLogic -->
+<g id="edge1" class="edge">
+<title>ShopBuilder&#45;&gt;ShopBusinessLogic</title>
+<path fill="none" stroke="black" d="M230.88,-103.04C220.85,-115.08 210.38,-127.65 201.14,-138.73"/>
+<text text-anchor="middle" x="161.1" y="-126.13" font-family="Times,serif" font-size="14.00">businessLogic</text>
+<text text-anchor="middle" x="211.05" y="-107.24" font-family="Times,serif" font-size="14.00">builder</text>
 </g>
 <!-- ShopService -->
-<g id="node2" class="node"><title>ShopService</title>
-<polygon fill="none" stroke="black" points="298,-85 298,-106 626,-106 626,-85 298,-85"/>
-<text text-anchor="start" x="426" y="-91.8" font-family="Times New Roman,serif" font-size="14.00">ShopService</text>
-<polygon fill="none" stroke="black" points="298,-4 298,-85 626,-85 626,-4 298,-4"/>
-<text text-anchor="start" x="301" y="-70.8" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
-<text text-anchor="start" x="301" y="-55.8" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
-<text text-anchor="start" x="301" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
-<text text-anchor="start" x="301" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">model :ShopModel</text>
-<text text-anchor="start" x="301" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+<g id="node4" class="node">
+<title>ShopService</title>
+<polygon fill="none" stroke="black" points="157,-320.5 157,-342.5 389,-342.5 389,-320.5 157,-320.5"/>
+<text text-anchor="start" x="237.62" y="-326.9" font-family="Times,serif" font-size="14.00">ShopService</text>
+<polygon fill="none" stroke="black" points="157,-247.5 157,-320.5 389,-320.5 389,-247.5 157,-247.5"/>
+<text text-anchor="start" x="160" y="-304.9" font-family="Times,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="160" y="-288.1" font-family="Times,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="160" y="-271.3" font-family="Times,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="160" y="-254.5" font-family="Times,serif" font-size="14.00">model :ShopModel</text>
+</g>
+<!-- ShopBuilder&#45;&gt;ShopService -->
+<g id="edge2" class="edge">
+<title>ShopBuilder&#45;&gt;ShopService</title>
+<path fill="none" stroke="black" d="M332.69,-103.27C341.8,-114.06 349.87,-126.12 355,-139 366.36,-167.49 366.36,-179.51 355,-208 349.87,-220.88 341.8,-232.94 332.69,-243.73"/>
+<text text-anchor="middle" x="312.87" y="-231.13" font-family="Times,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="312.87" y="-107.47" font-family="Times,serif" font-size="14.00">builder</text>
+</g>
+<!-- ShopBusinessLogic&#45;&gt;ShopService -->
+<g id="edge3" class="edge">
+<title>ShopBusinessLogic&#45;&gt;ShopService</title>
+<path fill="none" stroke="black" d="M201.12,-208.25C210.36,-219.34 220.85,-231.92 230.9,-243.98"/>
+<text text-anchor="middle" x="211.08" y="-231.38" font-family="Times,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="161.07" y="-212.45" font-family="Times,serif" font-size="14.00">businessLogic</text>
+</g>
+<!-- ShopModel -->
+<g id="node3" class="node">
+<title>ShopModel</title>
+<polygon fill="none" stroke="black" points="522,-51.5 522,-73.5 780,-73.5 780,-51.5 522,-51.5"/>
+<text text-anchor="start" x="618.33" y="-57.9" font-family="Times,serif" font-size="14.00">ShopModel</text>
+<polygon fill="none" stroke="black" points="522,-29.5 522,-51.5 780,-51.5 780,-29.5 522,-29.5"/>
+<text text-anchor="start" x="525" y="-35.9" font-family="Times,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
 </g>
 </g>
 </svg>

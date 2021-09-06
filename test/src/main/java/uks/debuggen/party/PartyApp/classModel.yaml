@@ -32,7 +32,7 @@
   attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore 	partyAppBuilder_loaderMap 	partyAppBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import java.util.function.Function;"
-  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_loadPartyBuilt 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_initLoaderMap 	partyAppBuilder_addToGroup 	partyAppBuilder_stripBrackets
+  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_loadPartyBuilt 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_initLoaderMap 	partyAppBuilder_getVarName 	partyAppBuilder_addToGroup 	partyAppBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	PartyAppBuilder
@@ -410,15 +410,15 @@ if (event.getId().equals(\"14:09\")) {
   id: 	PartyAppBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
+   handlerMap.put(UserBuilt.class, builder::storeUserBuilt);
+   handlerMap.put(PartyBuilt.class, builder::storePartyBuilt);
+   handlerMap.put(ItemBuilt.class, builder::storeItemBuilt);
+   handlerMap.put(GuestBuilt.class, builder::storeGuestBuilt);
    handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
    handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
    handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
    handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
    handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
-   handlerMap.put(UserBuilt.class, builder::storeUserBuilt);
-   handlerMap.put(PartyBuilt.class, builder::storePartyBuilt);
-   handlerMap.put(ItemBuilt.class, builder::storeItemBuilt);
-   handlerMap.put(GuestBuilt.class, builder::storeGuestBuilt);
 }
 "
   modified: 	false
@@ -643,8 +643,8 @@ if (outdated(event)) {
 Item object = model.getOrCreateItem(event.getBlockId());
 object.setName(event.getName());
 object.setPrice(event.getPrice());
-object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
-object.setParty(model.getOrCreateParty(event.getParty()));
+object.setBuyer(model.getOrCreateGuest(getVarName(event.getBuyer())));
+object.setParty(model.getOrCreateParty(getVarName(event.getParty())));
 return object;
 "
   modified: 	false
@@ -681,7 +681,7 @@ if (outdated(event)) {
   methodBody: 	"GuestBuilt event = (GuestBuilt) e;
 Guest object = model.getOrCreateGuest(event.getBlockId());
 object.setName(event.getName());
-object.setParty(model.getOrCreateParty(event.getParty()));
+object.setParty(model.getOrCreateParty(getVarName(event.getParty())));
 object.setExpenses(event.getExpenses());
 return object;
 "
@@ -739,6 +739,27 @@ return object;
   paramsString: 	""
   returnType: 	void
   signature: 	"class/PartyAppBuilder/method/initLoaderMap()"
+
+- partyAppBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	PartyAppBuilder_getVarName
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/PartyAppBuilder/method/getVarName(String)"
 
 - partyAppBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""

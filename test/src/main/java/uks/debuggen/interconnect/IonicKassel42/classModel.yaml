@@ -31,7 +31,7 @@
   attributes: 	ionicKassel42Builder_model 	ionicKassel42Builder_eventStore 	ionicKassel42Builder_loaderMap 	ionicKassel42Builder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.interconnect.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.interconnect.events.*;" 	"import java.util.function.Function;"
-  methods: 	ionicKassel42Builder_outdated 	ionicKassel42Builder_load 	ionicKassel42Builder_initLoaderMap 	ionicKassel42Builder_addToGroup 	ionicKassel42Builder_stripBrackets
+  methods: 	ionicKassel42Builder_outdated 	ionicKassel42Builder_load 	ionicKassel42Builder_initLoaderMap 	ionicKassel42Builder_getVarName 	ionicKassel42Builder_addToGroup 	ionicKassel42Builder_stripBrackets
   model: 	c
   modified: 	false
   name: 	IonicKassel42Builder
@@ -304,6 +304,27 @@ handleDemoCarConnectedEvent(event);
   paramsString: 	""
   returnType: 	void
   signature: 	"class/IonicKassel42Builder/method/initLoaderMap()"
+
+- ionicKassel42Builder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	ionicKassel42Builder
+  declaration: 	"public String getVarName(String value)"
+  id: 	IonicKassel42Builder_getVarName
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/IonicKassel42Builder/method/getVarName(String)"
 
 - ionicKassel42Builder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""

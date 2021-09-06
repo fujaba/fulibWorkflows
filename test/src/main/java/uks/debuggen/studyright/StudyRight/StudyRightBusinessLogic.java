@@ -138,7 +138,7 @@ public class StudyRightBusinessLogic
          UniversityBuilt studyRightEvent = new UniversityBuilt();
          studyRightEvent.setId("12:00:00");
          studyRightEvent.setBlockId("StudyRight");
-         studyRightEvent.setRooms("[math exam]");
+         studyRightEvent.setRooms("[math, exam]");
          service.apply(studyRightEvent);
 
          RoomBuilt mathEvent = new RoomBuilt();
@@ -146,7 +146,7 @@ public class StudyRightBusinessLogic
          mathEvent.setBlockId("math");
          mathEvent.setCredits("23");
          mathEvent.setUni("StudyRight");
-         mathEvent.setDoors("[modeling algebra]");
+         mathEvent.setDoors("[modeling, algebra]");
          service.apply(mathEvent);
 
          RoomBuilt modelingEvent = new RoomBuilt();
@@ -154,7 +154,7 @@ public class StudyRightBusinessLogic
          modelingEvent.setBlockId("modeling");
          modelingEvent.setUni("StudyRight");
          modelingEvent.setCredits("42");
-         modelingEvent.setDoors("[math algebra exam]");
+         modelingEvent.setDoors("[math, algebra, exam]");
          service.apply(modelingEvent);
 
          RoomBuilt algebraEvent = new RoomBuilt();
@@ -594,16 +594,16 @@ public class StudyRightBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
+         handlerMap.put(UniversityBuilt.class, builder::storeUniversityBuilt);
+         handlerMap.put(RoomBuilt.class, builder::storeRoomBuilt);
+         handlerMap.put(StudentBuilt.class, builder::storeStudentBuilt);
+         handlerMap.put(TourListBuilt.class, builder::storeTourListBuilt);
+         handlerMap.put(StopBuilt.class, builder::storeStopBuilt);
+         handlerMap.put(TourBuilt.class, builder::storeTourBuilt);
          handlerMap.put(LoadRoomsCommand.class, this::handleLoadRoomsCommand);
          handlerMap.put(FindToursCommand.class, this::handleFindToursCommand);
          handlerMap.put(VisitRoomCommand.class, this::handleVisitRoomCommand);
          handlerMap.put(CollectTourStopsCommand.class, this::handleCollectTourStopsCommand);
-         handlerMap.put(UniversityBuilt.class, builder::handleUniversityBuilt);
-         handlerMap.put(RoomBuilt.class, builder::handleRoomBuilt);
-         handlerMap.put(StudentBuilt.class, builder::handleStudentBuilt);
-         handlerMap.put(TourListBuilt.class, builder::handleTourListBuilt);
-         handlerMap.put(StopBuilt.class, builder::handleStopBuilt);
-         handlerMap.put(TourBuilt.class, builder::handleTourBuilt);
       }
    }
 }

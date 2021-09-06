@@ -1,140 +1,66 @@
-
 delimiters "{", "}"
 
-
-page(content, width) ::= <<
-<html>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        body \{
-            font-family: "Arial Narrow", Arial, sans-serif;
-        \}
-
-        .lane \{
-            width: {width}px;
-            float: left;
-        \}
-
-        .box \{
-            position: relative;
-            float: left;
-            margin: 6px;
-            padding: 12px;
-        \}
-
-        .placeholder \{
-            opacity: 0.0;
-        \}
-
-        .event \{
-            background-color:Orange;
-        \}
-
-        .page \{
-            background-color:LightBlue;
-        \}
-
-        .command \{
-            background-color:LightBlue;
-        \}
-
-        .data \{
-            background-color: #FFA2FF;
-        \}
-
-        .user \{
-            background-color:Yellow;
-        \}
-
-        .server \{
-            background-color:Violet;
-        \}
-
-        .center \{
-            text-align: center;
-        }
-
-        .fa-rotate-45 \{
-            -webkit-transform: rotate(45deg);
-            -moz-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-            -o-transform: rotate(45deg);
-            transform: rotate(45deg);
-            color: #FFA2FF;
-            font-size: 3em;
-        }
-
-        .fa-cloud \{
-            color: LightGrey;
-            font-size: 3em;
-        }
-    </style>
+page(content, workflowName) ::= <<
+<html lang="en">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{workflowName}.css" />
+<script src="{workflowName}.js"></script>
 <body>
-    {content}
+{content}
 </body>
 </html>
 >>
 
-lane(id, type, content) ::=
-<<
-    <div id="{id}" class="lane">
-        <div class="box {type}">
-            <div class="center"><i class="fa fa-{type}"></i></div>
-            <div>{id}</div>
-        </div>
-        {content}
-    </div>
-
->>
-
-lane2(id, content, icon) ::=
-<<
-    <div id="{id}" class="lane">
-        <div class="box">
-            <div class="center">{icon}</i></div>
-            <div>{id}</div>
-        </div>
-        {content}
-    </div>
-
->>
-
-actor(id, type) ::=
-<<
+lane(id, type, content) ::= <<
+<div id="{id}" class="lane">
     <div class="box {type}">
         <div class="center"><i class="fa fa-{type}"></i></div>
         <div>{id}</div>
     </div>
-
+    {content}
+</div>
 >>
 
-note(id, type, content) ::=
-<<
-    <div class="box {type}">
+lane2(id, content, icon) ::= <<
+<div id="{id}" class="lane">
+    <div class="box" onClick="changeVisibilityOf{id}()">
+        <div class="center">{icon}</i></div>
+        <div>{id}</div>
+    </div>
+    <div id="show{id}">
         {content}
     </div>
+</div>
+>>
 
+actor(id, type) ::= <<
+<div class="box {type}">
+    <div class="center"><i class="fa fa-{type}"></i></div>
+    <div>{id}</div>
+</div>
+>>
+
+note(id, type, content) ::= <<
+<div class="box {type}">
+    {content}
+</div>
 >>
 
 
 label(id, content) ::= <<
 <p>{content}</p>
-
 >>
 
 input(id, content, value) ::= <<
 <p><input id="{id}" name="{id}" value="{value}" placeholder="{content}"/></p>
-
 >>
 
 link(id, content, value) ::= <<
 <p><a id="{id}" href="{value}">{content}</a></p>
-
 >>
 
 button(id, content) ::= <<
 <p><button id="{id}">{content}</button></p>
-
 >>
 
 form(id, content, url) ::= <<
@@ -142,5 +68,4 @@ form(id, content, url) ::= <<
     {content}
     <input id="submit" type="submit" value="Send">
 </form>
-
 >>
