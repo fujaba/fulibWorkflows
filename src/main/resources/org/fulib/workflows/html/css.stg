@@ -1,6 +1,8 @@
 delimiters "{", "}"
 
 css(width) ::= <<
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
 body \{
     font-family: "Arial Narrow", Arial, sans-serif;
 \}
