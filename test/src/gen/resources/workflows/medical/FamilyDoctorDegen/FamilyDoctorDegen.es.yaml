@@ -3,10 +3,10 @@
 
 - workflow: family doctor degen
 
-- boundedcontext: consultations
+- boundedContext: consultations
 
-- boundedcontext: accounting
+- boundedContext: accounting
 
-- boundedcontext: covid vaccination
+- boundedContext: covid vaccination
 
 

@@ -172,7 +172,7 @@ public class HtmlGenerator3 {
                 noteType = "broker";
                 StringBuilder lines = new StringBuilder();
                 lines.append(String.format("<div class='box event center'>%s</i></div>\n", "E"));
-                String value = map.get("brokertopic");
+                String value = map.get("brokerTopic");
                 String[] split = value.split("\\s+");
                 for (String word : split) {
                     lines.append(String.format("<div class='center'>%s</i></div>\n", word));

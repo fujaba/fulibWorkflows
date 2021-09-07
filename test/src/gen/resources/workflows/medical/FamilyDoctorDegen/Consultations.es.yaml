@@ -2,7 +2,7 @@
 - workflow: import knowledge
 
 # import health knowledge
-- externalsystem: marburg health knowledge
+- externalSystem: marburg health knowledge
   events: 12:00 - 13:00
 
 - policy: DocMedical
@@ -12,7 +12,7 @@
 
 - action: Doc Degen
 
-- brokertopic: doc degen office
+- brokerTopic: doc degen office
 
 - event: patient registered 14:00
   name: Alice
