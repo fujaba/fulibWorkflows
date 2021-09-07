@@ -37,11 +37,12 @@ public class HtmlGenerator3 {
             String outputDirectoryPath = String.format("tmp//%s", workFlowName);
             Files.createDirectories(Path.of(outputDirectoryPath));
 
-            String outputCssFilePath = String.format("tmp/%s/%sEventStorming.css", workFlowName, workFlowName);
+            // Only generate css once and save it in tmp directly (Always the same content)
+            String outputCssFilePath = "tmp/EventStorming.css";
             if (!Files.exists(Path.of(outputCssFilePath))) {
                 Files.createFile(Path.of(outputCssFilePath));
+                Files.write(Path.of(outputCssFilePath), cssBody.toString().getBytes(StandardCharsets.UTF_8));
             }
-            Files.write(Path.of(outputCssFilePath), cssBody.toString().getBytes(StandardCharsets.UTF_8));
 
             String outputHtmlFilePath = String.format("tmp/%s/%sEventStorming.html", workFlowName, workFlowName);
             if (!Files.exists(Path.of(outputHtmlFilePath))) {
