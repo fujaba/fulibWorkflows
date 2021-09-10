@@ -68,6 +68,7 @@ public class TestSomeEventStorming
       LinkedHashMap<String, Object> modelMap;
 
       // workflow working smoothly
+
       // create StoreBoxCommand: store box 12:00
       StoreBoxCommand e1200 = new StoreBoxCommand();
       e1200.setId("12:00");
@@ -202,6 +203,7 @@ public class TestSomeEventStorming
       pre.shouldHave(matchText("state:.*shipping"));
 
       // workflow OrderOutOfStocks
+
       // create SubmitOrderCommand: submit order 13:11
       SubmitOrderCommand e1311 = new SubmitOrderCommand();
       e1311.setId("13:11");

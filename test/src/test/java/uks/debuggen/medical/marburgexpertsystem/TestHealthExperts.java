@@ -58,6 +58,7 @@ public class TestHealthExperts
       LinkedHashMap<String, Object> modelMap;
 
       // workflow MarburgExpertSystem
+
       // create LoadDiseasesCommand: load diseases 12:00
       LoadDiseasesCommand e1200 = new LoadDiseasesCommand();
       e1200.setId("12:00");

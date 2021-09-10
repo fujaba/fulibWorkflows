@@ -67,8 +67,8 @@
   consultation: Alice#2021-06-02T14:00
   consultation.back: [tests]
 
-- data: Symptom fever 14:04:02
-  name: fever
+- data: Symptom medium_fever 14:04:02
+  name: medium fever
   consultations: [Alice#2021-06-02T14:00]
 
 - data: Consultation Alice_2021_06_02T14_00 14:05:01

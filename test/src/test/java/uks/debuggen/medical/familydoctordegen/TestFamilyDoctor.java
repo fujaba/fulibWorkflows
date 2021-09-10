@@ -46,7 +46,7 @@ public class TestFamilyDoctor
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = 10 * 60 * 1000;
+      // Configuration.timeout = 10 * 60 * 1000;
       Configuration.pageLoadTimeout = Configuration.timeout;
       Configuration.browserPosition = "-3500x10";
    }
@@ -70,8 +70,88 @@ public class TestFamilyDoctor
       LinkedHashMap<String, Object> modelMap;
 
       // workflow FamilyDoctorDegen
+
       // workflow ImportKnowledge
+         DiseaseBuilt common_coldEvent = new DiseaseBuilt();
+         common_coldEvent.setId("12:00:01");
+         common_coldEvent.setBlockId("common_cold");
+         common_coldEvent.setName("common cold");
+         common_coldEvent.setSymptoms("[runny nose, cough, hoarseness, medium fever]");
+         common_coldEvent.setCounterSymptoms("[chills, joint pain]");
+         publish(common_coldEvent);
+
+         DiseaseBuilt influenzaEvent = new DiseaseBuilt();
+         influenzaEvent.setId("12:00:02");
+         influenzaEvent.setBlockId("influenza");
+         influenzaEvent.setName("influenza");
+         influenzaEvent.setSymptoms("[cough, medium fever, chills, joint pain, headache]");
+         influenzaEvent.setCounterSymptoms("[lung noises]");
+         publish(influenzaEvent);
+
+         DiseaseBuilt pneumoniaEvent = new DiseaseBuilt();
+         pneumoniaEvent.setId("12:00:03");
+         pneumoniaEvent.setBlockId("pneumonia");
+         pneumoniaEvent.setName("pneumonia");
+         pneumoniaEvent.setSymptoms("[cough, medium fever, chills, joint pain, headache, lung noises]");
+         publish(pneumoniaEvent);
+
+         SymptomBuilt coughEvent = new SymptomBuilt();
+         coughEvent.setId("12:00:04");
+         coughEvent.setBlockId("cough");
+         coughEvent.setName("cough");
+         publish(coughEvent);
+
+         SymptomBuilt runny_noseEvent = new SymptomBuilt();
+         runny_noseEvent.setId("12:00:05");
+         runny_noseEvent.setBlockId("runny_nose");
+         runny_noseEvent.setName("runny nose");
+         publish(runny_noseEvent);
+
+         SymptomBuilt hoarsenessEvent = new SymptomBuilt();
+         hoarsenessEvent.setId("12:00:06");
+         hoarsenessEvent.setBlockId("hoarseness");
+         hoarsenessEvent.setName("hoarseness");
+         publish(hoarsenessEvent);
+
+         SymptomBuilt medium_feverEvent = new SymptomBuilt();
+         medium_feverEvent.setId("12:00:07");
+         medium_feverEvent.setBlockId("medium_fever");
+         medium_feverEvent.setName("medium fever");
+         publish(medium_feverEvent);
+
+         SymptomBuilt chillsEvent = new SymptomBuilt();
+         chillsEvent.setId("12:00:08");
+         chillsEvent.setBlockId("chills");
+         chillsEvent.setName("chills");
+         publish(chillsEvent);
+
+         SymptomBuilt joint_painEvent = new SymptomBuilt();
+         joint_painEvent.setId("12:00:09");
+         joint_painEvent.setBlockId("joint_pain");
+         joint_painEvent.setName("joint pain");
+         publish(joint_painEvent);
+
+         SymptomBuilt headacheEvent = new SymptomBuilt();
+         headacheEvent.setId("12:00:10");
+         headacheEvent.setBlockId("headache");
+         headacheEvent.setName("headache");
+         publish(headacheEvent);
+
+         SymptomBuilt lung_noisesEvent = new SymptomBuilt();
+         lung_noisesEvent.setId("12:00:11");
+         lung_noisesEvent.setBlockId("lung_noises");
+         lung_noisesEvent.setName("lung noises");
+         publish(lung_noisesEvent);
+
+         DiseaseBuilt disease2Event = new DiseaseBuilt();
+         disease2Event.setId("12:00:01");
+         disease2Event.setBlockId("Disease2");
+         disease2Event.setMigratedTo("Disease2");
+         publish(disease2Event);
+
+
       // workflow SimpleConsultations
+
       // create PatientRegisteredEvent: patient registered 14:00
       PatientRegisteredEvent e1400 = new PatientRegisteredEvent();
       e1400.setId("14:00");
@@ -218,8 +298,8 @@ public class TestFamilyDoctor
       pre.shouldHave(matchText("consultation:.*alice_2021_06_02T14_00"));
       // check data note 14:04:02
       pre = $("#data");
-      pre.shouldHave(text("- fever:"));
-      pre.shouldHave(matchText("name:.*fever"));
+      pre.shouldHave(text("- medium_fever:"));
+      pre.shouldHave(matchText("name:.*\"medium fever\""));
       pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00"));
 
       // create DiagnosisEvent: diagnosis done
@@ -279,6 +359,7 @@ public class TestFamilyDoctor
       pre.shouldHave(matchText("treatment:.*\"ibuprofen 400 1-1-1\""));
 
       // workflow Accounting
+
       // create InvoiceSentEvent: invoice sent 14:07
       InvoiceSentEvent e1407 = new InvoiceSentEvent();
       e1407.setId("14:07");
@@ -289,6 +370,7 @@ public class TestFamilyDoctor
       pre.shouldHave(text("- 14_07:"));
 
       // workflow CovidVaccination
+
       // create CovidVaccinationRequestedEvent: covid vaccination requested 14:10
       CovidVaccinationRequestedEvent e1410 = new CovidVaccinationRequestedEvent();
       e1410.setId("14:10");

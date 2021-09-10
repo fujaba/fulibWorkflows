@@ -567,13 +567,13 @@ public class WorkflowGenerator
          EventNote triggerEvent = policy.getTrigger();
          String eventId = triggerEvent.getTime();
          body.append(String.format("if (event.getId().equals(\"%s\")) {\n", eventId));
-         addMockupData(modelManager, serviceNote, policy, body);
+         addMockupData(modelManager, serviceNote, policy, body, "service.apply");
          body.append("}\n");
       }
       modelManager.haveMethod(logicClass, declaration, body.toString());
    }
 
-   private void addMockupData(ClassModelManager modelManager, ServiceNote serviceNote, Policy policy, StringBuilder body)
+   private void addMockupData(ClassModelManager modelManager, ServiceNote serviceNote, Policy policy, StringBuilder body, String methodCall)
    {
       for (WorkflowNote note : policy.getSteps()) {
          if (note instanceof DataNote) {
@@ -589,7 +589,7 @@ public class WorkflowGenerator
             LinkedHashMap<String, String> mockup = getMockup(map);
             addModelClassForDataNote(modelManager, serviceNote, mockup);
             addGetOrCreateMethodToServiceModel(modelManager, serviceNote.getName(), mockup);
-            addCreateAndInitModelObjectCode(modelManager, serviceNote, dataNote, mockup, body);
+            addCreateAndInitModelObjectCode(modelManager, serviceNote, dataNote, mockup, body, methodCall);
          }
          else if (note instanceof ClassNote) {
             ClassNote classNote = (ClassNote) note;
@@ -624,8 +624,8 @@ public class WorkflowGenerator
                      varName, setterName, entry.getValue());
                body.append(statement);
             }
-            body.append(String.format("   service.apply(e%s);\n",
-                  varName));
+            body.append(String.format("   %s(e%s);\n",
+                  methodCall, varName));
          }
          else {
             Logger.getGlobal().severe("do not know how to deal with " + note);
@@ -794,7 +794,7 @@ public class WorkflowGenerator
       }
    }
 
-   private String addCreateAndInitModelObjectCode(ClassModelManager modelManager, ServiceNote serviceNote, DataNote dataNote, LinkedHashMap<String, String> map, StringBuilder body)
+   private String addCreateAndInitModelObjectCode(ClassModelManager modelManager, ServiceNote serviceNote, DataNote dataNote, LinkedHashMap<String, String> map, StringBuilder body, String methodCall)
    {
       boolean first = true;
       String varName = null;
@@ -837,7 +837,7 @@ public class WorkflowGenerator
          body.append(statement);
       }
 
-      statement = String.format("   service.apply(%s);\n\n", varName);
+      statement = String.format("   %s(%s);\n\n", methodCall, varName);
       body.append(statement);
 
       return varName;
@@ -883,7 +883,7 @@ public class WorkflowGenerator
       startServices();
 
       for (Workflow workflow : eventStormingBoard.getWorkflows()) {
-         testBody.append("\n// workflow " + workflow.getName());
+         testBody.append("\n// workflow " + workflow.getName() + "\n");
          for (WorkflowNote note : workflow.getNotes()) {
             // Send user events
             if (note instanceof PageNote) {
@@ -912,6 +912,13 @@ public class WorkflowGenerator
                Interaction interaction = eventNote.getInteraction();
                if (interaction instanceof UserInteraction) {
                   testGenerateSendUserEvent(testBody, eventNote);
+               }
+            }
+            else if (note instanceof ExternalSystemNote) {
+               ExternalSystemNote externalSystemNote = (ExternalSystemNote) note;
+               for (Policy policy : ((ExternalSystemNote) note).getPolicies()) {
+                  ClassModelManager modelManager = managerMap.get(policy.getService().getName());
+                  addMockupData(modelManager, policy.getService(), policy, testBody, "publish");
                }
             }
          }

@@ -73,7 +73,7 @@
   consultation.back: [tests]
 
 - data: Symptom
-  name: fever
+  name: medium fever
   consultations: [Alice#2021-06-02T14:00]
 
 - action: Doc Degen
