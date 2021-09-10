@@ -196,6 +196,7 @@ public class ShopBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }

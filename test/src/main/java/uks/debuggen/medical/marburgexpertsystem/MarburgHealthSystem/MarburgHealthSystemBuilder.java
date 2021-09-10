@@ -2,6 +2,8 @@ package uks.debuggen.medical.marburgexpertsystem.MarburgHealthSystem;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import org.fulib.yaml.Yamler2;
 import uks.debuggen.medical.marburgexpertsystem.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
@@ -158,6 +160,7 @@ public class MarburgHealthSystemBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }

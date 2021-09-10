@@ -155,7 +155,7 @@ public class DocMedicalBuilder
    }
 
    private boolean outdated(DataEvent event)
-   { // no fulib
+   {
       DataEvent oldEvent = getEventStore().get(event.getBlockId());
 
       if (oldEvent == null) {
@@ -164,15 +164,13 @@ public class DocMedicalBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
-         new Yamler2().mergeObjects(oldEvent, event);
+         new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }
 
       return true;
    }
-
-
 
    public void storeDiseaseBuilt(Event e)
    {
