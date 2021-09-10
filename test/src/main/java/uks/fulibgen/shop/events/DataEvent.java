@@ -8,11 +8,11 @@ import java.util.Collection;
 public class DataEvent extends Event
 {
    public static final String PROPERTY_BLOCK_ID = "blockId";
-   public static final String PROPERTY_SAGAS = "sagas";
    public static final String PROPERTY_QUERY = "query";
+   public static final String PROPERTY_SAGAS = "sagas";
    private String blockId;
-   private List<DataGroup> sagas;
    private Query query;
+   private List<DataGroup> sagas;
 
    public String getBlockId()
    {
@@ -29,6 +29,33 @@ public class DataEvent extends Event
       final String oldValue = this.blockId;
       this.blockId = value;
       this.firePropertyChange(PROPERTY_BLOCK_ID, oldValue, value);
+      return this;
+   }
+
+   public Query getQuery()
+   {
+      return this.query;
+   }
+
+   public DataEvent setQuery(Query value)
+   {
+      if (this.query == value)
+      {
+         return this;
+      }
+
+      final Query oldValue = this.query;
+      if (this.query != null)
+      {
+         this.query = null;
+         oldValue.withoutResults(this);
+      }
+      this.query = value;
+      if (value != null)
+      {
+         value.withResults(this);
+      }
+      this.firePropertyChange(PROPERTY_QUERY, oldValue, value);
       return this;
    }
 
@@ -95,33 +122,6 @@ public class DataEvent extends Event
       {
          this.withoutSagas(item);
       }
-      return this;
-   }
-
-   public Query getQuery()
-   {
-      return this.query;
-   }
-
-   public DataEvent setQuery(Query value)
-   {
-      if (this.query == value)
-      {
-         return this;
-      }
-
-      final Query oldValue = this.query;
-      if (this.query != null)
-      {
-         this.query = null;
-         oldValue.withoutResults(this);
-      }
-      this.query = value;
-      if (value != null)
-      {
-         value.withResults(this);
-      }
-      this.firePropertyChange(PROPERTY_QUERY, oldValue, value);
       return this;
    }
 

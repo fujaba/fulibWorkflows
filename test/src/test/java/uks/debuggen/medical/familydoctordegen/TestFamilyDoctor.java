@@ -52,7 +52,7 @@ public class TestFamilyDoctor
    }
 
    @Test
-   public void FamilyDoctor() throws InterruptedException
+   public void FamilyDoctor()
    {
       // start the event broker
       eventBroker = new EventBroker();
@@ -413,7 +413,7 @@ public class TestFamilyDoctor
       System.out.println();
    }
 
-   public void publish(Event event) throws InterruptedException
+   public void publish(Event event)
    {
       String yaml = Yaml.encodeSimple(event);
 
@@ -425,7 +425,6 @@ public class TestFamilyDoctor
       catch (UnirestException e) {
          e.printStackTrace();
       }
-      Thread.sleep(100);
    }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
