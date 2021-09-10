@@ -140,7 +140,8 @@ public class Yamler2
          String newValue = entry.getValue();
          String oldValue = oldMap.get(key);
          if (newValue.startsWith("[")) {
-            // merge lists
+            String merge = mergeLists(oldValue, newValue);
+            oldMap.put(key, merge);
             Logger.getGlobal().info("List merge not yet implemented");
          }
          else {
@@ -150,6 +151,33 @@ public class Yamler2
       }
 
       toEvent(oldMap, event);
+   }
+
+   private String mergeLists(String oldValue, String newValue)
+   {
+      if (oldValue == null) {
+         return newValue;
+      }
+
+      // strip brackets
+      int start = oldValue.indexOf('[') + 1;
+      int end = oldValue.indexOf(']');
+      oldValue = oldValue.substring(start, end);
+      String[] split = oldValue.split(",\\s+");
+      List<String> resultList = Arrays.asList(split);
+
+      start = newValue.indexOf('[') + 1;
+      end = newValue.indexOf(']');
+      newValue = newValue.substring(start, end);
+      split = newValue.split(",\\s+");
+      for (String s : split) {
+         if ( ! resultList.contains(s)) {
+            resultList.add(s);
+         }
+      }
+      String[] resultArray = resultList.toArray(new String[resultList.size()]);
+      String join = String.join(", ", resultArray);
+      return "[" + join + "]";
    }
 
    private Object toEvent(LinkedHashMap<String, String> map, Object event)

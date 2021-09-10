@@ -46,13 +46,13 @@ public class TestFamilyDoctor
 
    @Before
    public void setTimeOut() {
-      // Configuration.timeout = 10 * 60 * 1000;
+      Configuration.timeout = 10 * 60 * 1000;
       Configuration.pageLoadTimeout = Configuration.timeout;
       Configuration.browserPosition = "-3500x10";
    }
 
    @Test
-   public void FamilyDoctor()
+   public void FamilyDoctor() throws InterruptedException
    {
       // start the event broker
       eventBroker = new EventBroker();
@@ -413,7 +413,7 @@ public class TestFamilyDoctor
       System.out.println();
    }
 
-   public void publish(Event event)
+   public void publish(Event event) throws InterruptedException
    {
       String yaml = Yaml.encodeSimple(event);
 
@@ -425,6 +425,7 @@ public class TestFamilyDoctor
       catch (UnirestException e) {
          e.printStackTrace();
       }
+      Thread.sleep(100);
    }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)

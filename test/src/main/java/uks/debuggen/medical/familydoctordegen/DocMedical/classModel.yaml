@@ -359,12 +359,12 @@ handleDemoTestEvent(event);
    alice_t001_2021_06_02T14_00Event.setConsultation(\"Alice#2021-06-02T14:00\");
    service.apply(alice_t001_2021_06_02T14_00Event);
 
-   SymptomBuilt feverEvent = new SymptomBuilt();
-   feverEvent.setId(\"14:04:02\");
-   feverEvent.setBlockId(\"fever\");
-   feverEvent.setName(\"fever\");
-   feverEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
-   service.apply(feverEvent);
+   SymptomBuilt medium_feverEvent = new SymptomBuilt();
+   medium_feverEvent.setId(\"14:04:02\");
+   medium_feverEvent.setBlockId(\"medium_fever\");
+   medium_feverEvent.setName(\"medium fever\");
+   medium_feverEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
+   service.apply(medium_feverEvent);
 
 }
 "
