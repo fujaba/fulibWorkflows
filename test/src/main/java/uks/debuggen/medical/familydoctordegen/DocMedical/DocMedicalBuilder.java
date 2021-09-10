@@ -1,10 +1,16 @@
 package uks.debuggen.medical.familydoctordegen.DocMedical;
 import java.util.LinkedHashMap;
-import java.util.function.Consumer;
+import java.util.Map;
 import java.util.function.Function;
+
+import org.fulib.yaml.Yaml;
+import org.fulib.yaml.YamlIdMap;
+import org.fulib.yaml.Yamler;
+import org.fulib.yaml.Yamler2;
 import uks.debuggen.medical.familydoctordegen.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.function.Consumer;
 
 public class DocMedicalBuilder
 {
@@ -149,7 +155,7 @@ public class DocMedicalBuilder
    }
 
    private boolean outdated(DataEvent event)
-   {
+   { // no fulib
       DataEvent oldEvent = getEventStore().get(event.getBlockId());
 
       if (oldEvent == null) {
@@ -158,12 +164,15 @@ public class DocMedicalBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         new Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }
 
       return true;
    }
+
+
 
    public void storeDiseaseBuilt(Event e)
    {
@@ -188,6 +197,7 @@ public class DocMedicalBuilder
          if (name.equals("")) continue;
          object.withCounterSymptoms(model.getOrCreateSymptom(getObjectId(name)));
       }
+      object.setMigratedTo(event.getMigratedTo());
       return object;
    }
 

@@ -38,6 +38,9 @@
 - data: Symptom lung_noises 12:00:11
   name: lung noises
 
+- data: Disease Disease2 12:00:01
+  migratedTo: Disease2
+
 - data: Patient Alice 14:00:01
   name: Alice
   address: Wonderland 1
@@ -70,14 +73,10 @@
 
 - data: Consultation Alice_2021_06_02T14_00 14:05:01
   cid: Alice#2021-06-02T14:00
-  patient: Alice
   diagnosis: common cold
   diagnosis.back: [consultations]
-  patient.back: [consultations]
 
 - data: Consultation Alice_2021_06_02T14_00 14:06:01
   cid: Alice#2021-06-02T14:00
-  patient: Alice
-  diagnosis: common cold
   treatment: ibuprofen 400 1-1-1
 

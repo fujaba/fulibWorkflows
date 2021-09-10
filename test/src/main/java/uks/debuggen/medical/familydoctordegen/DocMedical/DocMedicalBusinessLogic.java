@@ -278,7 +278,6 @@ public class DocMedicalBusinessLogic
          alice_2021_06_02T14_00Event.setId("14:05:01");
          alice_2021_06_02T14_00Event.setBlockId("Alice_2021_06_02T14_00");
          alice_2021_06_02T14_00Event.setCid("Alice#2021-06-02T14:00");
-         alice_2021_06_02T14_00Event.setPatient("Alice");
          alice_2021_06_02T14_00Event.setDiagnosis("common cold");
          service.apply(alice_2021_06_02T14_00Event);
 
@@ -300,8 +299,6 @@ public class DocMedicalBusinessLogic
          alice_2021_06_02T14_00Event.setId("14:06:01");
          alice_2021_06_02T14_00Event.setBlockId("Alice_2021_06_02T14_00");
          alice_2021_06_02T14_00Event.setCid("Alice#2021-06-02T14:00");
-         alice_2021_06_02T14_00Event.setPatient("Alice");
-         alice_2021_06_02T14_00Event.setDiagnosis("common cold");
          alice_2021_06_02T14_00Event.setTreatment("ibuprofen 400 1-1-1");
          service.apply(alice_2021_06_02T14_00Event);
 

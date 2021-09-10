@@ -13,12 +13,14 @@ public class Disease
    public static final String PROPERTY_SYMPTOMS = "symptoms";
    public static final String PROPERTY_COUNTER_SYMPTOMS = "counterSymptoms";
    public static final String PROPERTY_CONSULTATIONS = "consultations";
+   public static final String PROPERTY_MIGRATED_TO = "migratedTo";
    private String id;
    private String name;
    private List<Symptom> symptoms;
    private List<Symptom> counterSymptoms;
    private List<Consultation> consultations;
    protected PropertyChangeSupport listeners;
+   private String migratedTo;
 
    public String getId()
    {
@@ -254,6 +256,24 @@ public class Disease
       return this;
    }
 
+   public String getMigratedTo()
+   {
+      return this.migratedTo;
+   }
+
+   public Disease setMigratedTo(String value)
+   {
+      if (Objects.equals(value, this.migratedTo))
+      {
+         return this;
+      }
+
+      final String oldValue = this.migratedTo;
+      this.migratedTo = value;
+      this.firePropertyChange(PROPERTY_MIGRATED_TO, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -279,6 +299,7 @@ public class Disease
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
+      result.append(' ').append(this.getMigratedTo());
       return result.substring(1);
    }
 

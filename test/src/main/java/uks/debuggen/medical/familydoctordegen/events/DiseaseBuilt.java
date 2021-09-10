@@ -6,9 +6,11 @@ public class DiseaseBuilt extends DataEvent
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_SYMPTOMS = "symptoms";
    public static final String PROPERTY_COUNTER_SYMPTOMS = "counterSymptoms";
+   public static final String PROPERTY_MIGRATED_TO = "migratedTo";
    private String name;
    private String symptoms;
    private String counterSymptoms;
+   private String migratedTo;
 
    public String getName()
    {
@@ -64,6 +66,24 @@ public class DiseaseBuilt extends DataEvent
       return this;
    }
 
+   public String getMigratedTo()
+   {
+      return this.migratedTo;
+   }
+
+   public DiseaseBuilt setMigratedTo(String value)
+   {
+      if (Objects.equals(value, this.migratedTo))
+      {
+         return this;
+      }
+
+      final String oldValue = this.migratedTo;
+      this.migratedTo = value;
+      this.firePropertyChange(PROPERTY_MIGRATED_TO, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -71,6 +91,7 @@ public class DiseaseBuilt extends DataEvent
       result.append(' ').append(this.getName());
       result.append(' ').append(this.getSymptoms());
       result.append(' ').append(this.getCounterSymptoms());
+      result.append(' ').append(this.getMigratedTo());
       return result.toString();
    }
 }

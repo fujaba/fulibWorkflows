@@ -51,7 +51,7 @@
   roles: 	docMedicalService_businessLogic 	docMedicalService_builder
 
 - disease: 	org.fulib.classmodel.Clazz
-  attributes: 	disease_id 	disease_name
+  attributes: 	disease_id 	disease_name 	disease_migratedTo
   model: 	c
   modified: 	false
   name: 	Disease
@@ -402,7 +402,6 @@ handleDemoDiagnosisEvent(event);
    alice_2021_06_02T14_00Event.setId(\"14:05:01\");
    alice_2021_06_02T14_00Event.setBlockId(\"Alice_2021_06_02T14_00\");
    alice_2021_06_02T14_00Event.setCid(\"Alice#2021-06-02T14:00\");
-   alice_2021_06_02T14_00Event.setPatient(\"Alice\");
    alice_2021_06_02T14_00Event.setDiagnosis(\"common cold\");
    service.apply(alice_2021_06_02T14_00Event);
 
@@ -442,8 +441,6 @@ handleDemoTreatmentEvent(event);
    alice_2021_06_02T14_00Event.setId(\"14:06:01\");
    alice_2021_06_02T14_00Event.setBlockId(\"Alice_2021_06_02T14_00\");
    alice_2021_06_02T14_00Event.setCid(\"Alice#2021-06-02T14:00\");
-   alice_2021_06_02T14_00Event.setPatient(\"Alice\");
-   alice_2021_06_02T14_00Event.setDiagnosis(\"common cold\");
    alice_2021_06_02T14_00Event.setTreatment(\"ibuprofen 400 1-1-1\");
    service.apply(alice_2021_06_02T14_00Event);
 
@@ -629,6 +626,7 @@ for (String name : stripBrackets(event.getCounterSymptoms()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
    object.withCounterSymptoms(model.getOrCreateSymptom(getObjectId(name)));
 }
+object.setMigratedTo(event.getMigratedTo());
 return object;
 "
   modified: 	false
@@ -1229,6 +1227,15 @@ catch (UnirestException e) {
   id: 	Disease_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- disease_migratedTo: 	org.fulib.classmodel.Attribute
+  clazz: 	disease
+  id: 	Disease_migratedTo
+  modified: 	false
+  name: 	migratedTo
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

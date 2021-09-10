@@ -116,17 +116,18 @@
 </g>
 <!-- DiseaseBuilt -->
 <g id="node9" class="node"><title>DiseaseBuilt</title>
-<polygon fill="none" stroke="black" points="145.5,-62.5 145.5,-83.5 294.5,-83.5 294.5,-62.5 145.5,-62.5"/>
-<text text-anchor="start" x="185.5" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">DiseaseBuilt</text>
-<polygon fill="none" stroke="black" points="145.5,-11.5 145.5,-62.5 294.5,-62.5 294.5,-11.5 145.5,-11.5"/>
-<text text-anchor="start" x="148.5" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
-<text text-anchor="start" x="148.5" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">symptoms :String</text>
-<text text-anchor="start" x="148.5" y="-18.3" font-family="Times New Roman,serif" font-size="14.00">counterSymptoms :String</text>
+<polygon fill="none" stroke="black" points="145.5,-69.5 145.5,-90.5 294.5,-90.5 294.5,-69.5 145.5,-69.5"/>
+<text text-anchor="start" x="185.5" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">DiseaseBuilt</text>
+<polygon fill="none" stroke="black" points="145.5,-3.5 145.5,-69.5 294.5,-69.5 294.5,-3.5 145.5,-3.5"/>
+<text text-anchor="start" x="148.5" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="148.5" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">symptoms :String</text>
+<text text-anchor="start" x="148.5" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">counterSymptoms :String</text>
+<text text-anchor="start" x="148.5" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">migratedTo :String</text>
 </g>
 <!-- DiseaseBuilt&#45;&gt;DataEvent -->
 <g id="edge11" class="edge"><title>DiseaseBuilt&#45;&gt;DataEvent</title>
-<path fill="none" stroke="black" d="M270.04,-87.6122C291.785,-104.44 316.822,-123.816 337.151,-139.549"/>
-<polygon fill="none" stroke="black" points="335.214,-142.475 345.265,-145.828 339.498,-136.939 335.214,-142.475"/>
+<path fill="none" stroke="black" d="M279.751,-95.1276C298.924,-109.965 319.635,-125.993 336.956,-139.397"/>
+<polygon fill="none" stroke="black" points="335.114,-142.398 345.165,-145.75 339.399,-136.862 335.114,-142.398"/>
 </g>
 <!-- InvoiceSentEvent -->
 <g id="node11" class="node"><title>InvoiceSentEvent</title>
