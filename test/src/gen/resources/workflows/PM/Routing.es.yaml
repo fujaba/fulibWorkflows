@@ -1,0 +1,32 @@
+
+- data: Route route1
+  start: Kassel
+  start.back: [routeStarts]
+  end: Frankfurt
+  end.back: [routeEnds]
+
+- data: Stop Kassel
+  departure: leg1
+  departure.back: from
+
+- data: Leg leg1
+  to: Fulda
+  to.back: arrival
+  via: A7
+  length: 104 km
+
+- data: Stop Fulda
+  departure: leg2
+
+- data: Leg leg2
+  to: Frankfurt
+  via: A66
+  length: 71 km
+
+- data: Stop Frankfurt
+
+- command: compute length
+  route: route1
+
+- data: Route route1
+  length: 175
