@@ -86,6 +86,7 @@ public class EventModel
                note.setMap(map);
                note.withWorkflows(getRootWorkflow());
                note.setEventStormingBoard(getEventStormingBoard());
+               lastService = note;
             }
             else if (entry.getKey().equalsIgnoreCase("Action")) {
                UserInteraction userInteraction = new UserInteraction();

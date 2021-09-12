@@ -1,4 +1,6 @@
 
+- service: Routing
+
 - data: Route route1
   start: Kassel
   start.back: [routeStarts]
@@ -29,4 +31,4 @@
   route: route1
 
 - data: Route route1
-  length: 175
+  length: 175 km
