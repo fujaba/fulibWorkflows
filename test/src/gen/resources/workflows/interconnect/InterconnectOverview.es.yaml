@@ -3,15 +3,15 @@
 
 - workflow: overview
 
-- boundedcontext: Uni Kassel Ionic charger
+- boundedContext: Uni Kassel Ionic charger
 
-- boundedcontext: Wilhelmshoehe Station Tesla charger
+- boundedContext: Wilhelmshoehe Station Tesla charger
 
-- boundedcontext: Uni Kassel Tesla charger
+- boundedContext: Uni Kassel Tesla charger
 
 - broker: Kassel charging
 
-- boundedcontext: city electrics Kassel Inc
+- boundedContext: city electrics Kassel Inc
 
 - workflow: Uni Kassel Ionic charger
 

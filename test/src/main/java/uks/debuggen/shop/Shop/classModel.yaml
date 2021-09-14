@@ -29,26 +29,26 @@
   roles: 	shopBusinessLogic_builder 	shopBusinessLogic_service
 
 - shopBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	shopBuilder_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;"
-  methods: 	shopBuilder_handleOrderBuilt 	shopBuilder_handleCustomerBuilt 	shopBuilder_stripBrackets
+  attributes: 	shopBuilder_model 	shopBuilder_eventStore 	shopBuilder_loaderMap 	shopBuilder_groupStore
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import java.util.function.Function;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import java.util.function.Function;"
+  methods: 	shopBuilder_outdated 	shopBuilder_storeOrderBuilt 	shopBuilder_loadOrderBuilt 	shopBuilder_storeCustomerBuilt 	shopBuilder_loadCustomerBuilt 	shopBuilder_load 	shopBuilder_initLoaderMap 	shopBuilder_getVarName 	shopBuilder_addToGroup 	shopBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	ShopBuilder
   propertyStyle: 	Bean
-  roles: 	shopBuilder_businessLogic
+  roles: 	shopBuilder_businessLogic 	shopBuilder_service
 
 - shopService: 	org.fulib.classmodel.Clazz
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_publish 	shopService_postApply
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  methods: 	shopService_query 	shopService_isoNow 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_publish 	shopService_postApply
   model: 	c
   modified: 	false
   name: 	ShopService
   propertyStyle: 	Bean
-  roles: 	shopService_businessLogic
+  roles: 	shopService_businessLogic 	shopService_builder
 
 - order: 	org.fulib.classmodel.Clazz
   attributes: 	order_id 	order_product 	order_customer 	order_address 	order_state
@@ -134,7 +134,8 @@ return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleSubmitOrderCommand(Event e)"
   id: 	ShopBusinessLogic_handleSubmitOrderCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 SubmitOrderCommand event = (SubmitOrderCommand) e;
 handleDemoSubmitOrderCommand(event);
 "
@@ -189,7 +190,7 @@ if (event.getId().equals(\"13:11\")) {
    CustomerBuilt aliceEvent = new CustomerBuilt();
    aliceEvent.setId(\"13:13\");
    aliceEvent.setBlockId(\"Alice\");
-   aliceEvent.setOrders(\"[ order1300 order1310 ]\");
+   aliceEvent.setOrders(\"[order1300, order1310]\");
    service.apply(aliceEvent);
 
 
@@ -216,7 +217,8 @@ if (event.getId().equals(\"13:11\")) {
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleOrderApprovedEvent(Event e)"
   id: 	ShopBusinessLogic_handleOrderApprovedEvent
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 OrderApprovedEvent event = (OrderApprovedEvent) e;
 handleDemoOrderApprovedEvent(event);
 "
@@ -253,7 +255,8 @@ handleDemoOrderApprovedEvent(event);
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleOrderPickedEvent(Event e)"
   id: 	ShopBusinessLogic_handleOrderPickedEvent
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 OrderPickedEvent event = (OrderPickedEvent) e;
 handleDemoOrderPickedEvent(event);
 "
@@ -290,7 +293,8 @@ handleDemoOrderPickedEvent(event);
   clazz: 	shopBusinessLogic
   declaration: 	"private void handleOrderDeclinedEvent(Event e)"
   id: 	ShopBusinessLogic_handleOrderDeclinedEvent
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 OrderDeclinedEvent event = (OrderDeclinedEvent) e;
 handleDemoOrderDeclinedEvent(event);
 "
@@ -329,12 +333,12 @@ handleDemoOrderDeclinedEvent(event);
   id: 	ShopBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
+   handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
+   handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
    handlerMap.put(SubmitOrderCommand.class, this::handleSubmitOrderCommand);
    handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
    handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
    handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-   handlerMap.put(OrderBuilt.class, builder::handleOrderBuilt);
-   handlerMap.put(CustomerBuilt.class, builder::handleCustomerBuilt);
 }
 "
   modified: 	false
@@ -401,40 +405,222 @@ handleDemoOrderDeclinedEvent(event);
   type: 	ShopModel
   typeSignature: 	ShopModel
 
-- shopBuilder_handleOrderBuilt: 	org.fulib.classmodel.FMethod
+- shopBuilder_eventStore: 	org.fulib.classmodel.Attribute
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_eventStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	eventStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, DataEvent>"
+  typeSignature: 	"LinkedHashMap<String,DataEvent>"
+
+- shopBuilder_loaderMap: 	org.fulib.classmodel.Attribute
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_loaderMap
+  modified: 	false
+  name: 	loaderMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Function<Event, Object>>"
+  typeSignature: 	"LinkedHashMap<Class,Function<Event,Object>>"
+
+- shopBuilder_groupStore: 	org.fulib.classmodel.Attribute
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_groupStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	groupStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, LinkedHashMap<String, DataEvent>>"
+  typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
+
+- shopBuilder_outdated: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBuilder
-  declaration: 	"public void handleOrderBuilt(Event e)"
-  id: 	ShopBuilder_handleOrderBuilt
+  declaration: 	"private boolean outdated(DataEvent event)"
+  id: 	ShopBuilder_outdated
+  methodBody: 	"      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;"
+  modified: 	false
+  modifiers: 	private
+  name: 	outdated
+  paramsString: 	"DataEvent event"
+  returnType: 	boolean
+  signature: 	"class/ShopBuilder/method/outdated(DataEvent)"
+
+- shopBuilder_storeOrderBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public void storeOrderBuilt(Event e)"
+  id: 	ShopBuilder_storeOrderBuilt
+  methodBody: 	"OrderBuilt event = (OrderBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeOrderBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/storeOrderBuilt(Event)"
+
+- shopBuilder_loadOrderBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public Order loadOrderBuilt(Event e)"
+  id: 	ShopBuilder_loadOrderBuilt
   methodBody: 	"OrderBuilt event = (OrderBuilt) e;
 Order object = model.getOrCreateOrder(event.getBlockId());
 object.setProduct(event.getProduct());
 object.setCustomer(event.getCustomer());
 object.setAddress(event.getAddress());
 object.setState(event.getState());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleOrderBuilt
+  name: 	loadOrderBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/ShopBuilder/method/handleOrderBuilt(Event)"
+  returnType: 	Order
+  signature: 	"class/ShopBuilder/method/loadOrderBuilt(Event)"
 
-- shopBuilder_handleCustomerBuilt: 	org.fulib.classmodel.FMethod
+- shopBuilder_storeCustomerBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBuilder
-  declaration: 	"public void handleCustomerBuilt(Event e)"
-  id: 	ShopBuilder_handleCustomerBuilt
+  declaration: 	"public void storeCustomerBuilt(Event e)"
+  id: 	ShopBuilder_storeCustomerBuilt
+  methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeCustomerBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/storeCustomerBuilt(Event)"
+
+- shopBuilder_loadCustomerBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public Customer loadCustomerBuilt(Event e)"
+  id: 	ShopBuilder_loadCustomerBuilt
   methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
 Customer object = model.getOrCreateCustomer(event.getBlockId());
 object.setOrders(event.getOrders());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleCustomerBuilt
+  name: 	loadCustomerBuilt
   paramsString: 	"Event e"
+  returnType: 	Customer
+  signature: 	"class/ShopBuilder/method/loadCustomerBuilt(Event)"
+
+- shopBuilder_load: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public Object load(String blockId)"
+  id: 	ShopBuilder_load
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;"
+  modified: 	false
+  modifiers: 	public
+  name: 	load
+  paramsString: 	"String blockId"
+  returnType: 	Object
+  signature: 	"class/ShopBuilder/method/load(String)"
+
+- shopBuilder_initLoaderMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"private void initLoaderMap()"
+  id: 	ShopBuilder_initLoaderMap
+  methodBody: 	"if (loaderMap == null) {
+   loaderMap = new LinkedHashMap<>();
+   loaderMap.put(OrderBuilt.class, this::loadOrderBuilt);
+   loaderMap.put(CustomerBuilt.class, this::loadCustomerBuilt);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	initLoaderMap
+  paramsString: 	""
   returnType: 	void
-  signature: 	"class/ShopBuilder/method/handleCustomerBuilt(Event)"
+  signature: 	"class/ShopBuilder/method/initLoaderMap()"
+
+- shopBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	ShopBuilder_getVarName
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/ShopBuilder/method/getVarName(String)"
+
+- shopBuilder_addToGroup: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"private void addToGroup(String groupId, String elementId)"
+  id: 	ShopBuilder_addToGroup
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format(\"could not find element event %s for group %s \", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);"
+  modified: 	false
+  modifiers: 	private
+  name: 	addToGroup
+  paramsString: 	"String groupId, String elementId"
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/addToGroup(String,String)"
 
 - shopBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -465,6 +651,16 @@ object.setOrders(event.getOrders());
   modified: 	false
   name: 	businessLogic
   other: 	shopBusinessLogic_builder
+  propertyStyle: 	Bean
+
+- shopBuilder_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	shopBuilder
+  id: 	ShopBuilder_service
+  modified: 	false
+  name: 	service
+  other: 	shopService_builder
   propertyStyle: 	Bean
 
 - shopService_history: 	org.fulib.classmodel.Attribute
@@ -505,14 +701,56 @@ object.setOrders(event.getOrders());
   type: 	ShopModel
   typeSignature: 	ShopModel
 
+- shopService_query: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopService
+  declaration: 	"public Query query(Query query)"
+  id: 	ShopService_query
+  methodBody: 	"      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;"
+  modified: 	false
+  modifiers: 	public
+  name: 	query
+  paramsString: 	"Query query"
+  returnType: 	Query
+  signature: 	"class/ShopService/method/query(Query)"
+
+- shopService_isoNow: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopService
+  declaration: 	"public String isoNow()"
+  id: 	ShopService_isoNow
+  methodBody: 	"return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	isoNow
+  paramsString: 	""
+  returnType: 	String
+  signature: 	"class/ShopService/method/isoNow()"
+
 - shopService_start: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopService
   declaration: 	"public void start()"
   id: 	ShopService_start
   methodBody: 	"model = new ShopModel();
+setBuilder(new ShopBuilder().setModel(model));
 setBusinessLogic(new ShopBusinessLogic());
-businessLogic.setBuilder(new ShopBuilder().setModel(model));
+businessLogic.setBuilder(getBuilder());
 businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
@@ -536,8 +774,8 @@ Logger.getGlobal().info(\"Shop service is up and running on port \" + port);
   declaration: 	"private String getHello(Request req, Response res)"
   id: 	ShopService_getHello
   methodBody: 	"try {
-   String events = Yaml.encode(getHistory().values().toArray());
-   String objects = Yaml.encode(model.getModelMap().values().toArray());
+   String events = Yaml.encodeSimple(getHistory().values().toArray());
+   String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
    return \"<p id='Shop'>This is the Shop service. </p>\n\" +
          \"<pre id=\\"history\\">\" + events + \"</pre>\n\" +
          \"<pre id=\\"data\\">\" + objects + \"</pre>\n\" +
@@ -561,8 +799,8 @@ catch (Exception e) {
   declaration: 	"private void subscribeAndLoadOldEvents()"
   id: 	ShopService_subscribeAndLoadOldEvents
   methodBody: 	"ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-      .setServiceUrl(\"http://localhost:42100/apply\");
-String json = Yaml.encode(serviceSubscribed);
+      .setServiceUrl(String.format(\"http://localhost:%d/apply\", port));
+String json = Yaml.encodeSimple(serviceSubscribed);
 try {
    String url = \"http://localhost:42000/subscribe\";
    HttpResponse<String> response = Unirest
@@ -570,7 +808,9 @@ try {
          .body(json)
          .asString();
    String body = response.getBody();
-   Map<String, Object> objectMap = Yaml.decode(body);
+   YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+   idMap.decode(body);
+   Map<String, Object> objectMap = idMap.getObjIdMap();
    for (Object obj : objectMap.values()) {
       apply((Event) obj);
    }
@@ -597,6 +837,7 @@ businessLogic.initEventHandlerMap();
 Consumer<Event> handler = businessLogic.getHandler(event);
 handler.accept(event);
 history.put(event.getId(), event);
+firePropertyChange(PROPERTY_HISTORY, null, event);
 publish(event);"
   modified: 	false
   modifiers: 	public
@@ -610,8 +851,8 @@ publish(event);"
   clazz: 	shopService
   declaration: 	"public String getPage(Request request, Response response)"
   id: 	ShopService_getPage
-  methodBody: 	"// no fulib
-// add your page handling here
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 return getDemoPage(request, response);
 "
   modified: 	false
@@ -694,7 +935,7 @@ return html.toString();"
   clazz: 	shopService
   declaration: 	"public void publish(Event event)"
   id: 	ShopService_publish
-  methodBody: 	"String json = Yaml.encode(event);
+  methodBody: 	"String json = Yaml.encodeSimple(event);
 
 try {
    HttpResponse<String> response = Unirest
@@ -717,16 +958,24 @@ catch (UnirestException e) {
   clazz: 	shopService
   declaration: 	"private String postApply(Request req, Response res)"
   id: 	ShopService_postApply
-  methodBody: 	"      try {
-         String body = req.body();
-         Map<String, Object> map = Yaml.decode(body);
+  methodBody: 	"      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
          for (Object value : map.values()) {
             Event event = (Event) value;
             apply(event);
          }
       }
       catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         String message = e.getMessage();
+         if (message.contains(\"ReflectorMap could not find class description\")) {
+            Logger.getGlobal().info(\"post apply ignores unknown event \" + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         }
       }
       return \"apply done\";"
   modified: 	false
@@ -744,6 +993,16 @@ catch (UnirestException e) {
   modified: 	false
   name: 	businessLogic
   other: 	shopBusinessLogic_service
+  propertyStyle: 	Bean
+
+- shopService_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	shopService
+  id: 	ShopService_builder
+  modified: 	false
+  name: 	builder
+  other: 	shopBuilder_service
   propertyStyle: 	Bean
 
 - order_id: 	org.fulib.classmodel.Attribute

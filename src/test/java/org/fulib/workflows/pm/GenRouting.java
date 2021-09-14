@@ -2,13 +2,9 @@ package org.fulib.workflows.pm;
 
 import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
-import org.fulib.workflows.HtmlGenerator3;
 import org.fulib.workflows.WorkflowGenerator;
+import org.fulib.workflows.html.HtmlGenerator3;
 import org.junit.Test;
-
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class GenRouting
 {
@@ -29,8 +25,7 @@ public class GenRouting
          HtmlGenerator3 generator = new HtmlGenerator3();
          generator.dumpObjectDiagram = (f, o) ->
          {FulibTools.objectDiagrams().dumpSVG(f, o);};
-         String html = generator.generateHtml(fileName);
-         Files.write(Path.of(String.format("tmp/%sEventStorming.html", "PM.Routing")), html.getBytes(StandardCharsets.UTF_8));
+         generator.generateViewFiles(fileName, "Routing");
 
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG(String.format("tmp/%s.svg", system), o); };

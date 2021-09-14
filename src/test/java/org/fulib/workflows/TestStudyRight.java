@@ -2,46 +2,36 @@ package org.fulib.workflows;
 
 import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
+import org.fulib.workflows.html.HtmlGenerator3;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+public class TestStudyRight {
 
-public class TestStudyRight
-{
+    private ClassModelManager mm;
 
-   private ClassModelManager mm;
+    @Test
+    public void testStartGenerator() {
+        mm = new ClassModelManager();
+        mm.setMainJavaDir("test/src/main/java");
+        mm.setPackageName("uks.debuggen.studyright");
 
-   @Test
-   public void testStartGenerator()
-   {
-      try {
-         mm = new ClassModelManager();
-         mm.setMainJavaDir("test/src/main/java");
-         mm.setPackageName("uks.debuggen.studyright");
+        // html
+        HtmlGenerator3 generator = new HtmlGenerator3();
+        generator.dumpObjectDiagram = (f, o) -> {
+            FulibTools.objectDiagrams().dumpSVG(f, o);
+        };
+        String filename = "test/src/gen/resources/workflows/StudyRight.es.yaml";
+        generator.generateViewFiles(filename, "StudyRight");
 
-         // html
-         HtmlGenerator3 generator = new HtmlGenerator3();
-         generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-         String filename = "test/src/gen/resources/workflows/StudyRight.es.yaml";
-         String html = generator.generateHtml(filename);
-         Files.write(Path.of("tmp/StudyRightEventStorming.html"), html.getBytes(StandardCharsets.UTF_8));
+        // java
+        WorkflowGenerator workflowGenerator = new WorkflowGenerator();
+        workflowGenerator.loadWorkflow(mm, filename);
 
-         // java
-         WorkflowGenerator workflowGenerator = new WorkflowGenerator();
-         workflowGenerator.loadWorkflow(mm, filename);
+        FulibTools.objectDiagrams().dumpSVG("tmp/StudyRight/StudyRightModel.svg",
+                workflowGenerator.getEventModel().getEventStormingBoard());
 
-         FulibTools.objectDiagrams().dumpSVG("tmp/StudyRightModel.svg",
-               workflowGenerator.getEventModel().getEventStormingBoard());
+        workflowGenerator.generate();
 
-         workflowGenerator.generate();
-
-         System.out.println();
-      }
-      catch (IOException e) {
-         e.printStackTrace();
-      }
-   }
+        System.out.println();
+    }
 }

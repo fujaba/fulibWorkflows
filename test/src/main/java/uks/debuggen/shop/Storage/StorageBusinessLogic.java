@@ -107,8 +107,6 @@ public class StorageBusinessLogic
       return this;
    }
 
-
-
    private void handleOrderRegisteredEvent(Event e)
    {
       // no fulib
@@ -150,11 +148,11 @@ public class StorageBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
+         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+         handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
          handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
          handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
          handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
-         handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
-         handlerMap.put(PickTaskBuilt.class, builder::handlePickTaskBuilt);
       }
    }
 
@@ -220,7 +218,6 @@ public class StorageBusinessLogic
    {
       return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
    }
-
 
    private void handlePickOrderCommand(Event e)
    {

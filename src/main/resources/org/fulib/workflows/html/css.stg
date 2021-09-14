@@ -1,0 +1,68 @@
+delimiters "{", "}"
+
+css(width) ::= <<
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
+
+body \{
+    font-family: "Arial Narrow", Arial, sans-serif;
+\}
+
+.lane \{
+    width: {width}px;
+    float: left;
+\}
+
+.box \{
+    position: relative;
+    float: left;
+    margin: 6px;
+    padding: 12px;
+\}
+
+.placeholder \{
+    opacity: 0.0;
+\}
+
+.event \{
+    background-color: Orange;
+\}
+
+.page \{
+    background-color: LightBlue;
+\}
+
+.command \{
+    background-color: LightBlue;
+\}
+
+.data \{
+    background-color: #FFA2FF;
+\}
+
+.user \{
+    background-color: Yellow;
+\}
+
+.server \{
+    background-color: Violet;
+\}
+
+.center \{
+    text-align: center;
+\}
+
+.fa-rotate-45 \{
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    color: #FFA2FF;
+    font-size: 3em;
+\}
+
+.fa-cloud \{
+    color: LightGrey;
+    font-size: 3em;
+\}
+>>

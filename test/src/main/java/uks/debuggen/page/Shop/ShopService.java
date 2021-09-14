@@ -20,6 +20,9 @@ import uks.debuggen.page.events.*;
 
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import org.fulib.yaml.YamlIdMap;
 
 public class ShopService
 {
@@ -27,13 +30,15 @@ public class ShopService
    public static final String PROPERTY_PORT = "port";
    public static final String PROPERTY_SPARK = "spark";
    public static final String PROPERTY_MODEL = "model";
-   public static final String PROPERTY_HANDLER_MAP = "handlerMap";
+   public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
+   public static final String PROPERTY_BUILDER = "builder";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
    private int port = 42001;
    private Service spark;
    private ShopModel model;
-   private LinkedHashMap<Class, Consumer<Event>> handlerMap;
    protected PropertyChangeSupport listeners;
+   private ShopBusinessLogic businessLogic;
+   private ShopBuilder builder;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -107,27 +112,67 @@ public class ShopService
       return this;
    }
 
-   public LinkedHashMap<Class, Consumer<Event>> getHandlerMap()
+   public ShopBusinessLogic getBusinessLogic()
    {
-      return this.handlerMap;
+      return this.businessLogic;
    }
 
-   public ShopService setHandlerMap(LinkedHashMap<Class, Consumer<Event>> value)
+   public ShopService setBusinessLogic(ShopBusinessLogic value)
    {
-      if (Objects.equals(value, this.handlerMap))
+      if (this.businessLogic == value)
       {
          return this;
       }
 
-      final LinkedHashMap<Class, Consumer<Event>> oldValue = this.handlerMap;
-      this.handlerMap = value;
-      this.firePropertyChange(PROPERTY_HANDLER_MAP, oldValue, value);
+      final ShopBusinessLogic oldValue = this.businessLogic;
+      if (this.businessLogic != null)
+      {
+         this.businessLogic = null;
+         oldValue.setService(null);
+      }
+      this.businessLogic = value;
+      if (value != null)
+      {
+         value.setService(this);
+      }
+      this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
+      return this;
+   }
+
+   public ShopBuilder getBuilder()
+   {
+      return this.builder;
+   }
+
+   public ShopService setBuilder(ShopBuilder value)
+   {
+      if (this.builder == value)
+      {
+         return this;
+      }
+
+      final ShopBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setService(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setService(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
       return this;
    }
 
    public void start()
    {
       model = new ShopModel();
+      setBuilder(new ShopBuilder().setModel(model));
+      setBusinessLogic(new ShopBusinessLogic());
+      businessLogic.setBuilder(getBuilder());
+      businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);
@@ -141,8 +186,8 @@ public class ShopService
    private String getHello(Request req, Response res)
    {
       try {
-         String events = Yaml.encode(getHistory().values().toArray());
-         String objects = Yaml.encode(model.getModelMap().values().toArray());
+         String events = Yaml.encodeSimple(getHistory().values().toArray());
+         String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
          return "<p id='Shop'>This is the Shop service. </p>\n" +
                "<pre id=\"history\">" + events + "</pre>\n" +
                "<pre id=\"data\">" + objects + "</pre>\n" +
@@ -157,8 +202,8 @@ public class ShopService
    private void subscribeAndLoadOldEvents()
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-            .setServiceUrl("http://localhost:42001/apply");
-      String json = Yaml.encode(serviceSubscribed);
+            .setServiceUrl(String.format("http://localhost:%d/apply", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
          HttpResponse<String> response = Unirest
@@ -166,7 +211,9 @@ public class ShopService
                .body(json)
                .asString();
          String body = response.getBody();
-         Map<String, Object> objectMap = Yaml.decode(body);
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
          for (Object obj : objectMap.values()) {
             apply((Event) obj);
          }
@@ -181,14 +228,104 @@ public class ShopService
       if (history.get(event.getId()) != null) {
          return;
       }
-      initEventHandlerMap();
-      Consumer<Event> handler = handlerMap.computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+      businessLogic.initEventHandlerMap();
+      Consumer<Event> handler = businessLogic.getHandler(event);
       handler.accept(event);
       history.put(event.getId(), event);
+      firePropertyChange(PROPERTY_HISTORY, null, event);
       publish(event);
    }
 
    public String getPage(Request request, Response response)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      return getDemoPage(request, response);
+   }
+
+   public void publish(Event event)
+   {
+      String json = Yaml.encodeSimple(event);
+
+      try {
+         HttpResponse<String> response = Unirest
+               .post("http://localhost:42000/publish")
+               .body(json)
+               .asString();
+      }
+      catch (UnirestException e) {
+         e.printStackTrace();
+      }
+   }
+
+   private String postApply(Request req, Response res)
+   {
+      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            apply(event);
+         }
+      }
+      catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
+      }
+      return "apply done";
+   }
+
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   {
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
+   }
+
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
+   }
+
+   public Query query(Query query)
+   {
+      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;
+   }
+
+   public String isoNow()
+   {
+      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+   }
+
+   public String getDemoPage(Request request, Response response)
    {
       StringBuilder html = new StringBuilder();
       String id = request.params("id");
@@ -196,29 +333,29 @@ public class ShopService
 
       if ("product selected 12:51".equals(event)) {
 
-         // create ProductSelected: product selected 12:51
-         ProductSelected e1251 = new ProductSelected();
+         // create ProductSelectedCommand: product selected 12:51
+         ProductSelectedCommand e1251 = new ProductSelectedCommand();
          e1251.setId("12:51");
-         publish(e1251);
+         apply(e1251);
       }
 
       if ("order registered 13:00".equals(event)) {
 
-         // create OrderRegistered: order registered 13:00
-         OrderRegistered e1300 = new OrderRegistered();
+         // create OrderRegisteredCommand: order registered 13:00
+         OrderRegisteredCommand e1300 = new OrderRegisteredCommand();
          e1300.setId("13:00");
          e1300.setCount(request.queryParams("count"));
          e1300.setName(request.queryParams("name"));
          e1300.setAddress(request.queryParams("address"));
-         publish(e1300);
+         apply(e1300);
       }
 
       if ("product selected 13:10".equals(event)) {
 
-         // create ProductSelected: product selected 13:10
-         ProductSelected e1310 = new ProductSelected();
+         // create ProductSelectedCommand: product selected 13:10
+         ProductSelectedCommand e1310 = new ProductSelectedCommand();
          e1310.setId("13:10");
-         publish(e1310);
+         apply(e1310);
       }
 
 
@@ -270,65 +407,9 @@ public class ShopService
       return html.toString();
    }
 
-   private void initEventHandlerMap()
+   public void removeYou()
    {
-      if (handlerMap == null) {
-         handlerMap = new LinkedHashMap<>();
-      }
-   }
-
-   private void ignoreEvent(Event event)
-   {
-      // empty
-   }
-
-   public void publish(Event event)
-   {
-      String json = Yaml.encode(event);
-
-      try {
-         HttpResponse<String> response = Unirest
-               .post("http://localhost:42000/publish")
-               .body(json)
-               .asString();
-      }
-      catch (UnirestException e) {
-         e.printStackTrace();
-      }
-   }
-
-   private String postApply(Request req, Response res)
-   {
-      try {
-         String body = req.body();
-         Map<String, Object> map = Yaml.decode(body);
-         for (Object value : map.values()) {
-            Event event = (Event) value;
-            apply(event);
-         }
-      }
-      catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
-      }
-      return "apply done";
-   }
-
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
-      {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
-      }
-      return false;
-   }
-
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
-      {
-         this.listeners = new PropertyChangeSupport(this);
-      }
-      return this.listeners;
+      this.setBusinessLogic(null);
+      this.setBuilder(null);
    }
 }

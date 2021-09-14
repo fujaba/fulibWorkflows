@@ -258,8 +258,8 @@ public class PartyAppBuilder
       Item object = model.getOrCreateItem(event.getBlockId());
       object.setName(event.getName());
       object.setPrice(event.getPrice());
-      object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
-      object.setParty(model.getOrCreateParty(event.getParty()));
+      object.setBuyer(model.getOrCreateGuest(getVarName(event.getBuyer())));
+      object.setParty(model.getOrCreateParty(getVarName(event.getParty())));
       return object;
    }
 
@@ -280,7 +280,7 @@ public class PartyAppBuilder
       GuestBuilt event = (GuestBuilt) e;
       Guest object = model.getOrCreateGuest(event.getBlockId());
       object.setName(event.getName());
-      object.setParty(model.getOrCreateParty(event.getParty()));
+      object.setParty(model.getOrCreateParty(getVarName(event.getParty())));
       object.setExpenses(event.getExpenses());
       return object;
    }
@@ -327,6 +327,19 @@ public class PartyAppBuilder
 
       LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
       group.put(elementId, dataEvent);
+   }
+
+   public String getVarName(String value)
+   {
+      if (value == null) {
+         return null;
+      }
+      String[] split = value.split("\\s+");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;
    }
 
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();

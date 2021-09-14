@@ -29,26 +29,26 @@
   roles: 	storageBusinessLogic_builder 	storageBusinessLogic_service
 
 - storageBuilder: 	org.fulib.classmodel.Clazz
-  attributes: 	storageBuilder_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;"
-  methods: 	storageBuilder_handleBoxBuilt 	storageBuilder_handlePickTaskBuilt 	storageBuilder_stripBrackets
+  attributes: 	storageBuilder_model 	storageBuilder_eventStore 	storageBuilder_loaderMap 	storageBuilder_groupStore
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import java.util.function.Function;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import java.util.function.Function;"
+  methods: 	storageBuilder_outdated 	storageBuilder_storeBoxBuilt 	storageBuilder_loadBoxBuilt 	storageBuilder_storePickTaskBuilt 	storageBuilder_loadPickTaskBuilt 	storageBuilder_load 	storageBuilder_initLoaderMap 	storageBuilder_getVarName 	storageBuilder_addToGroup 	storageBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	StorageBuilder
   propertyStyle: 	Bean
-  roles: 	storageBuilder_businessLogic
+  roles: 	storageBuilder_businessLogic 	storageBuilder_service
 
 - storageService: 	org.fulib.classmodel.Clazz
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model
-  importList: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  imports: 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_publish 	storageService_postApply
+  importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
+  methods: 	storageService_query 	storageService_isoNow 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_publish 	storageService_postApply
   model: 	c
   modified: 	false
   name: 	StorageService
   propertyStyle: 	Bean
-  roles: 	storageService_businessLogic
+  roles: 	storageService_businessLogic 	storageService_builder
 
 - box: 	org.fulib.classmodel.Clazz
   attributes: 	box_id 	box_product 	box_place
@@ -134,7 +134,8 @@ return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
   clazz: 	storageBusinessLogic
   declaration: 	"private void handleStoreBoxCommand(Event e)"
   id: 	StorageBusinessLogic_handleStoreBoxCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 StoreBoxCommand event = (StoreBoxCommand) e;
 handleDemoStoreBoxCommand(event);
 "
@@ -180,7 +181,8 @@ handleDemoStoreBoxCommand(event);
   clazz: 	storageBusinessLogic
   declaration: 	"private void handleOrderRegisteredEvent(Event e)"
   id: 	StorageBusinessLogic_handleOrderRegisteredEvent
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 OrderRegisteredEvent event = (OrderRegisteredEvent) e;
 handleDemoOrderRegisteredEvent(event);
 "
@@ -235,7 +237,8 @@ if (event.getId().equals(\"13:14\")) {
   clazz: 	storageBusinessLogic
   declaration: 	"private void handlePickOrderCommand(Event e)"
   id: 	StorageBusinessLogic_handlePickOrderCommand
-  methodBody: 	"// no fulib
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 PickOrderCommand event = (PickOrderCommand) e;
 handleDemoPickOrderCommand(event);
 "
@@ -289,11 +292,11 @@ handleDemoPickOrderCommand(event);
   id: 	StorageBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
+   handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+   handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
    handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
    handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
    handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
-   handlerMap.put(BoxBuilt.class, builder::handleBoxBuilt);
-   handlerMap.put(PickTaskBuilt.class, builder::handlePickTaskBuilt);
 }
 "
   modified: 	false
@@ -360,28 +363,121 @@ handleDemoPickOrderCommand(event);
   type: 	StorageModel
   typeSignature: 	StorageModel
 
-- storageBuilder_handleBoxBuilt: 	org.fulib.classmodel.FMethod
+- storageBuilder_eventStore: 	org.fulib.classmodel.Attribute
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_eventStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	eventStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, DataEvent>"
+  typeSignature: 	"LinkedHashMap<String,DataEvent>"
+
+- storageBuilder_loaderMap: 	org.fulib.classmodel.Attribute
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_loaderMap
+  modified: 	false
+  name: 	loaderMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<Class, Function<Event, Object>>"
+  typeSignature: 	"LinkedHashMap<Class,Function<Event,Object>>"
+
+- storageBuilder_groupStore: 	org.fulib.classmodel.Attribute
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_groupStore
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	groupStore
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, LinkedHashMap<String, DataEvent>>"
+  typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
+
+- storageBuilder_outdated: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
-  declaration: 	"public void handleBoxBuilt(Event e)"
-  id: 	StorageBuilder_handleBoxBuilt
+  declaration: 	"private boolean outdated(DataEvent event)"
+  id: 	StorageBuilder_outdated
+  methodBody: 	"      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;"
+  modified: 	false
+  modifiers: 	private
+  name: 	outdated
+  paramsString: 	"DataEvent event"
+  returnType: 	boolean
+  signature: 	"class/StorageBuilder/method/outdated(DataEvent)"
+
+- storageBuilder_storeBoxBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public void storeBoxBuilt(Event e)"
+  id: 	StorageBuilder_storeBoxBuilt
+  methodBody: 	"BoxBuilt event = (BoxBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeBoxBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StorageBuilder/method/storeBoxBuilt(Event)"
+
+- storageBuilder_loadBoxBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public Box loadBoxBuilt(Event e)"
+  id: 	StorageBuilder_loadBoxBuilt
   methodBody: 	"BoxBuilt event = (BoxBuilt) e;
 Box object = model.getOrCreateBox(event.getBlockId());
 object.setProduct(event.getProduct());
 object.setPlace(event.getPlace());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handleBoxBuilt
+  name: 	loadBoxBuilt
   paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StorageBuilder/method/handleBoxBuilt(Event)"
+  returnType: 	Box
+  signature: 	"class/StorageBuilder/method/loadBoxBuilt(Event)"
 
-- storageBuilder_handlePickTaskBuilt: 	org.fulib.classmodel.FMethod
+- storageBuilder_storePickTaskBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
-  declaration: 	"public void handlePickTaskBuilt(Event e)"
-  id: 	StorageBuilder_handlePickTaskBuilt
+  declaration: 	"public void storePickTaskBuilt(Event e)"
+  id: 	StorageBuilder_storePickTaskBuilt
+  methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storePickTaskBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/StorageBuilder/method/storePickTaskBuilt(Event)"
+
+- storageBuilder_loadPickTaskBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public PickTask loadPickTaskBuilt(Event e)"
+  id: 	StorageBuilder_loadPickTaskBuilt
   methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
 PickTask object = model.getOrCreatePickTask(event.getBlockId());
 object.setOrder(event.getOrder());
@@ -390,13 +486,102 @@ object.setCustomer(event.getCustomer());
 object.setAddress(event.getAddress());
 object.setState(event.getState());
 object.setBox(event.getBox());
+return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	handlePickTaskBuilt
+  name: 	loadPickTaskBuilt
   paramsString: 	"Event e"
+  returnType: 	PickTask
+  signature: 	"class/StorageBuilder/method/loadPickTaskBuilt(Event)"
+
+- storageBuilder_load: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public Object load(String blockId)"
+  id: 	StorageBuilder_load
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(blockId);
+      if (dataEvent == null) {
+         return null;
+      }
+
+      initLoaderMap();
+      Function<Event, Object> loader = loaderMap.get(dataEvent.getClass());
+      Object object = loader.apply(dataEvent);
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(blockId, k -> new LinkedHashMap<>());
+      for (DataEvent element : group.values()) {
+         loader = loaderMap.get(element.getClass());
+         loader.apply(element);
+      }
+
+      return object;"
+  modified: 	false
+  modifiers: 	public
+  name: 	load
+  paramsString: 	"String blockId"
+  returnType: 	Object
+  signature: 	"class/StorageBuilder/method/load(String)"
+
+- storageBuilder_initLoaderMap: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"private void initLoaderMap()"
+  id: 	StorageBuilder_initLoaderMap
+  methodBody: 	"if (loaderMap == null) {
+   loaderMap = new LinkedHashMap<>();
+   loaderMap.put(BoxBuilt.class, this::loadBoxBuilt);
+   loaderMap.put(PickTaskBuilt.class, this::loadPickTaskBuilt);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	initLoaderMap
+  paramsString: 	""
   returnType: 	void
-  signature: 	"class/StorageBuilder/method/handlePickTaskBuilt(Event)"
+  signature: 	"class/StorageBuilder/method/initLoaderMap()"
+
+- storageBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	StorageBuilder_getVarName
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/StorageBuilder/method/getVarName(String)"
+
+- storageBuilder_addToGroup: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageBuilder
+  declaration: 	"private void addToGroup(String groupId, String elementId)"
+  id: 	StorageBuilder_addToGroup
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format(\"could not find element event %s for group %s \", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);"
+  modified: 	false
+  modifiers: 	private
+  name: 	addToGroup
+  paramsString: 	"String groupId, String elementId"
+  returnType: 	void
+  signature: 	"class/StorageBuilder/method/addToGroup(String,String)"
 
 - storageBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -427,6 +612,16 @@ object.setBox(event.getBox());
   modified: 	false
   name: 	businessLogic
   other: 	storageBusinessLogic_builder
+  propertyStyle: 	Bean
+
+- storageBuilder_service: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	storageBuilder
+  id: 	StorageBuilder_service
+  modified: 	false
+  name: 	service
+  other: 	storageService_builder
   propertyStyle: 	Bean
 
 - storageService_history: 	org.fulib.classmodel.Attribute
@@ -467,14 +662,56 @@ object.setBox(event.getBox());
   type: 	StorageModel
   typeSignature: 	StorageModel
 
+- storageService_query: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"public Query query(Query query)"
+  id: 	StorageService_query
+  methodBody: 	"      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;"
+  modified: 	false
+  modifiers: 	public
+  name: 	query
+  paramsString: 	"Query query"
+  returnType: 	Query
+  signature: 	"class/StorageService/method/query(Query)"
+
+- storageService_isoNow: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"public String isoNow()"
+  id: 	StorageService_isoNow
+  methodBody: 	"return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	isoNow
+  paramsString: 	""
+  returnType: 	String
+  signature: 	"class/StorageService/method/isoNow()"
+
 - storageService_start: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageService
   declaration: 	"public void start()"
   id: 	StorageService_start
   methodBody: 	"model = new StorageModel();
+setBuilder(new StorageBuilder().setModel(model));
 setBusinessLogic(new StorageBusinessLogic());
-businessLogic.setBuilder(new StorageBuilder().setModel(model));
+businessLogic.setBuilder(getBuilder());
 businessLogic.setModel(model);
 ExecutorService executor = Executors.newSingleThreadExecutor();
 spark = Service.ignite();
@@ -498,8 +735,8 @@ Logger.getGlobal().info(\"Storage service is up and running on port \" + port);
   declaration: 	"private String getHello(Request req, Response res)"
   id: 	StorageService_getHello
   methodBody: 	"try {
-   String events = Yaml.encode(getHistory().values().toArray());
-   String objects = Yaml.encode(model.getModelMap().values().toArray());
+   String events = Yaml.encodeSimple(getHistory().values().toArray());
+   String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
    return \"<p id='Storage'>This is the Storage service. </p>\n\" +
          \"<pre id=\\"history\\">\" + events + \"</pre>\n\" +
          \"<pre id=\\"data\\">\" + objects + \"</pre>\n\" +
@@ -523,8 +760,8 @@ catch (Exception e) {
   declaration: 	"private void subscribeAndLoadOldEvents()"
   id: 	StorageService_subscribeAndLoadOldEvents
   methodBody: 	"ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-      .setServiceUrl(\"http://localhost:42002/apply\");
-String json = Yaml.encode(serviceSubscribed);
+      .setServiceUrl(String.format(\"http://localhost:%d/apply\", port));
+String json = Yaml.encodeSimple(serviceSubscribed);
 try {
    String url = \"http://localhost:42000/subscribe\";
    HttpResponse<String> response = Unirest
@@ -532,7 +769,9 @@ try {
          .body(json)
          .asString();
    String body = response.getBody();
-   Map<String, Object> objectMap = Yaml.decode(body);
+   YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+   idMap.decode(body);
+   Map<String, Object> objectMap = idMap.getObjIdMap();
    for (Object obj : objectMap.values()) {
       apply((Event) obj);
    }
@@ -559,6 +798,7 @@ businessLogic.initEventHandlerMap();
 Consumer<Event> handler = businessLogic.getHandler(event);
 handler.accept(event);
 history.put(event.getId(), event);
+firePropertyChange(PROPERTY_HISTORY, null, event);
 publish(event);"
   modified: 	false
   modifiers: 	public
@@ -572,8 +812,8 @@ publish(event);"
   clazz: 	storageService
   declaration: 	"public String getPage(Request request, Response response)"
   id: 	StorageService_getPage
-  methodBody: 	"// no fulib
-// add your page handling here
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
 return getDemoPage(request, response);
 "
   modified: 	false
@@ -608,7 +848,7 @@ return html.toString();"
   clazz: 	storageService
   declaration: 	"public void publish(Event event)"
   id: 	StorageService_publish
-  methodBody: 	"String json = Yaml.encode(event);
+  methodBody: 	"String json = Yaml.encodeSimple(event);
 
 try {
    HttpResponse<String> response = Unirest
@@ -631,16 +871,24 @@ catch (UnirestException e) {
   clazz: 	storageService
   declaration: 	"private String postApply(Request req, Response res)"
   id: 	StorageService_postApply
-  methodBody: 	"      try {
-         String body = req.body();
-         Map<String, Object> map = Yaml.decode(body);
+  methodBody: 	"      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
          for (Object value : map.values()) {
             Event event = (Event) value;
             apply(event);
          }
       }
       catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         String message = e.getMessage();
+         if (message.contains(\"ReflectorMap could not find class description\")) {
+            Logger.getGlobal().info(\"post apply ignores unknown event \" + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         }
       }
       return \"apply done\";"
   modified: 	false
@@ -658,6 +906,16 @@ catch (UnirestException e) {
   modified: 	false
   name: 	businessLogic
   other: 	storageBusinessLogic_service
+  propertyStyle: 	Bean
+
+- storageService_builder: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	storageService
+  id: 	StorageService_builder
+  modified: 	false
+  name: 	builder
+  other: 	storageBuilder_service
   propertyStyle: 	Bean
 
 - box_id: 	org.fulib.classmodel.Attribute

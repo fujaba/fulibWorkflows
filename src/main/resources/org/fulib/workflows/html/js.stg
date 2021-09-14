@@ -1,0 +1,14 @@
+delimiters "{", "}"
+
+visibilityVariableAndMethod(id) ::= <<
+let show{id} = false;
+
+function changeVisibilityOf{id}() \{
+    show{id} = !show{id};
+    if (show{id}) \{
+        document.getElementById("show{id}").style["display"] = "none";
+    \} else \{
+        document.getElementById("show{id}").style["display"] = "block";
+    \}
+\}
+>>

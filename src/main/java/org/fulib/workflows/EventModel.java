@@ -97,7 +97,7 @@ public class EventModel
                lastUser = userInteraction;
             }
             else if (entry.getKey().equalsIgnoreCase("subprocess")
-                  || entry.getKey().equalsIgnoreCase("boundedcontext")) {
+                  || entry.getKey().equalsIgnoreCase("boundedContext")) {
                SubprocessNote subprocessNote = new SubprocessNote();
                subprocessNote.setSubprocessName(StrUtil.toIdentifier(entry.getValue()));
                subprocessNote.setTime(subprocessNote.getSubprocessName());
@@ -108,7 +108,7 @@ public class EventModel
 
                addSubFile(fileName, subprocessNote);
             }
-            else if (entry.getKey().equalsIgnoreCase("brokertopic")) {
+            else if (entry.getKey().equalsIgnoreCase("brokerTopic")) {
                BrokerTopicNote brokerTopicNote = new BrokerTopicNote();
                brokerTopicNote.setBrokerName(StrUtil.toIdentifier(entry.getValue()));
                brokerTopicNote.setTime(brokerTopicNote.getBrokerName());
@@ -133,7 +133,7 @@ public class EventModel
                EventNote eventNote = new EventNote();
                fillEventNote(map, eventNote);
             }
-            else if (entry.getKey().equalsIgnoreCase("externalsystem")) {
+            else if (entry.getKey().equalsIgnoreCase("externalSystem")) {
                String value = entry.getValue();
                ExternalSystemNote externalSystemNote = new ExternalSystemNote();
                String timeInterval = map.get("events");

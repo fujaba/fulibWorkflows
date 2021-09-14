@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	serviceSubscribed 	productStored 	productSelected 	orderRegistered
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	productStoredEvent 	productSelectedCommand 	orderRegisteredCommand
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,34 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	serviceSubscribed 	productStored 	productSelected 	orderRegistered
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	productStoredEvent
+
+- dataEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	dataEvent_blockId
+  model: 	c
+  modified: 	false
+  name: 	DataEvent
+  propertyStyle: 	Bean
+  roles: 	dataEvent_sagas 	dataEvent_query
+  subClasses: 	dataGroup
+  superClass: 	event
+
+- dataGroup: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	DataGroup
+  propertyStyle: 	Bean
+  roles: 	dataGroup_elements
+  superClass: 	dataEvent
+
+- query: 	org.fulib.classmodel.Clazz
+  attributes: 	query_key
+  model: 	c
+  modified: 	false
+  name: 	Query
+  propertyStyle: 	Bean
+  roles: 	query_results
+  superClass: 	event
 
 - serviceSubscribed: 	org.fulib.classmodel.Clazz
   attributes: 	serviceSubscribed_serviceUrl
@@ -23,29 +50,36 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- productStored: 	org.fulib.classmodel.Clazz
-  attributes: 	productStored_event 	productStored_box 	productStored_product 	productStored_place
+- command: 	org.fulib.classmodel.Clazz
   model: 	c
   modified: 	false
-  name: 	ProductStored
+  name: 	Command
+  propertyStyle: 	Bean
+  subClasses: 	productSelectedCommand 	orderRegisteredCommand
+  superClass: 	event
+
+- productStoredEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	productStoredEvent_box 	productStoredEvent_product 	productStoredEvent_place
+  model: 	c
+  modified: 	false
+  name: 	ProductStoredEvent
   propertyStyle: 	Bean
   superClass: 	event
 
-- productSelected: 	org.fulib.classmodel.Clazz
-  attributes: 	productSelected_event
+- productSelectedCommand: 	org.fulib.classmodel.Clazz
   model: 	c
   modified: 	false
-  name: 	ProductSelected
+  name: 	ProductSelectedCommand
   propertyStyle: 	Bean
-  superClass: 	event
+  superClass: 	command
 
-- orderRegistered: 	org.fulib.classmodel.Clazz
-  attributes: 	orderRegistered_event 	orderRegistered_count 	orderRegistered_name 	orderRegistered_address
+- orderRegisteredCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	orderRegisteredCommand_count 	orderRegisteredCommand_name 	orderRegisteredCommand_address
   model: 	c
   modified: 	false
-  name: 	OrderRegistered
+  name: 	OrderRegisteredCommand
   propertyStyle: 	Bean
-  superClass: 	event
+  superClass: 	command
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -63,6 +97,70 @@
   type: 	String
   typeSignature: 	String
 
+- dataEvent_blockId: 	org.fulib.classmodel.Attribute
+  clazz: 	dataEvent
+  id: 	DataEvent_blockId
+  modified: 	false
+  name: 	blockId
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- dataEvent_sagas: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	dataEvent
+  collectionType: 	c1
+  id: 	DataEvent_sagas
+  modified: 	false
+  name: 	sagas
+  other: 	dataGroup_elements
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- dataEvent_query: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	dataEvent
+  id: 	DataEvent_query
+  modified: 	false
+  name: 	query
+  other: 	query_results
+  propertyStyle: 	Bean
+
+- dataGroup_elements: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	dataGroup
+  collectionType: 	c1
+  id: 	DataGroup_elements
+  modified: 	false
+  name: 	elements
+  other: 	dataEvent_sagas
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- query_key: 	org.fulib.classmodel.Attribute
+  clazz: 	query
+  id: 	Query_key
+  modified: 	false
+  name: 	key
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- query_results: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	query
+  collectionType: 	c1
+  id: 	Query_results
+  modified: 	false
+  name: 	results
+  other: 	dataEvent_query
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - serviceSubscribed_serviceUrl: 	org.fulib.classmodel.Attribute
   clazz: 	serviceSubscribed
   id: 	ServiceSubscribed_serviceUrl
@@ -72,81 +170,54 @@
   type: 	String
   typeSignature: 	String
 
-- productStored_event: 	org.fulib.classmodel.Attribute
-  clazz: 	productStored
-  id: 	ProductStored_event
-  modified: 	false
-  name: 	event
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- productStored_box: 	org.fulib.classmodel.Attribute
-  clazz: 	productStored
-  id: 	ProductStored_box
+- productStoredEvent_box: 	org.fulib.classmodel.Attribute
+  clazz: 	productStoredEvent
+  id: 	ProductStoredEvent_box
   modified: 	false
   name: 	box
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- productStored_product: 	org.fulib.classmodel.Attribute
-  clazz: 	productStored
-  id: 	ProductStored_product
+- productStoredEvent_product: 	org.fulib.classmodel.Attribute
+  clazz: 	productStoredEvent
+  id: 	ProductStoredEvent_product
   modified: 	false
   name: 	product
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- productStored_place: 	org.fulib.classmodel.Attribute
-  clazz: 	productStored
-  id: 	ProductStored_place
+- productStoredEvent_place: 	org.fulib.classmodel.Attribute
+  clazz: 	productStoredEvent
+  id: 	ProductStoredEvent_place
   modified: 	false
   name: 	place
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- productSelected_event: 	org.fulib.classmodel.Attribute
-  clazz: 	productSelected
-  id: 	ProductSelected_event
-  modified: 	false
-  name: 	event
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- orderRegistered_event: 	org.fulib.classmodel.Attribute
-  clazz: 	orderRegistered
-  id: 	OrderRegistered_event
-  modified: 	false
-  name: 	event
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- orderRegistered_count: 	org.fulib.classmodel.Attribute
-  clazz: 	orderRegistered
-  id: 	OrderRegistered_count
+- orderRegisteredCommand_count: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegisteredCommand
+  id: 	OrderRegisteredCommand_count
   modified: 	false
   name: 	count
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- orderRegistered_name: 	org.fulib.classmodel.Attribute
-  clazz: 	orderRegistered
-  id: 	OrderRegistered_name
+- orderRegisteredCommand_name: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegisteredCommand
+  id: 	OrderRegisteredCommand_name
   modified: 	false
   name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- orderRegistered_address: 	org.fulib.classmodel.Attribute
-  clazz: 	orderRegistered
-  id: 	OrderRegistered_address
+- orderRegisteredCommand_address: 	org.fulib.classmodel.Attribute
+  clazz: 	orderRegisteredCommand
+  id: 	OrderRegisteredCommand_address
   modified: 	false
   name: 	address
   propertyStyle: 	Bean
