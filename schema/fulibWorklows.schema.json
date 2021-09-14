@@ -85,8 +85,7 @@
         }
       },
       "required": [
-        "service",
-        "port"
+        "service"
       ],
       "additionalProperties": false
     },
