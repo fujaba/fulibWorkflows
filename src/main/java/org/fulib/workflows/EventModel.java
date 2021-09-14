@@ -19,6 +19,7 @@ public class EventModel
    private LinkedList<String> yamlFileList;
    private UserInteraction lastUser;
    private ServiceNote lastService;
+   private ExternalSystemNote externalSystemNote = null;
 
    public EventStormingBoard getEventStormingBoard()
    {
@@ -85,6 +86,7 @@ public class EventModel
                note.setMap(map);
                note.withWorkflows(getRootWorkflow());
                note.setEventStormingBoard(getEventStormingBoard());
+               lastService = note;
             }
             else if (entry.getKey().equalsIgnoreCase("Action")) {
                UserInteraction userInteraction = new UserInteraction();
@@ -317,7 +319,7 @@ public class EventModel
          value = split[1];
          Map.Entry<String, String> typeEntry = iterator.next();
          objectId = typeEntry.getValue();
-         objectId = getVarName(objectId);
+         objectId = getObjectId(objectId);
          map.put("data", String.format("%s %s %s", className, objectId, value));
       }
       else {
@@ -330,7 +332,7 @@ public class EventModel
       note.setTime(value);
       note.setBlockId(objectId);
       note.setMap(map);
-      note.setWorkflow(getRootWorkflow());
+      // note.setWorkflow(getRootWorkflow());
       note.setDataType(className);
       addToStepsOfLastActor(note);
       ServiceNote serviceNote = ((Policy) lastActor).getService();
@@ -345,6 +347,7 @@ public class EventModel
 
       serviceNote.withHandledDataTypes(dataType);
    }
+
 
    private void buildPageNote(LinkedHashMap<String, PageNote> userLastPage, LinkedHashMap<String, String> map, Map.Entry<String, String> entry)
    {
@@ -479,9 +482,17 @@ public class EventModel
       return varName;
    }
 
+   public String getObjectId(String objectId)
+   {
+      if (objectId == null) {
+         return null;
+      }
+      return objectId.replaceAll("\\W+", "_");
+   }
+
    private void addToStepsOfLastActor(WorkflowNote note)
    {
-      if (note instanceof EventNote || note instanceof PageNote || note instanceof BrokerTopicNote) {
+      if (note instanceof EventNote || note instanceof PageNote || note instanceof CommandNote || note instanceof BrokerTopicNote) {
          if (lastUser == null) {
             UserNote somebody = getEventStormingBoard().getOrCreateFromUsers("somebody");
             lastUser = (UserInteraction) new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody).setActorName("somebody");
@@ -489,26 +500,47 @@ public class EventModel
          if (lastActor == null) {
             lastActor = lastUser;
          }
-         if (lastActor instanceof Policy && note instanceof PageNote) {
+         if (lastActor instanceof Policy && (note instanceof PageNote || note instanceof CommandNote)) {
             lastActor = new UserInteraction().setWorkflow(getRootWorkflow()).setUser(lastUser.getUser()).setActorName(lastUser.getActorName());
          }
-         if (note instanceof PageNote) {
+         if (note instanceof PageNote || note instanceof CommandNote) {
             String actorName = lastActor.getActorName();
          }
       }
       else if ((note instanceof DataNote) || (note instanceof ClassNote) || (note instanceof QueryNote)) {
+         if (lastEvent == null && externalSystemNote == null) {
+            externalSystemNote = new ExternalSystemNote();
+            externalSystemNote.setTime("11:00:00");
+            externalSystemNote.setWorkflow(getRootWorkflow());
+            externalSystemNote.setSystemName("someExternalSystem");
+            LinkedHashMap<String, String> exMap = new LinkedHashMap<>();
+            exMap.put("externalsystem", "someExternalsystem");
+            externalSystemNote.setMap(exMap);
+         }
          if (lastService == null) {
             lastService = getEventStormingBoard().getOrCreateFromServices("someservice");
          }
          if (lastActor == null || !(lastActor instanceof Policy)) {
-            Interaction action = new Policy()
-                  .setWorkflow(getRootWorkflow())
-                  .setService(lastService)
-                  .setTrigger(lastEvent)
-                  .setActorName(lastService.getName());
-            lastService.withHandledEventTypes(lastEvent.getType());
-            lastActor = action;
+            if (lastEvent != null) {
+               Interaction action = new Policy()
+                     .setWorkflow(getRootWorkflow())
+                     .setService(lastService)
+                     .setTrigger(lastEvent)
+                     .setActorName(lastService.getName());
+               lastService.withHandledEventTypes(lastEvent.getType());
+               lastActor = action;
+            }
+            else {
+               // add external service
+               Interaction action = new Policy()
+                     .setWorkflow(getRootWorkflow())
+                     .setService(lastService)
+                     .setExternalSystem(externalSystemNote)
+                     .setActorName(lastService.getName());
+               lastActor = action;
+            }
          }
+         note.setWorkflow(getRootWorkflow());
       }
       else {
          Logger.getGlobal().severe("Unknown note type " + note.getClass().getSimpleName());

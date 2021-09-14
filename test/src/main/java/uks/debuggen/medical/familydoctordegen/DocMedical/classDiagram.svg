@@ -1,159 +1,142 @@
-<svg width="1219px" height="389px"
- viewBox="0.00 0.00 1218.96 389.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 385)">
+<svg width="1227px" height="365px"
+ viewBox="0.00 0.00 1226.90 365.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 361)">
 <title>uks.debuggen.medical.familydoctordegen.DocMedical</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-385 1214.96,-385 1214.96,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-361 1222.9,-361 1222.9,4 -4,4"/>
 <!-- Consultation -->
-<g id="node1" class="node">
-<title>Consultation</title>
-<polygon fill="none" stroke="black" points="189.96,-68.5 189.96,-90.5 289.96,-90.5 289.96,-68.5 189.96,-68.5"/>
-<text text-anchor="start" x="204.19" y="-74.9" font-family="Times,serif" font-size="14.00">Consultation</text>
-<polygon fill="none" stroke="black" points="189.96,-12.5 189.96,-68.5 289.96,-68.5 289.96,-12.5 189.96,-12.5"/>
-<text text-anchor="start" x="192.96" y="-52.9" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="192.96" y="-36.1" font-family="Times,serif" font-size="14.00">cid :String</text>
-<text text-anchor="start" x="192.96" y="-19.3" font-family="Times,serif" font-size="14.00">treatment :String</text>
+<g id="node1" class="node"><title>Consultation</title>
+<polygon fill="none" stroke="black" points="207.898,-62.5 207.898,-83.5 304.898,-83.5 304.898,-62.5 207.898,-62.5"/>
+<text text-anchor="start" x="220.898" y="-69.3" font-family="Times New Roman,serif" font-size="14.00">Consultation</text>
+<polygon fill="none" stroke="black" points="207.898,-11.5 207.898,-62.5 304.898,-62.5 304.898,-11.5 207.898,-11.5"/>
+<text text-anchor="start" x="210.898" y="-48.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="210.898" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">cid :String</text>
+<text text-anchor="start" x="210.898" y="-18.3" font-family="Times New Roman,serif" font-size="14.00">treatment :String</text>
 </g>
 <!-- Disease -->
-<g id="node2" class="node">
-<title>Disease</title>
-<polygon fill="none" stroke="black" points="35.96,-198.5 35.96,-220.5 112.96,-220.5 112.96,-198.5 35.96,-198.5"/>
-<text text-anchor="start" x="52.7" y="-204.9" font-family="Times,serif" font-size="14.00">Disease</text>
-<polygon fill="none" stroke="black" points="35.96,-159.5 35.96,-198.5 112.96,-198.5 112.96,-159.5 35.96,-159.5"/>
-<text text-anchor="start" x="38.96" y="-182.9" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="38.96" y="-166.1" font-family="Times,serif" font-size="14.00">name :String</text>
+<g id="node2" class="node"><title>Disease</title>
+<polygon fill="none" stroke="black" points="20.8978,-193.5 20.8978,-214.5 131.898,-214.5 131.898,-193.5 20.8978,-193.5"/>
+<text text-anchor="start" x="54.8978" y="-200.3" font-family="Times New Roman,serif" font-size="14.00">Disease</text>
+<polygon fill="none" stroke="black" points="20.8978,-142.5 20.8978,-193.5 131.898,-193.5 131.898,-142.5 20.8978,-142.5"/>
+<text text-anchor="start" x="23.8978" y="-179.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="23.8978" y="-164.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="23.8978" y="-149.3" font-family="Times New Roman,serif" font-size="14.00">migratedTo :String</text>
 </g>
 <!-- Consultation&#45;&gt;Disease -->
-<g id="edge5" class="edge">
-<title>Consultation&#45;&gt;Disease</title>
-<path fill="none" stroke="black" d="M184.83,-94.68C167.11,-108.55 147.52,-124.21 129.96,-139 123.66,-144.31 117.06,-150.07 110.7,-155.73"/>
-<text text-anchor="middle" x="84.26" y="-143.13" font-family="Times,serif" font-size="14.00">diagnosis</text>
-<text text-anchor="middle" x="142.64" y="-98.88" font-family="Times,serif" font-size="14.00">consultations *</text>
+<g id="edge5" class="edge"><title>Consultation&#45;&gt;Disease</title>
+<path fill="none" stroke="black" d="M201.403,-87.5543C178.95,-103.646 152.984,-122.255 130.517,-138.356"/>
+<text text-anchor="middle" x="104.017" y="-127.156" font-family="Times New Roman,serif" font-size="14.00">diagnosis</text>
+<text text-anchor="middle" x="158.903" y="-91.3543" font-family="Times New Roman,serif" font-size="14.00">consultations *</text>
 </g>
 <!-- Patient -->
-<g id="node7" class="node">
-<title>Patient</title>
-<polygon fill="none" stroke="black" points="146.96,-215.5 146.96,-237.5 246.96,-237.5 246.96,-215.5 146.96,-215.5"/>
-<text text-anchor="start" x="177.52" y="-221.9" font-family="Times,serif" font-size="14.00">Patient</text>
-<polygon fill="none" stroke="black" points="146.96,-142.5 146.96,-215.5 246.96,-215.5 246.96,-142.5 146.96,-142.5"/>
-<text text-anchor="start" x="149.96" y="-199.9" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="149.96" y="-183.1" font-family="Times,serif" font-size="14.00">name :String</text>
-<text text-anchor="start" x="149.96" y="-166.3" font-family="Times,serif" font-size="14.00">address :String</text>
-<text text-anchor="start" x="149.96" y="-149.5" font-family="Times,serif" font-size="14.00">birthDate :String</text>
+<g id="node7" class="node"><title>Patient</title>
+<polygon fill="none" stroke="black" points="165.898,-200.5 165.898,-221.5 262.898,-221.5 262.898,-200.5 165.898,-200.5"/>
+<text text-anchor="start" x="195.398" y="-207.3" font-family="Times New Roman,serif" font-size="14.00">Patient</text>
+<polygon fill="none" stroke="black" points="165.898,-134.5 165.898,-200.5 262.898,-200.5 262.898,-134.5 165.898,-134.5"/>
+<text text-anchor="start" x="168.898" y="-186.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="168.898" y="-171.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="168.898" y="-156.3" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
+<text text-anchor="start" x="168.898" y="-141.3" font-family="Times New Roman,serif" font-size="14.00">birthDate :String</text>
 </g>
 <!-- Consultation&#45;&gt;Patient -->
-<g id="edge6" class="edge">
-<title>Consultation&#45;&gt;Patient</title>
-<path fill="none" stroke="black" d="M226.71,-94.72C222.32,-108.72 217.39,-124.44 212.82,-138.99"/>
-<text text-anchor="middle" x="193.77" y="-126.39" font-family="Times,serif" font-size="14.00">patient</text>
-<text text-anchor="middle" x="268.9" y="-98.92" font-family="Times,serif" font-size="14.00">consultations *</text>
+<g id="edge6" class="edge"><title>Consultation&#45;&gt;Patient</title>
+<path fill="none" stroke="black" d="M243.182,-87.5543C238.74,-101.199 233.708,-116.653 229.085,-130.854"/>
+<text text-anchor="middle" x="210.585" y="-119.654" font-family="Times New Roman,serif" font-size="14.00">patient</text>
+<text text-anchor="middle" x="285.682" y="-91.3543" font-family="Times New Roman,serif" font-size="14.00">consultations *</text>
 </g>
 <!-- Symptom -->
-<g id="node8" class="node">
-<title>Symptom</title>
-<polygon fill="none" stroke="black" points="35.96,-337.5 35.96,-359.5 112.96,-359.5 112.96,-337.5 35.96,-337.5"/>
-<text text-anchor="start" x="47.24" y="-343.9" font-family="Times,serif" font-size="14.00">Symptom</text>
-<polygon fill="none" stroke="black" points="35.96,-298.5 35.96,-337.5 112.96,-337.5 112.96,-298.5 35.96,-298.5"/>
-<text text-anchor="start" x="38.96" y="-321.9" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="38.96" y="-305.1" font-family="Times,serif" font-size="14.00">name :String</text>
+<g id="node8" class="node"><title>Symptom</title>
+<polygon fill="none" stroke="black" points="37.8978,-316.5 37.8978,-337.5 113.898,-337.5 113.898,-316.5 37.8978,-316.5"/>
+<text text-anchor="start" x="48.3978" y="-323.3" font-family="Times New Roman,serif" font-size="14.00">Symptom</text>
+<polygon fill="none" stroke="black" points="37.8978,-280.5 37.8978,-316.5 113.898,-316.5 113.898,-280.5 37.8978,-280.5"/>
+<text text-anchor="start" x="40.8978" y="-302.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="40.8978" y="-287.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
 </g>
 <!-- Consultation&#45;&gt;Symptom -->
-<g id="edge7" class="edge">
-<title>Consultation&#45;&gt;Symptom</title>
-<path fill="none" stroke="black" d="M260.13,-94.79C276.43,-135.69 292.41,-197.8 263.96,-242 232.58,-290.77 166.21,-312.36 120.84,-321.7"/>
-<text text-anchor="middle" x="154.87" y="-309.1" font-family="Times,serif" font-size="14.00">symptoms *</text>
-<text text-anchor="middle" x="302.32" y="-82.19" font-family="Times,serif" font-size="14.00">consultations *</text>
+<g id="edge7" class="edge"><title>Consultation&#45;&gt;Symptom</title>
+<path fill="none" stroke="black" d="M275.035,-87.6226C290.832,-126.098 306.571,-184.883 278.898,-226 244.063,-277.759 170.549,-297.06 122.21,-304.247"/>
+<text text-anchor="middle" x="157.21" y="-293.047" font-family="Times New Roman,serif" font-size="14.00">symptoms *</text>
+<text text-anchor="middle" x="317.535" y="-76.4226" font-family="Times New Roman,serif" font-size="14.00">consultations *</text>
 </g>
 <!-- Test -->
-<g id="node9" class="node">
-<title>Test</title>
-<polygon fill="none" stroke="black" points="318.96,-215.5 318.96,-237.5 396.96,-237.5 396.96,-215.5 318.96,-215.5"/>
-<text text-anchor="start" x="345.91" y="-221.9" font-family="Times,serif" font-size="14.00">Test</text>
-<polygon fill="none" stroke="black" points="318.96,-142.5 318.96,-215.5 396.96,-215.5 396.96,-142.5 318.96,-142.5"/>
-<text text-anchor="start" x="321.96" y="-199.9" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="321.96" y="-183.1" font-family="Times,serif" font-size="14.00">cid :String</text>
-<text text-anchor="start" x="321.96" y="-166.3" font-family="Times,serif" font-size="14.00">kind :String</text>
-<text text-anchor="start" x="321.96" y="-149.5" font-family="Times,serif" font-size="14.00">result :String</text>
+<g id="node9" class="node"><title>Test</title>
+<polygon fill="none" stroke="black" points="334.898,-200.5 334.898,-221.5 410.898,-221.5 410.898,-200.5 334.898,-200.5"/>
+<text text-anchor="start" x="360.398" y="-207.3" font-family="Times New Roman,serif" font-size="14.00">Test</text>
+<polygon fill="none" stroke="black" points="334.898,-134.5 334.898,-200.5 410.898,-200.5 410.898,-134.5 334.898,-134.5"/>
+<text text-anchor="start" x="337.898" y="-186.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="337.898" y="-171.3" font-family="Times New Roman,serif" font-size="14.00">cid :String</text>
+<text text-anchor="start" x="337.898" y="-156.3" font-family="Times New Roman,serif" font-size="14.00">kind :String</text>
+<text text-anchor="start" x="337.898" y="-141.3" font-family="Times New Roman,serif" font-size="14.00">result :String</text>
 </g>
 <!-- Consultation&#45;&gt;Test -->
-<g id="edge4" class="edge">
-<title>Consultation&#45;&gt;Test</title>
-<path fill="none" stroke="black" d="M276.33,-94.72C288.39,-108.72 301.92,-124.44 314.46,-138.99"/>
-<text text-anchor="middle" x="296.77" y="-126.39" font-family="Times,serif" font-size="14.00">tests *</text>
-<text text-anchor="middle" x="310.55" y="-98.92" font-family="Times,serif" font-size="14.00">consultation</text>
+<g id="edge4" class="edge"><title>Consultation&#45;&gt;Test</title>
+<path fill="none" stroke="black" d="M291.319,-87.5543C303.695,-101.199 317.711,-116.653 330.591,-130.854"/>
+<text text-anchor="middle" x="312.091" y="-119.654" font-family="Times New Roman,serif" font-size="14.00">tests *</text>
+<text text-anchor="middle" x="325.319" y="-91.3543" font-family="Times New Roman,serif" font-size="14.00">consultation</text>
 </g>
 <!-- Disease&#45;&gt;Symptom -->
-<g id="edge9" class="edge">
-<title>Disease&#45;&gt;Symptom</title>
-<path fill="none" stroke="black" d="M68.07,-225.01C66.93,-246.24 66.93,-273.6 68.06,-294.86"/>
-<text text-anchor="middle" x="34.03" y="-282.26" font-family="Times,serif" font-size="14.00">symptoms *</text>
-<text text-anchor="middle" x="37.94" y="-229.21" font-family="Times,serif" font-size="14.00">indicates *</text>
+<g id="edge9" class="edge"><title>Disease&#45;&gt;Symptom</title>
+<path fill="none" stroke="black" d="M69.6382,-218.554C68.8803,-237.242 69.0009,-259.323 70,-276.93"/>
+<text text-anchor="middle" x="35" y="-265.73" font-family="Times New Roman,serif" font-size="14.00">symptoms *</text>
+<text text-anchor="middle" x="39.6382" y="-222.354" font-family="Times New Roman,serif" font-size="14.00">indicates *</text>
 </g>
 <!-- DocMedicalBuilder -->
-<g id="node3" class="node">
-<title>DocMedicalBuilder</title>
-<polygon fill="none" stroke="black" points="481.96,-76.5 481.96,-98.5 910.96,-98.5 910.96,-76.5 481.96,-76.5"/>
-<text text-anchor="start" x="640.87" y="-82.9" font-family="Times,serif" font-size="14.00">DocMedicalBuilder</text>
-<polygon fill="none" stroke="black" points="481.96,-3.5 481.96,-76.5 910.96,-76.5 910.96,-3.5 481.96,-3.5"/>
-<text text-anchor="start" x="484.96" y="-60.9" font-family="Times,serif" font-size="14.00">model :DocMedicalModel</text>
-<text text-anchor="start" x="484.96" y="-44.1" font-family="Times,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
-<text text-anchor="start" x="484.96" y="-27.3" font-family="Times,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
-<text text-anchor="start" x="484.96" y="-10.5" font-family="Times,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
+<g id="node3" class="node"><title>DocMedicalBuilder</title>
+<polygon fill="none" stroke="black" points="496.898,-69.5 496.898,-90.5 920.898,-90.5 920.898,-69.5 496.898,-69.5"/>
+<text text-anchor="start" x="654.398" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">DocMedicalBuilder</text>
+<polygon fill="none" stroke="black" points="496.898,-3.5 496.898,-69.5 920.898,-69.5 920.898,-3.5 496.898,-3.5"/>
+<text text-anchor="start" x="499.898" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">model :DocMedicalModel</text>
+<text text-anchor="start" x="499.898" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
+<text text-anchor="start" x="499.898" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
+<text text-anchor="start" x="499.898" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
 </g>
 <!-- DocMedicalBusinessLogic -->
-<g id="node4" class="node">
-<title>DocMedicalBusinessLogic</title>
-<polygon fill="none" stroke="black" points="430.96,-198.5 430.96,-220.5 760.96,-220.5 760.96,-198.5 430.96,-198.5"/>
-<text text-anchor="start" x="520.15" y="-204.9" font-family="Times,serif" font-size="14.00">DocMedicalBusinessLogic</text>
-<polygon fill="none" stroke="black" points="430.96,-159.5 430.96,-198.5 760.96,-198.5 760.96,-159.5 430.96,-159.5"/>
-<text text-anchor="start" x="433.96" y="-182.9" font-family="Times,serif" font-size="14.00">model :DocMedicalModel</text>
-<text text-anchor="start" x="433.96" y="-166.1" font-family="Times,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+<g id="node4" class="node"><title>DocMedicalBusinessLogic</title>
+<polygon fill="none" stroke="black" points="444.898,-185.5 444.898,-206.5 772.898,-206.5 772.898,-185.5 444.898,-185.5"/>
+<text text-anchor="start" x="533.398" y="-192.3" font-family="Times New Roman,serif" font-size="14.00">DocMedicalBusinessLogic</text>
+<polygon fill="none" stroke="black" points="444.898,-149.5 444.898,-185.5 772.898,-185.5 772.898,-149.5 444.898,-149.5"/>
+<text text-anchor="start" x="447.898" y="-171.3" font-family="Times New Roman,serif" font-size="14.00">model :DocMedicalModel</text>
+<text text-anchor="start" x="447.898" y="-156.3" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
 </g>
 <!-- DocMedicalBuilder&#45;&gt;DocMedicalBusinessLogic -->
-<g id="edge1" class="edge">
-<title>DocMedicalBuilder&#45;&gt;DocMedicalBusinessLogic</title>
-<path fill="none" stroke="black" d="M659.01,-103.12C646.22,-120.66 632.19,-139.87 620.63,-155.71"/>
-<text text-anchor="middle" x="580.58" y="-143.11" font-family="Times,serif" font-size="14.00">businessLogic</text>
-<text text-anchor="middle" x="639.18" y="-107.32" font-family="Times,serif" font-size="14.00">builder</text>
+<g id="edge1" class="edge"><title>DocMedicalBuilder&#45;&gt;DocMedicalBusinessLogic</title>
+<path fill="none" stroke="black" d="M672.796,-95.072C659.704,-111.959 645.233,-130.628 633.377,-145.922"/>
+<text text-anchor="middle" x="592.877" y="-134.722" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
+<text text-anchor="middle" x="653.296" y="-98.872" font-family="Times New Roman,serif" font-size="14.00">builder</text>
 </g>
 <!-- DocMedicalService -->
-<g id="node6" class="node">
-<title>DocMedicalService</title>
-<polygon fill="none" stroke="black" points="579.96,-354.5 579.96,-376.5 811.96,-376.5 811.96,-354.5 579.96,-354.5"/>
-<text text-anchor="start" x="640.38" y="-360.9" font-family="Times,serif" font-size="14.00">DocMedicalService</text>
-<polygon fill="none" stroke="black" points="579.96,-281.5 579.96,-354.5 811.96,-354.5 811.96,-281.5 579.96,-281.5"/>
-<text text-anchor="start" x="582.96" y="-338.9" font-family="Times,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
-<text text-anchor="start" x="582.96" y="-322.1" font-family="Times,serif" font-size="14.00">port :int</text>
-<text text-anchor="start" x="582.96" y="-305.3" font-family="Times,serif" font-size="14.00">spark :Service</text>
-<text text-anchor="start" x="582.96" y="-288.5" font-family="Times,serif" font-size="14.00">model :DocMedicalModel</text>
+<g id="node6" class="node"><title>DocMedicalService</title>
+<polygon fill="none" stroke="black" points="594.898,-331.5 594.898,-352.5 823.898,-352.5 823.898,-331.5 594.898,-331.5"/>
+<text text-anchor="start" x="654.398" y="-338.3" font-family="Times New Roman,serif" font-size="14.00">DocMedicalService</text>
+<polygon fill="none" stroke="black" points="594.898,-265.5 594.898,-331.5 823.898,-331.5 823.898,-265.5 594.898,-265.5"/>
+<text text-anchor="start" x="597.898" y="-317.3" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="597.898" y="-302.3" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="597.898" y="-287.3" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="597.898" y="-272.3" font-family="Times New Roman,serif" font-size="14.00">model :DocMedicalModel</text>
 </g>
 <!-- DocMedicalBuilder&#45;&gt;DocMedicalService -->
-<g id="edge2" class="edge">
-<title>DocMedicalBuilder&#45;&gt;DocMedicalService</title>
-<path fill="none" stroke="black" d="M755.66,-103.27C764.77,-114.06 772.83,-126.12 777.96,-139 794.92,-181.52 794.92,-199.48 777.96,-242 772.83,-254.88 764.77,-266.94 755.66,-277.73"/>
-<text text-anchor="middle" x="735.84" y="-265.13" font-family="Times,serif" font-size="14.00">service</text>
-<text text-anchor="middle" x="735.83" y="-107.47" font-family="Times,serif" font-size="14.00">builder</text>
+<g id="edge2" class="edge"><title>DocMedicalBuilder&#45;&gt;DocMedicalService</title>
+<path fill="none" stroke="black" d="M766.62,-95.2715C776.115,-105.933 784.58,-117.994 789.898,-131 805.876,-170.082 805.876,-186.918 789.898,-226 784.58,-239.006 776.115,-251.067 766.62,-261.729"/>
+<text text-anchor="middle" x="746.62" y="-250.529" font-family="Times New Roman,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="747.12" y="-99.0715" font-family="Times New Roman,serif" font-size="14.00">builder</text>
 </g>
 <!-- DocMedicalBusinessLogic&#45;&gt;DocMedicalService -->
-<g id="edge3" class="edge">
-<title>DocMedicalBusinessLogic&#45;&gt;DocMedicalService</title>
-<path fill="none" stroke="black" d="M620.43,-225.01C632.05,-240.94 646.19,-260.31 659.08,-277.96"/>
-<text text-anchor="middle" x="639.26" y="-265.36" font-family="Times,serif" font-size="14.00">service</text>
-<text text-anchor="middle" x="580.38" y="-229.21" font-family="Times,serif" font-size="14.00">businessLogic</text>
+<g id="edge3" class="edge"><title>DocMedicalBusinessLogic&#45;&gt;DocMedicalService</title>
+<path fill="none" stroke="black" d="M633.361,-211.057C645.156,-226.273 659.544,-244.834 672.586,-261.657"/>
+<text text-anchor="middle" x="652.586" y="-250.457" font-family="Times New Roman,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="592.861" y="-214.857" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
 </g>
 <!-- DocMedicalModel -->
-<g id="node5" class="node">
-<title>DocMedicalModel</title>
-<polygon fill="none" stroke="black" points="944.96,-51.5 944.96,-73.5 1202.96,-73.5 1202.96,-51.5 944.96,-51.5"/>
-<text text-anchor="start" x="1021.09" y="-57.9" font-family="Times,serif" font-size="14.00">DocMedicalModel</text>
-<polygon fill="none" stroke="black" points="944.96,-29.5 944.96,-51.5 1202.96,-51.5 1202.96,-29.5 944.96,-29.5"/>
-<text text-anchor="start" x="947.96" y="-35.9" font-family="Times,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+<g id="node5" class="node"><title>DocMedicalModel</title>
+<polygon fill="none" stroke="black" points="954.898,-47.5 954.898,-68.5 1210.9,-68.5 1210.9,-47.5 954.898,-47.5"/>
+<text text-anchor="start" x="1030.4" y="-54.3" font-family="Times New Roman,serif" font-size="14.00">DocMedicalModel</text>
+<polygon fill="none" stroke="black" points="954.898,-26.5 954.898,-47.5 1210.9,-47.5 1210.9,-26.5 954.898,-26.5"/>
+<text text-anchor="start" x="957.898" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
 </g>
 <!-- Symptom&#45;&gt;Disease -->
-<g id="edge8" class="edge">
-<title>Symptom&#45;&gt;Disease</title>
-<path fill="none" stroke="black" d="M79.87,-294.86C81,-273.6 81,-246.24 79.86,-225.01"/>
-<text text-anchor="middle" x="109.6" y="-229.21" font-family="Times,serif" font-size="14.00">excludes *</text>
-<text text-anchor="middle" x="136.06" y="-282.26" font-family="Times,serif" font-size="14.00">counterSymptoms *</text>
+<g id="edge8" class="edge"><title>Symptom&#45;&gt;Disease</title>
+<path fill="none" stroke="black" d="M81.7956,-276.93C82.7947,-259.323 82.9153,-237.242 82.1574,-218.554"/>
+<text text-anchor="middle" x="112.157" y="-222.354" font-family="Times New Roman,serif" font-size="14.00">excludes *</text>
+<text text-anchor="middle" x="138.796" y="-265.73" font-family="Times New Roman,serif" font-size="14.00">counterSymptoms *</text>
 </g>
 </g>
 </svg>

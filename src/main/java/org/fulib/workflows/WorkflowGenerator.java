@@ -40,6 +40,8 @@ public class WorkflowGenerator
    private Clazz serviceClazz;
    private Clazz logicClass;
    private Clazz builderClass;
+   private ServiceNote lastServiceNote;
+   private Clazz logic;
 
    public EventModel getEventModel()
    {
@@ -70,6 +72,197 @@ public class WorkflowGenerator
       buildTest();
 
       return this;
+   }
+
+   public WorkflowGenerator loadPlainModel(ClassModelManager mm, String fileName)
+   {
+      this.mm = mm;
+
+      group = new STGroupFile(this.getClass().getResource("templates/Workflows.stg"));
+
+      // event map
+      eventModel = new EventModel();
+      eventStormingBoard = eventModel.buildEventStormModel(fileName);
+      managerMap = new LinkedHashMap<>();
+      managerMap.put("mm", mm);
+      buildPlainModel();
+      buildPlainTest();
+
+      return this;
+   }
+
+   private void buildPlainModel()
+   {
+      ClassModelManager modelManager = null;
+      for (ServiceNote currentServiceNote : eventStormingBoard.getServices()) {
+         lastServiceNote = currentServiceNote;
+         // each service gets its own package
+         // build classModelManager for that package
+         String port = currentServiceNote.getPort();
+
+         Map<String, String> map = currentServiceNote.getMap();
+         if (map != null) {
+            map.get("port");
+         }
+         String serviceName = currentServiceNote.getName();
+         modelManager = new ClassModelManager().setMainJavaDir(mm.getClassModel().getMainJavaDir())
+               .setPackageName(mm.getClassModel().getPackageName() + "." + serviceName);
+         managerMap.put(serviceName, modelManager);
+
+         // add model class
+         Clazz modelClazz = modelManager.haveClass(serviceName + "Model");
+         modelClazz.withImports("import java.util.LinkedHashMap;");
+         modelManager.haveAttribute(modelClazz,
+               "modelMap",
+               "LinkedHashMap<String, Object>",
+               "new LinkedHashMap<>()");
+
+         buildPlainDataClasses(currentServiceNote, modelManager);
+      }
+   }
+
+   private void buildPlainDataClasses(ServiceNote serviceNote, ClassModelManager modelManager)
+   {
+      // collect object ids
+      for (Workflow workflow : serviceNote.getEventStormingBoard().getWorkflows()) {
+         for (WorkflowNote note : workflow.getNotes()) {
+            if (note instanceof DataNote) {
+               serviceNote.getObjectMap().put(((DataNote) note).getBlockId(), ((DataNote) note).getDataType());
+            }
+         }
+      }
+
+      // create classes
+      for (Workflow workflow : serviceNote.getEventStormingBoard().getWorkflows()) {
+         for (WorkflowNote note : workflow.getNotes()) {
+            if (note instanceof DataNote) {
+               DataNote dataNote = (DataNote) note;
+               if (dataNote.getType().getMigratedTo() != null) {
+                  continue;
+               }
+               LinkedHashMap<String, String> map = note.getMap();
+               LinkedHashMap<String, String> mockup = getMockup(map);
+               addModelClassForDataNote(modelManager, serviceNote, mockup);
+               addGetOrCreateMethodToServiceModel(modelManager, serviceNote.getName(), mockup);
+               // addCreateAndInitModelObjectCode(modelManager, serviceNote, dataNote, mockup, body, methodCall);
+            }
+            else if (note instanceof ClassNote) {
+               ClassNote classNote = (ClassNote) note;
+               addModelClassForClassNote(modelManager, serviceNote, classNote);
+            }
+         }
+      }
+   }
+
+   private void buildPlainTest()
+   {
+      tm = new ClassModelManager().setMainJavaDir(mm.getClassModel().getMainJavaDir().replace("/main/java", "/test/java"))
+            .setPackageName(mm.getClassModel().getPackageName());
+      managerMap.put("tm", tm);
+
+      String boardName = StrUtil.toIdentifier(eventStormingBoard.getName());
+      testClazz = tm.haveClass("Test" + boardName);
+      testClazz.withImports("import org.junit.Test;",
+            "import java.util.LinkedHashMap;",
+            "import static org.assertj.core.api.Assertions.assertThat;");
+      testClazz.withImports(String.format("import %s.%s.*;", mm.getClassModel().getPackageName(), lastServiceNote.getName()));
+
+      String declaration = "@Test\n" +
+            "public void test" + StrUtil.toIdentifier(eventModel.getEventStormingBoard().getName()) + "()";
+      testBody = new StringBuilder();
+
+      // create business logic
+      ClassModelManager modelManager = managerMap.get(lastServiceNote.getName());
+      logic = modelManager.haveClass(lastServiceNote.getName() + "BusinessLogic");
+
+      testBody.append(String.format("%s logic = new %1$s();\n", logic.getName()));
+
+      // create model map
+      testBody.append("RoutingModel model = new RoutingModel();\n");
+      for (Workflow workflow : eventStormingBoard.getWorkflows()) {
+         for (WorkflowNote note : workflow.getNotes()) {
+            if (note instanceof ExternalSystemNote) {
+               ExternalSystemNote externalSystemNote = (ExternalSystemNote) note;
+               for (Policy policy : externalSystemNote.getPolicies()) {
+                  for (WorkflowNote step : policy.getSteps()) {
+                     if (step instanceof DataNote) {
+                        addObjectCreationToPlainTest(step);
+                     }
+                  }
+               }
+            }
+            else if (note instanceof CommandNote) {
+               addCommandToPlainTest(note);
+            }
+         }
+      }
+
+
+      testBody.append("\nSystem.out.println();\n");
+
+      tm.haveMethod(testClazz, declaration, testBody.toString());
+   }
+
+   private void addCommandToPlainTest(WorkflowNote note)
+   {
+      CommandNote commandNote = (CommandNote) note;
+      String command = commandNote.getMap().get("command");
+      command = eventModel.getVarName(command);
+      String params = "";
+      Iterator<Map.Entry<String, String>> iterator = commandNote.getMap().entrySet().iterator();
+      iterator.next();
+      while (iterator.hasNext()) {
+         Map.Entry<String, String> entry = iterator.next();
+         params += entry.getValue();
+      }
+      testBody.append(String.format("logic.%s(%s);\n", command, params));
+
+      // is there a policy?
+      for (Policy policy : commandNote.getPolicies()) {
+         for (WorkflowNote step : policy.getSteps()) {
+            if (step instanceof DataNote) {
+               LinkedHashMap<String, String> mockup = getMockup(step.getMap());
+               iterator = mockup.entrySet().iterator();
+               Map.Entry<String, String> entry = iterator.next();
+               String blockId = entry.getValue();
+               String type = entry.getKey();
+               while (iterator.hasNext()) {
+                  entry = iterator.next();
+                  testBody.append(String.format("assertThat(model.getOrCreate%s(\"%s\").get%s()).isEqualTo(\"%s\");\n",
+                        type, blockId, StrUtil.cap(entry.getKey()), entry.getValue()));
+               }
+            }
+         }
+      }
+   }
+
+   private void addObjectCreationToPlainTest(WorkflowNote note)
+   {
+      DataNote dataNote = (DataNote) note;
+      ClassModelManager modelManager = managerMap.get(lastServiceNote.getName());
+      Clazz dataClass = modelManager.haveClass(dataNote.getDataType());
+      LinkedHashMap<String, String> mockup = getMockup(dataNote.getMap());
+      String blockId = dataNote.getBlockId();
+      String varName = StrUtil.decap(blockId);
+      testBody.append(String.format("\n%s %s = model.getOrCreate%1$s(\"%s\");\n", dataNote.getDataType(), varName, blockId));
+      Iterator<Map.Entry<String, String>> iterator = mockup.entrySet().iterator();
+      iterator.next();
+      while (iterator.hasNext()) {
+         Map.Entry<String, String> entry = iterator.next();
+         String attr = entry.getKey();
+         if (attr.endsWith(".back")) {
+            continue;
+         }
+         String value = entry.getValue();
+         Attribute attribute = dataClass.getAttribute(attr);
+         AssocRole role = dataClass.getRole(attr);
+         if (attribute != null) {
+            testBody.append(String.format("%s.set%s(\"%s\");\n", varName, StrUtil.cap(attr), value));
+         }
+         else if (role.getCardinality() <= 1) {
+            testBody.append(String.format("%s.set%s(model.getOrCreate%s(\"%s\"));\n", varName, StrUtil.cap(attr), role.getOther().getClazz().getName(), value));
+         }
+      }
    }
 
 
@@ -418,9 +611,9 @@ public class WorkflowGenerator
 
       modelManager.haveMethod(builderClass, declaration, body.toString());
 
-      declaration = "public String getVarName(String value)";
+      declaration = "public String getObjectId(String value)";
       body.setLength(0);
-      st = group.getInstanceOf("builderGetVarName");
+      st = group.getInstanceOf("builderGetObjectId");
       body.append(st.render());
       modelManager.haveMethod(builderClass, declaration, body.toString());
 
@@ -524,12 +717,12 @@ public class WorkflowGenerator
             AssocRole other = role.getOther();
             Clazz otherClazz = other.getClazz();
             if (role.getCardinality() <= 1) {
-               body.append(String.format("object.set%s(model.getOrCreate%s(getVarName(event.get%1$s())));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append(String.format("object.set%s(model.getOrCreate%s(getObjectId(event.get%1$s())));\n", StrUtil.cap(attrName), otherClazz.getName()));
             }
             else {
                body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\",\\\\s+\")) {\n", StrUtil.cap(attrName)));
                body.append("   if (name.equals(\"\")) continue;\n");
-               body.append(String.format("   object.with%s(model.getOrCreate%s(getVarName(name)));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append(String.format("   object.with%s(model.getOrCreate%s(getObjectId(name)));\n", StrUtil.cap(attrName), otherClazz.getName()));
                body.append("}\n");
             }
          }
@@ -567,13 +760,13 @@ public class WorkflowGenerator
          EventNote triggerEvent = policy.getTrigger();
          String eventId = triggerEvent.getTime();
          body.append(String.format("if (event.getId().equals(\"%s\")) {\n", eventId));
-         addMockupData(modelManager, serviceNote, policy, body);
+         addMockupData(modelManager, serviceNote, policy, body, "service.apply");
          body.append("}\n");
       }
       modelManager.haveMethod(logicClass, declaration, body.toString());
    }
 
-   private void addMockupData(ClassModelManager modelManager, ServiceNote serviceNote, Policy policy, StringBuilder body)
+   private void addMockupData(ClassModelManager modelManager, ServiceNote serviceNote, Policy policy, StringBuilder body, String methodCall)
    {
       for (WorkflowNote note : policy.getSteps()) {
          if (note instanceof DataNote) {
@@ -589,7 +782,7 @@ public class WorkflowGenerator
             LinkedHashMap<String, String> mockup = getMockup(map);
             addModelClassForDataNote(modelManager, serviceNote, mockup);
             addGetOrCreateMethodToServiceModel(modelManager, serviceNote.getName(), mockup);
-            addCreateAndInitModelObjectCode(modelManager, serviceNote, dataNote, mockup, body);
+            addCreateAndInitModelObjectCode(modelManager, serviceNote, dataNote, mockup, body, methodCall);
          }
          else if (note instanceof ClassNote) {
             ClassNote classNote = (ClassNote) note;
@@ -624,8 +817,8 @@ public class WorkflowGenerator
                      varName, setterName, entry.getValue());
                body.append(statement);
             }
-            body.append(String.format("   service.apply(e%s);\n",
-                  varName));
+            body.append(String.format("   %s(e%s);\n",
+                  methodCall, varName));
          }
          else {
             Logger.getGlobal().severe("do not know how to deal with " + note);
@@ -694,7 +887,7 @@ public class WorkflowGenerator
             // its an assoc
             int srcSize = value.startsWith("[") ? 42 : 1;
             value = StrUtil.stripBrackets(value).split(",\\s+")[0];
-            value = eventModel.getVarName(value);
+            value = eventModel.getObjectId(value);
             // find other class
             String otherClassName = serviceNote.getObjectMap().get(value);
             Clazz otherClazz = modelManager.haveClass(otherClassName);
@@ -794,7 +987,7 @@ public class WorkflowGenerator
       }
    }
 
-   private String addCreateAndInitModelObjectCode(ClassModelManager modelManager, ServiceNote serviceNote, DataNote dataNote, LinkedHashMap<String, String> map, StringBuilder body)
+   private String addCreateAndInitModelObjectCode(ClassModelManager modelManager, ServiceNote serviceNote, DataNote dataNote, LinkedHashMap<String, String> map, StringBuilder body, String methodCall)
    {
       boolean first = true;
       String varName = null;
@@ -837,7 +1030,7 @@ public class WorkflowGenerator
          body.append(statement);
       }
 
-      statement = String.format("   service.apply(%s);\n\n", varName);
+      statement = String.format("   %s(%s);\n\n", methodCall, varName);
       body.append(statement);
 
       return varName;
@@ -883,7 +1076,7 @@ public class WorkflowGenerator
       startServices();
 
       for (Workflow workflow : eventStormingBoard.getWorkflows()) {
-         testBody.append("\n// workflow " + workflow.getName());
+         testBody.append("\n// workflow " + workflow.getName() + "\n");
          for (WorkflowNote note : workflow.getNotes()) {
             // Send user events
             if (note instanceof PageNote) {
@@ -912,6 +1105,13 @@ public class WorkflowGenerator
                Interaction interaction = eventNote.getInteraction();
                if (interaction instanceof UserInteraction) {
                   testGenerateSendUserEvent(testBody, eventNote);
+               }
+            }
+            else if (note instanceof ExternalSystemNote) {
+               ExternalSystemNote externalSystemNote = (ExternalSystemNote) note;
+               for (Policy policy : ((ExternalSystemNote) note).getPolicies()) {
+                  ClassModelManager modelManager = managerMap.get(policy.getService().getName());
+                  addMockupData(modelManager, policy.getService(), policy, testBody, "publish");
                }
             }
          }
@@ -1012,9 +1212,11 @@ public class WorkflowGenerator
                      "for (DataEvent dataEvent : %s.getBuilder().getEventStore().values()) {\n" +
                      "   %1$s.getBuilder().load(dataEvent.getBlockId());\n" +
                      "}\n" +
-                     "modelMap = %1$s.getBuilder().getModel().getModelMap();\n",
-               StrUtil.decap(service.getName()));
+                     "modelMap = %1$s.getBuilder().getModel().getModelMap();\n" +
+                     "org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/%1$s%s.svg\", modelMap.values());\n\n",
+               StrUtil.decap(service.getName()), note.getTime().replaceAll("\\W+", "_"));
          check.append(loadDataEventsCode);
+         check.append("");
          check.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
          for (WorkflowNote step : policy.getSteps()) {
             if (step instanceof DataNote) {
@@ -1050,12 +1252,12 @@ public class WorkflowGenerator
                         String[] split = value.split(",\\s+");
                         value = "";
                         for (String s : split) {
-                           value += StrUtil.decap(s.replaceAll("\\W+", "_")) + ".*";
+                           value += StrUtil.decap(eventModel.getObjectId(s));
                         }
                         value = value.strip();
                      }
                      else {
-                        value = StrUtil.decap(eventModel.getVarName(value).replaceAll("\\W+", "_"));
+                        value = StrUtil.decap(eventModel.getObjectId(value));
                      }
                   }
                   check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",
@@ -1253,4 +1455,5 @@ public class WorkflowGenerator
       packageDirName = manager.getClassModel().getMainJavaDir() + "/" + packageDirName;
       return packageDirName;
    }
+
 }

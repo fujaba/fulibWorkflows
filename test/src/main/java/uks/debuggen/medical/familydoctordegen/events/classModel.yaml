@@ -51,7 +51,7 @@
   superClass: 	event
 
 - diseaseBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	diseaseBuilt_name 	diseaseBuilt_symptoms 	diseaseBuilt_counterSymptoms
+  attributes: 	diseaseBuilt_name 	diseaseBuilt_symptoms 	diseaseBuilt_counterSymptoms 	diseaseBuilt_migratedTo
   model: 	c
   modified: 	false
   name: 	DiseaseBuilt
@@ -287,6 +287,15 @@
   id: 	DiseaseBuilt_counterSymptoms
   modified: 	false
   name: 	counterSymptoms
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- diseaseBuilt_migratedTo: 	org.fulib.classmodel.Attribute
+  clazz: 	diseaseBuilt
+  id: 	DiseaseBuilt_migratedTo
+  modified: 	false
+  name: 	migratedTo
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

@@ -1,10 +1,16 @@
 package uks.debuggen.medical.familydoctordegen.DocMedical;
 import java.util.LinkedHashMap;
-import java.util.function.Consumer;
+import java.util.Map;
 import java.util.function.Function;
+
+import org.fulib.yaml.Yaml;
+import org.fulib.yaml.YamlIdMap;
+import org.fulib.yaml.Yamler;
+import org.fulib.yaml.Yamler2;
 import uks.debuggen.medical.familydoctordegen.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.function.Consumer;
 
 public class DocMedicalBuilder
 {
@@ -158,6 +164,7 @@ public class DocMedicalBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }
@@ -182,12 +189,13 @@ public class DocMedicalBuilder
       object.setName(event.getName());
       for (String name : stripBrackets(event.getSymptoms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withSymptoms(model.getOrCreateSymptom(getVarName(name)));
+         object.withSymptoms(model.getOrCreateSymptom(getObjectId(name)));
       }
       for (String name : stripBrackets(event.getCounterSymptoms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withCounterSymptoms(model.getOrCreateSymptom(getVarName(name)));
+         object.withCounterSymptoms(model.getOrCreateSymptom(getObjectId(name)));
       }
+      object.setMigratedTo(event.getMigratedTo());
       return object;
    }
 
@@ -208,7 +216,7 @@ public class DocMedicalBuilder
       object.setName(event.getName());
       for (String name : stripBrackets(event.getConsultations()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withConsultations(model.getOrCreateConsultation(getVarName(name)));
+         object.withConsultations(model.getOrCreateConsultation(getObjectId(name)));
       }
       return object;
    }
@@ -248,8 +256,8 @@ public class DocMedicalBuilder
       ConsultationBuilt event = (ConsultationBuilt) e;
       Consultation object = model.getOrCreateConsultation(event.getBlockId());
       object.setCid(event.getCid());
-      object.setPatient(model.getOrCreatePatient(getVarName(event.getPatient())));
-      object.setDiagnosis(model.getOrCreateDisease(getVarName(event.getDiagnosis())));
+      object.setPatient(model.getOrCreatePatient(getObjectId(event.getPatient())));
+      object.setDiagnosis(model.getOrCreateDisease(getObjectId(event.getDiagnosis())));
       object.setTreatment(event.getTreatment());
       return object;
    }
@@ -271,7 +279,7 @@ public class DocMedicalBuilder
       object.setCid(event.getCid());
       object.setKind(event.getKind());
       object.setResult(event.getResult());
-      object.setConsultation(model.getOrCreateConsultation(getVarName(event.getConsultation())));
+      object.setConsultation(model.getOrCreateConsultation(getObjectId(event.getConsultation())));
       return object;
    }
 
@@ -307,17 +315,12 @@ public class DocMedicalBuilder
       }
    }
 
-   public String getVarName(String value)
+   public String getObjectId(String value)
    {
       if (value == null) {
          return null;
       }
-      String[] split = value.split("\\s+");
-      String varName = split[0];
-      for (int i = 1; i < split.length; i++) {
-         varName += org.fulib.StrUtil.cap(split[i]);
-      }
-      return varName;
+      return value.replaceAll("\\W+", "_");
    }
 
    private void addToGroup(String groupId, String elementId)

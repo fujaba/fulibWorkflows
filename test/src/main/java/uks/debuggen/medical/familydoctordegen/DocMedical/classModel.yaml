@@ -32,7 +32,7 @@
   attributes: 	docMedicalBuilder_model 	docMedicalBuilder_eventStore 	docMedicalBuilder_loaderMap 	docMedicalBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;" 	"import java.util.function.Function;"
-  methods: 	docMedicalBuilder_outdated 	docMedicalBuilder_storeDiseaseBuilt 	docMedicalBuilder_loadDiseaseBuilt 	docMedicalBuilder_storeSymptomBuilt 	docMedicalBuilder_loadSymptomBuilt 	docMedicalBuilder_storePatientBuilt 	docMedicalBuilder_loadPatientBuilt 	docMedicalBuilder_storeConsultationBuilt 	docMedicalBuilder_loadConsultationBuilt 	docMedicalBuilder_storeTestBuilt 	docMedicalBuilder_loadTestBuilt 	docMedicalBuilder_load 	docMedicalBuilder_initLoaderMap 	docMedicalBuilder_getVarName 	docMedicalBuilder_addToGroup 	docMedicalBuilder_stripBrackets
+  methods: 	docMedicalBuilder_outdated 	docMedicalBuilder_storeDiseaseBuilt 	docMedicalBuilder_loadDiseaseBuilt 	docMedicalBuilder_storeSymptomBuilt 	docMedicalBuilder_loadSymptomBuilt 	docMedicalBuilder_storePatientBuilt 	docMedicalBuilder_loadPatientBuilt 	docMedicalBuilder_storeConsultationBuilt 	docMedicalBuilder_loadConsultationBuilt 	docMedicalBuilder_storeTestBuilt 	docMedicalBuilder_loadTestBuilt 	docMedicalBuilder_load 	docMedicalBuilder_initLoaderMap 	docMedicalBuilder_getObjectId 	docMedicalBuilder_addToGroup 	docMedicalBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	DocMedicalBuilder
@@ -51,7 +51,7 @@
   roles: 	docMedicalService_businessLogic 	docMedicalService_builder
 
 - disease: 	org.fulib.classmodel.Clazz
-  attributes: 	disease_id 	disease_name
+  attributes: 	disease_id 	disease_name 	disease_migratedTo
   model: 	c
   modified: 	false
   name: 	Disease
@@ -225,7 +225,7 @@ handleDemoPatientRegisteredEvent(event);
   methodBody: 	"if (event.getId().equals(\"14:00\")) {
    PatientBuilt aliceEvent = new PatientBuilt();
    aliceEvent.setId(\"14:00:01\");
-   aliceEvent.setBlockId(\"alice\");
+   aliceEvent.setBlockId(\"Alice\");
    aliceEvent.setName(\"Alice\");
    aliceEvent.setAddress(\"Wonderland 1\");
    aliceEvent.setBirthDate(\"1970-01-01\");
@@ -263,12 +263,12 @@ handleDemoConsultationEvent(event);
   declaration: 	"private void handleDemoConsultationEvent(ConsultationEvent event)"
   id: 	DocMedicalBusinessLogic_handleDemoConsultationEvent
   methodBody: 	"if (event.getId().equals(\"14:01\")) {
-   ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-   alice20210602T1400Event.setId(\"14:01:01\");
-   alice20210602T1400Event.setBlockId(\"alice#2021-06-02T14:00\");
-   alice20210602T1400Event.setCid(\"Alice#2021-06-02T14:00\");
-   alice20210602T1400Event.setPatient(\"Alice\");
-   service.apply(alice20210602T1400Event);
+   ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
+   alice_2021_06_02T14_00Event.setId(\"14:01:01\");
+   alice_2021_06_02T14_00Event.setBlockId(\"Alice_2021_06_02T14_00\");
+   alice_2021_06_02T14_00Event.setCid(\"Alice#2021-06-02T14:00\");
+   alice_2021_06_02T14_00Event.setPatient(\"Alice\");
+   service.apply(alice_2021_06_02T14_00Event);
 
 }
 "
@@ -311,12 +311,12 @@ handleDemoSymptomEvent(event);
 
 }
 if (event.getId().equals(\"14:03\")) {
-   SymptomBuilt runnyNoseEvent = new SymptomBuilt();
-   runnyNoseEvent.setId(\"14:03:01\");
-   runnyNoseEvent.setBlockId(\"runnyNose\");
-   runnyNoseEvent.setName(\"runny nose\");
-   runnyNoseEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
-   service.apply(runnyNoseEvent);
+   SymptomBuilt runny_noseEvent = new SymptomBuilt();
+   runny_noseEvent.setId(\"14:03:01\");
+   runny_noseEvent.setBlockId(\"runny_nose\");
+   runny_noseEvent.setName(\"runny nose\");
+   runny_noseEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
+   service.apply(runny_noseEvent);
 
 }
 "
@@ -350,21 +350,21 @@ handleDemoTestEvent(event);
   declaration: 	"private void handleDemoTestEvent(TestEvent event)"
   id: 	DocMedicalBusinessLogic_handleDemoTestEvent
   methodBody: 	"if (event.getId().equals(\"14:04\")) {
-   TestBuilt alicet00120210602T1400Event = new TestBuilt();
-   alicet00120210602T1400Event.setId(\"14:04:01\");
-   alicet00120210602T1400Event.setBlockId(\"alice#t001#2021-06-02T14:00\");
-   alicet00120210602T1400Event.setCid(\"Alice#t001#2021-06-02T14:00\");
-   alicet00120210602T1400Event.setKind(\"temperature\");
-   alicet00120210602T1400Event.setResult(\"39.8 Celsius\");
-   alicet00120210602T1400Event.setConsultation(\"Alice#2021-06-02T14:00\");
-   service.apply(alicet00120210602T1400Event);
+   TestBuilt alice_t001_2021_06_02T14_00Event = new TestBuilt();
+   alice_t001_2021_06_02T14_00Event.setId(\"14:04:01\");
+   alice_t001_2021_06_02T14_00Event.setBlockId(\"Alice_t001_2021_06_02T14_00\");
+   alice_t001_2021_06_02T14_00Event.setCid(\"Alice#t001#2021-06-02T14:00\");
+   alice_t001_2021_06_02T14_00Event.setKind(\"temperature\");
+   alice_t001_2021_06_02T14_00Event.setResult(\"39.8 Celsius\");
+   alice_t001_2021_06_02T14_00Event.setConsultation(\"Alice#2021-06-02T14:00\");
+   service.apply(alice_t001_2021_06_02T14_00Event);
 
-   SymptomBuilt feverEvent = new SymptomBuilt();
-   feverEvent.setId(\"14:04:02\");
-   feverEvent.setBlockId(\"fever\");
-   feverEvent.setName(\"fever\");
-   feverEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
-   service.apply(feverEvent);
+   SymptomBuilt medium_feverEvent = new SymptomBuilt();
+   medium_feverEvent.setId(\"14:04:02\");
+   medium_feverEvent.setBlockId(\"medium_fever\");
+   medium_feverEvent.setName(\"medium fever\");
+   medium_feverEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
+   service.apply(medium_feverEvent);
 
 }
 "
@@ -398,12 +398,12 @@ handleDemoDiagnosisEvent(event);
   declaration: 	"private void handleDemoDiagnosisEvent(DiagnosisEvent event)"
   id: 	DocMedicalBusinessLogic_handleDemoDiagnosisEvent
   methodBody: 	"if (event.getId().equals(\"14:05\")) {
-   ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-   alice20210602T1400Event.setId(\"14:05:01\");
-   alice20210602T1400Event.setBlockId(\"alice#2021-06-02T14:00\");
-   alice20210602T1400Event.setCid(\"Alice#2021-06-02T14:00\");
-   alice20210602T1400Event.setDiagnosis(\"common cold\");
-   service.apply(alice20210602T1400Event);
+   ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
+   alice_2021_06_02T14_00Event.setId(\"14:05:01\");
+   alice_2021_06_02T14_00Event.setBlockId(\"Alice_2021_06_02T14_00\");
+   alice_2021_06_02T14_00Event.setCid(\"Alice#2021-06-02T14:00\");
+   alice_2021_06_02T14_00Event.setDiagnosis(\"common cold\");
+   service.apply(alice_2021_06_02T14_00Event);
 
 }
 "
@@ -437,12 +437,12 @@ handleDemoTreatmentEvent(event);
   declaration: 	"private void handleDemoTreatmentEvent(TreatmentEvent event)"
   id: 	DocMedicalBusinessLogic_handleDemoTreatmentEvent
   methodBody: 	"if (event.getId().equals(\"14:06\")) {
-   ConsultationBuilt alice20210602T1400Event = new ConsultationBuilt();
-   alice20210602T1400Event.setId(\"14:06:01\");
-   alice20210602T1400Event.setBlockId(\"alice#2021-06-02T14:00\");
-   alice20210602T1400Event.setCid(\"Alice#2021-06-02T14:00\");
-   alice20210602T1400Event.setTreatment(\"ibuprofen 400 1-1-1\");
-   service.apply(alice20210602T1400Event);
+   ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
+   alice_2021_06_02T14_00Event.setId(\"14:06:01\");
+   alice_2021_06_02T14_00Event.setBlockId(\"Alice_2021_06_02T14_00\");
+   alice_2021_06_02T14_00Event.setCid(\"Alice#2021-06-02T14:00\");
+   alice_2021_06_02T14_00Event.setTreatment(\"ibuprofen 400 1-1-1\");
+   service.apply(alice_2021_06_02T14_00Event);
 
 }
 "
@@ -579,6 +579,7 @@ handleDemoTreatmentEvent(event);
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }
@@ -620,12 +621,13 @@ Disease object = model.getOrCreateDisease(event.getBlockId());
 object.setName(event.getName());
 for (String name : stripBrackets(event.getSymptoms()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
-   object.withSymptoms(model.getOrCreateSymptom(getVarName(name)));
+   object.withSymptoms(model.getOrCreateSymptom(getObjectId(name)));
 }
 for (String name : stripBrackets(event.getCounterSymptoms()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
-   object.withCounterSymptoms(model.getOrCreateSymptom(getVarName(name)));
+   object.withCounterSymptoms(model.getOrCreateSymptom(getObjectId(name)));
 }
+object.setMigratedTo(event.getMigratedTo());
 return object;
 "
   modified: 	false
@@ -664,7 +666,7 @@ Symptom object = model.getOrCreateSymptom(event.getBlockId());
 object.setName(event.getName());
 for (String name : stripBrackets(event.getConsultations()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
-   object.withConsultations(model.getOrCreateConsultation(getVarName(name)));
+   object.withConsultations(model.getOrCreateConsultation(getObjectId(name)));
 }
 return object;
 "
@@ -740,8 +742,8 @@ if (outdated(event)) {
   methodBody: 	"ConsultationBuilt event = (ConsultationBuilt) e;
 Consultation object = model.getOrCreateConsultation(event.getBlockId());
 object.setCid(event.getCid());
-object.setPatient(model.getOrCreatePatient(getVarName(event.getPatient())));
-object.setDiagnosis(model.getOrCreateDisease(getVarName(event.getDiagnosis())));
+object.setPatient(model.getOrCreatePatient(getObjectId(event.getPatient())));
+object.setDiagnosis(model.getOrCreateDisease(getObjectId(event.getDiagnosis())));
 object.setTreatment(event.getTreatment());
 return object;
 "
@@ -781,7 +783,7 @@ Test object = model.getOrCreateTest(event.getBlockId());
 object.setCid(event.getCid());
 object.setKind(event.getKind());
 object.setResult(event.getResult());
-object.setConsultation(model.getOrCreateConsultation(getVarName(event.getConsultation())));
+object.setConsultation(model.getOrCreateConsultation(getObjectId(event.getConsultation())));
 return object;
 "
   modified: 	false
@@ -840,26 +842,21 @@ return object;
   returnType: 	void
   signature: 	"class/DocMedicalBuilder/method/initLoaderMap()"
 
-- docMedicalBuilder_getVarName: 	org.fulib.classmodel.FMethod
+- docMedicalBuilder_getObjectId: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBuilder
-  declaration: 	"public String getVarName(String value)"
-  id: 	DocMedicalBuilder_getVarName
+  declaration: 	"public String getObjectId(String value)"
+  id: 	DocMedicalBuilder_getObjectId
   methodBody: 	"      if (value == null) {
          return null;
       }
-      String[] split = value.split(\"\\s+\");
-      String varName = split[0];
-      for (int i = 1; i < split.length; i++) {
-         varName += org.fulib.StrUtil.cap(split[i]);
-      }
-      return varName;"
+      return value.replaceAll(\"\\W+\", \"_\");"
   modified: 	false
   modifiers: 	public
-  name: 	getVarName
+  name: 	getObjectId
   paramsString: 	"String value"
   returnType: 	String
-  signature: 	"class/DocMedicalBuilder/method/getVarName(String)"
+  signature: 	"class/DocMedicalBuilder/method/getObjectId(String)"
 
 - docMedicalBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -1231,6 +1228,15 @@ catch (UnirestException e) {
   id: 	Disease_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- disease_migratedTo: 	org.fulib.classmodel.Attribute
+  clazz: 	disease
+  id: 	Disease_migratedTo
+  modified: 	false
+  name: 	migratedTo
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

@@ -1,9 +1,7 @@
 package org.fulib.yaml;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.*;
+import java.util.logging.Logger;
 
 public class Yamler2
 {
@@ -128,5 +126,89 @@ public class Yamler2
    {
       final String info = line + "\n<--" + msg + "-->";
       System.err.println(info);
+   }
+
+
+
+
+   public void mergeObjects(Object oldEvent, Object event)
+   {
+      LinkedHashMap<String, String> oldMap = toMap(oldEvent);
+      LinkedHashMap<String, String> newMap = toMap(event);
+      for (Map.Entry<String, String> entry : newMap.entrySet()) {
+         String key = entry.getKey();
+         String newValue = entry.getValue();
+         String oldValue = oldMap.get(key);
+         if (newValue.startsWith("[")) {
+            String merge = mergeLists(oldValue, newValue);
+            oldMap.put(key, merge);
+            Logger.getGlobal().info("List merge not yet implemented");
+         }
+         else {
+            // overwrite
+            oldMap.put(key, newValue);
+         }
+      }
+
+      toEvent(oldMap, event);
+   }
+
+   private String mergeLists(String oldValue, String newValue)
+   {
+      if (oldValue == null) {
+         return newValue;
+      }
+
+      // strip brackets
+      int start = oldValue.indexOf('[') + 1;
+      int end = oldValue.indexOf(']');
+      oldValue = oldValue.substring(start, end);
+      String[] split = oldValue.split(",\\s+");
+      List<String> resultList = Arrays.asList(split);
+
+      start = newValue.indexOf('[') + 1;
+      end = newValue.indexOf(']');
+      newValue = newValue.substring(start, end);
+      split = newValue.split(",\\s+");
+      for (String s : split) {
+         if ( ! resultList.contains(s)) {
+            resultList.add(s);
+         }
+      }
+      String[] resultArray = resultList.toArray(new String[resultList.size()]);
+      String join = String.join(", ", resultArray);
+      return "[" + join + "]";
+   }
+
+   private Object toEvent(LinkedHashMap<String, String> map, Object event)
+   {
+      Reflector reflector = new Reflector().setClazz(event.getClass());
+      for (Map.Entry<String, String> entry : map.entrySet()) {
+         reflector.setValue(event, entry.getKey(), entry.getValue());
+      }
+      return event;
+   }
+
+   public LinkedHashMap<String, String> toMap(Object event) {
+      LinkedHashMap<String, String> result = new LinkedHashMap<>();
+      Reflector reflector = new Reflector().setClazz(event.getClass());
+      for (String property : reflector.getAllProperties()) {
+         Object value = reflector.getValue(event, property);
+         if (value != null) {
+            result.put(property, value.toString());
+         }
+      }
+
+      return result;
+   }
+
+   public String toYaml(LinkedHashMap<String, String> map)
+   {
+      StringBuilder buf = new StringBuilder();
+      for (Map.Entry<String, String> entry : map.entrySet()) {
+         buf.append(String.format("  %s: \"%s\"\n", entry.getKey(), entry.getValue()));
+      }
+      buf.setCharAt(0, '-');
+      return buf.toString();
    }
 }

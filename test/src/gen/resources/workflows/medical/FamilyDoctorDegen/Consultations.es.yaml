@@ -8,7 +8,13 @@
 - policy: DocMedical
   trigger: 12:00 - 13:00
 
-- workflow: simple consulting
+- data: Disease
+  migratedTo: Disease2
+
+
+
+
+- workflow: simple consultations
 
 - action: Doc Degen
 
@@ -67,7 +73,7 @@
   consultation.back: [tests]
 
 - data: Symptom
-  name: fever
+  name: medium fever
   consultations: [Alice#2021-06-02T14:00]
 
 - action: Doc Degen
