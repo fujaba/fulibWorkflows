@@ -15,12 +15,11 @@ public class HtmlTest
    public void testGenWorkflow() throws IOException
    {
 
-      String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow2.yaml"));
-      Files.createDirectories(Path.of("tmp"));
+      String fileName = "test/src/gen/resources/workflows/ShopWorkflow2.yaml";
 
       HtmlGenerator3 generator = new HtmlGenerator3();
       generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-      generator.generateViewFiles(yaml, "Shop2");
+      generator.generateViewFiles(fileName, "Shop2");
 
    }
 
@@ -28,11 +27,10 @@ public class HtmlTest
    public void testGUIYaml() throws IOException
    {
 
-      String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/GUI.yaml"));
-      Files.createDirectories(Path.of("tmp"));
+      String fileName = "test/src/gen/resources/workflows/GUI.yaml";
 
       HtmlGenerator3 generator = new HtmlGenerator3();
       generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-      generator.generateViewFiles(yaml, "GUI");
+      generator.generateViewFiles(fileName, "GUI");
    }
 }
