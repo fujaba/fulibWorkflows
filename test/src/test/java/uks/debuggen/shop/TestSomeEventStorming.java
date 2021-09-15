@@ -16,6 +16,8 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.assertj.core.api.Assertions.assertThat;
 import static com.codeborne.selenide.Condition.text;
+import java.util.LinkedHashMap;
+import static com.codeborne.selenide.Condition.matchText;
 
 public class TestSomeEventStorming
 {
@@ -43,7 +45,7 @@ public class TestSomeEventStorming
 
    public void publish(Event event)
    {
-      String yaml = Yaml.encode(event);
+      String yaml = Yaml.encodeSimple(event);
 
       try {
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
@@ -95,8 +97,10 @@ public class TestSomeEventStorming
       SelenideElement pre = $("pre");
       pre.shouldHave(text("http://localhost:42100/apply"));
       pre.shouldHave(text("http://localhost:42002/apply"));
+      LinkedHashMap<String, Object> modelMap;
 
       // workflow working smoothly
+
       // create StoreBoxCommand: store box 12:00
       StoreBoxCommand e1200 = new StoreBoxCommand();
       e1200.setId("12:00");
@@ -113,11 +117,18 @@ public class TestSomeEventStorming
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 12_00:"));
+      for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+         storage.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = storage.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage12_00.svg", modelMap.values());
+
+      open("http://localhost:42002");
       // check data note 12:01
       pre = $("#data");
       pre.shouldHave(text("- box23:"));
-      pre.shouldHave(text("product: shoes"));
-      pre.shouldHave(text("place: shelf23"));
+      pre.shouldHave(matchText("product:.*shoes"));
+      pre.shouldHave(matchText("place:.*shelf23"));
 
       // page 12:50
       open("http://localhost:42100/page/12_50");
@@ -142,23 +153,37 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
+      for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+         shop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = shop.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop13_01.svg", modelMap.values());
+
+      open("http://localhost:42100");
       // check data note 13:06
       pre = $("#data");
       pre.shouldHave(text("- order1300:"));
-      pre.shouldHave(text("state: picking"));
+      pre.shouldHave(matchText("state:.*picking"));
 
       // check Storage
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
+      for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+         storage.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = storage.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage13_01.svg", modelMap.values());
+
+      open("http://localhost:42002");
       // check data note 13:05
       pre = $("#data");
       pre.shouldHave(text("- pick1300:"));
-      pre.shouldHave(text("order: order1300"));
-      pre.shouldHave(text("product: shoes"));
-      pre.shouldHave(text("customer: Alice"));
-      pre.shouldHave(text("address: \"Wonderland 1\""));
-      pre.shouldHave(text("state: todo"));
+      pre.shouldHave(matchText("order:.*order1300"));
+      pre.shouldHave(matchText("product:.*shoes"));
+      pre.shouldHave(matchText("customer:.*Alice"));
+      pre.shouldHave(matchText("address:.*\"Wonderland 1\""));
+      pre.shouldHave(matchText("state:.*todo"));
 
       // create PickOrderCommand: pick order 14:00
       PickOrderCommand e1400 = new PickOrderCommand();
@@ -176,26 +201,41 @@ public class TestSomeEventStorming
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
+      for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+         storage.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = storage.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage14_00.svg", modelMap.values());
+
+      open("http://localhost:42002");
       // check data note 14:01
       pre = $("#data");
       pre.shouldHave(text("- pick1300:"));
-      pre.shouldHave(text("state: done"));
-      pre.shouldHave(text("box: box23"));
+      pre.shouldHave(matchText("state:.*done"));
+      pre.shouldHave(matchText("box:.*box23"));
       // check data note 14:02
       pre = $("#data");
       pre.shouldHave(text("- box23:"));
-      pre.shouldHave(text("place: shipping"));
+      pre.shouldHave(matchText("place:.*shipping"));
 
       // check Shop
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 14_00:"));
+      for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+         shop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = shop.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop14_00.svg", modelMap.values());
+
+      open("http://localhost:42100");
       // check data note 14:04
       pre = $("#data");
       pre.shouldHave(text("- order1300:"));
-      pre.shouldHave(text("state: shipping"));
+      pre.shouldHave(matchText("state:.*shipping"));
 
       // workflow OrderOutOfStocks
+
       // create SubmitOrderCommand: submit order 13:11
       SubmitOrderCommand e1311 = new SubmitOrderCommand();
       e1311.setId("13:11");
@@ -213,15 +253,29 @@ public class TestSomeEventStorming
       open("http://localhost:42100");
       pre = $("#history");
       pre.shouldHave(text("- 13_11:"));
+      for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
+         shop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = shop.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop13_11.svg", modelMap.values());
+
+      open("http://localhost:42100");
       // check data note 13:16
       pre = $("#data");
       pre.shouldHave(text("- order1310:"));
-      pre.shouldHave(text("state: \"out of stock\""));
+      pre.shouldHave(matchText("state:.*\"out of stock\""));
 
       // check Storage
       open("http://localhost:42002");
       pre = $("#history");
       pre.shouldHave(text("- 13_11:"));
+      for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
+         storage.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = storage.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage13_11.svg", modelMap.values());
+
+      open("http://localhost:42002");
 
       System.out.println();
    }

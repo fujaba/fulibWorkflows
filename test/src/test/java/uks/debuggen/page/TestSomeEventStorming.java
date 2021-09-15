@@ -12,6 +12,8 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.LinkedHashMap;
+import static com.codeborne.selenide.Condition.matchText;
 
 public class TestSomeEventStorming
 {
@@ -53,10 +55,12 @@ public class TestSomeEventStorming
 
       SelenideElement pre = $("pre");
       pre.shouldHave(text("http://localhost:42001/apply"));
+      LinkedHashMap<String, Object> modelMap;
 
       // workflow working smoothly
-      // create ProductStored: product stored 12:00
-      ProductStored e1200 = new ProductStored();
+
+      // create ProductStoredEvent: product stored 12:00
+      ProductStoredEvent e1200 = new ProductStoredEvent();
       e1200.setId("12:00");
       e1200.setBox("box23");
       e1200.setProduct("shoes");
@@ -98,7 +102,7 @@ public class TestSomeEventStorming
 
    public void publish(Event event)
    {
-      String yaml = Yaml.encode(event);
+      String yaml = Yaml.encodeSimple(event);
 
       try {
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")

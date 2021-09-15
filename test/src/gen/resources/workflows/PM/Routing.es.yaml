@@ -1,5 +1,5 @@
 
-- service: Routing
+- command: init
 
 - data: Route route1
   start: Kassel
@@ -32,3 +32,4 @@
 
 - data: Route route1
   length: 175 km
+

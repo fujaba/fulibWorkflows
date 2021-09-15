@@ -1,0 +1,249 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	someserviceModel 	route 	stop 	leg 	someserviceBusinessLogic
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/main/java"
+  packageName: 	uks.debuggen.pm.someservice
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/pm/someservice"
+
+- someserviceModel: 	org.fulib.classmodel.Clazz
+  attributes: 	someserviceModel_modelMap
+  importList: 	"import java.util.LinkedHashMap;"
+  imports: 	"import java.util.LinkedHashMap;"
+  methods: 	someserviceModel_getOrCreateRoute 	someserviceModel_getOrCreateStop 	someserviceModel_getOrCreateLeg
+  model: 	c
+  modified: 	false
+  name: 	someserviceModel
+  propertyStyle: 	Bean
+
+- route: 	org.fulib.classmodel.Clazz
+  attributes: 	route_id 	route_length
+  model: 	c
+  modified: 	false
+  name: 	Route
+  propertyStyle: 	Bean
+  roles: 	route_start 	route_end
+
+- stop: 	org.fulib.classmodel.Clazz
+  attributes: 	stop_id
+  model: 	c
+  modified: 	false
+  name: 	Stop
+  propertyStyle: 	Bean
+  roles: 	stop_routeStarts 	stop_routeEnds 	stop_departure 	stop_arrival
+
+- leg: 	org.fulib.classmodel.Clazz
+  attributes: 	leg_id 	leg_via 	leg_length
+  model: 	c
+  modified: 	false
+  name: 	Leg
+  propertyStyle: 	Bean
+  roles: 	leg_from 	leg_to
+
+- someserviceBusinessLogic: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	someserviceBusinessLogic
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- someserviceModel_modelMap: 	org.fulib.classmodel.Attribute
+  clazz: 	someserviceModel
+  id: 	someserviceModel_modelMap
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	modelMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, Object>"
+  typeSignature: 	"LinkedHashMap<String,Object>"
+
+- someserviceModel_getOrCreateRoute: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceModel
+  declaration: 	"public Route getOrCreateRoute(String id)"
+  id: 	someserviceModel_getOrCreateRoute
+  methodBody: 	"if (id == null) return null;
+return (Route) modelMap.computeIfAbsent(id, k -> new Route().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateRoute
+  paramsString: 	"String id"
+  returnType: 	Route
+  signature: 	"class/someserviceModel/method/getOrCreateRoute(String)"
+
+- someserviceModel_getOrCreateStop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceModel
+  declaration: 	"public Stop getOrCreateStop(String id)"
+  id: 	someserviceModel_getOrCreateStop
+  methodBody: 	"if (id == null) return null;
+return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateStop
+  paramsString: 	"String id"
+  returnType: 	Stop
+  signature: 	"class/someserviceModel/method/getOrCreateStop(String)"
+
+- someserviceModel_getOrCreateLeg: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	someserviceModel
+  declaration: 	"public Leg getOrCreateLeg(String id)"
+  id: 	someserviceModel_getOrCreateLeg
+  methodBody: 	"if (id == null) return null;
+return (Leg) modelMap.computeIfAbsent(id, k -> new Leg().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateLeg
+  paramsString: 	"String id"
+  returnType: 	Leg
+  signature: 	"class/someserviceModel/method/getOrCreateLeg(String)"
+
+- route_id: 	org.fulib.classmodel.Attribute
+  clazz: 	route
+  id: 	Route_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- route_length: 	org.fulib.classmodel.Attribute
+  clazz: 	route
+  id: 	Route_length
+  modified: 	false
+  name: 	length
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- route_start: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	route
+  id: 	Route_start
+  modified: 	false
+  name: 	start
+  other: 	stop_routeStarts
+  propertyStyle: 	Bean
+
+- route_end: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	route
+  id: 	Route_end
+  modified: 	false
+  name: 	end
+  other: 	stop_routeEnds
+  propertyStyle: 	Bean
+
+- stop_id: 	org.fulib.classmodel.Attribute
+  clazz: 	stop
+  id: 	Stop_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- stop_routeStarts: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	stop
+  collectionType: 	c1
+  id: 	Stop_routeStarts
+  modified: 	false
+  name: 	routeStarts
+  other: 	route_start
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- stop_routeEnds: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	stop
+  collectionType: 	c1
+  id: 	Stop_routeEnds
+  modified: 	false
+  name: 	routeEnds
+  other: 	route_end
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- stop_departure: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	stop
+  id: 	Stop_departure
+  modified: 	false
+  name: 	departure
+  other: 	leg_from
+  propertyStyle: 	Bean
+
+- stop_arrival: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	stop
+  id: 	Stop_arrival
+  modified: 	false
+  name: 	arrival
+  other: 	leg_to
+  propertyStyle: 	Bean
+
+- leg_id: 	org.fulib.classmodel.Attribute
+  clazz: 	leg
+  id: 	Leg_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- leg_via: 	org.fulib.classmodel.Attribute
+  clazz: 	leg
+  id: 	Leg_via
+  modified: 	false
+  name: 	via
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- leg_length: 	org.fulib.classmodel.Attribute
+  clazz: 	leg
+  id: 	Leg_length
+  modified: 	false
+  name: 	length
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- leg_from: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	leg
+  id: 	Leg_from
+  modified: 	false
+  name: 	from
+  other: 	stop_departure
+  propertyStyle: 	Bean
+
+- leg_to: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	leg
+  id: 	Leg_to
+  modified: 	false
+  name: 	to
+  other: 	stop_arrival
+  propertyStyle: 	Bean
+

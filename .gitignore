@@ -20,5 +20,7 @@ gradle-app.setting
 /tmp/
 /test/build/
 /test/tmp/
+/test/bin/
 
 .idea
+test/bin/main/org/fulib/workflows/Event.class

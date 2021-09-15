@@ -1,0 +1,68 @@
+<svg width="603px" height="275px"
+ viewBox="0.00 0.00 602.54 275.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 271)">
+<title>uks.debuggen.pm.someservice</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-271 598.537,-271 598.537,4 -4,4"/>
+<!-- Leg -->
+<g id="node1" class="node"><title>Leg</title>
+<polygon fill="none" stroke="black" points="26.5371,-55 26.5371,-76 105.537,-76 105.537,-55 26.5371,-55"/>
+<text text-anchor="start" x="55.0371" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">Leg</text>
+<polygon fill="none" stroke="black" points="26.5371,-4 26.5371,-55 105.537,-55 105.537,-4 26.5371,-4"/>
+<text text-anchor="start" x="29.5371" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="29.5371" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">via :String</text>
+<text text-anchor="start" x="29.5371" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">length :String</text>
+</g>
+<!-- Stop -->
+<g id="node3" class="node"><title>Stop</title>
+<polygon fill="none" stroke="black" points="37.5371,-141 37.5371,-162 94.5371,-162 94.5371,-141 37.5371,-141"/>
+<text text-anchor="start" x="52.0371" y="-147.8" font-family="Times New Roman,serif" font-size="14.00">Stop</text>
+<polygon fill="none" stroke="black" points="37.5371,-120 37.5371,-141 94.5371,-141 94.5371,-120 37.5371,-120"/>
+<text text-anchor="start" x="40.5371" y="-126.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+</g>
+<!-- Leg&#45;&gt;Stop -->
+<g id="edge1" class="edge"><title>Leg&#45;&gt;Stop</title>
+<path fill="none" stroke="black" d="M58.9206,-80.1274C58.6048,-92.234 58.8493,-105.207 59.6541,-115.972"/>
+<text text-anchor="middle" x="53.6541" y="-104.772" font-family="Times New Roman,serif" font-size="14.00">to</text>
+<text text-anchor="middle" x="41.9206" y="-83.9274" font-family="Times New Roman,serif" font-size="14.00">arrival</text>
+</g>
+<!-- Leg&#45;&gt;Stop -->
+<g id="edge2" class="edge"><title>Leg&#45;&gt;Stop</title>
+<path fill="none" stroke="black" d="M72.1536,-80.1274C72.4694,-92.234 72.2249,-105.207 71.4201,-115.972"/>
+<text text-anchor="middle" x="85.4201" y="-104.772" font-family="Times New Roman,serif" font-size="14.00">from</text>
+<text text-anchor="middle" x="98.6536" y="-83.9274" font-family="Times New Roman,serif" font-size="14.00">departure</text>
+</g>
+<!-- Route -->
+<g id="node2" class="node"><title>Route</title>
+<polygon fill="none" stroke="black" points="26.5371,-241.5 26.5371,-262.5 105.537,-262.5 105.537,-241.5 26.5371,-241.5"/>
+<text text-anchor="start" x="49.0371" y="-248.3" font-family="Times New Roman,serif" font-size="14.00">Route</text>
+<polygon fill="none" stroke="black" points="26.5371,-205.5 26.5371,-241.5 105.537,-241.5 105.537,-205.5 26.5371,-205.5"/>
+<text text-anchor="start" x="29.5371" y="-227.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="29.5371" y="-212.3" font-family="Times New Roman,serif" font-size="14.00">length :String</text>
+</g>
+<!-- Route&#45;&gt;Stop -->
+<g id="edge4" class="edge"><title>Route&#45;&gt;Stop</title>
+<path fill="none" stroke="black" d="M72,-201.702C72.4959,-189.999 72.3494,-176.948 71.5604,-166.041"/>
+<text text-anchor="middle" x="59.0604" y="-169.841" font-family="Times New Roman,serif" font-size="14.00">start</text>
+<text text-anchor="middle" x="36" y="-190.502" font-family="Times New Roman,serif" font-size="14.00">routeStarts *</text>
+</g>
+<!-- Stop&#45;&gt;Route -->
+<g id="edge3" class="edge"><title>Stop&#45;&gt;Route</title>
+<path fill="none" stroke="black" d="M59.5139,-166.041C58.7248,-176.948 58.5783,-189.999 59.0742,-201.702"/>
+<text text-anchor="middle" x="93.0742" y="-190.502" font-family="Times New Roman,serif" font-size="14.00">routeEnds *</text>
+<text text-anchor="middle" x="49.0139" y="-169.841" font-family="Times New Roman,serif" font-size="14.00">end</text>
+</g>
+<!-- someserviceBusinessLogic -->
+<g id="node4" class="node"><title>someserviceBusinessLogic</title>
+<polygon fill="none" stroke="black" points="139.537,-32 139.537,-53 296.537,-53 296.537,-32 139.537,-32"/>
+<text text-anchor="start" x="142.537" y="-38.8" font-family="Times New Roman,serif" font-size="14.00">someserviceBusinessLogic</text>
+<polygon fill="none" stroke="black" points="139.537,-26 139.537,-32 296.537,-32 296.537,-26 139.537,-26"/>
+</g>
+<!-- someserviceModel -->
+<g id="node5" class="node"><title>someserviceModel</title>
+<polygon fill="none" stroke="black" points="330.537,-40 330.537,-61 586.537,-61 586.537,-40 330.537,-40"/>
+<text text-anchor="start" x="405.537" y="-46.8" font-family="Times New Roman,serif" font-size="14.00">someserviceModel</text>
+<polygon fill="none" stroke="black" points="330.537,-19 330.537,-40 586.537,-40 586.537,-19 330.537,-19"/>
+<text text-anchor="start" x="333.537" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+</g>
+</g>
+</svg>

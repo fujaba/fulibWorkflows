@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	partyAppModel 	partyAppBusinessLogic 	partyAppBuilder 	partyAppService 	user 	region 	party2 	item 	guest
+  classes: 	partyAppModel 	partyAppBusinessLogic 	partyAppBuilder 	partyAppService 	user 	region 	party2 	item 	guest 	party
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -32,7 +32,7 @@
   attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore 	partyAppBuilder_loaderMap 	partyAppBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party2.events.*;" 	"import java.util.function.Function;"
-  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storeRegionBuilt 	partyAppBuilder_loadRegionBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_storeParty2Built 	partyAppBuilder_loadParty2Built 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_initLoaderMap 	partyAppBuilder_addToGroup 	partyAppBuilder_stripBrackets
+  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storeRegionBuilt 	partyAppBuilder_loadRegionBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_storeParty2Built 	partyAppBuilder_loadParty2Built 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_initLoaderMap 	partyAppBuilder_getObjectId 	partyAppBuilder_addToGroup 	partyAppBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	PartyAppBuilder
@@ -88,6 +88,12 @@
   name: 	Guest
   propertyStyle: 	Bean
   roles: 	guest_items 	guest_party
+
+- party: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	Party
+  propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -480,18 +486,18 @@ if (event.getId().equals(\"14:09\")) {
   id: 	PartyAppBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
-   handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
-   handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
-   handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
-   handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
-   handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
-   handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
    handlerMap.put(UserBuilt.class, builder::storeUserBuilt);
    handlerMap.put(RegionBuilt.class, builder::storeRegionBuilt);
    handlerMap.put(PartyBuilt.class, builder::storePartyBuilt);
    handlerMap.put(Party2Built.class, builder::storeParty2Built);
    handlerMap.put(ItemBuilt.class, builder::storeItemBuilt);
    handlerMap.put(GuestBuilt.class, builder::storeGuestBuilt);
+   handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
+   handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
+   handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
+   handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
+   handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
+   handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
 }
 "
   modified: 	false
@@ -600,6 +606,7 @@ if (event.getId().equals(\"14:09\")) {
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }
@@ -728,7 +735,7 @@ if (outdated(event)) {
   methodBody: 	"Party2Built event = (Party2Built) e;
 Party2 object = model.getOrCreateParty2(event.getBlockId());
 object.setName(event.getName());
-object.setRegion(model.getOrCreateRegion(event.getRegion()));
+object.setRegion(model.getOrCreateRegion(getObjectId(event.getRegion())));
 object.setDate(event.getDate());
 object.setAddress(event.getAddress());
 return object;
@@ -768,8 +775,8 @@ if (outdated(event)) {
 Item object = model.getOrCreateItem(event.getBlockId());
 object.setName(event.getName());
 object.setPrice(event.getPrice());
-object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
-object.setParty(model.getOrCreateParty2(event.getParty()));
+object.setBuyer(model.getOrCreateGuest(getObjectId(event.getBuyer())));
+object.setParty(model.getOrCreateParty2(getObjectId(event.getParty())));
 return object;
 "
   modified: 	false
@@ -806,7 +813,7 @@ if (outdated(event)) {
   methodBody: 	"GuestBuilt event = (GuestBuilt) e;
 Guest object = model.getOrCreateGuest(event.getBlockId());
 object.setName(event.getName());
-object.setParty(model.getOrCreateParty2(event.getParty()));
+object.setParty(model.getOrCreateParty2(getObjectId(event.getParty())));
 object.setExpenses(event.getExpenses());
 return object;
 "
@@ -865,6 +872,22 @@ return object;
   paramsString: 	""
   returnType: 	void
   signature: 	"class/PartyAppBuilder/method/initLoaderMap()"
+
+- partyAppBuilder_getObjectId: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppBuilder
+  declaration: 	"public String getObjectId(String value)"
+  id: 	PartyAppBuilder_getObjectId
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      return value.replaceAll(\"\\W+\", \"_\");"
+  modified: 	false
+  modifiers: 	public
+  name: 	getObjectId
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/PartyAppBuilder/method/getObjectId(String)"
 
 - partyAppBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""

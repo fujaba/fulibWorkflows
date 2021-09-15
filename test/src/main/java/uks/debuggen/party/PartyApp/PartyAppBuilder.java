@@ -193,6 +193,7 @@ public class PartyAppBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }
@@ -258,8 +259,8 @@ public class PartyAppBuilder
       Item object = model.getOrCreateItem(event.getBlockId());
       object.setName(event.getName());
       object.setPrice(event.getPrice());
-      object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
-      object.setParty(model.getOrCreateParty(event.getParty()));
+      object.setBuyer(model.getOrCreateGuest(getObjectId(event.getBuyer())));
+      object.setParty(model.getOrCreateParty(getObjectId(event.getParty())));
       return object;
    }
 
@@ -280,7 +281,7 @@ public class PartyAppBuilder
       GuestBuilt event = (GuestBuilt) e;
       Guest object = model.getOrCreateGuest(event.getBlockId());
       object.setName(event.getName());
-      object.setParty(model.getOrCreateParty(event.getParty()));
+      object.setParty(model.getOrCreateParty(getObjectId(event.getParty())));
       object.setExpenses(event.getExpenses());
       return object;
    }
@@ -327,6 +328,14 @@ public class PartyAppBuilder
 
       LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
       group.put(elementId, dataEvent);
+   }
+
+   public String getObjectId(String value)
+   {
+      if (value == null) {
+         return null;
+      }
+      return value.replaceAll("\\W+", "_");
    }
 
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();

@@ -16,6 +16,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.LinkedHashMap;
 
 public class TestPartyApp
 {
@@ -142,8 +143,10 @@ public class TestPartyApp
 
       SelenideElement pre = $("pre");
       pre.shouldHave(text("http://localhost:42001/apply"));
+      LinkedHashMap<String, Object> modelMap;
 
       // workflow Overview
+
       // create UserRegisteredEvent: user registered 12:00
       UserRegisteredEvent e1200 = new UserRegisteredEvent();
       e1200.setId("12:00");
@@ -190,6 +193,7 @@ public class TestPartyApp
       pre.shouldHave(text("- 16_00:"));
 
       // workflow RegisterNewUser
+
       // page 12:00
       open("http://localhost:42001/page/12_00");
       $("#name").setValue("Alice");
@@ -203,6 +207,13 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 12_01:"));
+      for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
+         partyApp.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = partyApp.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_01.svg", modelMap.values());
+
+      open("http://localhost:42001");
 
       // page 12:02
       open("http://localhost:42001/page/12_02");
@@ -217,6 +228,13 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 12_03:"));
+      for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
+         partyApp.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = partyApp.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_03.svg", modelMap.values());
+
+      open("http://localhost:42001");
 
       // page 12:04
       open("http://localhost:42001/page/12_04");
@@ -231,9 +249,16 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 12_05:"));
+      for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
+         partyApp.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = partyApp.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_05.svg", modelMap.values());
+
+      open("http://localhost:42001");
       // check data note 12:05:02
       pre = $("#data");
-      pre.shouldHave(text("- Alice:"));
+      pre.shouldHave(text("- alice:"));
       pre.shouldHave(matchText("name:.*Alice"));
       pre.shouldHave(matchText("email:.*a@b.de"));
       pre.shouldHave(matchText("password:.*secret"));
@@ -248,6 +273,7 @@ public class TestPartyApp
       pre.shouldHave(text("- 12_07:"));
 
       // workflow LoginOldUser
+
       // page 13:00
       open("http://localhost:42001/page/13_00");
       $("#name").setValue("Alice");
@@ -261,6 +287,13 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 13_01:"));
+      for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
+         partyApp.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = partyApp.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_01.svg", modelMap.values());
+
+      open("http://localhost:42001");
 
       // page 13:02
       open("http://localhost:42001/page/13_02");
@@ -275,6 +308,13 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 13_03:"));
+      for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
+         partyApp.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = partyApp.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_03.svg", modelMap.values());
+
+      open("http://localhost:42001");
 
       // page 13:04
       open("http://localhost:42001/page/13_04");
@@ -286,6 +326,7 @@ public class TestPartyApp
       pre.shouldHave(text("- 13_05:"));
 
       // workflow StartParty
+
       // page 14:00
       open("http://localhost:42001/page/14_00");
       $("#party").setValue("SE BBQ");
@@ -301,6 +342,13 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 14_01:"));
+      for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
+         partyApp.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = partyApp.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_01.svg", modelMap.values());
+
+      open("http://localhost:42001");
       // check data note 14:01:02
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ:"));
@@ -331,6 +379,13 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 14_05:"));
+      for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
+         partyApp.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = partyApp.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_05.svg", modelMap.values());
+
+      open("http://localhost:42001");
       // check data note 14:05:01
       pre = $("#data");
       pre.shouldHave(text("- beer:"));
@@ -367,6 +422,13 @@ public class TestPartyApp
       open("http://localhost:42001");
       pre = $("#history");
       pre.shouldHave(text("- 14_09:"));
+      for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
+         partyApp.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = partyApp.getBuilder().getModel().getModelMap();
+      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_09.svg", modelMap.values());
+
+      open("http://localhost:42001");
       // check data note 14:09:01
       pre = $("#data");
       pre.shouldHave(text("- meat:"));

@@ -138,7 +138,7 @@ public class StudyRightBusinessLogic
          UniversityBuilt studyRightEvent = new UniversityBuilt();
          studyRightEvent.setId("12:00:00");
          studyRightEvent.setBlockId("StudyRight");
-         studyRightEvent.setRooms("[math exam]");
+         studyRightEvent.setRooms("[math, exam]");
          service.apply(studyRightEvent);
 
          RoomBuilt mathEvent = new RoomBuilt();
@@ -146,7 +146,7 @@ public class StudyRightBusinessLogic
          mathEvent.setBlockId("math");
          mathEvent.setCredits("23");
          mathEvent.setUni("StudyRight");
-         mathEvent.setDoors("[modeling algebra]");
+         mathEvent.setDoors("[modeling, algebra]");
          service.apply(mathEvent);
 
          RoomBuilt modelingEvent = new RoomBuilt();
@@ -154,7 +154,7 @@ public class StudyRightBusinessLogic
          modelingEvent.setBlockId("modeling");
          modelingEvent.setUni("StudyRight");
          modelingEvent.setCredits("42");
-         modelingEvent.setDoors("[math algebra exam]");
+         modelingEvent.setDoors("[math, algebra, exam]");
          service.apply(modelingEvent);
 
          RoomBuilt algebraEvent = new RoomBuilt();
@@ -185,11 +185,6 @@ public class StudyRightBusinessLogic
 
          e120006.setId("12:00:06");
          service.apply(e120006);
-
-         FindToursCommand e1201 = new FindToursCommand();
-
-         e1201.setId("12:01");
-         service.apply(e1201);
       }
    }
 
@@ -291,13 +286,6 @@ public class StudyRightBusinessLogic
          s01Event.setMotivation("77");
          service.apply(s01Event);
 
-
-         VisitRoomCommand e1202 = new VisitRoomCommand();
-
-         e1202.setId("12:02");
-         e1202.setRoom("math");
-         e1202.setPreviousStop("s01");
-         service.apply(e1202);
       }
    }
 
@@ -421,20 +409,6 @@ public class StudyRightBusinessLogic
          s02Event.setPreviousStop("s01");
          service.apply(s02Event);
 
-
-         VisitRoomCommand e1203 = new VisitRoomCommand();
-
-         e1203.setId("12:03");
-         e1203.setRoom("algebra");
-         e1203.setPreviousStop("s02");
-         service.apply(e1203);
-
-         VisitRoomCommand e1204 = new VisitRoomCommand();
-
-         e1204.setId("12:04");
-         e1204.setRoom("modeling");
-         e1204.setPreviousStop("s02");
-         service.apply(e1204);
       }
       if (event.getId().equals("12:03")) {
          StopBuilt s03Event = new StopBuilt();
@@ -445,20 +419,6 @@ public class StudyRightBusinessLogic
          s03Event.setMotivation("42");
          service.apply(s03Event);
 
-
-         VisitRoomCommand e1205 = new VisitRoomCommand();
-
-         e1205.setId("12:05");
-         e1205.setPreviousStop("s03");
-         e1205.setRoom("modeling");
-         service.apply(e1205);
-
-         VisitRoomCommand e1206 = new VisitRoomCommand();
-
-         e1206.setId("12:06");
-         e1206.setPreviousStop("s03");
-         e1206.setRoom("math");
-         service.apply(e1206);
       }
       if (event.getId().equals("12:05")) {
          StopBuilt s05Event = new StopBuilt();
@@ -469,20 +429,6 @@ public class StudyRightBusinessLogic
          s05Event.setMotivation("0");
          service.apply(s05Event);
 
-
-         VisitRoomCommand e1207 = new VisitRoomCommand();
-
-         e1207.setId("12:07");
-         e1207.setPreviousStop("s05");
-         e1207.setRoom("math");
-         service.apply(e1207);
-
-         VisitRoomCommand e1208 = new VisitRoomCommand();
-
-         e1208.setId("12:08");
-         e1208.setPreviousStop("s05");
-         e1208.setRoom("exam");
-         service.apply(e1208);
       }
       if (event.getId().equals("12:07")) {
          StopBuilt s07Event = new StopBuilt();
@@ -511,13 +457,6 @@ public class StudyRightBusinessLogic
          s08Event.setMotivation("0");
          service.apply(s08Event);
 
-
-         CollectTourStopsCommand e1209 = new CollectTourStopsCommand();
-
-         e1209.setId("12:09");
-         e1209.setStop("s08");
-         e1209.setTour("tour1");
-         service.apply(e1209);
       }
    }
 
@@ -531,13 +470,6 @@ public class StudyRightBusinessLogic
          tour1Event.setStops("exam");
          service.apply(tour1Event);
 
-
-         CollectTourStopsCommand e1210 = new CollectTourStopsCommand();
-
-         e1210.setId("12:10");
-         e1210.setStop("s05");
-         e1210.setTour("tour1");
-         service.apply(e1210);
       }
       if (event.getId().equals("12:10")) {
          TourBuilt tour1Event = new TourBuilt();
@@ -546,13 +478,6 @@ public class StudyRightBusinessLogic
          tour1Event.setStops("modeling exam");
          service.apply(tour1Event);
 
-
-         CollectTourStopsCommand e1211 = new CollectTourStopsCommand();
-
-         e1211.setId("12:11");
-         e1211.setStop("s03");
-         e1211.setTour("tour1");
-         service.apply(e1211);
       }
       if (event.getId().equals("12:11")) {
          TourBuilt tour1Event = new TourBuilt();
@@ -561,13 +486,6 @@ public class StudyRightBusinessLogic
          tour1Event.setStops("algebra modeling exam");
          service.apply(tour1Event);
 
-
-         CollectTourStopsCommand e1212 = new CollectTourStopsCommand();
-
-         e1212.setId("12:12");
-         e1212.setStop("s02");
-         e1212.setTour("tour1");
-         service.apply(e1212);
       }
       if (event.getId().equals("12:12")) {
          TourBuilt tour1Event = new TourBuilt();
@@ -594,16 +512,16 @@ public class StudyRightBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
+         handlerMap.put(UniversityBuilt.class, builder::storeUniversityBuilt);
+         handlerMap.put(RoomBuilt.class, builder::storeRoomBuilt);
+         handlerMap.put(StudentBuilt.class, builder::storeStudentBuilt);
+         handlerMap.put(TourListBuilt.class, builder::storeTourListBuilt);
+         handlerMap.put(StopBuilt.class, builder::storeStopBuilt);
+         handlerMap.put(TourBuilt.class, builder::storeTourBuilt);
          handlerMap.put(LoadRoomsCommand.class, this::handleLoadRoomsCommand);
          handlerMap.put(FindToursCommand.class, this::handleFindToursCommand);
          handlerMap.put(VisitRoomCommand.class, this::handleVisitRoomCommand);
          handlerMap.put(CollectTourStopsCommand.class, this::handleCollectTourStopsCommand);
-         handlerMap.put(UniversityBuilt.class, builder::handleUniversityBuilt);
-         handlerMap.put(RoomBuilt.class, builder::handleRoomBuilt);
-         handlerMap.put(StudentBuilt.class, builder::handleStudentBuilt);
-         handlerMap.put(TourListBuilt.class, builder::handleTourListBuilt);
-         handlerMap.put(StopBuilt.class, builder::handleStopBuilt);
-         handlerMap.put(TourBuilt.class, builder::handleTourBuilt);
       }
    }
 }

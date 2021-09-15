@@ -18,6 +18,9 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import org.fulib.yaml.YamlIdMap;
 
 public class StorageService
 {
@@ -26,12 +29,14 @@ public class StorageService
    public static final String PROPERTY_SPARK = "spark";
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
+   public static final String PROPERTY_BUILDER = "builder";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
    protected PropertyChangeSupport listeners;
    private int port = 42002;
    private Service spark;
    private StorageModel model;
    private StorageBusinessLogic businessLogic;
+   private StorageBuilder builder;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -132,6 +137,33 @@ public class StorageService
       return this;
    }
 
+   public StorageBuilder getBuilder()
+   {
+      return this.builder;
+   }
+
+   public StorageService setBuilder(StorageBuilder value)
+   {
+      if (this.builder == value)
+      {
+         return this;
+      }
+
+      final StorageBuilder oldValue = this.builder;
+      if (this.builder != null)
+      {
+         this.builder = null;
+         oldValue.setService(null);
+      }
+      this.builder = value;
+      if (value != null)
+      {
+         value.setService(this);
+      }
+      this.firePropertyChange(PROPERTY_BUILDER, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -154,8 +186,9 @@ public class StorageService
    public void start()
    {
       model = new StorageModel();
+      setBuilder(new StorageBuilder().setModel(model));
       setBusinessLogic(new StorageBusinessLogic());
-      businessLogic.setBuilder(new StorageBuilder().setModel(model));
+      businessLogic.setBuilder(getBuilder());
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
@@ -170,8 +203,8 @@ public class StorageService
    private String getHello(Request req, Response res)
    {
       try {
-         String events = Yaml.encode(getHistory().values().toArray());
-         String objects = Yaml.encode(model.getModelMap().values().toArray());
+         String events = Yaml.encodeSimple(getHistory().values().toArray());
+         String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
          return "<p id='Storage'>This is the Storage service. </p>\n" +
                "<pre id=\"history\">" + events + "</pre>\n" +
                "<pre id=\"data\">" + objects + "</pre>\n" +
@@ -186,8 +219,8 @@ public class StorageService
    private void subscribeAndLoadOldEvents()
    {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
-            .setServiceUrl("http://localhost:42002/apply");
-      String json = Yaml.encode(serviceSubscribed);
+            .setServiceUrl(String.format("http://localhost:%d/apply", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
       try {
          String url = "http://localhost:42000/subscribe";
          HttpResponse<String> response = Unirest
@@ -195,7 +228,9 @@ public class StorageService
                .body(json)
                .asString();
          String body = response.getBody();
-         Map<String, Object> objectMap = Yaml.decode(body);
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
          for (Object obj : objectMap.values()) {
             apply((Event) obj);
          }
@@ -214,12 +249,13 @@ public class StorageService
       Consumer<Event> handler = businessLogic.getHandler(event);
       handler.accept(event);
       history.put(event.getId(), event);
+      firePropertyChange(PROPERTY_HISTORY, null, event);
       publish(event);
    }
 
    public void publish(Event event)
    {
-      String json = Yaml.encode(event);
+      String json = Yaml.encodeSimple(event);
 
       try {
          HttpResponse<String> response = Unirest
@@ -234,16 +270,24 @@ public class StorageService
 
    private String postApply(Request req, Response res)
    {
+      String body = req.body();
       try {
-         String body = req.body();
-         Map<String, Object> map = Yaml.decode(body);
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
          for (Object value : map.values()) {
             Event event = (Event) value;
             apply(event);
          }
       }
       catch (Exception e) {
-         Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
       }
       return "apply done";
    }
@@ -270,6 +314,31 @@ public class StorageService
    public void removeYou()
    {
       this.setBusinessLogic(null);
+      this.setBuilder(null);
+   }
+
+   public Query query(Query query)
+   {
+      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;
+   }
+
+   public String isoNow()
+   {
+      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
    }
 
 }

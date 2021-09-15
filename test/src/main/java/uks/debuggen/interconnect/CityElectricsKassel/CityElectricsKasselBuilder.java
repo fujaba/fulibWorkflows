@@ -158,6 +158,7 @@ public class CityElectricsKasselBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
          eventStore.put(event.getBlockId(), event);
          return false;
       }
@@ -241,5 +242,13 @@ public class CityElectricsKasselBuilder
    {
       this.setBusinessLogic(null);
       this.setService(null);
+   }
+
+   public String getObjectId(String value)
+   {
+      if (value == null) {
+         return null;
+      }
+      return value.replaceAll("\\W+", "_");
    }
 }

@@ -258,18 +258,18 @@ public class PartyAppBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
-         handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
-         handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
-         handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
-         handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
-         handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
          handlerMap.put(UserBuilt.class, builder::storeUserBuilt);
          handlerMap.put(RegionBuilt.class, builder::storeRegionBuilt);
          handlerMap.put(PartyBuilt.class, builder::storePartyBuilt);
          handlerMap.put(Party2Built.class, builder::storeParty2Built);
          handlerMap.put(ItemBuilt.class, builder::storeItemBuilt);
          handlerMap.put(GuestBuilt.class, builder::storeGuestBuilt);
+         handlerMap.put(CheckNameCommand.class, this::handleCheckNameCommand);
+         handlerMap.put(CheckEmailCommand.class, this::handleCheckEmailCommand);
+         handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
+         handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
+         handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
+         handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
       }
    }
 
