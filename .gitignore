@@ -23,8 +23,4 @@ gradle-app.setting
 /test/bin/
 
 .idea
-<<<<<<< HEAD
-test/bin/main/org/fulib/workflows/Event.class
-=======
 tmp
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
