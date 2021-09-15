@@ -193,12 +193,25 @@ public class ShopBuilder
       }
    }
 
+<<<<<<< HEAD
    public String getObjectId(String value)
+=======
+   public String getVarName(String value)
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
    {
       if (value == null) {
          return null;
       }
+<<<<<<< HEAD
       return value.replaceAll("\\W+", "_");
+=======
+      String[] split = value.split("\\s+");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
    }
 
    private void addToGroup(String groupId, String elementId)

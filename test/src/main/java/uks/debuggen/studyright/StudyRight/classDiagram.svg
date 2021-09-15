@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <svg width="1267px" height="350px"
  viewBox="0.00 0.00 1266.50 350.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 346)">
@@ -148,6 +149,178 @@
 <path fill="none" stroke="black" d="M1212,-80.1055C1212,-100.637 1212,-126.988 1212,-145.843"/>
 <text text-anchor="middle" x="1190" y="-134.643" font-family="Times New Roman,serif" font-size="14.00">tourList</text>
 <text text-anchor="middle" x="1175.5" y="-83.9055" font-family="Times New Roman,serif" font-size="14.00">alternatives *</text>
+=======
+<svg width="1278px" height="372px"
+ viewBox="0.00 0.00 1278.00 372.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 368)">
+<title>uks.debuggen.studyright.StudyRight</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-368 1274,-368 1274,4 -4,4"/>
+<!-- Person -->
+<g id="node1" class="node">
+<title>Person</title>
+<polygon fill="none" stroke="black" points="145,-199 145,-221 226,-221 226,-199 145,-199"/>
+<text text-anchor="start" x="166.45" y="-205.4" font-family="Times,serif" font-size="14.00">Person</text>
+<polygon fill="none" stroke="black" points="145,-143 145,-199 226,-199 226,-143 145,-143"/>
+<text text-anchor="start" x="148" y="-183.4" font-family="Times,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="148" y="-166.6" font-family="Times,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="148" y="-149.8" font-family="Times,serif" font-size="14.00">birthYear :int</text>
+</g>
+<!-- University -->
+<g id="node11" class="node">
+<title>University</title>
+<polygon fill="none" stroke="black" points="86,-312.5 86,-334.5 151,-334.5 151,-312.5 86,-312.5"/>
+<text text-anchor="start" x="88.95" y="-318.9" font-family="Times,serif" font-size="14.00">University</text>
+<polygon fill="none" stroke="black" points="86,-290.5 86,-312.5 151,-312.5 151,-290.5 86,-290.5"/>
+<text text-anchor="start" x="92.25" y="-296.9" font-family="Times,serif" font-size="14.00">id :String</text>
+</g>
+<!-- Person&#45;&gt;University -->
+<g id="edge7" class="edge">
+<title>Person&#45;&gt;University</title>
+<path fill="none" stroke="black" d="M163.06,-225.08C152.53,-245.28 140.26,-268.81 131.18,-286.22"/>
+<text text-anchor="middle" x="122.24" y="-273.62" font-family="Times,serif" font-size="14.00">uni</text>
+<text text-anchor="middle" x="136.43" y="-229.28" font-family="Times,serif" font-size="14.00">persons *</text>
+</g>
+<!-- Room -->
+<g id="node2" class="node">
+<title>Room</title>
+<polygon fill="none" stroke="black" points="8,-190 8,-212 92,-212 92,-190 8,-190"/>
+<text text-anchor="start" x="32.89" y="-196.4" font-family="Times,serif" font-size="14.00">Room</text>
+<polygon fill="none" stroke="black" points="8,-151 8,-190 92,-190 92,-151 8,-151"/>
+<text text-anchor="start" x="11" y="-174.4" font-family="Times,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="11" y="-157.6" font-family="Times,serif" font-size="14.00">credits :String</text>
+</g>
+<!-- Room&#45;&gt;Room -->
+<g id="edge5" class="edge">
+<title>Room&#45;&gt;Room</title>
+<path fill="none" stroke="black" d="M100.11,-158.48C110.52,-160.96 118,-168.8 118,-182 118,-195.2 110.52,-203.04 100.11,-205.52"/>
+<text text-anchor="middle" x="120.92" y="-192.92" font-family="Times,serif" font-size="14.00">doors *</text>
+<text text-anchor="middle" x="120.92" y="-145.88" font-family="Times,serif" font-size="14.00">doors *</text>
+</g>
+<!-- Room&#45;&gt;University -->
+<g id="edge8" class="edge">
+<title>Room&#45;&gt;University</title>
+<path fill="none" stroke="black" d="M67.87,-216.76C79.44,-238.62 94.25,-266.62 104.77,-286.49"/>
+<text text-anchor="middle" x="95.82" y="-273.89" font-family="Times,serif" font-size="14.00">uni</text>
+<text text-anchor="middle" x="45.12" y="-220.96" font-family="Times,serif" font-size="14.00">rooms *</text>
+</g>
+<!-- Stop -->
+<g id="node3" class="node">
+<title>Stop</title>
+<polygon fill="none" stroke="black" points="270,-68.5 270,-90.5 378,-90.5 378,-68.5 270,-68.5"/>
+<text text-anchor="start" x="311.16" y="-74.9" font-family="Times,serif" font-size="14.00">Stop</text>
+<polygon fill="none" stroke="black" points="270,-12.5 270,-68.5 378,-68.5 378,-12.5 270,-12.5"/>
+<text text-anchor="start" x="273" y="-52.9" font-family="Times,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="273" y="-36.1" font-family="Times,serif" font-size="14.00">motivation :String</text>
+<text text-anchor="start" x="273" y="-19.3" font-family="Times,serif" font-size="14.00">room :String</text>
+</g>
+<!-- Stop&#45;&gt;Stop -->
+<g id="edge6" class="edge">
+<title>Stop&#45;&gt;Stop</title>
+<path fill="none" stroke="black" d="M386.05,-28.75C396.66,-31.85 404,-39.44 404,-51.5 404,-63.56 396.66,-71.15 386.05,-74.25"/>
+<text text-anchor="middle" x="386.05" y="-78.45" font-family="Times,serif" font-size="14.00">previousStop</text>
+<text text-anchor="middle" x="418.92" y="-16.15" font-family="Times,serif" font-size="14.00">nextStops *</text>
+</g>
+<!-- Student -->
+<g id="node4" class="node">
+<title>Student</title>
+<polygon fill="none" stroke="black" points="135,-76.5 135,-98.5 236,-98.5 236,-76.5 135,-76.5"/>
+<text text-anchor="start" x="164.11" y="-82.9" font-family="Times,serif" font-size="14.00">Student</text>
+<polygon fill="none" stroke="black" points="135,-3.5 135,-76.5 236,-76.5 236,-3.5 135,-3.5"/>
+<text text-anchor="start" x="138" y="-60.9" font-family="Times,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="138" y="-44.1" font-family="Times,serif" font-size="14.00">birthYear :String</text>
+<text text-anchor="start" x="138" y="-27.3" font-family="Times,serif" font-size="14.00">studentId :String</text>
+<text text-anchor="start" x="138" y="-10.5" font-family="Times,serif" font-size="14.00">uni :String</text>
+</g>
+<!-- Student&#45;&gt;Person -->
+<g id="edge9" class="edge">
+<title>Student&#45;&gt;Person</title>
+<path fill="none" stroke="black" d="M185,-103.29C185,-111.67 185,-120.36 185,-128.78"/>
+<polygon fill="none" stroke="black" points="181.5,-128.86 185,-138.86 188.5,-128.86 181.5,-128.86"/>
+</g>
+<!-- StudyRightBuilder -->
+<g id="node5" class="node">
+<title>StudyRightBuilder</title>
+<polygon fill="none" stroke="black" points="431,-76.5 431,-98.5 860,-98.5 860,-76.5 431,-76.5"/>
+<text text-anchor="start" x="592.61" y="-82.9" font-family="Times,serif" font-size="14.00">StudyRightBuilder</text>
+<polygon fill="none" stroke="black" points="431,-3.5 431,-76.5 860,-76.5 860,-3.5 431,-3.5"/>
+<text text-anchor="start" x="434" y="-60.9" font-family="Times,serif" font-size="14.00">model :StudyRightModel</text>
+<text text-anchor="start" x="434" y="-44.1" font-family="Times,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
+<text text-anchor="start" x="434" y="-27.3" font-family="Times,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
+<text text-anchor="start" x="434" y="-10.5" font-family="Times,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
+</g>
+<!-- StudyRightBusinessLogic -->
+<g id="node6" class="node">
+<title>StudyRightBusinessLogic</title>
+<polygon fill="none" stroke="black" points="379,-190 379,-212 709,-212 709,-190 379,-190"/>
+<text text-anchor="start" x="470.89" y="-196.4" font-family="Times,serif" font-size="14.00">StudyRightBusinessLogic</text>
+<polygon fill="none" stroke="black" points="379,-151 379,-190 709,-190 709,-151 379,-151"/>
+<text text-anchor="start" x="382" y="-174.4" font-family="Times,serif" font-size="14.00">model :StudyRightModel</text>
+<text text-anchor="start" x="382" y="-157.6" font-family="Times,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+</g>
+<!-- StudyRightBuilder&#45;&gt;StudyRightBusinessLogic -->
+<g id="edge2" class="edge">
+<title>StudyRightBuilder&#45;&gt;StudyRightBusinessLogic</title>
+<path fill="none" stroke="black" d="M605.08,-103.29C593.5,-118.02 581.15,-133.74 570.6,-147.16"/>
+<text text-anchor="middle" x="530.55" y="-134.56" font-family="Times,serif" font-size="14.00">businessLogic</text>
+<text text-anchor="middle" x="585.25" y="-107.49" font-family="Times,serif" font-size="14.00">builder</text>
+</g>
+<!-- StudyRightService -->
+<g id="node8" class="node">
+<title>StudyRightService</title>
+<polygon fill="none" stroke="black" points="528,-337.5 528,-359.5 760,-359.5 760,-337.5 528,-337.5"/>
+<text text-anchor="start" x="591.12" y="-343.9" font-family="Times,serif" font-size="14.00">StudyRightService</text>
+<polygon fill="none" stroke="black" points="528,-264.5 528,-337.5 760,-337.5 760,-264.5 528,-264.5"/>
+<text text-anchor="start" x="531" y="-321.9" font-family="Times,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="531" y="-305.1" font-family="Times,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="531" y="-288.3" font-family="Times,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="531" y="-271.5" font-family="Times,serif" font-size="14.00">model :StudyRightModel</text>
+</g>
+<!-- StudyRightBuilder&#45;&gt;StudyRightService -->
+<g id="edge3" class="edge">
+<title>StudyRightBuilder&#45;&gt;StudyRightService</title>
+<path fill="none" stroke="black" d="M703.98,-103.36C712.97,-114.15 720.93,-126.18 726,-139 740.05,-174.55 740.15,-189.5 726,-225 720.87,-237.88 712.8,-249.94 703.69,-260.73"/>
+<text text-anchor="middle" x="683.87" y="-248.13" font-family="Times,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="684.15" y="-107.56" font-family="Times,serif" font-size="14.00">builder</text>
+</g>
+<!-- StudyRightBusinessLogic&#45;&gt;StudyRightService -->
+<g id="edge4" class="edge">
+<title>StudyRightBusinessLogic&#45;&gt;StudyRightService</title>
+<path fill="none" stroke="black" d="M570.27,-216.76C580.69,-230.15 592.89,-245.83 604.34,-260.54"/>
+<text text-anchor="middle" x="584.52" y="-247.94" font-family="Times,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="530.23" y="-220.96" font-family="Times,serif" font-size="14.00">businessLogic</text>
+</g>
+<!-- StudyRightModel -->
+<g id="node7" class="node">
+<title>StudyRightModel</title>
+<polygon fill="none" stroke="black" points="894,-51.5 894,-73.5 1152,-73.5 1152,-51.5 894,-51.5"/>
+<text text-anchor="start" x="972.83" y="-57.9" font-family="Times,serif" font-size="14.00">StudyRightModel</text>
+<polygon fill="none" stroke="black" points="894,-29.5 894,-51.5 1152,-51.5 1152,-29.5 894,-29.5"/>
+<text text-anchor="start" x="897" y="-35.9" font-family="Times,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+</g>
+<!-- Tour -->
+<g id="node9" class="node">
+<title>Tour</title>
+<polygon fill="none" stroke="black" points="1186,-59.5 1186,-81.5 1262,-81.5 1262,-59.5 1186,-59.5"/>
+<text text-anchor="start" x="1210.39" y="-65.9" font-family="Times,serif" font-size="14.00">Tour</text>
+<polygon fill="none" stroke="black" points="1186,-20.5 1186,-59.5 1262,-59.5 1262,-20.5 1186,-20.5"/>
+<text text-anchor="start" x="1189" y="-43.9" font-family="Times,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="1189" y="-27.1" font-family="Times,serif" font-size="14.00">stops :String</text>
+</g>
+<!-- TourList -->
+<g id="node10" class="node">
+<title>TourList</title>
+<polygon fill="none" stroke="black" points="1195,-182 1195,-204 1253,-204 1253,-182 1195,-182"/>
+<text text-anchor="start" x="1199.5" y="-188.4" font-family="Times,serif" font-size="14.00">TourList</text>
+<polygon fill="none" stroke="black" points="1195,-160 1195,-182 1253,-182 1253,-160 1195,-160"/>
+<text text-anchor="start" x="1198" y="-166.4" font-family="Times,serif" font-size="14.00">id :String</text>
+</g>
+<!-- Tour&#45;&gt;TourList -->
+<g id="edge1" class="edge">
+<title>Tour&#45;&gt;TourList</title>
+<path fill="none" stroke="black" d="M1224,-86.26C1224,-108.12 1224,-136.12 1224,-155.99"/>
+<text text-anchor="middle" x="1201.84" y="-143.39" font-family="Times,serif" font-size="14.00">tourList</text>
+<text text-anchor="middle" x="1186.49" y="-90.46" font-family="Times,serif" font-size="14.00">alternatives *</text>
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
 </g>
 </g>
 </svg>

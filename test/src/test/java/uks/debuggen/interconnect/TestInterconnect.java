@@ -84,8 +84,11 @@ public class TestInterconnect
          ionicKassel42.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = ionicKassel42.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/ionicKassel4211_55.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
 
       // check CityElectricsKassel
@@ -96,8 +99,11 @@ public class TestInterconnect
          cityElectricsKassel.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = cityElectricsKassel.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/cityElectricsKassel11_55.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42002");
 
       System.out.println();

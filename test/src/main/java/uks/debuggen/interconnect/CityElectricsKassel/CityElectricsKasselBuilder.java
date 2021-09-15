@@ -244,11 +244,16 @@ public class CityElectricsKasselBuilder
       this.setService(null);
    }
 
-   public String getObjectId(String value)
+   public String getVarName(String value)
    {
       if (value == null) {
          return null;
       }
-      return value.replaceAll("\\W+", "_");
+      String[] split = value.split("\\s+");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;
    }
 }

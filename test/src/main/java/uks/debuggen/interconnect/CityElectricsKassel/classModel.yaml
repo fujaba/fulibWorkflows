@@ -31,7 +31,7 @@
   attributes: 	cityElectricsKasselBuilder_model 	cityElectricsKasselBuilder_eventStore 	cityElectricsKasselBuilder_loaderMap 	cityElectricsKasselBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.interconnect.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.interconnect.events.*;" 	"import java.util.function.Function;"
-  methods: 	cityElectricsKasselBuilder_outdated 	cityElectricsKasselBuilder_load 	cityElectricsKasselBuilder_initLoaderMap 	cityElectricsKasselBuilder_getObjectId 	cityElectricsKasselBuilder_addToGroup 	cityElectricsKasselBuilder_stripBrackets
+  methods: 	cityElectricsKasselBuilder_outdated 	cityElectricsKasselBuilder_load 	cityElectricsKasselBuilder_initLoaderMap 	cityElectricsKasselBuilder_getVarName 	cityElectricsKasselBuilder_addToGroup 	cityElectricsKasselBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	CityElectricsKasselBuilder
@@ -298,21 +298,26 @@ handleDemoChargingRequestedEvent(event);
   returnType: 	void
   signature: 	"class/CityElectricsKasselBuilder/method/initLoaderMap()"
 
-- cityElectricsKasselBuilder_getObjectId: 	org.fulib.classmodel.FMethod
+- cityElectricsKasselBuilder_getVarName: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	cityElectricsKasselBuilder
-  declaration: 	"public String getObjectId(String value)"
-  id: 	CityElectricsKasselBuilder_getObjectId
+  declaration: 	"public String getVarName(String value)"
+  id: 	CityElectricsKasselBuilder_getVarName
   methodBody: 	"      if (value == null) {
          return null;
       }
-      return value.replaceAll(\"\\W+\", \"_\");"
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
   modified: 	false
   modifiers: 	public
-  name: 	getObjectId
+  name: 	getVarName
   paramsString: 	"String value"
   returnType: 	String
-  signature: 	"class/CityElectricsKasselBuilder/method/getObjectId(String)"
+  signature: 	"class/CityElectricsKasselBuilder/method/getVarName(String)"
 
 - cityElectricsKasselBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""

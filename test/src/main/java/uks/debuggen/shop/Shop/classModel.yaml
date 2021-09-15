@@ -32,7 +32,11 @@
   attributes: 	shopBuilder_model 	shopBuilder_eventStore 	shopBuilder_loaderMap 	shopBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import java.util.function.Function;"
+<<<<<<< HEAD
   methods: 	shopBuilder_outdated 	shopBuilder_storeOrderBuilt 	shopBuilder_loadOrderBuilt 	shopBuilder_storeCustomerBuilt 	shopBuilder_loadCustomerBuilt 	shopBuilder_load 	shopBuilder_initLoaderMap 	shopBuilder_getObjectId 	shopBuilder_addToGroup 	shopBuilder_stripBrackets
+=======
+  methods: 	shopBuilder_outdated 	shopBuilder_storeOrderBuilt 	shopBuilder_loadOrderBuilt 	shopBuilder_storeCustomerBuilt 	shopBuilder_loadCustomerBuilt 	shopBuilder_load 	shopBuilder_initLoaderMap 	shopBuilder_getVarName 	shopBuilder_addToGroup 	shopBuilder_stripBrackets
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   model: 	c
   modified: 	false
   name: 	ShopBuilder
@@ -435,6 +439,7 @@ handleDemoOrderDeclinedEvent(event);
   typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
 
 - shopBuilder_outdated: 	org.fulib.classmodel.FMethod
+<<<<<<< HEAD
   annotations: 	""
   clazz: 	shopBuilder
   declaration: 	"private boolean outdated(DataEvent event)"
@@ -482,6 +487,54 @@ if (outdated(event)) {
 - shopBuilder_loadOrderBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBuilder
+=======
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"private boolean outdated(DataEvent event)"
+  id: 	ShopBuilder_outdated
+  methodBody: 	"      DataEvent oldEvent = getEventStore().get(event.getBlockId());
+
+      if (oldEvent == null) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      if (oldEvent.getId().compareTo(event.getId()) < 0) {
+         eventStore.put(event.getBlockId(), event);
+         return false;
+      }
+
+      return true;"
+  modified: 	false
+  modifiers: 	private
+  name: 	outdated
+  paramsString: 	"DataEvent event"
+  returnType: 	boolean
+  signature: 	"class/ShopBuilder/method/outdated(DataEvent)"
+
+- shopBuilder_storeOrderBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public void storeOrderBuilt(Event e)"
+  id: 	ShopBuilder_storeOrderBuilt
+  methodBody: 	"OrderBuilt event = (OrderBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeOrderBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/ShopBuilder/method/storeOrderBuilt(Event)"
+
+- shopBuilder_loadOrderBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   declaration: 	"public Order loadOrderBuilt(Event e)"
   id: 	ShopBuilder_loadOrderBuilt
   methodBody: 	"OrderBuilt event = (OrderBuilt) e;
@@ -491,6 +544,7 @@ object.setCustomer(event.getCustomer());
 object.setAddress(event.getAddress());
 object.setState(event.getState());
 return object;
+<<<<<<< HEAD
 "
   modified: 	false
   modifiers: 	public
@@ -513,6 +567,30 @@ if (outdated(event)) {
 "
   modified: 	false
   modifiers: 	public
+=======
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadOrderBuilt
+  paramsString: 	"Event e"
+  returnType: 	Order
+  signature: 	"class/ShopBuilder/method/loadOrderBuilt(Event)"
+
+- shopBuilder_storeCustomerBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public void storeCustomerBuilt(Event e)"
+  id: 	ShopBuilder_storeCustomerBuilt
+  methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   name: 	storeCustomerBuilt
   paramsString: 	"Event e"
   returnType: 	void
@@ -581,6 +659,7 @@ return object;
   returnType: 	void
   signature: 	"class/ShopBuilder/method/initLoaderMap()"
 
+<<<<<<< HEAD
 - shopBuilder_getObjectId: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	shopBuilder
@@ -596,6 +675,28 @@ return object;
   paramsString: 	"String value"
   returnType: 	String
   signature: 	"class/ShopBuilder/method/getObjectId(String)"
+=======
+- shopBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	ShopBuilder_getVarName
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/ShopBuilder/method/getVarName(String)"
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
 
 - shopBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""

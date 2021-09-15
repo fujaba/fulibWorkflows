@@ -11,7 +11,7 @@
 - policy: MarburgHealthSystem
   trigger: 12:00
 
-- brokertopic: marburg health knowledge
+- brokerTopic: marburg health knowledge
 
 - data: Disease
   name: common cold

@@ -1,6 +1,7 @@
 package org.fulib.workflows;
 
 import org.fulib.FulibTools;
+import org.fulib.workflows.html.HtmlGenerator3;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,13 +15,11 @@ public class HtmlTest
    public void testGenWorkflow() throws IOException
    {
 
-      String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/ShopWorkflow2.yaml"));
-      Files.createDirectories(Path.of("tmp"));
+      String fileName = "test/src/gen/resources/workflows/ShopWorkflow2.yaml";
 
       HtmlGenerator3 generator = new HtmlGenerator3();
       generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-      String html = generator.generateHtml(yaml);
-      Files.write(Path.of("tmp/index3.html"), html.getBytes(StandardCharsets.UTF_8));
+      generator.generateViewFiles(fileName, "Shop2");
 
    }
 
@@ -28,13 +27,10 @@ public class HtmlTest
    public void testGUIYaml() throws IOException
    {
 
-      String yaml = Files.readString(Path.of("test/src/gen/resources/workflows/GUI.yaml"));
-      Files.createDirectories(Path.of("tmp"));
+      String fileName = "test/src/gen/resources/workflows/GUI.yaml";
 
       HtmlGenerator3 generator = new HtmlGenerator3();
       generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-      String html = generator.generateHtml(yaml);
-      Files.write(Path.of("tmp/gui.html"), html.getBytes(StandardCharsets.UTF_8));
-
+      generator.generateViewFiles(fileName, "GUI");
    }
 }

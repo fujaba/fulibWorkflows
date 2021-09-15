@@ -10,7 +10,7 @@
 
 - event: login succeeded 13:00
 
-- boundedcontext: start party
+- boundedContext: start party
 
 - event: party created 14:00
 

@@ -199,7 +199,10 @@ public class StudyRightBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+<<<<<<< HEAD
          new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
          eventStore.put(event.getBlockId(), event);
          return false;
       }
@@ -223,7 +226,11 @@ public class StudyRightBuilder
       University object = model.getOrCreateUniversity(event.getBlockId());
       for (String name : stripBrackets(event.getRooms()).split(",\\s+")) {
          if (name.equals("")) continue;
+<<<<<<< HEAD
          object.withRooms(model.getOrCreateRoom(getObjectId(name)));
+=======
+         object.withRooms(model.getOrCreateRoom(getVarName(name)));
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       }
       return object;
    }
@@ -243,10 +250,17 @@ public class StudyRightBuilder
       RoomBuilt event = (RoomBuilt) e;
       Room object = model.getOrCreateRoom(event.getBlockId());
       object.setCredits(event.getCredits());
+<<<<<<< HEAD
       object.setUni(model.getOrCreateUniversity(getObjectId(event.getUni())));
       for (String name : stripBrackets(event.getDoors()).split(",\\s+")) {
          if (name.equals("")) continue;
          object.withDoors(model.getOrCreateRoom(getObjectId(name)));
+=======
+      object.setUni(model.getOrCreateUniversity(getVarName(event.getUni())));
+      for (String name : stripBrackets(event.getDoors()).split(",\\s+")) {
+         if (name.equals("")) continue;
+         object.withDoors(model.getOrCreateRoom(getVarName(name)));
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       }
       return object;
    }
@@ -287,6 +301,7 @@ public class StudyRightBuilder
       TourListBuilt event = (TourListBuilt) e;
       TourList object = model.getOrCreateTourList(event.getBlockId());
       return object;
+<<<<<<< HEAD
    }
 
    public void storeStopBuilt(Event e)
@@ -299,13 +314,31 @@ public class StudyRightBuilder
       // fulib
    }
 
+=======
+   }
+
+   public void storeStopBuilt(Event e)
+   {
+      StopBuilt event = (StopBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
    public Stop loadStopBuilt(Event e)
    {
       StopBuilt event = (StopBuilt) e;
       Stop object = model.getOrCreateStop(event.getBlockId());
       object.setMotivation(event.getMotivation());
       object.setRoom(event.getRoom());
+<<<<<<< HEAD
       object.setPreviousStop(model.getOrCreateStop(getObjectId(event.getPreviousStop())));
+=======
+      object.setPreviousStop(model.getOrCreateStop(getVarName(event.getPreviousStop())));
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       return object;
    }
 
@@ -323,7 +356,11 @@ public class StudyRightBuilder
    {
       TourBuilt event = (TourBuilt) e;
       Tour object = model.getOrCreateTour(event.getBlockId());
+<<<<<<< HEAD
       object.setTourList(model.getOrCreateTourList(getObjectId(event.getTourList())));
+=======
+      object.setTourList(model.getOrCreateTourList(getVarName(event.getTourList())));
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       object.setStops(event.getStops());
       return object;
    }
@@ -361,12 +398,25 @@ public class StudyRightBuilder
       }
    }
 
+<<<<<<< HEAD
    public String getObjectId(String value)
+=======
+   public String getVarName(String value)
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
    {
       if (value == null) {
          return null;
       }
+<<<<<<< HEAD
       return value.replaceAll("\\W+", "_");
+=======
+      String[] split = value.split("\\s+");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
    }
 
    private void addToGroup(String groupId, String elementId)

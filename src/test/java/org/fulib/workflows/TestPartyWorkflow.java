@@ -2,81 +2,70 @@ package org.fulib.workflows;
 
 import org.fulib.FulibTools;
 import org.fulib.builder.ClassModelManager;
+import org.fulib.workflows.html.HtmlGenerator3;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
+public class TestPartyWorkflow {
 
-public class TestPartyWorkflow
-{
+    private ClassModelManager mm;
 
-   private ClassModelManager mm;
+    @Test
+    public void testGeneratePartySystemMigration() {
+        mm = new ClassModelManager();
+        mm.setMainJavaDir("test/src/main/java");
+        mm.setPackageName("uks.debuggen.party2");
 
-   @Test
-   public void testGeneratePartySystemMigration()
-   {
-      try {
-         mm = new ClassModelManager();
-         mm.setMainJavaDir("test/src/main/java");
-         mm.setPackageName("uks.debuggen.party2");
+        String fileName = "test/src/gen/resources/workflows/PartyWorkflow2.es.yaml";
 
-         String fileName = "test/src/gen/resources/workflows/PartyWorkflow2.es.yaml";
+        // html
+        HtmlGenerator3 generator = new HtmlGenerator3();
+        generator.dumpObjectDiagram = (f, o) -> {
+            FulibTools.objectDiagrams().dumpSVG(f, o);
+        };
+        generator.generateViewFiles(fileName, "Party2");
 
-         // html
-         HtmlGenerator3 generator = new HtmlGenerator3();
-         generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-         String html = generator.generateHtml(fileName);
-         Files.write(Path.of("tmp/PartyEventStorming2.html"), html.getBytes(StandardCharsets.UTF_8));
+        // java
+        WorkflowGenerator workflowGenerator = new WorkflowGenerator();
+        workflowGenerator.dumpObjectDiagram = (o) -> {
+            FulibTools.objectDiagrams().dumpSVG("tmp/Party2/PartyBoard2.svg", o);
+        };
+        workflowGenerator.loadWorkflow(mm, fileName);
 
-         // java
-         WorkflowGenerator workflowGenerator = new WorkflowGenerator();
-         workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/PartyBoard2.svg", o); };
-         workflowGenerator.loadWorkflow(mm, fileName);
+        FulibTools.objectDiagrams().dumpSVG("tmp/Party2/PartyEventStormingModel2.svg",
+                workflowGenerator.getEventModel().getEventStormingBoard());
 
-         FulibTools.objectDiagrams().dumpSVG("tmp/PartyEventStormingModel2.svg",
-               workflowGenerator.getEventModel().getEventStormingBoard());
+        workflowGenerator.generate();
 
-         workflowGenerator.generate();
+        System.out.println();
+    }
 
-         System.out.println();
-      }
-      catch (IOException e) {
-         e.printStackTrace();
-      }
-   }
+    @Test
+    public void testGeneratePartySystem() {
+        mm = new ClassModelManager();
+        mm.setMainJavaDir("test/src/main/java");
+        mm.setPackageName("uks.debuggen.party");
 
-   @Test
-   public void testGeneratePartySystem()
-   {
-      try {
-         mm = new ClassModelManager();
-         mm.setMainJavaDir("test/src/main/java");
-         mm.setPackageName("uks.debuggen.party");
+        String fileName = "test/src/gen/resources/workflows/PartyWorkflow.es.yaml";
 
-         String fileName = "test/src/gen/resources/workflows/PartyWorkflow.es.yaml";
+        // html
+        HtmlGenerator3 generator = new HtmlGenerator3();
+        generator.dumpObjectDiagram = (f, o) -> {
+            FulibTools.objectDiagrams().dumpSVG(f, o);
+        };
+        generator.generateViewFiles(fileName, "Party");
 
-         // html
-         HtmlGenerator3 generator = new HtmlGenerator3();
-         generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
-         String html = generator.generateHtml(fileName);
-         Files.write(Path.of("tmp/PartyEventStorming.html"), html.getBytes(StandardCharsets.UTF_8));
+        // java
+        WorkflowGenerator workflowGenerator = new WorkflowGenerator();
+        workflowGenerator.dumpObjectDiagram = (o) -> {
+            FulibTools.objectDiagrams().dumpSVG("tmp/Party/PartyBoard.svg", o);
+        };
+        workflowGenerator.loadWorkflow(mm, fileName);
 
-         // java
-         WorkflowGenerator workflowGenerator = new WorkflowGenerator();
-         workflowGenerator.dumpObjectDiagram = (o) -> { FulibTools.objectDiagrams().dumpSVG("tmp/PartyBoard.svg", o); };
-         workflowGenerator.loadWorkflow(mm, fileName);
+        FulibTools.objectDiagrams().dumpSVG("tmp/Party/PartyEventStormingModel.svg",
+                workflowGenerator.getEventModel().getEventStormingBoard());
 
-         FulibTools.objectDiagrams().dumpSVG("tmp/PartyEventStormingModel.svg",
-               workflowGenerator.getEventModel().getEventStormingBoard());
+        workflowGenerator.generate();
 
-         workflowGenerator.generate();
-
-         System.out.println();
-      }
-      catch (IOException e) {
-         e.printStackTrace();
-      }
-   }
+        System.out.println();
+    }
 }

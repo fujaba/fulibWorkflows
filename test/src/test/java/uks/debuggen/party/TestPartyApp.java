@@ -211,8 +211,11 @@ public class TestPartyApp
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_01.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
 
       // page 12:02
@@ -232,8 +235,11 @@ public class TestPartyApp
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_03.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
 
       // page 12:04
@@ -253,8 +259,11 @@ public class TestPartyApp
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_05.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
       // check data note 12:05:02
       pre = $("#data");
@@ -291,8 +300,11 @@ public class TestPartyApp
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_01.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
 
       // page 13:02
@@ -312,8 +324,11 @@ public class TestPartyApp
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_03.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
 
       // page 13:04
@@ -346,8 +361,11 @@ public class TestPartyApp
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_01.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
       // check data note 14:01:02
       pre = $("#data");
@@ -383,8 +401,11 @@ public class TestPartyApp
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_05.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
       // check data note 14:05:01
       pre = $("#data");
@@ -426,8 +447,11 @@ public class TestPartyApp
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
+<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_09.svg", modelMap.values());
 
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42001");
       // check data note 14:09:01
       pre = $("#data");

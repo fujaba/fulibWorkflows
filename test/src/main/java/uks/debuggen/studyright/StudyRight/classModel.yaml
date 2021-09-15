@@ -32,7 +32,11 @@
   attributes: 	studyRightBuilder_model 	studyRightBuilder_eventStore 	studyRightBuilder_loaderMap 	studyRightBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import java.util.function.Function;"
+<<<<<<< HEAD
   methods: 	studyRightBuilder_outdated 	studyRightBuilder_storeUniversityBuilt 	studyRightBuilder_loadUniversityBuilt 	studyRightBuilder_storeRoomBuilt 	studyRightBuilder_loadRoomBuilt 	studyRightBuilder_storeStudentBuilt 	studyRightBuilder_loadStudentBuilt 	studyRightBuilder_storeTourListBuilt 	studyRightBuilder_loadTourListBuilt 	studyRightBuilder_storeStopBuilt 	studyRightBuilder_loadStopBuilt 	studyRightBuilder_storeTourBuilt 	studyRightBuilder_loadTourBuilt 	studyRightBuilder_load 	studyRightBuilder_initLoaderMap 	studyRightBuilder_getObjectId 	studyRightBuilder_addToGroup 	studyRightBuilder_stripBrackets
+=======
+  methods: 	studyRightBuilder_outdated 	studyRightBuilder_storeUniversityBuilt 	studyRightBuilder_loadUniversityBuilt 	studyRightBuilder_storeRoomBuilt 	studyRightBuilder_loadRoomBuilt 	studyRightBuilder_storeStudentBuilt 	studyRightBuilder_loadStudentBuilt 	studyRightBuilder_storeTourListBuilt 	studyRightBuilder_loadTourListBuilt 	studyRightBuilder_storeStopBuilt 	studyRightBuilder_loadStopBuilt 	studyRightBuilder_storeTourBuilt 	studyRightBuilder_loadTourBuilt 	studyRightBuilder_load 	studyRightBuilder_initLoaderMap 	studyRightBuilder_getVarName 	studyRightBuilder_addToGroup 	studyRightBuilder_stripBrackets
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   model: 	c
   modified: 	false
   name: 	StudyRightBuilder
@@ -639,7 +643,10 @@ if (event.getId().equals(\"12:12\")) {
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
+<<<<<<< HEAD
          new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
+=======
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
          eventStore.put(event.getBlockId(), event);
          return false;
       }
@@ -680,6 +687,7 @@ if (outdated(event)) {
 University object = model.getOrCreateUniversity(event.getBlockId());
 for (String name : stripBrackets(event.getRooms()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
+<<<<<<< HEAD
    object.withRooms(model.getOrCreateRoom(getObjectId(name)));
 }
 return object;
@@ -705,6 +713,33 @@ if (outdated(event)) {
 "
   modified: 	false
   modifiers: 	public
+=======
+   object.withRooms(model.getOrCreateRoom(getVarName(name)));
+}
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadUniversityBuilt
+  paramsString: 	"Event e"
+  returnType: 	University
+  signature: 	"class/StudyRightBuilder/method/loadUniversityBuilt(Event)"
+
+- studyRightBuilder_storeRoomBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public void storeRoomBuilt(Event e)"
+  id: 	StudyRightBuilder_storeRoomBuilt
+  methodBody: 	"RoomBuilt event = (RoomBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   name: 	storeRoomBuilt
   paramsString: 	"Event e"
   returnType: 	void
@@ -718,6 +753,7 @@ if (outdated(event)) {
   methodBody: 	"RoomBuilt event = (RoomBuilt) e;
 Room object = model.getOrCreateRoom(event.getBlockId());
 object.setCredits(event.getCredits());
+<<<<<<< HEAD
 object.setUni(model.getOrCreateUniversity(getObjectId(event.getUni())));
 for (String name : stripBrackets(event.getDoors()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
@@ -746,6 +782,36 @@ if (outdated(event)) {
 "
   modified: 	false
   modifiers: 	public
+=======
+object.setUni(model.getOrCreateUniversity(getVarName(event.getUni())));
+for (String name : stripBrackets(event.getDoors()).split(\",\\s+\")) {
+   if (name.equals(\"\")) continue;
+   object.withDoors(model.getOrCreateRoom(getVarName(name)));
+}
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadRoomBuilt
+  paramsString: 	"Event e"
+  returnType: 	Room
+  signature: 	"class/StudyRightBuilder/method/loadRoomBuilt(Event)"
+
+- studyRightBuilder_storeStudentBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public void storeStudentBuilt(Event e)"
+  id: 	StudyRightBuilder_storeStudentBuilt
+  methodBody: 	"StudentBuilt event = (StudentBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   name: 	storeStudentBuilt
   paramsString: 	"Event e"
   returnType: 	void
@@ -834,6 +900,7 @@ if (outdated(event)) {
 Stop object = model.getOrCreateStop(event.getBlockId());
 object.setMotivation(event.getMotivation());
 object.setRoom(event.getRoom());
+<<<<<<< HEAD
 object.setPreviousStop(model.getOrCreateStop(getObjectId(event.getPreviousStop())));
 return object;
 "
@@ -858,6 +925,32 @@ if (outdated(event)) {
 "
   modified: 	false
   modifiers: 	public
+=======
+object.setPreviousStop(model.getOrCreateStop(getVarName(event.getPreviousStop())));
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadStopBuilt
+  paramsString: 	"Event e"
+  returnType: 	Stop
+  signature: 	"class/StudyRightBuilder/method/loadStopBuilt(Event)"
+
+- studyRightBuilder_storeTourBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public void storeTourBuilt(Event e)"
+  id: 	StudyRightBuilder_storeTourBuilt
+  methodBody: 	"TourBuilt event = (TourBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   name: 	storeTourBuilt
   paramsString: 	"Event e"
   returnType: 	void
@@ -870,7 +963,11 @@ if (outdated(event)) {
   id: 	StudyRightBuilder_loadTourBuilt
   methodBody: 	"TourBuilt event = (TourBuilt) e;
 Tour object = model.getOrCreateTour(event.getBlockId());
+<<<<<<< HEAD
 object.setTourList(model.getOrCreateTourList(getObjectId(event.getTourList())));
+=======
+object.setTourList(model.getOrCreateTourList(getVarName(event.getTourList())));
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
 object.setStops(event.getStops());
 return object;
 "
@@ -928,6 +1025,7 @@ return object;
   modifiers: 	private
   name: 	initLoaderMap
   paramsString: 	""
+<<<<<<< HEAD
   returnType: 	void
   signature: 	"class/StudyRightBuilder/method/initLoaderMap()"
 
@@ -966,6 +1064,51 @@ return object;
   name: 	addToGroup
   paramsString: 	"String groupId, String elementId"
   returnType: 	void
+=======
+  returnType: 	void
+  signature: 	"class/StudyRightBuilder/method/initLoaderMap()"
+
+- studyRightBuilder_getVarName: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"public String getVarName(String value)"
+  id: 	StudyRightBuilder_getVarName
+  methodBody: 	"      if (value == null) {
+         return null;
+      }
+      String[] split = value.split(\"\\s+\");
+      String varName = split[0];
+      for (int i = 1; i < split.length; i++) {
+         varName += org.fulib.StrUtil.cap(split[i]);
+      }
+      return varName;"
+  modified: 	false
+  modifiers: 	public
+  name: 	getVarName
+  paramsString: 	"String value"
+  returnType: 	String
+  signature: 	"class/StudyRightBuilder/method/getVarName(String)"
+
+- studyRightBuilder_addToGroup: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightBuilder
+  declaration: 	"private void addToGroup(String groupId, String elementId)"
+  id: 	StudyRightBuilder_addToGroup
+  methodBody: 	"      DataEvent dataEvent = eventStore.get(elementId);
+
+      if (dataEvent == null) {
+         java.util.logging.Logger.getGlobal().severe(String.format(\"could not find element event %s for group %s \", elementId, groupId));
+         return;
+      }
+
+      LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
+      group.put(elementId, dataEvent);"
+  modified: 	false
+  modifiers: 	private
+  name: 	addToGroup
+  paramsString: 	"String groupId, String elementId"
+  returnType: 	void
+>>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   signature: 	"class/StudyRightBuilder/method/addToGroup(String,String)"
 
 - studyRightBuilder_stripBrackets: 	org.fulib.classmodel.FMethod
