@@ -1,5 +1,7 @@
 package uks.debuggen.pm;
 import java.util.LinkedHashMap;
+
+import org.fulib.FulibTools;
 import org.junit.Test;
 import uks.debuggen.pm.Routing.*;
 
@@ -37,7 +39,7 @@ public class TestSomeEventStorming
       Stop frankfurt = model.getOrCreateStop("Frankfurt");
       logic.computeLength(route1);
       assertThat(model.getOrCreateRoute("route1").getLength()).isEqualTo("175 km");
-
+      FulibTools.objectDiagrams().dumpSVG("tmp/RoutingKasselFrankfurt.svg", route1);
       System.out.println();
    }
 }
