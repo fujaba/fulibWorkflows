@@ -4,7 +4,6 @@ import org.junit.Test;
 import uks.debuggen.pm.Routing.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import uks.debuggen.pm.someservice.*;
 
 public class TestSomeEventStorming
 {
@@ -12,7 +11,7 @@ public class TestSomeEventStorming
    @Test
    public void testSomeEventStorming()
    {
-      someserviceBusinessLogic logic = new someserviceBusinessLogic();
+      RoutingBusinessLogic logic = new RoutingBusinessLogic();
       RoutingModel model = new RoutingModel();
 
       Route route1 = model.getOrCreateRoute("route1");

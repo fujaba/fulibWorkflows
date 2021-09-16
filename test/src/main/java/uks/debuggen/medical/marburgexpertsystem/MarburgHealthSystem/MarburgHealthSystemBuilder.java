@@ -185,11 +185,11 @@ public class MarburgHealthSystemBuilder
       object.setName(event.getName());
       for (String name : stripBrackets(event.getSymptoms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withSymptoms(model.getOrCreateSymptom(getObjectId(name)));
+         object.withSymptoms(model.getOrCreateSymptom(name));
       }
       for (String name : stripBrackets(event.getCounterSymptoms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withCounterSymptoms(model.getOrCreateSymptom(getObjectId(name)));
+         object.withCounterSymptoms(model.getOrCreateSymptom(name));
       }
       return object;
    }

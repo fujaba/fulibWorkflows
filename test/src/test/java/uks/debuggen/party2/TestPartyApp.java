@@ -1,4 +1,5 @@
 package uks.debuggen.party2;
+
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
@@ -30,8 +31,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.LinkedHashMap;
 
-public class TestPartyApp implements PropertyChangeListener
-{
+public class TestPartyApp implements PropertyChangeListener {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
@@ -39,12 +39,10 @@ public class TestPartyApp implements PropertyChangeListener
    private LinkedBlockingQueue party2EventQueue = new LinkedBlockingQueue();
 
    @Override
-   public void propertyChange(PropertyChangeEvent evt)
-   {
+   public void propertyChange(PropertyChangeEvent evt) {
       try {
          party2EventQueue.put(evt.getNewValue());
-      }
-      catch (InterruptedException e) {
+      } catch (InterruptedException e) {
          e.printStackTrace();
       }
    }
@@ -52,13 +50,11 @@ public class TestPartyApp implements PropertyChangeListener
    class AliceListener implements PropertyChangeListener {
 
       @Override
-      public void propertyChange(PropertyChangeEvent evt)
-      {
+      public void propertyChange(PropertyChangeEvent evt) {
          try {
             System.out.println("Alice listener got " + evt.getNewValue());
             party1EventQueue.put(evt.getNewValue());
-         }
-         catch (InterruptedException e) {
+         } catch (InterruptedException e) {
             e.printStackTrace();
          }
       }
@@ -86,12 +82,11 @@ public class TestPartyApp implements PropertyChangeListener
    public void setTimeOut() {
       Configuration.timeout = 10 * 60 * 1000;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      // Configuration.browserPosition = "-3500x10";
+      Configuration.browserPosition = "-3500x10";
    }
 
    @Test
-   public void testLoadAndStoreConcept() throws IOException
-   {
+   public void testLoadAndStoreConcept() throws IOException {
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
@@ -119,10 +114,13 @@ public class TestPartyApp implements PropertyChangeListener
       Party2 party = (Party2) bobNewPartyApp2.getBuilder().load("Kassel.Finals");
       assertThat(party.getRegion().getId()).isEqualTo("Kassel");
 
-      $("body").shouldHave(text("Let's do the Finals in Kassel"));
+      $("body").shouldHave(text("Let's do the Finals on in Kassel"));
 
       bookItem("Wine", "9.99", "Bob");
 
+      for (DataEvent dataEvent : bobNewPartyApp2.getBuilder().getEventStore().values()) {
+         bobNewPartyApp2.getBuilder().load(dataEvent.getBlockId());
+      }
       party = (Party2) bobNewPartyApp2.getBuilder().load("Kassel.Finals");
       assertThat(party.getItems().size()).isEqualTo(1);
 
@@ -132,8 +130,7 @@ public class TestPartyApp implements PropertyChangeListener
    }
 
    @Test
-   public void testMigration() throws IOException
-   {
+   public void testMigration() throws IOException {
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
@@ -199,21 +196,25 @@ public class TestPartyApp implements PropertyChangeListener
 
       uks.debuggen.party.events.DataEvent dataEvent = retrieveBuiltEventFromParty1("Kassel.Finals#Wine");
 
+      FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsOld.svg",
+            aliceOldPartyApp.getBuilder().getModel().getModelMap().values());
+      FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsNew.svg",
+            bobNewPartyApp2.getBuilder().getModel().getModelMap().values());
 
-      FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsOld.svg", aliceOldPartyApp.getBuilder().getModel().getModelMap().values());
-      FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsNew.svg", bobNewPartyApp2.getBuilder().getModel().getModelMap().values());
-
-//      String oldHistory = new HtmlGenerator3().generateHtml(aliceOldPartyApp.getHistory());
-//      Files.write(Path.of("tmp/oldHistory.html"), oldHistory.getBytes(StandardCharsets.UTF_8));
-//
-//      String newHistory = new HtmlGenerator3().generateHtml(bobNewPartyApp2.getHistory());
-//      Files.write(Path.of("tmp/newHistory.html"), newHistory.getBytes(StandardCharsets.UTF_8));
+      // String oldHistory = new
+      // HtmlGenerator3().generateHtml(aliceOldPartyApp.getHistory());
+      // Files.write(Path.of("tmp/oldHistory.html"),
+      // oldHistory.getBytes(StandardCharsets.UTF_8));
+      //
+      // String newHistory = new
+      // HtmlGenerator3().generateHtml(bobNewPartyApp2.getHistory());
+      // Files.write(Path.of("tmp/newHistory.html"),
+      // newHistory.getBytes(StandardCharsets.UTF_8));
 
       System.out.println();
    }
 
-   private void bookItem(String item, String price, String buyer)
-   {
+   private void bookItem(String item, String price, String buyer) {
       $("#add").click();
 
       $("#item").setValue(item);
@@ -222,8 +223,7 @@ public class TestPartyApp implements PropertyChangeListener
       $("#ok").click();
    }
 
-   private void bobOpenKasselParty(String partyName, String date, String location)
-   {
+   private void bobOpenKasselParty(String partyName, String date, String location) {
       open("http://localhost:42002/page/withPassword?password=secret&name=Bob&email=b%40b.de&button=ok");
       $("body").shouldHave(text("In which region is your party"));
       $("#region").setValue("Kassel");
@@ -236,8 +236,7 @@ public class TestPartyApp implements PropertyChangeListener
       $("#ok").click();
    }
 
-   private void aliceOpenSEBBQ()
-   {
+   private void aliceOpenSEBBQ() {
       open("http://localhost:42001/page/withPassword?password=secret&name=Alice&email=a%40b.de&button=ok");
       $("body").shouldHave(text("Choose a party"));
       $("#party").setValue("SE BBQ");
@@ -246,8 +245,7 @@ public class TestPartyApp implements PropertyChangeListener
       $("#ok").click();
    }
 
-   private uks.debuggen.party.events.DataEvent retrieveBuiltEventFromParty1(String blockId)
-   {
+   private uks.debuggen.party.events.DataEvent retrieveBuiltEventFromParty1(String blockId) {
       uks.debuggen.party.events.DataEvent dataEvent = null;
       while (true) {
          try {
@@ -258,16 +256,14 @@ public class TestPartyApp implements PropertyChangeListener
                   break;
                }
             }
-         }
-         catch (InterruptedException ex) {
+         } catch (InterruptedException ex) {
             ex.printStackTrace();
          }
       }
       return dataEvent;
    }
 
-   private DataEvent retrieveBuiltEventFromParty2(String blockId)
-   {
+   private DataEvent retrieveBuiltEventFromParty2(String blockId) {
       DataEvent dataEvent = null;
       while (true) {
          try {
@@ -278,16 +274,14 @@ public class TestPartyApp implements PropertyChangeListener
                   break;
                }
             }
-         }
-         catch (InterruptedException ex) {
+         } catch (InterruptedException ex) {
             ex.printStackTrace();
          }
       }
       return dataEvent;
    }
 
-   private void login(String s, String alice, String s2)
-   {
+   private void login(String s, String alice, String s2) {
       // Alice login to old party app
       open(s);
       $("#name").setValue(alice);

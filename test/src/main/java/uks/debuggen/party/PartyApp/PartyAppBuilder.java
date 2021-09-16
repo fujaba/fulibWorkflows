@@ -259,8 +259,8 @@ public class PartyAppBuilder
       Item object = model.getOrCreateItem(event.getBlockId());
       object.setName(event.getName());
       object.setPrice(event.getPrice());
-      object.setBuyer(model.getOrCreateGuest(getObjectId(event.getBuyer())));
-      object.setParty(model.getOrCreateParty(getObjectId(event.getParty())));
+      object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
+      object.setParty(model.getOrCreateParty(event.getParty()));
       return object;
    }
 
@@ -281,7 +281,7 @@ public class PartyAppBuilder
       GuestBuilt event = (GuestBuilt) e;
       Guest object = model.getOrCreateGuest(event.getBlockId());
       object.setName(event.getName());
-      object.setParty(model.getOrCreateParty(getObjectId(event.getParty())));
+      object.setParty(model.getOrCreateParty(event.getParty()));
       object.setExpenses(event.getExpenses());
       return object;
    }

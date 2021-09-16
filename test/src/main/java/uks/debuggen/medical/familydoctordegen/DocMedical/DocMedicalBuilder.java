@@ -189,11 +189,11 @@ public class DocMedicalBuilder
       object.setName(event.getName());
       for (String name : stripBrackets(event.getSymptoms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withSymptoms(model.getOrCreateSymptom(getObjectId(name)));
+         object.withSymptoms(model.getOrCreateSymptom(name));
       }
       for (String name : stripBrackets(event.getCounterSymptoms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withCounterSymptoms(model.getOrCreateSymptom(getObjectId(name)));
+         object.withCounterSymptoms(model.getOrCreateSymptom(name));
       }
       object.setMigratedTo(event.getMigratedTo());
       return object;
@@ -216,7 +216,7 @@ public class DocMedicalBuilder
       object.setName(event.getName());
       for (String name : stripBrackets(event.getConsultations()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withConsultations(model.getOrCreateConsultation(getObjectId(name)));
+         object.withConsultations(model.getOrCreateConsultation(name));
       }
       return object;
    }
@@ -256,8 +256,8 @@ public class DocMedicalBuilder
       ConsultationBuilt event = (ConsultationBuilt) e;
       Consultation object = model.getOrCreateConsultation(event.getBlockId());
       object.setCid(event.getCid());
-      object.setPatient(model.getOrCreatePatient(getObjectId(event.getPatient())));
-      object.setDiagnosis(model.getOrCreateDisease(getObjectId(event.getDiagnosis())));
+      object.setPatient(model.getOrCreatePatient(event.getPatient()));
+      object.setDiagnosis(model.getOrCreateDisease(event.getDiagnosis()));
       object.setTreatment(event.getTreatment());
       return object;
    }
@@ -279,7 +279,7 @@ public class DocMedicalBuilder
       object.setCid(event.getCid());
       object.setKind(event.getKind());
       object.setResult(event.getResult());
-      object.setConsultation(model.getOrCreateConsultation(getObjectId(event.getConsultation())));
+      object.setConsultation(model.getOrCreateConsultation(event.getConsultation()));
       return object;
    }
 

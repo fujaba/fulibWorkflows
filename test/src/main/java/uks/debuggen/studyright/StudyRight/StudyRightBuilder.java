@@ -223,7 +223,7 @@ public class StudyRightBuilder
       University object = model.getOrCreateUniversity(event.getBlockId());
       for (String name : stripBrackets(event.getRooms()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withRooms(model.getOrCreateRoom(getObjectId(name)));
+         object.withRooms(model.getOrCreateRoom(name));
       }
       return object;
    }
@@ -243,10 +243,10 @@ public class StudyRightBuilder
       RoomBuilt event = (RoomBuilt) e;
       Room object = model.getOrCreateRoom(event.getBlockId());
       object.setCredits(event.getCredits());
-      object.setUni(model.getOrCreateUniversity(getObjectId(event.getUni())));
+      object.setUni(model.getOrCreateUniversity(event.getUni()));
       for (String name : stripBrackets(event.getDoors()).split(",\\s+")) {
          if (name.equals("")) continue;
-         object.withDoors(model.getOrCreateRoom(getObjectId(name)));
+         object.withDoors(model.getOrCreateRoom(name));
       }
       return object;
    }
@@ -268,7 +268,7 @@ public class StudyRightBuilder
       object.setName(event.getName());
       object.setBirthYear(Integer.parseInt(event.getBirthYear()));
       object.setStudentId(event.getStudentId());
-      object.setUni(model.getOrCreateUniversity(getObjectId(event.getUni())));
+      object.setUni(model.getOrCreateUniversity(event.getUni()));
       return object;
    }
 
@@ -305,7 +305,7 @@ public class StudyRightBuilder
       Stop object = model.getOrCreateStop(event.getBlockId());
       object.setMotivation(event.getMotivation());
       object.setRoom(event.getRoom());
-      object.setPreviousStop(model.getOrCreateStop(getObjectId(event.getPreviousStop())));
+      object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
       return object;
    }
 
@@ -323,7 +323,7 @@ public class StudyRightBuilder
    {
       TourBuilt event = (TourBuilt) e;
       Tour object = model.getOrCreateTour(event.getBlockId());
-      object.setTourList(model.getOrCreateTourList(getObjectId(event.getTourList())));
+      object.setTourList(model.getOrCreateTourList(event.getTourList()));
       object.setStops(event.getStops());
       return object;
    }

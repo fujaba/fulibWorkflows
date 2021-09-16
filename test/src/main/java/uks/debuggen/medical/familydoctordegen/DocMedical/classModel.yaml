@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	docMedicalModel 	docMedicalBusinessLogic 	docMedicalBuilder 	docMedicalService 	disease 	symptom 	consultation 	patient 	test
+  classes: 	docMedicalModel 	docMedicalBusinessLogic 	docMedicalBuilder 	docMedicalService 	disease 	symptom 	patient 	consultation 	test
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -66,14 +66,6 @@
   propertyStyle: 	Bean
   roles: 	symptom_indicates 	symptom_excludes 	symptom_consultations
 
-- consultation: 	org.fulib.classmodel.Clazz
-  attributes: 	consultation_id 	consultation_cid 	consultation_treatment
-  model: 	c
-  modified: 	false
-  name: 	Consultation
-  propertyStyle: 	Bean
-  roles: 	consultation_symptoms 	consultation_patient 	consultation_diagnosis 	consultation_tests
-
 - patient: 	org.fulib.classmodel.Clazz
   attributes: 	patient_id 	patient_name 	patient_address 	patient_birthDate
   model: 	c
@@ -81,6 +73,14 @@
   name: 	Patient
   propertyStyle: 	Bean
   roles: 	patient_consultations
+
+- consultation: 	org.fulib.classmodel.Clazz
+  attributes: 	consultation_id 	consultation_cid 	consultation_treatment
+  model: 	c
+  modified: 	false
+  name: 	Consultation
+  propertyStyle: 	Bean
+  roles: 	consultation_patient 	consultation_symptoms 	consultation_tests 	consultation_diagnosis
 
 - test: 	org.fulib.classmodel.Clazz
   attributes: 	test_id 	test_cid 	test_kind 	test_result
@@ -621,11 +621,11 @@ Disease object = model.getOrCreateDisease(event.getBlockId());
 object.setName(event.getName());
 for (String name : stripBrackets(event.getSymptoms()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
-   object.withSymptoms(model.getOrCreateSymptom(getObjectId(name)));
+   object.withSymptoms(model.getOrCreateSymptom(name));
 }
 for (String name : stripBrackets(event.getCounterSymptoms()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
-   object.withCounterSymptoms(model.getOrCreateSymptom(getObjectId(name)));
+   object.withCounterSymptoms(model.getOrCreateSymptom(name));
 }
 object.setMigratedTo(event.getMigratedTo());
 return object;
@@ -666,7 +666,7 @@ Symptom object = model.getOrCreateSymptom(event.getBlockId());
 object.setName(event.getName());
 for (String name : stripBrackets(event.getConsultations()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
-   object.withConsultations(model.getOrCreateConsultation(getObjectId(name)));
+   object.withConsultations(model.getOrCreateConsultation(name));
 }
 return object;
 "
@@ -742,8 +742,8 @@ if (outdated(event)) {
   methodBody: 	"ConsultationBuilt event = (ConsultationBuilt) e;
 Consultation object = model.getOrCreateConsultation(event.getBlockId());
 object.setCid(event.getCid());
-object.setPatient(model.getOrCreatePatient(getObjectId(event.getPatient())));
-object.setDiagnosis(model.getOrCreateDisease(getObjectId(event.getDiagnosis())));
+object.setPatient(model.getOrCreatePatient(event.getPatient()));
+object.setDiagnosis(model.getOrCreateDisease(event.getDiagnosis()));
 object.setTreatment(event.getTreatment());
 return object;
 "
@@ -783,7 +783,7 @@ Test object = model.getOrCreateTest(event.getBlockId());
 object.setCid(event.getCid());
 object.setKind(event.getKind());
 object.setResult(event.getResult());
-object.setConsultation(model.getOrCreateConsultation(getObjectId(event.getConsultation())));
+object.setConsultation(model.getOrCreateConsultation(event.getConsultation()));
 return object;
 "
   modified: 	false
@@ -1331,77 +1331,6 @@ catch (UnirestException e) {
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- consultation_id: 	org.fulib.classmodel.Attribute
-  clazz: 	consultation
-  id: 	Consultation_id
-  modified: 	false
-  name: 	id
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- consultation_cid: 	org.fulib.classmodel.Attribute
-  clazz: 	consultation
-  id: 	Consultation_cid
-  modified: 	false
-  name: 	cid
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- consultation_treatment: 	org.fulib.classmodel.Attribute
-  clazz: 	consultation
-  id: 	Consultation_treatment
-  modified: 	false
-  name: 	treatment
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- consultation_symptoms: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	42
-  clazz: 	consultation
-  collectionType: 	c1
-  id: 	Consultation_symptoms
-  modified: 	false
-  name: 	symptoms
-  other: 	symptom_consultations
-  propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
-
-- consultation_patient: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	consultation
-  id: 	Consultation_patient
-  modified: 	false
-  name: 	patient
-  other: 	patient_consultations
-  propertyStyle: 	Bean
-
-- consultation_diagnosis: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	consultation
-  id: 	Consultation_diagnosis
-  modified: 	false
-  name: 	diagnosis
-  other: 	disease_consultations
-  propertyStyle: 	Bean
-
-- consultation_tests: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	42
-  clazz: 	consultation
-  collectionType: 	c1
-  id: 	Consultation_tests
-  modified: 	false
-  name: 	tests
-  other: 	test_consultation
-  propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
-
 - patient_id: 	org.fulib.classmodel.Attribute
   clazz: 	patient
   id: 	Patient_id
@@ -1449,6 +1378,77 @@ catch (UnirestException e) {
   other: 	consultation_patient
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- consultation_id: 	org.fulib.classmodel.Attribute
+  clazz: 	consultation
+  id: 	Consultation_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultation_cid: 	org.fulib.classmodel.Attribute
+  clazz: 	consultation
+  id: 	Consultation_cid
+  modified: 	false
+  name: 	cid
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultation_treatment: 	org.fulib.classmodel.Attribute
+  clazz: 	consultation
+  id: 	Consultation_treatment
+  modified: 	false
+  name: 	treatment
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- consultation_patient: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	consultation
+  id: 	Consultation_patient
+  modified: 	false
+  name: 	patient
+  other: 	patient_consultations
+  propertyStyle: 	Bean
+
+- consultation_symptoms: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	consultation
+  collectionType: 	c1
+  id: 	Consultation_symptoms
+  modified: 	false
+  name: 	symptoms
+  other: 	symptom_consultations
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- consultation_tests: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	consultation
+  collectionType: 	c1
+  id: 	Consultation_tests
+  modified: 	false
+  name: 	tests
+  other: 	test_consultation
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- consultation_diagnosis: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	consultation
+  id: 	Consultation_diagnosis
+  modified: 	false
+  name: 	diagnosis
+  other: 	disease_consultations
+  propertyStyle: 	Bean
 
 - test_id: 	org.fulib.classmodel.Attribute
   clazz: 	test

@@ -295,9 +295,9 @@ public class Consultation
 
    public void removeYou()
    {
-      this.withoutSymptoms(new ArrayList<>(this.getSymptoms()));
       this.setPatient(null);
-      this.setDiagnosis(null);
+      this.withoutSymptoms(new ArrayList<>(this.getSymptoms()));
       this.withoutTests(new ArrayList<>(this.getTests()));
+      this.setDiagnosis(null);
    }
 }

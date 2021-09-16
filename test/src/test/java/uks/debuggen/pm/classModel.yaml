@@ -8,8 +8,8 @@
   packageSrcFolder: 	"test/src/test/java/uks/debuggen/pm"
 
 - testSomeEventStorming: 	org.fulib.classmodel.Clazz
-  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import static org.assertj.core.api.Assertions.assertThat;" 	"import uks.debuggen.pm.someservice.*;"
-  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import static org.assertj.core.api.Assertions.assertThat;" 	"import uks.debuggen.pm.someservice.*;"
+  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import static org.assertj.core.api.Assertions.assertThat;" 	"import uks.debuggen.pm.Routing.*;"
+  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import static org.assertj.core.api.Assertions.assertThat;" 	"import uks.debuggen.pm.Routing.*;"
   methods: 	testSomeEventStorming_testSomeEventStorming
   model: 	c
   modified: 	false
@@ -29,7 +29,7 @@
   declaration: 	"@Test
 public void testSomeEventStorming()"
   id: 	TestSomeEventStorming_testSomeEventStorming
-  methodBody: 	"someserviceBusinessLogic logic = new someserviceBusinessLogic();
+  methodBody: 	"RoutingBusinessLogic logic = new RoutingBusinessLogic();
 RoutingModel model = new RoutingModel();
 
 Route route1 = model.getOrCreateRoute(\"route1\");
