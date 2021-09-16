@@ -58,10 +58,7 @@ public class TestSomeEventStorming
       LinkedHashMap<String, Object> modelMap;
 
       // workflow working smoothly
-<<<<<<< HEAD
 
-=======
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       // create ProductStoredEvent: product stored 12:00
       ProductStoredEvent e1200 = new ProductStoredEvent();
       e1200.setId("12:00");

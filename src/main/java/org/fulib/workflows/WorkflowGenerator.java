@@ -32,7 +32,6 @@ public class WorkflowGenerator
    private STGroupFile group;
    private Clazz testClazz;
    private EventModel eventModel;
-   private Workflow rootWorkflow;
 
    public Consumer<Object> dumpObjectDiagram;
    private EventStormingBoard eventStormingBoard;
@@ -908,9 +907,13 @@ public class WorkflowGenerator
          if (getAttribute(clazz, attrName) != null) {
             continue;
          }
-         modelManager.haveAttribute(clazz, attrName, Type.STRING);
+         Attribute attribute = getAttribute(clazz, attrName);
+         if (attribute == null) {
+            modelManager.haveAttribute(clazz, attrName, Type.STRING);
+         }
       }
    }
+
 
    private AssocRole getRole(Clazz clazz, String attrName)
    {
@@ -957,8 +960,18 @@ public class WorkflowGenerator
          if (attrName.equals("extends")) {
             Clazz superClass = modelManager.haveClass(value);
             clazz.setSuperClass(superClass);
-            Attribute id = clazz.getAttribute("id");
-            clazz.withoutAttributes(id);
+            for ( Attribute superAttr : superClass.getAttributes()) {
+               Attribute localAttr = clazz.getAttribute(superAttr.getName());
+               if (localAttr != null) {
+                  clazz.withoutAttributes(localAttr);
+               }
+            }
+            for ( AssocRole superRole : superClass.getRoles()) {
+               Attribute localAttr = clazz.getAttribute(superRole.getName());
+               if (localAttr != null) {
+                  clazz.withoutAttributes(localAttr);
+               }
+            }
             continue;
          }
          String back = map.get(attrName + ".back");
@@ -1039,7 +1052,7 @@ public class WorkflowGenerator
    private void buildEventBroker()
    {
       try {
-         InputStream resource = this.getClass().getResourceAsStream("templates/EventBroker.java");
+         InputStream resource = this.getClass().getResourceAsStream("templates/EventBroker.template");
          BufferedInputStream buf = new BufferedInputStream(resource);
          byte[] bytes = buf.readAllBytes();
          String content = new String(bytes, StandardCharsets.UTF_8);
@@ -1051,7 +1064,7 @@ public class WorkflowGenerator
          Files.write(Path.of(eventBrokerName), content.getBytes(StandardCharsets.UTF_8));
       }
       catch (IOException e) {
-         Logger.getGlobal().log(Level.SEVERE, "could not read resource templates/Eventbroker.java", e);
+         Logger.getGlobal().log(Level.SEVERE, "could not read resource templates/Eventbroker.template", e);
       }
 
    }

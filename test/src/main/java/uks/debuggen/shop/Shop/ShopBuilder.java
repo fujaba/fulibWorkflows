@@ -196,10 +196,7 @@ public class ShopBuilder
       }
 
       if (oldEvent.getId().compareTo(event.getId()) < 0) {
-<<<<<<< HEAD
          new org.fulib.yaml.Yamler2().mergeObjects(oldEvent, event);
-=======
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
          eventStore.put(event.getBlockId(), event);
          return false;
       }
@@ -275,27 +272,6 @@ public class ShopBuilder
       }
    }
 
-<<<<<<< HEAD
-   public String getObjectId(String value)
-=======
-   public String getVarName(String value)
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
-   {
-      if (value == null) {
-         return null;
-      }
-<<<<<<< HEAD
-      return value.replaceAll("\\W+", "_");
-=======
-      String[] split = value.split("\\s+");
-      String varName = split[0];
-      for (int i = 1; i < split.length; i++) {
-         varName += org.fulib.StrUtil.cap(split[i]);
-      }
-      return varName;
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
-   }
-
    private void addToGroup(String groupId, String elementId)
    {
       DataEvent dataEvent = eventStore.get(elementId);
@@ -307,5 +283,13 @@ public class ShopBuilder
 
       LinkedHashMap<String, DataEvent> group = groupStore.computeIfAbsent(groupId, k -> new LinkedHashMap<>());
       group.put(elementId, dataEvent);
+   }
+
+   public String getObjectId(String value)
+   {
+      if (value == null) {
+         return null;
+      }
+      return value.replaceAll("\\W+", "_");
    }
 }

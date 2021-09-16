@@ -32,11 +32,7 @@
   attributes: 	storageBuilder_model 	storageBuilder_eventStore 	storageBuilder_loaderMap 	storageBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import java.util.function.Function;"
-<<<<<<< HEAD
   methods: 	storageBuilder_outdated 	storageBuilder_storeBoxBuilt 	storageBuilder_loadBoxBuilt 	storageBuilder_storePickTaskBuilt 	storageBuilder_loadPickTaskBuilt 	storageBuilder_load 	storageBuilder_initLoaderMap 	storageBuilder_getObjectId 	storageBuilder_addToGroup 	storageBuilder_stripBrackets
-=======
-  methods: 	storageBuilder_outdated 	storageBuilder_storeBoxBuilt 	storageBuilder_loadBoxBuilt 	storageBuilder_storePickTaskBuilt 	storageBuilder_loadPickTaskBuilt 	storageBuilder_load 	storageBuilder_initLoaderMap 	storageBuilder_getVarName 	storageBuilder_addToGroup 	storageBuilder_stripBrackets
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   model: 	c
   modified: 	false
   name: 	StorageBuilder
@@ -397,7 +393,6 @@ handleDemoPickOrderCommand(event);
   typeSignature: 	"LinkedHashMap<String,LinkedHashMap<String,DataEvent>>"
 
 - storageBuilder_outdated: 	org.fulib.classmodel.FMethod
-<<<<<<< HEAD
   annotations: 	""
   clazz: 	storageBuilder
   declaration: 	"private boolean outdated(DataEvent event)"
@@ -445,54 +440,6 @@ if (outdated(event)) {
 - storageBuilder_loadBoxBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
-=======
-  annotations: 	""
-  clazz: 	storageBuilder
-  declaration: 	"private boolean outdated(DataEvent event)"
-  id: 	StorageBuilder_outdated
-  methodBody: 	"      DataEvent oldEvent = getEventStore().get(event.getBlockId());
-
-      if (oldEvent == null) {
-         eventStore.put(event.getBlockId(), event);
-         return false;
-      }
-
-      if (oldEvent.getId().compareTo(event.getId()) < 0) {
-         eventStore.put(event.getBlockId(), event);
-         return false;
-      }
-
-      return true;"
-  modified: 	false
-  modifiers: 	private
-  name: 	outdated
-  paramsString: 	"DataEvent event"
-  returnType: 	boolean
-  signature: 	"class/StorageBuilder/method/outdated(DataEvent)"
-
-- storageBuilder_storeBoxBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBuilder
-  declaration: 	"public void storeBoxBuilt(Event e)"
-  id: 	StorageBuilder_storeBoxBuilt
-  methodBody: 	"BoxBuilt event = (BoxBuilt) e;
-if (outdated(event)) {
-   return;
-}
-// please insert a no before fulib in the next line and insert addToGroup commands as necessary
-// fulib
-"
-  modified: 	false
-  modifiers: 	public
-  name: 	storeBoxBuilt
-  paramsString: 	"Event e"
-  returnType: 	void
-  signature: 	"class/StorageBuilder/method/storeBoxBuilt(Event)"
-
-- storageBuilder_loadBoxBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBuilder
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   declaration: 	"public Box loadBoxBuilt(Event e)"
   id: 	StorageBuilder_loadBoxBuilt
   methodBody: 	"BoxBuilt event = (BoxBuilt) e;
@@ -500,7 +447,6 @@ Box object = model.getOrCreateBox(event.getBlockId());
 object.setProduct(event.getProduct());
 object.setPlace(event.getPlace());
 return object;
-<<<<<<< HEAD
 "
   modified: 	false
   modifiers: 	public
@@ -523,30 +469,6 @@ if (outdated(event)) {
 "
   modified: 	false
   modifiers: 	public
-=======
-"
-  modified: 	false
-  modifiers: 	public
-  name: 	loadBoxBuilt
-  paramsString: 	"Event e"
-  returnType: 	Box
-  signature: 	"class/StorageBuilder/method/loadBoxBuilt(Event)"
-
-- storageBuilder_storePickTaskBuilt: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBuilder
-  declaration: 	"public void storePickTaskBuilt(Event e)"
-  id: 	StorageBuilder_storePickTaskBuilt
-  methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
-if (outdated(event)) {
-   return;
-}
-// please insert a no before fulib in the next line and insert addToGroup commands as necessary
-// fulib
-"
-  modified: 	false
-  modifiers: 	public
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
   name: 	storePickTaskBuilt
   paramsString: 	"Event e"
   returnType: 	void
@@ -620,7 +542,6 @@ return object;
   returnType: 	void
   signature: 	"class/StorageBuilder/method/initLoaderMap()"
 
-<<<<<<< HEAD
 - storageBuilder_getObjectId: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	storageBuilder
@@ -636,28 +557,6 @@ return object;
   paramsString: 	"String value"
   returnType: 	String
   signature: 	"class/StorageBuilder/method/getObjectId(String)"
-=======
-- storageBuilder_getVarName: 	org.fulib.classmodel.FMethod
-  annotations: 	""
-  clazz: 	storageBuilder
-  declaration: 	"public String getVarName(String value)"
-  id: 	StorageBuilder_getVarName
-  methodBody: 	"      if (value == null) {
-         return null;
-      }
-      String[] split = value.split(\"\\s+\");
-      String varName = split[0];
-      for (int i = 1; i < split.length; i++) {
-         varName += org.fulib.StrUtil.cap(split[i]);
-      }
-      return varName;"
-  modified: 	false
-  modifiers: 	public
-  name: 	getVarName
-  paramsString: 	"String value"
-  returnType: 	String
-  signature: 	"class/StorageBuilder/method/getVarName(String)"
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
 
 - storageBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""

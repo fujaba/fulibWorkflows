@@ -20,10 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
-<<<<<<< HEAD
-import uks.debuggen.studyright.Welcome.WelcomeService;
-=======
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
 import java.util.LinkedHashMap;
 import static com.codeborne.selenide.Condition.matchText;
 
@@ -122,7 +118,6 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-<<<<<<< HEAD
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_00.svg", modelMap.values());
 
       open("http://localhost:42400");
@@ -458,8 +453,6 @@ public class TestSomeEventStorming
       modelMap = studyRight.getBuilder().getModel().getModelMap();
       org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_12.svg", modelMap.values());
 
-=======
->>>>>>> d3ea970929d108027c425d763c0cb0d0be7e0237
       open("http://localhost:42400");
       // check data note 12:12:01
       pre = $("#data");

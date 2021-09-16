@@ -32,7 +32,7 @@
   attributes: 	partyAppBuilder_model 	partyAppBuilder_eventStore 	partyAppBuilder_loaderMap 	partyAppBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.party.events.*;" 	"import java.util.function.Function;"
-  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_loadPartyBuilt 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_initLoaderMap 	partyAppBuilder_getVarName 	partyAppBuilder_addToGroup 	partyAppBuilder_stripBrackets
+  methods: 	partyAppBuilder_outdated 	partyAppBuilder_storeUserBuilt 	partyAppBuilder_loadUserBuilt 	partyAppBuilder_storePartyBuilt 	partyAppBuilder_loadPartyBuilt 	partyAppBuilder_storeItemBuilt 	partyAppBuilder_loadItemBuilt 	partyAppBuilder_storeGuestBuilt 	partyAppBuilder_loadGuestBuilt 	partyAppBuilder_load 	partyAppBuilder_initLoaderMap 	partyAppBuilder_getObjectId 	partyAppBuilder_addToGroup 	partyAppBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	PartyAppBuilder
@@ -644,8 +644,8 @@ if (outdated(event)) {
 Item object = model.getOrCreateItem(event.getBlockId());
 object.setName(event.getName());
 object.setPrice(event.getPrice());
-object.setBuyer(model.getOrCreateGuest(getVarName(event.getBuyer())));
-object.setParty(model.getOrCreateParty(getVarName(event.getParty())));
+object.setBuyer(model.getOrCreateGuest(getObjectId(event.getBuyer())));
+object.setParty(model.getOrCreateParty(getObjectId(event.getParty())));
 return object;
 "
   modified: 	false
@@ -682,7 +682,7 @@ if (outdated(event)) {
   methodBody: 	"GuestBuilt event = (GuestBuilt) e;
 Guest object = model.getOrCreateGuest(event.getBlockId());
 object.setName(event.getName());
-object.setParty(model.getOrCreateParty(getVarName(event.getParty())));
+object.setParty(model.getOrCreateParty(getObjectId(event.getParty())));
 object.setExpenses(event.getExpenses());
 return object;
 "
@@ -741,26 +741,21 @@ return object;
   returnType: 	void
   signature: 	"class/PartyAppBuilder/method/initLoaderMap()"
 
-- partyAppBuilder_getVarName: 	org.fulib.classmodel.FMethod
+- partyAppBuilder_getObjectId: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	partyAppBuilder
-  declaration: 	"public String getVarName(String value)"
-  id: 	PartyAppBuilder_getVarName
+  declaration: 	"public String getObjectId(String value)"
+  id: 	PartyAppBuilder_getObjectId
   methodBody: 	"      if (value == null) {
          return null;
       }
-      String[] split = value.split(\"\\s+\");
-      String varName = split[0];
-      for (int i = 1; i < split.length; i++) {
-         varName += org.fulib.StrUtil.cap(split[i]);
-      }
-      return varName;"
+      return value.replaceAll(\"\\W+\", \"_\");"
   modified: 	false
   modifiers: 	public
-  name: 	getVarName
+  name: 	getObjectId
   paramsString: 	"String value"
   returnType: 	String
-  signature: 	"class/PartyAppBuilder/method/getVarName(String)"
+  signature: 	"class/PartyAppBuilder/method/getObjectId(String)"
 
 - partyAppBuilder_addToGroup: 	org.fulib.classmodel.FMethod
   annotations: 	""
