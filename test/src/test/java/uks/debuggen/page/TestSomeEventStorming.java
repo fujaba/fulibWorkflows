@@ -49,6 +49,10 @@ public class TestSomeEventStorming
       // start service
       ShopService shop = new ShopService();
       shop.start();
+      try {
+         Thread.sleep(500);
+      } catch (Exception e) {
+      }
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -96,6 +100,12 @@ public class TestSomeEventStorming
       open("http://localhost:42000");
       pre = $("#history");
       pre.shouldHave(text("- 13_10:"));
+      try {
+         Thread.sleep(3000);
+      } catch (Exception e) {
+      }
+      eventBroker.stop();
+      shop.stop();
 
       System.out.println();
    }
@@ -108,8 +118,9 @@ public class TestSomeEventStorming
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
                .body(yaml)
                .asString();
+               Thread.sleep(200);
       }
-      catch (UnirestException e) {
+      catch (Exception e) {
          e.printStackTrace();
       }
    }

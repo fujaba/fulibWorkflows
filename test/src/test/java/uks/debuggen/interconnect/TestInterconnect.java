@@ -54,6 +54,10 @@ public class TestInterconnect
       // start service
       CityElectricsKasselService cityElectricsKassel = new CityElectricsKasselService();
       cityElectricsKassel.start();
+      try {
+         Thread.sleep(500);
+      } catch (Exception e) {
+      }
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -84,7 +88,9 @@ public class TestInterconnect
          ionicKassel42.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = ionicKassel42.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/ionicKassel4211_55.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/ionicKassel4211_55.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
 
@@ -96,9 +102,18 @@ public class TestInterconnect
          cityElectricsKassel.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = cityElectricsKassel.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/cityElectricsKassel11_55.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/cityElectricsKassel11_55.svg", modelMap.values());
+      }
 
       open("http://localhost:42002");
+      try {
+         Thread.sleep(3000);
+      } catch (Exception e) {
+      }
+      eventBroker.stop();
+      ionicKassel42.stop();
+      cityElectricsKassel.stop();
 
       System.out.println();
    }
@@ -111,8 +126,9 @@ public class TestInterconnect
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
                .body(yaml)
                .asString();
+               Thread.sleep(200);
       }
-      catch (UnirestException e) {
+      catch (Exception e) {
          e.printStackTrace();
       }
    }

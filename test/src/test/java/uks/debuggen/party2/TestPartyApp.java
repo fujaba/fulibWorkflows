@@ -23,9 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -87,17 +84,18 @@ public class TestPartyApp implements PropertyChangeListener {
 
    @Test
    public void testLoadAndStoreConcept() throws IOException {
+      System.err.println("starting party2 TestPartyApp testLoadAndStoreConcept");
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
 
-      PartyAppService bobNewPartyApp2 = new PartyAppService().setPort(42002);
+      PartyAppService bobNewPartyApp2 = new PartyAppService().setPort(42007);
       bobNewPartyApp2.listeners().addPropertyChangeListener(PartyAppService.PROPERTY_HISTORY, this);
       bobNewPartyApp2.start();
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
-      login("http://localhost:42002/page/getUserName", "Bob", "b@b.de");
+      login("http://localhost:42007/page/getUserName", "Bob", "b@b.de");
 
       User bob = (User) bobNewPartyApp2.getBuilder().load("Bob");
       assertThat(bob.getEmail()).isEqualTo("b@b.de");
@@ -126,11 +124,18 @@ public class TestPartyApp implements PropertyChangeListener {
 
       FulibTools.objectDiagrams().dumpSVG("tmp/FinalsParty.svg", party);
 
-      System.out.println();
+      try {
+         Thread.sleep(4000);
+      } catch (Exception e) {
+      }
+      eventBroker.stop();
+      bobNewPartyApp2.stop();
+      System.out.println("party2 TestPartyApp testLoadAndStoreConcept done");
    }
 
    @Test
    public void testMigration() throws IOException {
+      System.err.println("starting party2 TestPartyApp testMigration");
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
@@ -201,17 +206,15 @@ public class TestPartyApp implements PropertyChangeListener {
       FulibTools.objectDiagrams().dumpSVG("tmp/KasselFinalsNew.svg",
             bobNewPartyApp2.getBuilder().getModel().getModelMap().values());
 
-      // String oldHistory = new
-      // HtmlGenerator3().generateHtml(aliceOldPartyApp.getHistory());
-      // Files.write(Path.of("tmp/oldHistory.html"),
-      // oldHistory.getBytes(StandardCharsets.UTF_8));
-      //
-      // String newHistory = new
-      // HtmlGenerator3().generateHtml(bobNewPartyApp2.getHistory());
-      // Files.write(Path.of("tmp/newHistory.html"),
-      // newHistory.getBytes(StandardCharsets.UTF_8));
+      try {
+         Thread.sleep(4000);
+      } catch (Exception e) {
+      }
 
-      System.out.println();
+      eventBroker.stop();
+      aliceOldPartyApp.stop();
+      bobNewPartyApp2.stop();
+      System.out.println("party2 TestPartyApp testMigration done");
    }
 
    private void bookItem(String item, String price, String buyer) {
@@ -304,6 +307,10 @@ public class TestPartyApp implements PropertyChangeListener {
       // start service
       PartyAppService partyApp = new PartyAppService();
       partyApp.start();
+      try {
+         Thread.sleep(500);
+      } catch (Exception e) {
+      }
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -378,7 +385,9 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_01.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_01.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
 
@@ -399,7 +408,9 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_03.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_03.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
 
@@ -420,7 +431,9 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_05.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp12_05.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
       // check data note 12:05:02
@@ -458,7 +471,9 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_01.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_01.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
 
@@ -479,7 +494,9 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_03.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_03.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
 
@@ -511,7 +528,9 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_56.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp13_56.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
       // check data note 13:56:02
@@ -537,16 +556,14 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_01.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_01.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
       // check data note 14:01:02
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ:"));
-      pre.shouldHave(matchText("name:.*\"SE BBQ\""));
-      pre.shouldHave(matchText("date:.*\"after work\""));
-      pre.shouldHave(matchText("location:.*Uni"));
-      pre.shouldHave(matchText("@migratedTo:.*Party2"));
       // check data note 14:01:03
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ:"));
@@ -582,7 +599,9 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_05.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_05.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
       // check data note 14:05:01
@@ -625,7 +644,9 @@ public class TestPartyApp implements PropertyChangeListener {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_09.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_09.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
       // check data note 14:09:01
@@ -644,6 +665,12 @@ public class TestPartyApp implements PropertyChangeListener {
 
       // page 14:10
       open("http://localhost:42001/page/14_10");
+      try {
+         Thread.sleep(3000);
+      } catch (Exception e) {
+      }
+      eventBroker.stop();
+      partyApp.stop();
 
       System.out.println();
    }
@@ -656,8 +683,9 @@ public class TestPartyApp implements PropertyChangeListener {
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
                .body(yaml)
                .asString();
+               Thread.sleep(200);
       }
-      catch (UnirestException e) {
+      catch (Exception e) {
          e.printStackTrace();
       }
    }

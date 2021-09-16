@@ -341,4 +341,9 @@ public class StorageService
       return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
    }
 
+   public void stop()
+   {
+      spark.stop();
+   }
+
 }

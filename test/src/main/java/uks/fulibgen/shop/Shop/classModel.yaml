@@ -43,7 +43,7 @@
   attributes: 	shopService_history 	shopService_port 	shopService_spark 	shopService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.fulibgen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	shopService_query 	shopService_isoNow 	shopService_start 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_publish 	shopService_postApply
+  methods: 	shopService_query 	shopService_isoNow 	shopService_start 	shopService_stop 	shopService_getHello 	shopService_subscribeAndLoadOldEvents 	shopService_apply 	shopService_getPage 	shopService_getDemoPage 	shopService_publish 	shopService_postApply
   model: 	c
   modified: 	false
   name: 	ShopService
@@ -763,6 +763,20 @@ Logger.getGlobal().info(\"Shop service is up and running on port \" + port);
   paramsString: 	""
   returnType: 	void
   signature: 	"class/ShopService/method/start()"
+
+- shopService_stop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	shopService
+  declaration: 	"public void stop()"
+  id: 	ShopService_stop
+  methodBody: 	"spark.stop();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	stop
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/ShopService/method/stop()"
 
 - shopService_getHello: 	org.fulib.classmodel.FMethod
   annotations: 	""

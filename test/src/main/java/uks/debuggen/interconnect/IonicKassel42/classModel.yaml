@@ -42,7 +42,7 @@
   attributes: 	ionicKassel42Service_history 	ionicKassel42Service_port 	ionicKassel42Service_spark 	ionicKassel42Service_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.interconnect.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.interconnect.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	ionicKassel42Service_query 	ionicKassel42Service_isoNow 	ionicKassel42Service_start 	ionicKassel42Service_getHello 	ionicKassel42Service_subscribeAndLoadOldEvents 	ionicKassel42Service_apply 	ionicKassel42Service_getPage 	ionicKassel42Service_getDemoPage 	ionicKassel42Service_publish 	ionicKassel42Service_postApply
+  methods: 	ionicKassel42Service_query 	ionicKassel42Service_isoNow 	ionicKassel42Service_start 	ionicKassel42Service_stop 	ionicKassel42Service_getHello 	ionicKassel42Service_subscribeAndLoadOldEvents 	ionicKassel42Service_apply 	ionicKassel42Service_getPage 	ionicKassel42Service_getDemoPage 	ionicKassel42Service_publish 	ionicKassel42Service_postApply
   model: 	c
   modified: 	false
   name: 	IonicKassel42Service
@@ -488,6 +488,20 @@ Logger.getGlobal().info(\"IonicKassel42 service is up and running on port \" + p
   paramsString: 	""
   returnType: 	void
   signature: 	"class/IonicKassel42Service/method/start()"
+
+- ionicKassel42Service_stop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	ionicKassel42Service
+  declaration: 	"public void stop()"
+  id: 	IonicKassel42Service_stop
+  methodBody: 	"spark.stop();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	stop
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/IonicKassel42Service/method/stop()"
 
 - ionicKassel42Service_getHello: 	org.fulib.classmodel.FMethod
   annotations: 	""

@@ -1,10 +1,12 @@
 package uks.debuggen.medical.marburgexpertsystem;
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.LinkedHashMap;
 import org.fulib.yaml.Yaml;
+import org.junit.Before;
 import org.junit.Test;
 import uks.debuggen.medical.marburgexpertsystem.MarburgHealthSystem.MarburgHealthSystemService;
 import uks.debuggen.medical.marburgexpertsystem.events.*;
@@ -39,6 +41,13 @@ public class TestHealthExperts
       return this;
    }
 
+   @Before
+   public void setTimeOut() {
+      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.pageLoadTimeout = Configuration.timeout;
+      Configuration.browserPosition = "-3500x10";
+   }
+
    @Test
    public void HealthExperts()
    {
@@ -49,6 +58,10 @@ public class TestHealthExperts
       // start service
       MarburgHealthSystemService marburgHealthSystem = new MarburgHealthSystemService();
       marburgHealthSystem.start();
+      try {
+         Thread.sleep(500);
+      } catch (Exception e) {
+      }
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -77,26 +90,28 @@ public class TestHealthExperts
          marburgHealthSystem.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = marburgHealthSystem.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/marburgHealthSystem12_00.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/marburgHealthSystem12_00.svg", modelMap.values());
+      }
 
       open("http://localhost:42001");
       // check data note 12:00:01
       pre = $("#data");
       pre.shouldHave(text("- common_cold:"));
       pre.shouldHave(matchText("name:.*\"common cold\""));
-      pre.shouldHave(matchText("symptoms:.*runny_nosecoughhoarsenessmedium_fever"));
-      pre.shouldHave(matchText("counterSymptoms:.*chillsjoint_pain"));
+      pre.shouldHave(matchText("symptoms:.*runny_nose.*cough.*hoarseness.*medium_fever.*"));
+      pre.shouldHave(matchText("counterSymptoms:.*chills.*joint_pain.*"));
       // check data note 12:00:02
       pre = $("#data");
       pre.shouldHave(text("- influenza:"));
       pre.shouldHave(matchText("name:.*influenza"));
-      pre.shouldHave(matchText("symptoms:.*coughmedium_feverchillsjoint_painheadache"));
-      pre.shouldHave(matchText("counterSymptoms:.*lung_noises"));
+      pre.shouldHave(matchText("symptoms:.*cough.*medium_fever.*chills.*joint_pain.*headache.*"));
+      pre.shouldHave(matchText("counterSymptoms:.*lung_noises.*"));
       // check data note 12:00:03
       pre = $("#data");
       pre.shouldHave(text("- pneumonia:"));
       pre.shouldHave(matchText("name:.*pneumonia"));
-      pre.shouldHave(matchText("symptoms:.*coughmedium_feverchillsjoint_painheadachelung_noises"));
+      pre.shouldHave(matchText("symptoms:.*cough.*medium_fever.*chills.*joint_pain.*headache.*lung_noises.*"));
       // check data note 12:00:04
       pre = $("#data");
       pre.shouldHave(text("- cough:"));
@@ -129,6 +144,12 @@ public class TestHealthExperts
       pre = $("#data");
       pre.shouldHave(text("- lung_noises:"));
       pre.shouldHave(matchText("name:.*\"lung noises\""));
+      try {
+         Thread.sleep(3000);
+      } catch (Exception e) {
+      }
+      eventBroker.stop();
+      marburgHealthSystem.stop();
 
       System.out.println();
    }
@@ -141,8 +162,9 @@ public class TestHealthExperts
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
                .body(yaml)
                .asString();
+               Thread.sleep(200);
       }
-      catch (UnirestException e) {
+      catch (Exception e) {
          e.printStackTrace();
       }
    }

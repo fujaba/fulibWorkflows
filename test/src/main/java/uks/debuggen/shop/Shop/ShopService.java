@@ -387,4 +387,9 @@ public class ShopService
    {
       return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
    }
+
+   public void stop()
+   {
+      spark.stop();
+   }
 }

@@ -43,7 +43,7 @@
   attributes: 	studyRightService_history 	studyRightService_port 	studyRightService_spark 	studyRightService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.studyright.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	studyRightService_query 	studyRightService_isoNow 	studyRightService_start 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_publish 	studyRightService_postApply
+  methods: 	studyRightService_query 	studyRightService_isoNow 	studyRightService_start 	studyRightService_stop 	studyRightService_getHello 	studyRightService_subscribeAndLoadOldEvents 	studyRightService_apply 	studyRightService_getPage 	studyRightService_getDemoPage 	studyRightService_publish 	studyRightService_postApply
   model: 	c
   modified: 	false
   name: 	StudyRightService
@@ -1113,6 +1113,20 @@ Logger.getGlobal().info(\"StudyRight service is up and running on port \" + port
   paramsString: 	""
   returnType: 	void
   signature: 	"class/StudyRightService/method/start()"
+
+- studyRightService_stop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyRightService
+  declaration: 	"public void stop()"
+  id: 	StudyRightService_stop
+  methodBody: 	"spark.stop();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	stop
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/StudyRightService/method/stop()"
 
 - studyRightService_getHello: 	org.fulib.classmodel.FMethod
   annotations: 	""

@@ -41,6 +41,7 @@ public class WorkflowGenerator
    private Clazz builderClass;
    private ServiceNote lastServiceNote;
    private Clazz logic;
+   private StringBuilder testClosing;
 
    public EventModel getEventModel()
    {
@@ -592,6 +593,10 @@ public class WorkflowGenerator
             String.format("Logger.getGlobal().info(\"%s service is up and running on port \" + port);\n",
                   serviceName));
       modelManager.haveMethod(serviceClazz, declaration, body.toString());
+
+      declaration = "public void stop()";
+      String stopBody = "spark.stop();\n";
+      modelManager.haveMethod(serviceClazz, declaration, stopBody);
    }
 
 
@@ -1146,6 +1151,7 @@ public class WorkflowGenerator
          }
       }
 
+      testBody.append(testClosing.toString());
       testBody.append("\nSystem.out.println();\n");
 
       tm.haveMethod(testClazz, declaration, testBody.toString());
@@ -1171,13 +1177,26 @@ public class WorkflowGenerator
    private void startServices()
    {
       testBody = new StringBuilder();
+      testClosing = new StringBuilder();
+      testClosing.append("" +
+         "try {\n" +
+         "   Thread.sleep(3000);\n" +
+         "} catch (Exception e) {\n" +
+         "}\n" +
+         "eventBroker.stop();\n");
 
-      ST st = group.getInstanceOf("startEventBroker");
+         ST st = group.getInstanceOf("startEventBroker");
       testBody.append(st.render());
 
       for (ServiceNote service : eventStormingBoard.getServices()) {
          testGenerateServiceStart(testBody, service);
       }
+
+      testBody.append("" +
+      "try {\n" +
+      "   Thread.sleep(500);\n" +
+      "} catch (Exception e) {\n" +
+      "}\n");
 
       // validate that the event broker knows the services.
       testBody.append("\nopen(\"http://localhost:42000\");\n");
@@ -1191,6 +1210,7 @@ public class WorkflowGenerator
       }
 
       testBody.append("LinkedHashMap<String, Object> modelMap;\n");
+
 
    }
 
@@ -1207,6 +1227,8 @@ public class WorkflowGenerator
       body.append(String.format("%sService %s = new %sService();\n",
             serviceName, serviceVarName, serviceName));
       body.append(String.format("%s.start();\n", serviceVarName));
+
+      testClosing.append(String.format("%s.stop();\n", serviceVarName));
    }
 
    private void testGenerateSendUserEvent(StringBuilder body, EventNote note)
@@ -1242,7 +1264,9 @@ public class WorkflowGenerator
                      "   %1$s.getBuilder().load(dataEvent.getBlockId());\n" +
                      "}\n" +
                      "modelMap = %1$s.getBuilder().getModel().getModelMap();\n" +
-                     "org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/%1$s%s.svg\", modelMap.values());\n\n",
+                     "if (modelMap.values().size() > 0) {\n" +
+                     "   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/%1$s%s.svg\", modelMap.values());\n" +
+                     "}\n\n",
                StrUtil.decap(service.getName()), note.getTime().replaceAll("\\W+", "_"));
          check.append(loadDataEventsCode);
          check.append("");
@@ -1266,31 +1290,34 @@ public class WorkflowGenerator
                      continue;
                   }
                   AssocRole role = dataTypeClass.getRole(key);
+                  Attribute attribute = getAttribute(dataTypeClass, key);
                   value = entry.getValue();
-                  if (role == null) {
+                  if (attribute != null && role == null) {
                      if (value.startsWith("[")) {
                         value = StrUtil.stripBrackets(value);
                      }
                      else if (value.indexOf(" ") > 0) {
                         value = "\\\"" + value + "\\\"";
                      }
+                     check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",
+                           key, value));
                   }
-                  else {
+                  else if (role != null) {
                      if (value.startsWith("[")) {
                         value = StrUtil.stripBrackets(value);
                         String[] split = value.split(",\\s+");
                         value = "";
                         for (String s : split) {
-                           value += StrUtil.decap(eventModel.getObjectId(s));
+                           value += StrUtil.decap(eventModel.getObjectId(s)) + ".*";
                         }
                         value = value.strip();
                      }
                      else {
                         value = StrUtil.decap(eventModel.getObjectId(value));
                      }
+                     check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",
+                           key, value));
                   }
-                  check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",
-                        key, value));
                }
             }
             else if (step instanceof EventNote) {

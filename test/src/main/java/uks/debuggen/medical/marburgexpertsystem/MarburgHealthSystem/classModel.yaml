@@ -43,7 +43,7 @@
   attributes: 	marburgHealthSystemService_history 	marburgHealthSystemService_port 	marburgHealthSystemService_spark 	marburgHealthSystemService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.marburgexpertsystem.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.marburgexpertsystem.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	marburgHealthSystemService_query 	marburgHealthSystemService_isoNow 	marburgHealthSystemService_start 	marburgHealthSystemService_getHello 	marburgHealthSystemService_subscribeAndLoadOldEvents 	marburgHealthSystemService_apply 	marburgHealthSystemService_getPage 	marburgHealthSystemService_getDemoPage 	marburgHealthSystemService_publish 	marburgHealthSystemService_postApply
+  methods: 	marburgHealthSystemService_query 	marburgHealthSystemService_isoNow 	marburgHealthSystemService_start 	marburgHealthSystemService_stop 	marburgHealthSystemService_getHello 	marburgHealthSystemService_subscribeAndLoadOldEvents 	marburgHealthSystemService_apply 	marburgHealthSystemService_getPage 	marburgHealthSystemService_getDemoPage 	marburgHealthSystemService_publish 	marburgHealthSystemService_postApply
   model: 	c
   modified: 	false
   name: 	MarburgHealthSystemService
@@ -673,6 +673,20 @@ Logger.getGlobal().info(\"MarburgHealthSystem service is up and running on port 
   paramsString: 	""
   returnType: 	void
   signature: 	"class/MarburgHealthSystemService/method/start()"
+
+- marburgHealthSystemService_stop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	marburgHealthSystemService
+  declaration: 	"public void stop()"
+  id: 	MarburgHealthSystemService_stop
+  methodBody: 	"spark.stop();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	stop
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/MarburgHealthSystemService/method/stop()"
 
 - marburgHealthSystemService_getHello: 	org.fulib.classmodel.FMethod
   annotations: 	""

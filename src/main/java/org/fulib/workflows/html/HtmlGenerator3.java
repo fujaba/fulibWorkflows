@@ -7,6 +7,7 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -298,7 +299,8 @@ public class HtmlGenerator3 {
         String yaml = Yaml.encode(objects);
         historyMaps = new Yamler2().decodeList(yaml);
 
-        htmlGroup = new STGroupFile(this.getClass().getResource("html/html.stg"));
+        URL resource = this.getClass().getResource("html.stg");
+        htmlGroup = new STGroupFile(resource);
         htmlBody = new StringBuilder();
 
         String notes = historyNotes();
@@ -310,7 +312,7 @@ public class HtmlGenerator3 {
 
         st = htmlGroup.getInstanceOf("page");
         st.add("content", htmlBody.toString());
-        st.add("width", maxNotesPerLane * 200);
+        st.add("workflowName", "history");
         htmlBody.setLength(0);
         htmlBody.append(st.render());
         return htmlBody.toString();

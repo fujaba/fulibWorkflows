@@ -412,4 +412,9 @@ public class ShopService
       this.setBusinessLogic(null);
       this.setBuilder(null);
    }
+
+   public void stop()
+   {
+      spark.stop();
+   }
 }

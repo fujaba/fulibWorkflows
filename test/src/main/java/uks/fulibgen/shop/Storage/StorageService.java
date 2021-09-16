@@ -19,22 +19,6 @@ import java.util.function.Consumer;
 import org.fulib.yaml.YamlIdMap;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-;
-;
-;
-;
-;
-;
-;
-;
 
 public class StorageService
 {
@@ -353,5 +337,10 @@ public class StorageService
    public String isoNow()
    {
       return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+   }
+
+   public void stop()
+   {
+      spark.stop();
    }
 }

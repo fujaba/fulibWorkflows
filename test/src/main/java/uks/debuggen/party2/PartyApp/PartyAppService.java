@@ -280,6 +280,11 @@ public class PartyAppService
       }
    }
 
+   public void stop()
+   {
+      spark.stop();
+   }
+
    LinkedHashMap<String, BiFunction<Request, Response, String>> pageHandlerMap = null;
 
    private void initPageHandlerMap()

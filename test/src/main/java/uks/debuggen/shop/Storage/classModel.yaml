@@ -43,7 +43,7 @@
   attributes: 	storageService_history 	storageService_port 	storageService_spark 	storageService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.shop.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	storageService_query 	storageService_isoNow 	storageService_start 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_publish 	storageService_postApply
+  methods: 	storageService_query 	storageService_isoNow 	storageService_start 	storageService_stop 	storageService_getHello 	storageService_subscribeAndLoadOldEvents 	storageService_apply 	storageService_getPage 	storageService_getDemoPage 	storageService_publish 	storageService_postApply
   model: 	c
   modified: 	false
   name: 	StorageService
@@ -724,6 +724,20 @@ Logger.getGlobal().info(\"Storage service is up and running on port \" + port);
   paramsString: 	""
   returnType: 	void
   signature: 	"class/StorageService/method/start()"
+
+- storageService_stop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	storageService
+  declaration: 	"public void stop()"
+  id: 	StorageService_stop
+  methodBody: 	"spark.stop();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	stop
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/StorageService/method/stop()"
 
 - storageService_getHello: 	org.fulib.classmodel.FMethod
   annotations: 	""

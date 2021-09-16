@@ -43,7 +43,7 @@
   attributes: 	docMedicalService_history 	docMedicalService_port 	docMedicalService_spark 	docMedicalService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	docMedicalService_query 	docMedicalService_isoNow 	docMedicalService_start 	docMedicalService_getHello 	docMedicalService_subscribeAndLoadOldEvents 	docMedicalService_apply 	docMedicalService_getPage 	docMedicalService_getDemoPage 	docMedicalService_publish 	docMedicalService_postApply
+  methods: 	docMedicalService_query 	docMedicalService_isoNow 	docMedicalService_start 	docMedicalService_stop 	docMedicalService_getHello 	docMedicalService_subscribeAndLoadOldEvents 	docMedicalService_apply 	docMedicalService_getPage 	docMedicalService_getDemoPage 	docMedicalService_publish 	docMedicalService_postApply
   model: 	c
   modified: 	false
   name: 	DocMedicalService
@@ -1024,6 +1024,20 @@ Logger.getGlobal().info(\"DocMedical service is up and running on port \" + port
   paramsString: 	""
   returnType: 	void
   signature: 	"class/DocMedicalService/method/start()"
+
+- docMedicalService_stop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	docMedicalService
+  declaration: 	"public void stop()"
+  id: 	DocMedicalService_stop
+  methodBody: 	"spark.stop();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	stop
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/DocMedicalService/method/stop()"
 
 - docMedicalService_getHello: 	org.fulib.classmodel.FMethod
   annotations: 	""

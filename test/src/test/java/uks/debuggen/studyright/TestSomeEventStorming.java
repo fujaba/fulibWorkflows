@@ -51,10 +51,11 @@ public class TestSomeEventStorming
    public void setTimeOut() {
       Configuration.timeout = 10 * 60 * 1000;
       Configuration.pageLoadTimeout = Configuration.timeout;
+      Configuration.browserPosition = "-3500x10";
    }
 
    @Test
-   public void testImplentation() throws IOException
+   public void testImplentation() throws IOException, InterruptedException
    {
       eventBroker = new EventBroker();
       eventBroker.start();
@@ -75,16 +76,26 @@ public class TestSomeEventStorming
       $("#ok").click();
 
 
+      // open("http://localhost:42000");
+      // open("http://localhost:42400/page/welcome");
       String html = new HtmlGenerator3().generateHtml(studyRight.getHistory());
 
       Files.write(Path.of("tmp/history.html"), html.getBytes(StandardCharsets.UTF_8));
 
-      System.out.println();
+      try {
+         Thread.sleep(4000);
+      } catch (Exception e) {
+      }
+      eventBroker.stop();
+      studyRight.stop();
+
+      System.err.println("testImplentation done");
    }
 
    @Test
    public void SomeEventStorming()
    {
+      // no fulib
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
@@ -92,6 +103,11 @@ public class TestSomeEventStorming
       // start service
       StudyRightService studyRight = new StudyRightService();
       studyRight.start();
+
+      try {
+         Thread.sleep(1000);
+      } catch (InterruptedException e1) {
+      }
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -118,25 +134,27 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_00.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_00.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:00:00
       pre = $("#data");
       pre.shouldHave(text("- studyRight:"));
-      pre.shouldHave(matchText("rooms:.*mathexam"));
+      pre.shouldHave(matchText("rooms:.*math.*exam.*"));
       // check data note 12:00:01
       pre = $("#data");
       pre.shouldHave(text("- math:"));
       pre.shouldHave(matchText("credits:.*23"));
       pre.shouldHave(matchText("uni:.*studyRight"));
-      pre.shouldHave(matchText("doors:.*modelingalgebra"));
+      pre.shouldHave(matchText("doors:.*modeling.*algebra.*"));
       // check data note 12:00:02
       pre = $("#data");
       pre.shouldHave(text("- modeling:"));
       pre.shouldHave(matchText("uni:.*studyRight"));
       pre.shouldHave(matchText("credits:.*42"));
-      pre.shouldHave(matchText("doors:.*mathalgebraexam"));
+      pre.shouldHave(matchText("doors:.*math.*algebra.*exam.*"));
       // check data note 12:00:03
       pre = $("#data");
       pre.shouldHave(text("- algebra:"));
@@ -153,7 +171,6 @@ public class TestSomeEventStorming
       pre.shouldHave(matchText("name:.*Carli"));
       pre.shouldHave(matchText("birthYear:.*1970"));
       pre.shouldHave(matchText("studentId:.*stud42"));
-      pre.shouldHave(matchText("uni:.*StudyRight"));
 
       // create FindToursCommand: find tours 12:01
       FindToursCommand e1201 = new FindToursCommand();
@@ -172,7 +189,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_01.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_01.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:01:00
@@ -202,7 +221,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_02.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_02.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:02:01
@@ -231,7 +252,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_03.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_03.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:03:01
@@ -271,7 +294,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_05.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_05.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:05:01
@@ -311,7 +336,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_07.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_07.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:07:01
@@ -340,7 +367,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_08.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_08.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:08:01
@@ -369,7 +398,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_09.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_09.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:09:02
@@ -397,7 +428,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_10.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_10.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:10:01
@@ -424,7 +457,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_11.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_11.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:11:01
@@ -451,7 +486,9 @@ public class TestSomeEventStorming
          studyRight.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = studyRight.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_12.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/studyRight12_12.svg", modelMap.values());
+      }
 
       open("http://localhost:42400");
       // check data note 12:12:01
@@ -461,6 +498,12 @@ public class TestSomeEventStorming
 
       // page 12:13
       open("http://localhost:42400/page/12_13");
+      try {
+         Thread.sleep(3000);
+      } catch (Exception e) {
+      }
+      eventBroker.stop();
+      studyRight.stop();
 
       System.out.println();
    }
@@ -473,8 +516,9 @@ public class TestSomeEventStorming
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
                .body(yaml)
                .asString();
+               Thread.sleep(200);
       }
-      catch (UnirestException e) {
+      catch (Exception e) {
          e.printStackTrace();
       }
    }

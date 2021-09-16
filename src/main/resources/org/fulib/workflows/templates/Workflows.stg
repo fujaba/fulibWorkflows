@@ -15,8 +15,9 @@ try {
    HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
          .body(yaml)
          .asString();
+         Thread.sleep(200);
 }
-catch (UnirestException e) {
+catch (Exception e) {
    e.printStackTrace();
 }
 >>

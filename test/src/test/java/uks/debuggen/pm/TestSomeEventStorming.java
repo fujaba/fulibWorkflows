@@ -39,7 +39,7 @@ public class TestSomeEventStorming
       Stop frankfurt = model.getOrCreateStop("Frankfurt");
       logic.computeLength(route1);
       assertThat(model.getOrCreateRoute("route1").getLength()).isEqualTo("175 km");
-      FulibTools.objectDiagrams().dumpSVG("tmp/RoutingKasselFrankfurt.svg", route1);
+
       System.out.println();
    }
 }

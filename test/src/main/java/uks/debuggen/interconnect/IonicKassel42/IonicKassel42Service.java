@@ -338,4 +338,9 @@ public class IonicKassel42Service
       this.setBusinessLogic(null);
       this.setBuilder(null);
    }
+
+   public void stop()
+   {
+      spark.stop();
+   }
 }

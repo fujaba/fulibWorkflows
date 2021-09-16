@@ -338,4 +338,9 @@ public class CityElectricsKasselService
       this.setBusinessLogic(null);
       this.setBuilder(null);
    }
+
+   public void stop()
+   {
+      spark.stop();
+   }
 }

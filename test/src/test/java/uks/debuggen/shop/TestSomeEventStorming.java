@@ -1,10 +1,12 @@
 package uks.debuggen.shop;
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.yaml.Yaml;
+import org.junit.Before;
 import org.junit.Test;
 import uks.debuggen.shop.events.*;
 import java.util.Objects;
@@ -51,8 +53,9 @@ public class TestSomeEventStorming
          HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
                .body(yaml)
                .asString();
+               Thread.sleep(200);
       }
-      catch (UnirestException e) {
+      catch (Exception e) {
          e.printStackTrace();
       }
    }
@@ -76,6 +79,13 @@ public class TestSomeEventStorming
       return this.listeners;
    }
 
+   @Before
+   public void setTimeOut() {
+      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.pageLoadTimeout = Configuration.timeout;
+      Configuration.browserPosition = "-3500x10";
+   }
+
    @Test
    public void SomeEventStorming()
    {
@@ -90,6 +100,10 @@ public class TestSomeEventStorming
       // start service
       StorageService storage = new StorageService();
       storage.start();
+      try {
+         Thread.sleep(500);
+      } catch (Exception e) {
+      }
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -121,7 +135,9 @@ public class TestSomeEventStorming
          storage.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = storage.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage12_00.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage12_00.svg", modelMap.values());
+      }
 
       open("http://localhost:42002");
       // check data note 12:01
@@ -157,7 +173,9 @@ public class TestSomeEventStorming
          shop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = shop.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop13_01.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop13_01.svg", modelMap.values());
+      }
 
       open("http://localhost:42100");
       // check data note 13:06
@@ -173,7 +191,9 @@ public class TestSomeEventStorming
          storage.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = storage.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage13_01.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage13_01.svg", modelMap.values());
+      }
 
       open("http://localhost:42002");
       // check data note 13:05
@@ -205,7 +225,9 @@ public class TestSomeEventStorming
          storage.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = storage.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage14_00.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage14_00.svg", modelMap.values());
+      }
 
       open("http://localhost:42002");
       // check data note 14:01
@@ -226,7 +248,9 @@ public class TestSomeEventStorming
          shop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = shop.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop14_00.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop14_00.svg", modelMap.values());
+      }
 
       open("http://localhost:42100");
       // check data note 14:04
@@ -257,7 +281,9 @@ public class TestSomeEventStorming
          shop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = shop.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop13_11.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/shop13_11.svg", modelMap.values());
+      }
 
       open("http://localhost:42100");
       // check data note 13:16
@@ -273,9 +299,18 @@ public class TestSomeEventStorming
          storage.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = storage.getBuilder().getModel().getModelMap();
-      org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage13_11.svg", modelMap.values());
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/storage13_11.svg", modelMap.values());
+      }
 
       open("http://localhost:42002");
+      try {
+         Thread.sleep(3000);
+      } catch (Exception e) {
+      }
+      eventBroker.stop();
+      shop.stop();
+      storage.stop();
 
       System.out.println();
    }

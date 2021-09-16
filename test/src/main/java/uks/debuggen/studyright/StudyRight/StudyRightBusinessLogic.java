@@ -207,7 +207,7 @@ public class StudyRightBusinessLogic
       UniversityBuilt studyRightEvent = new UniversityBuilt();
       studyRightEvent.setId(newEventId());
       studyRightEvent.setBlockId("StudyRight");
-      studyRightEvent.setRooms("[math exam]");
+      studyRightEvent.setRooms("[math, exam]");
       service.apply(studyRightEvent);
 
       RoomBuilt mathEvent = new RoomBuilt();
@@ -215,7 +215,7 @@ public class StudyRightBusinessLogic
       mathEvent.setBlockId("math");
       mathEvent.setCredits("23");
       mathEvent.setUni("StudyRight");
-      mathEvent.setDoors("[modeling algebra]");
+      mathEvent.setDoors("[modeling, algebra]");
       service.apply(mathEvent);
 
       RoomBuilt modelingEvent = new RoomBuilt();
@@ -223,7 +223,7 @@ public class StudyRightBusinessLogic
       modelingEvent.setBlockId("modeling");
       modelingEvent.setUni("StudyRight");
       modelingEvent.setCredits("42");
-      modelingEvent.setDoors("[math algebra exam]");
+      modelingEvent.setDoors("[math, algebra, exam]");
       service.apply(modelingEvent);
 
       RoomBuilt algebraEvent = new RoomBuilt();
@@ -236,7 +236,7 @@ public class StudyRightBusinessLogic
       RoomBuilt examEvent = new RoomBuilt();
       examEvent.setId(newEventId());
       examEvent.setBlockId("exam");
-      examEvent.setDoors("[modeling algebra]");
+      examEvent.setDoors("[modeling, algebra]");
       examEvent.setCredits("0");
       examEvent.setUni("StudyRight");
       service.apply(examEvent);
@@ -296,8 +296,8 @@ public class StudyRightBusinessLogic
 
       if (event.getId().startsWith(idPrefix)) {
          // always create a stop
-         Room room = model.getOrCreateRoom(event.getRoom());
-         Stop previousStop = model.getOrCreateStop(event.getPreviousStop());
+         Room room = (Room) builder.load(event.getRoom());
+         Stop previousStop = (Stop) builder.load(event.getPreviousStop());
          String motivation = previousStop.getMotivation();
          String credits = room.getCredits();
          int newMotivation = Integer.parseInt(motivation) - Integer.parseInt(credits);

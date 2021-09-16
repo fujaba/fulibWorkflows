@@ -42,7 +42,7 @@
   attributes: 	cityElectricsKasselService_history 	cityElectricsKasselService_port 	cityElectricsKasselService_spark 	cityElectricsKasselService_model
   importList: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.interconnect.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.time.Instant;" 	"import java.time.format.DateTimeFormatter;" 	"import java.util.Map;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.interconnect.events.*;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import spark.Service;" 	"import spark.Request;" 	"import spark.Response;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.logging.Logger;" 	"import java.util.logging.Level;"
-  methods: 	cityElectricsKasselService_query 	cityElectricsKasselService_isoNow 	cityElectricsKasselService_start 	cityElectricsKasselService_getHello 	cityElectricsKasselService_subscribeAndLoadOldEvents 	cityElectricsKasselService_apply 	cityElectricsKasselService_getPage 	cityElectricsKasselService_getDemoPage 	cityElectricsKasselService_publish 	cityElectricsKasselService_postApply
+  methods: 	cityElectricsKasselService_query 	cityElectricsKasselService_isoNow 	cityElectricsKasselService_start 	cityElectricsKasselService_stop 	cityElectricsKasselService_getHello 	cityElectricsKasselService_subscribeAndLoadOldEvents 	cityElectricsKasselService_apply 	cityElectricsKasselService_getPage 	cityElectricsKasselService_getDemoPage 	cityElectricsKasselService_publish 	cityElectricsKasselService_postApply
   model: 	c
   modified: 	false
   name: 	CityElectricsKasselService
@@ -480,6 +480,20 @@ Logger.getGlobal().info(\"CityElectricsKassel service is up and running on port 
   paramsString: 	""
   returnType: 	void
   signature: 	"class/CityElectricsKasselService/method/start()"
+
+- cityElectricsKasselService_stop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	cityElectricsKasselService
+  declaration: 	"public void stop()"
+  id: 	CityElectricsKasselService_stop
+  methodBody: 	"spark.stop();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	stop
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/CityElectricsKasselService/method/stop()"
 
 - cityElectricsKasselService_getHello: 	org.fulib.classmodel.FMethod
   annotations: 	""

@@ -183,6 +183,11 @@ public class StudyRightService
       Logger.getGlobal().info("StudyRight service is up and running on port " + port);
    }
 
+   public void stop()
+   {
+      spark.stop();
+   }
+
    private String getHello(Request req, Response res)
    {
       try {

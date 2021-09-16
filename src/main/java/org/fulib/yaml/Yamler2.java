@@ -164,7 +164,8 @@ public class Yamler2
       int end = oldValue.indexOf(']');
       oldValue = oldValue.substring(start, end);
       String[] split = oldValue.split(",\\s+");
-      List<String> resultList = Arrays.asList(split);
+      ArrayList<String> resultList = new ArrayList<>();
+      resultList.addAll(Arrays.asList(split));
 
       start = newValue.indexOf('[') + 1;
       end = newValue.indexOf(']');
