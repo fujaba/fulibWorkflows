@@ -96,14 +96,7 @@ public class WorkflowGenerator
       ClassModelManager modelManager = null;
       for (ServiceNote currentServiceNote : eventStormingBoard.getServices()) {
          lastServiceNote = currentServiceNote;
-         // each service gets its own package
-         // build classModelManager for that package
-         String port = currentServiceNote.getPort();
 
-         Map<String, String> map = currentServiceNote.getMap();
-         if (map != null) {
-            map.get("port");
-         }
          String serviceName = currentServiceNote.getName();
          modelManager = new ClassModelManager().setMainJavaDir(mm.getClassModel().getMainJavaDir())
                .setPackageName(mm.getClassModel().getPackageName() + "." + serviceName);
