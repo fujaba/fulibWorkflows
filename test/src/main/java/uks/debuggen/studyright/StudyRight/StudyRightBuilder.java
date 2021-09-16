@@ -266,9 +266,9 @@ public class StudyRightBuilder
       StudentBuilt event = (StudentBuilt) e;
       Student object = model.getOrCreateStudent(event.getBlockId());
       object.setName(event.getName());
-      object.setBirthYear(event.getBirthYear());
+      object.setBirthYear(Integer.parseInt(event.getBirthYear()));
       object.setStudentId(event.getStudentId());
-      object.setUni(event.getUni());
+      object.setUni(model.getOrCreateUniversity(getObjectId(event.getUni())));
       return object;
    }
 

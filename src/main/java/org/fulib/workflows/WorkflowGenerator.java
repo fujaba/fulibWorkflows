@@ -312,6 +312,7 @@ public class WorkflowGenerator
 
          buildGetPageMethod(modelManager, serviceClazz, serviceName, body);
 
+         buildModelClasses(modelManager, serviceNote);
          buildInitEventHandlerMapMethod(modelManager, serviceNote, body);
          buildLoadAndInitLoaderMap(modelManager, serviceNote);
 
@@ -351,6 +352,21 @@ public class WorkflowGenerator
       }
    }
 
+
+   private void buildModelClasses(ClassModelManager modelManager, ServiceNote serviceNote) {
+      for (Policy policy : serviceNote.getPolicies()) {
+         for (WorkflowNote note : policy.getSteps()) {
+            if (note instanceof ClassNote) {
+               ClassNote classNote = (ClassNote) note;
+               addModelClassForClassNote(modelManager, serviceNote, classNote);
+            }
+            else if (note instanceof DataNote) {
+               LinkedHashMap<String, String> mockup = getMockup(note.getMap());
+               addModelClassForDataNote(modelManager, serviceNote, mockup);
+            }
+         }
+      }
+   }
 
    private void addBuilderClass(ClassModelManager modelManager, String serviceName)
    {

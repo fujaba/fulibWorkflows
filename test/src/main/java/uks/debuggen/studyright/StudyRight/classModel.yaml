@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	studyRightModel 	studyRightBusinessLogic 	studyRightBuilder 	studyRightService 	university 	room 	student 	tourList 	stop 	tour 	person
+  classes: 	studyRightModel 	studyRightBusinessLogic 	studyRightBuilder 	studyRightService 	university 	room 	person 	student 	tourList 	stop 	tour
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -66,6 +66,15 @@
   propertyStyle: 	Bean
   roles: 	room_uni 	room_doors
 
+- person: 	org.fulib.classmodel.Clazz
+  attributes: 	person_id 	person_name 	person_birthYear
+  model: 	c
+  modified: 	false
+  name: 	Person
+  propertyStyle: 	Bean
+  roles: 	person_uni
+  subClasses: 	student
+
 - student: 	org.fulib.classmodel.Clazz
   attributes: 	student_studentId
   model: 	c
@@ -97,15 +106,6 @@
   name: 	Tour
   propertyStyle: 	Bean
   roles: 	tour_tourList
-
-- person: 	org.fulib.classmodel.Clazz
-  attributes: 	person_id 	person_name 	person_birthYear
-  model: 	c
-  modified: 	false
-  name: 	Person
-  propertyStyle: 	Bean
-  roles: 	person_uni
-  subClasses: 	student
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -759,9 +759,9 @@ if (outdated(event)) {
   methodBody: 	"StudentBuilt event = (StudentBuilt) e;
 Student object = model.getOrCreateStudent(event.getBlockId());
 object.setName(event.getName());
-object.setBirthYear(event.getBirthYear());
+object.setBirthYear(Integer.parseInt(event.getBirthYear()));
 object.setStudentId(event.getStudentId());
-object.setUni(event.getUni());
+object.setUni(model.getOrCreateUniversity(getObjectId(event.getUni())));
 return object;
 "
   modified: 	false
@@ -1408,6 +1408,43 @@ catch (UnirestException e) {
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
+- person_id: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- person_name: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- person_birthYear: 	org.fulib.classmodel.Attribute
+  clazz: 	person
+  id: 	Person_birthYear
+  modified: 	false
+  name: 	birthYear
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- person_uni: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	person
+  id: 	Person_uni
+  modified: 	false
+  name: 	uni
+  other: 	university_persons
+  propertyStyle: 	Bean
+
 - student_studentId: 	org.fulib.classmodel.Attribute
   clazz: 	student
   id: 	Student_studentId
@@ -1513,42 +1550,5 @@ catch (UnirestException e) {
   modified: 	false
   name: 	tourList
   other: 	tourList_alternatives
-  propertyStyle: 	Bean
-
-- person_id: 	org.fulib.classmodel.Attribute
-  clazz: 	person
-  id: 	Person_id
-  modified: 	false
-  name: 	id
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- person_name: 	org.fulib.classmodel.Attribute
-  clazz: 	person
-  id: 	Person_name
-  modified: 	false
-  name: 	name
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- person_birthYear: 	org.fulib.classmodel.Attribute
-  clazz: 	person
-  id: 	Person_birthYear
-  modified: 	false
-  name: 	birthYear
-  propertyStyle: 	Bean
-  type: 	int
-  typeSignature: 	int
-
-- person_uni: 	org.fulib.classmodel.AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	person
-  id: 	Person_uni
-  modified: 	false
-  name: 	uni
-  other: 	university_persons
   propertyStyle: 	Bean
 
