@@ -14,21 +14,28 @@ public class TestSomeEventStorming
    {
       someserviceBusinessLogic logic = new someserviceBusinessLogic();
       RoutingModel model = new RoutingModel();
-      logic.init();
-      assertThat(model.getOrCreateRoute("route1").getStart()).isEqualTo("Kassel");
-      assertThat(model.getOrCreateRoute("route1").getStart.back()).isEqualTo("[routeStarts]");
-      assertThat(model.getOrCreateRoute("route1").getEnd()).isEqualTo("Frankfurt");
-      assertThat(model.getOrCreateRoute("route1").getEnd.back()).isEqualTo("[routeEnds]");
-      assertThat(model.getOrCreateStop("Kassel").getDeparture()).isEqualTo("leg1");
-      assertThat(model.getOrCreateStop("Kassel").getDeparture.back()).isEqualTo("from");
-      assertThat(model.getOrCreateLeg("leg1").getTo()).isEqualTo("Fulda");
-      assertThat(model.getOrCreateLeg("leg1").getTo.back()).isEqualTo("arrival");
-      assertThat(model.getOrCreateLeg("leg1").getVia()).isEqualTo("A7");
-      assertThat(model.getOrCreateLeg("leg1").getLength()).isEqualTo("104 km");
-      assertThat(model.getOrCreateStop("Fulda").getDeparture()).isEqualTo("leg2");
-      assertThat(model.getOrCreateLeg("leg2").getTo()).isEqualTo("Frankfurt");
-      assertThat(model.getOrCreateLeg("leg2").getVia()).isEqualTo("A66");
-      assertThat(model.getOrCreateLeg("leg2").getLength()).isEqualTo("71 km");
+
+      Route route1 = model.getOrCreateRoute("route1");
+      route1.setStart(model.getOrCreateStop("Kassel"));
+      route1.setEnd(model.getOrCreateStop("Frankfurt"));
+
+      Stop kassel = model.getOrCreateStop("Kassel");
+      kassel.setDeparture(model.getOrCreateLeg("leg1"));
+
+      Leg leg1 = model.getOrCreateLeg("leg1");
+      leg1.setTo(model.getOrCreateStop("Fulda"));
+      leg1.setVia("A7");
+      leg1.setLength("104 km");
+
+      Stop fulda = model.getOrCreateStop("Fulda");
+      fulda.setDeparture(model.getOrCreateLeg("leg2"));
+
+      Leg leg2 = model.getOrCreateLeg("leg2");
+      leg2.setTo(model.getOrCreateStop("Frankfurt"));
+      leg2.setVia("A66");
+      leg2.setLength("71 km");
+
+      Stop frankfurt = model.getOrCreateStop("Frankfurt");
       logic.computeLength(route1);
       assertThat(model.getOrCreateRoute("route1").getLength()).isEqualTo("175 km");
 
