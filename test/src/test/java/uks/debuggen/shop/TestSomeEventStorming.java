@@ -11,6 +11,8 @@ import org.junit.Test;
 import uks.debuggen.shop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+
+import uks.debuggen.Constants;
 import uks.debuggen.shop.Shop.ShopService;
 import uks.debuggen.shop.Storage.StorageService;
 import uks.debuggen.shop.someservice.someserviceService;
@@ -81,9 +83,9 @@ public class TestSomeEventStorming
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.timeout = Constants.TIME_OUT;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = "-3500x10";
+      Configuration.browserPosition = Constants.BROWSER_POS;
    }
 
    @Test

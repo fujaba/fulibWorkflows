@@ -9,6 +9,8 @@ import org.fulib.FulibTools;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
+
+import uks.debuggen.Constants;
 import uks.debuggen.party.PartyApp.Party;
 import uks.debuggen.party2.PartyApp.Party2;
 import uks.debuggen.party2.PartyApp.PartyAppService;
@@ -77,9 +79,9 @@ public class TestPartyApp implements PropertyChangeListener {
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.timeout = Constants.TIME_OUT;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = "-3500x10";
+      Configuration.browserPosition = Constants.BROWSER_POS;
    }
 
    @Test

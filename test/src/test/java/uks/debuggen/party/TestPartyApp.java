@@ -7,6 +7,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
+
+import uks.debuggen.Constants;
 import uks.debuggen.party.PartyApp.PartyAppService;
 import uks.debuggen.party.events.*;
 
@@ -44,8 +46,9 @@ public class TestPartyApp
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.timeout = Constants.TIME_OUT;
       Configuration.pageLoadTimeout = Configuration.timeout;
+      Configuration.browserPosition = Constants.BROWSER_POS;
    }
 
    @Test

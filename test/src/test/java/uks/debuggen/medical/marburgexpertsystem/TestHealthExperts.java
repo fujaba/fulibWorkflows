@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
+
+import uks.debuggen.Constants;
 import uks.debuggen.medical.marburgexpertsystem.MarburgHealthSystem.MarburgHealthSystemService;
 import uks.debuggen.medical.marburgexpertsystem.events.*;
 import static com.codeborne.selenide.Condition.matchText;
@@ -43,10 +45,11 @@ public class TestHealthExperts
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.timeout = Constants.TIME_OUT;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = "-3500x10";
+      Configuration.browserPosition = Constants.BROWSER_POS;
    }
+
 
    @Test
    public void HealthExperts()

@@ -8,6 +8,8 @@ import org.fulib.workflows.html.HtmlGenerator3;
 import org.fulib.yaml.Yaml;
 import org.junit.Before;
 import org.junit.Test;
+
+import uks.debuggen.Constants;
 import uks.debuggen.studyright.StudyRight.StudyRightService;
 import uks.debuggen.studyright.events.*;
 import static com.codeborne.selenide.Condition.text;
@@ -49,10 +51,11 @@ public class TestSomeEventStorming
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = 10 * 60 * 1000;
+      Configuration.timeout = Constants.TIME_OUT;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = "-3500x10";
+      Configuration.browserPosition = Constants.BROWSER_POS;
    }
+
 
    @Test
    public void testImplentation() throws IOException, InterruptedException
