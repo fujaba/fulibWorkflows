@@ -31,8 +31,10 @@ jobs:
                path: ~/.gradle/caches
                key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
                restore-keys: ${{ runner.os }}-gradle
+         -  name: set gradlew permissions
+            run: chmod a+rwx ./gradlew
          -  name: Check gradlew permissions
-            run: chmod -X ./gradlew
+            run: ls -l ./gradlew
          -  name: Build with Gradle
             run: ./gradlew build
          -  name: Deploy to Maven Central
