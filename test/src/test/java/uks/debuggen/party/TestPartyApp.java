@@ -149,7 +149,7 @@ public class TestPartyApp
       PartyAppService partyApp = new PartyAppService();
       partyApp.start();
       try {
-         Thread.sleep(500);
+         Thread.sleep(1500);
       } catch (Exception e) {
       }
 

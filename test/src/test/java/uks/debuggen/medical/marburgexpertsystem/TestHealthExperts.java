@@ -62,7 +62,7 @@ public class TestHealthExperts
       MarburgHealthSystemService marburgHealthSystem = new MarburgHealthSystemService();
       marburgHealthSystem.start();
       try {
-         Thread.sleep(500);
+         Thread.sleep(1500);
       } catch (Exception e) {
       }
 

@@ -1187,7 +1187,7 @@ public class WorkflowGenerator
 
       testBody.append("" +
       "try {\n" +
-      "   Thread.sleep(500);\n" +
+      "   Thread.sleep(1500);\n" +
       "} catch (Exception e) {\n" +
       "}\n");
 
