@@ -21,6 +21,9 @@ import uks.debuggen.page.Shop.ShopService;
 import uks.debuggen.page.events.Event;
 import uks.debuggen.page.events.EventBroker;
 import uks.debuggen.page.events.ProductStoredEvent;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import uks.debuggen.page.events.*;
+import static com.codeborne.selenide.Condition.matchText;
 
 public class TestSomeEventStorming
 {

@@ -23,6 +23,9 @@ import uks.debuggen.interconnect.events.CarConnectedEvent;
 import uks.debuggen.interconnect.events.DataEvent;
 import uks.debuggen.interconnect.events.Event;
 import uks.debuggen.interconnect.events.EventBroker;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import uks.debuggen.interconnect.events.*;
+import static com.codeborne.selenide.Condition.matchText;
 
 public class TestInterconnect
 {
