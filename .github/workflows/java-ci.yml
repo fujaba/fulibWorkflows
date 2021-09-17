@@ -32,7 +32,7 @@ jobs:
                key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
                restore-keys: ${{ runner.os }}-gradle
          -  name: Check gradlew permissions
-            run: ls -al
+            run: chmod -X ./gradlew
          -  name: Build with Gradle
             run: ./gradlew build
          -  name: Deploy to Maven Central
