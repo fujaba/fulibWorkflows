@@ -86,6 +86,7 @@ public class TestSomeEventStorming
       Configuration.timeout = Constants.TIME_OUT;
       Configuration.pageLoadTimeout = Configuration.timeout;
       Configuration.browserPosition = Constants.BROWSER_POS;
+      Configuration.headless = Constants.HEADLESS;
    }
 
    @Test

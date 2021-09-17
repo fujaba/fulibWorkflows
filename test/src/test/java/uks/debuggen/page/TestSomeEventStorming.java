@@ -1,19 +1,26 @@
 package uks.debuggen.page;
-import com.codeborne.selenide.SelenideElement;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import org.fulib.yaml.Yaml;
-import org.junit.Test;
-import uks.debuggen.page.Shop.ShopService;
-import uks.debuggen.page.events.*;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import java.util.Objects;
+
 import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
-import static com.codeborne.selenide.Condition.matchText;
+import java.util.Objects;
+
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.SelenideElement;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+
+import org.fulib.yaml.Yaml;
+import org.junit.Before;
+import org.junit.Test;
+
+import uks.debuggen.Constants;
+import uks.debuggen.page.Shop.ShopService;
+import uks.debuggen.page.events.Event;
+import uks.debuggen.page.events.EventBroker;
+import uks.debuggen.page.events.ProductStoredEvent;
 
 public class TestSomeEventStorming
 {
@@ -37,6 +44,14 @@ public class TestSomeEventStorming
       this.eventBroker = value;
       this.firePropertyChange(PROPERTY_EVENT_BROKER, oldValue, value);
       return this;
+   }
+
+   @Before
+   public void setTimeOut() {
+      Configuration.timeout = Constants.TIME_OUT;
+      Configuration.pageLoadTimeout = Configuration.timeout;
+      Configuration.browserPosition = Constants.BROWSER_POS;
+      Configuration.headless = Constants.HEADLESS;
    }
 
    @Test
