@@ -15,11 +15,14 @@ public class HtmlTest
    public void testGenWorkflow() throws IOException
    {
 
-      String fileName = "test/src/gen/resources/workflows/ShopWorkflow2.yaml";
+      String fileName = "test/src/gen/resources/workflows/shop/ShopWorkflow2.es.yaml";
 
       HtmlGenerator3 generator = new HtmlGenerator3();
-      generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
+
+      // generator.dumpObjectDiagram = (f, o) -> { FulibTools.objectDiagrams().dumpSVG(f, o); };
       generator.generateViewFiles(fileName, "Shop2");
+
+
 
    }
 

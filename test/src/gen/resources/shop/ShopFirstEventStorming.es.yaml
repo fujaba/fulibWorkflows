@@ -1,0 +1,25 @@
+
+- workflow: smooth case
+
+- event: product stored
+
+- event: product offered
+
+- event: customer registered
+
+- event: customer logged in
+
+- event: product ordered
+
+- event: order picked
+
+- event: order delivered
+
+
+- workflow: out of stock
+
+- event: product ordered
+
+- event: order rejected
+
+

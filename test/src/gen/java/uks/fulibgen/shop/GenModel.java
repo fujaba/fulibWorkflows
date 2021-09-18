@@ -3,6 +3,7 @@ package uks.fulibgen.shop;
 import org.fulib.builder.ClassModelDecorator;
 import org.fulib.builder.ClassModelManager;
 import org.fulib.workflows.WorkflowGenerator;
+import org.fulib.workflows.html.HtmlGenerator3;
 import org.fulib.yaml.Yamler;
 
 import java.io.IOException;
@@ -16,6 +17,6 @@ public class GenModel implements ClassModelDecorator
    @Override
    public void decorate(ClassModelManager mm)
    {
-      new WorkflowGenerator().generateWorkflow(mm, "src/gen/resources/workflows/ShopWorkflow2.yaml");
+      new WorkflowGenerator().generateWorkflow(mm, "src/gen/resources/workflows/shop/ShopWorkflow2.es.yaml");
    }
 }

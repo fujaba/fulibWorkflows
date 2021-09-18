@@ -18,7 +18,7 @@ public class TestGenerator {
         workflowGenerator.dumpObjectDiagram = (o) -> {
             FulibTools.objectDiagrams().dumpSVG("tmp/Shop/shopboard.svg", o);
         };
-        workflowGenerator.loadWorkflow(mm, "test/src/gen/resources/workflows/ShopWorkflow2.yaml");
+        workflowGenerator.loadWorkflow(mm, "test/src/gen/resources/workflows/shop/ShopWorkflow2.es.yaml");
 
         FulibTools.objectDiagrams().dumpSVG("tmp/Shop/EventStorming.svg",
                 workflowGenerator.getEventModel().getEventStormingBoard());
