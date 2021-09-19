@@ -20,6 +20,7 @@ public class EventModel
    private UserInteraction lastUser;
    private ServiceNote lastService;
    private ExternalSystemNote externalSystemNote = null;
+   private Workflow lastWorkflow = null;
 
    public EventStormingBoard getEventStormingBoard()
    {
@@ -72,6 +73,11 @@ public class EventModel
                rootWorkflow = new Workflow().setName(workflowName);
                rootWorkflow.setMap(map);
                getEventStormingBoard().withWorkflows(rootWorkflow);
+               if (lastWorkflow != null) {
+                  String newTime = lastWorkflow.addToTime("01:00:00");
+                  rootWorkflow.setCurrentTime(newTime);
+               }
+               lastWorkflow = rootWorkflow;
                continue;
             }
             if (entry.getKey().equals("user")) {

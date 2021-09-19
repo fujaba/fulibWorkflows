@@ -1,7 +1,23 @@
 
 - workflow: smooth case
 
+- action: Peter Picker
+
+- command: store product
+  barcode: 001
+  type: red shoes
+  location: shelf 42
+
+- policy: Warehouse
+
+- data: Box
+  barcode: 001
+  content: red shoes
+  location: shelf 42
+
 - event: product stored
+  barcode: 001
+  type: red shoes
 
 - event: product offered
 

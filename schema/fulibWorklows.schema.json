@@ -137,8 +137,7 @@
         }
       },
       "required": [
-        "policy",
-        "trigger"
+        "policy"
       ],
       "additionalProperties": false
     },
