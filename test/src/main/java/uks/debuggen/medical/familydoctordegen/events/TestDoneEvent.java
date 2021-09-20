@@ -1,7 +1,7 @@
 package uks.debuggen.medical.familydoctordegen.events;
 import java.util.Objects;
 
-public class TestEvent extends Event
+public class TestDoneEvent extends Event
 {
    public static final String PROPERTY_TEST = "test";
    public static final String PROPERTY_RESULT = "result";
@@ -15,7 +15,7 @@ public class TestEvent extends Event
       return this.test;
    }
 
-   public TestEvent setTest(String value)
+   public TestDoneEvent setTest(String value)
    {
       if (Objects.equals(value, this.test))
       {
@@ -33,7 +33,7 @@ public class TestEvent extends Event
       return this.result;
    }
 
-   public TestEvent setResult(String value)
+   public TestDoneEvent setResult(String value)
    {
       if (Objects.equals(value, this.result))
       {
@@ -51,7 +51,7 @@ public class TestEvent extends Event
       return this.consultation;
    }
 
-   public TestEvent setConsultation(String value)
+   public TestDoneEvent setConsultation(String value)
    {
       if (Objects.equals(value, this.consultation))
       {

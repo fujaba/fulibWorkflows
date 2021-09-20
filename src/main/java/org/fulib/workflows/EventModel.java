@@ -428,6 +428,9 @@ public class EventModel
    {
       String value = getEventId(map); // example value: product stored 12:00
       String eventTime = getEventTime(value, "00:01:00");
+      if ( ! value.endsWith(eventTime)) {
+         value = value + " " + eventTime;
+      }
       eventNote.setTime(eventTime);
       String suffix = eventNote instanceof CommandNote ? "Command" : "Event";
       String eventTypeName = getEventTypeName(value) + suffix;

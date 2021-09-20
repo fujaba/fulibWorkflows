@@ -1,10 +1,10 @@
 package uks.fulibgen.shop.Shop;
 import java.util.LinkedHashMap;
-import java.util.function.Consumer;
 import uks.fulibgen.shop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 import java.util.function.Function;
+import java.util.function.Consumer;
 
 public class ShopBuilder
 {

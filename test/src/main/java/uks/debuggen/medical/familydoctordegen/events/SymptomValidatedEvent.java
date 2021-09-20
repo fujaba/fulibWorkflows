@@ -1,7 +1,7 @@
 package uks.debuggen.medical.familydoctordegen.events;
 import java.util.Objects;
 
-public class SymptomEvent extends Event
+public class SymptomValidatedEvent extends Event
 {
    public static final String PROPERTY_SYMPTOM = "symptom";
    public static final String PROPERTY_CONSULTATION = "consultation";
@@ -15,7 +15,7 @@ public class SymptomEvent extends Event
       return this.symptom;
    }
 
-   public SymptomEvent setSymptom(String value)
+   public SymptomValidatedEvent setSymptom(String value)
    {
       if (Objects.equals(value, this.symptom))
       {
@@ -33,7 +33,7 @@ public class SymptomEvent extends Event
       return this.consultation;
    }
 
-   public SymptomEvent setConsultation(String value)
+   public SymptomValidatedEvent setConsultation(String value)
    {
       if (Objects.equals(value, this.consultation))
       {
@@ -51,7 +51,7 @@ public class SymptomEvent extends Event
       return this.consultations;
    }
 
-   public SymptomEvent setConsultations(String value)
+   public SymptomValidatedEvent setConsultations(String value)
    {
       if (Objects.equals(value, this.consultations))
       {

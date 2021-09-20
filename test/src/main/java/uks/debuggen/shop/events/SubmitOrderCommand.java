@@ -1,43 +1,25 @@
-package uks.fulibgen.shop.events;
+package uks.debuggen.shop.events;
 import java.util.Objects;
 
-public class OrderRegisteredEvent extends Event
+public class SubmitOrderCommand extends Command
 {
-   public static final String PROPERTY_ORDER = "order";
    public static final String PROPERTY_PRODUCT = "product";
-   public static final String PROPERTY_CUSTOMER = "customer";
+   public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_TRIGGER = "trigger";
-   private String order;
+   public static final String PROPERTY_CUSTOMER = "customer";
    private String product;
-   private String customer;
+   private String name;
    private String address;
    private String trigger;
-
-   public String getOrder()
-   {
-      return this.order;
-   }
-
-   public OrderRegisteredEvent setOrder(String value)
-   {
-      if (Objects.equals(value, this.order))
-      {
-         return this;
-      }
-
-      final String oldValue = this.order;
-      this.order = value;
-      this.firePropertyChange(PROPERTY_ORDER, oldValue, value);
-      return this;
-   }
+   private String customer;
 
    public String getProduct()
    {
       return this.product;
    }
 
-   public OrderRegisteredEvent setProduct(String value)
+   public SubmitOrderCommand setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -50,21 +32,21 @@ public class OrderRegisteredEvent extends Event
       return this;
    }
 
-   public String getCustomer()
+   public String getName()
    {
-      return this.customer;
+      return this.name;
    }
 
-   public OrderRegisteredEvent setCustomer(String value)
+   public SubmitOrderCommand setName(String value)
    {
-      if (Objects.equals(value, this.customer))
+      if (Objects.equals(value, this.name))
       {
          return this;
       }
 
-      final String oldValue = this.customer;
-      this.customer = value;
-      this.firePropertyChange(PROPERTY_CUSTOMER, oldValue, value);
+      final String oldValue = this.name;
+      this.name = value;
+      this.firePropertyChange(PROPERTY_NAME, oldValue, value);
       return this;
    }
 
@@ -73,7 +55,7 @@ public class OrderRegisteredEvent extends Event
       return this.address;
    }
 
-   public OrderRegisteredEvent setAddress(String value)
+   public SubmitOrderCommand setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -91,7 +73,7 @@ public class OrderRegisteredEvent extends Event
       return this.trigger;
    }
 
-   public OrderRegisteredEvent setTrigger(String value)
+   public SubmitOrderCommand setTrigger(String value)
    {
       if (Objects.equals(value, this.trigger))
       {
@@ -104,15 +86,33 @@ public class OrderRegisteredEvent extends Event
       return this;
    }
 
+   public String getCustomer()
+   {
+      return this.customer;
+   }
+
+   public SubmitOrderCommand setCustomer(String value)
+   {
+      if (Objects.equals(value, this.customer))
+      {
+         return this;
+      }
+
+      final String oldValue = this.customer;
+      this.customer = value;
+      this.firePropertyChange(PROPERTY_CUSTOMER, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getOrder());
       result.append(' ').append(this.getProduct());
-      result.append(' ').append(this.getCustomer());
+      result.append(' ').append(this.getName());
       result.append(' ').append(this.getAddress());
       result.append(' ').append(this.getTrigger());
+      result.append(' ').append(this.getCustomer());
       return result.toString();
    }
 }

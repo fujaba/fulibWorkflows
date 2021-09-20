@@ -117,9 +117,9 @@ public class DocMedicalBusinessLogic
 
    private void handleDemoPatientRegisteredEvent(PatientRegisteredEvent event)
    {
-      if (event.getId().equals("14:00")) {
+      if (event.getId().equals("14:01")) {
          PatientBuilt aliceEvent = new PatientBuilt();
-         aliceEvent.setId("14:00:01");
+         aliceEvent.setId("14:01:01");
          aliceEvent.setBlockId("Alice");
          aliceEvent.setName("Alice");
          aliceEvent.setAddress("Wonderland 1");
@@ -139,11 +139,11 @@ public class DocMedicalBusinessLogic
          handlerMap.put(ConsultationBuilt.class, builder::storeConsultationBuilt);
          handlerMap.put(TestBuilt.class, builder::storeTestBuilt);
          handlerMap.put(PatientRegisteredEvent.class, this::handlePatientRegisteredEvent);
-         handlerMap.put(ConsultationEvent.class, this::handleConsultationEvent);
-         handlerMap.put(SymptomEvent.class, this::handleSymptomEvent);
-         handlerMap.put(TestEvent.class, this::handleTestEvent);
-         handlerMap.put(DiagnosisEvent.class, this::handleDiagnosisEvent);
-         handlerMap.put(TreatmentEvent.class, this::handleTreatmentEvent);
+         handlerMap.put(ConsultationRegisteredEvent.class, this::handleConsultationRegisteredEvent);
+         handlerMap.put(SymptomValidatedEvent.class, this::handleSymptomValidatedEvent);
+         handlerMap.put(TestDoneEvent.class, this::handleTestDoneEvent);
+         handlerMap.put(DiagnosisDoneEvent.class, this::handleDiagnosisDoneEvent);
+         handlerMap.put(TreatmentInitiatedEvent.class, this::handleTreatmentInitiatedEvent);
       }
    }
 
@@ -182,19 +182,19 @@ public class DocMedicalBusinessLogic
       this.setService(null);
    }
 
-   private void handleConsultationEvent(Event e)
+   private void handleConsultationRegisteredEvent(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
       // fulib
-      ConsultationEvent event = (ConsultationEvent) e;
-      handleDemoConsultationEvent(event);
+      ConsultationRegisteredEvent event = (ConsultationRegisteredEvent) e;
+      handleDemoConsultationRegisteredEvent(event);
    }
 
-   private void handleDemoConsultationEvent(ConsultationEvent event)
+   private void handleDemoConsultationRegisteredEvent(ConsultationRegisteredEvent event)
    {
-      if (event.getId().equals("14:01")) {
+      if (event.getId().equals("14:02")) {
          ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
-         alice_2021_06_02T14_00Event.setId("14:01:01");
+         alice_2021_06_02T14_00Event.setId("14:02:01");
          alice_2021_06_02T14_00Event.setBlockId("Alice_2021_06_02T14_00");
          alice_2021_06_02T14_00Event.setCid("Alice#2021-06-02T14:00");
          alice_2021_06_02T14_00Event.setPatient("Alice");
@@ -203,28 +203,28 @@ public class DocMedicalBusinessLogic
       }
    }
 
-   private void handleSymptomEvent(Event e)
+   private void handleSymptomValidatedEvent(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
       // fulib
-      SymptomEvent event = (SymptomEvent) e;
-      handleDemoSymptomEvent(event);
+      SymptomValidatedEvent event = (SymptomValidatedEvent) e;
+      handleDemoSymptomValidatedEvent(event);
    }
 
-   private void handleDemoSymptomEvent(SymptomEvent event)
+   private void handleDemoSymptomValidatedEvent(SymptomValidatedEvent event)
    {
-      if (event.getId().equals("14:02")) {
+      if (event.getId().equals("14:03")) {
          SymptomBuilt coughEvent = new SymptomBuilt();
-         coughEvent.setId("14:02:01");
+         coughEvent.setId("14:03:01");
          coughEvent.setBlockId("cough");
          coughEvent.setName("cough");
          coughEvent.setConsultations("[Alice#2021-06-02T14:00]");
          service.apply(coughEvent);
 
       }
-      if (event.getId().equals("14:03")) {
+      if (event.getId().equals("14:04")) {
          SymptomBuilt runny_noseEvent = new SymptomBuilt();
-         runny_noseEvent.setId("14:03:01");
+         runny_noseEvent.setId("14:04:01");
          runny_noseEvent.setBlockId("runny_nose");
          runny_noseEvent.setName("runny nose");
          runny_noseEvent.setConsultations("[Alice#2021-06-02T14:00]");
@@ -233,19 +233,19 @@ public class DocMedicalBusinessLogic
       }
    }
 
-   private void handleTestEvent(Event e)
+   private void handleTestDoneEvent(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
       // fulib
-      TestEvent event = (TestEvent) e;
-      handleDemoTestEvent(event);
+      TestDoneEvent event = (TestDoneEvent) e;
+      handleDemoTestDoneEvent(event);
    }
 
-   private void handleDemoTestEvent(TestEvent event)
+   private void handleDemoTestDoneEvent(TestDoneEvent event)
    {
-      if (event.getId().equals("14:04")) {
+      if (event.getId().equals("14:05")) {
          TestBuilt alice_t001_2021_06_02T14_00Event = new TestBuilt();
-         alice_t001_2021_06_02T14_00Event.setId("14:04:01");
+         alice_t001_2021_06_02T14_00Event.setId("14:05:01");
          alice_t001_2021_06_02T14_00Event.setBlockId("Alice_t001_2021_06_02T14_00");
          alice_t001_2021_06_02T14_00Event.setCid("Alice#t001#2021-06-02T14:00");
          alice_t001_2021_06_02T14_00Event.setKind("temperature");
@@ -254,7 +254,7 @@ public class DocMedicalBusinessLogic
          service.apply(alice_t001_2021_06_02T14_00Event);
 
          SymptomBuilt medium_feverEvent = new SymptomBuilt();
-         medium_feverEvent.setId("14:04:02");
+         medium_feverEvent.setId("14:05:02");
          medium_feverEvent.setBlockId("medium_fever");
          medium_feverEvent.setName("medium fever");
          medium_feverEvent.setConsultations("[Alice#2021-06-02T14:00]");
@@ -263,19 +263,19 @@ public class DocMedicalBusinessLogic
       }
    }
 
-   private void handleDiagnosisEvent(Event e)
+   private void handleDiagnosisDoneEvent(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
       // fulib
-      DiagnosisEvent event = (DiagnosisEvent) e;
-      handleDemoDiagnosisEvent(event);
+      DiagnosisDoneEvent event = (DiagnosisDoneEvent) e;
+      handleDemoDiagnosisDoneEvent(event);
    }
 
-   private void handleDemoDiagnosisEvent(DiagnosisEvent event)
+   private void handleDemoDiagnosisDoneEvent(DiagnosisDoneEvent event)
    {
-      if (event.getId().equals("14:05")) {
+      if (event.getId().equals("14:06")) {
          ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
-         alice_2021_06_02T14_00Event.setId("14:05:01");
+         alice_2021_06_02T14_00Event.setId("14:06:01");
          alice_2021_06_02T14_00Event.setBlockId("Alice_2021_06_02T14_00");
          alice_2021_06_02T14_00Event.setCid("Alice#2021-06-02T14:00");
          alice_2021_06_02T14_00Event.setDiagnosis("common cold");
@@ -284,19 +284,19 @@ public class DocMedicalBusinessLogic
       }
    }
 
-   private void handleTreatmentEvent(Event e)
+   private void handleTreatmentInitiatedEvent(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
       // fulib
-      TreatmentEvent event = (TreatmentEvent) e;
-      handleDemoTreatmentEvent(event);
+      TreatmentInitiatedEvent event = (TreatmentInitiatedEvent) e;
+      handleDemoTreatmentInitiatedEvent(event);
    }
 
-   private void handleDemoTreatmentEvent(TreatmentEvent event)
+   private void handleDemoTreatmentInitiatedEvent(TreatmentInitiatedEvent event)
    {
-      if (event.getId().equals("14:06")) {
+      if (event.getId().equals("14:07")) {
          ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
-         alice_2021_06_02T14_00Event.setId("14:06:01");
+         alice_2021_06_02T14_00Event.setId("14:07:01");
          alice_2021_06_02T14_00Event.setBlockId("Alice_2021_06_02T14_00");
          alice_2021_06_02T14_00Event.setCid("Alice#2021-06-02T14:00");
          alice_2021_06_02T14_00Event.setTreatment("ibuprofen 400 1-1-1");

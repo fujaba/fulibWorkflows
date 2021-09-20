@@ -1,6 +1,6 @@
 
 # provide name for this scenario
-# - workflow: ordering smooth
+- workflow: ordering smooth
 
 # provide some service with its port
 - service: Shop

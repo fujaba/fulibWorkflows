@@ -21,7 +21,7 @@
   attributes: 	docMedicalBusinessLogic_model 	docMedicalBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.medical.familydoctordegen.events.*;"
-  methods: 	docMedicalBusinessLogic_handlePatientRegisteredEvent 	docMedicalBusinessLogic_handleDemoPatientRegisteredEvent 	docMedicalBusinessLogic_handleConsultationEvent 	docMedicalBusinessLogic_handleDemoConsultationEvent 	docMedicalBusinessLogic_handleSymptomEvent 	docMedicalBusinessLogic_handleDemoSymptomEvent 	docMedicalBusinessLogic_handleTestEvent 	docMedicalBusinessLogic_handleDemoTestEvent 	docMedicalBusinessLogic_handleDiagnosisEvent 	docMedicalBusinessLogic_handleDemoDiagnosisEvent 	docMedicalBusinessLogic_handleTreatmentEvent 	docMedicalBusinessLogic_handleDemoTreatmentEvent 	docMedicalBusinessLogic_initEventHandlerMap 	docMedicalBusinessLogic_ignoreEvent 	docMedicalBusinessLogic_getHandler
+  methods: 	docMedicalBusinessLogic_handlePatientRegisteredEvent 	docMedicalBusinessLogic_handleDemoPatientRegisteredEvent 	docMedicalBusinessLogic_handleConsultationRegisteredEvent 	docMedicalBusinessLogic_handleDemoConsultationRegisteredEvent 	docMedicalBusinessLogic_handleSymptomValidatedEvent 	docMedicalBusinessLogic_handleDemoSymptomValidatedEvent 	docMedicalBusinessLogic_handleTestDoneEvent 	docMedicalBusinessLogic_handleDemoTestDoneEvent 	docMedicalBusinessLogic_handleDiagnosisDoneEvent 	docMedicalBusinessLogic_handleDemoDiagnosisDoneEvent 	docMedicalBusinessLogic_handleTreatmentInitiatedEvent 	docMedicalBusinessLogic_handleDemoTreatmentInitiatedEvent 	docMedicalBusinessLogic_initEventHandlerMap 	docMedicalBusinessLogic_ignoreEvent 	docMedicalBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	DocMedicalBusinessLogic
@@ -222,9 +222,9 @@ handleDemoPatientRegisteredEvent(event);
   clazz: 	docMedicalBusinessLogic
   declaration: 	"private void handleDemoPatientRegisteredEvent(PatientRegisteredEvent event)"
   id: 	DocMedicalBusinessLogic_handleDemoPatientRegisteredEvent
-  methodBody: 	"if (event.getId().equals(\"14:00\")) {
+  methodBody: 	"if (event.getId().equals(\"14:01\")) {
    PatientBuilt aliceEvent = new PatientBuilt();
-   aliceEvent.setId(\"14:00:01\");
+   aliceEvent.setId(\"14:01:01\");
    aliceEvent.setBlockId(\"Alice\");
    aliceEvent.setName(\"Alice\");
    aliceEvent.setAddress(\"Wonderland 1\");
@@ -240,31 +240,31 @@ handleDemoPatientRegisteredEvent(event);
   returnType: 	void
   signature: 	"class/DocMedicalBusinessLogic/method/handleDemoPatientRegisteredEvent(PatientRegisteredEvent)"
 
-- docMedicalBusinessLogic_handleConsultationEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleConsultationRegisteredEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleConsultationEvent(Event e)"
-  id: 	DocMedicalBusinessLogic_handleConsultationEvent
+  declaration: 	"private void handleConsultationRegisteredEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleConsultationRegisteredEvent
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-ConsultationEvent event = (ConsultationEvent) e;
-handleDemoConsultationEvent(event);
+ConsultationRegisteredEvent event = (ConsultationRegisteredEvent) e;
+handleDemoConsultationRegisteredEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleConsultationEvent
+  name: 	handleConsultationRegisteredEvent
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleConsultationEvent(Event)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleConsultationRegisteredEvent(Event)"
 
-- docMedicalBusinessLogic_handleDemoConsultationEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleDemoConsultationRegisteredEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleDemoConsultationEvent(ConsultationEvent event)"
-  id: 	DocMedicalBusinessLogic_handleDemoConsultationEvent
-  methodBody: 	"if (event.getId().equals(\"14:01\")) {
+  declaration: 	"private void handleDemoConsultationRegisteredEvent(ConsultationRegisteredEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoConsultationRegisteredEvent
+  methodBody: 	"if (event.getId().equals(\"14:02\")) {
    ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
-   alice_2021_06_02T14_00Event.setId(\"14:01:01\");
+   alice_2021_06_02T14_00Event.setId(\"14:02:01\");
    alice_2021_06_02T14_00Event.setBlockId(\"Alice_2021_06_02T14_00\");
    alice_2021_06_02T14_00Event.setCid(\"Alice#2021-06-02T14:00\");
    alice_2021_06_02T14_00Event.setPatient(\"Alice\");
@@ -274,45 +274,45 @@ handleDemoConsultationEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoConsultationEvent
-  paramsString: 	"ConsultationEvent event"
+  name: 	handleDemoConsultationRegisteredEvent
+  paramsString: 	"ConsultationRegisteredEvent event"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoConsultationEvent(ConsultationEvent)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoConsultationRegisteredEvent(ConsultationRegisteredEvent)"
 
-- docMedicalBusinessLogic_handleSymptomEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleSymptomValidatedEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleSymptomEvent(Event e)"
-  id: 	DocMedicalBusinessLogic_handleSymptomEvent
+  declaration: 	"private void handleSymptomValidatedEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleSymptomValidatedEvent
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-SymptomEvent event = (SymptomEvent) e;
-handleDemoSymptomEvent(event);
+SymptomValidatedEvent event = (SymptomValidatedEvent) e;
+handleDemoSymptomValidatedEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleSymptomEvent
+  name: 	handleSymptomValidatedEvent
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleSymptomEvent(Event)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleSymptomValidatedEvent(Event)"
 
-- docMedicalBusinessLogic_handleDemoSymptomEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleDemoSymptomValidatedEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleDemoSymptomEvent(SymptomEvent event)"
-  id: 	DocMedicalBusinessLogic_handleDemoSymptomEvent
-  methodBody: 	"if (event.getId().equals(\"14:02\")) {
+  declaration: 	"private void handleDemoSymptomValidatedEvent(SymptomValidatedEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoSymptomValidatedEvent
+  methodBody: 	"if (event.getId().equals(\"14:03\")) {
    SymptomBuilt coughEvent = new SymptomBuilt();
-   coughEvent.setId(\"14:02:01\");
+   coughEvent.setId(\"14:03:01\");
    coughEvent.setBlockId(\"cough\");
    coughEvent.setName(\"cough\");
    coughEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
    service.apply(coughEvent);
 
 }
-if (event.getId().equals(\"14:03\")) {
+if (event.getId().equals(\"14:04\")) {
    SymptomBuilt runny_noseEvent = new SymptomBuilt();
-   runny_noseEvent.setId(\"14:03:01\");
+   runny_noseEvent.setId(\"14:04:01\");
    runny_noseEvent.setBlockId(\"runny_nose\");
    runny_noseEvent.setName(\"runny nose\");
    runny_noseEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
@@ -322,36 +322,36 @@ if (event.getId().equals(\"14:03\")) {
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoSymptomEvent
-  paramsString: 	"SymptomEvent event"
+  name: 	handleDemoSymptomValidatedEvent
+  paramsString: 	"SymptomValidatedEvent event"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoSymptomEvent(SymptomEvent)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoSymptomValidatedEvent(SymptomValidatedEvent)"
 
-- docMedicalBusinessLogic_handleTestEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleTestDoneEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleTestEvent(Event e)"
-  id: 	DocMedicalBusinessLogic_handleTestEvent
+  declaration: 	"private void handleTestDoneEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleTestDoneEvent
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-TestEvent event = (TestEvent) e;
-handleDemoTestEvent(event);
+TestDoneEvent event = (TestDoneEvent) e;
+handleDemoTestDoneEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleTestEvent
+  name: 	handleTestDoneEvent
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleTestEvent(Event)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleTestDoneEvent(Event)"
 
-- docMedicalBusinessLogic_handleDemoTestEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleDemoTestDoneEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleDemoTestEvent(TestEvent event)"
-  id: 	DocMedicalBusinessLogic_handleDemoTestEvent
-  methodBody: 	"if (event.getId().equals(\"14:04\")) {
+  declaration: 	"private void handleDemoTestDoneEvent(TestDoneEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoTestDoneEvent
+  methodBody: 	"if (event.getId().equals(\"14:05\")) {
    TestBuilt alice_t001_2021_06_02T14_00Event = new TestBuilt();
-   alice_t001_2021_06_02T14_00Event.setId(\"14:04:01\");
+   alice_t001_2021_06_02T14_00Event.setId(\"14:05:01\");
    alice_t001_2021_06_02T14_00Event.setBlockId(\"Alice_t001_2021_06_02T14_00\");
    alice_t001_2021_06_02T14_00Event.setCid(\"Alice#t001#2021-06-02T14:00\");
    alice_t001_2021_06_02T14_00Event.setKind(\"temperature\");
@@ -360,7 +360,7 @@ handleDemoTestEvent(event);
    service.apply(alice_t001_2021_06_02T14_00Event);
 
    SymptomBuilt medium_feverEvent = new SymptomBuilt();
-   medium_feverEvent.setId(\"14:04:02\");
+   medium_feverEvent.setId(\"14:05:02\");
    medium_feverEvent.setBlockId(\"medium_fever\");
    medium_feverEvent.setName(\"medium fever\");
    medium_feverEvent.setConsultations(\"[Alice#2021-06-02T14:00]\");
@@ -370,36 +370,36 @@ handleDemoTestEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoTestEvent
-  paramsString: 	"TestEvent event"
+  name: 	handleDemoTestDoneEvent
+  paramsString: 	"TestDoneEvent event"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoTestEvent(TestEvent)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoTestDoneEvent(TestDoneEvent)"
 
-- docMedicalBusinessLogic_handleDiagnosisEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleDiagnosisDoneEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleDiagnosisEvent(Event e)"
-  id: 	DocMedicalBusinessLogic_handleDiagnosisEvent
+  declaration: 	"private void handleDiagnosisDoneEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleDiagnosisDoneEvent
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-DiagnosisEvent event = (DiagnosisEvent) e;
-handleDemoDiagnosisEvent(event);
+DiagnosisDoneEvent event = (DiagnosisDoneEvent) e;
+handleDemoDiagnosisDoneEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDiagnosisEvent
+  name: 	handleDiagnosisDoneEvent
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleDiagnosisEvent(Event)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDiagnosisDoneEvent(Event)"
 
-- docMedicalBusinessLogic_handleDemoDiagnosisEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleDemoDiagnosisDoneEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleDemoDiagnosisEvent(DiagnosisEvent event)"
-  id: 	DocMedicalBusinessLogic_handleDemoDiagnosisEvent
-  methodBody: 	"if (event.getId().equals(\"14:05\")) {
+  declaration: 	"private void handleDemoDiagnosisDoneEvent(DiagnosisDoneEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoDiagnosisDoneEvent
+  methodBody: 	"if (event.getId().equals(\"14:06\")) {
    ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
-   alice_2021_06_02T14_00Event.setId(\"14:05:01\");
+   alice_2021_06_02T14_00Event.setId(\"14:06:01\");
    alice_2021_06_02T14_00Event.setBlockId(\"Alice_2021_06_02T14_00\");
    alice_2021_06_02T14_00Event.setCid(\"Alice#2021-06-02T14:00\");
    alice_2021_06_02T14_00Event.setDiagnosis(\"common cold\");
@@ -409,36 +409,36 @@ handleDemoDiagnosisEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoDiagnosisEvent
-  paramsString: 	"DiagnosisEvent event"
+  name: 	handleDemoDiagnosisDoneEvent
+  paramsString: 	"DiagnosisDoneEvent event"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoDiagnosisEvent(DiagnosisEvent)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoDiagnosisDoneEvent(DiagnosisDoneEvent)"
 
-- docMedicalBusinessLogic_handleTreatmentEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleTreatmentInitiatedEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleTreatmentEvent(Event e)"
-  id: 	DocMedicalBusinessLogic_handleTreatmentEvent
+  declaration: 	"private void handleTreatmentInitiatedEvent(Event e)"
+  id: 	DocMedicalBusinessLogic_handleTreatmentInitiatedEvent
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-TreatmentEvent event = (TreatmentEvent) e;
-handleDemoTreatmentEvent(event);
+TreatmentInitiatedEvent event = (TreatmentInitiatedEvent) e;
+handleDemoTreatmentInitiatedEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleTreatmentEvent
+  name: 	handleTreatmentInitiatedEvent
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleTreatmentEvent(Event)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleTreatmentInitiatedEvent(Event)"
 
-- docMedicalBusinessLogic_handleDemoTreatmentEvent: 	org.fulib.classmodel.FMethod
+- docMedicalBusinessLogic_handleDemoTreatmentInitiatedEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	docMedicalBusinessLogic
-  declaration: 	"private void handleDemoTreatmentEvent(TreatmentEvent event)"
-  id: 	DocMedicalBusinessLogic_handleDemoTreatmentEvent
-  methodBody: 	"if (event.getId().equals(\"14:06\")) {
+  declaration: 	"private void handleDemoTreatmentInitiatedEvent(TreatmentInitiatedEvent event)"
+  id: 	DocMedicalBusinessLogic_handleDemoTreatmentInitiatedEvent
+  methodBody: 	"if (event.getId().equals(\"14:07\")) {
    ConsultationBuilt alice_2021_06_02T14_00Event = new ConsultationBuilt();
-   alice_2021_06_02T14_00Event.setId(\"14:06:01\");
+   alice_2021_06_02T14_00Event.setId(\"14:07:01\");
    alice_2021_06_02T14_00Event.setBlockId(\"Alice_2021_06_02T14_00\");
    alice_2021_06_02T14_00Event.setCid(\"Alice#2021-06-02T14:00\");
    alice_2021_06_02T14_00Event.setTreatment(\"ibuprofen 400 1-1-1\");
@@ -448,10 +448,10 @@ handleDemoTreatmentEvent(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoTreatmentEvent
-  paramsString: 	"TreatmentEvent event"
+  name: 	handleDemoTreatmentInitiatedEvent
+  paramsString: 	"TreatmentInitiatedEvent event"
   returnType: 	void
-  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoTreatmentEvent(TreatmentEvent)"
+  signature: 	"class/DocMedicalBusinessLogic/method/handleDemoTreatmentInitiatedEvent(TreatmentInitiatedEvent)"
 
 - docMedicalBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -466,11 +466,11 @@ handleDemoTreatmentEvent(event);
    handlerMap.put(ConsultationBuilt.class, builder::storeConsultationBuilt);
    handlerMap.put(TestBuilt.class, builder::storeTestBuilt);
    handlerMap.put(PatientRegisteredEvent.class, this::handlePatientRegisteredEvent);
-   handlerMap.put(ConsultationEvent.class, this::handleConsultationEvent);
-   handlerMap.put(SymptomEvent.class, this::handleSymptomEvent);
-   handlerMap.put(TestEvent.class, this::handleTestEvent);
-   handlerMap.put(DiagnosisEvent.class, this::handleDiagnosisEvent);
-   handlerMap.put(TreatmentEvent.class, this::handleTreatmentEvent);
+   handlerMap.put(ConsultationRegisteredEvent.class, this::handleConsultationRegisteredEvent);
+   handlerMap.put(SymptomValidatedEvent.class, this::handleSymptomValidatedEvent);
+   handlerMap.put(TestDoneEvent.class, this::handleTestDoneEvent);
+   handlerMap.put(DiagnosisDoneEvent.class, this::handleDiagnosisDoneEvent);
+   handlerMap.put(TreatmentInitiatedEvent.class, this::handleTreatmentInitiatedEvent);
 }
 "
   modified: 	false

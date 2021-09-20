@@ -82,7 +82,7 @@ public class TestSomeEventStorming
       pre.shouldHave(text("http://localhost:42002/apply"));
       LinkedHashMap<String, Object> modelMap;
 
-      // workflow working smoothly
+      // workflow OrderingSmooth
 
       // create StoreBoxCommand: store box 12:00
       StoreBoxCommand e1200 = new StoreBoxCommand();

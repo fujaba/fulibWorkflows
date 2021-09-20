@@ -1,4 +1,4 @@
-package uks.fulibgen.shop.events;
+package uks.debuggen.shop.events;
 import java.util.Objects;
 
 public class OrderRegisteredEvent extends Event

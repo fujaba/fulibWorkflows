@@ -20,7 +20,7 @@
 
 - brokerTopic: doc degen office
 
-- event: patient registered 14:00
+- event: patient registered
   name: Alice
   address: Wonderland 1
   birthDate: 1970-01-01

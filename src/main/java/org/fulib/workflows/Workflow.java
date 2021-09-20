@@ -373,21 +373,21 @@ public class Workflow extends Note
       String[] deltaSplit = delta.split("\\:");
       String deltaSecs = deltaSplit[2];
       String deltaMins = deltaSplit[1];
+      String deltaHours = deltaSplit[0];
       String[] currentSplit = currentTime.split("\\:");
       String hours = addOneTimePart(currentSplit[0], deltaSplit[0]);
       String mins = addOneTimePart(currentSplit[1], deltaSplit[1]);
-      String secs = "00";
+      String secs = deltaSecs;
       if (currentSplit.length >= 3) {
-         secs = currentSplit[2];
-      }
-      if (deltaSecs.equals("00")) {
-         secs = deltaSecs;
-      }
-      else {
-         secs = addOneTimePart(secs, deltaSplit[2]);
+         secs = addOneTimePart(currentSplit[2], deltaSecs);
       }
 
-      if (deltaMins.equals("00")) {
+      if ( ! deltaMins.equals("00")) {
+         secs = "00";
+      }
+
+      if ( ! deltaHours.equals("00")) {
+         secs = "00";
          mins = "00";
       }
 

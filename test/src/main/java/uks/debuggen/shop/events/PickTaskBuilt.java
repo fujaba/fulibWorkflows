@@ -1,25 +1,27 @@
-package uks.fulibgen.shop.events;
+package uks.debuggen.shop.events;
 import java.util.Objects;
 
-public class OrderRegisteredEvent extends Event
+public class PickTaskBuilt extends DataEvent
 {
    public static final String PROPERTY_ORDER = "order";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
-   public static final String PROPERTY_TRIGGER = "trigger";
+   public static final String PROPERTY_STATE = "state";
+   public static final String PROPERTY_BOX = "box";
    private String order;
    private String product;
    private String customer;
    private String address;
-   private String trigger;
+   private String state;
+   private String box;
 
    public String getOrder()
    {
       return this.order;
    }
 
-   public OrderRegisteredEvent setOrder(String value)
+   public PickTaskBuilt setOrder(String value)
    {
       if (Objects.equals(value, this.order))
       {
@@ -37,7 +39,7 @@ public class OrderRegisteredEvent extends Event
       return this.product;
    }
 
-   public OrderRegisteredEvent setProduct(String value)
+   public PickTaskBuilt setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -55,7 +57,7 @@ public class OrderRegisteredEvent extends Event
       return this.customer;
    }
 
-   public OrderRegisteredEvent setCustomer(String value)
+   public PickTaskBuilt setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -73,7 +75,7 @@ public class OrderRegisteredEvent extends Event
       return this.address;
    }
 
-   public OrderRegisteredEvent setAddress(String value)
+   public PickTaskBuilt setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -86,21 +88,39 @@ public class OrderRegisteredEvent extends Event
       return this;
    }
 
-   public String getTrigger()
+   public String getState()
    {
-      return this.trigger;
+      return this.state;
    }
 
-   public OrderRegisteredEvent setTrigger(String value)
+   public PickTaskBuilt setState(String value)
    {
-      if (Objects.equals(value, this.trigger))
+      if (Objects.equals(value, this.state))
       {
          return this;
       }
 
-      final String oldValue = this.trigger;
-      this.trigger = value;
-      this.firePropertyChange(PROPERTY_TRIGGER, oldValue, value);
+      final String oldValue = this.state;
+      this.state = value;
+      this.firePropertyChange(PROPERTY_STATE, oldValue, value);
+      return this;
+   }
+
+   public String getBox()
+   {
+      return this.box;
+   }
+
+   public PickTaskBuilt setBox(String value)
+   {
+      if (Objects.equals(value, this.box))
+      {
+         return this;
+      }
+
+      final String oldValue = this.box;
+      this.box = value;
+      this.firePropertyChange(PROPERTY_BOX, oldValue, value);
       return this;
    }
 
@@ -112,7 +132,8 @@ public class OrderRegisteredEvent extends Event
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
-      result.append(' ').append(this.getTrigger());
+      result.append(' ').append(this.getState());
+      result.append(' ').append(this.getBox());
       return result.toString();
    }
 }
