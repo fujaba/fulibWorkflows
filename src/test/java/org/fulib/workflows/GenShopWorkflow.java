@@ -20,7 +20,7 @@ public class GenShopWorkflow {
         generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopFirstEventStorming.es.yaml", "FirstShopBoard");
         generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopRefinedProductStoredEventStorming.es.yaml", "StoreProductShopBoard");
 
-        String filename = "test/src/gen/resources/shop/ShopWorkflow2.es.yaml";
+        String filename = "test/src/gen/resources/workflows/shop/ShopWorkflow2.es.yaml";
         generator.generateViewFiles(filename, "MicroShop");
 
         // java

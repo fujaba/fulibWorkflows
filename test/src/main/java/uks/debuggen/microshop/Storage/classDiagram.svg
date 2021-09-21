@@ -1,0 +1,91 @@
+<svg width="1002px" height="405px"
+ viewBox="0.00 0.00 1002.00 405.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 401)">
+<title>uks.debuggen.microshop.Storage</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-401 998,-401 998,4 -4,4"/>
+<!-- Box -->
+<g id="node1" class="node">
+<title>Box</title>
+<polygon fill="none" stroke="black" points="8,-93.5 8,-115.5 98,-115.5 98,-93.5 8,-93.5"/>
+<text text-anchor="start" x="41.33" y="-99.9" font-family="Times,serif" font-size="14.00">Box</text>
+<polygon fill="none" stroke="black" points="8,-37.5 8,-93.5 98,-93.5 98,-37.5 8,-37.5"/>
+<text text-anchor="start" x="11" y="-77.9" font-family="Times,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="11" y="-61.1" font-family="Times,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="11" y="-44.3" font-family="Times,serif" font-size="14.00">place :String</text>
+</g>
+<!-- PickTask -->
+<g id="node2" class="node">
+<title>PickTask</title>
+<polygon fill="none" stroke="black" points="132,-126.5 132,-148.5 230,-148.5 230,-126.5 132,-126.5"/>
+<text text-anchor="start" x="154.95" y="-132.9" font-family="Times,serif" font-size="14.00">PickTask</text>
+<polygon fill="none" stroke="black" points="132,-3.5 132,-126.5 230,-126.5 230,-3.5 132,-3.5"/>
+<text text-anchor="start" x="135" y="-110.9" font-family="Times,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="135" y="-94.1" font-family="Times,serif" font-size="14.00">order :String</text>
+<text text-anchor="start" x="135" y="-77.3" font-family="Times,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="135" y="-60.5" font-family="Times,serif" font-size="14.00">customer :String</text>
+<text text-anchor="start" x="135" y="-43.7" font-family="Times,serif" font-size="14.00">address :String</text>
+<text text-anchor="start" x="135" y="-26.9" font-family="Times,serif" font-size="14.00">state :String</text>
+<text text-anchor="start" x="135" y="-10.1" font-family="Times,serif" font-size="14.00">box :String</text>
+</g>
+<!-- StorageBuilder -->
+<g id="node3" class="node">
+<title>StorageBuilder</title>
+<polygon fill="none" stroke="black" points="265,-101.5 265,-123.5 694,-123.5 694,-101.5 265,-101.5"/>
+<text text-anchor="start" x="437.12" y="-107.9" font-family="Times,serif" font-size="14.00">StorageBuilder</text>
+<polygon fill="none" stroke="black" points="265,-28.5 265,-101.5 694,-101.5 694,-28.5 265,-28.5"/>
+<text text-anchor="start" x="268" y="-85.9" font-family="Times,serif" font-size="14.00">model :StorageModel</text>
+<text text-anchor="start" x="268" y="-69.1" font-family="Times,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
+<text text-anchor="start" x="268" y="-52.3" font-family="Times,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
+<text text-anchor="start" x="268" y="-35.5" font-family="Times,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
+</g>
+<!-- StorageBusinessLogic -->
+<g id="node4" class="node">
+<title>StorageBusinessLogic</title>
+<polygon fill="none" stroke="black" points="213,-231.5 213,-253.5 543,-253.5 543,-231.5 213,-231.5"/>
+<text text-anchor="start" x="315.4" y="-237.9" font-family="Times,serif" font-size="14.00">StorageBusinessLogic</text>
+<polygon fill="none" stroke="black" points="213,-192.5 213,-231.5 543,-231.5 543,-192.5 213,-192.5"/>
+<text text-anchor="start" x="216" y="-215.9" font-family="Times,serif" font-size="14.00">model :StorageModel</text>
+<text text-anchor="start" x="216" y="-199.1" font-family="Times,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+</g>
+<!-- StorageBuilder&#45;&gt;StorageBusinessLogic -->
+<g id="edge1" class="edge">
+<title>StorageBuilder&#45;&gt;StorageBusinessLogic</title>
+<path fill="none" stroke="black" d="M443.68,-128.21C429.68,-148.3 413.97,-170.85 401.43,-188.86"/>
+<text text-anchor="middle" x="361.38" y="-176.26" font-family="Times,serif" font-size="14.00">businessLogic</text>
+<text text-anchor="middle" x="423.85" y="-132.41" font-family="Times,serif" font-size="14.00">builder</text>
+</g>
+<!-- StorageService -->
+<g id="node6" class="node">
+<title>StorageService</title>
+<polygon fill="none" stroke="black" points="362,-370.5 362,-392.5 594,-392.5 594,-370.5 362,-370.5"/>
+<text text-anchor="start" x="435.63" y="-376.9" font-family="Times,serif" font-size="14.00">StorageService</text>
+<polygon fill="none" stroke="black" points="362,-297.5 362,-370.5 594,-370.5 594,-297.5 362,-297.5"/>
+<text text-anchor="start" x="365" y="-354.9" font-family="Times,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="365" y="-338.1" font-family="Times,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="365" y="-321.3" font-family="Times,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="365" y="-304.5" font-family="Times,serif" font-size="14.00">model :StorageModel</text>
+</g>
+<!-- StorageBuilder&#45;&gt;StorageService -->
+<g id="edge2" class="edge">
+<title>StorageBuilder&#45;&gt;StorageService</title>
+<path fill="none" stroke="black" d="M526.05,-128.12C539.74,-146.01 552.9,-167.15 560,-189 569.48,-218.17 571.36,-229.51 560,-258 554.87,-270.88 546.8,-282.94 537.69,-293.73"/>
+<text text-anchor="middle" x="517.87" y="-281.13" font-family="Times,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="506.23" y="-132.32" font-family="Times,serif" font-size="14.00">builder</text>
+</g>
+<!-- StorageBusinessLogic&#45;&gt;StorageService -->
+<g id="edge3" class="edge">
+<title>StorageBusinessLogic&#45;&gt;StorageService</title>
+<path fill="none" stroke="black" d="M406.12,-258.25C415.36,-269.34 425.85,-281.92 435.9,-293.98"/>
+<text text-anchor="middle" x="416.08" y="-281.38" font-family="Times,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="366.07" y="-262.45" font-family="Times,serif" font-size="14.00">businessLogic</text>
+</g>
+<!-- StorageModel -->
+<g id="node5" class="node">
+<title>StorageModel</title>
+<polygon fill="none" stroke="black" points="728,-76.5 728,-98.5 986,-98.5 986,-76.5 728,-76.5"/>
+<text text-anchor="start" x="817.34" y="-82.9" font-family="Times,serif" font-size="14.00">StorageModel</text>
+<polygon fill="none" stroke="black" points="728,-54.5 728,-76.5 986,-76.5 986,-54.5 728,-54.5"/>
+<text text-anchor="start" x="731" y="-60.9" font-family="Times,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+</g>
+</g>
+</svg>
