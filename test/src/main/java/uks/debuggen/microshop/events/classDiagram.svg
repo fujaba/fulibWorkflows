@@ -150,6 +150,19 @@
 <path fill="none" stroke="black" d="M672.335,-41.6695C770.826,-44.2275 1014.97,-56.5586 1065.02,-116 1083.63,-138.098 1083.47,-158.77 1065.02,-181 1030.86,-222.158 872.325,-235.254 791.975,-239.284"/>
 <polygon fill="none" stroke="black" points="791.466,-235.804 781.643,-239.774 791.798,-242.797 791.466,-235.804"/>
 </g>
+<!-- SelectProductCommand -->
+<g id="node16" class="node">
+<title>SelectProductCommand</title>
+<polygon fill="none" stroke="black" points="999,-60 999,-82 1141,-82 1141,-60 999,-60"/>
+<text text-anchor="start" x="1001.96" y="-66.4" font-family="Times,serif" font-size="14.00">SelectProductCommand</text>
+<polygon fill="none" stroke="black" points="999,-54 999,-60 1141,-60 1141,-54 999,-54"/>
+</g>
+<!-- SelectProductCommand&#45;&gt;Command -->
+<g id="edge17" class="edge">
+<title>SelectProductCommand&#45;&gt;Command</title>
+<path fill="none" stroke="black" d="M1088.91,-86.11C1106.14,-100.97 1132.82,-122.21 1159,-136 1203.39,-159.39 1224.62,-143.62 1266,-172 1278.78,-180.76 1290.06,-193.75 1298.57,-205.3"/>
+<polygon fill="none" stroke="black" points="1295.9,-207.6 1304.51,-213.77 1301.63,-203.58 1295.9,-207.6"/>
+</g>
 <!-- ServiceSubscribed -->
 <g id="node13" class="node"><title>ServiceSubscribed</title>
 <polygon fill="none" stroke="black" points="1120.02,-148.5 1120.02,-169.5 1232.02,-169.5 1232.02,-148.5 1120.02,-148.5"/>

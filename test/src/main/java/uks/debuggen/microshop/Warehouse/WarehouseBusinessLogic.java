@@ -107,50 +107,6 @@ public class WarehouseBusinessLogic
       return this;
    }
 
-   public void initEventHandlerMap()
-   {
-      if (handlerMap == null) {
-         handlerMap = new LinkedHashMap<>();
-         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
-         handlerMap.put(StoreProductCommand.class, this::handleStoreProductCommand);
-      }
-   }
-
-   private void ignoreEvent(Event event)
-   {
-      // empty
-   }
-
-   public Consumer<Event> getHandler(Event event)
-   {
-      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
-   }
-
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
-      {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
-      }
-      return false;
-   }
-
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
-      {
-         this.listeners = new PropertyChangeSupport(this);
-      }
-      return this.listeners;
-   }
-
-   public void removeYou()
-   {
-      this.setBuilder(null);
-      this.setService(null);
-   }
-
    private void handleStoreProductCommand(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
@@ -208,5 +164,49 @@ public class WarehouseBusinessLogic
          e1302.setId("13:02");
          service.apply(e1302);
       }
+   }
+
+   public void initEventHandlerMap()
+   {
+      if (handlerMap == null) {
+         handlerMap = new LinkedHashMap<>();
+         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+         handlerMap.put(StoreProductCommand.class, this::handleStoreProductCommand);
+      }
+   }
+
+   private void ignoreEvent(Event event)
+   {
+      // empty
+   }
+
+   public Consumer<Event> getHandler(Event event)
+   {
+      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+   }
+
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   {
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
+   }
+
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
+   }
+
+   public void removeYou()
+   {
+      this.setBuilder(null);
+      this.setService(null);
    }
 }
