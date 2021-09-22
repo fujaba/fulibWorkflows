@@ -64,7 +64,7 @@ public class WorkflowGenerator
       // event map
       eventModel = new EventModel();
       eventStormingBoard = eventModel.buildEventStormModel(fileName);
-      // dumpObjectDiagram.accept("tmp/afterBuildEventStormModel.svg", rootWorkflow);
+      dumpObjectDiagram.accept(eventStormingBoard);
       buildClassModelManagerMap(mm);
       buildEventBroker();
       buildEventClasses();

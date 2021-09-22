@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeProductCommand 	boxBuilt 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -22,7 +22,7 @@
   name: 	DataEvent
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
-  subClasses: 	dataGroup
+  subClasses: 	dataGroup 	boxBuilt
   superClass: 	event
 
 - dataGroup: 	org.fulib.classmodel.Clazz
@@ -47,6 +47,73 @@
   model: 	c
   modified: 	false
   name: 	ServiceSubscribed
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- command: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	Command
+  propertyStyle: 	Bean
+  subClasses: 	storeProductCommand
+  superClass: 	event
+
+- storeProductCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	storeProductCommand_barcode 	storeProductCommand_type 	storeProductCommand_location
+  model: 	c
+  modified: 	false
+  name: 	StoreProductCommand
+  propertyStyle: 	Bean
+  superClass: 	command
+
+- boxBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	boxBuilt_barcode 	boxBuilt_content 	boxBuilt_location
+  model: 	c
+  modified: 	false
+  name: 	BoxBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- productStoredEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	productStoredEvent_barcode 	productStoredEvent_type
+  model: 	c
+  modified: 	false
+  name: 	ProductStoredEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- productOfferedEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	ProductOfferedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- productOrderedEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	ProductOrderedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- orderPickedEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	OrderPickedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- orderDeliveredEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	OrderDeliveredEvent
+  propertyStyle: 	Bean
+  superClass: 	event
+
+- orderRejectedEvent: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	OrderRejectedEvent
   propertyStyle: 	Bean
   superClass: 	event
 
@@ -135,6 +202,78 @@
   id: 	ServiceSubscribed_serviceUrl
   modified: 	false
   name: 	serviceUrl
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- storeProductCommand_barcode: 	org.fulib.classmodel.Attribute
+  clazz: 	storeProductCommand
+  id: 	StoreProductCommand_barcode
+  modified: 	false
+  name: 	barcode
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- storeProductCommand_type: 	org.fulib.classmodel.Attribute
+  clazz: 	storeProductCommand
+  id: 	StoreProductCommand_type
+  modified: 	false
+  name: 	type
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- storeProductCommand_location: 	org.fulib.classmodel.Attribute
+  clazz: 	storeProductCommand
+  id: 	StoreProductCommand_location
+  modified: 	false
+  name: 	location
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- boxBuilt_barcode: 	org.fulib.classmodel.Attribute
+  clazz: 	boxBuilt
+  id: 	BoxBuilt_barcode
+  modified: 	false
+  name: 	barcode
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- boxBuilt_content: 	org.fulib.classmodel.Attribute
+  clazz: 	boxBuilt
+  id: 	BoxBuilt_content
+  modified: 	false
+  name: 	content
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- boxBuilt_location: 	org.fulib.classmodel.Attribute
+  clazz: 	boxBuilt
+  id: 	BoxBuilt_location
+  modified: 	false
+  name: 	location
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStoredEvent_barcode: 	org.fulib.classmodel.Attribute
+  clazz: 	productStoredEvent
+  id: 	ProductStoredEvent_barcode
+  modified: 	false
+  name: 	barcode
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productStoredEvent_type: 	org.fulib.classmodel.Attribute
+  clazz: 	productStoredEvent
+  id: 	ProductStoredEvent_type
+  modified: 	false
+  name: 	type
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

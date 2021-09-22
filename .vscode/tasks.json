@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "gradle",
+			"id": "c:\\Users\\zuend\\IdeaProjects\\fulibWorkflowstestfulibWorkflows",
+			"script": "test",
+			"description": "Runs the unit tests.",
+			"group": "verification",
+			"project": "fulibWorkflows",
+			"buildFile": "C:\\Users\\zuend\\IdeaProjects\\fulibWorkflows\\build.gradle",
+			"rootProject": "fulibWorkflows",
+			"projectFolder": "c:\\Users\\zuend\\IdeaProjects\\fulibWorkflows",
+			"workspaceFolder": "c:\\Users\\zuend\\IdeaProjects\\fulibWorkflows",
+			"args": "",
+			"javaDebug": false,
+			"problemMatcher": [
+				"$gradle"
+			],
+			"label": "gradle: test"
+		}
+	]
+}

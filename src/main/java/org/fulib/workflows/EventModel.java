@@ -9,8 +9,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class EventModel
-{
+public class EventModel {
    public String workflowName;
    private EventStormingBoard eventStormingBoard = null;
    private Workflow rootWorkflow;
@@ -22,16 +21,14 @@ public class EventModel
    private ExternalSystemNote externalSystemNote = null;
    private Workflow lastWorkflow = null;
 
-   public EventStormingBoard getEventStormingBoard()
-   {
+   public EventStormingBoard getEventStormingBoard() {
       if (eventStormingBoard == null) {
          eventStormingBoard = new EventStormingBoard();
       }
       return eventStormingBoard;
    }
 
-   public Workflow getRootWorkflow()
-   {
+   public Workflow getRootWorkflow() {
       if (rootWorkflow == null) {
          rootWorkflow = new Workflow().setName("working smoothly");
          getEventStormingBoard().withWorkflows(rootWorkflow);
@@ -39,11 +36,9 @@ public class EventModel
       return rootWorkflow;
    }
 
-   public EventStormingBoard buildEventStormModel(String fileName)
-   {
+   public EventStormingBoard buildEventStormModel(String fileName) {
       yamlFileList = new LinkedList<>();
       yamlFileList.add(fileName);
-
 
       while (!yamlFileList.isEmpty()) {
          fileName = yamlFileList.poll();
@@ -52,8 +47,7 @@ public class EventModel
 
          try {
             oneYaml = Files.readString(Path.of(fileName));
-         }
-         catch (IOException e) {
+         } catch (IOException e) {
             continue;
          }
 
@@ -84,8 +78,7 @@ public class EventModel
                UserNote userNote = new UserNote().setName(map.get("name"));
                userNote.setMap(map);
                userNote.setEventStormingBoard(getEventStormingBoard());
-            }
-            else if (entry.getKey().equalsIgnoreCase("service")) {
+            } else if (entry.getKey().equalsIgnoreCase("service")) {
                ServiceNote note = new ServiceNote();
                note.setName(entry.getValue());
                note.setPort(map.get("port"));
@@ -93,16 +86,14 @@ public class EventModel
                note.withWorkflows(getRootWorkflow());
                note.setEventStormingBoard(getEventStormingBoard());
                lastService = note;
-            }
-            else if (entry.getKey().equalsIgnoreCase("Action")) {
+            } else if (entry.getKey().equalsIgnoreCase("Action")) {
                UserInteraction userInteraction = new UserInteraction();
                userInteraction.setActorName(entry.getValue());
                UserNote userNote = getEventStormingBoard().getOrCreateFromUsers(userInteraction.getActorName());
                userNote.withInteractions(userInteraction);
                lastActor = userInteraction;
                lastUser = userInteraction;
-            }
-            else if (entry.getKey().equalsIgnoreCase("subprocess")
+            } else if (entry.getKey().equalsIgnoreCase("subprocess")
                   || entry.getKey().equalsIgnoreCase("boundedContext")) {
                SubprocessNote subprocessNote = new SubprocessNote();
                subprocessNote.setSubprocessName(StrUtil.toIdentifier(entry.getValue()));
@@ -113,33 +104,27 @@ public class EventModel
                subprocessNote.setEventStormingBoard(getEventStormingBoard());
 
                addSubFile(fileName, subprocessNote);
-            }
-            else if (entry.getKey().equalsIgnoreCase("brokerTopic")) {
+            } else if (entry.getKey().equalsIgnoreCase("brokerTopic")) {
                BrokerTopicNote brokerTopicNote = new BrokerTopicNote();
                brokerTopicNote.setBrokerName(StrUtil.toIdentifier(entry.getValue()));
                brokerTopicNote.setTime(brokerTopicNote.getBrokerName());
                brokerTopicNote.setMap(map);
                brokerTopicNote.setWorkflow(getRootWorkflow());
                addToStepsOfLastActor(brokerTopicNote);
-            }
-            else if (entry.getKey().equalsIgnoreCase("Policy")) {
+            } else if (entry.getKey().equalsIgnoreCase("Policy")) {
                maps = buildPolicy(fileName, maps, map, entry);
                continue;
-            }
-            else if (entry.getKey().equalsIgnoreCase("class")) {
+            } else if (entry.getKey().equalsIgnoreCase("class")) {
                ClassNote classNote = new ClassNote();
                classNote.setMap(map);
                classNote.setWorkflow(getRootWorkflow());
                addToStepsOfLastActor(classNote);
-            }
-            else if (entry.getKey().equalsIgnoreCase("Data")) {
+            } else if (entry.getKey().equalsIgnoreCase("Data")) {
                buildDataNote(map, iterator, entry);
-            }
-            else if (entry.getKey().equalsIgnoreCase("event")) {
+            } else if (entry.getKey().equalsIgnoreCase("event")) {
                EventNote eventNote = new EventNote();
                fillEventNote(map, eventNote);
-            }
-            else if (entry.getKey().equalsIgnoreCase("externalSystem")) {
+            } else if (entry.getKey().equalsIgnoreCase("externalSystem")) {
                String value = entry.getValue();
                ExternalSystemNote externalSystemNote = new ExternalSystemNote();
                String timeInterval = map.get("events");
@@ -148,18 +133,14 @@ public class EventModel
                externalSystemNote.setTime(timeInterval);
                externalSystemNote.setWorkflow(getRootWorkflow());
                externalSystemNote.setSystemName(getTypeName(value));
-            }
-            else if (entry.getKey().equalsIgnoreCase("command")) {
+            } else if (entry.getKey().equalsIgnoreCase("command")) {
                CommandNote commandNote = new CommandNote();
                fillEventNote(map, commandNote);
-            }
-            else if (entry.getKey().equalsIgnoreCase("page")) {
+            } else if (entry.getKey().equalsIgnoreCase("page")) {
                buildPageNote(userLastPage, map, entry);
-            }
-            else if (entry.getKey().equalsIgnoreCase("board")) {
+            } else if (entry.getKey().equalsIgnoreCase("board")) {
                getEventStormingBoard().setName(map.get("board"));
-            }
-            else if (entry.getKey().equalsIgnoreCase("query")) {
+            } else if (entry.getKey().equalsIgnoreCase("query")) {
                String value = entry.getValue();
                String[] split = value.split("\\s+");
                String key = split[0];
@@ -175,8 +156,7 @@ public class EventModel
                addToStepsOfLastActor(queryNote);
                // send a query
                // validate result
-            }
-            else {
+            } else {
                Logger.getGlobal().severe("Unknown event type " + getEventType(map));
             }
          }
@@ -188,8 +168,9 @@ public class EventModel
       return getEventStormingBoard();
    }
 
-   private ArrayList<LinkedHashMap<String, String>> buildPolicy(String fileName, ArrayList<LinkedHashMap<String, String>> maps, LinkedHashMap<String, String> map, Map.Entry<String, String> entry)
-   {
+   private ArrayList<LinkedHashMap<String, String>> buildPolicy(String fileName,
+         ArrayList<LinkedHashMap<String, String>> maps, LinkedHashMap<String, String> map,
+         Map.Entry<String, String> entry) {
       String oneYaml;
       Policy policy = new Policy();
       policy.setActorName(entry.getValue());
@@ -197,15 +178,20 @@ public class EventModel
       ServiceNote service = getEventStormingBoard().getOrCreateFromServices(entry.getValue());
       policy.setService(service);
       String triggerTime = map.get("trigger");
+      WorkflowNote trigger = null;
       if (triggerTime != null) {
-         WorkflowNote trigger = getRootWorkflow().getFromNotes(triggerTime);
+         trigger = getRootWorkflow().getFromNotes(triggerTime);
+      } else if (lastEvent != null) {
+         trigger = lastEvent;
+      }
+
+      if (trigger != null) {
          if (trigger instanceof EventNote) {
             EventNote eventNote = (EventNote) trigger;
             policy.setTrigger(eventNote);
             EventType type = eventNote.getType();
             service.withHandledEventTypes(type);
-         }
-         else {
+         } else {
             ExternalSystemNote externalSystemNote = (ExternalSystemNote) trigger;
             policy.setExternalSystem(externalSystemNote);
 
@@ -215,8 +201,7 @@ public class EventModel
             importedFileName = String.format("%s/export%s.es.yaml", importedFileName, exportName);
             try {
                oneYaml = Files.readString(Path.of(importedFileName));
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                return null;
             }
 
@@ -230,8 +215,7 @@ public class EventModel
       return maps;
    }
 
-   private void generateExports(String fileName)
-   {
+   private void generateExports(String fileName) {
       StringBuilder body = new StringBuilder();
       String currentTopic = null;
       for (Workflow workflow : getEventStormingBoard().getWorkflows()) {
@@ -257,15 +241,14 @@ public class EventModel
       fileName = fileName.substring(0, lastIndexOf);
       fileName = String.format("%s/export%s.es.yaml", fileName, currentTopic);
       try {
-         Files.writeString(Path.of(fileName), body.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-      }
-      catch (IOException e) {
+         Files.writeString(Path.of(fileName), body.toString(), StandardOpenOption.CREATE,
+               StandardOpenOption.TRUNCATE_EXISTING);
+      } catch (IOException e) {
          e.printStackTrace();
       }
    }
 
-   private String mapToYaml(LinkedHashMap<String, String> map)
-   {
+   private String mapToYaml(LinkedHashMap<String, String> map) {
       StringBuilder body = new StringBuilder();
       String indent = "- ";
       for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -275,8 +258,7 @@ public class EventModel
       return body.toString() + "\n";
    }
 
-   private void addSubFile(String fileName, SubprocessNote subprocessNote)
-   {
+   private void addSubFile(String fileName, SubprocessNote subprocessNote) {
       ArrayList<String> fileNameTries = new ArrayList<>();
       String subFileName = fileName.substring(0, fileName.lastIndexOf('/'));
       subFileName = String.format("%s/%s.es.yaml", subFileName, subprocessNote.getSubprocessName());
@@ -294,11 +276,10 @@ public class EventModel
 
       Logger.getGlobal().info("No file for subprocess or bounded context " + subprocessNote.getSubprocessName());
 
-
    }
 
-   private void buildDataNote(LinkedHashMap<String, String> map, Iterator<Map.Entry<String, String>> iterator, Map.Entry<String, String> entry)
-   {
+   private void buildDataNote(LinkedHashMap<String, String> map, Iterator<Map.Entry<String, String>> iterator,
+         Map.Entry<String, String> entry) {
       String value = entry.getValue();
       String[] split = StrUtil.split(value);
       String className;
@@ -318,8 +299,7 @@ public class EventModel
          Map.Entry<String, String> typeEntry = iterator.next();
          className = StrUtil.cap(typeEntry.getKey());
          objectId = typeEntry.getValue();
-      }
-      else if (split.length == 2) {
+      } else if (split.length == 2) {
          // class name and 12:00
          className = split[0];
          value = split[1];
@@ -327,8 +307,7 @@ public class EventModel
          objectId = typeEntry.getValue();
          objectId = getObjectId(objectId);
          map.put("data", String.format("%s %s %s", className, objectId, value));
-      }
-      else {
+      } else {
          className = StrUtil.cap(split[0]);
          objectId = split[1];
          value = split[2];
@@ -354,9 +333,8 @@ public class EventModel
       serviceNote.withHandledDataTypes(dataType);
    }
 
-
-   private void buildPageNote(LinkedHashMap<String, PageNote> userLastPage, LinkedHashMap<String, String> map, Map.Entry<String, String> entry)
-   {
+   private void buildPageNote(LinkedHashMap<String, PageNote> userLastPage, LinkedHashMap<String, String> map,
+         Map.Entry<String, String> entry) {
       PageNote pageNote = new PageNote();
       pageNote.setWorkflow(getRootWorkflow());
       pageNote.setMap(map);
@@ -365,9 +343,7 @@ public class EventModel
       String multilineValue = entry.getValue();
       ArrayList<LinkedHashMap<String, String>> lineMaps = new Yamler2().decodeList(multilineValue);
       for (LinkedHashMap<String, String> lineMap : lineMaps) {
-         PageLine pageLine = new PageLine()
-               .setPageNote(pageNote)
-               .setMap(lineMap);
+         PageLine pageLine = new PageLine().setPageNote(pageNote).setMap(lineMap);
          String nameValue = lineMap.get("name");
          if (nameValue != null) {
             // its like name: ServiceName timestamp
@@ -424,11 +400,10 @@ public class EventModel
       }
    }
 
-   private void fillEventNote(LinkedHashMap<String, String> map, EventNote eventNote)
-   {
+   private void fillEventNote(LinkedHashMap<String, String> map, EventNote eventNote) {
       String value = getEventId(map); // example value: product stored 12:00
       String eventTime = getEventTime(value, "00:01:00");
-      if ( ! value.endsWith(eventTime)) {
+      if (!value.endsWith(eventTime)) {
          value = value + " " + eventTime;
       }
       eventNote.setTime(eventTime);
@@ -445,8 +420,7 @@ public class EventModel
       addToStepsOfLastActor(eventNote);
    }
 
-   private String getEventTime(String value, String delta)
-   {
+   private String getEventTime(String value, String delta) {
       String[] split = value.split("\\s");
       String eventTime = split[split.length - 1];
       if (eventTime.indexOf(':') < 0) {
@@ -454,15 +428,13 @@ public class EventModel
          eventTime = getRootWorkflow().addToTime(delta);
          value = value + " " + eventTime;
          split = StrUtil.split(value);
-      }
-      else {
+      } else {
          getRootWorkflow().setCurrentTime(eventTime);
       }
       return eventTime;
    }
 
-   public String getEventTypeName(String value)
-   {
+   public String getEventTypeName(String value) {
       String[] split2 = value.split("\\s");
       String eventTypeName = "";
       for (int i = 0; i < split2.length - 1; i++) {
@@ -471,8 +443,7 @@ public class EventModel
       return eventTypeName;
    }
 
-   public String getTypeName(String value)
-   {
+   public String getTypeName(String value) {
       String[] split2 = value.split("\\s");
       String typeName = "";
       for (int i = 0; i < split2.length; ++i) {
@@ -481,8 +452,7 @@ public class EventModel
       return typeName;
    }
 
-   public String getVarName(String value)
-   {
+   public String getVarName(String value) {
       String[] split2 = value.split("\\s");
       String varName = StrUtil.decap(split2[0]);
       for (int i = 1; i < split2.length; ++i) {
@@ -491,32 +461,32 @@ public class EventModel
       return varName;
    }
 
-   public String getObjectId(String objectId)
-   {
+   public String getObjectId(String objectId) {
       if (objectId == null) {
          return null;
       }
       return objectId.replaceAll("\\W+", "_");
    }
 
-   private void addToStepsOfLastActor(WorkflowNote note)
-   {
-      if (note instanceof EventNote || note instanceof PageNote || note instanceof CommandNote || note instanceof BrokerTopicNote) {
+   private void addToStepsOfLastActor(WorkflowNote note) {
+      if (note instanceof EventNote || note instanceof PageNote || note instanceof CommandNote
+            || note instanceof BrokerTopicNote) {
          if (lastUser == null) {
             UserNote somebody = getEventStormingBoard().getOrCreateFromUsers("somebody");
-            lastUser = (UserInteraction) new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody).setActorName("somebody");
+            lastUser = (UserInteraction) new UserInteraction().setWorkflow(getRootWorkflow()).setUser(somebody)
+                  .setActorName("somebody");
          }
          if (lastActor == null) {
             lastActor = lastUser;
          }
          if (lastActor instanceof Policy && (note instanceof PageNote || note instanceof CommandNote)) {
-            lastActor = new UserInteraction().setWorkflow(getRootWorkflow()).setUser(lastUser.getUser()).setActorName(lastUser.getActorName());
+            lastActor = new UserInteraction().setWorkflow(getRootWorkflow()).setUser(lastUser.getUser())
+                  .setActorName(lastUser.getActorName());
          }
          if (note instanceof PageNote || note instanceof CommandNote) {
             String actorName = lastActor.getActorName();
          }
-      }
-      else if ((note instanceof DataNote) || (note instanceof ClassNote) || (note instanceof QueryNote)) {
+      } else if ((note instanceof DataNote) || (note instanceof ClassNote) || (note instanceof QueryNote)) {
          if (lastEvent == null && externalSystemNote == null) {
             externalSystemNote = new ExternalSystemNote();
             externalSystemNote.setTime("11:00:00");
@@ -531,40 +501,30 @@ public class EventModel
          }
          if (lastActor == null || !(lastActor instanceof Policy)) {
             if (lastEvent != null) {
-               Interaction action = new Policy()
-                     .setWorkflow(getRootWorkflow())
-                     .setService(lastService)
-                     .setTrigger(lastEvent)
-                     .setActorName(lastService.getName());
+               Interaction action = new Policy().setWorkflow(getRootWorkflow()).setService(lastService)
+                     .setTrigger(lastEvent).setActorName(lastService.getName());
                lastService.withHandledEventTypes(lastEvent.getType());
                lastActor = action;
-            }
-            else {
+            } else {
                // add external service
-               Interaction action = new Policy()
-                     .setWorkflow(getRootWorkflow())
-                     .setService(lastService)
-                     .setExternalSystem(externalSystemNote)
-                     .setActorName(lastService.getName());
+               Interaction action = new Policy().setWorkflow(getRootWorkflow()).setService(lastService)
+                     .setExternalSystem(externalSystemNote).setActorName(lastService.getName());
                lastActor = action;
             }
          }
          note.setWorkflow(getRootWorkflow());
-      }
-      else {
+      } else {
          Logger.getGlobal().severe("Unknown note type " + note.getClass().getSimpleName());
       }
       lastActor.withSteps(note);
 
    }
 
-   public String getEventId(Map<String, String> map)
-   {
+   public String getEventId(Map<String, String> map) {
       return map.values().iterator().next();
    }
 
-   public String getEventType(Map<String, String> map)
-   {
+   public String getEventType(Map<String, String> map) {
       return map.keySet().iterator().next();
    }
 }

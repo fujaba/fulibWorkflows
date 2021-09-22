@@ -4,19 +4,19 @@
 - action: Peter Picker
 
 - command: store product
-  barcode: 001
+  barcode: b001
   type: red shoes
   location: shelf 42
 
 - policy: Warehouse
 
 - data: Box
-  barcode: 001
+  barcode: b001
   content: red shoes
   location: shelf 42
 
 - event: product stored
-  barcode: 001
+  barcode: b001
   type: red shoes
 
 - event: product offered
