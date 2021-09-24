@@ -274,6 +274,129 @@ public class WarehouseService
       String id = request.params("id");
       String event = request.queryParams("event");
 
+      if ("store product".equals(event)) {
+
+         // create StoreCommand: store product
+         StoreCommand e120201 = new StoreCommand();
+         e120201.setId("12:02:01");
+         e120201.setBarcode(request.queryParams("barcode"));
+         e120201.setType(request.queryParams("type"));
+         e120201.setLocation(request.queryParams("location"));
+         apply(e120201);
+      }
+
+      if ("store product".equals(event)) {
+
+         // create StoreCommand: store product
+         StoreCommand e120501 = new StoreCommand();
+         e120501.setId("12:05:01");
+         e120501.setBarcode(request.queryParams("barcode"));
+         e120501.setType(request.queryParams("type"));
+         e120501.setLocation(request.queryParams("location"));
+         apply(e120501);
+      }
+
+      if ("store product".equals(event)) {
+
+         // create StoreCommand: store product
+         StoreCommand e120801 = new StoreCommand();
+         e120801.setId("12:08:01");
+         e120801.setBarcode(request.queryParams("barcode"));
+         e120801.setType(request.queryParams("type"));
+         e120801.setLocation(request.queryParams("location"));
+         apply(e120801);
+      }
+
+
+
+      // 12:01
+      if (id.equals("12_01")) {
+         html.append("<form action=\"/page/12_02\" method=\"get\">\n");
+         // Warehouse overview 12:01
+         html.append("   <p>Warehouse boxes</p>\n");
+         html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:02
+      if (id.equals("12_02")) {
+         html.append("<form action=\"/page/12_04\" method=\"get\">\n");
+         // Warehouse add box 12:02
+         html.append("   <p>Store new box</p>\n");
+         html.append("   <p><input id=\"barcode\" name=\"barcode\" placeholder=\"barcode?\"></p>\n");
+         html.append("   <p><input id=\"type\" name=\"type\" placeholder=\"type?\"></p>\n");
+         html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:04
+      if (id.equals("12_04")) {
+         html.append("<form action=\"/page/12_05\" method=\"get\">\n");
+         // Warehouse overview 12:04
+         html.append("   <p>Warehouse boxes</p>\n");
+         html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+         html.append("   <p>b001, red shoes, shelf 42</p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:05
+      if (id.equals("12_05")) {
+         html.append("<form action=\"/page/12_07\" method=\"get\">\n");
+         // Warehouse add box 12:05
+         html.append("   <p>Store new box</p>\n");
+         html.append("   <p><input id=\"barcode\" name=\"barcode\" placeholder=\"barcode?\"></p>\n");
+         html.append("   <p><input id=\"type\" name=\"type\" placeholder=\"type?\"></p>\n");
+         html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:07
+      if (id.equals("12_07")) {
+         html.append("<form action=\"/page/12_08\" method=\"get\">\n");
+         // Warehouse overview 12:07
+         html.append("   <p>Warehouse boxes</p>\n");
+         html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+         html.append("   <p>b002, red shoes, shelf 23</p>\n");
+         html.append("   <p>b001, red shoes, shelf 42</p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:08
+      if (id.equals("12_08")) {
+         html.append("<form action=\"/page/12_10\" method=\"get\">\n");
+         // Warehouse add box 12:08
+         html.append("   <p>Store new box</p>\n");
+         html.append("   <p><input id=\"barcode\" name=\"barcode\" placeholder=\"barcode?\"></p>\n");
+         html.append("   <p><input id=\"type\" name=\"type\" placeholder=\"type?\"></p>\n");
+         html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 12:10
+      if (id.equals("12_10")) {
+         html.append("<form action=\"/page/next_page\" method=\"get\">\n");
+         // Warehouse overview 12:10
+         html.append("   <p>Warehouse boxes</p>\n");
+         html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+         html.append("   <p>b003, blue jeans, shelf 1337</p>\n");
+         html.append("   <p>b002, red shoes, shelf 23</p>\n");
+         html.append("   <p>b001, red shoes, shelf 42</p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
 
 
       html.append("This is the Shop Service page " + id + "\n");

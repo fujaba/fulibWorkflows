@@ -346,7 +346,13 @@ public class EventModel {
          PageLine pageLine = new PageLine().setPageNote(pageNote).setMap(lineMap);
          String nameValue = lineMap.get("name");
          if (nameValue != null) {
-            // its like name: ServiceName timestamp
+            // its like name: ServiceName or
+            //          name: ServiceName timestamp
+            String time = getEventTime(nameValue, "00:01:00");
+            if ( ! nameValue.endsWith(time)) {
+               nameValue = nameValue + " " + time;
+               lineMap.put("name", nameValue);
+            }
             String[] split = nameValue.split("\\s+");
             String pageName = split[split.length - 1];
             String serviceName = split[0];

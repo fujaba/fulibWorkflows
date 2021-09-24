@@ -1,8 +1,8 @@
-<svg width="1385px" height="275px"
- viewBox="0.00 0.00 1385.02 275.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="1363px" height="275px"
+ viewBox="0.00 0.00 1362.52 275.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 271)">
 <title>uks.debuggen.microshop.events</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-271 1381.02,-271 1381.02,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-271 1358.52,-271 1358.52,4 -4,4"/>
 <!-- BoxBuilt -->
 <g id="node1" class="node"><title>BoxBuilt</title>
 <polygon fill="none" stroke="black" points="19.0233,-55 19.0233,-76 111.023,-76 111.023,-55 19.0233,-55"/>
@@ -162,17 +162,17 @@
 <path fill="none" stroke="black" d="M1120.72,-173.528C1113.18,-176.304 1105.47,-178.89 1098.02,-181 990.503,-211.463 859.916,-228.73 791.68,-236.312"/>
 <polygon fill="none" stroke="black" points="791.238,-232.839 781.676,-237.403 791.997,-239.798 791.238,-232.839"/>
 </g>
-<!-- StoreProductCommand -->
-<g id="node14" class="node"><title>StoreProductCommand</title>
-<polygon fill="none" stroke="black" points="1229.02,-55 1229.02,-76 1369.02,-76 1369.02,-55 1229.02,-55"/>
-<text text-anchor="start" x="1232.02" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">StoreProductCommand</text>
-<polygon fill="none" stroke="black" points="1229.02,-4 1229.02,-55 1369.02,-55 1369.02,-4 1229.02,-4"/>
-<text text-anchor="start" x="1256.02" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">barcode :String</text>
-<text text-anchor="start" x="1256.02" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">type :String</text>
-<text text-anchor="start" x="1256.02" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
+<!-- StoreCommand -->
+<g id="node14" class="node"><title>StoreCommand</title>
+<polygon fill="none" stroke="black" points="1252.02,-55 1252.02,-76 1347.02,-76 1347.02,-55 1252.02,-55"/>
+<text text-anchor="start" x="1255.02" y="-61.8" font-family="Times New Roman,serif" font-size="14.00">StoreCommand</text>
+<polygon fill="none" stroke="black" points="1252.02,-4 1252.02,-55 1347.02,-55 1347.02,-4 1252.02,-4"/>
+<text text-anchor="start" x="1256.52" y="-40.8" font-family="Times New Roman,serif" font-size="14.00">barcode :String</text>
+<text text-anchor="start" x="1256.52" y="-25.8" font-family="Times New Roman,serif" font-size="14.00">type :String</text>
+<text text-anchor="start" x="1256.52" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
 </g>
-<!-- StoreProductCommand&#45;&gt;Command -->
-<g id="edge15" class="edge"><title>StoreProductCommand&#45;&gt;Command</title>
+<!-- StoreCommand&#45;&gt;Command -->
+<g id="edge15" class="edge"><title>StoreCommand&#45;&gt;Command</title>
 <path fill="none" stroke="black" d="M1299.02,-80.0519C1299.02,-93.4592 1299.02,-108.162 1299.02,-120.409"/>
 <polygon fill="none" stroke="black" points="1295.52,-120.444 1299.02,-130.444 1302.52,-120.444 1295.52,-120.444"/>
 </g>

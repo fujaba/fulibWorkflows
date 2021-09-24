@@ -19,6 +19,39 @@
   barcode: b001
   type: red shoes
 
+- command: store product
+  barcode: b002
+  type: red shoes
+  location: shelf 23
+
+- policy: Warehouse
+
+- data: Box
+  barcode: b002
+  content: red shoes
+  location: shelf 23
+
+- event: product stored
+  barcode: b002
+  type: red shoes
+
+- command: store product
+  barcode: b003
+  type: blue jeans
+  location: shelf 1337
+
+- policy: Warehouse
+
+- data: Box
+  barcode: b003
+  content: blue jeans
+  location: shelf 1337
+
+- event: product stored
+  barcode: b003
+  type: blue jeans
+
+
 - event: product offered
 
 - event: product ordered

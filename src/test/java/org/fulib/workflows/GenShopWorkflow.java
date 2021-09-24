@@ -16,6 +16,7 @@ public class GenShopWorkflow {
         HtmlGenerator3 generator = new HtmlGenerator3();
         generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopFirstEventStorming.es.yaml", "FirstShopBoard");
         generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopRefinedProductStoredEventStorming.es.yaml", "StoreProductShopBoard");
+        generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopWithGuiPrototypes.es.yaml", "ShopWithGuiBoard");
 
 
         mm = new ClassModelManager();
@@ -23,7 +24,7 @@ public class GenShopWorkflow {
         mm.setPackageName("uks.debuggen.microshop");
         WorkflowGenerator workflowGenerator = new WorkflowGenerator();
         workflowGenerator.dumpObjectDiagram = (root) -> FulibTools.objectDiagrams().dumpSVG("tmp/MicroShopBoard.svg", root);
-        workflowGenerator.loadWorkflow(mm, "test/src/gen/resources/workflows/shop/ShopRefinedProductStoredEventStorming.es.yaml");
+        workflowGenerator.loadWorkflow(mm, "test/src/gen/resources/workflows/shop/ShopWithGuiPrototypes.es.yaml");
         workflowGenerator.generate();
 
         System.out.println();

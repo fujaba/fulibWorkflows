@@ -1,0 +1,121 @@
+
+- board: micro shop
+
+- workflow: smooth case
+
+- action: Peter Picker
+
+- page:
+    - name: Warehouse overview
+    - label: Warehouse boxes
+    - button: add
+
+
+- page:
+    - name: Warehouse add box
+    - label: Store new box
+    - input: barcode
+      fill: b001
+    - input: type
+      fill: red shoes
+    - input: location
+      fill: shelf 42
+    - button: ok
+      command: store product
+
+
+- policy: Warehouse
+
+- data: Box
+  barcode: b001
+  content: red shoes
+  location: shelf 42
+
+- event: product stored
+  barcode: b001
+  type: red shoes
+
+- page:
+    - name: Warehouse overview
+    - label: Warehouse boxes
+    - button: add
+    - label: b001, red shoes, shelf 42
+
+- page:
+    - name: Warehouse add box
+    - label: Store new box
+    - input: barcode
+      fill: b002
+    - input: type
+      fill: red shoes
+    - input: location
+      fill: shelf 23
+    - button: ok
+      command: store product
+
+- policy: Warehouse
+
+- data: Box
+  barcode: b002
+  content: red shoes
+  location: shelf 23
+
+- event: product stored
+  barcode: b002
+  type: red shoes
+
+- page:
+    - name: Warehouse overview
+    - label: Warehouse boxes
+    - button: add
+    - label: b002, red shoes, shelf 23
+    - label: b001, red shoes, shelf 42
+
+- page:
+    - name: Warehouse add box
+    - label: Store new box
+    - input: barcode
+      fill: b003
+    - input: type
+      fill: blue jeans
+    - input: location
+      fill: shelf 1337
+    - button: ok
+      command: store product
+
+- policy: Warehouse
+
+- data: Box
+  barcode: b003
+  content: blue jeans
+  location: shelf 1337
+
+- event: product stored
+  barcode: b003
+  type: blue jeans
+
+- page:
+    - name: Warehouse overview
+    - label: Warehouse boxes
+    - button: add
+    - label: b003, blue jeans, shelf 1337
+    - label: b002, red shoes, shelf 23
+    - label: b001, red shoes, shelf 42
+
+
+- event: product offered
+
+- event: product ordered
+
+- event: order picked
+
+- event: order delivered
+
+
+- workflow: out of stock
+
+- event: product ordered
+
+- event: order rejected
+
+

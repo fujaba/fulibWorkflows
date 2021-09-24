@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeProductCommand 	boxBuilt 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -55,14 +55,14 @@
   modified: 	false
   name: 	Command
   propertyStyle: 	Bean
-  subClasses: 	storeProductCommand
+  subClasses: 	storeCommand
   superClass: 	event
 
-- storeProductCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	storeProductCommand_barcode 	storeProductCommand_type 	storeProductCommand_location
+- storeCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	storeCommand_barcode 	storeCommand_type 	storeCommand_location
   model: 	c
   modified: 	false
-  name: 	StoreProductCommand
+  name: 	StoreCommand
   propertyStyle: 	Bean
   superClass: 	command
 
@@ -206,27 +206,27 @@
   type: 	String
   typeSignature: 	String
 
-- storeProductCommand_barcode: 	org.fulib.classmodel.Attribute
-  clazz: 	storeProductCommand
-  id: 	StoreProductCommand_barcode
+- storeCommand_barcode: 	org.fulib.classmodel.Attribute
+  clazz: 	storeCommand
+  id: 	StoreCommand_barcode
   modified: 	false
   name: 	barcode
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- storeProductCommand_type: 	org.fulib.classmodel.Attribute
-  clazz: 	storeProductCommand
-  id: 	StoreProductCommand_type
+- storeCommand_type: 	org.fulib.classmodel.Attribute
+  clazz: 	storeCommand
+  id: 	StoreCommand_type
   modified: 	false
   name: 	type
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- storeProductCommand_location: 	org.fulib.classmodel.Attribute
-  clazz: 	storeProductCommand
-  id: 	StoreProductCommand_location
+- storeCommand_location: 	org.fulib.classmodel.Attribute
+  clazz: 	storeCommand
+  id: 	StoreCommand_location
   modified: 	false
   name: 	location
   propertyStyle: 	Bean

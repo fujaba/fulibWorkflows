@@ -1075,7 +1075,7 @@ public class WorkflowGenerator
          content = content.replace("package uks.dpst21.events;",
                "package " + em.getClassModel().getPackageName() + ";");
          String eventBrokerName = getPackageDirName(em) + "/EventBroker.java";
-         Logger.getGlobal().info("EventBroker file generated " + eventBrokerName);
+         // Logger.getGlobal().info("EventBroker file generated " + eventBrokerName);
          Files.createDirectories(Path.of(getPackageDirName(em)));
          Files.write(Path.of(eventBrokerName), content.getBytes(StandardCharsets.UTF_8));
       }
@@ -1211,7 +1211,7 @@ public class WorkflowGenerator
 
    private void testGenerateServiceStart(StringBuilder body, ServiceNote serviceNote)
    {
-      String serviceName = serviceNote.getName();
+      String serviceName = StrUtil.cap(serviceNote.getName());
       String imp = String.format("import %s.%s.%sService;",
             mm.getClassModel().getPackageName(), serviceName, serviceName);
       testClazz.withImports(imp);

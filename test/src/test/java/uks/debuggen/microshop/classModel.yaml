@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	testSomeEventStorming
+  classes: 	testMicroShop
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -7,14 +7,14 @@
   packageName: 	uks.debuggen.microshop
   packageSrcFolder: 	"test/src/test/java/uks/debuggen/microshop"
 
-- testSomeEventStorming: 	org.fulib.classmodel.Clazz
-  attributes: 	testSomeEventStorming_eventBroker
+- testMicroShop: 	org.fulib.classmodel.Clazz
+  attributes: 	testMicroShop_eventBroker
   importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.microshop.events.*;" 	"import uks.debuggen.microshop.Warehouse.WarehouseService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
   imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.microshop.events.*;" 	"import uks.debuggen.microshop.Warehouse.WarehouseService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
-  methods: 	testSomeEventStorming_SomeEventStorming 	testSomeEventStorming_publish
+  methods: 	testMicroShop_MicroShop 	testMicroShop_publish
   model: 	c
   modified: 	false
-  name: 	TestSomeEventStorming
+  name: 	TestMicroShop
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -24,21 +24,21 @@
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
 
-- testSomeEventStorming_eventBroker: 	org.fulib.classmodel.Attribute
-  clazz: 	testSomeEventStorming
-  id: 	TestSomeEventStorming_eventBroker
+- testMicroShop_eventBroker: 	org.fulib.classmodel.Attribute
+  clazz: 	testMicroShop
+  id: 	TestMicroShop_eventBroker
   modified: 	false
   name: 	eventBroker
   propertyStyle: 	Bean
   type: 	EventBroker
   typeSignature: 	EventBroker
 
-- testSomeEventStorming_SomeEventStorming: 	org.fulib.classmodel.FMethod
+- testMicroShop_MicroShop: 	org.fulib.classmodel.FMethod
   annotations: 	"@Test"
-  clazz: 	testSomeEventStorming
+  clazz: 	testMicroShop
   declaration: 	"@Test
-public void SomeEventStorming()"
-  id: 	TestSomeEventStorming_SomeEventStorming
+public void MicroShop()"
+  id: 	TestMicroShop_MicroShop
   methodBody: 	"// start the event broker
 eventBroker = new EventBroker();
 eventBroker.start();
@@ -60,39 +60,166 @@ LinkedHashMap<String, Object> modelMap;
 
 // workflow SmoothCase
 
-// create StoreProductCommand: store product
-StoreProductCommand e1201 = new StoreProductCommand();
-e1201.setId(\"12:01\");
-e1201.setBarcode(\"b001\");
-e1201.setType(\"red shoes\");
-e1201.setLocation(\"shelf 42\");
-publish(e1201);
+// page 12:01
+open(\"http://localhost:42001/page/12_01\");
+
+// page 12:02
+open(\"http://localhost:42001/page/12_02\");
+$(\"#barcode\").setValue(\"b001\");
+$(\"#type\").setValue(\"red shoes\");
+$(\"#location\").setValue(\"shelf 42\");
+$(\"#ok\").click();
 
 open(\"http://localhost:42000\");
 pre = $(\"#history\");
-pre.shouldHave(text(\"- 12_01:\"));
+pre.shouldHave(text(\"- 12_02_01:\"));
 
 // check Warehouse
 open(\"http://localhost:42001\");
 pre = $(\"#history\");
-pre.shouldHave(text(\"- 12_01:\"));
+pre.shouldHave(text(\"- 12_02_01:\"));
 for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
    warehouse.getBuilder().load(dataEvent.getBlockId());
 }
 modelMap = warehouse.getBuilder().getModel().getModelMap();
 if (modelMap.values().size() > 0) {
-   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/warehouse12_01.svg\", modelMap.values());
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/warehouse12_02_01.svg\", modelMap.values());
 }
 
 open(\"http://localhost:42001\");
-// check data note 12:01:01
+// check data note 12:02:02
 pre = $(\"#data\");
 pre.shouldHave(text(\"- b001:\"));
 pre.shouldHave(matchText(\"barcode:.*b001\"));
 pre.shouldHave(matchText(\"content:.*\\"red shoes\\"\"));
 pre.shouldHave(matchText(\"location:.*\\"shelf 42\\"\"));
 
+// page 12:04
+open(\"http://localhost:42001/page/12_04\");
+
+// page 12:05
+open(\"http://localhost:42001/page/12_05\");
+$(\"#barcode\").setValue(\"b002\");
+$(\"#type\").setValue(\"red shoes\");
+$(\"#location\").setValue(\"shelf 23\");
+$(\"#ok\").click();
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_05_01:\"));
+
+// check Warehouse
+open(\"http://localhost:42001\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_05_01:\"));
+for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
+   warehouse.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = warehouse.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/warehouse12_05_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42001\");
+// check data note 12:05:02
+pre = $(\"#data\");
+pre.shouldHave(text(\"- b002:\"));
+pre.shouldHave(matchText(\"barcode:.*b002\"));
+pre.shouldHave(matchText(\"content:.*\\"red shoes\\"\"));
+pre.shouldHave(matchText(\"location:.*\\"shelf 23\\"\"));
+
+// page 12:07
+open(\"http://localhost:42001/page/12_07\");
+
+// page 12:08
+open(\"http://localhost:42001/page/12_08\");
+$(\"#barcode\").setValue(\"b003\");
+$(\"#type\").setValue(\"blue jeans\");
+$(\"#location\").setValue(\"shelf 1337\");
+$(\"#ok\").click();
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_08_01:\"));
+
+// check Warehouse
+open(\"http://localhost:42001\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_08_01:\"));
+for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
+   warehouse.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = warehouse.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/warehouse12_08_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42001\");
+// check data note 12:08:02
+pre = $(\"#data\");
+pre.shouldHave(text(\"- b003:\"));
+pre.shouldHave(matchText(\"barcode:.*b003\"));
+pre.shouldHave(matchText(\"content:.*\\"blue jeans\\"\"));
+pre.shouldHave(matchText(\"location:.*\\"shelf 1337\\"\"));
+
+// page 12:10
+open(\"http://localhost:42001/page/12_10\");
+
+// create ProductOfferedEvent: product offered
+ProductOfferedEvent e1211 = new ProductOfferedEvent();
+e1211.setId(\"12:11\");
+publish(e1211);
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_11:\"));
+
+// create ProductOrderedEvent: product ordered
+ProductOrderedEvent e1212 = new ProductOrderedEvent();
+e1212.setId(\"12:12\");
+publish(e1212);
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_12:\"));
+
+// create OrderPickedEvent: order picked
+OrderPickedEvent e1213 = new OrderPickedEvent();
+e1213.setId(\"12:13\");
+publish(e1213);
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_13:\"));
+
+// create OrderDeliveredEvent: order delivered
+OrderDeliveredEvent e1214 = new OrderDeliveredEvent();
+e1214.setId(\"12:14\");
+publish(e1214);
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_14:\"));
+
 // workflow OutOfStock
+
+// create ProductOrderedEvent: product ordered
+ProductOrderedEvent e1301 = new ProductOrderedEvent();
+e1301.setId(\"13:01\");
+publish(e1301);
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 13_01:\"));
+
+// create OrderRejectedEvent: order rejected
+OrderRejectedEvent e1302 = new OrderRejectedEvent();
+e1302.setId(\"13:02\");
+publish(e1302);
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 13_02:\"));
 try {
    Thread.sleep(3000);
 } catch (Exception e) {
@@ -104,16 +231,16 @@ System.out.println();
 "
   modified: 	false
   modifiers: 	public
-  name: 	SomeEventStorming
+  name: 	MicroShop
   paramsString: 	""
   returnType: 	void
-  signature: 	"class/TestSomeEventStorming/method/SomeEventStorming()"
+  signature: 	"class/TestMicroShop/method/MicroShop()"
 
-- testSomeEventStorming_publish: 	org.fulib.classmodel.FMethod
+- testMicroShop_publish: 	org.fulib.classmodel.FMethod
   annotations: 	""
-  clazz: 	testSomeEventStorming
+  clazz: 	testMicroShop
   declaration: 	"public void publish(Event event)"
-  id: 	TestSomeEventStorming_publish
+  id: 	TestMicroShop_publish
   methodBody: 	"String yaml = Yaml.encodeSimple(event);
 
 try {
@@ -130,5 +257,5 @@ catch (Exception e) {
   name: 	publish
   paramsString: 	"Event event"
   returnType: 	void
-  signature: 	"class/TestSomeEventStorming/method/publish(Event)"
+  signature: 	"class/TestMicroShop/method/publish(Event)"
 

@@ -6,10 +6,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Launch Current File",
+            "name": "GenShopWorkflow",
             "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "org.junit.runner.JUnitCore",
+            "args": "org.fulib.workflows.GenShopWorkflow"
         }
-
     ]
 }

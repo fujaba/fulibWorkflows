@@ -21,7 +21,7 @@
   attributes: 	warehouseBusinessLogic_model 	warehouseBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
-  methods: 	warehouseBusinessLogic_handleStoreProductCommand 	warehouseBusinessLogic_handleDemoStoreProductCommand 	warehouseBusinessLogic_initEventHandlerMap 	warehouseBusinessLogic_ignoreEvent 	warehouseBusinessLogic_getHandler
+  methods: 	warehouseBusinessLogic_handleStoreCommand 	warehouseBusinessLogic_handleDemoStoreCommand 	warehouseBusinessLogic_initEventHandlerMap 	warehouseBusinessLogic_ignoreEvent 	warehouseBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	WarehouseBusinessLogic
@@ -107,31 +107,31 @@ return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
   type: 	"LinkedHashMap<Class, Consumer<Event>>"
   typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
 
-- warehouseBusinessLogic_handleStoreProductCommand: 	org.fulib.classmodel.FMethod
+- warehouseBusinessLogic_handleStoreCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	warehouseBusinessLogic
-  declaration: 	"private void handleStoreProductCommand(Event e)"
-  id: 	WarehouseBusinessLogic_handleStoreProductCommand
+  declaration: 	"private void handleStoreCommand(Event e)"
+  id: 	WarehouseBusinessLogic_handleStoreCommand
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-StoreProductCommand event = (StoreProductCommand) e;
-handleDemoStoreProductCommand(event);
+StoreCommand event = (StoreCommand) e;
+handleDemoStoreCommand(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleStoreProductCommand
+  name: 	handleStoreCommand
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/WarehouseBusinessLogic/method/handleStoreProductCommand(Event)"
+  signature: 	"class/WarehouseBusinessLogic/method/handleStoreCommand(Event)"
 
-- warehouseBusinessLogic_handleDemoStoreProductCommand: 	org.fulib.classmodel.FMethod
+- warehouseBusinessLogic_handleDemoStoreCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	warehouseBusinessLogic
-  declaration: 	"private void handleDemoStoreProductCommand(StoreProductCommand event)"
-  id: 	WarehouseBusinessLogic_handleDemoStoreProductCommand
-  methodBody: 	"if (event.getId().equals(\"12:01\")) {
+  declaration: 	"private void handleDemoStoreCommand(StoreCommand event)"
+  id: 	WarehouseBusinessLogic_handleDemoStoreCommand
+  methodBody: 	"if (event.getId().equals(\"12:02:01\")) {
    BoxBuilt b001Event = new BoxBuilt();
-   b001Event.setId(\"12:01:01\");
+   b001Event.setId(\"12:02:02\");
    b001Event.setBlockId(\"b001\");
    b001Event.setBarcode(\"b001\");
    b001Event.setContent(\"red shoes\");
@@ -139,50 +139,54 @@ handleDemoStoreProductCommand(event);
    service.apply(b001Event);
 
 
-   ProductStoredEvent e1202 = new ProductStoredEvent();
-
-   e1202.setId(\"12:02\");
-   e1202.setBarcode(\"b001\");
-   e1202.setType(\"red shoes\");
-   service.apply(e1202);
-
-   ProductOfferedEvent e1203 = new ProductOfferedEvent();
+   ProductStoredEvent e1203 = new ProductStoredEvent();
 
    e1203.setId(\"12:03\");
+   e1203.setBarcode(\"b001\");
+   e1203.setType(\"red shoes\");
    service.apply(e1203);
+}
+if (event.getId().equals(\"12:05:01\")) {
+   BoxBuilt b002Event = new BoxBuilt();
+   b002Event.setId(\"12:05:02\");
+   b002Event.setBlockId(\"b002\");
+   b002Event.setBarcode(\"b002\");
+   b002Event.setContent(\"red shoes\");
+   b002Event.setLocation(\"shelf 23\");
+   service.apply(b002Event);
 
-   ProductOrderedEvent e1204 = new ProductOrderedEvent();
 
-   e1204.setId(\"12:04\");
-   service.apply(e1204);
-
-   OrderPickedEvent e1205 = new OrderPickedEvent();
-
-   e1205.setId(\"12:05\");
-   service.apply(e1205);
-
-   OrderDeliveredEvent e1206 = new OrderDeliveredEvent();
+   ProductStoredEvent e1206 = new ProductStoredEvent();
 
    e1206.setId(\"12:06\");
+   e1206.setBarcode(\"b002\");
+   e1206.setType(\"red shoes\");
    service.apply(e1206);
+}
+if (event.getId().equals(\"12:08:01\")) {
+   BoxBuilt b003Event = new BoxBuilt();
+   b003Event.setId(\"12:08:02\");
+   b003Event.setBlockId(\"b003\");
+   b003Event.setBarcode(\"b003\");
+   b003Event.setContent(\"blue jeans\");
+   b003Event.setLocation(\"shelf 1337\");
+   service.apply(b003Event);
 
-   ProductOrderedEvent e1301 = new ProductOrderedEvent();
 
-   e1301.setId(\"13:01\");
-   service.apply(e1301);
+   ProductStoredEvent e1209 = new ProductStoredEvent();
 
-   OrderRejectedEvent e1302 = new OrderRejectedEvent();
-
-   e1302.setId(\"13:02\");
-   service.apply(e1302);
+   e1209.setId(\"12:09\");
+   e1209.setBarcode(\"b003\");
+   e1209.setType(\"blue jeans\");
+   service.apply(e1209);
 }
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoStoreProductCommand
-  paramsString: 	"StoreProductCommand event"
+  name: 	handleDemoStoreCommand
+  paramsString: 	"StoreCommand event"
   returnType: 	void
-  signature: 	"class/WarehouseBusinessLogic/method/handleDemoStoreProductCommand(StoreProductCommand)"
+  signature: 	"class/WarehouseBusinessLogic/method/handleDemoStoreCommand(StoreCommand)"
 
 - warehouseBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -192,7 +196,7 @@ handleDemoStoreProductCommand(event);
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
-   handlerMap.put(StoreProductCommand.class, this::handleStoreProductCommand);
+   handlerMap.put(StoreCommand.class, this::handleStoreCommand);
 }
 "
   modified: 	false
@@ -696,6 +700,129 @@ return getDemoPage(request, response);
   methodBody: 	"StringBuilder html = new StringBuilder();
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
+
+if (\"store product\".equals(event)) {
+
+   // create StoreCommand: store product
+   StoreCommand e120201 = new StoreCommand();
+   e120201.setId(\"12:02:01\");
+   e120201.setBarcode(request.queryParams(\"barcode\"));
+   e120201.setType(request.queryParams(\"type\"));
+   e120201.setLocation(request.queryParams(\"location\"));
+   apply(e120201);
+}
+
+if (\"store product\".equals(event)) {
+
+   // create StoreCommand: store product
+   StoreCommand e120501 = new StoreCommand();
+   e120501.setId(\"12:05:01\");
+   e120501.setBarcode(request.queryParams(\"barcode\"));
+   e120501.setType(request.queryParams(\"type\"));
+   e120501.setLocation(request.queryParams(\"location\"));
+   apply(e120501);
+}
+
+if (\"store product\".equals(event)) {
+
+   // create StoreCommand: store product
+   StoreCommand e120801 = new StoreCommand();
+   e120801.setId(\"12:08:01\");
+   e120801.setBarcode(request.queryParams(\"barcode\"));
+   e120801.setType(request.queryParams(\"type\"));
+   e120801.setLocation(request.queryParams(\"location\"));
+   apply(e120801);
+}
+
+
+
+// 12:01
+if (id.equals(\"12_01\")) {
+   html.append(\"<form action=\\"/page/12_02\\" method=\\"get\\">\n\");
+   // Warehouse overview 12:01
+   html.append(\"   <p>Warehouse boxes</p>\n\");
+   html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:02
+if (id.equals(\"12_02\")) {
+   html.append(\"<form action=\\"/page/12_04\\" method=\\"get\\">\n\");
+   // Warehouse add box 12:02
+   html.append(\"   <p>Store new box</p>\n\");
+   html.append(\"   <p><input id=\\"barcode\\" name=\\"barcode\\" placeholder=\\"barcode?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"type\\" name=\\"type\\" placeholder=\\"type?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:04
+if (id.equals(\"12_04\")) {
+   html.append(\"<form action=\\"/page/12_05\\" method=\\"get\\">\n\");
+   // Warehouse overview 12:04
+   html.append(\"   <p>Warehouse boxes</p>\n\");
+   html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
+   html.append(\"   <p>b001, red shoes, shelf 42</p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:05
+if (id.equals(\"12_05\")) {
+   html.append(\"<form action=\\"/page/12_07\\" method=\\"get\\">\n\");
+   // Warehouse add box 12:05
+   html.append(\"   <p>Store new box</p>\n\");
+   html.append(\"   <p><input id=\\"barcode\\" name=\\"barcode\\" placeholder=\\"barcode?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"type\\" name=\\"type\\" placeholder=\\"type?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:07
+if (id.equals(\"12_07\")) {
+   html.append(\"<form action=\\"/page/12_08\\" method=\\"get\\">\n\");
+   // Warehouse overview 12:07
+   html.append(\"   <p>Warehouse boxes</p>\n\");
+   html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
+   html.append(\"   <p>b002, red shoes, shelf 23</p>\n\");
+   html.append(\"   <p>b001, red shoes, shelf 42</p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:08
+if (id.equals(\"12_08\")) {
+   html.append(\"<form action=\\"/page/12_10\\" method=\\"get\\">\n\");
+   // Warehouse add box 12:08
+   html.append(\"   <p>Store new box</p>\n\");
+   html.append(\"   <p><input id=\\"barcode\\" name=\\"barcode\\" placeholder=\\"barcode?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"type\\" name=\\"type\\" placeholder=\\"type?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product\\"></p>\n\");
+   html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:10
+if (id.equals(\"12_10\")) {
+   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   // Warehouse overview 12:10
+   html.append(\"   <p>Warehouse boxes</p>\n\");
+   html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
+   html.append(\"   <p>b003, blue jeans, shelf 1337</p>\n\");
+   html.append(\"   <p>b002, red shoes, shelf 23</p>\n\");
+   html.append(\"   <p>b001, red shoes, shelf 42</p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
 
 
 

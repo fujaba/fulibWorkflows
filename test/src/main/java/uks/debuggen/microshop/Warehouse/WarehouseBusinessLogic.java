@@ -107,71 +107,12 @@ public class WarehouseBusinessLogic
       return this;
    }
 
-   private void handleStoreProductCommand(Event e)
-   {
-      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
-      // fulib
-      StoreProductCommand event = (StoreProductCommand) e;
-      handleDemoStoreProductCommand(event);
-   }
-
-   private void handleDemoStoreProductCommand(StoreProductCommand event)
-   {
-      if (event.getId().equals("12:01")) {
-         BoxBuilt b001Event = new BoxBuilt();
-         b001Event.setId("12:01:01");
-         b001Event.setBlockId("b001");
-         b001Event.setBarcode("b001");
-         b001Event.setContent("red shoes");
-         b001Event.setLocation("shelf 42");
-         service.apply(b001Event);
-
-
-         ProductStoredEvent e1202 = new ProductStoredEvent();
-
-         e1202.setId("12:02");
-         e1202.setBarcode("b001");
-         e1202.setType("red shoes");
-         service.apply(e1202);
-
-         ProductOfferedEvent e1203 = new ProductOfferedEvent();
-
-         e1203.setId("12:03");
-         service.apply(e1203);
-
-         ProductOrderedEvent e1204 = new ProductOrderedEvent();
-
-         e1204.setId("12:04");
-         service.apply(e1204);
-
-         OrderPickedEvent e1205 = new OrderPickedEvent();
-
-         e1205.setId("12:05");
-         service.apply(e1205);
-
-         OrderDeliveredEvent e1206 = new OrderDeliveredEvent();
-
-         e1206.setId("12:06");
-         service.apply(e1206);
-
-         ProductOrderedEvent e1301 = new ProductOrderedEvent();
-
-         e1301.setId("13:01");
-         service.apply(e1301);
-
-         OrderRejectedEvent e1302 = new OrderRejectedEvent();
-
-         e1302.setId("13:02");
-         service.apply(e1302);
-      }
-   }
-
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
-         handlerMap.put(StoreProductCommand.class, this::handleStoreProductCommand);
+         handlerMap.put(StoreCommand.class, this::handleStoreCommand);
       }
    }
 
@@ -208,5 +149,68 @@ public class WarehouseBusinessLogic
    {
       this.setBuilder(null);
       this.setService(null);
+   }
+
+   private void handleStoreCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      StoreCommand event = (StoreCommand) e;
+      handleDemoStoreCommand(event);
+   }
+
+   private void handleDemoStoreCommand(StoreCommand event)
+   {
+      if (event.getId().equals("12:02:01")) {
+         BoxBuilt b001Event = new BoxBuilt();
+         b001Event.setId("12:02:02");
+         b001Event.setBlockId("b001");
+         b001Event.setBarcode("b001");
+         b001Event.setContent("red shoes");
+         b001Event.setLocation("shelf 42");
+         service.apply(b001Event);
+
+
+         ProductStoredEvent e1203 = new ProductStoredEvent();
+
+         e1203.setId("12:03");
+         e1203.setBarcode("b001");
+         e1203.setType("red shoes");
+         service.apply(e1203);
+      }
+      if (event.getId().equals("12:05:01")) {
+         BoxBuilt b002Event = new BoxBuilt();
+         b002Event.setId("12:05:02");
+         b002Event.setBlockId("b002");
+         b002Event.setBarcode("b002");
+         b002Event.setContent("red shoes");
+         b002Event.setLocation("shelf 23");
+         service.apply(b002Event);
+
+
+         ProductStoredEvent e1206 = new ProductStoredEvent();
+
+         e1206.setId("12:06");
+         e1206.setBarcode("b002");
+         e1206.setType("red shoes");
+         service.apply(e1206);
+      }
+      if (event.getId().equals("12:08:01")) {
+         BoxBuilt b003Event = new BoxBuilt();
+         b003Event.setId("12:08:02");
+         b003Event.setBlockId("b003");
+         b003Event.setBarcode("b003");
+         b003Event.setContent("blue jeans");
+         b003Event.setLocation("shelf 1337");
+         service.apply(b003Event);
+
+
+         ProductStoredEvent e1209 = new ProductStoredEvent();
+
+         e1209.setId("12:09");
+         e1209.setBarcode("b003");
+         e1209.setType("blue jeans");
+         service.apply(e1209);
+      }
    }
 }

@@ -1,7 +1,7 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class StoreProductCommand extends Command
+public class StoreCommand extends Command
 {
    public static final String PROPERTY_BARCODE = "barcode";
    public static final String PROPERTY_TYPE = "type";
@@ -15,7 +15,7 @@ public class StoreProductCommand extends Command
       return this.barcode;
    }
 
-   public StoreProductCommand setBarcode(String value)
+   public StoreCommand setBarcode(String value)
    {
       if (Objects.equals(value, this.barcode))
       {
@@ -33,7 +33,7 @@ public class StoreProductCommand extends Command
       return this.type;
    }
 
-   public StoreProductCommand setType(String value)
+   public StoreCommand setType(String value)
    {
       if (Objects.equals(value, this.type))
       {
@@ -51,7 +51,7 @@ public class StoreProductCommand extends Command
       return this.location;
    }
 
-   public StoreProductCommand setLocation(String value)
+   public StoreCommand setLocation(String value)
    {
       if (Objects.equals(value, this.location))
       {
