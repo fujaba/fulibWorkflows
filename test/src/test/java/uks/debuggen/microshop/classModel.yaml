@@ -9,8 +9,8 @@
 
 - testMicroShop: 	org.fulib.classmodel.Clazz
   attributes: 	testMicroShop_eventBroker
-  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.microshop.events.*;" 	"import uks.debuggen.microshop.Warehouse.WarehouseService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
-  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.microshop.events.*;" 	"import uks.debuggen.microshop.Warehouse.WarehouseService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.microshop.events.*;" 	"import uks.debuggen.microshop.Warehouse.WarehouseService;" 	"import uks.debuggen.microshop.MicroShop.MicroShopService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.microshop.events.*;" 	"import uks.debuggen.microshop.Warehouse.WarehouseService;" 	"import uks.debuggen.microshop.MicroShop.MicroShopService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
   methods: 	testMicroShop_MicroShop 	testMicroShop_publish
   model: 	c
   modified: 	false
@@ -46,6 +46,10 @@ eventBroker.start();
 // start service
 WarehouseService warehouse = new WarehouseService();
 warehouse.start();
+
+// start service
+MicroShopService microShop = new MicroShopService();
+microShop.start();
 try {
    Thread.sleep(1500);
 } catch (Exception e) {
@@ -56,6 +60,7 @@ $(\"body\").shouldHave(text(\"event broker\"));
 
 SelenideElement pre = $(\"pre\");
 pre.shouldHave(text(\"http://localhost:42001/apply\"));
+pre.shouldHave(text(\"http://localhost:42002/apply\"));
 LinkedHashMap<String, Object> modelMap;
 
 // workflow SmoothCase
@@ -165,41 +170,214 @@ pre.shouldHave(matchText(\"location:.*\\"shelf 1337\\"\"));
 // page 12:10
 open(\"http://localhost:42001/page/12_10\");
 
-// create ProductOfferedEvent: product offered
-ProductOfferedEvent e1211 = new ProductOfferedEvent();
-e1211.setId(\"12:11\");
-publish(e1211);
+// page 12:11
+open(\"http://localhost:42002/page/12_11\");
+
+// page 12:12
+open(\"http://localhost:42002/page/12_12\");
+$(\"#product\").setValue(\"red shoes\");
+$(\"#price\").setValue(\"$42\");
+$(\"#ok\").click();
 
 open(\"http://localhost:42000\");
 pre = $(\"#history\");
-pre.shouldHave(text(\"- 12_11:\"));
+pre.shouldHave(text(\"- 12_12_01:\"));
 
-// create ProductOrderedEvent: product ordered
-ProductOrderedEvent e1212 = new ProductOrderedEvent();
-e1212.setId(\"12:12\");
-publish(e1212);
+// check MicroShop
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_12_01:\"));
+for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+   microShop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = microShop.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/microShop12_12_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42002\");
+// check data note 12:12:02
+pre = $(\"#data\");
+pre.shouldHave(text(\"- red_shoes:\"));
+pre.shouldHave(matchText(\"name:.*\\"red shoes\\"\"));
+pre.shouldHave(matchText(\"price:.*$42\"));
+
+// page 12:14
+open(\"http://localhost:42002/page/12_14\");
+
+// page 12:15
+open(\"http://localhost:42002/page/12_15\");
+$(\"#product\").setValue(\"blue jeans\");
+$(\"#price\").setValue(\"$63\");
+$(\"#ok\").click();
 
 open(\"http://localhost:42000\");
 pre = $(\"#history\");
-pre.shouldHave(text(\"- 12_12:\"));
+pre.shouldHave(text(\"- 12_15_01:\"));
 
-// create OrderPickedEvent: order picked
-OrderPickedEvent e1213 = new OrderPickedEvent();
-e1213.setId(\"12:13\");
-publish(e1213);
+// check MicroShop
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_15_01:\"));
+for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+   microShop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = microShop.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/microShop12_15_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42002\");
+// check data note 12:15:02
+pre = $(\"#data\");
+pre.shouldHave(text(\"- blue_jeans:\"));
+pre.shouldHave(matchText(\"name:.*\\"blue jeans\\"\"));
+pre.shouldHave(matchText(\"price:.*$63\"));
+
+// page 12:17
+open(\"http://localhost:42002/page/12_17\");
+
+// page 12:18
+open(\"http://localhost:42002/page/12_18\");
+
+// page 12:19
+open(\"http://localhost:42002/page/12_19\");
+$(\"#product\").setValue(\"red shoes\");
+$(\"#customer\").setValue(\"Carli Customer\");
+$(\"#address\").setValue(\"Wonderland 1\");
+$(\"#buy\").click();
 
 open(\"http://localhost:42000\");
 pre = $(\"#history\");
-pre.shouldHave(text(\"- 12_13:\"));
+pre.shouldHave(text(\"- 12_19_01:\"));
 
-// create OrderDeliveredEvent: order delivered
-OrderDeliveredEvent e1214 = new OrderDeliveredEvent();
-e1214.setId(\"12:14\");
-publish(e1214);
+// check MicroShop
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_19_01:\"));
+for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+   microShop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = microShop.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/microShop12_19_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42002\");
+// check data note 12:19:02
+pre = $(\"#data\");
+pre.shouldHave(text(\"- o0925_1:\"));
+pre.shouldHave(matchText(\"code:.*o0925_1\"));
+pre.shouldHave(matchText(\"product:.*\\"red shoes\\"\"));
+pre.shouldHave(matchText(\"customer:.*\\"Carli Customer\\"\"));
+pre.shouldHave(matchText(\"address:.*\\"Wonderland 1\\"\"));
+pre.shouldHave(matchText(\"state:.*\\"new order\\"\"));
+
+// check Warehouse
+open(\"http://localhost:42001\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_19_01:\"));
+for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
+   warehouse.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = warehouse.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/warehouse12_19_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42001\");
+// check data note 12:20:01
+pre = $(\"#data\");
+pre.shouldHave(text(\"- pt_o0925_1:\"));
+pre.shouldHave(matchText(\"code:.*pt_o0925_1\"));
+pre.shouldHave(matchText(\"product:.*\\"red shoes\\"\"));
+pre.shouldHave(matchText(\"shelf:.*shelf 42, shelf 23\"));
+pre.shouldHave(matchText(\"customer:.*\\"Carli Customer\\"\"));
+pre.shouldHave(matchText(\"address:.*\\"Wonderland 1\\"\"));
+pre.shouldHave(matchText(\"state:.*picking\"));
+
+// page 12:21
+open(\"http://localhost:42001/page/12_21\");
+
+// page 12:22
+open(\"http://localhost:42001/page/12_22\");
+$(\"#task\").setValue(\"pt_o0925_1\");
+$(\"#shelf\").setValue(\"shelf 42\");
+$(\"#done\").click();
 
 open(\"http://localhost:42000\");
 pre = $(\"#history\");
-pre.shouldHave(text(\"- 12_14:\"));
+pre.shouldHave(text(\"- 12_22_01:\"));
+
+// check Warehouse
+open(\"http://localhost:42001\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_22_01:\"));
+for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
+   warehouse.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = warehouse.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/warehouse12_22_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42001\");
+// check data note 12:22:02
+pre = $(\"#data\");
+pre.shouldHave(text(\"- pt_o0925_1:\"));
+pre.shouldHave(matchText(\"code:.*pt_o0925_1\"));
+pre.shouldHave(matchText(\"from:.*\\"shelf 42\\"\"));
+pre.shouldHave(matchText(\"state:.*shipping\"));
+
+// check MicroShop
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_22_01:\"));
+for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+   microShop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = microShop.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/microShop12_22_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42002\");
+// check data note 12:23:01
+pre = $(\"#data\");
+pre.shouldHave(text(\"- o0925_1:\"));
+pre.shouldHave(matchText(\"code:.*o0925_1\"));
+pre.shouldHave(matchText(\"state:.*shipping\"));
+
+// page 12:24
+open(\"http://localhost:42001/page/12_24\");
+
+// page 12:25
+open(\"http://localhost:42001/page/12_25\");
+$(\"#order\").setValue(\"o0925_1\");
+$(\"#done\").click();
+
+open(\"http://localhost:42000\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_25_01:\"));
+
+// check MicroShop
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_25_01:\"));
+for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+   microShop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = microShop.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/microShop12_25_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42002\");
+// check data note 12:25:02
+pre = $(\"#data\");
+pre.shouldHave(text(\"- o0925_1:\"));
+pre.shouldHave(matchText(\"code:.*o0925_1\"));
+pre.shouldHave(matchText(\"state:.*delivered\"));
 
 // workflow OutOfStock
 
@@ -226,6 +404,7 @@ try {
 }
 eventBroker.stop();
 warehouse.stop();
+microShop.stop();
 
 System.out.println();
 "

@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	addCommand 	productBuilt 	productOfferedEvent 	placeCommand 	orderBuilt 	productOrderedEvent 	pickTaskBuilt 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	orderPickedEvent 	command 	orderDeliveredEvent 	orderRejectedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -22,7 +22,7 @@
   name: 	DataEvent
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
-  subClasses: 	dataGroup 	boxBuilt
+  subClasses: 	dataGroup 	boxBuilt 	productBuilt 	orderBuilt 	pickTaskBuilt
   superClass: 	event
 
 - dataGroup: 	org.fulib.classmodel.Clazz
@@ -51,11 +51,12 @@
   superClass: 	event
 
 - command: 	org.fulib.classmodel.Clazz
+  attributes: 	command_task 	command_shelf 	command_order
   model: 	c
   modified: 	false
   name: 	Command
   propertyStyle: 	Bean
-  subClasses: 	storeCommand
+  subClasses: 	storeCommand 	addCommand 	placeCommand
   superClass: 	event
 
 - storeCommand: 	org.fulib.classmodel.Clazz
@@ -82,21 +83,64 @@
   propertyStyle: 	Bean
   superClass: 	event
 
+- addCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	addCommand_product 	addCommand_price
+  model: 	c
+  modified: 	false
+  name: 	AddCommand
+  propertyStyle: 	Bean
+  superClass: 	command
+
+- productBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	productBuilt_name 	productBuilt_price
+  model: 	c
+  modified: 	false
+  name: 	ProductBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
 - productOfferedEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	productOfferedEvent_name 	productOfferedEvent_price
   model: 	c
   modified: 	false
   name: 	ProductOfferedEvent
   propertyStyle: 	Bean
   superClass: 	event
 
+- placeCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	placeCommand_product 	placeCommand_customer 	placeCommand_address
+  model: 	c
+  modified: 	false
+  name: 	PlaceCommand
+  propertyStyle: 	Bean
+  superClass: 	command
+
+- orderBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	orderBuilt_code 	orderBuilt_product 	orderBuilt_customer 	orderBuilt_address 	orderBuilt_state
+  model: 	c
+  modified: 	false
+  name: 	OrderBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
 - productOrderedEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	productOrderedEvent_code 	productOrderedEvent_product 	productOrderedEvent_customer 	productOrderedEvent_address
   model: 	c
   modified: 	false
   name: 	ProductOrderedEvent
   propertyStyle: 	Bean
   superClass: 	event
 
+- pickTaskBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	pickTaskBuilt_code 	pickTaskBuilt_product 	pickTaskBuilt_shelf 	pickTaskBuilt_customer 	pickTaskBuilt_address 	pickTaskBuilt_state 	pickTaskBuilt_from
+  model: 	c
+  modified: 	false
+  name: 	PickTaskBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
 - orderPickedEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	orderPickedEvent_order
   model: 	c
   modified: 	false
   name: 	OrderPickedEvent
@@ -104,6 +148,7 @@
   superClass: 	event
 
 - orderDeliveredEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	orderDeliveredEvent_order
   model: 	c
   modified: 	false
   name: 	OrderDeliveredEvent
@@ -206,6 +251,33 @@
   type: 	String
   typeSignature: 	String
 
+- command_task: 	org.fulib.classmodel.Attribute
+  clazz: 	command
+  id: 	Command_task
+  modified: 	false
+  name: 	task
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- command_shelf: 	org.fulib.classmodel.Attribute
+  clazz: 	command
+  id: 	Command_shelf
+  modified: 	false
+  name: 	shelf
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- command_order: 	org.fulib.classmodel.Attribute
+  clazz: 	command
+  id: 	Command_order
+  modified: 	false
+  name: 	order
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - storeCommand_barcode: 	org.fulib.classmodel.Attribute
   clazz: 	storeCommand
   id: 	StoreCommand_barcode
@@ -274,6 +346,249 @@
   id: 	ProductStoredEvent_type
   modified: 	false
   name: 	type
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- addCommand_product: 	org.fulib.classmodel.Attribute
+  clazz: 	addCommand
+  id: 	AddCommand_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- addCommand_price: 	org.fulib.classmodel.Attribute
+  clazz: 	addCommand
+  id: 	AddCommand_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	productBuilt
+  id: 	ProductBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productBuilt_price: 	org.fulib.classmodel.Attribute
+  clazz: 	productBuilt
+  id: 	ProductBuilt_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productOfferedEvent_name: 	org.fulib.classmodel.Attribute
+  clazz: 	productOfferedEvent
+  id: 	ProductOfferedEvent_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productOfferedEvent_price: 	org.fulib.classmodel.Attribute
+  clazz: 	productOfferedEvent
+  id: 	ProductOfferedEvent_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- placeCommand_product: 	org.fulib.classmodel.Attribute
+  clazz: 	placeCommand
+  id: 	PlaceCommand_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- placeCommand_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	placeCommand
+  id: 	PlaceCommand_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- placeCommand_address: 	org.fulib.classmodel.Attribute
+  clazz: 	placeCommand
+  id: 	PlaceCommand_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderBuilt_code: 	org.fulib.classmodel.Attribute
+  clazz: 	orderBuilt
+  id: 	OrderBuilt_code
+  modified: 	false
+  name: 	code
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderBuilt_product: 	org.fulib.classmodel.Attribute
+  clazz: 	orderBuilt
+  id: 	OrderBuilt_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderBuilt_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	orderBuilt
+  id: 	OrderBuilt_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderBuilt_address: 	org.fulib.classmodel.Attribute
+  clazz: 	orderBuilt
+  id: 	OrderBuilt_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderBuilt_state: 	org.fulib.classmodel.Attribute
+  clazz: 	orderBuilt
+  id: 	OrderBuilt_state
+  modified: 	false
+  name: 	state
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productOrderedEvent_code: 	org.fulib.classmodel.Attribute
+  clazz: 	productOrderedEvent
+  id: 	ProductOrderedEvent_code
+  modified: 	false
+  name: 	code
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productOrderedEvent_product: 	org.fulib.classmodel.Attribute
+  clazz: 	productOrderedEvent
+  id: 	ProductOrderedEvent_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productOrderedEvent_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	productOrderedEvent
+  id: 	ProductOrderedEvent_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productOrderedEvent_address: 	org.fulib.classmodel.Attribute
+  clazz: 	productOrderedEvent
+  id: 	ProductOrderedEvent_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskBuilt_code: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskBuilt
+  id: 	PickTaskBuilt_code
+  modified: 	false
+  name: 	code
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskBuilt_product: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskBuilt
+  id: 	PickTaskBuilt_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskBuilt_shelf: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskBuilt
+  id: 	PickTaskBuilt_shelf
+  modified: 	false
+  name: 	shelf
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskBuilt_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskBuilt
+  id: 	PickTaskBuilt_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskBuilt_address: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskBuilt
+  id: 	PickTaskBuilt_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskBuilt_state: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskBuilt
+  id: 	PickTaskBuilt_state
+  modified: 	false
+  name: 	state
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskBuilt_from: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskBuilt
+  id: 	PickTaskBuilt_from
+  modified: 	false
+  name: 	from
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderPickedEvent_order: 	org.fulib.classmodel.Attribute
+  clazz: 	orderPickedEvent
+  id: 	OrderPickedEvent_order
+  modified: 	false
+  name: 	order
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- orderDeliveredEvent_order: 	org.fulib.classmodel.Attribute
+  clazz: 	orderDeliveredEvent
+  id: 	OrderDeliveredEvent_order
+  modified: 	false
+  name: 	order
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

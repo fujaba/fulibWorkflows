@@ -1,41 +1,21 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class ProductOrderedEvent extends Event
+public class PlaceCommand extends Command
 {
-   public static final String PROPERTY_CODE = "code";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
-   private String code;
    private String product;
    private String customer;
    private String address;
-
-   public String getCode()
-   {
-      return this.code;
-   }
-
-   public ProductOrderedEvent setCode(String value)
-   {
-      if (Objects.equals(value, this.code))
-      {
-         return this;
-      }
-
-      final String oldValue = this.code;
-      this.code = value;
-      this.firePropertyChange(PROPERTY_CODE, oldValue, value);
-      return this;
-   }
 
    public String getProduct()
    {
       return this.product;
    }
 
-   public ProductOrderedEvent setProduct(String value)
+   public PlaceCommand setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -53,7 +33,7 @@ public class ProductOrderedEvent extends Event
       return this.customer;
    }
 
-   public ProductOrderedEvent setCustomer(String value)
+   public PlaceCommand setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -71,7 +51,7 @@ public class ProductOrderedEvent extends Event
       return this.address;
    }
 
-   public ProductOrderedEvent setAddress(String value)
+   public PlaceCommand setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -88,7 +68,6 @@ public class ProductOrderedEvent extends Event
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getCode());
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());

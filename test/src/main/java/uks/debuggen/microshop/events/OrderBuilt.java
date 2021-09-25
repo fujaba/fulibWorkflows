@@ -1,23 +1,25 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class ProductOrderedEvent extends Event
+public class OrderBuilt extends DataEvent
 {
    public static final String PROPERTY_CODE = "code";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
+   public static final String PROPERTY_STATE = "state";
    private String code;
    private String product;
    private String customer;
    private String address;
+   private String state;
 
    public String getCode()
    {
       return this.code;
    }
 
-   public ProductOrderedEvent setCode(String value)
+   public OrderBuilt setCode(String value)
    {
       if (Objects.equals(value, this.code))
       {
@@ -35,7 +37,7 @@ public class ProductOrderedEvent extends Event
       return this.product;
    }
 
-   public ProductOrderedEvent setProduct(String value)
+   public OrderBuilt setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -53,7 +55,7 @@ public class ProductOrderedEvent extends Event
       return this.customer;
    }
 
-   public ProductOrderedEvent setCustomer(String value)
+   public OrderBuilt setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -71,7 +73,7 @@ public class ProductOrderedEvent extends Event
       return this.address;
    }
 
-   public ProductOrderedEvent setAddress(String value)
+   public OrderBuilt setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -84,6 +86,24 @@ public class ProductOrderedEvent extends Event
       return this;
    }
 
+   public String getState()
+   {
+      return this.state;
+   }
+
+   public OrderBuilt setState(String value)
+   {
+      if (Objects.equals(value, this.state))
+      {
+         return this;
+      }
+
+      final String oldValue = this.state;
+      this.state = value;
+      this.firePropertyChange(PROPERTY_STATE, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -92,6 +112,7 @@ public class ProductOrderedEvent extends Event
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
+      result.append(' ').append(this.getState());
       return result.toString();
    }
 }

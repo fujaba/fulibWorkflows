@@ -1,9 +1,9 @@
-package uks.debuggen.microshop.Warehouse;
+package uks.debuggen.microshop.MicroShop;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class WarehouseModel
+public class MicroShopModel
 {
    public static final String PROPERTY_MODEL_MAP = "modelMap";
    private LinkedHashMap<String, Object> modelMap = new LinkedHashMap<>();
@@ -14,7 +14,7 @@ public class WarehouseModel
       return this.modelMap;
    }
 
-   public WarehouseModel setModelMap(LinkedHashMap<String, Object> value)
+   public MicroShopModel setModelMap(LinkedHashMap<String, Object> value)
    {
       if (Objects.equals(value, this.modelMap))
       {
@@ -27,10 +27,10 @@ public class WarehouseModel
       return this;
    }
 
-   public Box getOrCreateBox(String id)
+   public Product getOrCreateProduct(String id)
    {
       if (id == null) return null;
-      return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
+      return (Product) modelMap.computeIfAbsent(id, k -> new Product().setId(k));
    }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
@@ -52,9 +52,9 @@ public class WarehouseModel
       return this.listeners;
    }
 
-   public PickTask getOrCreatePickTask(String id)
+   public Order getOrCreateOrder(String id)
    {
       if (id == null) return null;
-      return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
+      return (Order) modelMap.computeIfAbsent(id, k -> new Order().setId(k));
    }
 }

@@ -1,28 +1,28 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class ProductOfferedEvent extends Event
+public class AddCommand extends Command
 {
-   public static final String PROPERTY_NAME = "name";
+   public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_PRICE = "price";
-   private String name;
+   private String product;
    private String price;
 
-   public String getName()
+   public String getProduct()
    {
-      return this.name;
+      return this.product;
    }
 
-   public ProductOfferedEvent setName(String value)
+   public AddCommand setProduct(String value)
    {
-      if (Objects.equals(value, this.name))
+      if (Objects.equals(value, this.product))
       {
          return this;
       }
 
-      final String oldValue = this.name;
-      this.name = value;
-      this.firePropertyChange(PROPERTY_NAME, oldValue, value);
+      final String oldValue = this.product;
+      this.product = value;
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
       return this;
    }
 
@@ -31,7 +31,7 @@ public class ProductOfferedEvent extends Event
       return this.price;
    }
 
-   public ProductOfferedEvent setPrice(String value)
+   public AddCommand setPrice(String value)
    {
       if (Objects.equals(value, this.price))
       {
@@ -48,7 +48,7 @@ public class ProductOfferedEvent extends Event
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
-      result.append(' ').append(this.getName());
+      result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getPrice());
       return result.toString();
    }

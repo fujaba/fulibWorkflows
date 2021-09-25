@@ -1,4 +1,4 @@
-package uks.debuggen.microshop.Warehouse;
+package uks.debuggen.microshop.MicroShop;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -6,7 +6,7 @@ import uks.debuggen.microshop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class WarehouseBuilder
+public class MicroShopBuilder
 {
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_EVENT_STORE = "eventStore";
@@ -14,27 +14,27 @@ public class WarehouseBuilder
    public static final String PROPERTY_GROUP_STORE = "groupStore";
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    public static final String PROPERTY_SERVICE = "service";
-   private WarehouseModel model;
+   private MicroShopModel model;
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
    private LinkedHashMap<Class, Function<Event, Object>> loaderMap;
    private LinkedHashMap<String, LinkedHashMap<String, DataEvent>> groupStore = new LinkedHashMap<>();
-   private WarehouseBusinessLogic businessLogic;
-   private WarehouseService service;
+   private MicroShopBusinessLogic businessLogic;
+   private MicroShopService service;
    protected PropertyChangeSupport listeners;
 
-   public WarehouseModel getModel()
+   public MicroShopModel getModel()
    {
       return this.model;
    }
 
-   public WarehouseBuilder setModel(WarehouseModel value)
+   public MicroShopBuilder setModel(MicroShopModel value)
    {
       if (Objects.equals(value, this.model))
       {
          return this;
       }
 
-      final WarehouseModel oldValue = this.model;
+      final MicroShopModel oldValue = this.model;
       this.model = value;
       this.firePropertyChange(PROPERTY_MODEL, oldValue, value);
       return this;
@@ -45,7 +45,7 @@ public class WarehouseBuilder
       return this.eventStore;
    }
 
-   public WarehouseBuilder setEventStore(LinkedHashMap<String, DataEvent> value)
+   public MicroShopBuilder setEventStore(LinkedHashMap<String, DataEvent> value)
    {
       if (Objects.equals(value, this.eventStore))
       {
@@ -63,7 +63,7 @@ public class WarehouseBuilder
       return this.loaderMap;
    }
 
-   public WarehouseBuilder setLoaderMap(LinkedHashMap<Class, Function<Event, Object>> value)
+   public MicroShopBuilder setLoaderMap(LinkedHashMap<Class, Function<Event, Object>> value)
    {
       if (Objects.equals(value, this.loaderMap))
       {
@@ -81,7 +81,7 @@ public class WarehouseBuilder
       return this.groupStore;
    }
 
-   public WarehouseBuilder setGroupStore(LinkedHashMap<String, LinkedHashMap<String, DataEvent>> value)
+   public MicroShopBuilder setGroupStore(LinkedHashMap<String, LinkedHashMap<String, DataEvent>> value)
    {
       if (Objects.equals(value, this.groupStore))
       {
@@ -94,19 +94,19 @@ public class WarehouseBuilder
       return this;
    }
 
-   public WarehouseBusinessLogic getBusinessLogic()
+   public MicroShopBusinessLogic getBusinessLogic()
    {
       return this.businessLogic;
    }
 
-   public WarehouseBuilder setBusinessLogic(WarehouseBusinessLogic value)
+   public MicroShopBuilder setBusinessLogic(MicroShopBusinessLogic value)
    {
       if (this.businessLogic == value)
       {
          return this;
       }
 
-      final WarehouseBusinessLogic oldValue = this.businessLogic;
+      final MicroShopBusinessLogic oldValue = this.businessLogic;
       if (this.businessLogic != null)
       {
          this.businessLogic = null;
@@ -121,19 +121,19 @@ public class WarehouseBuilder
       return this;
    }
 
-   public WarehouseService getService()
+   public MicroShopService getService()
    {
       return this.service;
    }
 
-   public WarehouseBuilder setService(WarehouseService value)
+   public MicroShopBuilder setService(MicroShopService value)
    {
       if (this.service == value)
       {
          return this;
       }
 
-      final WarehouseService oldValue = this.service;
+      final MicroShopService oldValue = this.service;
       if (this.service != null)
       {
          this.service = null;
@@ -166,9 +166,9 @@ public class WarehouseBuilder
       return true;
    }
 
-   public void storeBoxBuilt(Event e)
+   public void storeProductBuilt(Event e)
    {
-      BoxBuilt event = (BoxBuilt) e;
+      ProductBuilt event = (ProductBuilt) e;
       if (outdated(event)) {
          return;
       }
@@ -176,13 +176,12 @@ public class WarehouseBuilder
       // fulib
    }
 
-   public Box loadBoxBuilt(Event e)
+   public Product loadProductBuilt(Event e)
    {
-      BoxBuilt event = (BoxBuilt) e;
-      Box object = model.getOrCreateBox(event.getBlockId());
-      object.setBarcode(event.getBarcode());
-      object.setContent(event.getContent());
-      object.setLocation(event.getLocation());
+      ProductBuilt event = (ProductBuilt) e;
+      Product object = model.getOrCreateProduct(event.getBlockId());
+      object.setName(event.getName());
+      object.setPrice(event.getPrice());
       return object;
    }
 
@@ -210,8 +209,8 @@ public class WarehouseBuilder
    {
       if (loaderMap == null) {
          loaderMap = new LinkedHashMap<>();
-         loaderMap.put(BoxBuilt.class, this::loadBoxBuilt);
-         loaderMap.put(PickTaskBuilt.class, this::loadPickTaskBuilt);
+         loaderMap.put(ProductBuilt.class, this::loadProductBuilt);
+         loaderMap.put(OrderBuilt.class, this::loadOrderBuilt);
       }
    }
 
@@ -274,9 +273,9 @@ public class WarehouseBuilder
       this.setService(null);
    }
 
-   public void storePickTaskBuilt(Event e)
+   public void storeOrderBuilt(Event e)
    {
-      PickTaskBuilt event = (PickTaskBuilt) e;
+      OrderBuilt event = (OrderBuilt) e;
       if (outdated(event)) {
          return;
       }
@@ -284,17 +283,15 @@ public class WarehouseBuilder
       // fulib
    }
 
-   public PickTask loadPickTaskBuilt(Event e)
+   public Order loadOrderBuilt(Event e)
    {
-      PickTaskBuilt event = (PickTaskBuilt) e;
-      PickTask object = model.getOrCreatePickTask(event.getBlockId());
+      OrderBuilt event = (OrderBuilt) e;
+      Order object = model.getOrCreateOrder(event.getBlockId());
       object.setCode(event.getCode());
       object.setProduct(event.getProduct());
-      object.setShelf(event.getShelf());
       object.setCustomer(event.getCustomer());
       object.setAddress(event.getAddress());
       object.setState(event.getState());
-      object.setFrom(event.getFrom());
       return object;
    }
 }

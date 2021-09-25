@@ -1,23 +1,47 @@
-package uks.debuggen.microshop.events;
+package uks.debuggen.microshop.MicroShop;
 import java.util.Objects;
+import java.beans.PropertyChangeSupport;
 
-public class ProductOrderedEvent extends Event
+public class Order
 {
+   public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_CODE = "code";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
+   public static final String PROPERTY_STATE = "state";
+   private String id;
    private String code;
    private String product;
    private String customer;
    private String address;
+   private String state;
+   protected PropertyChangeSupport listeners;
+
+   public String getId()
+   {
+      return this.id;
+   }
+
+   public Order setId(String value)
+   {
+      if (Objects.equals(value, this.id))
+      {
+         return this;
+      }
+
+      final String oldValue = this.id;
+      this.id = value;
+      this.firePropertyChange(PROPERTY_ID, oldValue, value);
+      return this;
+   }
 
    public String getCode()
    {
       return this.code;
    }
 
-   public ProductOrderedEvent setCode(String value)
+   public Order setCode(String value)
    {
       if (Objects.equals(value, this.code))
       {
@@ -35,7 +59,7 @@ public class ProductOrderedEvent extends Event
       return this.product;
    }
 
-   public ProductOrderedEvent setProduct(String value)
+   public Order setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -53,7 +77,7 @@ public class ProductOrderedEvent extends Event
       return this.customer;
    }
 
-   public ProductOrderedEvent setCustomer(String value)
+   public Order setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -71,7 +95,7 @@ public class ProductOrderedEvent extends Event
       return this.address;
    }
 
-   public ProductOrderedEvent setAddress(String value)
+   public Order setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -84,14 +108,53 @@ public class ProductOrderedEvent extends Event
       return this;
    }
 
+   public String getState()
+   {
+      return this.state;
+   }
+
+   public Order setState(String value)
+   {
+      if (Objects.equals(value, this.state))
+      {
+         return this;
+      }
+
+      final String oldValue = this.state;
+      this.state = value;
+      this.firePropertyChange(PROPERTY_STATE, oldValue, value);
+      return this;
+   }
+
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   {
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
+   }
+
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
+   }
+
    @Override
    public String toString()
    {
-      final StringBuilder result = new StringBuilder(super.toString());
+      final StringBuilder result = new StringBuilder();
+      result.append(' ').append(this.getId());
       result.append(' ').append(this.getCode());
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
-      return result.toString();
+      result.append(' ').append(this.getState());
+      return result.substring(1);
    }
 }

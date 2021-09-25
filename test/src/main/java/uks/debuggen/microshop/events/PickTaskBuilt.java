@@ -1,23 +1,29 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class ProductOrderedEvent extends Event
+public class PickTaskBuilt extends DataEvent
 {
    public static final String PROPERTY_CODE = "code";
    public static final String PROPERTY_PRODUCT = "product";
+   public static final String PROPERTY_SHELF = "shelf";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
+   public static final String PROPERTY_STATE = "state";
+   public static final String PROPERTY_FROM = "from";
    private String code;
    private String product;
+   private String shelf;
    private String customer;
    private String address;
+   private String state;
+   private String from;
 
    public String getCode()
    {
       return this.code;
    }
 
-   public ProductOrderedEvent setCode(String value)
+   public PickTaskBuilt setCode(String value)
    {
       if (Objects.equals(value, this.code))
       {
@@ -35,7 +41,7 @@ public class ProductOrderedEvent extends Event
       return this.product;
    }
 
-   public ProductOrderedEvent setProduct(String value)
+   public PickTaskBuilt setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -48,12 +54,30 @@ public class ProductOrderedEvent extends Event
       return this;
    }
 
+   public String getShelf()
+   {
+      return this.shelf;
+   }
+
+   public PickTaskBuilt setShelf(String value)
+   {
+      if (Objects.equals(value, this.shelf))
+      {
+         return this;
+      }
+
+      final String oldValue = this.shelf;
+      this.shelf = value;
+      this.firePropertyChange(PROPERTY_SHELF, oldValue, value);
+      return this;
+   }
+
    public String getCustomer()
    {
       return this.customer;
    }
 
-   public ProductOrderedEvent setCustomer(String value)
+   public PickTaskBuilt setCustomer(String value)
    {
       if (Objects.equals(value, this.customer))
       {
@@ -71,7 +95,7 @@ public class ProductOrderedEvent extends Event
       return this.address;
    }
 
-   public ProductOrderedEvent setAddress(String value)
+   public PickTaskBuilt setAddress(String value)
    {
       if (Objects.equals(value, this.address))
       {
@@ -84,14 +108,53 @@ public class ProductOrderedEvent extends Event
       return this;
    }
 
+   public String getState()
+   {
+      return this.state;
+   }
+
+   public PickTaskBuilt setState(String value)
+   {
+      if (Objects.equals(value, this.state))
+      {
+         return this;
+      }
+
+      final String oldValue = this.state;
+      this.state = value;
+      this.firePropertyChange(PROPERTY_STATE, oldValue, value);
+      return this;
+   }
+
+   public String getFrom()
+   {
+      return this.from;
+   }
+
+   public PickTaskBuilt setFrom(String value)
+   {
+      if (Objects.equals(value, this.from))
+      {
+         return this;
+      }
+
+      final String oldValue = this.from;
+      this.from = value;
+      this.firePropertyChange(PROPERTY_FROM, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getCode());
       result.append(' ').append(this.getProduct());
+      result.append(' ').append(this.getShelf());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
+      result.append(' ').append(this.getState());
+      result.append(' ').append(this.getFrom());
       return result.toString();
    }
 }

@@ -1,4 +1,4 @@
-package uks.debuggen.microshop.Warehouse;
+package uks.debuggen.microshop.MicroShop;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -20,7 +20,7 @@ import uks.debuggen.microshop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class WarehouseService
+public class MicroShopService
 {
    public static final String PROPERTY_HISTORY = "history";
    public static final String PROPERTY_PORT = "port";
@@ -29,11 +29,11 @@ public class WarehouseService
    public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
    public static final String PROPERTY_BUILDER = "builder";
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
-   private int port = 42001;
+   private int port = 42002;
    private Service spark;
-   private WarehouseModel model;
-   private WarehouseBusinessLogic businessLogic;
-   private WarehouseBuilder builder;
+   private MicroShopModel model;
+   private MicroShopBusinessLogic businessLogic;
+   private MicroShopBuilder builder;
    protected PropertyChangeSupport listeners;
 
    public LinkedHashMap<String, Event> getHistory()
@@ -41,7 +41,7 @@ public class WarehouseService
       return this.history;
    }
 
-   public WarehouseService setHistory(LinkedHashMap<String, Event> value)
+   public MicroShopService setHistory(LinkedHashMap<String, Event> value)
    {
       if (Objects.equals(value, this.history))
       {
@@ -59,7 +59,7 @@ public class WarehouseService
       return this.port;
    }
 
-   public WarehouseService setPort(int value)
+   public MicroShopService setPort(int value)
    {
       if (value == this.port)
       {
@@ -77,7 +77,7 @@ public class WarehouseService
       return this.spark;
    }
 
-   public WarehouseService setSpark(Service value)
+   public MicroShopService setSpark(Service value)
    {
       if (Objects.equals(value, this.spark))
       {
@@ -90,37 +90,37 @@ public class WarehouseService
       return this;
    }
 
-   public WarehouseModel getModel()
+   public MicroShopModel getModel()
    {
       return this.model;
    }
 
-   public WarehouseService setModel(WarehouseModel value)
+   public MicroShopService setModel(MicroShopModel value)
    {
       if (Objects.equals(value, this.model))
       {
          return this;
       }
 
-      final WarehouseModel oldValue = this.model;
+      final MicroShopModel oldValue = this.model;
       this.model = value;
       this.firePropertyChange(PROPERTY_MODEL, oldValue, value);
       return this;
    }
 
-   public WarehouseBusinessLogic getBusinessLogic()
+   public MicroShopBusinessLogic getBusinessLogic()
    {
       return this.businessLogic;
    }
 
-   public WarehouseService setBusinessLogic(WarehouseBusinessLogic value)
+   public MicroShopService setBusinessLogic(MicroShopBusinessLogic value)
    {
       if (this.businessLogic == value)
       {
          return this;
       }
 
-      final WarehouseBusinessLogic oldValue = this.businessLogic;
+      final MicroShopBusinessLogic oldValue = this.businessLogic;
       if (this.businessLogic != null)
       {
          this.businessLogic = null;
@@ -135,19 +135,19 @@ public class WarehouseService
       return this;
    }
 
-   public WarehouseBuilder getBuilder()
+   public MicroShopBuilder getBuilder()
    {
       return this.builder;
    }
 
-   public WarehouseService setBuilder(WarehouseBuilder value)
+   public MicroShopService setBuilder(MicroShopBuilder value)
    {
       if (this.builder == value)
       {
          return this;
       }
 
-      final WarehouseBuilder oldValue = this.builder;
+      final MicroShopBuilder oldValue = this.builder;
       if (this.builder != null)
       {
          this.builder = null;
@@ -188,9 +188,9 @@ public class WarehouseService
 
    public void start()
    {
-      model = new WarehouseModel();
-      setBuilder(new WarehouseBuilder().setModel(model));
-      setBusinessLogic(new WarehouseBusinessLogic());
+      model = new MicroShopModel();
+      setBuilder(new MicroShopBuilder().setModel(model));
+      setBusinessLogic(new MicroShopBusinessLogic());
       businessLogic.setBuilder(getBuilder());
       businessLogic.setModel(model);
       ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -200,7 +200,7 @@ public class WarehouseService
       spark.get("/", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
       executor.submit(this::subscribeAndLoadOldEvents);
-      Logger.getGlobal().info("Warehouse service is up and running on port " + port);
+      Logger.getGlobal().info("MicroShop service is up and running on port " + port);
    }
 
    public void stop()
@@ -213,14 +213,14 @@ public class WarehouseService
       try {
          String events = Yaml.encodeSimple(getHistory().values().toArray());
          String objects = Yaml.encodeSimple(model.getModelMap().values().toArray());
-         return "<p id='Warehouse'>This is the Warehouse service. </p>\n" +
+         return "<p id='MicroShop'>This is the MicroShop service. </p>\n" +
                "<pre id=\"history\">" + events + "</pre>\n" +
                "<pre id=\"data\">" + objects + "</pre>\n" +
                "";
       }
       catch (Exception e) {
          Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
-         return "Warehouse Error " + e.getMessage();
+         return "MicroShop Error " + e.getMessage();
       }
    }
 
@@ -274,190 +274,122 @@ public class WarehouseService
       String id = request.params("id");
       String event = request.queryParams("event");
 
-      if ("store product".equals(event)) {
+      if ("add offer".equals(event)) {
 
-         // create StoreCommand: store product
-         StoreCommand e120201 = new StoreCommand();
-         e120201.setId("12:02:01");
-         e120201.setBarcode(request.queryParams("barcode"));
-         e120201.setType(request.queryParams("type"));
-         e120201.setLocation(request.queryParams("location"));
-         apply(e120201);
+         // create AddCommand: add offer
+         AddCommand e121201 = new AddCommand();
+         e121201.setId("12:12:01");
+         e121201.setProduct(request.queryParams("product"));
+         e121201.setPrice(request.queryParams("price"));
+         apply(e121201);
       }
 
-      if ("store product".equals(event)) {
+      if ("add offer".equals(event)) {
 
-         // create StoreCommand: store product
-         StoreCommand e120501 = new StoreCommand();
-         e120501.setId("12:05:01");
-         e120501.setBarcode(request.queryParams("barcode"));
-         e120501.setType(request.queryParams("type"));
-         e120501.setLocation(request.queryParams("location"));
-         apply(e120501);
+         // create AddCommand: add offer
+         AddCommand e121501 = new AddCommand();
+         e121501.setId("12:15:01");
+         e121501.setProduct(request.queryParams("product"));
+         e121501.setPrice(request.queryParams("price"));
+         apply(e121501);
       }
 
-      if ("store product".equals(event)) {
+      if ("place order".equals(event)) {
 
-         // create StoreCommand: store product
-         StoreCommand e120801 = new StoreCommand();
-         e120801.setId("12:08:01");
-         e120801.setBarcode(request.queryParams("barcode"));
-         e120801.setType(request.queryParams("type"));
-         e120801.setLocation(request.queryParams("location"));
-         apply(e120801);
-      }
-
-      if ("Pick".equals(event)) {
-
-         // create Command: Pick
-         Command e122201 = new Command();
-         e122201.setId("12:22:01");
-         e122201.setTask(request.queryParams("task"));
-         e122201.setShelf(request.queryParams("shelf"));
-         apply(e122201);
-      }
-
-      if ("deliver".equals(event)) {
-
-         // create Command: deliver
-         Command e122501 = new Command();
-         e122501.setId("12:25:01");
-         e122501.setOrder(request.queryParams("order"));
-         apply(e122501);
+         // create PlaceCommand: place order
+         PlaceCommand e121901 = new PlaceCommand();
+         e121901.setId("12:19:01");
+         e121901.setProduct(request.queryParams("product"));
+         e121901.setCustomer(request.queryParams("customer"));
+         e121901.setAddress(request.queryParams("address"));
+         apply(e121901);
       }
 
 
 
-      // 12:01
-      if (id.equals("12_01")) {
-         html.append("<form action=\"/page/12_02\" method=\"get\">\n");
-         // Warehouse overview 12:01
-         html.append("   <p>Warehouse boxes</p>\n");
+      // 12:11
+      if (id.equals("12_11")) {
+         html.append("<form action=\"/page/12_12\" method=\"get\">\n");
+         // MicroShop offers 12:11
+         html.append("   <p>Offers overview</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+         html.append("   <p>no offers yet</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
-      // 12:02
-      if (id.equals("12_02")) {
-         html.append("<form action=\"/page/12_04\" method=\"get\">\n");
-         // Warehouse add box 12:02
-         html.append("   <p>Store new box</p>\n");
-         html.append("   <p><input id=\"barcode\" name=\"barcode\" placeholder=\"barcode?\"></p>\n");
-         html.append("   <p><input id=\"type\" name=\"type\" placeholder=\"type?\"></p>\n");
-         html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
+      // 12:12
+      if (id.equals("12_12")) {
+         html.append("<form action=\"/page/12_14\" method=\"get\">\n");
+         // MicroShop add offer 12:12
+         html.append("   <p>make new offer</p>\n");
+         html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
+         html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"add offer\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
-      // 12:04
-      if (id.equals("12_04")) {
-         html.append("<form action=\"/page/12_05\" method=\"get\">\n");
-         // Warehouse overview 12:04
-         html.append("   <p>Warehouse boxes</p>\n");
+      // 12:14
+      if (id.equals("12_14")) {
+         html.append("<form action=\"/page/12_15\" method=\"get\">\n");
+         // MicroShop offers 12:14
+         html.append("   <p>Offers overview</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
-         html.append("   <p>b001, red shoes, shelf 42</p>\n");
+         html.append("   <p>red shoes, $42</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
-      // 12:05
-      if (id.equals("12_05")) {
-         html.append("<form action=\"/page/12_07\" method=\"get\">\n");
-         // Warehouse add box 12:05
-         html.append("   <p>Store new box</p>\n");
-         html.append("   <p><input id=\"barcode\" name=\"barcode\" placeholder=\"barcode?\"></p>\n");
-         html.append("   <p><input id=\"type\" name=\"type\" placeholder=\"type?\"></p>\n");
-         html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
+      // 12:15
+      if (id.equals("12_15")) {
+         html.append("<form action=\"/page/12_17\" method=\"get\">\n");
+         // MicroShop add offer 12:15
+         html.append("   <p>make new offer</p>\n");
+         html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
+         html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"add offer\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
-      // 12:07
-      if (id.equals("12_07")) {
-         html.append("<form action=\"/page/12_08\" method=\"get\">\n");
-         // Warehouse overview 12:07
-         html.append("   <p>Warehouse boxes</p>\n");
-         html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
-         html.append("   <p>b002, red shoes, shelf 23</p>\n");
-         html.append("   <p>b001, red shoes, shelf 42</p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-      // 12:08
-      if (id.equals("12_08")) {
-         html.append("<form action=\"/page/12_10\" method=\"get\">\n");
-         // Warehouse add box 12:08
-         html.append("   <p>Store new box</p>\n");
-         html.append("   <p><input id=\"barcode\" name=\"barcode\" placeholder=\"barcode?\"></p>\n");
-         html.append("   <p><input id=\"type\" name=\"type\" placeholder=\"type?\"></p>\n");
-         html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
-         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-      // 12:10
-      if (id.equals("12_10")) {
-         html.append("<form action=\"/page/12_21\" method=\"get\">\n");
-         // Warehouse overview 12:10
-         html.append("   <p>Warehouse boxes</p>\n");
-         html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
-         html.append("   <p>b003, blue jeans, shelf 1337</p>\n");
-         html.append("   <p>b002, red shoes, shelf 23</p>\n");
-         html.append("   <p>b001, red shoes, shelf 42</p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-      // 12:21
-      if (id.equals("12_21")) {
-         html.append("<form action=\"/page/12_22\" method=\"get\">\n");
-         // Warehouse pick tasks 12:21
-         html.append("   <p>Pick tasks overview</p>\n");
-         html.append("   <p><input id=\"pick\" name=\"button\" type=\"submit\" value=\"pick\"></p>\n");
-         html.append("   <p>red shoes, shelf 42, shelf 23</p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-      // 12:22
-      if (id.equals("12_22")) {
+      // 12:17
+      if (id.equals("12_17")) {
          html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // Warehouse pick one 12:22
-         html.append("   <p>Pick one</p>\n");
-         html.append("   <p><input id=\"task\" name=\"task\" placeholder=\"task?\"></p>\n");
-         html.append("   <p><input id=\"shelf\" name=\"shelf\" placeholder=\"shelf?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"Pick\"></p>\n");
-         html.append("   <p><input id=\"done\" name=\"button\" type=\"submit\" value=\"done\"></p>\n");
+         // MicroShop offers 12:17
+         html.append("   <p>Offers overview</p>\n");
+         html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+         html.append("   <p>red shoes, $42</p>\n");
+         html.append("   <p>blue jeans, $63</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
-      // 12:24
-      if (id.equals("12_24")) {
-         html.append("<form action=\"/page/12_25\" method=\"get\">\n");
-         // Warehouse delivery tasks 12:24
-         html.append("   <p>Delivery tasks overview</p>\n");
-         html.append("   <p><input id=\"red shoes, Wonderland 1\" name=\"button\" type=\"submit\" value=\"red shoes, Wonderland 1\"></p>\n");
+      // 12:18
+      if (id.equals("12_18")) {
+         html.append("<form action=\"/page/12_19\" method=\"get\">\n");
+         // MicroShop offers 12:18
+         html.append("   <p>Welcome to our micro shop</p>\n");
+         html.append("   <p>We have</p>\n");
+         html.append("   <p>red shoes for $42</p>\n");
+         html.append("   <p>blue jeans for $63</p>\n");
+         html.append("   <p><input id=\"order\" name=\"button\" type=\"submit\" value=\"order\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
-      // 12:25
-      if (id.equals("12_25")) {
+      // 12:19
+      if (id.equals("12_19")) {
          html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // Warehouse deliver 12:25
-         html.append("   <p>Delivering</p>\n");
-         html.append("   <p><input id=\"order\" name=\"order\" placeholder=\"order?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"deliver\"></p>\n");
-         html.append("   <p><input id=\"done\" name=\"button\" type=\"submit\" value=\"done\"></p>\n");
+         // MicroShop buy 12:19
+         html.append("   <p>Welcome to our micro shop</p>\n");
+         html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
+         html.append("   <p><input id=\"customer\" name=\"customer\" placeholder=\"customer?\"></p>\n");
+         html.append("   <p><input id=\"address\" name=\"address\" placeholder=\"address?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"place order\"></p>\n");
+         html.append("   <p><input id=\"buy\" name=\"button\" type=\"submit\" value=\"buy\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }

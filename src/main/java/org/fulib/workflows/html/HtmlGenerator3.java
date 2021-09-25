@@ -149,7 +149,8 @@ public class HtmlGenerator3 {
                 previousUserType = "server";
             }
 
-            if (previousUserType.equals("server") && userType.equals("user") ) {
+            if ((previousUserType.equals("server") && userType.equals("user"))
+                    || (userType.equals("user") && !previousActor.equals("noActor") && !previousActor.equals(user))) {
                 st = htmlGroup.getInstanceOf("lane3");
                 st.add("id", rootWorkflow.getName());
                 st.add("content", actionBuf.toString());

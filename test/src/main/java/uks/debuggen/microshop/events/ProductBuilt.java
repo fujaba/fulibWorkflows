@@ -1,7 +1,7 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class ProductOfferedEvent extends Event
+public class ProductBuilt extends DataEvent
 {
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_PRICE = "price";
@@ -13,7 +13,7 @@ public class ProductOfferedEvent extends Event
       return this.name;
    }
 
-   public ProductOfferedEvent setName(String value)
+   public ProductBuilt setName(String value)
    {
       if (Objects.equals(value, this.name))
       {
@@ -31,7 +31,7 @@ public class ProductOfferedEvent extends Event
       return this.price;
    }
 
-   public ProductOfferedEvent setPrice(String value)
+   public ProductBuilt setPrice(String value)
    {
       if (Objects.equals(value, this.price))
       {

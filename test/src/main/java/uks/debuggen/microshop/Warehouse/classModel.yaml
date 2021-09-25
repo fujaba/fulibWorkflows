@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	warehouseModel 	warehouseBusinessLogic 	warehouseBuilder 	warehouseService 	box
+  classes: 	warehouseModel 	warehouseBusinessLogic 	warehouseBuilder 	warehouseService 	box 	pickTask
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	warehouseModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	warehouseModel_getOrCreateBox
+  methods: 	warehouseModel_getOrCreateBox 	warehouseModel_getOrCreatePickTask
   model: 	c
   modified: 	false
   name: 	WarehouseModel
@@ -21,7 +21,7 @@
   attributes: 	warehouseBusinessLogic_model 	warehouseBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
-  methods: 	warehouseBusinessLogic_handleStoreCommand 	warehouseBusinessLogic_handleDemoStoreCommand 	warehouseBusinessLogic_initEventHandlerMap 	warehouseBusinessLogic_ignoreEvent 	warehouseBusinessLogic_getHandler
+  methods: 	warehouseBusinessLogic_handleStoreCommand 	warehouseBusinessLogic_handleDemoStoreCommand 	warehouseBusinessLogic_handleProductOrderedEvent 	warehouseBusinessLogic_handleDemoProductOrderedEvent 	warehouseBusinessLogic_handleCommand 	warehouseBusinessLogic_handleDemoCommand 	warehouseBusinessLogic_initEventHandlerMap 	warehouseBusinessLogic_ignoreEvent 	warehouseBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	WarehouseBusinessLogic
@@ -32,7 +32,7 @@
   attributes: 	warehouseBuilder_model 	warehouseBuilder_eventStore 	warehouseBuilder_loaderMap 	warehouseBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;" 	"import java.util.function.Function;"
-  methods: 	warehouseBuilder_outdated 	warehouseBuilder_storeBoxBuilt 	warehouseBuilder_loadBoxBuilt 	warehouseBuilder_load 	warehouseBuilder_initLoaderMap 	warehouseBuilder_getObjectId 	warehouseBuilder_addToGroup 	warehouseBuilder_stripBrackets
+  methods: 	warehouseBuilder_outdated 	warehouseBuilder_storeBoxBuilt 	warehouseBuilder_loadBoxBuilt 	warehouseBuilder_storePickTaskBuilt 	warehouseBuilder_loadPickTaskBuilt 	warehouseBuilder_load 	warehouseBuilder_initLoaderMap 	warehouseBuilder_getObjectId 	warehouseBuilder_addToGroup 	warehouseBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	WarehouseBuilder
@@ -55,6 +55,13 @@
   model: 	c
   modified: 	false
   name: 	Box
+  propertyStyle: 	Bean
+
+- pickTask: 	org.fulib.classmodel.Clazz
+  attributes: 	pickTask_id 	pickTask_code 	pickTask_product 	pickTask_shelf 	pickTask_customer 	pickTask_address 	pickTask_state 	pickTask_from
+  model: 	c
+  modified: 	false
+  name: 	PickTask
   propertyStyle: 	Bean
 
 - c1: 	org.fulib.classmodel.CollectionType
@@ -88,6 +95,21 @@ return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
   paramsString: 	"String id"
   returnType: 	Box
   signature: 	"class/WarehouseModel/method/getOrCreateBox(String)"
+
+- warehouseModel_getOrCreatePickTask: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseModel
+  declaration: 	"public PickTask getOrCreatePickTask(String id)"
+  id: 	WarehouseModel_getOrCreatePickTask
+  methodBody: 	"if (id == null) return null;
+return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreatePickTask
+  paramsString: 	"String id"
+  returnType: 	PickTask
+  signature: 	"class/WarehouseModel/method/getOrCreatePickTask(String)"
 
 - warehouseBusinessLogic_model: 	org.fulib.classmodel.Attribute
   clazz: 	warehouseBusinessLogic
@@ -188,6 +210,95 @@ if (event.getId().equals(\"12:08:01\")) {
   returnType: 	void
   signature: 	"class/WarehouseBusinessLogic/method/handleDemoStoreCommand(StoreCommand)"
 
+- warehouseBusinessLogic_handleProductOrderedEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseBusinessLogic
+  declaration: 	"private void handleProductOrderedEvent(Event e)"
+  id: 	WarehouseBusinessLogic_handleProductOrderedEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+ProductOrderedEvent event = (ProductOrderedEvent) e;
+handleDemoProductOrderedEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleProductOrderedEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/WarehouseBusinessLogic/method/handleProductOrderedEvent(Event)"
+
+- warehouseBusinessLogic_handleDemoProductOrderedEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseBusinessLogic
+  declaration: 	"private void handleDemoProductOrderedEvent(ProductOrderedEvent event)"
+  id: 	WarehouseBusinessLogic_handleDemoProductOrderedEvent
+  methodBody: 	"if (event.getId().equals(\"12:20\")) {
+   PickTaskBuilt pt_o0925_1Event = new PickTaskBuilt();
+   pt_o0925_1Event.setId(\"12:20:01\");
+   pt_o0925_1Event.setBlockId(\"pt_o0925_1\");
+   pt_o0925_1Event.setCode(\"pt_o0925_1\");
+   pt_o0925_1Event.setProduct(\"red shoes\");
+   pt_o0925_1Event.setShelf(\"[shelf 42, shelf 23]\");
+   pt_o0925_1Event.setCustomer(\"Carli Customer\");
+   pt_o0925_1Event.setAddress(\"Wonderland 1\");
+   pt_o0925_1Event.setState(\"picking\");
+   service.apply(pt_o0925_1Event);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoProductOrderedEvent
+  paramsString: 	"ProductOrderedEvent event"
+  returnType: 	void
+  signature: 	"class/WarehouseBusinessLogic/method/handleDemoProductOrderedEvent(ProductOrderedEvent)"
+
+- warehouseBusinessLogic_handleCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseBusinessLogic
+  declaration: 	"private void handleCommand(Event e)"
+  id: 	WarehouseBusinessLogic_handleCommand
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+Command event = (Command) e;
+handleDemoCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/WarehouseBusinessLogic/method/handleCommand(Event)"
+
+- warehouseBusinessLogic_handleDemoCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseBusinessLogic
+  declaration: 	"private void handleDemoCommand(Command event)"
+  id: 	WarehouseBusinessLogic_handleDemoCommand
+  methodBody: 	"if (event.getId().equals(\"12:22:01\")) {
+   PickTaskBuilt pt_o0925_1Event = new PickTaskBuilt();
+   pt_o0925_1Event.setId(\"12:22:02\");
+   pt_o0925_1Event.setBlockId(\"pt_o0925_1\");
+   pt_o0925_1Event.setCode(\"pt_o0925_1\");
+   pt_o0925_1Event.setFrom(\"shelf 42\");
+   pt_o0925_1Event.setState(\"shipping\");
+   service.apply(pt_o0925_1Event);
+
+
+   OrderPickedEvent e1223 = new OrderPickedEvent();
+
+   e1223.setId(\"12:23\");
+   e1223.setOrder(\"o0925_1\");
+   service.apply(e1223);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoCommand
+  paramsString: 	"Command event"
+  returnType: 	void
+  signature: 	"class/WarehouseBusinessLogic/method/handleDemoCommand(Command)"
+
 - warehouseBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	warehouseBusinessLogic
@@ -196,7 +307,10 @@ if (event.getId().equals(\"12:08:01\")) {
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+   handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
    handlerMap.put(StoreCommand.class, this::handleStoreCommand);
+   handlerMap.put(ProductOrderedEvent.class, this::handleProductOrderedEvent);
+   handlerMap.put(Command.class, this::handleCommand);
 }
 "
   modified: 	false
@@ -356,6 +470,48 @@ return object;
   returnType: 	Box
   signature: 	"class/WarehouseBuilder/method/loadBoxBuilt(Event)"
 
+- warehouseBuilder_storePickTaskBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseBuilder
+  declaration: 	"public void storePickTaskBuilt(Event e)"
+  id: 	WarehouseBuilder_storePickTaskBuilt
+  methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storePickTaskBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/WarehouseBuilder/method/storePickTaskBuilt(Event)"
+
+- warehouseBuilder_loadPickTaskBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseBuilder
+  declaration: 	"public PickTask loadPickTaskBuilt(Event e)"
+  id: 	WarehouseBuilder_loadPickTaskBuilt
+  methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
+PickTask object = model.getOrCreatePickTask(event.getBlockId());
+object.setCode(event.getCode());
+object.setProduct(event.getProduct());
+object.setShelf(event.getShelf());
+object.setCustomer(event.getCustomer());
+object.setAddress(event.getAddress());
+object.setState(event.getState());
+object.setFrom(event.getFrom());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadPickTaskBuilt
+  paramsString: 	"Event e"
+  returnType: 	PickTask
+  signature: 	"class/WarehouseBuilder/method/loadPickTaskBuilt(Event)"
+
 - warehouseBuilder_load: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	warehouseBuilder
@@ -392,6 +548,7 @@ return object;
   methodBody: 	"if (loaderMap == null) {
    loaderMap = new LinkedHashMap<>();
    loaderMap.put(BoxBuilt.class, this::loadBoxBuilt);
+   loaderMap.put(PickTaskBuilt.class, this::loadPickTaskBuilt);
 }
 "
   modified: 	false
@@ -734,6 +891,25 @@ if (\"store product\".equals(event)) {
    apply(e120801);
 }
 
+if (\"Pick\".equals(event)) {
+
+   // create Command: Pick
+   Command e122201 = new Command();
+   e122201.setId(\"12:22:01\");
+   e122201.setTask(request.queryParams(\"task\"));
+   e122201.setShelf(request.queryParams(\"shelf\"));
+   apply(e122201);
+}
+
+if (\"deliver\".equals(event)) {
+
+   // create Command: deliver
+   Command e122501 = new Command();
+   e122501.setId(\"12:25:01\");
+   e122501.setOrder(request.queryParams(\"order\"));
+   apply(e122501);
+}
+
 
 
 // 12:01
@@ -813,13 +989,59 @@ if (id.equals(\"12_08\")) {
 
 // 12:10
 if (id.equals(\"12_10\")) {
-   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/12_21\\" method=\\"get\\">\n\");
    // Warehouse overview 12:10
    html.append(\"   <p>Warehouse boxes</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
    html.append(\"   <p>b003, blue jeans, shelf 1337</p>\n\");
    html.append(\"   <p>b002, red shoes, shelf 23</p>\n\");
    html.append(\"   <p>b001, red shoes, shelf 42</p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:21
+if (id.equals(\"12_21\")) {
+   html.append(\"<form action=\\"/page/12_22\\" method=\\"get\\">\n\");
+   // Warehouse pick tasks 12:21
+   html.append(\"   <p>Pick tasks overview</p>\n\");
+   html.append(\"   <p><input id=\\"pick\\" name=\\"button\\" type=\\"submit\\" value=\\"pick\\"></p>\n\");
+   html.append(\"   <p>red shoes, shelf 42, shelf 23</p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:22
+if (id.equals(\"12_22\")) {
+   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   // Warehouse pick one 12:22
+   html.append(\"   <p>Pick one</p>\n\");
+   html.append(\"   <p><input id=\\"task\\" name=\\"task\\" placeholder=\\"task?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"shelf\\" name=\\"shelf\\" placeholder=\\"shelf?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"Pick\\"></p>\n\");
+   html.append(\"   <p><input id=\\"done\\" name=\\"button\\" type=\\"submit\\" value=\\"done\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:24
+if (id.equals(\"12_24\")) {
+   html.append(\"<form action=\\"/page/12_25\\" method=\\"get\\">\n\");
+   // Warehouse delivery tasks 12:24
+   html.append(\"   <p>Delivery tasks overview</p>\n\");
+   html.append(\"   <p><input id=\\"red shoes, Wonderland 1\\" name=\\"button\\" type=\\"submit\\" value=\\"red shoes, Wonderland 1\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:25
+if (id.equals(\"12_25\")) {
+   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   // Warehouse deliver 12:25
+   html.append(\"   <p>Delivering</p>\n\");
+   html.append(\"   <p><input id=\\"order\\" name=\\"order\\" placeholder=\\"order?\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"deliver\\"></p>\n\");
+   html.append(\"   <p><input id=\\"done\\" name=\\"button\\" type=\\"submit\\" value=\\"done\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -942,6 +1164,78 @@ catch (UnirestException e) {
   id: 	Box_location
   modified: 	false
   name: 	location
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTask_id: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTask
+  id: 	PickTask_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTask_code: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTask
+  id: 	PickTask_code
+  modified: 	false
+  name: 	code
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTask_product: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTask
+  id: 	PickTask_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTask_shelf: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTask
+  id: 	PickTask_shelf
+  modified: 	false
+  name: 	shelf
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTask_customer: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTask
+  id: 	PickTask_customer
+  modified: 	false
+  name: 	customer
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTask_address: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTask
+  id: 	PickTask_address
+  modified: 	false
+  name: 	address
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTask_state: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTask
+  id: 	PickTask_state
+  modified: 	false
+  name: 	state
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTask_from: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTask
+  id: 	PickTask_from
+  modified: 	false
+  name: 	from
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

@@ -14,8 +14,8 @@ public class GenShopWorkflow {
 
         // html
         HtmlGenerator3 generator = new HtmlGenerator3();
-        // generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopFirstEventStorming.es.yaml", "FirstShopBoard");
-        // generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopRefinedProductStoredEventStorming.es.yaml", "StoreProductShopBoard");
+        generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopFirstEventStorming.es.yaml", "FirstShopBoard");
+        generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopRefinedProductStoredEventStorming.es.yaml", "StoreProductShopBoard");
         generator.generateViewFiles("test/src/gen/resources/workflows/shop/ShopWithGuiPrototypes.es.yaml", "ShopWithGuiBoard");
 
 

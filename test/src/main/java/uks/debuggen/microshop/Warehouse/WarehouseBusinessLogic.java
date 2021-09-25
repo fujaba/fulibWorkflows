@@ -112,7 +112,10 @@ public class WarehouseBusinessLogic
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+         handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
          handlerMap.put(StoreCommand.class, this::handleStoreCommand);
+         handlerMap.put(ProductOrderedEvent.class, this::handleProductOrderedEvent);
+         handlerMap.put(Command.class, this::handleCommand);
       }
    }
 
@@ -211,6 +214,59 @@ public class WarehouseBusinessLogic
          e1209.setBarcode("b003");
          e1209.setType("blue jeans");
          service.apply(e1209);
+      }
+   }
+
+   private void handleProductOrderedEvent(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      ProductOrderedEvent event = (ProductOrderedEvent) e;
+      handleDemoProductOrderedEvent(event);
+   }
+
+   private void handleDemoProductOrderedEvent(ProductOrderedEvent event)
+   {
+      if (event.getId().equals("12:20")) {
+         PickTaskBuilt pt_o0925_1Event = new PickTaskBuilt();
+         pt_o0925_1Event.setId("12:20:01");
+         pt_o0925_1Event.setBlockId("pt_o0925_1");
+         pt_o0925_1Event.setCode("pt_o0925_1");
+         pt_o0925_1Event.setProduct("red shoes");
+         pt_o0925_1Event.setShelf("[shelf 42, shelf 23]");
+         pt_o0925_1Event.setCustomer("Carli Customer");
+         pt_o0925_1Event.setAddress("Wonderland 1");
+         pt_o0925_1Event.setState("picking");
+         service.apply(pt_o0925_1Event);
+
+      }
+   }
+
+   private void handleCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      Command event = (Command) e;
+      handleDemoCommand(event);
+   }
+
+   private void handleDemoCommand(Command event)
+   {
+      if (event.getId().equals("12:22:01")) {
+         PickTaskBuilt pt_o0925_1Event = new PickTaskBuilt();
+         pt_o0925_1Event.setId("12:22:02");
+         pt_o0925_1Event.setBlockId("pt_o0925_1");
+         pt_o0925_1Event.setCode("pt_o0925_1");
+         pt_o0925_1Event.setFrom("shelf 42");
+         pt_o0925_1Event.setState("shipping");
+         service.apply(pt_o0925_1Event);
+
+
+         OrderPickedEvent e1223 = new OrderPickedEvent();
+
+         e1223.setId("12:23");
+         e1223.setOrder("o0925_1");
+         service.apply(e1223);
       }
    }
 }

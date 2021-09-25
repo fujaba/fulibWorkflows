@@ -102,17 +102,176 @@
     - label: b002, red shoes, shelf 23
     - label: b001, red shoes, shelf 42
 
+- action: Sabine Sales
+
+- page:
+    - name: MicroShop offers
+    - label: Offers overview
+    - button: add
+    - label: no offers yet
+
+- page:
+    - name: MicroShop add offer
+    - label: make new offer
+    - input: product
+      fill: red shoes
+    - input: price
+      fill: $42
+    - button: ok
+      command: add offer
+
+- policy: MicroShop
+
+- data: Product
+  name: red shoes
+  price: $42
 
 - event: product offered
+  name: red shoes
+  price: $42
+
+- page:
+    - name: MicroShop offers
+    - label: Offers overview
+    - button: add
+    - label: red shoes, $42
+
+- page:
+    - name: MicroShop add offer
+    - label: make new offer
+    - input: product
+      fill: blue jeans
+    - input: price
+      fill: $63
+    - button: ok
+      command: add offer
+
+- policy: MicroShop
+
+- data: Product
+  name: blue jeans
+  price: $63
+
+- event: product offered
+  name: blue jeans
+  price: $63
+
+- page:
+    - name: MicroShop offers
+    - label: Offers overview
+    - button: add
+    - label: red shoes, $42
+    - label: blue jeans, $63
+
+- action: Carli Customer
+
+- page:
+    - name: MicroShop offers
+    - label: Welcome to our micro shop
+    - label: We have
+    - label: red shoes for $42
+    - label: blue jeans for $63
+    - button: order
+
+- page:
+    - name: MicroShop buy
+    - label: Welcome to our micro shop
+    - input: product
+      fill: red shoes
+    - input: customer
+      fill: Carli Customer
+    - input: address
+      fill: Wonderland 1
+    - button: buy
+      command: place order
+
+- policy: MicroShop
+
+- data: Order
+  code: o0925_1
+  product: red shoes
+  customer: Carli Customer
+  address: Wonderland 1
+  state: new order
 
 - event: product ordered
+  code: o0925_1
+  product: red shoes
+  customer: Carli Customer
+  address: Wonderland 1
+
+- policy: Warehouse
+
+- data: PickTask
+  code: pt_o0925_1
+  product: red shoes
+  shelf: [shelf 42, shelf 23]
+  customer: Carli Customer
+  address: Wonderland 1
+  state: picking
+
+- action: Peter Picker
+
+- page:
+    - name: Warehouse pick tasks
+    - label: Pick tasks overview
+    - button: pick
+    - label: red shoes, shelf 42, shelf 23
+
+- page:
+    - name: Warehouse pick one
+    - label: Pick one
+    - input: task
+      fill: pt_o0925_1
+    - input: shelf
+      fill: shelf 42
+    - button: done
+      command: Pick
+
+- policy: Warehouse
+
+- data: PickTask
+  code: pt_o0925_1
+  from: shelf 42
+  state: shipping
 
 - event: order picked
+  order: o0925_1
+
+- policy: MicroShop
+
+- data: Order
+  code: o0925_1
+  state: shipping
+
+- action: Dora Delivery
+
+- page:
+    - name: Warehouse delivery tasks
+    - label: Delivery tasks overview
+    - button: red shoes, Wonderland 1
+
+- page:
+    - name: Warehouse deliver
+    - label: Delivering
+    - input: order
+      fill: o0925_1
+    - button: done
+      command: deliver
+
+- policy: MicroShop
+
+- data: Order
+  code: o0925_1
+  state: delivered
 
 - event: order delivered
+  order: o0925_1
 
 
 - workflow: out of stock
+
+- action: Carli Customer
 
 - event: product ordered
 
