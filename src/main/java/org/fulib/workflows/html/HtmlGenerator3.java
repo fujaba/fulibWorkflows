@@ -31,6 +31,8 @@ public class HtmlGenerator3 {
     private EventStormingBoard eventStormingBoard;
     private ArrayList<LinkedHashMap<String, String>> historyMaps;
 
+    private String icon;
+
     public void generateViewFiles(String filename, String workFlowName) {
         generateHtml(filename, workFlowName); // Fill bodies
 
@@ -66,7 +68,8 @@ public class HtmlGenerator3 {
         eventModel.buildEventStormModel(filename);
         eventStormingBoard = eventModel.getEventStormingBoard();
         if (dumpObjectDiagram != null) {
-            dumpObjectDiagram.accept(String.format("tmp/%s/GuiEventStormingBoard.svg", workFlowName), eventStormingBoard);
+            dumpObjectDiagram.accept(String.format("tmp/%s/GuiEventStormingBoard.svg", workFlowName),
+                    eventStormingBoard);
         }
 
         STGroupFile cssGroup = new STGroupFile(Objects.requireNonNull(this.getClass().getResource("css.stg")));
@@ -80,13 +83,13 @@ public class HtmlGenerator3 {
         for (Workflow workflow : eventStormingBoard.getWorkflows()) {
             rootWorkflow = workflow;
             // workflow lane
-            String notes = notes();
             String workflowName = workflow.getName();
             SubprocessNote subprocess = eventStormingBoard.getFromSubprocesses(workflowName);
-            String icon = "<i class=\"fa fa-cogs\">";
+            icon = "<i class=\"fa fa-cogs\">";
             if (subprocess != null) {
                 icon = iconFor(subprocess);
             }
+            String notes = notes();
 
             String id = rootWorkflow.getName().replaceAll("\\s+|_", "<br>");
 
@@ -106,7 +109,6 @@ public class HtmlGenerator3 {
         cssBody.setLength(0);
         cssBody.append(st.render());
 
-
         st = htmlGroup.getInstanceOf("page");
         st.add("content", htmlBody.toString());
         st.add("workflowName", String.format("%sEventStorming", workFlowName));
@@ -118,11 +120,13 @@ public class HtmlGenerator3 {
     private String notes() {
         String laneName = null;
         StringBuilder buf = new StringBuilder();
+        StringBuilder actionBuf = new StringBuilder();
 
         notesPerLane = 1;
         maxNotesPerLane = Math.max(maxNotesPerLane, notesPerLane);
 
         String previousActor = "noActor";
+        String previousUserType = "noUserType";
         for (WorkflowNote note : rootWorkflow.getNotes()) {
             if (note instanceof ClassNote) {
                 continue;
@@ -130,7 +134,6 @@ public class HtmlGenerator3 {
             String time = note.getTime();
             Map<String, String> map = note.getMap();
             String eventType = eventModel.getEventType(map);
-
 
             String user = null;
             if (note.getInteraction() != null) {
@@ -143,6 +146,17 @@ public class HtmlGenerator3 {
             ServiceNote serviceNote = eventStormingBoard.getFromServices(user);
             if (serviceNote != null) {
                 userType = "server";
+                previousUserType = "server";
+            }
+
+            if (previousUserType.equals("server") && userType.equals("user") ) {
+                st = htmlGroup.getInstanceOf("lane3");
+                st.add("id", rootWorkflow.getName());
+                st.add("content", actionBuf.toString());
+                st.add("icon", icon);
+                buf.append(st.render());
+                actionBuf.setLength(0);
+                previousUserType = "noUserType";
             }
 
             String targetActor = user;
@@ -167,8 +181,8 @@ public class HtmlGenerator3 {
                 SubprocessNote subprocessNote = (SubprocessNote) note;
                 noteType = "subprocess";
                 String icon = iconFor(subprocessNote);
-                noteContent = String.format("<div class='center'>%s</i></div>\n", icon) +
-                        String.format("<div>%s</div>\n", note.getTime());
+                noteContent = String.format("<div class='center'>%s</i></div>\n", icon)
+                        + String.format("<div>%s</div>\n", note.getTime());
             } else if (note instanceof BrokerTopicNote) {
                 BrokerTopicNote subprocessNote = (BrokerTopicNote) note;
                 noteType = "broker";
@@ -193,7 +207,7 @@ public class HtmlGenerator3 {
                 st = htmlGroup.getInstanceOf("actor");
                 st.add("id", user);
                 st.add("type", userType);
-                buf.append(st.render());
+                actionBuf.append(st.render());
             }
 
             previousActor = targetActor;
@@ -202,11 +216,17 @@ public class HtmlGenerator3 {
             st.add("id", time);
             st.add("type", noteType);
             st.add("content", noteContent);
-            buf.append(st.render());
+            actionBuf.append(st.render());
 
             notesPerLane++;
             maxNotesPerLane = Math.max(maxNotesPerLane, notesPerLane);
         }
+
+        st = htmlGroup.getInstanceOf("lane3");
+        st.add("id", rootWorkflow.getName());
+        st.add("content", actionBuf.toString());
+        st.add("icon", icon);
+        buf.append(st.render());
 
         return buf.toString();
     }
@@ -221,10 +241,8 @@ public class HtmlGenerator3 {
         return icon;
     }
 
-
     private String pageNote(PageNote note) {
         StringBuilder pageBody = new StringBuilder();
-
 
         String time = note.getTime();
         String serviceName = note.getService().getName();
@@ -265,7 +283,6 @@ public class HtmlGenerator3 {
                 pageBody.append(html);
             }
         }
-
 
         String noteContent = pageBody.toString();
         return noteContent;
@@ -370,6 +387,5 @@ public class HtmlGenerator3 {
 
         return notesBuffer.toString();
     }
-
 
 }

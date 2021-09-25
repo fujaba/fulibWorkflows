@@ -21,16 +21,23 @@ lane(id, type, content) ::= <<
 >>
 
 lane2(id, content, icon) ::= <<
-<div id="{id}" class="lane">
-    <div class="box" onClick="changeVisibilityOf{id}()">
-        <div class="center">{icon}</i></div>
-        <div>{id}</div>
-    </div>
+<div id="{id}">
     <div id="show{id}">
         {content}
     </div>
 </div>
 >>
+
+lane3(id, content, icon) ::= <<
+<div id="{id}" class="lane">
+    <div class="box">
+        <div class="center">{icon}</i></div>
+        <div>{id}</div>
+    </div>
+    {content}
+</div>
+>>
+
 
 actor(id, type) ::= <<
 <div class="box {type}">
