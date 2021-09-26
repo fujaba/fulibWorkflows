@@ -188,8 +188,8 @@ public class TestFamilyDoctor
       pre = $("#data");
       pre.shouldHave(text("- alice:"));
       pre.shouldHave(matchText("name:.*Alice"));
-      pre.shouldHave(matchText("address:.*\"Wonderland 1\""));
-      pre.shouldHave(matchText("birthDate:.*1970-01-01"));
+      pre.shouldHave(matchText("address:.*Wonderland.1"));
+      pre.shouldHave(matchText("birthDate:.*1970.01.01"));
 
       // create ConsultationRegisteredEvent: consultation registered
       ConsultationRegisteredEvent e1402 = new ConsultationRegisteredEvent();
@@ -218,7 +218,7 @@ public class TestFamilyDoctor
       // check data note 14:02:01
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
-      pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));
+      pre.shouldHave(matchText("cid:.*Alice.2021.06.02T14.00"));
       pre.shouldHave(matchText("patient:.*alice"));
 
       // create SymptomValidatedEvent: symptom validated
@@ -278,7 +278,7 @@ public class TestFamilyDoctor
       // check data note 14:04:01
       pre = $("#data");
       pre.shouldHave(text("- runny_nose:"));
-      pre.shouldHave(matchText("name:.*\"runny nose\""));
+      pre.shouldHave(matchText("name:.*runny.nose"));
       pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
 
       // create TestDoneEvent: test done
@@ -309,14 +309,14 @@ public class TestFamilyDoctor
       // check data note 14:05:01
       pre = $("#data");
       pre.shouldHave(text("- alice_t001_2021_06_02T14_00:"));
-      pre.shouldHave(matchText("cid:.*Alice#t001#2021-06-02T14:00"));
+      pre.shouldHave(matchText("cid:.*Alice.t001.2021.06.02T14.00"));
       pre.shouldHave(matchText("kind:.*temperature"));
-      pre.shouldHave(matchText("result:.*\"39.8 Celsius\""));
+      pre.shouldHave(matchText("result:.*39.8.Celsius"));
       pre.shouldHave(matchText("consultation:.*alice_2021_06_02T14_00"));
       // check data note 14:05:02
       pre = $("#data");
       pre.shouldHave(text("- medium_fever:"));
-      pre.shouldHave(matchText("name:.*\"medium fever\""));
+      pre.shouldHave(matchText("name:.*medium.fever"));
       pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
 
       // create DiagnosisDoneEvent: diagnosis done
@@ -346,7 +346,7 @@ public class TestFamilyDoctor
       // check data note 14:06:01
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
-      pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));
+      pre.shouldHave(matchText("cid:.*Alice.2021.06.02T14.00"));
       pre.shouldHave(matchText("diagnosis:.*common_cold"));
 
       // create TreatmentInitiatedEvent: treatment initiated
@@ -376,8 +376,8 @@ public class TestFamilyDoctor
       // check data note 14:07:01
       pre = $("#data");
       pre.shouldHave(text("- alice_2021_06_02T14_00:"));
-      pre.shouldHave(matchText("cid:.*Alice#2021-06-02T14:00"));
-      pre.shouldHave(matchText("treatment:.*\"ibuprofen 400 1-1-1\""));
+      pre.shouldHave(matchText("cid:.*Alice.2021.06.02T14.00"));
+      pre.shouldHave(matchText("treatment:.*ibuprofen.400.1.1.1"));
 
       // workflow Accounting
 

@@ -117,37 +117,21 @@ public class MicroShopBusinessLogic
 
    private void handleDemoAddCommand(AddCommand event)
    {
-      if (event.getId().equals("12:12:01")) {
-         ProductBuilt red_shoesEvent = new ProductBuilt();
-         red_shoesEvent.setId("12:12:02");
-         red_shoesEvent.setBlockId("red_shoes");
-         red_shoesEvent.setName("red shoes");
-         red_shoesEvent.setPrice("$42");
-         service.apply(red_shoesEvent);
-
-
-         ProductOfferedEvent e1213 = new ProductOfferedEvent();
-
-         e1213.setId("12:13");
-         e1213.setName("red shoes");
-         e1213.setPrice("$42");
-         service.apply(e1213);
-      }
-      if (event.getId().equals("12:15:01")) {
+      if (event.getId().equals("12:17:01")) {
          ProductBuilt blue_jeansEvent = new ProductBuilt();
-         blue_jeansEvent.setId("12:15:02");
+         blue_jeansEvent.setId("12:17:02");
          blue_jeansEvent.setBlockId("blue_jeans");
          blue_jeansEvent.setName("blue jeans");
          blue_jeansEvent.setPrice("$63");
          service.apply(blue_jeansEvent);
 
 
-         ProductOfferedEvent e1216 = new ProductOfferedEvent();
+         ProductOfferedEvent e1218 = new ProductOfferedEvent();
 
-         e1216.setId("12:16");
-         e1216.setName("blue jeans");
-         e1216.setPrice("$63");
-         service.apply(e1216);
+         e1218.setId("12:18");
+         e1218.setName("blue jeans");
+         e1218.setPrice("$63");
+         service.apply(e1218);
       }
    }
 
@@ -157,11 +141,13 @@ public class MicroShopBusinessLogic
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(ProductBuilt.class, builder::storeProductBuilt);
          handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
+         handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
+         handlerMap.put(AddOfferCommand.class, this::handleAddOfferCommand);
          handlerMap.put(AddCommand.class, this::handleAddCommand);
          handlerMap.put(PlaceCommand.class, this::handlePlaceCommand);
          handlerMap.put(PickTaskCreatedEvent.class, this::handlePickTaskCreatedEvent);
          handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
-         handlerMap.put(Command.class, this::handleCommand);
+         handlerMap.put(DeliverCommand.class, this::handleDeliverCommand);
       }
    }
 
@@ -210,9 +196,9 @@ public class MicroShopBusinessLogic
 
    private void handleDemoPlaceCommand(PlaceCommand event)
    {
-      if (event.getId().equals("12:19:01")) {
+      if (event.getId().equals("12:21:01")) {
          OrderBuilt o0925_1Event = new OrderBuilt();
-         o0925_1Event.setId("12:19:02");
+         o0925_1Event.setId("12:21:02");
          o0925_1Event.setBlockId("o0925_1");
          o0925_1Event.setCode("o0925_1");
          o0925_1Event.setProduct("red shoes");
@@ -221,15 +207,21 @@ public class MicroShopBusinessLogic
          o0925_1Event.setState("new order");
          service.apply(o0925_1Event);
 
+         CustomerBuilt carli_CustomerEvent = new CustomerBuilt();
+         carli_CustomerEvent.setId("12:21:03");
+         carli_CustomerEvent.setBlockId("Carli_Customer");
+         carli_CustomerEvent.setName("Carli Customer");
+         service.apply(carli_CustomerEvent);
 
-         ProductOrderedEvent e1220 = new ProductOrderedEvent();
 
-         e1220.setId("12:20");
-         e1220.setCode("o0925_1");
-         e1220.setProduct("red shoes");
-         e1220.setCustomer("Carli Customer");
-         e1220.setAddress("Wonderland 1");
-         service.apply(e1220);
+         ProductOrderedEvent e1222 = new ProductOrderedEvent();
+
+         e1222.setId("12:22");
+         e1222.setCode("o0925_1");
+         e1222.setProduct("red shoes");
+         e1222.setCustomer("Carli Customer");
+         e1222.setAddress("Wonderland 1");
+         service.apply(e1222);
       }
    }
 
@@ -243,41 +235,14 @@ public class MicroShopBusinessLogic
 
    private void handleDemoOrderPickedEvent(OrderPickedEvent event)
    {
-      if (event.getId().equals("12:25")) {
+      if (event.getId().equals("12:27")) {
          OrderBuilt o0925_1Event = new OrderBuilt();
-         o0925_1Event.setId("12:25:01");
+         o0925_1Event.setId("12:27:01");
          o0925_1Event.setBlockId("o0925_1");
          o0925_1Event.setCode("o0925_1");
          o0925_1Event.setState("shipping");
          service.apply(o0925_1Event);
 
-      }
-   }
-
-   private void handleCommand(Event e)
-   {
-      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
-      // fulib
-      Command event = (Command) e;
-      handleDemoCommand(event);
-   }
-
-   private void handleDemoCommand(Command event)
-   {
-      if (event.getId().equals("12:27:01")) {
-         OrderBuilt o0925_1Event = new OrderBuilt();
-         o0925_1Event.setId("12:27:02");
-         o0925_1Event.setBlockId("o0925_1");
-         o0925_1Event.setCode("o0925_1");
-         o0925_1Event.setState("delivered");
-         service.apply(o0925_1Event);
-
-
-         OrderDeliveredEvent e1228 = new OrderDeliveredEvent();
-
-         e1228.setId("12:28");
-         e1228.setOrder("o0925_1");
-         service.apply(e1228);
       }
    }
 
@@ -291,14 +256,69 @@ public class MicroShopBusinessLogic
 
    private void handleDemoPickTaskCreatedEvent(PickTaskCreatedEvent event)
    {
-      if (event.getId().equals("12:21")) {
+      if (event.getId().equals("12:23")) {
          OrderBuilt o0925_1Event = new OrderBuilt();
-         o0925_1Event.setId("12:21:01");
+         o0925_1Event.setId("12:23:01");
          o0925_1Event.setBlockId("o0925_1");
          o0925_1Event.setCode("o0925_1");
          o0925_1Event.setState("picking");
          service.apply(o0925_1Event);
 
+      }
+   }
+
+   private void handleAddOfferCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      AddOfferCommand event = (AddOfferCommand) e;
+      handleDemoAddOfferCommand(event);
+   }
+
+   private void handleDemoAddOfferCommand(AddOfferCommand event)
+   {
+      if (event.getId().equals("12:14:42")) {
+         ProductBuilt red_shoesEvent = new ProductBuilt();
+         red_shoesEvent.setId("12:14:43");
+         red_shoesEvent.setBlockId("red_shoes");
+         red_shoesEvent.setName("red shoes");
+         red_shoesEvent.setPrice("$42");
+         service.apply(red_shoesEvent);
+
+
+         ProductOfferedEvent e1215 = new ProductOfferedEvent();
+
+         e1215.setId("12:15");
+         e1215.setName("red shoes");
+         e1215.setPrice("$42");
+         service.apply(e1215);
+      }
+   }
+
+   private void handleDeliverCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      DeliverCommand event = (DeliverCommand) e;
+      handleDemoDeliverCommand(event);
+   }
+
+   private void handleDemoDeliverCommand(DeliverCommand event)
+   {
+      if (event.getId().equals("12:30:01")) {
+         OrderBuilt o0925_1Event = new OrderBuilt();
+         o0925_1Event.setId("12:30:02");
+         o0925_1Event.setBlockId("o0925_1");
+         o0925_1Event.setCode("o0925_1");
+         o0925_1Event.setState("delivered");
+         service.apply(o0925_1Event);
+
+
+         OrderDeliveredEvent e1231 = new OrderDeliveredEvent();
+
+         e1231.setId("12:31");
+         e1231.setOrder("o0925_1");
+         service.apply(e1231);
       }
    }
 }

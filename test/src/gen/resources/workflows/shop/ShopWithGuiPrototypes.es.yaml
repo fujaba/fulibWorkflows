@@ -118,7 +118,7 @@
     - input: price
       fill: $42
     - button: ok
-      command: add offer
+      command: add offer 12:14:42
 
 - policy: MicroShop
 
@@ -163,6 +163,7 @@
     - label: red shoes, $42
     - label: blue jeans, $63
 
+
 - action: Carli Customer
 
 - page:
@@ -190,9 +191,14 @@
 - data: Order
   code: o0925_1
   product: red shoes
+  product.back: [orders]
   customer: Carli Customer
+  customer.back: [orders]
   address: Wonderland 1
   state: new order
+
+- data: Customer
+  name: Carli Customer
 
 - event: product ordered
   code: o0925_1
@@ -235,8 +241,7 @@
 - page:
     - name: Warehouse pick tasks
     - label: Pick tasks overview
-    - button: pick
-    - label: red shoes, shelf 42, shelf 23
+    - button: pt_o0925_1, red shoes, shelf 42, shelf 23
 
 - page:
     - name: Warehouse pick one
@@ -264,6 +269,12 @@
   code: o0925_1
   state: shipping
 
+- page:
+    - name: Warehouse pick tasks
+    - label: Pick tasks overview
+    - label: no tasks, have a break
+
+
 - action: Dora Delivery
 
 - page:
@@ -277,7 +288,7 @@
     - input: order
       fill: o0925_1
     - button: done
-      command: deliver
+      command: deliver order
 
 - policy: MicroShop
 
@@ -287,6 +298,11 @@
 
 - event: order delivered
   order: o0925_1
+
+- page:
+    - name: Warehouse delivery tasks
+    - label: Delivery tasks overview
+    - label: everything delivered, you are a hero
 
 
 - workflow: out of stock

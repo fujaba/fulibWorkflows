@@ -204,67 +204,67 @@ public class TestMicroShop
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_12_01:"));
+      pre.shouldHave(text("- 12_14_42:"));
 
       // check MicroShop
       open("http://localhost:42002");
       pre = $("#history");
-      pre.shouldHave(text("- 12_12_01:"));
+      pre.shouldHave(text("- 12_14_42:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_12_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_14_42.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
-      // check data note 12:12:02
+      // check data note 12:14:43
       pre = $("#data");
       pre.shouldHave(text("- red_shoes:"));
       pre.shouldHave(matchText("name:.*red.shoes"));
       pre.shouldHave(matchText("price:.*.42"));
 
-      // page 12:14
-      open("http://localhost:42002/page/12_14");
+      // page 12:16
+      open("http://localhost:42002/page/12_16");
 
-      // page 12:15
-      open("http://localhost:42002/page/12_15");
+      // page 12:17
+      open("http://localhost:42002/page/12_17");
       $("#product").setValue("blue jeans");
       $("#price").setValue("$63");
       $("#ok").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_15_01:"));
+      pre.shouldHave(text("- 12_17_01:"));
 
       // check MicroShop
       open("http://localhost:42002");
       pre = $("#history");
-      pre.shouldHave(text("- 12_15_01:"));
+      pre.shouldHave(text("- 12_17_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_15_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_17_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
-      // check data note 12:15:02
+      // check data note 12:17:02
       pre = $("#data");
       pre.shouldHave(text("- blue_jeans:"));
       pre.shouldHave(matchText("name:.*blue.jeans"));
       pre.shouldHave(matchText("price:.*.63"));
 
-      // page 12:17
-      open("http://localhost:42002/page/12_17");
-
-      // page 12:18
-      open("http://localhost:42002/page/12_18");
-
       // page 12:19
       open("http://localhost:42002/page/12_19");
+
+      // page 12:20
+      open("http://localhost:42002/page/12_20");
+
+      // page 12:21
+      open("http://localhost:42002/page/12_21");
       $("#product").setValue("red shoes");
       $("#customer").setValue("Carli Customer");
       $("#address").setValue("Wonderland 1");
@@ -272,22 +272,22 @@ public class TestMicroShop
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_19_01:"));
+      pre.shouldHave(text("- 12_21_01:"));
 
       // check MicroShop
       open("http://localhost:42002");
       pre = $("#history");
-      pre.shouldHave(text("- 12_19_01:"));
+      pre.shouldHave(text("- 12_21_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_19_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_21_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
-      // check data note 12:21:01
+      // check data note 12:23:01
       pre = $("#data");
       pre.shouldHave(text("- o0925_1:"));
       pre.shouldHave(matchText("code:.*o0925_1"));
@@ -296,17 +296,17 @@ public class TestMicroShop
       // check Warehouse
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 12_19_01:"));
+      pre.shouldHave(text("- 12_21_01:"));
       for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
          warehouse.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = warehouse.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_19_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_21_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
-      // check data note 12:20:01
+      // check data note 12:22:01
       pre = $("#data");
       pre.shouldHave(text("- pt_o0925_1:"));
       pre.shouldHave(matchText("code:.*pt_o0925_1"));
@@ -316,36 +316,36 @@ public class TestMicroShop
       pre.shouldHave(matchText("address:.*Wonderland.1"));
       pre.shouldHave(matchText("state:.*picking"));
 
-      // page 12:22
-      open("http://localhost:42002/page/12_22");
-
-      // page 12:23
-      open("http://localhost:42001/page/12_23");
-
       // page 12:24
-      open("http://localhost:42001/page/12_24");
+      open("http://localhost:42002/page/12_24");
+
+      // page 12:25
+      open("http://localhost:42001/page/12_25");
+
+      // page 12:26
+      open("http://localhost:42001/page/12_26");
       $("#task").setValue("pt_o0925_1");
       $("#shelf").setValue("shelf 42");
       $("#done").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_24_01:"));
+      pre.shouldHave(text("- 12_26_01:"));
 
       // check Warehouse
       open("http://localhost:42001");
       pre = $("#history");
-      pre.shouldHave(text("- 12_24_01:"));
+      pre.shouldHave(text("- 12_26_01:"));
       for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
          warehouse.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = warehouse.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_24_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_26_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
-      // check data note 12:24:02
+      // check data note 12:26:02
       pre = $("#data");
       pre.shouldHave(text("- pt_o0925_1:"));
       pre.shouldHave(matchText("code:.*pt_o0925_1"));
@@ -355,52 +355,58 @@ public class TestMicroShop
       // check MicroShop
       open("http://localhost:42002");
       pre = $("#history");
-      pre.shouldHave(text("- 12_24_01:"));
+      pre.shouldHave(text("- 12_26_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_24_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_26_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
-      // check data note 12:25:01
+      // check data note 12:27:01
       pre = $("#data");
       pre.shouldHave(text("- o0925_1:"));
       pre.shouldHave(matchText("code:.*o0925_1"));
       pre.shouldHave(matchText("state:.*shipping"));
 
-      // page 12:26
-      open("http://localhost:42001/page/12_26");
+      // page 12:28
+      open("http://localhost:42001/page/12_28");
 
-      // page 12:27
-      open("http://localhost:42001/page/12_27");
+      // page 12:29
+      open("http://localhost:42001/page/12_29");
+
+      // page 12:30
+      open("http://localhost:42001/page/12_30");
       $("#order").setValue("o0925_1");
       $("#done").click();
 
       open("http://localhost:42000");
       pre = $("#history");
-      pre.shouldHave(text("- 12_27_01:"));
+      pre.shouldHave(text("- 12_30_01:"));
 
       // check MicroShop
       open("http://localhost:42002");
       pre = $("#history");
-      pre.shouldHave(text("- 12_27_01:"));
+      pre.shouldHave(text("- 12_30_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_27_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_30_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
-      // check data note 12:27:02
+      // check data note 12:30:02
       pre = $("#data");
       pre.shouldHave(text("- o0925_1:"));
       pre.shouldHave(matchText("code:.*o0925_1"));
       pre.shouldHave(matchText("state:.*delivered"));
+
+      // page 12:32
+      open("http://localhost:42001/page/12_32");
 
       // workflow OutOfStock
 

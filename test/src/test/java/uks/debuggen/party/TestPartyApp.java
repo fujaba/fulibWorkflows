@@ -281,7 +281,7 @@ public class TestPartyApp
       pre = $("#data");
       pre.shouldHave(text("- alice:"));
       pre.shouldHave(matchText("name:.*Alice"));
-      pre.shouldHave(matchText("email:.*a@b.de"));
+      pre.shouldHave(matchText("email:.*a.b.de"));
       pre.shouldHave(matchText("password:.*secret"));
 
       // page 12:06
@@ -379,7 +379,7 @@ public class TestPartyApp
       // check data note 14:01:02
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ:"));
-      pre.shouldHave(matchText("name:.*\"SE BBQ\""));
+      pre.shouldHave(matchText("name:.*SE.BBQ"));
       pre.shouldHave(matchText("date:.*Friday"));
       pre.shouldHave(matchText("location:.*Uni"));
 

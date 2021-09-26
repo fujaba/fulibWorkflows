@@ -211,6 +211,7 @@ public class MicroShopBuilder
          loaderMap = new LinkedHashMap<>();
          loaderMap.put(ProductBuilt.class, this::loadProductBuilt);
          loaderMap.put(OrderBuilt.class, this::loadOrderBuilt);
+         loaderMap.put(CustomerBuilt.class, this::loadCustomerBuilt);
       }
    }
 
@@ -288,10 +289,28 @@ public class MicroShopBuilder
       OrderBuilt event = (OrderBuilt) e;
       Order object = model.getOrCreateOrder(event.getBlockId());
       object.setCode(event.getCode());
-      object.setProduct(event.getProduct());
-      object.setCustomer(event.getCustomer());
+      object.setProduct(model.getOrCreateProduct(getObjectId(event.getProduct())));
+      object.setCustomer(model.getOrCreateCustomer(getObjectId(event.getCustomer())));
       object.setAddress(event.getAddress());
       object.setState(event.getState());
+      return object;
+   }
+
+   public void storeCustomerBuilt(Event e)
+   {
+      CustomerBuilt event = (CustomerBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public Customer loadCustomerBuilt(Event e)
+   {
+      CustomerBuilt event = (CustomerBuilt) e;
+      Customer object = model.getOrCreateCustomer(event.getBlockId());
+      object.setName(event.getName());
       return object;
    }
 }

@@ -443,7 +443,7 @@ public class TestPartyApp implements PropertyChangeListener {
       pre = $("#data");
       pre.shouldHave(text("- alice:"));
       pre.shouldHave(matchText("name:.*Alice"));
-      pre.shouldHave(matchText("email:.*a@b.de"));
+      pre.shouldHave(matchText("email:.*a.b.de"));
       pre.shouldHave(matchText("password:.*secret"));
 
       // page 12:06
@@ -570,9 +570,9 @@ public class TestPartyApp implements PropertyChangeListener {
       // check data note 14:01:03
       pre = $("#data");
       pre.shouldHave(text("- sE_BBQ:"));
-      pre.shouldHave(matchText("name:.*\"SE BBQ\""));
+      pre.shouldHave(matchText("name:.*SE.BBQ"));
       pre.shouldHave(matchText("region:.*kassel"));
-      pre.shouldHave(matchText("date:.*\"after work\""));
+      pre.shouldHave(matchText("date:.*after.work"));
       pre.shouldHave(matchText("address:.*Uni"));
 
       // page 14:02

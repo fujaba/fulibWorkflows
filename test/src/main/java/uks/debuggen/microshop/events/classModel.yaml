@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	addCommand 	productBuilt 	productOfferedEvent 	placeCommand 	orderBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	addOfferCommand 	productBuilt 	productOfferedEvent 	addCommand 	placeCommand 	orderBuilt 	customerBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	deliverCommand 	orderDeliveredEvent 	orderRejectedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	pickTaskCreatedEvent 	orderPickedEvent 	command 	orderDeliveredEvent 	orderRejectedEvent
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	pickTaskCreatedEvent 	command 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -22,7 +22,7 @@
   name: 	DataEvent
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
-  subClasses: 	dataGroup 	boxBuilt 	productBuilt 	orderBuilt 	pickTaskBuilt
+  subClasses: 	dataGroup 	boxBuilt 	productBuilt 	orderBuilt 	customerBuilt 	pickTaskBuilt
   superClass: 	event
 
 - dataGroup: 	org.fulib.classmodel.Clazz
@@ -51,12 +51,12 @@
   superClass: 	event
 
 - command: 	org.fulib.classmodel.Clazz
-  attributes: 	command_task 	command_shelf 	command_order
+  attributes: 	command_task 	command_shelf
   model: 	c
   modified: 	false
   name: 	Command
   propertyStyle: 	Bean
-  subClasses: 	storeCommand 	addCommand 	placeCommand
+  subClasses: 	storeCommand 	addOfferCommand 	addCommand 	placeCommand 	deliverCommand
   superClass: 	event
 
 - storeCommand: 	org.fulib.classmodel.Clazz
@@ -83,11 +83,11 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- addCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	addCommand_product 	addCommand_price
+- addOfferCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	addOfferCommand_product 	addOfferCommand_price
   model: 	c
   modified: 	false
-  name: 	AddCommand
+  name: 	AddOfferCommand
   propertyStyle: 	Bean
   superClass: 	command
 
@@ -107,6 +107,14 @@
   propertyStyle: 	Bean
   superClass: 	event
 
+- addCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	addCommand_product 	addCommand_price
+  model: 	c
+  modified: 	false
+  name: 	AddCommand
+  propertyStyle: 	Bean
+  superClass: 	command
+
 - placeCommand: 	org.fulib.classmodel.Clazz
   attributes: 	placeCommand_product 	placeCommand_customer 	placeCommand_address
   model: 	c
@@ -120,6 +128,14 @@
   model: 	c
   modified: 	false
   name: 	OrderBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- customerBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	customerBuilt_name
+  model: 	c
+  modified: 	false
+  name: 	CustomerBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
@@ -154,6 +170,14 @@
   name: 	OrderPickedEvent
   propertyStyle: 	Bean
   superClass: 	event
+
+- deliverCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	deliverCommand_order
+  model: 	c
+  modified: 	false
+  name: 	DeliverCommand
+  propertyStyle: 	Bean
+  superClass: 	command
 
 - orderDeliveredEvent: 	org.fulib.classmodel.Clazz
   attributes: 	orderDeliveredEvent_order
@@ -277,15 +301,6 @@
   type: 	String
   typeSignature: 	String
 
-- command_order: 	org.fulib.classmodel.Attribute
-  clazz: 	command
-  id: 	Command_order
-  modified: 	false
-  name: 	order
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
 - storeCommand_barcode: 	org.fulib.classmodel.Attribute
   clazz: 	storeCommand
   id: 	StoreCommand_barcode
@@ -358,18 +373,18 @@
   type: 	String
   typeSignature: 	String
 
-- addCommand_product: 	org.fulib.classmodel.Attribute
-  clazz: 	addCommand
-  id: 	AddCommand_product
+- addOfferCommand_product: 	org.fulib.classmodel.Attribute
+  clazz: 	addOfferCommand
+  id: 	AddOfferCommand_product
   modified: 	false
   name: 	product
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- addCommand_price: 	org.fulib.classmodel.Attribute
-  clazz: 	addCommand
-  id: 	AddCommand_price
+- addOfferCommand_price: 	org.fulib.classmodel.Attribute
+  clazz: 	addOfferCommand
+  id: 	AddOfferCommand_price
   modified: 	false
   name: 	price
   propertyStyle: 	Bean
@@ -406,6 +421,24 @@
 - productOfferedEvent_price: 	org.fulib.classmodel.Attribute
   clazz: 	productOfferedEvent
   id: 	ProductOfferedEvent_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- addCommand_product: 	org.fulib.classmodel.Attribute
+  clazz: 	addCommand
+  id: 	AddCommand_product
+  modified: 	false
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- addCommand_price: 	org.fulib.classmodel.Attribute
+  clazz: 	addCommand
+  id: 	AddCommand_price
   modified: 	false
   name: 	price
   propertyStyle: 	Bean
@@ -480,6 +513,15 @@
   id: 	OrderBuilt_state
   modified: 	false
   name: 	state
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- customerBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	customerBuilt
+  id: 	CustomerBuilt_name
+  modified: 	false
+  name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -604,6 +646,15 @@
 - orderPickedEvent_order: 	org.fulib.classmodel.Attribute
   clazz: 	orderPickedEvent
   id: 	OrderPickedEvent_order
+  modified: 	false
+  name: 	order
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- deliverCommand_order: 	org.fulib.classmodel.Attribute
+  clazz: 	deliverCommand
+  id: 	DeliverCommand_order
   modified: 	false
   name: 	order
   propertyStyle: 	Bean

@@ -274,35 +274,35 @@ public class MicroShopService
       String id = request.params("id");
       String event = request.queryParams("event");
 
-      if ("add offer".equals(event)) {
+      if ("add offer 12:14:42".equals(event)) {
 
-         // create AddCommand: add offer
-         AddCommand e121201 = new AddCommand();
-         e121201.setId("12:12:01");
-         e121201.setProduct(request.queryParams("product"));
-         e121201.setPrice(request.queryParams("price"));
-         apply(e121201);
+         // create AddOfferCommand: add offer 12:14:42
+         AddOfferCommand e121442 = new AddOfferCommand();
+         e121442.setId("12:14:42");
+         e121442.setProduct(request.queryParams("product"));
+         e121442.setPrice(request.queryParams("price"));
+         apply(e121442);
       }
 
       if ("add offer".equals(event)) {
 
          // create AddCommand: add offer
-         AddCommand e121501 = new AddCommand();
-         e121501.setId("12:15:01");
-         e121501.setProduct(request.queryParams("product"));
-         e121501.setPrice(request.queryParams("price"));
-         apply(e121501);
+         AddCommand e121701 = new AddCommand();
+         e121701.setId("12:17:01");
+         e121701.setProduct(request.queryParams("product"));
+         e121701.setPrice(request.queryParams("price"));
+         apply(e121701);
       }
 
       if ("place order".equals(event)) {
 
          // create PlaceCommand: place order
-         PlaceCommand e121901 = new PlaceCommand();
-         e121901.setId("12:19:01");
-         e121901.setProduct(request.queryParams("product"));
-         e121901.setCustomer(request.queryParams("customer"));
-         e121901.setAddress(request.queryParams("address"));
-         apply(e121901);
+         PlaceCommand e122101 = new PlaceCommand();
+         e122101.setId("12:21:01");
+         e122101.setProduct(request.queryParams("product"));
+         e122101.setCustomer(request.queryParams("customer"));
+         e122101.setAddress(request.queryParams("address"));
+         apply(e122101);
       }
 
 
@@ -320,21 +320,21 @@ public class MicroShopService
 
       // 12:12
       if (id.equals("12_12")) {
-         html.append("<form action=\"/page/12_14\" method=\"get\">\n");
+         html.append("<form action=\"/page/12_16\" method=\"get\">\n");
          // MicroShop add offer 12:12
          html.append("   <p>make new offer</p>\n");
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"add offer\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"add offer 12:14:42\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
-      // 12:14
-      if (id.equals("12_14")) {
-         html.append("<form action=\"/page/12_15\" method=\"get\">\n");
-         // MicroShop offers 12:14
+      // 12:16
+      if (id.equals("12_16")) {
+         html.append("<form action=\"/page/12_17\" method=\"get\">\n");
+         // MicroShop offers 12:16
          html.append("   <p>Offers overview</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
          html.append("   <p>red shoes, $42</p>\n");
@@ -342,10 +342,10 @@ public class MicroShopService
          return html.toString();
       }
 
-      // 12:15
-      if (id.equals("12_15")) {
-         html.append("<form action=\"/page/12_17\" method=\"get\">\n");
-         // MicroShop add offer 12:15
+      // 12:17
+      if (id.equals("12_17")) {
+         html.append("<form action=\"/page/12_19\" method=\"get\">\n");
+         // MicroShop add offer 12:17
          html.append("   <p>make new offer</p>\n");
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
@@ -355,10 +355,10 @@ public class MicroShopService
          return html.toString();
       }
 
-      // 12:17
-      if (id.equals("12_17")) {
+      // 12:19
+      if (id.equals("12_19")) {
          html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // MicroShop offers 12:17
+         // MicroShop offers 12:19
          html.append("   <p>Offers overview</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
          html.append("   <p>red shoes, $42</p>\n");
@@ -367,10 +367,10 @@ public class MicroShopService
          return html.toString();
       }
 
-      // 12:18
-      if (id.equals("12_18")) {
-         html.append("<form action=\"/page/12_19\" method=\"get\">\n");
-         // MicroShop offers 12:18
+      // 12:20
+      if (id.equals("12_20")) {
+         html.append("<form action=\"/page/12_21\" method=\"get\">\n");
+         // MicroShop offers 12:20
          html.append("   <p>Welcome to our micro shop</p>\n");
          html.append("   <p>We have</p>\n");
          html.append("   <p>red shoes for $42</p>\n");
@@ -380,10 +380,10 @@ public class MicroShopService
          return html.toString();
       }
 
-      // 12:19
-      if (id.equals("12_19")) {
-         html.append("<form action=\"/page/12_22\" method=\"get\">\n");
-         // MicroShop buy 12:19
+      // 12:21
+      if (id.equals("12_21")) {
+         html.append("<form action=\"/page/12_24\" method=\"get\">\n");
+         // MicroShop buy 12:21
          html.append("   <p>Welcome to our micro shop</p>\n");
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"customer\" name=\"customer\" placeholder=\"customer?\"></p>\n");
@@ -394,10 +394,10 @@ public class MicroShopService
          return html.toString();
       }
 
-      // 12:22
-      if (id.equals("12_22")) {
+      // 12:24
+      if (id.equals("12_24")) {
          html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // MicroShop Carli overview 12:22
+         // MicroShop Carli overview 12:24
          html.append("   <p>Welcome Carli</p>\n");
          html.append("   <p>Your orders are</p>\n");
          html.append("   <p>red shoes for $42, picking</p>\n");

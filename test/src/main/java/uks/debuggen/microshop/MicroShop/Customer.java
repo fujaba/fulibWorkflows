@@ -1,29 +1,27 @@
 package uks.debuggen.microshop.MicroShop;
-import java.util.Objects;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Collections;
 import java.util.Collection;
+import java.beans.PropertyChangeSupport;
 
-public class Product
+public class Customer
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_PRICE = "price";
    public static final String PROPERTY_ORDERS = "orders";
    private String id;
    private String name;
-   private String price;
-   protected PropertyChangeSupport listeners;
    private List<Order> orders;
+   protected PropertyChangeSupport listeners;
 
    public String getId()
    {
       return this.id;
    }
 
-   public Product setId(String value)
+   public Customer setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -41,7 +39,7 @@ public class Product
       return this.name;
    }
 
-   public Product setName(String value)
+   public Customer setName(String value)
    {
       if (Objects.equals(value, this.name))
       {
@@ -54,30 +52,12 @@ public class Product
       return this;
    }
 
-   public String getPrice()
-   {
-      return this.price;
-   }
-
-   public Product setPrice(String value)
-   {
-      if (Objects.equals(value, this.price))
-      {
-         return this;
-      }
-
-      final String oldValue = this.price;
-      this.price = value;
-      this.firePropertyChange(PROPERTY_PRICE, oldValue, value);
-      return this;
-   }
-
    public List<Order> getOrders()
    {
       return this.orders != null ? Collections.unmodifiableList(this.orders) : Collections.emptyList();
    }
 
-   public Product withOrders(Order value)
+   public Customer withOrders(Order value)
    {
       if (this.orders == null)
       {
@@ -86,13 +66,13 @@ public class Product
       if (!this.orders.contains(value))
       {
          this.orders.add(value);
-         value.setProduct(this);
+         value.setCustomer(this);
          this.firePropertyChange(PROPERTY_ORDERS, null, value);
       }
       return this;
    }
 
-   public Product withOrders(Order... value)
+   public Customer withOrders(Order... value)
    {
       for (final Order item : value)
       {
@@ -101,7 +81,7 @@ public class Product
       return this;
    }
 
-   public Product withOrders(Collection<? extends Order> value)
+   public Customer withOrders(Collection<? extends Order> value)
    {
       for (final Order item : value)
       {
@@ -110,17 +90,17 @@ public class Product
       return this;
    }
 
-   public Product withoutOrders(Order value)
+   public Customer withoutOrders(Order value)
    {
       if (this.orders != null && this.orders.remove(value))
       {
-         value.setProduct(null);
+         value.setCustomer(null);
          this.firePropertyChange(PROPERTY_ORDERS, value, null);
       }
       return this;
    }
 
-   public Product withoutOrders(Order... value)
+   public Customer withoutOrders(Order... value)
    {
       for (final Order item : value)
       {
@@ -129,7 +109,7 @@ public class Product
       return this;
    }
 
-   public Product withoutOrders(Collection<? extends Order> value)
+   public Customer withoutOrders(Collection<? extends Order> value)
    {
       for (final Order item : value)
       {
@@ -163,7 +143,6 @@ public class Product
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
-      result.append(' ').append(this.getPrice());
       return result.substring(1);
    }
 

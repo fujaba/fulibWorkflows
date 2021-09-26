@@ -101,7 +101,7 @@ public class TestHealthExperts
       // check data note 12:00:01
       pre = $("#data");
       pre.shouldHave(text("- common_cold:"));
-      pre.shouldHave(matchText("name:.*\"common cold\""));
+      pre.shouldHave(matchText("name:.*common.cold"));
       pre.shouldHave(matchText("symptoms:.*runny_nose.*cough.*hoarseness.*medium_fever.*"));
       pre.shouldHave(matchText("counterSymptoms:.*chills.*joint_pain.*"));
       // check data note 12:00:02
@@ -122,7 +122,7 @@ public class TestHealthExperts
       // check data note 12:00:05
       pre = $("#data");
       pre.shouldHave(text("- runny_nose:"));
-      pre.shouldHave(matchText("name:.*\"runny nose\""));
+      pre.shouldHave(matchText("name:.*runny.nose"));
       // check data note 12:00:06
       pre = $("#data");
       pre.shouldHave(text("- hoarseness:"));
@@ -130,7 +130,7 @@ public class TestHealthExperts
       // check data note 12:00:07
       pre = $("#data");
       pre.shouldHave(text("- medium_fever:"));
-      pre.shouldHave(matchText("name:.*\"medium fever\""));
+      pre.shouldHave(matchText("name:.*medium.fever"));
       // check data note 12:00:08
       pre = $("#data");
       pre.shouldHave(text("- chills:"));
@@ -138,7 +138,7 @@ public class TestHealthExperts
       // check data note 12:00:09
       pre = $("#data");
       pre.shouldHave(text("- joint_pain:"));
-      pre.shouldHave(matchText("name:.*\"joint pain\""));
+      pre.shouldHave(matchText("name:.*joint.pain"));
       // check data note 12:00:10
       pre = $("#data");
       pre.shouldHave(text("- headache:"));
@@ -146,7 +146,7 @@ public class TestHealthExperts
       // check data note 12:00:11
       pre = $("#data");
       pre.shouldHave(text("- lung_noises:"));
-      pre.shouldHave(matchText("name:.*\"lung noises\""));
+      pre.shouldHave(matchText("name:.*lung.noises"));
       try {
          Thread.sleep(3000);
       } catch (Exception e) {

@@ -732,12 +732,12 @@ public class WorkflowGenerator
             AssocRole other = role.getOther();
             Clazz otherClazz = other.getClazz();
             if (role.getCardinality() <= 1) {
-               body.append(String.format("object.set%s(model.getOrCreate%s(event.get%1$s()));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append(String.format("object.set%s(model.getOrCreate%s(getObjectId(event.get%1$s())));\n", StrUtil.cap(attrName), otherClazz.getName()));
             }
             else {
                body.append(String.format("for (String name : stripBrackets(event.get%s()).split(\",\\\\s+\")) {\n", StrUtil.cap(attrName)));
                body.append("   if (name.equals(\"\")) continue;\n");
-               body.append(String.format("   object.with%s(model.getOrCreate%s(name));\n", StrUtil.cap(attrName), otherClazz.getName()));
+               body.append(String.format("   object.with%s(model.getOrCreate%s(getObjectId(name)));\n", StrUtil.cap(attrName), otherClazz.getName()));
                body.append("}\n");
             }
          }

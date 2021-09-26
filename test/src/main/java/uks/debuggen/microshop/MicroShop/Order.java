@@ -6,17 +6,17 @@ public class Order
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_CODE = "code";
-   public static final String PROPERTY_PRODUCT = "product";
-   public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_STATE = "state";
+   public static final String PROPERTY_PRODUCT = "product";
+   public static final String PROPERTY_CUSTOMER = "customer";
    private String id;
    private String code;
-   private String product;
-   private String customer;
    private String address;
    private String state;
    protected PropertyChangeSupport listeners;
+   private Product product;
+   private Customer customer;
 
    public String getId()
    {
@@ -51,42 +51,6 @@ public class Order
       final String oldValue = this.code;
       this.code = value;
       this.firePropertyChange(PROPERTY_CODE, oldValue, value);
-      return this;
-   }
-
-   public String getProduct()
-   {
-      return this.product;
-   }
-
-   public Order setProduct(String value)
-   {
-      if (Objects.equals(value, this.product))
-      {
-         return this;
-      }
-
-      final String oldValue = this.product;
-      this.product = value;
-      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
-      return this;
-   }
-
-   public String getCustomer()
-   {
-      return this.customer;
-   }
-
-   public Order setCustomer(String value)
-   {
-      if (Objects.equals(value, this.customer))
-      {
-         return this;
-      }
-
-      final String oldValue = this.customer;
-      this.customer = value;
-      this.firePropertyChange(PROPERTY_CUSTOMER, oldValue, value);
       return this;
    }
 
@@ -126,6 +90,60 @@ public class Order
       return this;
    }
 
+   public Product getProduct()
+   {
+      return this.product;
+   }
+
+   public Order setProduct(Product value)
+   {
+      if (this.product == value)
+      {
+         return this;
+      }
+
+      final Product oldValue = this.product;
+      if (this.product != null)
+      {
+         this.product = null;
+         oldValue.withoutOrders(this);
+      }
+      this.product = value;
+      if (value != null)
+      {
+         value.withOrders(this);
+      }
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
+      return this;
+   }
+
+   public Customer getCustomer()
+   {
+      return this.customer;
+   }
+
+   public Order setCustomer(Customer value)
+   {
+      if (this.customer == value)
+      {
+         return this;
+      }
+
+      final Customer oldValue = this.customer;
+      if (this.customer != null)
+      {
+         this.customer = null;
+         oldValue.withoutOrders(this);
+      }
+      this.customer = value;
+      if (value != null)
+      {
+         value.withOrders(this);
+      }
+      this.firePropertyChange(PROPERTY_CUSTOMER, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -151,10 +169,14 @@ public class Order
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getCode());
-      result.append(' ').append(this.getProduct());
-      result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
       result.append(' ').append(this.getState());
       return result.substring(1);
+   }
+
+   public void removeYou()
+   {
+      this.setProduct(null);
+      this.setCustomer(null);
    }
 }

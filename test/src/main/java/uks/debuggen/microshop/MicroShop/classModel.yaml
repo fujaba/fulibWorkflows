@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	microShopModel 	microShopBusinessLogic 	microShopBuilder 	microShopService 	product 	order
+  classes: 	microShopModel 	microShopBusinessLogic 	microShopBuilder 	microShopService 	product 	order 	customer
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	microShopModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	microShopModel_getOrCreateProduct 	microShopModel_getOrCreateOrder
+  methods: 	microShopModel_getOrCreateProduct 	microShopModel_getOrCreateOrder 	microShopModel_getOrCreateCustomer
   model: 	c
   modified: 	false
   name: 	MicroShopModel
@@ -21,7 +21,7 @@
   attributes: 	microShopBusinessLogic_model 	microShopBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
-  methods: 	microShopBusinessLogic_handleAddCommand 	microShopBusinessLogic_handleDemoAddCommand 	microShopBusinessLogic_handlePlaceCommand 	microShopBusinessLogic_handleDemoPlaceCommand 	microShopBusinessLogic_handlePickTaskCreatedEvent 	microShopBusinessLogic_handleDemoPickTaskCreatedEvent 	microShopBusinessLogic_handleOrderPickedEvent 	microShopBusinessLogic_handleDemoOrderPickedEvent 	microShopBusinessLogic_handleCommand 	microShopBusinessLogic_handleDemoCommand 	microShopBusinessLogic_initEventHandlerMap 	microShopBusinessLogic_ignoreEvent 	microShopBusinessLogic_getHandler
+  methods: 	microShopBusinessLogic_handleAddOfferCommand 	microShopBusinessLogic_handleDemoAddOfferCommand 	microShopBusinessLogic_handleAddCommand 	microShopBusinessLogic_handleDemoAddCommand 	microShopBusinessLogic_handlePlaceCommand 	microShopBusinessLogic_handleDemoPlaceCommand 	microShopBusinessLogic_handlePickTaskCreatedEvent 	microShopBusinessLogic_handleDemoPickTaskCreatedEvent 	microShopBusinessLogic_handleOrderPickedEvent 	microShopBusinessLogic_handleDemoOrderPickedEvent 	microShopBusinessLogic_handleDeliverCommand 	microShopBusinessLogic_handleDemoDeliverCommand 	microShopBusinessLogic_initEventHandlerMap 	microShopBusinessLogic_ignoreEvent 	microShopBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	MicroShopBusinessLogic
@@ -32,7 +32,7 @@
   attributes: 	microShopBuilder_model 	microShopBuilder_eventStore 	microShopBuilder_loaderMap 	microShopBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;" 	"import java.util.function.Function;"
-  methods: 	microShopBuilder_outdated 	microShopBuilder_storeProductBuilt 	microShopBuilder_loadProductBuilt 	microShopBuilder_storeOrderBuilt 	microShopBuilder_loadOrderBuilt 	microShopBuilder_load 	microShopBuilder_initLoaderMap 	microShopBuilder_getObjectId 	microShopBuilder_addToGroup 	microShopBuilder_stripBrackets
+  methods: 	microShopBuilder_outdated 	microShopBuilder_storeProductBuilt 	microShopBuilder_loadProductBuilt 	microShopBuilder_storeOrderBuilt 	microShopBuilder_loadOrderBuilt 	microShopBuilder_storeCustomerBuilt 	microShopBuilder_loadCustomerBuilt 	microShopBuilder_load 	microShopBuilder_initLoaderMap 	microShopBuilder_getObjectId 	microShopBuilder_addToGroup 	microShopBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	MicroShopBuilder
@@ -56,13 +56,23 @@
   modified: 	false
   name: 	Product
   propertyStyle: 	Bean
+  roles: 	product_orders
 
 - order: 	org.fulib.classmodel.Clazz
-  attributes: 	order_id 	order_code 	order_product 	order_customer 	order_address 	order_state
+  attributes: 	order_id 	order_code 	order_address 	order_state
   model: 	c
   modified: 	false
   name: 	Order
   propertyStyle: 	Bean
+  roles: 	order_product 	order_customer
+
+- customer: 	org.fulib.classmodel.Clazz
+  attributes: 	customer_id 	customer_name
+  model: 	c
+  modified: 	false
+  name: 	Customer
+  propertyStyle: 	Bean
+  roles: 	customer_orders
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -111,6 +121,21 @@ return (Order) modelMap.computeIfAbsent(id, k -> new Order().setId(k));
   returnType: 	Order
   signature: 	"class/MicroShopModel/method/getOrCreateOrder(String)"
 
+- microShopModel_getOrCreateCustomer: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopModel
+  declaration: 	"public Customer getOrCreateCustomer(String id)"
+  id: 	MicroShopModel_getOrCreateCustomer
+  methodBody: 	"if (id == null) return null;
+return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateCustomer
+  paramsString: 	"String id"
+  returnType: 	Customer
+  signature: 	"class/MicroShopModel/method/getOrCreateCustomer(String)"
+
 - microShopBusinessLogic_model: 	org.fulib.classmodel.Attribute
   clazz: 	microShopBusinessLogic
   id: 	MicroShopBusinessLogic_model
@@ -128,6 +153,52 @@ return (Order) modelMap.computeIfAbsent(id, k -> new Order().setId(k));
   propertyStyle: 	Bean
   type: 	"LinkedHashMap<Class, Consumer<Event>>"
   typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
+
+- microShopBusinessLogic_handleAddOfferCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopBusinessLogic
+  declaration: 	"private void handleAddOfferCommand(Event e)"
+  id: 	MicroShopBusinessLogic_handleAddOfferCommand
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+AddOfferCommand event = (AddOfferCommand) e;
+handleDemoAddOfferCommand(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleAddOfferCommand
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/MicroShopBusinessLogic/method/handleAddOfferCommand(Event)"
+
+- microShopBusinessLogic_handleDemoAddOfferCommand: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopBusinessLogic
+  declaration: 	"private void handleDemoAddOfferCommand(AddOfferCommand event)"
+  id: 	MicroShopBusinessLogic_handleDemoAddOfferCommand
+  methodBody: 	"if (event.getId().equals(\"12:14:42\")) {
+   ProductBuilt red_shoesEvent = new ProductBuilt();
+   red_shoesEvent.setId(\"12:14:43\");
+   red_shoesEvent.setBlockId(\"red_shoes\");
+   red_shoesEvent.setName(\"red shoes\");
+   red_shoesEvent.setPrice(\"$42\");
+   service.apply(red_shoesEvent);
+
+
+   ProductOfferedEvent e1215 = new ProductOfferedEvent();
+
+   e1215.setId(\"12:15\");
+   e1215.setName(\"red shoes\");
+   e1215.setPrice(\"$42\");
+   service.apply(e1215);
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoAddOfferCommand
+  paramsString: 	"AddOfferCommand event"
+  returnType: 	void
+  signature: 	"class/MicroShopBusinessLogic/method/handleDemoAddOfferCommand(AddOfferCommand)"
 
 - microShopBusinessLogic_handleAddCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -151,37 +222,21 @@ handleDemoAddCommand(event);
   clazz: 	microShopBusinessLogic
   declaration: 	"private void handleDemoAddCommand(AddCommand event)"
   id: 	MicroShopBusinessLogic_handleDemoAddCommand
-  methodBody: 	"if (event.getId().equals(\"12:12:01\")) {
-   ProductBuilt red_shoesEvent = new ProductBuilt();
-   red_shoesEvent.setId(\"12:12:02\");
-   red_shoesEvent.setBlockId(\"red_shoes\");
-   red_shoesEvent.setName(\"red shoes\");
-   red_shoesEvent.setPrice(\"$42\");
-   service.apply(red_shoesEvent);
-
-
-   ProductOfferedEvent e1213 = new ProductOfferedEvent();
-
-   e1213.setId(\"12:13\");
-   e1213.setName(\"red shoes\");
-   e1213.setPrice(\"$42\");
-   service.apply(e1213);
-}
-if (event.getId().equals(\"12:15:01\")) {
+  methodBody: 	"if (event.getId().equals(\"12:17:01\")) {
    ProductBuilt blue_jeansEvent = new ProductBuilt();
-   blue_jeansEvent.setId(\"12:15:02\");
+   blue_jeansEvent.setId(\"12:17:02\");
    blue_jeansEvent.setBlockId(\"blue_jeans\");
    blue_jeansEvent.setName(\"blue jeans\");
    blue_jeansEvent.setPrice(\"$63\");
    service.apply(blue_jeansEvent);
 
 
-   ProductOfferedEvent e1216 = new ProductOfferedEvent();
+   ProductOfferedEvent e1218 = new ProductOfferedEvent();
 
-   e1216.setId(\"12:16\");
-   e1216.setName(\"blue jeans\");
-   e1216.setPrice(\"$63\");
-   service.apply(e1216);
+   e1218.setId(\"12:18\");
+   e1218.setName(\"blue jeans\");
+   e1218.setPrice(\"$63\");
+   service.apply(e1218);
 }
 "
   modified: 	false
@@ -213,9 +268,9 @@ handleDemoPlaceCommand(event);
   clazz: 	microShopBusinessLogic
   declaration: 	"private void handleDemoPlaceCommand(PlaceCommand event)"
   id: 	MicroShopBusinessLogic_handleDemoPlaceCommand
-  methodBody: 	"if (event.getId().equals(\"12:19:01\")) {
+  methodBody: 	"if (event.getId().equals(\"12:21:01\")) {
    OrderBuilt o0925_1Event = new OrderBuilt();
-   o0925_1Event.setId(\"12:19:02\");
+   o0925_1Event.setId(\"12:21:02\");
    o0925_1Event.setBlockId(\"o0925_1\");
    o0925_1Event.setCode(\"o0925_1\");
    o0925_1Event.setProduct(\"red shoes\");
@@ -224,15 +279,21 @@ handleDemoPlaceCommand(event);
    o0925_1Event.setState(\"new order\");
    service.apply(o0925_1Event);
 
+   CustomerBuilt carli_CustomerEvent = new CustomerBuilt();
+   carli_CustomerEvent.setId(\"12:21:03\");
+   carli_CustomerEvent.setBlockId(\"Carli_Customer\");
+   carli_CustomerEvent.setName(\"Carli Customer\");
+   service.apply(carli_CustomerEvent);
 
-   ProductOrderedEvent e1220 = new ProductOrderedEvent();
 
-   e1220.setId(\"12:20\");
-   e1220.setCode(\"o0925_1\");
-   e1220.setProduct(\"red shoes\");
-   e1220.setCustomer(\"Carli Customer\");
-   e1220.setAddress(\"Wonderland 1\");
-   service.apply(e1220);
+   ProductOrderedEvent e1222 = new ProductOrderedEvent();
+
+   e1222.setId(\"12:22\");
+   e1222.setCode(\"o0925_1\");
+   e1222.setProduct(\"red shoes\");
+   e1222.setCustomer(\"Carli Customer\");
+   e1222.setAddress(\"Wonderland 1\");
+   service.apply(e1222);
 }
 "
   modified: 	false
@@ -264,9 +325,9 @@ handleDemoPickTaskCreatedEvent(event);
   clazz: 	microShopBusinessLogic
   declaration: 	"private void handleDemoPickTaskCreatedEvent(PickTaskCreatedEvent event)"
   id: 	MicroShopBusinessLogic_handleDemoPickTaskCreatedEvent
-  methodBody: 	"if (event.getId().equals(\"12:21\")) {
+  methodBody: 	"if (event.getId().equals(\"12:23\")) {
    OrderBuilt o0925_1Event = new OrderBuilt();
-   o0925_1Event.setId(\"12:21:01\");
+   o0925_1Event.setId(\"12:23:01\");
    o0925_1Event.setBlockId(\"o0925_1\");
    o0925_1Event.setCode(\"o0925_1\");
    o0925_1Event.setState(\"picking\");
@@ -303,9 +364,9 @@ handleDemoOrderPickedEvent(event);
   clazz: 	microShopBusinessLogic
   declaration: 	"private void handleDemoOrderPickedEvent(OrderPickedEvent event)"
   id: 	MicroShopBusinessLogic_handleDemoOrderPickedEvent
-  methodBody: 	"if (event.getId().equals(\"12:25\")) {
+  methodBody: 	"if (event.getId().equals(\"12:27\")) {
    OrderBuilt o0925_1Event = new OrderBuilt();
-   o0925_1Event.setId(\"12:25:01\");
+   o0925_1Event.setId(\"12:27:01\");
    o0925_1Event.setBlockId(\"o0925_1\");
    o0925_1Event.setCode(\"o0925_1\");
    o0925_1Event.setState(\"shipping\");
@@ -320,50 +381,50 @@ handleDemoOrderPickedEvent(event);
   returnType: 	void
   signature: 	"class/MicroShopBusinessLogic/method/handleDemoOrderPickedEvent(OrderPickedEvent)"
 
-- microShopBusinessLogic_handleCommand: 	org.fulib.classmodel.FMethod
+- microShopBusinessLogic_handleDeliverCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	microShopBusinessLogic
-  declaration: 	"private void handleCommand(Event e)"
-  id: 	MicroShopBusinessLogic_handleCommand
+  declaration: 	"private void handleDeliverCommand(Event e)"
+  id: 	MicroShopBusinessLogic_handleDeliverCommand
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-Command event = (Command) e;
-handleDemoCommand(event);
+DeliverCommand event = (DeliverCommand) e;
+handleDemoDeliverCommand(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleCommand
+  name: 	handleDeliverCommand
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/MicroShopBusinessLogic/method/handleCommand(Event)"
+  signature: 	"class/MicroShopBusinessLogic/method/handleDeliverCommand(Event)"
 
-- microShopBusinessLogic_handleDemoCommand: 	org.fulib.classmodel.FMethod
+- microShopBusinessLogic_handleDemoDeliverCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	microShopBusinessLogic
-  declaration: 	"private void handleDemoCommand(Command event)"
-  id: 	MicroShopBusinessLogic_handleDemoCommand
-  methodBody: 	"if (event.getId().equals(\"12:27:01\")) {
+  declaration: 	"private void handleDemoDeliverCommand(DeliverCommand event)"
+  id: 	MicroShopBusinessLogic_handleDemoDeliverCommand
+  methodBody: 	"if (event.getId().equals(\"12:30:01\")) {
    OrderBuilt o0925_1Event = new OrderBuilt();
-   o0925_1Event.setId(\"12:27:02\");
+   o0925_1Event.setId(\"12:30:02\");
    o0925_1Event.setBlockId(\"o0925_1\");
    o0925_1Event.setCode(\"o0925_1\");
    o0925_1Event.setState(\"delivered\");
    service.apply(o0925_1Event);
 
 
-   OrderDeliveredEvent e1228 = new OrderDeliveredEvent();
+   OrderDeliveredEvent e1231 = new OrderDeliveredEvent();
 
-   e1228.setId(\"12:28\");
-   e1228.setOrder(\"o0925_1\");
-   service.apply(e1228);
+   e1231.setId(\"12:31\");
+   e1231.setOrder(\"o0925_1\");
+   service.apply(e1231);
 }
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoCommand
-  paramsString: 	"Command event"
+  name: 	handleDemoDeliverCommand
+  paramsString: 	"DeliverCommand event"
   returnType: 	void
-  signature: 	"class/MicroShopBusinessLogic/method/handleDemoCommand(Command)"
+  signature: 	"class/MicroShopBusinessLogic/method/handleDemoDeliverCommand(DeliverCommand)"
 
 - microShopBusinessLogic_initEventHandlerMap: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -374,11 +435,13 @@ handleDemoCommand(event);
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(ProductBuilt.class, builder::storeProductBuilt);
    handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
+   handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
+   handlerMap.put(AddOfferCommand.class, this::handleAddOfferCommand);
    handlerMap.put(AddCommand.class, this::handleAddCommand);
    handlerMap.put(PlaceCommand.class, this::handlePlaceCommand);
    handlerMap.put(PickTaskCreatedEvent.class, this::handlePickTaskCreatedEvent);
    handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
-   handlerMap.put(Command.class, this::handleCommand);
+   handlerMap.put(DeliverCommand.class, this::handleDeliverCommand);
 }
 "
   modified: 	false
@@ -564,8 +627,8 @@ if (outdated(event)) {
   methodBody: 	"OrderBuilt event = (OrderBuilt) e;
 Order object = model.getOrCreateOrder(event.getBlockId());
 object.setCode(event.getCode());
-object.setProduct(event.getProduct());
-object.setCustomer(event.getCustomer());
+object.setProduct(model.getOrCreateProduct(getObjectId(event.getProduct())));
+object.setCustomer(model.getOrCreateCustomer(getObjectId(event.getCustomer())));
 object.setAddress(event.getAddress());
 object.setState(event.getState());
 return object;
@@ -576,6 +639,42 @@ return object;
   paramsString: 	"Event e"
   returnType: 	Order
   signature: 	"class/MicroShopBuilder/method/loadOrderBuilt(Event)"
+
+- microShopBuilder_storeCustomerBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopBuilder
+  declaration: 	"public void storeCustomerBuilt(Event e)"
+  id: 	MicroShopBuilder_storeCustomerBuilt
+  methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeCustomerBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/MicroShopBuilder/method/storeCustomerBuilt(Event)"
+
+- microShopBuilder_loadCustomerBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopBuilder
+  declaration: 	"public Customer loadCustomerBuilt(Event e)"
+  id: 	MicroShopBuilder_loadCustomerBuilt
+  methodBody: 	"CustomerBuilt event = (CustomerBuilt) e;
+Customer object = model.getOrCreateCustomer(event.getBlockId());
+object.setName(event.getName());
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadCustomerBuilt
+  paramsString: 	"Event e"
+  returnType: 	Customer
+  signature: 	"class/MicroShopBuilder/method/loadCustomerBuilt(Event)"
 
 - microShopBuilder_load: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -614,6 +713,7 @@ return object;
    loaderMap = new LinkedHashMap<>();
    loaderMap.put(ProductBuilt.class, this::loadProductBuilt);
    loaderMap.put(OrderBuilt.class, this::loadOrderBuilt);
+   loaderMap.put(CustomerBuilt.class, this::loadCustomerBuilt);
 }
 "
   modified: 	false
@@ -923,35 +1023,35 @@ return getDemoPage(request, response);
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
 
-if (\"add offer\".equals(event)) {
+if (\"add offer 12:14:42\".equals(event)) {
 
-   // create AddCommand: add offer
-   AddCommand e121201 = new AddCommand();
-   e121201.setId(\"12:12:01\");
-   e121201.setProduct(request.queryParams(\"product\"));
-   e121201.setPrice(request.queryParams(\"price\"));
-   apply(e121201);
+   // create AddOfferCommand: add offer 12:14:42
+   AddOfferCommand e121442 = new AddOfferCommand();
+   e121442.setId(\"12:14:42\");
+   e121442.setProduct(request.queryParams(\"product\"));
+   e121442.setPrice(request.queryParams(\"price\"));
+   apply(e121442);
 }
 
 if (\"add offer\".equals(event)) {
 
    // create AddCommand: add offer
-   AddCommand e121501 = new AddCommand();
-   e121501.setId(\"12:15:01\");
-   e121501.setProduct(request.queryParams(\"product\"));
-   e121501.setPrice(request.queryParams(\"price\"));
-   apply(e121501);
+   AddCommand e121701 = new AddCommand();
+   e121701.setId(\"12:17:01\");
+   e121701.setProduct(request.queryParams(\"product\"));
+   e121701.setPrice(request.queryParams(\"price\"));
+   apply(e121701);
 }
 
 if (\"place order\".equals(event)) {
 
    // create PlaceCommand: place order
-   PlaceCommand e121901 = new PlaceCommand();
-   e121901.setId(\"12:19:01\");
-   e121901.setProduct(request.queryParams(\"product\"));
-   e121901.setCustomer(request.queryParams(\"customer\"));
-   e121901.setAddress(request.queryParams(\"address\"));
-   apply(e121901);
+   PlaceCommand e122101 = new PlaceCommand();
+   e122101.setId(\"12:21:01\");
+   e122101.setProduct(request.queryParams(\"product\"));
+   e122101.setCustomer(request.queryParams(\"customer\"));
+   e122101.setAddress(request.queryParams(\"address\"));
+   apply(e122101);
 }
 
 
@@ -969,21 +1069,21 @@ if (id.equals(\"12_11\")) {
 
 // 12:12
 if (id.equals(\"12_12\")) {
-   html.append(\"<form action=\\"/page/12_14\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/12_16\\" method=\\"get\\">\n\");
    // MicroShop add offer 12:12
    html.append(\"   <p>make new offer</p>\n\");
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
    html.append(\"   <p><input id=\\"price\\" name=\\"price\\" placeholder=\\"price?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add offer\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"add offer 12:14:42\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
 
-// 12:14
-if (id.equals(\"12_14\")) {
-   html.append(\"<form action=\\"/page/12_15\\" method=\\"get\\">\n\");
-   // MicroShop offers 12:14
+// 12:16
+if (id.equals(\"12_16\")) {
+   html.append(\"<form action=\\"/page/12_17\\" method=\\"get\\">\n\");
+   // MicroShop offers 12:16
    html.append(\"   <p>Offers overview</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
    html.append(\"   <p>red shoes, $42</p>\n\");
@@ -991,10 +1091,10 @@ if (id.equals(\"12_14\")) {
    return html.toString();
 }
 
-// 12:15
-if (id.equals(\"12_15\")) {
-   html.append(\"<form action=\\"/page/12_17\\" method=\\"get\\">\n\");
-   // MicroShop add offer 12:15
+// 12:17
+if (id.equals(\"12_17\")) {
+   html.append(\"<form action=\\"/page/12_19\\" method=\\"get\\">\n\");
+   // MicroShop add offer 12:17
    html.append(\"   <p>make new offer</p>\n\");
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
    html.append(\"   <p><input id=\\"price\\" name=\\"price\\" placeholder=\\"price?\\"></p>\n\");
@@ -1004,10 +1104,10 @@ if (id.equals(\"12_15\")) {
    return html.toString();
 }
 
-// 12:17
-if (id.equals(\"12_17\")) {
+// 12:19
+if (id.equals(\"12_19\")) {
    html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
-   // MicroShop offers 12:17
+   // MicroShop offers 12:19
    html.append(\"   <p>Offers overview</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
    html.append(\"   <p>red shoes, $42</p>\n\");
@@ -1016,10 +1116,10 @@ if (id.equals(\"12_17\")) {
    return html.toString();
 }
 
-// 12:18
-if (id.equals(\"12_18\")) {
-   html.append(\"<form action=\\"/page/12_19\\" method=\\"get\\">\n\");
-   // MicroShop offers 12:18
+// 12:20
+if (id.equals(\"12_20\")) {
+   html.append(\"<form action=\\"/page/12_21\\" method=\\"get\\">\n\");
+   // MicroShop offers 12:20
    html.append(\"   <p>Welcome to our micro shop</p>\n\");
    html.append(\"   <p>We have</p>\n\");
    html.append(\"   <p>red shoes for $42</p>\n\");
@@ -1029,10 +1129,10 @@ if (id.equals(\"12_18\")) {
    return html.toString();
 }
 
-// 12:19
-if (id.equals(\"12_19\")) {
-   html.append(\"<form action=\\"/page/12_22\\" method=\\"get\\">\n\");
-   // MicroShop buy 12:19
+// 12:21
+if (id.equals(\"12_21\")) {
+   html.append(\"<form action=\\"/page/12_24\\" method=\\"get\\">\n\");
+   // MicroShop buy 12:21
    html.append(\"   <p>Welcome to our micro shop</p>\n\");
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
    html.append(\"   <p><input id=\\"customer\\" name=\\"customer\\" placeholder=\\"customer?\\"></p>\n\");
@@ -1043,10 +1143,10 @@ if (id.equals(\"12_19\")) {
    return html.toString();
 }
 
-// 12:22
-if (id.equals(\"12_22\")) {
+// 12:24
+if (id.equals(\"12_24\")) {
    html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
-   // MicroShop Carli overview 12:22
+   // MicroShop Carli overview 12:24
    html.append(\"   <p>Welcome Carli</p>\n\");
    html.append(\"   <p>Your orders are</p>\n\");
    html.append(\"   <p>red shoes for $42, picking</p>\n\");
@@ -1168,6 +1268,18 @@ catch (UnirestException e) {
   type: 	String
   typeSignature: 	String
 
+- product_orders: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	product
+  collectionType: 	c1
+  id: 	Product_orders
+  modified: 	false
+  name: 	orders
+  other: 	order_product
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - order_id: 	org.fulib.classmodel.Attribute
   clazz: 	order
   id: 	Order_id
@@ -1182,24 +1294,6 @@ catch (UnirestException e) {
   id: 	Order_code
   modified: 	false
   name: 	code
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- order_product: 	org.fulib.classmodel.Attribute
-  clazz: 	order
-  id: 	Order_product
-  modified: 	false
-  name: 	product
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- order_customer: 	org.fulib.classmodel.Attribute
-  clazz: 	order
-  id: 	Order_customer
-  modified: 	false
-  name: 	customer
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -1221,4 +1315,54 @@ catch (UnirestException e) {
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- order_product: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	order
+  id: 	Order_product
+  modified: 	false
+  name: 	product
+  other: 	product_orders
+  propertyStyle: 	Bean
+
+- order_customer: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	order
+  id: 	Order_customer
+  modified: 	false
+  name: 	customer
+  other: 	customer_orders
+  propertyStyle: 	Bean
+
+- customer_id: 	org.fulib.classmodel.Attribute
+  clazz: 	customer
+  id: 	Customer_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- customer_name: 	org.fulib.classmodel.Attribute
+  clazz: 	customer
+  id: 	Customer_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- customer_orders: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	customer
+  collectionType: 	c1
+  id: 	Customer_orders
+  modified: 	false
+  name: 	orders
+  other: 	order_customer
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
 

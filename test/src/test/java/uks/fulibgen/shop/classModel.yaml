@@ -152,7 +152,7 @@ pre.shouldHave(text(\"- pick1300:\"));
 pre.shouldHave(matchText(\"order:.*order1300\"));
 pre.shouldHave(matchText(\"product:.*shoes\"));
 pre.shouldHave(matchText(\"customer:.*Alice\"));
-pre.shouldHave(matchText(\"address:.*\\"Wonderland 1\\"\"));
+pre.shouldHave(matchText(\"address:.*Wonderland.1\"));
 pre.shouldHave(matchText(\"state:.*todo\"));
 
 // create PickOrderCommand: pick order 14:00
@@ -239,7 +239,7 @@ open(\"http://localhost:42100\");
 // check data note 13:16
 pre = $(\"#data\");
 pre.shouldHave(text(\"- order1310:\"));
-pre.shouldHave(matchText(\"state:.*\\"out of stock\\"\"));
+pre.shouldHave(matchText(\"state:.*out.of.stock\"));
 
 // check Storage
 open(\"http://localhost:42002\");

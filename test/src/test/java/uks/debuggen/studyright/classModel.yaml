@@ -288,7 +288,7 @@ pre = $(\"#data\");
 pre.shouldHave(text(\"- s07:\"));
 pre.shouldHave(matchText(\"room:.*math\"));
 pre.shouldHave(matchText(\"previousStop:.*s05\"));
-pre.shouldHave(matchText(\"motivation:.*-23\"));
+pre.shouldHave(matchText(\"motivation:.*.23\"));
 
 // create VisitRoomCommand: visit room 12:08
 VisitRoomCommand e1208 = new VisitRoomCommand();
@@ -378,7 +378,7 @@ open(\"http://localhost:42400\");
 // check data note 12:10:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- tour1:\"));
-pre.shouldHave(matchText(\"stops:.*\\"modeling exam\\"\"));
+pre.shouldHave(matchText(\"stops:.*modeling.exam\"));
 
 // create CollectTourStopsCommand: collect tour stops 12:11
 CollectTourStopsCommand e1211 = new CollectTourStopsCommand();
@@ -407,7 +407,7 @@ open(\"http://localhost:42400\");
 // check data note 12:11:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- tour1:\"));
-pre.shouldHave(matchText(\"stops:.*\\"algebra modeling exam\\"\"));
+pre.shouldHave(matchText(\"stops:.*algebra.modeling.exam\"));
 
 // create CollectTourStopsCommand: collect tour stops 12:12
 CollectTourStopsCommand e1212 = new CollectTourStopsCommand();
@@ -436,7 +436,7 @@ open(\"http://localhost:42400\");
 // check data note 12:12:01
 pre = $(\"#data\");
 pre.shouldHave(text(\"- tour1:\"));
-pre.shouldHave(matchText(\"stops:.*\\"math algebra modeling exam\\"\"));
+pre.shouldHave(matchText(\"stops:.*math.algebra.modeling.exam\"));
 
 // page 12:13
 open(\"http://localhost:42400/page/12_13\");
