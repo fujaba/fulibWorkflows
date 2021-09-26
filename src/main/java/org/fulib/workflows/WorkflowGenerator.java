@@ -1291,11 +1291,8 @@ public class WorkflowGenerator
                      if (value.startsWith("[")) {
                         value = StrUtil.stripBrackets(value);
                      }
-                     else if (value.indexOf(" ") > 0) {
-                        value = "\\\"" + value + "\\\"";
-                     }
                      check.append(String.format("pre.shouldHave(matchText(\"%s:.*%s\"));\n",
-                           key, value));
+                           key, value.replaceAll("\\W", ".")));
                   }
                   else if (role != null) {
                      if (value.startsWith("[")) {

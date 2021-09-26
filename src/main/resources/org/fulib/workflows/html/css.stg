@@ -8,7 +8,7 @@ body \{
 \}
 
 .lane \{
-    width: {width}px;
+    width: 3000px;
     float: left;
 \}
 

@@ -159,6 +159,7 @@ public class MicroShopBusinessLogic
          handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
          handlerMap.put(AddCommand.class, this::handleAddCommand);
          handlerMap.put(PlaceCommand.class, this::handlePlaceCommand);
+         handlerMap.put(PickTaskCreatedEvent.class, this::handlePickTaskCreatedEvent);
          handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
          handlerMap.put(Command.class, this::handleCommand);
       }
@@ -242,9 +243,9 @@ public class MicroShopBusinessLogic
 
    private void handleDemoOrderPickedEvent(OrderPickedEvent event)
    {
-      if (event.getId().equals("12:23")) {
+      if (event.getId().equals("12:25")) {
          OrderBuilt o0925_1Event = new OrderBuilt();
-         o0925_1Event.setId("12:23:01");
+         o0925_1Event.setId("12:25:01");
          o0925_1Event.setBlockId("o0925_1");
          o0925_1Event.setCode("o0925_1");
          o0925_1Event.setState("shipping");
@@ -263,20 +264,41 @@ public class MicroShopBusinessLogic
 
    private void handleDemoCommand(Command event)
    {
-      if (event.getId().equals("12:25:01")) {
+      if (event.getId().equals("12:27:01")) {
          OrderBuilt o0925_1Event = new OrderBuilt();
-         o0925_1Event.setId("12:25:02");
+         o0925_1Event.setId("12:27:02");
          o0925_1Event.setBlockId("o0925_1");
          o0925_1Event.setCode("o0925_1");
          o0925_1Event.setState("delivered");
          service.apply(o0925_1Event);
 
 
-         OrderDeliveredEvent e1226 = new OrderDeliveredEvent();
+         OrderDeliveredEvent e1228 = new OrderDeliveredEvent();
 
-         e1226.setId("12:26");
-         e1226.setOrder("o0925_1");
-         service.apply(e1226);
+         e1228.setId("12:28");
+         e1228.setOrder("o0925_1");
+         service.apply(e1228);
+      }
+   }
+
+   private void handlePickTaskCreatedEvent(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      PickTaskCreatedEvent event = (PickTaskCreatedEvent) e;
+      handleDemoPickTaskCreatedEvent(event);
+   }
+
+   private void handleDemoPickTaskCreatedEvent(PickTaskCreatedEvent event)
+   {
+      if (event.getId().equals("12:21")) {
+         OrderBuilt o0925_1Event = new OrderBuilt();
+         o0925_1Event.setId("12:21:01");
+         o0925_1Event.setBlockId("o0925_1");
+         o0925_1Event.setCode("o0925_1");
+         o0925_1Event.setState("picking");
+         service.apply(o0925_1Event);
+
       }
    }
 }

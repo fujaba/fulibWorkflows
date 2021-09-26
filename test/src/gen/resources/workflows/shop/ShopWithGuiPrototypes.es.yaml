@@ -210,6 +210,26 @@
   address: Wonderland 1
   state: picking
 
+- event: Pick task created
+  code: pt_o0925_1
+  order: o0925_1
+
+- policy: MicroShop
+
+- data: Order
+  code: o0925_1
+  state: picking
+
+
+- page:
+    - name: MicroShop Carli overview
+    - label: Welcome Carli
+    - label: Your orders are
+    - label: red shoes for $42, picking
+    - button: order
+
+
+
 - action: Peter Picker
 
 - page:

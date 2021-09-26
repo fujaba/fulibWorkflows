@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	addCommand 	productBuilt 	productOfferedEvent 	placeCommand 	orderBuilt 	productOrderedEvent 	pickTaskBuilt 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
+  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	addCommand 	productBuilt 	productOfferedEvent 	placeCommand 	orderBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	orderPickedEvent 	command 	orderDeliveredEvent 	orderRejectedEvent
+  subClasses: 	dataEvent 	query 	serviceSubscribed 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	pickTaskCreatedEvent 	orderPickedEvent 	command 	orderDeliveredEvent 	orderRejectedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -138,6 +138,14 @@
   name: 	PickTaskBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
+
+- pickTaskCreatedEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	pickTaskCreatedEvent_code 	pickTaskCreatedEvent_order
+  model: 	c
+  modified: 	false
+  name: 	PickTaskCreatedEvent
+  propertyStyle: 	Bean
+  superClass: 	event
 
 - orderPickedEvent: 	org.fulib.classmodel.Clazz
   attributes: 	orderPickedEvent_order
@@ -571,6 +579,24 @@
   id: 	PickTaskBuilt_from
   modified: 	false
   name: 	from
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskCreatedEvent_code: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskCreatedEvent
+  id: 	PickTaskCreatedEvent_code
+  modified: 	false
+  name: 	code
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskCreatedEvent_order: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskCreatedEvent
+  id: 	PickTaskCreatedEvent_order
+  modified: 	false
+  name: 	order
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

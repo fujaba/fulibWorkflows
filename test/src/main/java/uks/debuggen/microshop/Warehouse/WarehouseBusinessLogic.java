@@ -239,6 +239,13 @@ public class WarehouseBusinessLogic
          pt_o0925_1Event.setState("picking");
          service.apply(pt_o0925_1Event);
 
+
+         PickTaskCreatedEvent e1221 = new PickTaskCreatedEvent();
+
+         e1221.setId("12:21");
+         e1221.setCode("pt_o0925_1");
+         e1221.setOrder("o0925_1");
+         service.apply(e1221);
       }
    }
 
@@ -252,9 +259,9 @@ public class WarehouseBusinessLogic
 
    private void handleDemoCommand(Command event)
    {
-      if (event.getId().equals("12:22:01")) {
+      if (event.getId().equals("12:24:01")) {
          PickTaskBuilt pt_o0925_1Event = new PickTaskBuilt();
-         pt_o0925_1Event.setId("12:22:02");
+         pt_o0925_1Event.setId("12:24:02");
          pt_o0925_1Event.setBlockId("pt_o0925_1");
          pt_o0925_1Event.setCode("pt_o0925_1");
          pt_o0925_1Event.setFrom("shelf 42");
@@ -262,11 +269,11 @@ public class WarehouseBusinessLogic
          service.apply(pt_o0925_1Event);
 
 
-         OrderPickedEvent e1223 = new OrderPickedEvent();
+         OrderPickedEvent e1225 = new OrderPickedEvent();
 
-         e1223.setId("12:23");
-         e1223.setOrder("o0925_1");
-         service.apply(e1223);
+         e1225.setId("12:25");
+         e1225.setOrder("o0925_1");
+         service.apply(e1225);
       }
    }
 }

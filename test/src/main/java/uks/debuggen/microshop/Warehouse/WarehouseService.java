@@ -310,20 +310,20 @@ public class WarehouseService
       if ("Pick".equals(event)) {
 
          // create Command: Pick
-         Command e122201 = new Command();
-         e122201.setId("12:22:01");
-         e122201.setTask(request.queryParams("task"));
-         e122201.setShelf(request.queryParams("shelf"));
-         apply(e122201);
+         Command e122401 = new Command();
+         e122401.setId("12:24:01");
+         e122401.setTask(request.queryParams("task"));
+         e122401.setShelf(request.queryParams("shelf"));
+         apply(e122401);
       }
 
       if ("deliver".equals(event)) {
 
          // create Command: deliver
-         Command e122501 = new Command();
-         e122501.setId("12:25:01");
-         e122501.setOrder(request.queryParams("order"));
-         apply(e122501);
+         Command e122701 = new Command();
+         e122701.setId("12:27:01");
+         e122701.setOrder(request.queryParams("order"));
+         apply(e122701);
       }
 
 
@@ -405,7 +405,7 @@ public class WarehouseService
 
       // 12:10
       if (id.equals("12_10")) {
-         html.append("<form action=\"/page/12_21\" method=\"get\">\n");
+         html.append("<form action=\"/page/12_23\" method=\"get\">\n");
          // Warehouse overview 12:10
          html.append("   <p>Warehouse boxes</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
@@ -416,10 +416,10 @@ public class WarehouseService
          return html.toString();
       }
 
-      // 12:21
-      if (id.equals("12_21")) {
-         html.append("<form action=\"/page/12_22\" method=\"get\">\n");
-         // Warehouse pick tasks 12:21
+      // 12:23
+      if (id.equals("12_23")) {
+         html.append("<form action=\"/page/12_24\" method=\"get\">\n");
+         // Warehouse pick tasks 12:23
          html.append("   <p>Pick tasks overview</p>\n");
          html.append("   <p><input id=\"pick\" name=\"button\" type=\"submit\" value=\"pick\"></p>\n");
          html.append("   <p>red shoes, shelf 42, shelf 23</p>\n");
@@ -427,10 +427,10 @@ public class WarehouseService
          return html.toString();
       }
 
-      // 12:22
-      if (id.equals("12_22")) {
+      // 12:24
+      if (id.equals("12_24")) {
          html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // Warehouse pick one 12:22
+         // Warehouse pick one 12:24
          html.append("   <p>Pick one</p>\n");
          html.append("   <p><input id=\"task\" name=\"task\" placeholder=\"task?\"></p>\n");
          html.append("   <p><input id=\"shelf\" name=\"shelf\" placeholder=\"shelf?\"></p>\n");
@@ -440,20 +440,20 @@ public class WarehouseService
          return html.toString();
       }
 
-      // 12:24
-      if (id.equals("12_24")) {
-         html.append("<form action=\"/page/12_25\" method=\"get\">\n");
-         // Warehouse delivery tasks 12:24
+      // 12:26
+      if (id.equals("12_26")) {
+         html.append("<form action=\"/page/12_27\" method=\"get\">\n");
+         // Warehouse delivery tasks 12:26
          html.append("   <p>Delivery tasks overview</p>\n");
          html.append("   <p><input id=\"red shoes, Wonderland 1\" name=\"button\" type=\"submit\" value=\"red shoes, Wonderland 1\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
-      // 12:25
-      if (id.equals("12_25")) {
+      // 12:27
+      if (id.equals("12_27")) {
          html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // Warehouse deliver 12:25
+         // Warehouse deliver 12:27
          html.append("   <p>Delivering</p>\n");
          html.append("   <p><input id=\"order\" name=\"order\" placeholder=\"order?\"></p>\n");
          html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"deliver\"></p>\n");

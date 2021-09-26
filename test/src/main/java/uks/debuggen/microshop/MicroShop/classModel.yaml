@@ -21,7 +21,7 @@
   attributes: 	microShopBusinessLogic_model 	microShopBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
-  methods: 	microShopBusinessLogic_handleAddCommand 	microShopBusinessLogic_handleDemoAddCommand 	microShopBusinessLogic_handlePlaceCommand 	microShopBusinessLogic_handleDemoPlaceCommand 	microShopBusinessLogic_handleOrderPickedEvent 	microShopBusinessLogic_handleDemoOrderPickedEvent 	microShopBusinessLogic_handleCommand 	microShopBusinessLogic_handleDemoCommand 	microShopBusinessLogic_initEventHandlerMap 	microShopBusinessLogic_ignoreEvent 	microShopBusinessLogic_getHandler
+  methods: 	microShopBusinessLogic_handleAddCommand 	microShopBusinessLogic_handleDemoAddCommand 	microShopBusinessLogic_handlePlaceCommand 	microShopBusinessLogic_handleDemoPlaceCommand 	microShopBusinessLogic_handlePickTaskCreatedEvent 	microShopBusinessLogic_handleDemoPickTaskCreatedEvent 	microShopBusinessLogic_handleOrderPickedEvent 	microShopBusinessLogic_handleDemoOrderPickedEvent 	microShopBusinessLogic_handleCommand 	microShopBusinessLogic_handleDemoCommand 	microShopBusinessLogic_initEventHandlerMap 	microShopBusinessLogic_ignoreEvent 	microShopBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	MicroShopBusinessLogic
@@ -242,6 +242,45 @@ handleDemoPlaceCommand(event);
   returnType: 	void
   signature: 	"class/MicroShopBusinessLogic/method/handleDemoPlaceCommand(PlaceCommand)"
 
+- microShopBusinessLogic_handlePickTaskCreatedEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopBusinessLogic
+  declaration: 	"private void handlePickTaskCreatedEvent(Event e)"
+  id: 	MicroShopBusinessLogic_handlePickTaskCreatedEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+PickTaskCreatedEvent event = (PickTaskCreatedEvent) e;
+handleDemoPickTaskCreatedEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handlePickTaskCreatedEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/MicroShopBusinessLogic/method/handlePickTaskCreatedEvent(Event)"
+
+- microShopBusinessLogic_handleDemoPickTaskCreatedEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopBusinessLogic
+  declaration: 	"private void handleDemoPickTaskCreatedEvent(PickTaskCreatedEvent event)"
+  id: 	MicroShopBusinessLogic_handleDemoPickTaskCreatedEvent
+  methodBody: 	"if (event.getId().equals(\"12:21\")) {
+   OrderBuilt o0925_1Event = new OrderBuilt();
+   o0925_1Event.setId(\"12:21:01\");
+   o0925_1Event.setBlockId(\"o0925_1\");
+   o0925_1Event.setCode(\"o0925_1\");
+   o0925_1Event.setState(\"picking\");
+   service.apply(o0925_1Event);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoPickTaskCreatedEvent
+  paramsString: 	"PickTaskCreatedEvent event"
+  returnType: 	void
+  signature: 	"class/MicroShopBusinessLogic/method/handleDemoPickTaskCreatedEvent(PickTaskCreatedEvent)"
+
 - microShopBusinessLogic_handleOrderPickedEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	microShopBusinessLogic
@@ -264,9 +303,9 @@ handleDemoOrderPickedEvent(event);
   clazz: 	microShopBusinessLogic
   declaration: 	"private void handleDemoOrderPickedEvent(OrderPickedEvent event)"
   id: 	MicroShopBusinessLogic_handleDemoOrderPickedEvent
-  methodBody: 	"if (event.getId().equals(\"12:23\")) {
+  methodBody: 	"if (event.getId().equals(\"12:25\")) {
    OrderBuilt o0925_1Event = new OrderBuilt();
-   o0925_1Event.setId(\"12:23:01\");
+   o0925_1Event.setId(\"12:25:01\");
    o0925_1Event.setBlockId(\"o0925_1\");
    o0925_1Event.setCode(\"o0925_1\");
    o0925_1Event.setState(\"shipping\");
@@ -303,20 +342,20 @@ handleDemoCommand(event);
   clazz: 	microShopBusinessLogic
   declaration: 	"private void handleDemoCommand(Command event)"
   id: 	MicroShopBusinessLogic_handleDemoCommand
-  methodBody: 	"if (event.getId().equals(\"12:25:01\")) {
+  methodBody: 	"if (event.getId().equals(\"12:27:01\")) {
    OrderBuilt o0925_1Event = new OrderBuilt();
-   o0925_1Event.setId(\"12:25:02\");
+   o0925_1Event.setId(\"12:27:02\");
    o0925_1Event.setBlockId(\"o0925_1\");
    o0925_1Event.setCode(\"o0925_1\");
    o0925_1Event.setState(\"delivered\");
    service.apply(o0925_1Event);
 
 
-   OrderDeliveredEvent e1226 = new OrderDeliveredEvent();
+   OrderDeliveredEvent e1228 = new OrderDeliveredEvent();
 
-   e1226.setId(\"12:26\");
-   e1226.setOrder(\"o0925_1\");
-   service.apply(e1226);
+   e1228.setId(\"12:28\");
+   e1228.setOrder(\"o0925_1\");
+   service.apply(e1228);
 }
 "
   modified: 	false
@@ -337,6 +376,7 @@ handleDemoCommand(event);
    handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
    handlerMap.put(AddCommand.class, this::handleAddCommand);
    handlerMap.put(PlaceCommand.class, this::handlePlaceCommand);
+   handlerMap.put(PickTaskCreatedEvent.class, this::handlePickTaskCreatedEvent);
    handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
    handlerMap.put(Command.class, this::handleCommand);
 }
@@ -991,7 +1031,7 @@ if (id.equals(\"12_18\")) {
 
 // 12:19
 if (id.equals(\"12_19\")) {
-   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   html.append(\"<form action=\\"/page/12_22\\" method=\\"get\\">\n\");
    // MicroShop buy 12:19
    html.append(\"   <p>Welcome to our micro shop</p>\n\");
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
@@ -999,6 +1039,18 @@ if (id.equals(\"12_19\")) {
    html.append(\"   <p><input id=\\"address\\" name=\\"address\\" placeholder=\\"address?\\"></p>\n\");
    html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"place order\\"></p>\n\");
    html.append(\"   <p><input id=\\"buy\\" name=\\"button\\" type=\\"submit\\" value=\\"buy\\"></p>\n\");
+   html.append(\"</form>\n\");
+   return html.toString();
+}
+
+// 12:22
+if (id.equals(\"12_22\")) {
+   html.append(\"<form action=\\"/page/next_page\\" method=\\"get\\">\n\");
+   // MicroShop Carli overview 12:22
+   html.append(\"   <p>Welcome Carli</p>\n\");
+   html.append(\"   <p>Your orders are</p>\n\");
+   html.append(\"   <p>red shoes for $42, picking</p>\n\");
+   html.append(\"   <p><input id=\\"order\\" name=\\"button\\" type=\\"submit\\" value=\\"order\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
