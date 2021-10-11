@@ -36,6 +36,7 @@ import uks.debuggen.Constants;
 import uks.debuggen.microshop.MicroShop.MicroShopService;
 import uks.debuggen.microshop.Warehouse.WarehouseService;
 import uks.debuggen.microshop.events.*;
+import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class TestMicroShop {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
@@ -46,12 +47,15 @@ public class TestMicroShop {
    private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
    private int port = 41999;
 
-   public EventBroker getEventBroker() {
+   public EventBroker getEventBroker()
+   {
       return this.eventBroker;
    }
 
-   public TestMicroShop setEventBroker(EventBroker value) {
-      if (Objects.equals(value, this.eventBroker)) {
+   public TestMicroShop setEventBroker(EventBroker value)
+   {
+      if (Objects.equals(value, this.eventBroker))
+      {
          return this;
       }
 
@@ -60,8 +64,6 @@ public class TestMicroShop {
       this.firePropertyChange(PROPERTY_EVENT_BROKER, oldValue, value);
       return this;
    }
-
-
 
    public void start() {
       eventQueue = new LinkedBlockingQueue<Event>();
@@ -77,6 +79,7 @@ public class TestMicroShop {
 
    private String postApply(Request req, Response res) {
       String body = req.body();
+      // System.out.println("test postApply got \n" + body);
       try {
          YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
          idMap.decode(body);
@@ -133,7 +136,7 @@ public class TestMicroShop {
          }
 
          if (e == null) {
-            throw new RuntimeException("event timeout");
+            throw new RuntimeException("event timeout waiting for " + id);
          }
 
          System.out.println("Test got event " + e.getId());
@@ -158,15 +161,17 @@ public class TestMicroShop {
       eventBroker.start();
 
       this.start();
+      waitForEvent("41999");
 
       // start service
       WarehouseService warehouse = new WarehouseService();
       warehouse.start();
+      waitForEvent("42001");
 
       // start service
       MicroShopService microShop = new MicroShopService();
       microShop.start();
-
+      waitForEvent("42002");
 
       // page 12:01
       open("http://localhost:42001/page/12_01");
@@ -188,7 +193,8 @@ public class TestMicroShop {
    }
 
    @Test
-   public void MicroShop() {
+   public void MicroShop()
+   {
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
@@ -249,6 +255,25 @@ public class TestMicroShop {
       pre.shouldHave(matchText("content:.*red.shoes"));
       pre.shouldHave(matchText("location:.*shelf.42"));
 
+      // check MicroShop
+      open("http://localhost:42002");
+      pre = $("#history");
+      pre.shouldHave(text("- 12_02_01:"));
+      for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+         microShop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = microShop.getBuilder().getModel().getModelMap();
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_02_01.svg", modelMap.values());
+      }
+
+      open("http://localhost:42002");
+      // check data note 12:03:01
+      pre = $("#data");
+      pre.shouldHave(text("- red_shoes:"));
+      pre.shouldHave(matchText("name:.*red.shoes"));
+      pre.shouldHave(matchText("state:.*in.stock"));
+
       // page 12:04
       open("http://localhost:42001/page/12_04");
 
@@ -283,6 +308,25 @@ public class TestMicroShop {
       pre.shouldHave(matchText("content:.*red.shoes"));
       pre.shouldHave(matchText("location:.*shelf.23"));
 
+      // check MicroShop
+      open("http://localhost:42002");
+      pre = $("#history");
+      pre.shouldHave(text("- 12_05_01:"));
+      for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+         microShop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = microShop.getBuilder().getModel().getModelMap();
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_05_01.svg", modelMap.values());
+      }
+
+      open("http://localhost:42002");
+      // check data note 12:06:01
+      pre = $("#data");
+      pre.shouldHave(text("- red_shoes:"));
+      pre.shouldHave(matchText("name:.*red.shoes"));
+      pre.shouldHave(matchText("state:.*in.stock"));
+
       // page 12:07
       open("http://localhost:42001/page/12_07");
 
@@ -316,6 +360,25 @@ public class TestMicroShop {
       pre.shouldHave(matchText("barcode:.*b003"));
       pre.shouldHave(matchText("content:.*blue.jeans"));
       pre.shouldHave(matchText("location:.*shelf.1337"));
+
+      // check MicroShop
+      open("http://localhost:42002");
+      pre = $("#history");
+      pre.shouldHave(text("- 12_08_01:"));
+      for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+         microShop.getBuilder().load(dataEvent.getBlockId());
+      }
+      modelMap = microShop.getBuilder().getModel().getModelMap();
+      if (modelMap.values().size() > 0) {
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_08_01.svg", modelMap.values());
+      }
+
+      open("http://localhost:42002");
+      // check data note 12:09:01
+      pre = $("#data");
+      pre.shouldHave(text("- blue_jeans:"));
+      pre.shouldHave(matchText("name:.*blue.jeans"));
+      pre.shouldHave(matchText("state:.*in.stock"));
 
       // page 12:10
       open("http://localhost:42001/page/12_10");
@@ -565,27 +628,35 @@ public class TestMicroShop {
       System.out.println();
    }
 
-   public void publish(Event event) {
+   public void publish(Event event)
+   {
       String yaml = Yaml.encodeSimple(event);
 
       try {
-         HttpResponse<String> response = Unirest.post("http://localhost:42000/publish").body(yaml).asString();
-         Thread.sleep(200);
-      } catch (Exception e) {
+         HttpResponse<String> response = Unirest.post("http://localhost:42000/publish")
+               .body(yaml)
+               .asString();
+               Thread.sleep(200);
+      }
+      catch (Exception e) {
          e.printStackTrace();
       }
    }
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-      if (this.listeners != null) {
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   {
+      if (this.listeners != null)
+      {
          this.listeners.firePropertyChange(propertyName, oldValue, newValue);
          return true;
       }
       return false;
    }
 
-   public PropertyChangeSupport listeners() {
-      if (this.listeners == null) {
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;

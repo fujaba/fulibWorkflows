@@ -181,6 +181,7 @@ public class MicroShopBuilder
       ProductBuilt event = (ProductBuilt) e;
       Product object = model.getOrCreateProduct(event.getBlockId());
       object.setName(event.getName());
+      object.setState(event.getState());
       object.setPrice(event.getPrice());
       return object;
    }

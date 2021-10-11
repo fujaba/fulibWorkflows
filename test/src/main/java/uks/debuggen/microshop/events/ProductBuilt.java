@@ -5,8 +5,10 @@ public class ProductBuilt extends DataEvent
 {
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_PRICE = "price";
+   public static final String PROPERTY_STATE = "state";
    private String name;
    private String price;
+   private String state;
 
    public String getName()
    {
@@ -44,11 +46,30 @@ public class ProductBuilt extends DataEvent
       return this;
    }
 
+   public String getState()
+   {
+      return this.state;
+   }
+
+   public ProductBuilt setState(String value)
+   {
+      if (Objects.equals(value, this.state))
+      {
+         return this;
+      }
+
+      final String oldValue = this.state;
+      this.state = value;
+      this.firePropertyChange(PROPERTY_STATE, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getName());
+      result.append(' ').append(this.getState());
       result.append(' ').append(this.getPrice());
       return result.toString();
    }

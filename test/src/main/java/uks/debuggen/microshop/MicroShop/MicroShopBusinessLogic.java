@@ -142,6 +142,7 @@ public class MicroShopBusinessLogic
          handlerMap.put(ProductBuilt.class, builder::storeProductBuilt);
          handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
          handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
+         handlerMap.put(ProductStoredEvent.class, this::handleProductStoredEvent);
          handlerMap.put(AddOfferCommand.class, this::handleAddOfferCommand);
          handlerMap.put(AddCommand.class, this::handleAddCommand);
          handlerMap.put(PlaceCommand.class, this::handlePlaceCommand);
@@ -319,6 +320,45 @@ public class MicroShopBusinessLogic
          e1231.setId("12:31");
          e1231.setOrder("o0925_1");
          service.apply(e1231);
+      }
+   }
+
+   private void handleProductStoredEvent(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      ProductStoredEvent event = (ProductStoredEvent) e;
+      handleDemoProductStoredEvent(event);
+   }
+
+   private void handleDemoProductStoredEvent(ProductStoredEvent event)
+   {
+      if (event.getId().equals("12:03")) {
+         ProductBuilt red_shoesEvent = new ProductBuilt();
+         red_shoesEvent.setId("12:03:01");
+         red_shoesEvent.setBlockId("red_shoes");
+         red_shoesEvent.setName("red shoes");
+         red_shoesEvent.setState("in stock");
+         service.apply(red_shoesEvent);
+
+      }
+      if (event.getId().equals("12:06")) {
+         ProductBuilt red_shoesEvent = new ProductBuilt();
+         red_shoesEvent.setId("12:06:01");
+         red_shoesEvent.setBlockId("red_shoes");
+         red_shoesEvent.setName("red shoes");
+         red_shoesEvent.setState("in stock");
+         service.apply(red_shoesEvent);
+
+      }
+      if (event.getId().equals("12:09")) {
+         ProductBuilt blue_jeansEvent = new ProductBuilt();
+         blue_jeansEvent.setId("12:09:01");
+         blue_jeansEvent.setBlockId("blue_jeans");
+         blue_jeansEvent.setName("blue jeans");
+         blue_jeansEvent.setState("in stock");
+         service.apply(blue_jeansEvent);
+
       }
    }
 }

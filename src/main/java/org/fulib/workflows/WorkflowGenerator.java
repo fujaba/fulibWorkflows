@@ -1388,6 +1388,10 @@ public class WorkflowGenerator
       dataEvent.setSuperClass(event);
       em.haveAttribute(dataEvent, "blockId", Type.STRING);
 
+      Clazz subcribeEvent = em.haveClass("SubscribeEvent");
+      subcribeEvent.setSuperClass(event);
+      em.haveAttribute(subcribeEvent, "url", Type.STRING);
+
       Clazz dataGroup = em.haveClass("DataGroup");
       dataGroup.setSuperClass(dataEvent);
 

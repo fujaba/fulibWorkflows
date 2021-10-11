@@ -12,11 +12,13 @@ public class Product
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_PRICE = "price";
    public static final String PROPERTY_ORDERS = "orders";
+   public static final String PROPERTY_STATE = "state";
    private String id;
    private String name;
    private String price;
    protected PropertyChangeSupport listeners;
    private List<Order> orders;
+   private String state;
 
    public String getId()
    {
@@ -138,6 +140,24 @@ public class Product
       return this;
    }
 
+   public String getState()
+   {
+      return this.state;
+   }
+
+   public Product setState(String value)
+   {
+      if (Objects.equals(value, this.state))
+      {
+         return this;
+      }
+
+      final String oldValue = this.state;
+      this.state = value;
+      this.firePropertyChange(PROPERTY_STATE, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -163,6 +183,7 @@ public class Product
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
+      result.append(' ').append(this.getState());
       result.append(' ').append(this.getPrice());
       return result.substring(1);
    }

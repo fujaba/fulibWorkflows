@@ -99,6 +99,25 @@ pre.shouldHave(matchText(\"barcode:.*b001\"));
 pre.shouldHave(matchText(\"content:.*red.shoes\"));
 pre.shouldHave(matchText(\"location:.*shelf.42\"));
 
+// check MicroShop
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_02_01:\"));
+for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+   microShop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = microShop.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/microShop12_02_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42002\");
+// check data note 12:03:01
+pre = $(\"#data\");
+pre.shouldHave(text(\"- red_shoes:\"));
+pre.shouldHave(matchText(\"name:.*red.shoes\"));
+pre.shouldHave(matchText(\"state:.*in.stock\"));
+
 // page 12:04
 open(\"http://localhost:42001/page/12_04\");
 
@@ -133,6 +152,25 @@ pre.shouldHave(matchText(\"barcode:.*b002\"));
 pre.shouldHave(matchText(\"content:.*red.shoes\"));
 pre.shouldHave(matchText(\"location:.*shelf.23\"));
 
+// check MicroShop
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_05_01:\"));
+for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+   microShop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = microShop.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/microShop12_05_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42002\");
+// check data note 12:06:01
+pre = $(\"#data\");
+pre.shouldHave(text(\"- red_shoes:\"));
+pre.shouldHave(matchText(\"name:.*red.shoes\"));
+pre.shouldHave(matchText(\"state:.*in.stock\"));
+
 // page 12:07
 open(\"http://localhost:42001/page/12_07\");
 
@@ -166,6 +204,25 @@ pre.shouldHave(text(\"- b003:\"));
 pre.shouldHave(matchText(\"barcode:.*b003\"));
 pre.shouldHave(matchText(\"content:.*blue.jeans\"));
 pre.shouldHave(matchText(\"location:.*shelf.1337\"));
+
+// check MicroShop
+open(\"http://localhost:42002\");
+pre = $(\"#history\");
+pre.shouldHave(text(\"- 12_08_01:\"));
+for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
+   microShop.getBuilder().load(dataEvent.getBlockId());
+}
+modelMap = microShop.getBuilder().getModel().getModelMap();
+if (modelMap.values().size() > 0) {
+   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/microShop12_08_01.svg\", modelMap.values());
+}
+
+open(\"http://localhost:42002\");
+// check data note 12:09:01
+pre = $(\"#data\");
+pre.shouldHave(text(\"- blue_jeans:\"));
+pre.shouldHave(matchText(\"name:.*blue.jeans\"));
+pre.shouldHave(matchText(\"state:.*in.stock\"));
 
 // page 12:10
 open(\"http://localhost:42001/page/12_10\");

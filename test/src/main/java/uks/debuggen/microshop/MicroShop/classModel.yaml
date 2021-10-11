@@ -21,7 +21,7 @@
   attributes: 	microShopBusinessLogic_model 	microShopBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
-  methods: 	microShopBusinessLogic_handleAddOfferCommand 	microShopBusinessLogic_handleDemoAddOfferCommand 	microShopBusinessLogic_handleAddCommand 	microShopBusinessLogic_handleDemoAddCommand 	microShopBusinessLogic_handlePlaceCommand 	microShopBusinessLogic_handleDemoPlaceCommand 	microShopBusinessLogic_handlePickTaskCreatedEvent 	microShopBusinessLogic_handleDemoPickTaskCreatedEvent 	microShopBusinessLogic_handleOrderPickedEvent 	microShopBusinessLogic_handleDemoOrderPickedEvent 	microShopBusinessLogic_handleDeliverCommand 	microShopBusinessLogic_handleDemoDeliverCommand 	microShopBusinessLogic_initEventHandlerMap 	microShopBusinessLogic_ignoreEvent 	microShopBusinessLogic_getHandler
+  methods: 	microShopBusinessLogic_handleProductStoredEvent 	microShopBusinessLogic_handleDemoProductStoredEvent 	microShopBusinessLogic_handleAddOfferCommand 	microShopBusinessLogic_handleDemoAddOfferCommand 	microShopBusinessLogic_handleAddCommand 	microShopBusinessLogic_handleDemoAddCommand 	microShopBusinessLogic_handlePlaceCommand 	microShopBusinessLogic_handleDemoPlaceCommand 	microShopBusinessLogic_handlePickTaskCreatedEvent 	microShopBusinessLogic_handleDemoPickTaskCreatedEvent 	microShopBusinessLogic_handleOrderPickedEvent 	microShopBusinessLogic_handleDemoOrderPickedEvent 	microShopBusinessLogic_handleDeliverCommand 	microShopBusinessLogic_handleDemoDeliverCommand 	microShopBusinessLogic_initEventHandlerMap 	microShopBusinessLogic_ignoreEvent 	microShopBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	MicroShopBusinessLogic
@@ -51,7 +51,7 @@
   roles: 	microShopService_businessLogic 	microShopService_builder
 
 - product: 	org.fulib.classmodel.Clazz
-  attributes: 	product_id 	product_name 	product_price
+  attributes: 	product_id 	product_name 	product_state 	product_price
   model: 	c
   modified: 	false
   name: 	Product
@@ -153,6 +153,63 @@ return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
   propertyStyle: 	Bean
   type: 	"LinkedHashMap<Class, Consumer<Event>>"
   typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
+
+- microShopBusinessLogic_handleProductStoredEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopBusinessLogic
+  declaration: 	"private void handleProductStoredEvent(Event e)"
+  id: 	MicroShopBusinessLogic_handleProductStoredEvent
+  methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+// fulib
+ProductStoredEvent event = (ProductStoredEvent) e;
+handleDemoProductStoredEvent(event);
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleProductStoredEvent
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/MicroShopBusinessLogic/method/handleProductStoredEvent(Event)"
+
+- microShopBusinessLogic_handleDemoProductStoredEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	microShopBusinessLogic
+  declaration: 	"private void handleDemoProductStoredEvent(ProductStoredEvent event)"
+  id: 	MicroShopBusinessLogic_handleDemoProductStoredEvent
+  methodBody: 	"if (event.getId().equals(\"12:03\")) {
+   ProductBuilt red_shoesEvent = new ProductBuilt();
+   red_shoesEvent.setId(\"12:03:01\");
+   red_shoesEvent.setBlockId(\"red_shoes\");
+   red_shoesEvent.setName(\"red shoes\");
+   red_shoesEvent.setState(\"in stock\");
+   service.apply(red_shoesEvent);
+
+}
+if (event.getId().equals(\"12:06\")) {
+   ProductBuilt red_shoesEvent = new ProductBuilt();
+   red_shoesEvent.setId(\"12:06:01\");
+   red_shoesEvent.setBlockId(\"red_shoes\");
+   red_shoesEvent.setName(\"red shoes\");
+   red_shoesEvent.setState(\"in stock\");
+   service.apply(red_shoesEvent);
+
+}
+if (event.getId().equals(\"12:09\")) {
+   ProductBuilt blue_jeansEvent = new ProductBuilt();
+   blue_jeansEvent.setId(\"12:09:01\");
+   blue_jeansEvent.setBlockId(\"blue_jeans\");
+   blue_jeansEvent.setName(\"blue jeans\");
+   blue_jeansEvent.setState(\"in stock\");
+   service.apply(blue_jeansEvent);
+
+}
+"
+  modified: 	false
+  modifiers: 	private
+  name: 	handleDemoProductStoredEvent
+  paramsString: 	"ProductStoredEvent event"
+  returnType: 	void
+  signature: 	"class/MicroShopBusinessLogic/method/handleDemoProductStoredEvent(ProductStoredEvent)"
 
 - microShopBusinessLogic_handleAddOfferCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -436,6 +493,7 @@ handleDemoDeliverCommand(event);
    handlerMap.put(ProductBuilt.class, builder::storeProductBuilt);
    handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
    handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
+   handlerMap.put(ProductStoredEvent.class, this::handleProductStoredEvent);
    handlerMap.put(AddOfferCommand.class, this::handleAddOfferCommand);
    handlerMap.put(AddCommand.class, this::handleAddCommand);
    handlerMap.put(PlaceCommand.class, this::handlePlaceCommand);
@@ -590,6 +648,7 @@ if (outdated(event)) {
   methodBody: 	"ProductBuilt event = (ProductBuilt) e;
 Product object = model.getOrCreateProduct(event.getBlockId());
 object.setName(event.getName());
+object.setState(event.getState());
 object.setPrice(event.getPrice());
 return object;
 "
@@ -1255,6 +1314,15 @@ catch (UnirestException e) {
   id: 	Product_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- product_state: 	org.fulib.classmodel.Attribute
+  clazz: 	product
+  id: 	Product_state
+  modified: 	false
+  name: 	state
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

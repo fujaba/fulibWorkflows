@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	addOfferCommand 	productBuilt 	productOfferedEvent 	addCommand 	placeCommand 	orderBuilt 	customerBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	deliverCommand 	orderDeliveredEvent 	orderRejectedEvent
+  classes: 	event 	dataEvent 	subscribeEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	productBuilt 	addOfferCommand 	productOfferedEvent 	addCommand 	placeCommand 	orderBuilt 	customerBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	deliverCommand 	orderDeliveredEvent 	orderRejectedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	pickTaskCreatedEvent 	command 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
+  subClasses: 	dataEvent 	subscribeEvent 	query 	serviceSubscribed 	productStoredEvent 	productOfferedEvent 	productOrderedEvent 	pickTaskCreatedEvent 	command 	orderPickedEvent 	orderDeliveredEvent 	orderRejectedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -23,6 +23,14 @@
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
   subClasses: 	dataGroup 	boxBuilt 	productBuilt 	orderBuilt 	customerBuilt 	pickTaskBuilt
+  superClass: 	event
+
+- subscribeEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	subscribeEvent_url
+  model: 	c
+  modified: 	false
+  name: 	SubscribeEvent
+  propertyStyle: 	Bean
   superClass: 	event
 
 - dataGroup: 	org.fulib.classmodel.Clazz
@@ -83,6 +91,14 @@
   propertyStyle: 	Bean
   superClass: 	event
 
+- productBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	productBuilt_name 	productBuilt_state 	productBuilt_price
+  model: 	c
+  modified: 	false
+  name: 	ProductBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
 - addOfferCommand: 	org.fulib.classmodel.Clazz
   attributes: 	addOfferCommand_product 	addOfferCommand_price
   model: 	c
@@ -90,14 +106,6 @@
   name: 	AddOfferCommand
   propertyStyle: 	Bean
   superClass: 	command
-
-- productBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	productBuilt_name 	productBuilt_price
-  model: 	c
-  modified: 	false
-  name: 	ProductBuilt
-  propertyStyle: 	Bean
-  superClass: 	dataEvent
 
 - productOfferedEvent: 	org.fulib.classmodel.Clazz
   attributes: 	productOfferedEvent_name 	productOfferedEvent_price
@@ -241,6 +249,15 @@
   other: 	query_results
   propertyStyle: 	Bean
 
+- subscribeEvent_url: 	org.fulib.classmodel.Attribute
+  clazz: 	subscribeEvent
+  id: 	SubscribeEvent_url
+  modified: 	false
+  name: 	url
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - dataGroup_elements: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -373,6 +390,33 @@
   type: 	String
   typeSignature: 	String
 
+- productBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	productBuilt
+  id: 	ProductBuilt_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productBuilt_state: 	org.fulib.classmodel.Attribute
+  clazz: 	productBuilt
+  id: 	ProductBuilt_state
+  modified: 	false
+  name: 	state
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- productBuilt_price: 	org.fulib.classmodel.Attribute
+  clazz: 	productBuilt
+  id: 	ProductBuilt_price
+  modified: 	false
+  name: 	price
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - addOfferCommand_product: 	org.fulib.classmodel.Attribute
   clazz: 	addOfferCommand
   id: 	AddOfferCommand_product
@@ -385,24 +429,6 @@
 - addOfferCommand_price: 	org.fulib.classmodel.Attribute
   clazz: 	addOfferCommand
   id: 	AddOfferCommand_price
-  modified: 	false
-  name: 	price
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- productBuilt_name: 	org.fulib.classmodel.Attribute
-  clazz: 	productBuilt
-  id: 	ProductBuilt_name
-  modified: 	false
-  name: 	name
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- productBuilt_price: 	org.fulib.classmodel.Attribute
-  clazz: 	productBuilt
-  id: 	ProductBuilt_price
   modified: 	false
   name: 	price
   propertyStyle: 	Bean
