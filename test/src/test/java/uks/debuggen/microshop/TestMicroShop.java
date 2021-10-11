@@ -16,8 +16,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.sound.midi.Soundbank;
-
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.SelenideElement;
 import com.mashape.unirest.http.HttpResponse;
@@ -40,12 +38,16 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 public class TestMicroShop {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
+   public static final String PROPERTY_SPARK = "spark";
+   public static final String PROPERTY_EVENT_QUEUE = "eventQueue";
+   public static final String PROPERTY_HISTORY = "history";
+   public static final String PROPERTY_PORT = "port";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
    private Service spark;
    private LinkedBlockingQueue<Event> eventQueue;
-   private LinkedHashMap<String, Event> history = new LinkedHashMap<>();
-   private int port = 41999;
+   private LinkedHashMap<String, Event> history;
+   private int port;
 
    public EventBroker getEventBroker()
    {
@@ -65,8 +67,83 @@ public class TestMicroShop {
       return this;
    }
 
-   public void start() {
+   public Service getSpark()
+   {
+      return this.spark;
+   }
+
+   public TestMicroShop setSpark(Service value)
+   {
+      if (Objects.equals(value, this.spark))
+      {
+         return this;
+      }
+
+      final Service oldValue = this.spark;
+      this.spark = value;
+      this.firePropertyChange(PROPERTY_SPARK, oldValue, value);
+      return this;
+   }
+
+   public LinkedBlockingQueue<Event> getEventQueue()
+   {
+      return this.eventQueue;
+   }
+
+   public TestMicroShop setEventQueue(LinkedBlockingQueue<Event> value)
+   {
+      if (Objects.equals(value, this.eventQueue))
+      {
+         return this;
+      }
+
+      final LinkedBlockingQueue<Event> oldValue = this.eventQueue;
+      this.eventQueue = value;
+      this.firePropertyChange(PROPERTY_EVENT_QUEUE, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, Event> getHistory()
+   {
+      return this.history;
+   }
+
+   public TestMicroShop setHistory(LinkedHashMap<String, Event> value)
+   {
+      if (Objects.equals(value, this.history))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, Event> oldValue = this.history;
+      this.history = value;
+      this.firePropertyChange(PROPERTY_HISTORY, oldValue, value);
+      return this;
+   }
+
+   public int getPort()
+   {
+      return this.port;
+   }
+
+   public TestMicroShop setPort(int value)
+   {
+      if (value == this.port)
+      {
+         return this;
+      }
+
+      final int oldValue = this.port;
+      this.port = value;
+      this.firePropertyChange(PROPERTY_PORT, oldValue, value);
+      return this;
+   }
+
+   public void start()
+   {
       eventQueue = new LinkedBlockingQueue<Event>();
+      history  = new LinkedHashMap<>();
+      port = 41999;
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);
@@ -74,12 +151,11 @@ public class TestMicroShop {
       executor.submit(() -> System.out.println("test executor works"));
       executor.submit(this::subscribeAndLoadOldEvents);
       executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
-      System.out.println();
    }
 
-   private String postApply(Request req, Response res) {
+   private String postApply(Request req, Response res)
+   {
       String body = req.body();
-      // System.out.println("test postApply got \n" + body);
       try {
          YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
          idMap.decode(body);
@@ -99,7 +175,8 @@ public class TestMicroShop {
       return "apply done";
    }
 
-   private void subscribeAndLoadOldEvents() {
+   private void subscribeAndLoadOldEvents()
+   {
       ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
             .setServiceUrl(String.format("http://localhost:%d/apply", port));
       String json = Yaml.encodeSimple(serviceSubscribed);
@@ -120,7 +197,8 @@ public class TestMicroShop {
       }
    }
 
-   public Event waitForEvent(String id) {
+   public Event waitForEvent(String id)
+   {
       while (true) {
          Event e = history.get(id);
 

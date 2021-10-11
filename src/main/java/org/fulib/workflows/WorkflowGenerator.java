@@ -1094,12 +1094,47 @@ public class WorkflowGenerator
       String boardName = StrUtil.toIdentifier(eventStormingBoard.getName());
       testClazz = tm.haveClass("Test" + boardName);
       testClazz.withImports("import org.junit.Test;",
-            "import java.util.LinkedHashMap;");
+            "import java.util.LinkedHashMap;",
+            "import spark.Service;",
+            "import java.util.concurrent.ExecutorService;",
+            "import java.util.concurrent.Executors;",
+            "import java.util.concurrent.LinkedBlockingQueue;",
+            "import static org.assertj.core.api.Assertions.assertThat;",
+            "import java.util.concurrent.TimeUnit;");
       testClazz.withImports(String.format("import %s;",
             em.getClassModel().getPackageName() + ".*"));
-      tm.haveAttribute(testClazz, "eventBroker", "EventBroker");
 
-      String declaration = "@Test\n" +
+      tm.haveAttribute(testClazz, "eventBroker", "EventBroker");
+      tm.haveAttribute(testClazz, "spark", "Service");
+      tm.haveAttribute(testClazz, "eventQueue", "LinkedBlockingQueue<Event>");
+      tm.haveAttribute(testClazz, "history", "LinkedHashMap<String, Event>");
+      tm.haveAttribute(testClazz, "port", Type.INT);
+
+      String declaration = "";
+      String methodBody = "";
+      ST st;
+
+      declaration = "public void start()";
+      st = group.getInstanceOf("testStart");
+      methodBody = st.render();
+      tm.haveMethod(testClazz, declaration, methodBody);
+
+      declaration = "private String postApply(Request req, Response res)";
+      st = group.getInstanceOf("testPostApply");
+      methodBody = st.render();
+      tm.haveMethod(testClazz, declaration, methodBody);
+
+      declaration = "private void subscribeAndLoadOldEvents()";
+      st = group.getInstanceOf("testSubscribe");
+      methodBody = st.render();
+      tm.haveMethod(testClazz, declaration, methodBody);
+
+      declaration = "public Event waitForEvent(String id)";
+      st = group.getInstanceOf("testWaitForEvent");
+      methodBody = st.render();
+      tm.haveMethod(testClazz, declaration, methodBody);
+
+      declaration = "@Test\n" +
             "public void " + StrUtil.toIdentifier(eventModel.getEventStormingBoard().getName()) + "()";
 
       startServices();
@@ -1154,7 +1189,7 @@ public class WorkflowGenerator
       // add publish method to the test class
       declaration = "public void publish(Event event)";
       testBody.setLength(0);
-      ST st;
+
       st = group.getInstanceOf("publishBody");
       testBody.append(st.render());
       tm.haveMethod(testClazz, declaration, testBody.toString());

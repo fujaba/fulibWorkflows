@@ -220,3 +220,90 @@ serviceQuery() ::=
 
       return query;
 >>
+
+
+testStart() ::=
+<<
+      eventQueue = new LinkedBlockingQueue<Event>();
+      history  = new LinkedHashMap<>();
+      port = 41999;
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      spark = Service.ignite();
+      spark.port(port);
+      spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(this::subscribeAndLoadOldEvents);
+      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+>>
+
+
+testPostApply() ::=
+<<
+      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         } else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
+      }
+      return "apply done";
+>>
+
+
+testSubscribe() ::=
+<<
+      ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+            .setServiceUrl(String.format("http://localhost:\%d/apply", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
+      try {
+         String url = "http://localhost:42000/subscribe";
+         HttpResponse<String> response = Unirest.post(url).body(json).asString();
+         String body = response.getBody();
+         System.out.println("TestMikroShop subscribed to broker\n" + body);
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
+         for (Object obj : objectMap.values()) {
+            Event event = (Event) obj;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+>>
+
+
+testWaitForEvent() ::=
+<<
+      while (true) {
+         Event e = history.get(id);
+
+         if (e != null) {
+            return e;
+         }
+
+         try {
+            e = eventQueue.poll(Configuration.timeout, TimeUnit.MILLISECONDS);
+         }
+         catch (Exception x) {
+            throw new RuntimeException(x);
+         }
+
+         if (e == null) {
+            throw new RuntimeException("event timeout waiting for " + id);
+         }
+
+         System.out.println("Test got event " + e.getId());
+         history.put(e.getId(), e);
+      }
+>>
