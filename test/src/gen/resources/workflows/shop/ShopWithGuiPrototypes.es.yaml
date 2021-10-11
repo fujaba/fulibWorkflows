@@ -35,6 +35,12 @@
   barcode: b001
   type: red shoes
 
+- policy: MicroShop
+
+- data: Product
+  name: red shoes
+  state: in stock
+
 - page:
     - name: Warehouse overview
     - label: Warehouse boxes
@@ -63,6 +69,12 @@
 - event: product stored
   barcode: b002
   type: red shoes
+
+- policy: MicroShop
+
+- data: Product
+  name: red shoes
+  state: in stock
 
 - page:
     - name: Warehouse overview
@@ -93,6 +105,12 @@
 - event: product stored
   barcode: b003
   type: blue jeans
+
+- policy: MicroShop
+
+- data: Product
+  name: blue jeans
+  state: in stock
 
 - page:
     - name: Warehouse overview
@@ -233,7 +251,6 @@
     - label: Your orders are
     - label: red shoes for $42, picking
     - button: order
-
 
 
 - action: Peter Picker
