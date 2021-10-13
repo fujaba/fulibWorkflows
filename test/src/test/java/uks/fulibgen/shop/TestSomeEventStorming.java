@@ -22,12 +22,32 @@ import uks.fulibgen.shop.Shop.ShopService;
 import uks.fulibgen.shop.Storage.StorageService;
 import uks.fulibgen.shop.events.*;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import spark.Service;
+import static org.assertj.core.api.Assertions.assertThat;
+import spark.Request;
+import spark.Response;
+import org.fulib.yaml.YamlIdMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestSomeEventStorming
 {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
+   public static final String PROPERTY_SPARK = "spark";
+   public static final String PROPERTY_EVENT_QUEUE = "eventQueue";
+   public static final String PROPERTY_HISTORY = "history";
+   public static final String PROPERTY_PORT = "port";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
+   private Service spark;
+   private LinkedBlockingQueue<Event> eventQueue;
+   private LinkedHashMap<String, Event> history;
+   private int port;
 
    public EventBroker getEventBroker()
    {
@@ -47,6 +67,78 @@ public class TestSomeEventStorming
       return this;
    }
 
+   public Service getSpark()
+   {
+      return this.spark;
+   }
+
+   public TestSomeEventStorming setSpark(Service value)
+   {
+      if (Objects.equals(value, this.spark))
+      {
+         return this;
+      }
+
+      final Service oldValue = this.spark;
+      this.spark = value;
+      this.firePropertyChange(PROPERTY_SPARK, oldValue, value);
+      return this;
+   }
+
+   public LinkedBlockingQueue<Event> getEventQueue()
+   {
+      return this.eventQueue;
+   }
+
+   public TestSomeEventStorming setEventQueue(LinkedBlockingQueue<Event> value)
+   {
+      if (Objects.equals(value, this.eventQueue))
+      {
+         return this;
+      }
+
+      final LinkedBlockingQueue<Event> oldValue = this.eventQueue;
+      this.eventQueue = value;
+      this.firePropertyChange(PROPERTY_EVENT_QUEUE, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, Event> getHistory()
+   {
+      return this.history;
+   }
+
+   public TestSomeEventStorming setHistory(LinkedHashMap<String, Event> value)
+   {
+      if (Objects.equals(value, this.history))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, Event> oldValue = this.history;
+      this.history = value;
+      this.firePropertyChange(PROPERTY_HISTORY, oldValue, value);
+      return this;
+   }
+
+   public int getPort()
+   {
+      return this.port;
+   }
+
+   public TestSomeEventStorming setPort(int value)
+   {
+      if (value == this.port)
+      {
+         return this;
+      }
+
+      final int oldValue = this.port;
+      this.port = value;
+      this.firePropertyChange(PROPERTY_PORT, oldValue, value);
+      return this;
+   }
+
    @Before
    public void setTimeOut() {
       Configuration.timeout = Constants.TIME_OUT;
@@ -62,24 +154,19 @@ public class TestSomeEventStorming
       eventBroker = new EventBroker();
       eventBroker.start();
 
+      this.start();
+      waitForEvent("" + port);
+
       // start service
       ShopService shop = new ShopService();
       shop.start();
+      waitForEvent("42100");
 
       // start service
       StorageService storage = new StorageService();
       storage.start();
-      try {
-         Thread.sleep(1500);
-      } catch (Exception e) {
-      }
-
-      open("http://localhost:42000");
-      $("body").shouldHave(text("event broker"));
-
-      SelenideElement pre = $("pre");
-      pre.shouldHave(text("http://localhost:42100/apply"));
-      pre.shouldHave(text("http://localhost:42002/apply"));
+      waitForEvent("42002");
+      SelenideElement pre;
       LinkedHashMap<String, Object> modelMap;
 
       // workflow OrderingSmooth
@@ -91,15 +178,10 @@ public class TestSomeEventStorming
       e1200.setProduct("shoes");
       e1200.setPlace("shelf23");
       publish(e1200);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_00:"));
+      waitForEvent("12:00");
 
       // check Storage
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_00:"));
       for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
          storage.getBuilder().load(dataEvent.getBlockId());
       }
@@ -110,18 +192,14 @@ public class TestSomeEventStorming
 
       open("http://localhost:42002");
       // check data note 12:01
-      pre = $("#data");
-      pre.shouldHave(text("- box23:"));
-      pre.shouldHave(matchText("product:.*shoes"));
-      pre.shouldHave(matchText("place:.*shelf23"));
+      BoxBuilt e12_01 = (BoxBuilt) waitForEvent("12:01");
+      assertThat(e12_01.getProduct()).isEqualTo("shoes");
+      assertThat(e12_01.getPlace()).isEqualTo("shelf23");
 
       // page 12:50
       open("http://localhost:42100/page/12_50");
       $("#shoes").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_51:"));
+      waitForEvent("12:51");
 
       // page 13:00
       open("http://localhost:42100/page/13_00");
@@ -129,15 +207,10 @@ public class TestSomeEventStorming
       $("#name").setValue("Alice");
       $("#address").setValue("Wonderland 1");
       $("#OK").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_01:"));
+      waitForEvent("13:01");
 
       // check Shop
       open("http://localhost:42100");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_01:"));
       for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
          shop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -147,15 +220,12 @@ public class TestSomeEventStorming
       }
 
       open("http://localhost:42100");
-      // check data note 13:06
-      pre = $("#data");
-      pre.shouldHave(text("- order1300:"));
-      pre.shouldHave(matchText("state:.*picking"));
+      // check data note 13:06:01
+      OrderBuilt e13_06_01 = (OrderBuilt) waitForEvent("13:06:01");
+      assertThat(e13_06_01.getState()).isEqualTo("picking");
 
       // check Storage
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_01:"));
       for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
          storage.getBuilder().load(dataEvent.getBlockId());
       }
@@ -166,13 +236,12 @@ public class TestSomeEventStorming
 
       open("http://localhost:42002");
       // check data note 13:05
-      pre = $("#data");
-      pre.shouldHave(text("- pick1300:"));
-      pre.shouldHave(matchText("order:.*order1300"));
-      pre.shouldHave(matchText("product:.*shoes"));
-      pre.shouldHave(matchText("customer:.*Alice"));
-      pre.shouldHave(matchText("address:.*Wonderland.1"));
-      pre.shouldHave(matchText("state:.*todo"));
+      PickTaskBuilt e13_05 = (PickTaskBuilt) waitForEvent("13:05");
+      assertThat(e13_05.getOrder()).isEqualTo("order1300");
+      assertThat(e13_05.getProduct()).isEqualTo("shoes");
+      assertThat(e13_05.getCustomer()).isEqualTo("Alice");
+      assertThat(e13_05.getAddress()).isEqualTo("Wonderland 1");
+      assertThat(e13_05.getState()).isEqualTo("todo");
 
       // create PickOrderCommand: pick order 14:00
       PickOrderCommand e1400 = new PickOrderCommand();
@@ -181,15 +250,10 @@ public class TestSomeEventStorming
       e1400.setBox("box23");
       e1400.setUser("Bob");
       publish(e1400);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_00:"));
+      waitForEvent("14:00");
 
       // check Storage
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_00:"));
       for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
          storage.getBuilder().load(dataEvent.getBlockId());
       }
@@ -200,19 +264,15 @@ public class TestSomeEventStorming
 
       open("http://localhost:42002");
       // check data note 14:01
-      pre = $("#data");
-      pre.shouldHave(text("- pick1300:"));
-      pre.shouldHave(matchText("state:.*done"));
-      pre.shouldHave(matchText("box:.*box23"));
+      PickTaskBuilt e14_01 = (PickTaskBuilt) waitForEvent("14:01");
+      assertThat(e14_01.getState()).isEqualTo("done");
+      assertThat(e14_01.getBox()).isEqualTo("box23");
       // check data note 14:02
-      pre = $("#data");
-      pre.shouldHave(text("- box23:"));
-      pre.shouldHave(matchText("place:.*shipping"));
+      BoxBuilt e14_02 = (BoxBuilt) waitForEvent("14:02");
+      assertThat(e14_02.getPlace()).isEqualTo("shipping");
 
       // check Shop
       open("http://localhost:42100");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_00:"));
       for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
          shop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -223,9 +283,8 @@ public class TestSomeEventStorming
 
       open("http://localhost:42100");
       // check data note 14:04
-      pre = $("#data");
-      pre.shouldHave(text("- order1300:"));
-      pre.shouldHave(matchText("state:.*shipping"));
+      OrderBuilt e14_04 = (OrderBuilt) waitForEvent("14:04");
+      assertThat(e14_04.getState()).isEqualTo("shipping");
 
       // workflow OrderOutOfStocks
 
@@ -237,15 +296,10 @@ public class TestSomeEventStorming
       e1311.setCustomer("Alice");
       e1311.setAddress("Wonderland 1");
       publish(e1311);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_11:"));
+      waitForEvent("13:11");
 
       // check Shop
       open("http://localhost:42100");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_11:"));
       for (DataEvent dataEvent : shop.getBuilder().getEventStore().values()) {
          shop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -256,14 +310,11 @@ public class TestSomeEventStorming
 
       open("http://localhost:42100");
       // check data note 13:16
-      pre = $("#data");
-      pre.shouldHave(text("- order1310:"));
-      pre.shouldHave(matchText("state:.*out.of.stock"));
+      OrderBuilt e13_16 = (OrderBuilt) waitForEvent("13:16");
+      assertThat(e13_16.getState()).isEqualTo("out of stock");
 
       // check Storage
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_11:"));
       for (DataEvent dataEvent : storage.getBuilder().getEventStore().values()) {
          storage.getBuilder().load(dataEvent.getBlockId());
       }
@@ -278,6 +329,7 @@ public class TestSomeEventStorming
       } catch (Exception e) {
       }
       eventBroker.stop();
+      spark.stop();
       shop.stop();
       storage.stop();
 
@@ -316,5 +368,87 @@ public class TestSomeEventStorming
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
+   }
+
+   public void start()
+   {
+      eventQueue = new LinkedBlockingQueue<Event>();
+      history  = new LinkedHashMap<>();
+      port = 41999;
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      spark = Service.ignite();
+      spark.port(port);
+      spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(this::subscribeAndLoadOldEvents);
+      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+   }
+
+   private String postApply(Request req, Response res)
+   {
+      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         } else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
+      }
+      return "apply done";
+   }
+
+   private void subscribeAndLoadOldEvents()
+   {
+      ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+            .setServiceUrl(String.format("http://localhost:%d/apply", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
+      try {
+         String url = "http://localhost:42000/subscribe";
+         HttpResponse<String> response = Unirest.post(url).body(json).asString();
+         String body = response.getBody();
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
+         for (Object obj : objectMap.values()) {
+            Event event = (Event) obj;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+
+   public Event waitForEvent(String id)
+   {
+      while (true) {
+         Event e = history.get(id);
+
+         if (e != null) {
+            return e;
+         }
+
+         try {
+            e = eventQueue.poll(Configuration.timeout, TimeUnit.MILLISECONDS);
+         }
+         catch (Exception x) {
+            throw new RuntimeException(x);
+         }
+
+         if (e == null) {
+            throw new RuntimeException("event timeout waiting for " + id);
+         }
+
+         System.out.println("Test got event " + e.getId());
+         history.put(e.getId(), e);
+      }
    }
 }

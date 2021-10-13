@@ -821,23 +821,23 @@ public class PartyAppService
          apply(e1401);
       }
 
-      if ("add item 14:03".equals(event)) {
+      if ("add item".equals(event)) {
 
-         // create AddItemCommand: add item 14:03
-         AddItemCommand e1403 = new AddItemCommand();
-         e1403.setId("14:03");
-         apply(e1403);
+         // create AddCommand: add item
+         AddCommand e140201 = new AddCommand();
+         e140201.setId("14:02:01");
+         apply(e140201);
       }
 
-      if ("build item 14:05".equals(event)) {
+      if ("build item".equals(event)) {
 
-         // create BuildItemCommand: build item 14:05
-         BuildItemCommand e1405 = new BuildItemCommand();
-         e1405.setId("14:05");
-         e1405.setItem(request.queryParams("item"));
-         e1405.setPrice(request.queryParams("price"));
-         e1405.setBuyer(request.queryParams("buyer"));
-         apply(e1405);
+         // create BuildCommand: build item
+         BuildCommand e140301 = new BuildCommand();
+         e140301.setId("14:03:01");
+         e140301.setItem(request.queryParams("item"));
+         e140301.setPrice(request.queryParams("price"));
+         e140301.setBuyer(request.queryParams("buyer"));
+         apply(e140301);
       }
 
       if ("add item 14:07".equals(event)) {
@@ -848,15 +848,15 @@ public class PartyAppService
          apply(e1407);
       }
 
-      if ("build item 14:09".equals(event)) {
+      if ("build item".equals(event)) {
 
-         // create BuildItemCommand: build item 14:09
-         BuildItemCommand e1409 = new BuildItemCommand();
-         e1409.setId("14:09");
-         e1409.setItem(request.queryParams("item"));
-         e1409.setPrice(request.queryParams("price"));
-         e1409.setBuyer(request.queryParams("buyer"));
-         apply(e1409);
+         // create BuildCommand: build item
+         BuildCommand e140801 = new BuildCommand();
+         e140801.setId("14:08:01");
+         e140801.setItem(request.queryParams("item"));
+         e140801.setPrice(request.queryParams("price"));
+         e140801.setBuyer(request.queryParams("buyer"));
+         apply(e140801);
       }
 
 
@@ -983,36 +983,36 @@ public class PartyAppService
 
       // 14:02
       if (id.equals("14_02")) {
-         html.append("<form action=\"/page/14_04\" method=\"get\">\n");
-         // PartyApp 14:02
+         html.append("<form action=\"/page/14_03\" method=\"get\">\n");
+         // PartyApp welcome 14:02
          html.append("   <p>Welcome Alice</p>\n");
          html.append("   <p>Let's do the SE BBQ</p>\n");
          html.append("   <p>no items yet</p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"add item 14:03\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"add item\"></p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
+         html.append("</form>\n");
+         return html.toString();
+      }
+
+      // 14:03
+      if (id.equals("14_03")) {
+         html.append("<form action=\"/page/14_04\" method=\"get\">\n");
+         // PartyApp item 14:03
+         html.append("   <p>Welcome Alice</p>\n");
+         html.append("   <p>Let's do the SE BBQ</p>\n");
+         html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
+         html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
+         html.append("   <p><input id=\"buyer\" name=\"buyer\" placeholder=\"buyer?\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"build item\"></p>\n");
+         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }
 
       // 14:04
       if (id.equals("14_04")) {
-         html.append("<form action=\"/page/14_06\" method=\"get\">\n");
-         // PartyApp 14:04
-         html.append("   <p>Welcome Alice</p>\n");
-         html.append("   <p>Let's do the SE BBQ</p>\n");
-         html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
-         html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
-         html.append("   <p><input id=\"buyer\" name=\"buyer\" placeholder=\"buyer?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"build item 14:05\"></p>\n");
-         html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
-         html.append("</form>\n");
-         return html.toString();
-      }
-
-      // 14:06
-      if (id.equals("14_06")) {
          html.append("<form action=\"/page/14_08\" method=\"get\">\n");
-         // PartyApp 14:06
+         // PartyApp welcome 14:04
          html.append("   <p>Welcome Alice</p>\n");
          html.append("   <p>Let's do the SE BBQ</p>\n");
          html.append("   <p>beer 12.00 Bob</p>\n");
@@ -1028,13 +1028,13 @@ public class PartyAppService
       // 14:08
       if (id.equals("14_08")) {
          html.append("<form action=\"/page/14_10\" method=\"get\">\n");
-         // PartyApp 14:08
+         // PartyApp doit 14:08
          html.append("   <p>Welcome Alice</p>\n");
          html.append("   <p>Let's do the SE BBQ</p>\n");
          html.append("   <p><input id=\"item\" name=\"item\" placeholder=\"item?\"></p>\n");
          html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");
          html.append("   <p><input id=\"buyer\" name=\"buyer\" placeholder=\"buyer?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"build item 14:09\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"build item\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
@@ -1043,7 +1043,7 @@ public class PartyAppService
       // 14:10
       if (id.equals("14_10")) {
          html.append("<form action=\"/page/next_page\" method=\"get\">\n");
-         // PartyApp 14:10
+         // PartyApp overview 14:10
          html.append("   <p>Welcome Alice</p>\n");
          html.append("   <p>Let's do the SE BBQ</p>\n");
          html.append("   <p>beer 12.00 Bob</p>\n");

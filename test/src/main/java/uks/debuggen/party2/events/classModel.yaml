@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	userRegisteredEvent 	loginSucceededEvent 	partyCreatedEvent 	itemBookedEvent 	saldiComputedEvent 	checkNameCommand 	checkEmailCommand 	checkPasswordCommand 	userBuilt 	checkPartyCommand 	getPartyCommand 	getRegionCommand 	regionBuilt 	partyBuilt 	party2Built 	addItemCommand 	buildItemCommand 	itemBuilt 	guestBuilt
+  classes: 	event 	dataEvent 	subscribeEvent 	dataGroup 	query 	serviceSubscribed 	command 	userRegisteredEvent 	loginSucceededEvent 	partyCreatedEvent 	itemBookedEvent 	saldiComputedEvent 	checkNameCommand 	checkEmailCommand 	checkPasswordCommand 	userBuilt 	checkPartyCommand 	getPartyCommand 	getRegionCommand 	regionBuilt 	partyBuilt 	party2Built 	addCommand 	buildCommand 	itemBuilt 	guestBuilt 	addItemCommand
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	userRegisteredEvent 	loginSucceededEvent 	partyCreatedEvent 	itemBookedEvent 	saldiComputedEvent
+  subClasses: 	dataEvent 	subscribeEvent 	query 	serviceSubscribed 	command 	userRegisteredEvent 	loginSucceededEvent 	partyCreatedEvent 	itemBookedEvent 	saldiComputedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -23,6 +23,14 @@
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
   subClasses: 	dataGroup 	userBuilt 	regionBuilt 	partyBuilt 	party2Built 	itemBuilt 	guestBuilt
+  superClass: 	event
+
+- subscribeEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	subscribeEvent_url
+  model: 	c
+  modified: 	false
+  name: 	SubscribeEvent
+  propertyStyle: 	Bean
   superClass: 	event
 
 - dataGroup: 	org.fulib.classmodel.Clazz
@@ -55,7 +63,7 @@
   modified: 	false
   name: 	Command
   propertyStyle: 	Bean
-  subClasses: 	checkNameCommand 	checkEmailCommand 	checkPasswordCommand 	checkPartyCommand 	getPartyCommand 	getRegionCommand 	addItemCommand 	buildItemCommand
+  subClasses: 	checkNameCommand 	checkEmailCommand 	checkPasswordCommand 	checkPartyCommand 	getPartyCommand 	getRegionCommand 	addCommand 	buildCommand 	addItemCommand
   superClass: 	event
 
 - userRegisteredEvent: 	org.fulib.classmodel.Clazz
@@ -174,18 +182,18 @@
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
-- addItemCommand: 	org.fulib.classmodel.Clazz
+- addCommand: 	org.fulib.classmodel.Clazz
   model: 	c
   modified: 	false
-  name: 	AddItemCommand
+  name: 	AddCommand
   propertyStyle: 	Bean
   superClass: 	command
 
-- buildItemCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	buildItemCommand_item 	buildItemCommand_price 	buildItemCommand_buyer
+- buildCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	buildCommand_item 	buildCommand_price 	buildCommand_buyer
   model: 	c
   modified: 	false
-  name: 	BuildItemCommand
+  name: 	BuildCommand
   propertyStyle: 	Bean
   superClass: 	command
 
@@ -204,6 +212,13 @@
   name: 	GuestBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
+
+- addItemCommand: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	AddItemCommand
+  propertyStyle: 	Bean
+  superClass: 	command
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -251,6 +266,15 @@
   name: 	query
   other: 	query_results
   propertyStyle: 	Bean
+
+- subscribeEvent_url: 	org.fulib.classmodel.Attribute
+  clazz: 	subscribeEvent
+  id: 	SubscribeEvent_url
+  modified: 	false
+  name: 	url
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 
 - dataGroup_elements: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
@@ -501,27 +525,27 @@
   type: 	String
   typeSignature: 	String
 
-- buildItemCommand_item: 	org.fulib.classmodel.Attribute
-  clazz: 	buildItemCommand
-  id: 	BuildItemCommand_item
+- buildCommand_item: 	org.fulib.classmodel.Attribute
+  clazz: 	buildCommand
+  id: 	BuildCommand_item
   modified: 	false
   name: 	item
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- buildItemCommand_price: 	org.fulib.classmodel.Attribute
-  clazz: 	buildItemCommand
-  id: 	BuildItemCommand_price
+- buildCommand_price: 	org.fulib.classmodel.Attribute
+  clazz: 	buildCommand
+  id: 	BuildCommand_price
   modified: 	false
   name: 	price
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- buildItemCommand_buyer: 	org.fulib.classmodel.Attribute
-  clazz: 	buildItemCommand
-  id: 	BuildItemCommand_buyer
+- buildCommand_buyer: 	org.fulib.classmodel.Attribute
+  clazz: 	buildCommand
+  id: 	BuildCommand_buyer
   modified: 	false
   name: 	buyer
   propertyStyle: 	Bean

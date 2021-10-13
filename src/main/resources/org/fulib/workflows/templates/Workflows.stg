@@ -6,6 +6,9 @@ startEventBroker() ::= <<
 eventBroker = new EventBroker();
 eventBroker.start();
 
+this.start();
+waitForEvent("" + port);
+
 >>
 
 publishBody() ::= <<
@@ -269,7 +272,6 @@ testSubscribe() ::=
          String url = "http://localhost:42000/subscribe";
          HttpResponse<String> response = Unirest.post(url).body(json).asString();
          String body = response.getBody();
-         System.out.println("TestMikroShop subscribed to broker\n" + body);
          YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
          idMap.decode(body);
          Map<String, Object> objectMap = idMap.getObjIdMap();

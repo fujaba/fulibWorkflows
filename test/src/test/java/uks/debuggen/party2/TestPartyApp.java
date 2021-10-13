@@ -29,13 +29,31 @@ import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.LinkedHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import spark.Service;
+import spark.Request;
+import spark.Response;
+import org.fulib.yaml.YamlIdMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestPartyApp implements PropertyChangeListener {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
+   public static final String PROPERTY_SPARK = "spark";
+   public static final String PROPERTY_EVENT_QUEUE = "eventQueue";
+   public static final String PROPERTY_HISTORY = "history";
+   public static final String PROPERTY_PORT = "port";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
    private LinkedBlockingQueue party1EventQueue = new LinkedBlockingQueue();
    private LinkedBlockingQueue party2EventQueue = new LinkedBlockingQueue();
+   private Service spark;
+   private LinkedBlockingQueue<Event> eventQueue;
+   private LinkedHashMap<String, Event> history;
+   private int port;
 
    @Override
    public void propertyChange(PropertyChangeEvent evt) {
@@ -59,6 +77,88 @@ public class TestPartyApp implements PropertyChangeListener {
       }
    }
 
+   public void start()
+   {
+      eventQueue = new LinkedBlockingQueue<Event>();
+      history  = new LinkedHashMap<>();
+      port = 41999;
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      spark = Service.ignite();
+      spark.port(port);
+      spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(this::subscribeAndLoadOldEvents);
+      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+   }
+
+   private String postApply(Request req, Response res)
+   {
+      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         } else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
+      }
+      return "apply done";
+   }
+
+   private void subscribeAndLoadOldEvents()
+   {
+      ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+            .setServiceUrl(String.format("http://localhost:%d/apply", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
+      try {
+         String url = "http://localhost:42000/subscribe";
+         HttpResponse<String> response = Unirest.post(url).body(json).asString();
+         String body = response.getBody();
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
+         for (Object obj : objectMap.values()) {
+            Event event = (Event) obj;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+
+   public Event waitForEvent(String id)
+   {
+      while (true) {
+         Event e = history.get(id);
+
+         if (e != null) {
+            return e;
+         }
+
+         try {
+            e = eventQueue.poll(Configuration.timeout, TimeUnit.MILLISECONDS);
+         }
+         catch (Exception x) {
+            throw new RuntimeException(x);
+         }
+
+         if (e == null) {
+            throw new RuntimeException("event timeout waiting for " + id);
+         }
+
+         System.out.println("Test got event " + e.getId());
+         history.put(e.getId(), e);
+      }
+   }
+
    public EventBroker getEventBroker()
    {
       return this.eventBroker;
@@ -77,12 +177,85 @@ public class TestPartyApp implements PropertyChangeListener {
       return this;
    }
 
+   public Service getSpark()
+   {
+      return this.spark;
+   }
+
+   public TestPartyApp setSpark(Service value)
+   {
+      if (Objects.equals(value, this.spark))
+      {
+         return this;
+      }
+
+      final Service oldValue = this.spark;
+      this.spark = value;
+      this.firePropertyChange(PROPERTY_SPARK, oldValue, value);
+      return this;
+   }
+
+   public LinkedBlockingQueue<Event> getEventQueue()
+   {
+      return this.eventQueue;
+   }
+
+   public TestPartyApp setEventQueue(LinkedBlockingQueue<Event> value)
+   {
+      if (Objects.equals(value, this.eventQueue))
+      {
+         return this;
+      }
+
+      final LinkedBlockingQueue<Event> oldValue = this.eventQueue;
+      this.eventQueue = value;
+      this.firePropertyChange(PROPERTY_EVENT_QUEUE, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, Event> getHistory()
+   {
+      return this.history;
+   }
+
+   public TestPartyApp setHistory(LinkedHashMap<String, Event> value)
+   {
+      if (Objects.equals(value, this.history))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, Event> oldValue = this.history;
+      this.history = value;
+      this.firePropertyChange(PROPERTY_HISTORY, oldValue, value);
+      return this;
+   }
+
+   public int getPort()
+   {
+      return this.port;
+   }
+
+   public TestPartyApp setPort(int value)
+   {
+      if (value == this.port)
+      {
+         return this;
+      }
+
+      final int oldValue = this.port;
+      this.port = value;
+      this.firePropertyChange(PROPERTY_PORT, oldValue, value);
+      return this;
+   }
+
    @Before
    public void setTimeOut() {
-      Configuration.timeout = Constants.TIME_OUT;
+      Configuration.timeout = 10 * 60 * 1000; // Constants.TIME_OUT;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = Constants.BROWSER_POS;
-      Configuration.headless = Constants.HEADLESS;
+      Configuration.browserPosition = "-1300x600"; // Constants.BROWSER_POS;
+      Configuration.browserSize = "400x500";
+      // Configuration.headless = Constants.HEADLESS;
    }
 
    @Test
@@ -307,19 +480,14 @@ public class TestPartyApp implements PropertyChangeListener {
       eventBroker = new EventBroker();
       eventBroker.start();
 
+      this.start();
+      waitForEvent("" + port);
+
       // start service
       PartyAppService partyApp = new PartyAppService();
       partyApp.start();
-      try {
-         Thread.sleep(1500);
-      } catch (Exception e) {
-      }
-
-      open("http://localhost:42000");
-      $("body").shouldHave(text("event broker"));
-
-      SelenideElement pre = $("pre");
-      pre.shouldHave(text("http://localhost:42001/apply"));
+      waitForEvent("42001");
+      SelenideElement pre;
       LinkedHashMap<String, Object> modelMap;
 
       // workflow Overview
@@ -328,46 +496,31 @@ public class TestPartyApp implements PropertyChangeListener {
       UserRegisteredEvent e1200 = new UserRegisteredEvent();
       e1200.setId("12:00");
       publish(e1200);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_00:"));
+      waitForEvent("12:00");
 
       // create LoginSucceededEvent: login succeeded 13:00
       LoginSucceededEvent e1300 = new LoginSucceededEvent();
       e1300.setId("13:00");
       publish(e1300);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_00:"));
+      waitForEvent("13:00");
 
       // create PartyCreatedEvent: party created 14:00
       PartyCreatedEvent e1400 = new PartyCreatedEvent();
       e1400.setId("14:00");
       publish(e1400);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_00:"));
+      waitForEvent("14:00");
 
       // create ItemBookedEvent: item booked 15:00
       ItemBookedEvent e1500 = new ItemBookedEvent();
       e1500.setId("15:00");
       publish(e1500);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 15_00:"));
+      waitForEvent("15:00");
 
       // create SaldiComputedEvent: saldi computed 16:00
       SaldiComputedEvent e1600 = new SaldiComputedEvent();
       e1600.setId("16:00");
       publish(e1600);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 16_00:"));
+      waitForEvent("16:00");
 
       // workflow RegisterNewUser
 
@@ -375,15 +528,10 @@ public class TestPartyApp implements PropertyChangeListener {
       open("http://localhost:42001/page/12_00");
       $("#name").setValue("Alice");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_01:"));
+      waitForEvent("12:01");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_01:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
@@ -398,15 +546,10 @@ public class TestPartyApp implements PropertyChangeListener {
       open("http://localhost:42001/page/12_02");
       $("#email").setValue("a@b.de");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_03:"));
+      waitForEvent("12:03");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_03:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
@@ -421,15 +564,10 @@ public class TestPartyApp implements PropertyChangeListener {
       open("http://localhost:42001/page/12_04");
       $("#password").setValue("secret");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_05:"));
+      waitForEvent("12:05");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_05:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
@@ -440,20 +578,16 @@ public class TestPartyApp implements PropertyChangeListener {
 
       open("http://localhost:42001");
       // check data note 12:05:02
-      pre = $("#data");
-      pre.shouldHave(text("- alice:"));
-      pre.shouldHave(matchText("name:.*Alice"));
-      pre.shouldHave(matchText("email:.*a.b.de"));
-      pre.shouldHave(matchText("password:.*secret"));
+      UserBuilt e12_05_02 = (UserBuilt) waitForEvent("12:05:02");
+      assertThat(e12_05_02.getName()).isEqualTo("Alice");
+      assertThat(e12_05_02.getEmail()).isEqualTo("a@b.de");
+      assertThat(e12_05_02.getPassword()).isEqualTo("secret");
 
       // page 12:06
       open("http://localhost:42001/page/12_06");
       $("#party").setValue("SE BBQ");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_07:"));
+      waitForEvent("12:07");
 
       // workflow LoginOldUser
 
@@ -461,15 +595,10 @@ public class TestPartyApp implements PropertyChangeListener {
       open("http://localhost:42001/page/13_00");
       $("#name").setValue("Alice");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_01:"));
+      waitForEvent("13:01");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_01:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
@@ -484,15 +613,10 @@ public class TestPartyApp implements PropertyChangeListener {
       open("http://localhost:42001/page/13_02");
       $("#password").setValue("secret");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_03:"));
+      waitForEvent("13:03");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_03:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
@@ -507,10 +631,7 @@ public class TestPartyApp implements PropertyChangeListener {
       open("http://localhost:42001/page/13_04");
       $("#party").setValue("SE BBQ");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_05:"));
+      waitForEvent("13:05");
 
       // workflow StartParty
 
@@ -518,15 +639,10 @@ public class TestPartyApp implements PropertyChangeListener {
       open("http://localhost:42001/page/13_55");
       $("#region").setValue("Kassel");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_56:"));
+      waitForEvent("13:56");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_56:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
@@ -537,8 +653,7 @@ public class TestPartyApp implements PropertyChangeListener {
 
       open("http://localhost:42001");
       // check data note 13:56:02
-      pre = $("#data");
-      pre.shouldHave(text("- kassel:"));
+      RegionBuilt e13_56_02 = (RegionBuilt) waitForEvent("13:56:02");
 
       // page 14:00
       open("http://localhost:42001/page/14_00");
@@ -546,15 +661,10 @@ public class TestPartyApp implements PropertyChangeListener {
       $("#date").setValue("after work");
       $("#location").setValue("Uni");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_01:"));
+      waitForEvent("14:01");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_01:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
@@ -565,68 +675,51 @@ public class TestPartyApp implements PropertyChangeListener {
 
       open("http://localhost:42001");
       // check data note 14:01:02
-      pre = $("#data");
-      pre.shouldHave(text("- sE_BBQ:"));
-      // check data note 14:01:03
-      pre = $("#data");
-      pre.shouldHave(text("- sE_BBQ:"));
-      pre.shouldHave(matchText("name:.*SE.BBQ"));
-      pre.shouldHave(matchText("region:.*kassel"));
-      pre.shouldHave(matchText("date:.*after.work"));
-      pre.shouldHave(matchText("address:.*Uni"));
+      Party2Built e14_01_02 = (Party2Built) waitForEvent("14:01:02");
+      assertThat(e14_01_02.getName()).isEqualTo("SE BBQ");
+      assertThat(e14_01_02.getRegion()).isEqualTo("Kassel");
+      assertThat(e14_01_02.getDate()).isEqualTo("after work");
+      assertThat(e14_01_02.getAddress()).isEqualTo("Uni");
 
       // page 14:02
       open("http://localhost:42001/page/14_02");
       $("#add").click();
+      waitForEvent("14:02:01");
 
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_03:"));
-
-      // page 14:04
-      open("http://localhost:42001/page/14_04");
+      // page 14:03
+      open("http://localhost:42001/page/14_03");
       $("#item").setValue("beer");
       $("#price").setValue("12.00");
       $("#buyer").setValue("Bob");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_05:"));
+      waitForEvent("14:03:01");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_05:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_05.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_03_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
-      // check data note 14:05:01
-      pre = $("#data");
-      pre.shouldHave(text("- beer:"));
-      pre.shouldHave(matchText("name:.*beer"));
-      pre.shouldHave(matchText("price:.*12.00"));
-      pre.shouldHave(matchText("buyer:.*sE_BBQ_Bob"));
-      pre.shouldHave(matchText("party:.*sE_BBQ"));
-      // check data note 14:05:02
-      pre = $("#data");
-      pre.shouldHave(text("- sE_BBQ_Bob:"));
-      pre.shouldHave(matchText("name:.*Bob"));
-      pre.shouldHave(matchText("party:.*sE_BBQ"));
+      // check data note 14:03:02
+      ItemBuilt e14_03_02 = (ItemBuilt) waitForEvent("14:03:02");
+      assertThat(e14_03_02.getName()).isEqualTo("beer");
+      assertThat(e14_03_02.getPrice()).isEqualTo("12.00");
+      assertThat(e14_03_02.getBuyer()).isEqualTo("sE_BBQ_Bob");
+      assertThat(e14_03_02.getParty()).isEqualTo("SE BBQ");
+      // check data note 14:03:03
+      GuestBuilt e14_03_03 = (GuestBuilt) waitForEvent("14:03:03");
+      assertThat(e14_03_03.getName()).isEqualTo("Bob");
+      assertThat(e14_03_03.getParty()).isEqualTo("SE BBQ");
 
-      // page 14:06
-      open("http://localhost:42001/page/14_06");
+      // page 14:04
+      open("http://localhost:42001/page/14_04");
       $("#add").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_07:"));
+      waitForEvent("14:07");
 
       // page 14:08
       open("http://localhost:42001/page/14_08");
@@ -634,37 +727,30 @@ public class TestPartyApp implements PropertyChangeListener {
       $("#price").setValue("21.00");
       $("#buyer").setValue("Alice");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_09:"));
+      waitForEvent("14:08:01");
 
       // check PartyApp
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_09:"));
       for (DataEvent dataEvent : partyApp.getBuilder().getEventStore().values()) {
          partyApp.getBuilder().load(dataEvent.getBlockId());
       }
       modelMap = partyApp.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_09.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/partyApp14_08_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
+      // check data note 14:08:02
+      ItemBuilt e14_08_02 = (ItemBuilt) waitForEvent("14:08:02");
+      assertThat(e14_08_02.getName()).isEqualTo("meat");
+      assertThat(e14_08_02.getPrice()).isEqualTo("21.00");
+      assertThat(e14_08_02.getBuyer()).isEqualTo("sE_BBQ_Alice");
+      assertThat(e14_08_02.getParty()).isEqualTo("SE BBQ");
       // check data note 14:09:01
-      pre = $("#data");
-      pre.shouldHave(text("- meat:"));
-      pre.shouldHave(matchText("name:.*meat"));
-      pre.shouldHave(matchText("price:.*21.00"));
-      pre.shouldHave(matchText("buyer:.*sE_BBQ_Alice"));
-      pre.shouldHave(matchText("party:.*sE_BBQ"));
-      // check data note 14:09:02
-      pre = $("#data");
-      pre.shouldHave(text("- sE_BBQ_Alice:"));
-      pre.shouldHave(matchText("name:.*Alice"));
-      pre.shouldHave(matchText("expenses:.*0.00"));
-      pre.shouldHave(matchText("party:.*sE_BBQ"));
+      GuestBuilt e14_09_01 = (GuestBuilt) waitForEvent("14:09:01");
+      assertThat(e14_09_01.getName()).isEqualTo("Alice");
+      assertThat(e14_09_01.getExpenses()).isEqualTo("0.00");
+      assertThat(e14_09_01.getParty()).isEqualTo("SE BBQ");
 
       // page 14:10
       open("http://localhost:42001/page/14_10");
@@ -673,6 +759,7 @@ public class TestPartyApp implements PropertyChangeListener {
       } catch (Exception e) {
       }
       eventBroker.stop();
+      spark.stop();
       partyApp.stop();
 
       System.out.println();

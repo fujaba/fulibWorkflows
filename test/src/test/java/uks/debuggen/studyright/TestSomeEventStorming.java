@@ -24,12 +24,32 @@ import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 import java.util.LinkedHashMap;
 import static com.codeborne.selenide.Condition.matchText;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import spark.Service;
+import static org.assertj.core.api.Assertions.assertThat;
+import spark.Request;
+import spark.Response;
+import org.fulib.yaml.YamlIdMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestSomeEventStorming
 {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
+   public static final String PROPERTY_SPARK = "spark";
+   public static final String PROPERTY_EVENT_QUEUE = "eventQueue";
+   public static final String PROPERTY_HISTORY = "history";
+   public static final String PROPERTY_PORT = "port";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
+   private Service spark;
+   private LinkedBlockingQueue<Event> eventQueue;
+   private LinkedHashMap<String, Event> history;
+   private int port;
 
    public EventBroker getEventBroker()
    {
@@ -46,6 +66,78 @@ public class TestSomeEventStorming
       final EventBroker oldValue = this.eventBroker;
       this.eventBroker = value;
       this.firePropertyChange(PROPERTY_EVENT_BROKER, oldValue, value);
+      return this;
+   }
+
+   public Service getSpark()
+   {
+      return this.spark;
+   }
+
+   public TestSomeEventStorming setSpark(Service value)
+   {
+      if (Objects.equals(value, this.spark))
+      {
+         return this;
+      }
+
+      final Service oldValue = this.spark;
+      this.spark = value;
+      this.firePropertyChange(PROPERTY_SPARK, oldValue, value);
+      return this;
+   }
+
+   public LinkedBlockingQueue<Event> getEventQueue()
+   {
+      return this.eventQueue;
+   }
+
+   public TestSomeEventStorming setEventQueue(LinkedBlockingQueue<Event> value)
+   {
+      if (Objects.equals(value, this.eventQueue))
+      {
+         return this;
+      }
+
+      final LinkedBlockingQueue<Event> oldValue = this.eventQueue;
+      this.eventQueue = value;
+      this.firePropertyChange(PROPERTY_EVENT_QUEUE, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, Event> getHistory()
+   {
+      return this.history;
+   }
+
+   public TestSomeEventStorming setHistory(LinkedHashMap<String, Event> value)
+   {
+      if (Objects.equals(value, this.history))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, Event> oldValue = this.history;
+      this.history = value;
+      this.firePropertyChange(PROPERTY_HISTORY, oldValue, value);
+      return this;
+   }
+
+   public int getPort()
+   {
+      return this.port;
+   }
+
+   public TestSomeEventStorming setPort(int value)
+   {
+      if (value == this.port)
+      {
+         return this;
+      }
+
+      final int oldValue = this.port;
+      this.port = value;
+      this.firePropertyChange(PROPERTY_PORT, oldValue, value);
       return this;
    }
 
@@ -543,5 +635,87 @@ public class TestSomeEventStorming
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
+   }
+
+   public void start()
+   {
+      eventQueue = new LinkedBlockingQueue<Event>();
+      history  = new LinkedHashMap<>();
+      port = 41999;
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      spark = Service.ignite();
+      spark.port(port);
+      spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(this::subscribeAndLoadOldEvents);
+      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+   }
+
+   private String postApply(Request req, Response res)
+   {
+      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         } else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
+      }
+      return "apply done";
+   }
+
+   private void subscribeAndLoadOldEvents()
+   {
+      ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+            .setServiceUrl(String.format("http://localhost:%d/apply", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
+      try {
+         String url = "http://localhost:42000/subscribe";
+         HttpResponse<String> response = Unirest.post(url).body(json).asString();
+         String body = response.getBody();
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
+         for (Object obj : objectMap.values()) {
+            Event event = (Event) obj;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+
+   public Event waitForEvent(String id)
+   {
+      while (true) {
+         Event e = history.get(id);
+
+         if (e != null) {
+            return e;
+         }
+
+         try {
+            e = eventQueue.poll(Configuration.timeout, TimeUnit.MILLISECONDS);
+         }
+         catch (Exception x) {
+            throw new RuntimeException(x);
+         }
+
+         if (e == null) {
+            throw new RuntimeException("event timeout waiting for " + id);
+         }
+
+         System.out.println("Test got event " + e.getId());
+         history.put(e.getId(), e);
+      }
    }
 }

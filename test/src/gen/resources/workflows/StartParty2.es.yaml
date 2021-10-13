@@ -32,18 +32,13 @@
     - button: ok
       command: get party 14:01
 
-- query: sE_BBQ 14:01:01
-  result: []
-
-- data: 14:01:02
-  Party: sE_BBQ
+- data: Party
   name: SE BBQ
   date: after work
   location: Uni
   @migratedTo: Party2
 
-- data: 14:01:03
-  Party2: sE_BBQ
+- data: Party2
   name: SE BBQ
   region: Kassel
   region.back: [parties]
@@ -52,15 +47,15 @@
 
 
 - page:
-    - name: PartyApp 14:02
+    - name: PartyApp welcome
     - label: Welcome Alice
     - label: Let's do the SE BBQ
     - label: no items yet
     - button: add
-      command: add item 14:03
+      command: add item
 
 - page:
-    - name: PartyApp 14:04
+    - name: PartyApp item
     - label: Welcome Alice
     - label: Let's do the SE BBQ
     - input: item
@@ -70,25 +65,23 @@
     - input: buyer
       fill: Bob
     - button: ok
-      command: build item 14:05
+      command: build item
 
-- data: 14:05:01
-  Item: beer
+- data: Item
   name: beer
   price: 12.00
   buyer: sE_BBQ_Bob
   buyer.back: [items]
-  party: sE_BBQ
+  party: SE BBQ
   party.back: [items]
 
-- data: 14:05:02
-  guest: sE_BBQ_Bob
+- data: Guest sE_BBQ_Bob
   name: Bob
-  party: sE_BBQ
+  party: SE BBQ
   party.back: [guests]
 
 - page:
-    - name: PartyApp 14:06
+    - name: PartyApp welcome
     - label: Welcome Alice
     - label: Let's do the SE BBQ
     - label: beer 12.00 Bob
@@ -99,7 +92,7 @@
     - label: Bob 0.00
 
 - page:
-    - name: PartyApp 14:08
+    - name: PartyApp doit
     - label: Welcome Alice
     - label: Let's do the SE BBQ
     - input: item
@@ -109,29 +102,27 @@
     - input: buyer
       fill: Alice
     - button: ok
-      command: build item 14:09
+      command: build item
 
-- data: 14:09:01
-  Item: meat
+- data: Item
   name: meat
   price: 21.00
   buyer: sE_BBQ_Alice
-  party: sE_BBQ
+  party: SE BBQ
 
-- event: item booked 14:09:03
+- event: item booked
   name: meat
   price: 21.00
   buyer: Alice
-  party: sE_BBQ
+  party: SE BBQ
 
-- data: 14:09:02
-  guest: sE_BBQ_Alice
+- data: Guest sE_BBQ_Alice
   name: Alice
   expenses: 0.00
-  party: sE_BBQ
+  party: SE BBQ
 
 - page:
-    - name: PartyApp 14:10
+    - name: PartyApp overview
     - label: Welcome Alice
     - label: Let's do the SE BBQ
     - label: beer 12.00 Bob

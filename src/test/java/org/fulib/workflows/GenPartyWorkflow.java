@@ -5,7 +5,7 @@ import org.fulib.builder.ClassModelManager;
 import org.fulib.workflows.html.HtmlGenerator3;
 import org.junit.Test;
 
-public class TestPartyWorkflow {
+public class GenPartyWorkflow {
 
     private ClassModelManager mm;
 

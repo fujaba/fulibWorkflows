@@ -4,11 +4,11 @@ import java.util.Objects;
 public class GetPartyCommand extends Command
 {
    public static final String PROPERTY_PARTY = "party";
-   public static final String PROPERTY_LOCATION = "location";
    public static final String PROPERTY_DATE = "date";
+   public static final String PROPERTY_LOCATION = "location";
    private String party;
-   private String location;
    private String date;
+   private String location;
 
    public String getParty()
    {
@@ -28,24 +28,6 @@ public class GetPartyCommand extends Command
       return this;
    }
 
-   public String getLocation()
-   {
-      return this.location;
-   }
-
-   public GetPartyCommand setLocation(String value)
-   {
-      if (Objects.equals(value, this.location))
-      {
-         return this;
-      }
-
-      final String oldValue = this.location;
-      this.location = value;
-      this.firePropertyChange(PROPERTY_LOCATION, oldValue, value);
-      return this;
-   }
-
    public String getDate()
    {
       return this.date;
@@ -61,6 +43,24 @@ public class GetPartyCommand extends Command
       final String oldValue = this.date;
       this.date = value;
       this.firePropertyChange(PROPERTY_DATE, oldValue, value);
+      return this;
+   }
+
+   public String getLocation()
+   {
+      return this.location;
+   }
+
+   public GetPartyCommand setLocation(String value)
+   {
+      if (Objects.equals(value, this.location))
+      {
+         return this;
+      }
+
+      final String oldValue = this.location;
+      this.location = value;
+      this.firePropertyChange(PROPERTY_LOCATION, oldValue, value);
       return this;
    }
 

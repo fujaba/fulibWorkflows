@@ -18,12 +18,32 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import spark.Service;
+import static org.assertj.core.api.Assertions.assertThat;
+import spark.Request;
+import spark.Response;
+import org.fulib.yaml.YamlIdMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestHealthExperts
 {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
+   public static final String PROPERTY_SPARK = "spark";
+   public static final String PROPERTY_EVENT_QUEUE = "eventQueue";
+   public static final String PROPERTY_HISTORY = "history";
+   public static final String PROPERTY_PORT = "port";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
+   private Service spark;
+   private LinkedBlockingQueue<Event> eventQueue;
+   private LinkedHashMap<String, Event> history;
+   private int port;
 
    public EventBroker getEventBroker()
    {
@@ -43,6 +63,78 @@ public class TestHealthExperts
       return this;
    }
 
+   public Service getSpark()
+   {
+      return this.spark;
+   }
+
+   public TestHealthExperts setSpark(Service value)
+   {
+      if (Objects.equals(value, this.spark))
+      {
+         return this;
+      }
+
+      final Service oldValue = this.spark;
+      this.spark = value;
+      this.firePropertyChange(PROPERTY_SPARK, oldValue, value);
+      return this;
+   }
+
+   public LinkedBlockingQueue<Event> getEventQueue()
+   {
+      return this.eventQueue;
+   }
+
+   public TestHealthExperts setEventQueue(LinkedBlockingQueue<Event> value)
+   {
+      if (Objects.equals(value, this.eventQueue))
+      {
+         return this;
+      }
+
+      final LinkedBlockingQueue<Event> oldValue = this.eventQueue;
+      this.eventQueue = value;
+      this.firePropertyChange(PROPERTY_EVENT_QUEUE, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, Event> getHistory()
+   {
+      return this.history;
+   }
+
+   public TestHealthExperts setHistory(LinkedHashMap<String, Event> value)
+   {
+      if (Objects.equals(value, this.history))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, Event> oldValue = this.history;
+      this.history = value;
+      this.firePropertyChange(PROPERTY_HISTORY, oldValue, value);
+      return this;
+   }
+
+   public int getPort()
+   {
+      return this.port;
+   }
+
+   public TestHealthExperts setPort(int value)
+   {
+      if (value == this.port)
+      {
+         return this;
+      }
+
+      final int oldValue = this.port;
+      this.port = value;
+      this.firePropertyChange(PROPERTY_PORT, oldValue, value);
+      return this;
+   }
+
    @Before
    public void setTimeOut() {
       Configuration.timeout = Constants.TIME_OUT;
@@ -58,19 +150,14 @@ public class TestHealthExperts
       eventBroker = new EventBroker();
       eventBroker.start();
 
+      this.start();
+      waitForEvent("" + port);
+
       // start service
       MarburgHealthSystemService marburgHealthSystem = new MarburgHealthSystemService();
       marburgHealthSystem.start();
-      try {
-         Thread.sleep(1500);
-      } catch (Exception e) {
-      }
-
-      open("http://localhost:42000");
-      $("body").shouldHave(text("event broker"));
-
-      SelenideElement pre = $("pre");
-      pre.shouldHave(text("http://localhost:42001/apply"));
+      waitForEvent("42001");
+      SelenideElement pre;
       LinkedHashMap<String, Object> modelMap;
 
       // workflow MarburgExpertSystem
@@ -80,15 +167,10 @@ public class TestHealthExperts
       e1200.setId("12:00");
       e1200.setNames("[common cold, influenza, pneumonia]");
       publish(e1200);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_00:"));
+      waitForEvent("12:00");
 
       // check MarburgHealthSystem
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_00:"));
       for (DataEvent dataEvent : marburgHealthSystem.getBuilder().getEventStore().values()) {
          marburgHealthSystem.getBuilder().load(dataEvent.getBlockId());
       }
@@ -99,59 +181,49 @@ public class TestHealthExperts
 
       open("http://localhost:42001");
       // check data note 12:00:01
-      pre = $("#data");
-      pre.shouldHave(text("- common_cold:"));
-      pre.shouldHave(matchText("name:.*common.cold"));
-      pre.shouldHave(matchText("symptoms:.*runny_nose.*cough.*hoarseness.*medium_fever.*"));
-      pre.shouldHave(matchText("counterSymptoms:.*chills.*joint_pain.*"));
+      DiseaseBuilt e12_00_01 = (DiseaseBuilt) waitForEvent("12:00:01");
+      assertThat(e12_00_01.getName()).isEqualTo("common cold");
+      assertThat(e12_00_01.getSymptoms()).isEqualTo("[runny nose, cough, hoarseness, medium fever]");
+      assertThat(e12_00_01.getCounterSymptoms()).isEqualTo("[chills, joint pain]");
       // check data note 12:00:02
-      pre = $("#data");
-      pre.shouldHave(text("- influenza:"));
-      pre.shouldHave(matchText("name:.*influenza"));
-      pre.shouldHave(matchText("symptoms:.*cough.*medium_fever.*chills.*joint_pain.*headache.*"));
-      pre.shouldHave(matchText("counterSymptoms:.*lung_noises.*"));
+      DiseaseBuilt e12_00_02 = (DiseaseBuilt) waitForEvent("12:00:02");
+      assertThat(e12_00_02.getName()).isEqualTo("influenza");
+      assertThat(e12_00_02.getSymptoms()).isEqualTo("[cough, medium fever, chills, joint pain, headache]");
+      assertThat(e12_00_02.getCounterSymptoms()).isEqualTo("[lung noises]");
       // check data note 12:00:03
-      pre = $("#data");
-      pre.shouldHave(text("- pneumonia:"));
-      pre.shouldHave(matchText("name:.*pneumonia"));
-      pre.shouldHave(matchText("symptoms:.*cough.*medium_fever.*chills.*joint_pain.*headache.*lung_noises.*"));
+      DiseaseBuilt e12_00_03 = (DiseaseBuilt) waitForEvent("12:00:03");
+      assertThat(e12_00_03.getName()).isEqualTo("pneumonia");
+      assertThat(e12_00_03.getSymptoms()).isEqualTo("[cough, medium fever, chills, joint pain, headache, lung noises]");
       // check data note 12:00:04
-      pre = $("#data");
-      pre.shouldHave(text("- cough:"));
-      pre.shouldHave(matchText("name:.*cough"));
+      SymptomBuilt e12_00_04 = (SymptomBuilt) waitForEvent("12:00:04");
+      assertThat(e12_00_04.getName()).isEqualTo("cough");
       // check data note 12:00:05
-      pre = $("#data");
-      pre.shouldHave(text("- runny_nose:"));
-      pre.shouldHave(matchText("name:.*runny.nose"));
+      SymptomBuilt e12_00_05 = (SymptomBuilt) waitForEvent("12:00:05");
+      assertThat(e12_00_05.getName()).isEqualTo("runny nose");
       // check data note 12:00:06
-      pre = $("#data");
-      pre.shouldHave(text("- hoarseness:"));
-      pre.shouldHave(matchText("name:.*hoarseness"));
+      SymptomBuilt e12_00_06 = (SymptomBuilt) waitForEvent("12:00:06");
+      assertThat(e12_00_06.getName()).isEqualTo("hoarseness");
       // check data note 12:00:07
-      pre = $("#data");
-      pre.shouldHave(text("- medium_fever:"));
-      pre.shouldHave(matchText("name:.*medium.fever"));
+      SymptomBuilt e12_00_07 = (SymptomBuilt) waitForEvent("12:00:07");
+      assertThat(e12_00_07.getName()).isEqualTo("medium fever");
       // check data note 12:00:08
-      pre = $("#data");
-      pre.shouldHave(text("- chills:"));
-      pre.shouldHave(matchText("name:.*chills"));
+      SymptomBuilt e12_00_08 = (SymptomBuilt) waitForEvent("12:00:08");
+      assertThat(e12_00_08.getName()).isEqualTo("chills");
       // check data note 12:00:09
-      pre = $("#data");
-      pre.shouldHave(text("- joint_pain:"));
-      pre.shouldHave(matchText("name:.*joint.pain"));
+      SymptomBuilt e12_00_09 = (SymptomBuilt) waitForEvent("12:00:09");
+      assertThat(e12_00_09.getName()).isEqualTo("joint pain");
       // check data note 12:00:10
-      pre = $("#data");
-      pre.shouldHave(text("- headache:"));
-      pre.shouldHave(matchText("name:.*headache"));
+      SymptomBuilt e12_00_10 = (SymptomBuilt) waitForEvent("12:00:10");
+      assertThat(e12_00_10.getName()).isEqualTo("headache");
       // check data note 12:00:11
-      pre = $("#data");
-      pre.shouldHave(text("- lung_noises:"));
-      pre.shouldHave(matchText("name:.*lung.noises"));
+      SymptomBuilt e12_00_11 = (SymptomBuilt) waitForEvent("12:00:11");
+      assertThat(e12_00_11.getName()).isEqualTo("lung noises");
       try {
          Thread.sleep(3000);
       } catch (Exception e) {
       }
       eventBroker.stop();
+      spark.stop();
       marburgHealthSystem.stop();
 
       System.out.println();
@@ -189,5 +261,87 @@ public class TestHealthExperts
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
+   }
+
+   public void start()
+   {
+      eventQueue = new LinkedBlockingQueue<Event>();
+      history  = new LinkedHashMap<>();
+      port = 41999;
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      spark = Service.ignite();
+      spark.port(port);
+      spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(this::subscribeAndLoadOldEvents);
+      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+   }
+
+   private String postApply(Request req, Response res)
+   {
+      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         } else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
+      }
+      return "apply done";
+   }
+
+   private void subscribeAndLoadOldEvents()
+   {
+      ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+            .setServiceUrl(String.format("http://localhost:%d/apply", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
+      try {
+         String url = "http://localhost:42000/subscribe";
+         HttpResponse<String> response = Unirest.post(url).body(json).asString();
+         String body = response.getBody();
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
+         for (Object obj : objectMap.values()) {
+            Event event = (Event) obj;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+
+   public Event waitForEvent(String id)
+   {
+      while (true) {
+         Event e = history.get(id);
+
+         if (e != null) {
+            return e;
+         }
+
+         try {
+            e = eventQueue.poll(Configuration.timeout, TimeUnit.MILLISECONDS);
+         }
+         catch (Exception x) {
+            throw new RuntimeException(x);
+         }
+
+         if (e == null) {
+            throw new RuntimeException("event timeout waiting for " + id);
+         }
+
+         System.out.println("Test got event " + e.getId());
+         history.put(e.getId(), e);
+      }
    }
 }

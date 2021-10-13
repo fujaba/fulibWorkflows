@@ -1,7 +1,7 @@
 package uks.debuggen.party2.events;
 import java.util.Objects;
 
-public class BuildItemCommand extends Command
+public class BuildCommand extends Command
 {
    public static final String PROPERTY_ITEM = "item";
    public static final String PROPERTY_PRICE = "price";
@@ -15,7 +15,7 @@ public class BuildItemCommand extends Command
       return this.item;
    }
 
-   public BuildItemCommand setItem(String value)
+   public BuildCommand setItem(String value)
    {
       if (Objects.equals(value, this.item))
       {
@@ -33,7 +33,7 @@ public class BuildItemCommand extends Command
       return this.price;
    }
 
-   public BuildItemCommand setPrice(String value)
+   public BuildCommand setPrice(String value)
    {
       if (Objects.equals(value, this.price))
       {
@@ -51,7 +51,7 @@ public class BuildItemCommand extends Command
       return this.buyer;
    }
 
-   public BuildItemCommand setBuyer(String value)
+   public BuildCommand setBuyer(String value)
    {
       if (Objects.equals(value, this.buyer))
       {

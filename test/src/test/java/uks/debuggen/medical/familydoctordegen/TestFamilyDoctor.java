@@ -21,12 +21,32 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import spark.Service;
+import static org.assertj.core.api.Assertions.assertThat;
+import spark.Request;
+import spark.Response;
+import org.fulib.yaml.YamlIdMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class TestFamilyDoctor
 {
    public static final String PROPERTY_EVENT_BROKER = "eventBroker";
+   public static final String PROPERTY_SPARK = "spark";
+   public static final String PROPERTY_EVENT_QUEUE = "eventQueue";
+   public static final String PROPERTY_HISTORY = "history";
+   public static final String PROPERTY_PORT = "port";
    private EventBroker eventBroker;
    protected PropertyChangeSupport listeners;
+   private Service spark;
+   private LinkedBlockingQueue<Event> eventQueue;
+   private LinkedHashMap<String, Event> history;
+   private int port;
 
    public EventBroker getEventBroker()
    {
@@ -46,6 +66,78 @@ public class TestFamilyDoctor
       return this;
    }
 
+   public Service getSpark()
+   {
+      return this.spark;
+   }
+
+   public TestFamilyDoctor setSpark(Service value)
+   {
+      if (Objects.equals(value, this.spark))
+      {
+         return this;
+      }
+
+      final Service oldValue = this.spark;
+      this.spark = value;
+      this.firePropertyChange(PROPERTY_SPARK, oldValue, value);
+      return this;
+   }
+
+   public LinkedBlockingQueue<Event> getEventQueue()
+   {
+      return this.eventQueue;
+   }
+
+   public TestFamilyDoctor setEventQueue(LinkedBlockingQueue<Event> value)
+   {
+      if (Objects.equals(value, this.eventQueue))
+      {
+         return this;
+      }
+
+      final LinkedBlockingQueue<Event> oldValue = this.eventQueue;
+      this.eventQueue = value;
+      this.firePropertyChange(PROPERTY_EVENT_QUEUE, oldValue, value);
+      return this;
+   }
+
+   public LinkedHashMap<String, Event> getHistory()
+   {
+      return this.history;
+   }
+
+   public TestFamilyDoctor setHistory(LinkedHashMap<String, Event> value)
+   {
+      if (Objects.equals(value, this.history))
+      {
+         return this;
+      }
+
+      final LinkedHashMap<String, Event> oldValue = this.history;
+      this.history = value;
+      this.firePropertyChange(PROPERTY_HISTORY, oldValue, value);
+      return this;
+   }
+
+   public int getPort()
+   {
+      return this.port;
+   }
+
+   public TestFamilyDoctor setPort(int value)
+   {
+      if (value == this.port)
+      {
+         return this;
+      }
+
+      final int oldValue = this.port;
+      this.port = value;
+      this.firePropertyChange(PROPERTY_PORT, oldValue, value);
+      return this;
+   }
+
    @Before
    public void setTimeOut() {
       Configuration.timeout = Constants.TIME_OUT;
@@ -61,19 +153,14 @@ public class TestFamilyDoctor
       eventBroker = new EventBroker();
       eventBroker.start();
 
+      this.start();
+      waitForEvent("" + port);
+
       // start service
       DocMedicalService docMedical = new DocMedicalService();
       docMedical.start();
-      try {
-         Thread.sleep(1500);
-      } catch (Exception e) {
-      }
-
-      open("http://localhost:42000");
-      $("body").shouldHave(text("event broker"));
-
-      SelenideElement pre = $("pre");
-      pre.shouldHave(text("http://localhost:42001/apply"));
+      waitForEvent("42001");
+      SelenideElement pre;
       LinkedHashMap<String, Object> modelMap;
 
       // workflow FamilyDoctorDegen
@@ -166,15 +253,10 @@ public class TestFamilyDoctor
       e1401.setAddress("Wonderland 1");
       e1401.setBirthDate("1970-01-01");
       publish(e1401);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_01:"));
+      waitForEvent("14:01");
 
       // check DocMedical
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_01:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
@@ -185,11 +267,10 @@ public class TestFamilyDoctor
 
       open("http://localhost:42001");
       // check data note 14:01:01
-      pre = $("#data");
-      pre.shouldHave(text("- alice:"));
-      pre.shouldHave(matchText("name:.*Alice"));
-      pre.shouldHave(matchText("address:.*Wonderland.1"));
-      pre.shouldHave(matchText("birthDate:.*1970.01.01"));
+      PatientBuilt e14_01_01 = (PatientBuilt) waitForEvent("14:01:01");
+      assertThat(e14_01_01.getName()).isEqualTo("Alice");
+      assertThat(e14_01_01.getAddress()).isEqualTo("Wonderland 1");
+      assertThat(e14_01_01.getBirthDate()).isEqualTo("1970-01-01");
 
       // create ConsultationRegisteredEvent: consultation registered
       ConsultationRegisteredEvent e1402 = new ConsultationRegisteredEvent();
@@ -197,15 +278,10 @@ public class TestFamilyDoctor
       e1402.setPatient("Alice");
       e1402.setDate("2021-06-02T14:00");
       publish(e1402);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_02:"));
+      waitForEvent("14:02");
 
       // check DocMedical
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_02:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
@@ -216,10 +292,9 @@ public class TestFamilyDoctor
 
       open("http://localhost:42001");
       // check data note 14:02:01
-      pre = $("#data");
-      pre.shouldHave(text("- alice_2021_06_02T14_00:"));
-      pre.shouldHave(matchText("cid:.*Alice.2021.06.02T14.00"));
-      pre.shouldHave(matchText("patient:.*alice"));
+      ConsultationBuilt e14_02_01 = (ConsultationBuilt) waitForEvent("14:02:01");
+      assertThat(e14_02_01.getCid()).isEqualTo("Alice#2021-06-02T14:00");
+      assertThat(e14_02_01.getPatient()).isEqualTo("Alice");
 
       // create SymptomValidatedEvent: symptom validated
       SymptomValidatedEvent e1403 = new SymptomValidatedEvent();
@@ -227,15 +302,10 @@ public class TestFamilyDoctor
       e1403.setSymptom("cough");
       e1403.setConsultation("Alice#2021-06-02T14:00");
       publish(e1403);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_03:"));
+      waitForEvent("14:03");
 
       // check DocMedical
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_03:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
@@ -246,10 +316,9 @@ public class TestFamilyDoctor
 
       open("http://localhost:42001");
       // check data note 14:03:01
-      pre = $("#data");
-      pre.shouldHave(text("- cough:"));
-      pre.shouldHave(matchText("name:.*cough"));
-      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
+      SymptomBuilt e14_03_01 = (SymptomBuilt) waitForEvent("14:03:01");
+      assertThat(e14_03_01.getName()).isEqualTo("cough");
+      assertThat(e14_03_01.getConsultations()).isEqualTo("[Alice#2021-06-02T14:00]");
 
       // create SymptomValidatedEvent: symptom validated
       SymptomValidatedEvent e1404 = new SymptomValidatedEvent();
@@ -257,15 +326,10 @@ public class TestFamilyDoctor
       e1404.setSymptom("runny nose");
       e1404.setConsultations("[Alice#2021-06-02T14:00]");
       publish(e1404);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_04:"));
+      waitForEvent("14:04");
 
       // check DocMedical
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_04:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
@@ -276,10 +340,9 @@ public class TestFamilyDoctor
 
       open("http://localhost:42001");
       // check data note 14:04:01
-      pre = $("#data");
-      pre.shouldHave(text("- runny_nose:"));
-      pre.shouldHave(matchText("name:.*runny.nose"));
-      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
+      SymptomBuilt e14_04_01 = (SymptomBuilt) waitForEvent("14:04:01");
+      assertThat(e14_04_01.getName()).isEqualTo("runny nose");
+      assertThat(e14_04_01.getConsultations()).isEqualTo("[Alice#2021-06-02T14:00]");
 
       // create TestDoneEvent: test done
       TestDoneEvent e1405 = new TestDoneEvent();
@@ -288,15 +351,10 @@ public class TestFamilyDoctor
       e1405.setResult("39.8 Celsius");
       e1405.setConsultation("[Alice#2021-06-02T14:00]");
       publish(e1405);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_05:"));
+      waitForEvent("14:05");
 
       // check DocMedical
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_05:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
@@ -307,17 +365,15 @@ public class TestFamilyDoctor
 
       open("http://localhost:42001");
       // check data note 14:05:01
-      pre = $("#data");
-      pre.shouldHave(text("- alice_t001_2021_06_02T14_00:"));
-      pre.shouldHave(matchText("cid:.*Alice.t001.2021.06.02T14.00"));
-      pre.shouldHave(matchText("kind:.*temperature"));
-      pre.shouldHave(matchText("result:.*39.8.Celsius"));
-      pre.shouldHave(matchText("consultation:.*alice_2021_06_02T14_00"));
+      TestBuilt e14_05_01 = (TestBuilt) waitForEvent("14:05:01");
+      assertThat(e14_05_01.getCid()).isEqualTo("Alice#t001#2021-06-02T14:00");
+      assertThat(e14_05_01.getKind()).isEqualTo("temperature");
+      assertThat(e14_05_01.getResult()).isEqualTo("39.8 Celsius");
+      assertThat(e14_05_01.getConsultation()).isEqualTo("Alice#2021-06-02T14:00");
       // check data note 14:05:02
-      pre = $("#data");
-      pre.shouldHave(text("- medium_fever:"));
-      pre.shouldHave(matchText("name:.*medium.fever"));
-      pre.shouldHave(matchText("consultations:.*alice_2021_06_02T14_00.*"));
+      SymptomBuilt e14_05_02 = (SymptomBuilt) waitForEvent("14:05:02");
+      assertThat(e14_05_02.getName()).isEqualTo("medium fever");
+      assertThat(e14_05_02.getConsultations()).isEqualTo("[Alice#2021-06-02T14:00]");
 
       // create DiagnosisDoneEvent: diagnosis done
       DiagnosisDoneEvent e1406 = new DiagnosisDoneEvent();
@@ -325,15 +381,10 @@ public class TestFamilyDoctor
       e1406.setDiagnosis("common cold");
       e1406.setConsultation("Alice#2021-06-02T14:00");
       publish(e1406);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_06:"));
+      waitForEvent("14:06");
 
       // check DocMedical
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_06:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
@@ -344,10 +395,9 @@ public class TestFamilyDoctor
 
       open("http://localhost:42001");
       // check data note 14:06:01
-      pre = $("#data");
-      pre.shouldHave(text("- alice_2021_06_02T14_00:"));
-      pre.shouldHave(matchText("cid:.*Alice.2021.06.02T14.00"));
-      pre.shouldHave(matchText("diagnosis:.*common_cold"));
+      ConsultationBuilt e14_06_01 = (ConsultationBuilt) waitForEvent("14:06:01");
+      assertThat(e14_06_01.getCid()).isEqualTo("Alice#2021-06-02T14:00");
+      assertThat(e14_06_01.getDiagnosis()).isEqualTo("common cold");
 
       // create TreatmentInitiatedEvent: treatment initiated
       TreatmentInitiatedEvent e1407 = new TreatmentInitiatedEvent();
@@ -355,15 +405,10 @@ public class TestFamilyDoctor
       e1407.setTreatment("ibuprofen 400 1-1-1");
       e1407.setConsultation("Alice#2021-06-02T14:00");
       publish(e1407);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_07:"));
+      waitForEvent("14:07");
 
       // check DocMedical
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_07:"));
       for (DataEvent dataEvent : docMedical.getBuilder().getEventStore().values()) {
          docMedical.getBuilder().load(dataEvent.getBlockId());
       }
@@ -374,10 +419,9 @@ public class TestFamilyDoctor
 
       open("http://localhost:42001");
       // check data note 14:07:01
-      pre = $("#data");
-      pre.shouldHave(text("- alice_2021_06_02T14_00:"));
-      pre.shouldHave(matchText("cid:.*Alice.2021.06.02T14.00"));
-      pre.shouldHave(matchText("treatment:.*ibuprofen.400.1.1.1"));
+      ConsultationBuilt e14_07_01 = (ConsultationBuilt) waitForEvent("14:07:01");
+      assertThat(e14_07_01.getCid()).isEqualTo("Alice#2021-06-02T14:00");
+      assertThat(e14_07_01.getTreatment()).isEqualTo("ibuprofen 400 1-1-1");
 
       // workflow Accounting
 
@@ -385,10 +429,7 @@ public class TestFamilyDoctor
       InvoiceSentEvent e1501 = new InvoiceSentEvent();
       e1501.setId("15:01");
       publish(e1501);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 15_01:"));
+      waitForEvent("15:01");
 
       // workflow CovidVaccination
 
@@ -396,45 +437,34 @@ public class TestFamilyDoctor
       CovidVaccinationRequestedEvent e1410 = new CovidVaccinationRequestedEvent();
       e1410.setId("14:10");
       publish(e1410);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_10:"));
+      waitForEvent("14:10");
 
       // create DiagnosisDoneEvent: diagnosis done 14:20
       DiagnosisDoneEvent e1420 = new DiagnosisDoneEvent();
       e1420.setId("14:20");
       e1420.setDisease("covid");
       publish(e1420);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_20:"));
+      waitForEvent("14:20");
 
       // create TreatmentInitiatedEvent: treatment initiated 14:21
       TreatmentInitiatedEvent e1421 = new TreatmentInitiatedEvent();
       e1421.setId("14:21");
       e1421.setTreatment("covid vaccination");
       publish(e1421);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_21:"));
+      waitForEvent("14:21");
 
       // create DiagnosisDoneEvent: diagnosis done 14:20:02
       DiagnosisDoneEvent e142002 = new DiagnosisDoneEvent();
       e142002.setId("14:20:02");
       e142002.setDisease("fever from vaccination");
       publish(e142002);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 14_20_02:"));
+      waitForEvent("14:20:02");
       try {
          Thread.sleep(3000);
       } catch (Exception e) {
       }
       eventBroker.stop();
+      spark.stop();
       docMedical.stop();
 
       System.out.println();
@@ -472,5 +502,87 @@ public class TestFamilyDoctor
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
+   }
+
+   public void start()
+   {
+      eventQueue = new LinkedBlockingQueue<Event>();
+      history  = new LinkedHashMap<>();
+      port = 41999;
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      spark = Service.ignite();
+      spark.port(port);
+      spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(this::subscribeAndLoadOldEvents);
+      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+   }
+
+   private String postApply(Request req, Response res)
+   {
+      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         } else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
+      }
+      return "apply done";
+   }
+
+   private void subscribeAndLoadOldEvents()
+   {
+      ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+            .setServiceUrl(String.format("http://localhost:%d/apply", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
+      try {
+         String url = "http://localhost:42000/subscribe";
+         HttpResponse<String> response = Unirest.post(url).body(json).asString();
+         String body = response.getBody();
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
+         for (Object obj : objectMap.values()) {
+            Event event = (Event) obj;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+
+   public Event waitForEvent(String id)
+   {
+      while (true) {
+         Event e = history.get(id);
+
+         if (e != null) {
+            return e;
+         }
+
+         try {
+            e = eventQueue.poll(Configuration.timeout, TimeUnit.MILLISECONDS);
+         }
+         catch (Exception x) {
+            throw new RuntimeException(x);
+         }
+
+         if (e == null) {
+            throw new RuntimeException("event timeout waiting for " + id);
+         }
+
+         System.out.println("Test got event " + e.getId());
+         history.put(e.getId(), e);
+      }
    }
 }

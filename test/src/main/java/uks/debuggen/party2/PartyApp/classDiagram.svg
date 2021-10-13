@@ -1,8 +1,8 @@
-<svg width="1191px" height="436px"
- viewBox="0.00 0.00 1190.50 436.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="1108px" height="436px"
+ viewBox="0.00 0.00 1107.50 436.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 432)">
 <title>uks.debuggen.party2.PartyApp</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-432 1186.5,-432 1186.5,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-432 1103.5,-432 1103.5,4 -4,4"/>
 <!-- Guest -->
 <g id="node1" class="node"><title>Guest</title>
 <polygon fill="none" stroke="black" points="35,-62.5 35,-83.5 132,-83.5 132,-62.5 35,-62.5"/>
@@ -28,7 +28,7 @@
 <text text-anchor="middle" x="55.0893" y="-91.4122" font-family="Times New Roman,serif" font-size="14.00">buyer</text>
 </g>
 <!-- Party2 -->
-<g id="node4" class="node"><title>Party2</title>
+<g id="node3" class="node"><title>Party2</title>
 <polygon fill="none" stroke="black" points="38,-316.5 38,-337.5 128,-337.5 128,-316.5 38,-316.5"/>
 <text text-anchor="start" x="64.5" y="-323.3" font-family="Times New Roman,serif" font-size="14.00">Party2</text>
 <polygon fill="none" stroke="black" points="38,-250.5 38,-316.5 128,-316.5 128,-250.5 38,-250.5"/>
@@ -49,14 +49,8 @@
 <text text-anchor="middle" x="54.2858" y="-235.624" font-family="Times New Roman,serif" font-size="14.00">party</text>
 <text text-anchor="middle" x="37.9107" y="-214.912" font-family="Times New Roman,serif" font-size="14.00">items *</text>
 </g>
-<!-- Party -->
-<g id="node3" class="node"><title>Party</title>
-<polygon fill="none" stroke="black" points="225,-39.5 225,-60.5 261,-60.5 261,-39.5 225,-39.5"/>
-<text text-anchor="start" x="228" y="-46.3" font-family="Times New Roman,serif" font-size="14.00">Party</text>
-<polygon fill="none" stroke="black" points="225,-33.5 225,-39.5 261,-39.5 261,-33.5 225,-33.5"/>
-</g>
 <!-- Region -->
-<g id="node9" class="node"><title>Region</title>
+<g id="node8" class="node"><title>Region</title>
 <polygon fill="none" stroke="black" points="55,-403 55,-424 112,-424 112,-403 55,-403"/>
 <text text-anchor="start" x="63.5" y="-409.8" font-family="Times New Roman,serif" font-size="14.00">Region</text>
 <polygon fill="none" stroke="black" points="55,-382 55,-403 112,-403 112,-382 55,-382"/>
@@ -69,67 +63,67 @@
 <text text-anchor="middle" x="59" y="-346.012" font-family="Times New Roman,serif" font-size="14.00">parties *</text>
 </g>
 <!-- PartyAppBuilder -->
-<g id="node5" class="node"><title>PartyAppBuilder</title>
-<polygon fill="none" stroke="black" points="325,-69.5 325,-90.5 749,-90.5 749,-69.5 325,-69.5"/>
-<text text-anchor="start" x="490" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">PartyAppBuilder</text>
-<polygon fill="none" stroke="black" points="325,-3.5 325,-69.5 749,-69.5 749,-3.5 325,-3.5"/>
-<text text-anchor="start" x="328" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">model :PartyAppModel</text>
-<text text-anchor="start" x="328" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
-<text text-anchor="start" x="328" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
-<text text-anchor="start" x="328" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
+<g id="node4" class="node"><title>PartyAppBuilder</title>
+<polygon fill="none" stroke="black" points="242,-69.5 242,-90.5 666,-90.5 666,-69.5 242,-69.5"/>
+<text text-anchor="start" x="407" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">PartyAppBuilder</text>
+<polygon fill="none" stroke="black" points="242,-3.5 242,-69.5 666,-69.5 666,-3.5 242,-3.5"/>
+<text text-anchor="start" x="245" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">model :PartyAppModel</text>
+<text text-anchor="start" x="245" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
+<text text-anchor="start" x="245" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
+<text text-anchor="start" x="245" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
 </g>
 <!-- PartyAppBusinessLogic -->
-<g id="node6" class="node"><title>PartyAppBusinessLogic</title>
-<polygon fill="none" stroke="black" points="202,-178 202,-199 530,-199 530,-178 202,-178"/>
-<text text-anchor="start" x="298" y="-184.8" font-family="Times New Roman,serif" font-size="14.00">PartyAppBusinessLogic</text>
-<polygon fill="none" stroke="black" points="202,-142 202,-178 530,-178 530,-142 202,-142"/>
-<text text-anchor="start" x="205" y="-163.8" font-family="Times New Roman,serif" font-size="14.00">model :PartyAppModel</text>
-<text text-anchor="start" x="205" y="-148.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+<g id="node5" class="node"><title>PartyAppBusinessLogic</title>
+<polygon fill="none" stroke="black" points="166,-178 166,-199 494,-199 494,-178 166,-178"/>
+<text text-anchor="start" x="262" y="-184.8" font-family="Times New Roman,serif" font-size="14.00">PartyAppBusinessLogic</text>
+<polygon fill="none" stroke="black" points="166,-142 166,-178 494,-178 494,-142 166,-142"/>
+<text text-anchor="start" x="169" y="-163.8" font-family="Times New Roman,serif" font-size="14.00">model :PartyAppModel</text>
+<text text-anchor="start" x="169" y="-148.8" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
 </g>
 <!-- PartyAppBuilder&#45;&gt;PartyAppBusinessLogic -->
 <g id="edge1" class="edge"><title>PartyAppBuilder&#45;&gt;PartyAppBusinessLogic</title>
-<path fill="none" stroke="black" d="M471.376,-95.1276C451.032,-109.583 429.099,-125.167 410.538,-138.355"/>
-<text text-anchor="middle" x="370.038" y="-127.155" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
-<text text-anchor="middle" x="451.876" y="-98.9276" font-family="Times New Roman,serif" font-size="14.00">builder</text>
+<path fill="none" stroke="black" d="M406.413,-95.1276C391.661,-109.583 375.756,-125.167 362.296,-138.355"/>
+<text text-anchor="middle" x="321.796" y="-127.155" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
+<text text-anchor="middle" x="386.913" y="-98.9276" font-family="Times New Roman,serif" font-size="14.00">builder</text>
 </g>
 <!-- PartyAppService -->
-<g id="node8" class="node"><title>PartyAppService</title>
-<polygon fill="none" stroke="black" points="352,-316.5 352,-337.5 581,-337.5 581,-316.5 352,-316.5"/>
-<text text-anchor="start" x="418.5" y="-323.3" font-family="Times New Roman,serif" font-size="14.00">PartyAppService</text>
-<polygon fill="none" stroke="black" points="352,-250.5 352,-316.5 581,-316.5 581,-250.5 352,-250.5"/>
-<text text-anchor="start" x="355" y="-302.3" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
-<text text-anchor="start" x="355" y="-287.3" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
-<text text-anchor="start" x="355" y="-272.3" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
-<text text-anchor="start" x="355" y="-257.3" font-family="Times New Roman,serif" font-size="14.00">model :PartyAppModel</text>
+<g id="node7" class="node"><title>PartyAppService</title>
+<polygon fill="none" stroke="black" points="316,-316.5 316,-337.5 545,-337.5 545,-316.5 316,-316.5"/>
+<text text-anchor="start" x="382.5" y="-323.3" font-family="Times New Roman,serif" font-size="14.00">PartyAppService</text>
+<polygon fill="none" stroke="black" points="316,-250.5 316,-316.5 545,-316.5 545,-250.5 316,-250.5"/>
+<text text-anchor="start" x="319" y="-302.3" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="319" y="-287.3" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="319" y="-272.3" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="319" y="-257.3" font-family="Times New Roman,serif" font-size="14.00">model :PartyAppModel</text>
 </g>
 <!-- PartyAppBuilder&#45;&gt;PartyAppService -->
 <g id="edge2" class="edge"><title>PartyAppBuilder&#45;&gt;PartyAppService</title>
-<path fill="none" stroke="black" d="M550.372,-95.0818C557.517,-128.561 562.082,-174.11 547,-211 541.683,-224.006 533.217,-236.067 523.722,-246.729"/>
-<text text-anchor="middle" x="503.722" y="-235.529" font-family="Times New Roman,serif" font-size="14.00">service</text>
-<text text-anchor="middle" x="530.872" y="-98.8818" font-family="Times New Roman,serif" font-size="14.00">builder</text>
+<path fill="none" stroke="black" d="M493.36,-95.2129C500.611,-106.293 507.113,-118.535 511,-131 521.585,-164.943 524.456,-178.089 511,-211 505.683,-224.006 497.217,-236.067 487.722,-246.729"/>
+<text text-anchor="middle" x="467.722" y="-235.529" font-family="Times New Roman,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="473.86" y="-99.0129" font-family="Times New Roman,serif" font-size="14.00">builder</text>
 </g>
 <!-- PartyAppBusinessLogic&#45;&gt;PartyAppService -->
 <g id="edge3" class="edge"><title>PartyAppBusinessLogic&#45;&gt;PartyAppService</title>
-<path fill="none" stroke="black" d="M392.013,-203.606C402.892,-216.824 415.758,-232.456 427.684,-246.946"/>
-<text text-anchor="middle" x="407.684" y="-235.746" font-family="Times New Roman,serif" font-size="14.00">service</text>
-<text text-anchor="middle" x="351.513" y="-207.406" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
+<path fill="none" stroke="black" d="M356.013,-203.606C366.892,-216.824 379.758,-232.456 391.684,-246.946"/>
+<text text-anchor="middle" x="371.684" y="-235.746" font-family="Times New Roman,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="315.513" y="-207.406" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
 </g>
 <!-- PartyAppModel -->
-<g id="node7" class="node"><title>PartyAppModel</title>
-<polygon fill="none" stroke="black" points="783,-47.5 783,-68.5 1039,-68.5 1039,-47.5 783,-47.5"/>
-<text text-anchor="start" x="865.5" y="-54.3" font-family="Times New Roman,serif" font-size="14.00">PartyAppModel</text>
-<polygon fill="none" stroke="black" points="783,-26.5 783,-47.5 1039,-47.5 1039,-26.5 783,-26.5"/>
-<text text-anchor="start" x="786" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+<g id="node6" class="node"><title>PartyAppModel</title>
+<polygon fill="none" stroke="black" points="700,-47.5 700,-68.5 956,-68.5 956,-47.5 700,-47.5"/>
+<text text-anchor="start" x="782.5" y="-54.3" font-family="Times New Roman,serif" font-size="14.00">PartyAppModel</text>
+<polygon fill="none" stroke="black" points="700,-26.5 700,-47.5 956,-47.5 956,-26.5 700,-26.5"/>
+<text text-anchor="start" x="703" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
 </g>
 <!-- User -->
-<g id="node10" class="node"><title>User</title>
-<polygon fill="none" stroke="black" points="1074,-69.5 1074,-90.5 1175,-90.5 1175,-69.5 1074,-69.5"/>
-<text text-anchor="start" x="1111" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">User</text>
-<polygon fill="none" stroke="black" points="1074,-3.5 1074,-69.5 1175,-69.5 1175,-3.5 1074,-3.5"/>
-<text text-anchor="start" x="1077" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="1077" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
-<text text-anchor="start" x="1077" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">email :String</text>
-<text text-anchor="start" x="1077" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">password :String</text>
+<g id="node9" class="node"><title>User</title>
+<polygon fill="none" stroke="black" points="991,-69.5 991,-90.5 1092,-90.5 1092,-69.5 991,-69.5"/>
+<text text-anchor="start" x="1028" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">User</text>
+<polygon fill="none" stroke="black" points="991,-3.5 991,-69.5 1092,-69.5 1092,-3.5 991,-3.5"/>
+<text text-anchor="start" x="994" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="994" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="994" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">email :String</text>
+<text text-anchor="start" x="994" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">password :String</text>
 </g>
 </g>
 </svg>

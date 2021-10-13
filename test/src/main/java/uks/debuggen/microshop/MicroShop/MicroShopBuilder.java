@@ -290,8 +290,8 @@ public class MicroShopBuilder
       OrderBuilt event = (OrderBuilt) e;
       Order object = model.getOrCreateOrder(event.getBlockId());
       object.setCode(event.getCode());
-      object.setProduct(model.getOrCreateProduct(getObjectId(event.getProduct())));
-      object.setCustomer(model.getOrCreateCustomer(getObjectId(event.getCustomer())));
+      object.setProduct(model.getOrCreateProduct(event.getProduct()));
+      object.setCustomer(model.getOrCreateCustomer(event.getCustomer()));
       object.setAddress(event.getAddress());
       object.setState(event.getState());
       return object;

@@ -184,7 +184,6 @@ public class TestMicroShop {
          String url = "http://localhost:42000/subscribe";
          HttpResponse<String> response = Unirest.post(url).body(json).asString();
          String body = response.getBody();
-         System.out.println("TestMikroShop subscribed to broker\n" + body);
          YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
          idMap.decode(body);
          Map<String, Object> objectMap = idMap.getObjIdMap();
@@ -232,14 +231,14 @@ public class TestMicroShop {
    }
 
    @Test
-   public void newMicroShopTest() {
-      Event e;
+   public void MicroShop()
+   {
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
 
       this.start();
-      waitForEvent("41999");
+      waitForEvent("" + port);
 
       // start service
       WarehouseService warehouse = new WarehouseService();
@@ -250,51 +249,7 @@ public class TestMicroShop {
       MicroShopService microShop = new MicroShopService();
       microShop.start();
       waitForEvent("42002");
-
-      // page 12:01
-      open("http://localhost:42001/page/12_01");
-
-      // page 12:02
-      open("http://localhost:42001/page/12_02");
-      $("#barcode").setValue("b001");
-      $("#type").setValue("red shoes");
-      $("#location").setValue("shelf 42");
-      $("#ok").click();
-
-      e = waitForEvent("12:02:01");
-      StoreCommand storeCommand = (StoreCommand) e;
-      assertThat(storeCommand.getBarcode()).isEqualTo("b001");
-      assertThat(storeCommand.getLocation()).isEqualTo("shelf 42");
-
-      System.out.println();
-
-   }
-
-   @Test
-   public void MicroShop()
-   {
-      // start the event broker
-      eventBroker = new EventBroker();
-      eventBroker.start();
-
-      // start service
-      WarehouseService warehouse = new WarehouseService();
-      warehouse.start();
-
-      // start service
-      MicroShopService microShop = new MicroShopService();
-      microShop.start();
-      try {
-         Thread.sleep(1500);
-      } catch (Exception e) {
-      }
-
-      open("http://localhost:42000");
-      $("body").shouldHave(text("event broker"));
-
-      SelenideElement pre = $("pre");
-      pre.shouldHave(text("http://localhost:42001/apply"));
-      pre.shouldHave(text("http://localhost:42002/apply"));
+      SelenideElement pre;
       LinkedHashMap<String, Object> modelMap;
 
       // workflow SmoothCase
@@ -308,15 +263,10 @@ public class TestMicroShop {
       $("#type").setValue("red shoes");
       $("#location").setValue("shelf 42");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_02_01:"));
+      waitForEvent("12:02:01");
 
       // check Warehouse
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_02_01:"));
       for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
          warehouse.getBuilder().load(dataEvent.getBlockId());
       }
@@ -327,16 +277,13 @@ public class TestMicroShop {
 
       open("http://localhost:42001");
       // check data note 12:02:02
-      pre = $("#data");
-      pre.shouldHave(text("- b001:"));
-      pre.shouldHave(matchText("barcode:.*b001"));
-      pre.shouldHave(matchText("content:.*red.shoes"));
-      pre.shouldHave(matchText("location:.*shelf.42"));
+      BoxBuilt e12_02_02 = (BoxBuilt) waitForEvent("12:02:02");
+      assertThat(e12_02_02.getBarcode()).isEqualTo("b001");
+      assertThat(e12_02_02.getContent()).isEqualTo("red shoes");
+      assertThat(e12_02_02.getLocation()).isEqualTo("shelf 42");
 
       // check MicroShop
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_02_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -347,10 +294,9 @@ public class TestMicroShop {
 
       open("http://localhost:42002");
       // check data note 12:03:01
-      pre = $("#data");
-      pre.shouldHave(text("- red_shoes:"));
-      pre.shouldHave(matchText("name:.*red.shoes"));
-      pre.shouldHave(matchText("state:.*in.stock"));
+      ProductBuilt e12_03_01 = (ProductBuilt) waitForEvent("12:03:01");
+      assertThat(e12_03_01.getName()).isEqualTo("red shoes");
+      assertThat(e12_03_01.getState()).isEqualTo("in stock");
 
       // page 12:04
       open("http://localhost:42001/page/12_04");
@@ -361,15 +307,10 @@ public class TestMicroShop {
       $("#type").setValue("red shoes");
       $("#location").setValue("shelf 23");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_05_01:"));
+      waitForEvent("12:05:01");
 
       // check Warehouse
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_05_01:"));
       for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
          warehouse.getBuilder().load(dataEvent.getBlockId());
       }
@@ -380,16 +321,13 @@ public class TestMicroShop {
 
       open("http://localhost:42001");
       // check data note 12:05:02
-      pre = $("#data");
-      pre.shouldHave(text("- b002:"));
-      pre.shouldHave(matchText("barcode:.*b002"));
-      pre.shouldHave(matchText("content:.*red.shoes"));
-      pre.shouldHave(matchText("location:.*shelf.23"));
+      BoxBuilt e12_05_02 = (BoxBuilt) waitForEvent("12:05:02");
+      assertThat(e12_05_02.getBarcode()).isEqualTo("b002");
+      assertThat(e12_05_02.getContent()).isEqualTo("red shoes");
+      assertThat(e12_05_02.getLocation()).isEqualTo("shelf 23");
 
       // check MicroShop
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_05_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -400,10 +338,9 @@ public class TestMicroShop {
 
       open("http://localhost:42002");
       // check data note 12:06:01
-      pre = $("#data");
-      pre.shouldHave(text("- red_shoes:"));
-      pre.shouldHave(matchText("name:.*red.shoes"));
-      pre.shouldHave(matchText("state:.*in.stock"));
+      ProductBuilt e12_06_01 = (ProductBuilt) waitForEvent("12:06:01");
+      assertThat(e12_06_01.getName()).isEqualTo("red shoes");
+      assertThat(e12_06_01.getState()).isEqualTo("in stock");
 
       // page 12:07
       open("http://localhost:42001/page/12_07");
@@ -414,15 +351,10 @@ public class TestMicroShop {
       $("#type").setValue("blue jeans");
       $("#location").setValue("shelf 1337");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_08_01:"));
+      waitForEvent("12:08:01");
 
       // check Warehouse
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_08_01:"));
       for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
          warehouse.getBuilder().load(dataEvent.getBlockId());
       }
@@ -433,16 +365,13 @@ public class TestMicroShop {
 
       open("http://localhost:42001");
       // check data note 12:08:02
-      pre = $("#data");
-      pre.shouldHave(text("- b003:"));
-      pre.shouldHave(matchText("barcode:.*b003"));
-      pre.shouldHave(matchText("content:.*blue.jeans"));
-      pre.shouldHave(matchText("location:.*shelf.1337"));
+      BoxBuilt e12_08_02 = (BoxBuilt) waitForEvent("12:08:02");
+      assertThat(e12_08_02.getBarcode()).isEqualTo("b003");
+      assertThat(e12_08_02.getContent()).isEqualTo("blue jeans");
+      assertThat(e12_08_02.getLocation()).isEqualTo("shelf 1337");
 
       // check MicroShop
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_08_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -453,10 +382,9 @@ public class TestMicroShop {
 
       open("http://localhost:42002");
       // check data note 12:09:01
-      pre = $("#data");
-      pre.shouldHave(text("- blue_jeans:"));
-      pre.shouldHave(matchText("name:.*blue.jeans"));
-      pre.shouldHave(matchText("state:.*in.stock"));
+      ProductBuilt e12_09_01 = (ProductBuilt) waitForEvent("12:09:01");
+      assertThat(e12_09_01.getName()).isEqualTo("blue jeans");
+      assertThat(e12_09_01.getState()).isEqualTo("in stock");
 
       // page 12:10
       open("http://localhost:42001/page/12_10");
@@ -469,15 +397,10 @@ public class TestMicroShop {
       $("#product").setValue("red shoes");
       $("#price").setValue("$42");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_14_42:"));
+      waitForEvent("12:14:42");
 
       // check MicroShop
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_14_42:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -488,10 +411,9 @@ public class TestMicroShop {
 
       open("http://localhost:42002");
       // check data note 12:14:43
-      pre = $("#data");
-      pre.shouldHave(text("- red_shoes:"));
-      pre.shouldHave(matchText("name:.*red.shoes"));
-      pre.shouldHave(matchText("price:.*.42"));
+      ProductBuilt e12_14_43 = (ProductBuilt) waitForEvent("12:14:43");
+      assertThat(e12_14_43.getName()).isEqualTo("red shoes");
+      assertThat(e12_14_43.getPrice()).isEqualTo("$42");
 
       // page 12:16
       open("http://localhost:42002/page/12_16");
@@ -501,15 +423,10 @@ public class TestMicroShop {
       $("#product").setValue("blue jeans");
       $("#price").setValue("$63");
       $("#ok").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_17_01:"));
+      waitForEvent("12:17:01");
 
       // check MicroShop
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_17_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -520,10 +437,9 @@ public class TestMicroShop {
 
       open("http://localhost:42002");
       // check data note 12:17:02
-      pre = $("#data");
-      pre.shouldHave(text("- blue_jeans:"));
-      pre.shouldHave(matchText("name:.*blue.jeans"));
-      pre.shouldHave(matchText("price:.*.63"));
+      ProductBuilt e12_17_02 = (ProductBuilt) waitForEvent("12:17:02");
+      assertThat(e12_17_02.getName()).isEqualTo("blue jeans");
+      assertThat(e12_17_02.getPrice()).isEqualTo("$63");
 
       // page 12:19
       open("http://localhost:42002/page/12_19");
@@ -537,15 +453,10 @@ public class TestMicroShop {
       $("#customer").setValue("Carli Customer");
       $("#address").setValue("Wonderland 1");
       $("#buy").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_21_01:"));
+      waitForEvent("12:21:01");
 
       // check MicroShop
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_21_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -556,15 +467,12 @@ public class TestMicroShop {
 
       open("http://localhost:42002");
       // check data note 12:23:01
-      pre = $("#data");
-      pre.shouldHave(text("- o0925_1:"));
-      pre.shouldHave(matchText("code:.*o0925_1"));
-      pre.shouldHave(matchText("state:.*picking"));
+      OrderBuilt e12_23_01 = (OrderBuilt) waitForEvent("12:23:01");
+      assertThat(e12_23_01.getCode()).isEqualTo("o0925_1");
+      assertThat(e12_23_01.getState()).isEqualTo("picking");
 
       // check Warehouse
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_21_01:"));
       for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
          warehouse.getBuilder().load(dataEvent.getBlockId());
       }
@@ -575,14 +483,13 @@ public class TestMicroShop {
 
       open("http://localhost:42001");
       // check data note 12:22:01
-      pre = $("#data");
-      pre.shouldHave(text("- pt_o0925_1:"));
-      pre.shouldHave(matchText("code:.*pt_o0925_1"));
-      pre.shouldHave(matchText("product:.*red.shoes"));
-      pre.shouldHave(matchText("shelf:.*shelf.42..shelf.23"));
-      pre.shouldHave(matchText("customer:.*Carli.Customer"));
-      pre.shouldHave(matchText("address:.*Wonderland.1"));
-      pre.shouldHave(matchText("state:.*picking"));
+      PickTaskBuilt e12_22_01 = (PickTaskBuilt) waitForEvent("12:22:01");
+      assertThat(e12_22_01.getCode()).isEqualTo("pt_o0925_1");
+      assertThat(e12_22_01.getProduct()).isEqualTo("red shoes");
+      assertThat(e12_22_01.getShelf()).isEqualTo("[shelf 42, shelf 23]");
+      assertThat(e12_22_01.getCustomer()).isEqualTo("Carli Customer");
+      assertThat(e12_22_01.getAddress()).isEqualTo("Wonderland 1");
+      assertThat(e12_22_01.getState()).isEqualTo("picking");
 
       // page 12:24
       open("http://localhost:42002/page/12_24");
@@ -595,15 +502,10 @@ public class TestMicroShop {
       $("#task").setValue("pt_o0925_1");
       $("#shelf").setValue("shelf 42");
       $("#done").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_26_01:"));
+      waitForEvent("12:26:01");
 
       // check Warehouse
       open("http://localhost:42001");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_26_01:"));
       for (DataEvent dataEvent : warehouse.getBuilder().getEventStore().values()) {
          warehouse.getBuilder().load(dataEvent.getBlockId());
       }
@@ -614,16 +516,13 @@ public class TestMicroShop {
 
       open("http://localhost:42001");
       // check data note 12:26:02
-      pre = $("#data");
-      pre.shouldHave(text("- pt_o0925_1:"));
-      pre.shouldHave(matchText("code:.*pt_o0925_1"));
-      pre.shouldHave(matchText("from:.*shelf.42"));
-      pre.shouldHave(matchText("state:.*shipping"));
+      PickTaskBuilt e12_26_02 = (PickTaskBuilt) waitForEvent("12:26:02");
+      assertThat(e12_26_02.getCode()).isEqualTo("pt_o0925_1");
+      assertThat(e12_26_02.getFrom()).isEqualTo("shelf 42");
+      assertThat(e12_26_02.getState()).isEqualTo("shipping");
 
       // check MicroShop
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_26_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -634,10 +533,9 @@ public class TestMicroShop {
 
       open("http://localhost:42002");
       // check data note 12:27:01
-      pre = $("#data");
-      pre.shouldHave(text("- o0925_1:"));
-      pre.shouldHave(matchText("code:.*o0925_1"));
-      pre.shouldHave(matchText("state:.*shipping"));
+      OrderBuilt e12_27_01 = (OrderBuilt) waitForEvent("12:27:01");
+      assertThat(e12_27_01.getCode()).isEqualTo("o0925_1");
+      assertThat(e12_27_01.getState()).isEqualTo("shipping");
 
       // page 12:28
       open("http://localhost:42001/page/12_28");
@@ -649,15 +547,10 @@ public class TestMicroShop {
       open("http://localhost:42001/page/12_30");
       $("#order").setValue("o0925_1");
       $("#done").click();
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_30_01:"));
+      waitForEvent("12:30:01");
 
       // check MicroShop
       open("http://localhost:42002");
-      pre = $("#history");
-      pre.shouldHave(text("- 12_30_01:"));
       for (DataEvent dataEvent : microShop.getBuilder().getEventStore().values()) {
          microShop.getBuilder().load(dataEvent.getBlockId());
       }
@@ -668,10 +561,9 @@ public class TestMicroShop {
 
       open("http://localhost:42002");
       // check data note 12:30:02
-      pre = $("#data");
-      pre.shouldHave(text("- o0925_1:"));
-      pre.shouldHave(matchText("code:.*o0925_1"));
-      pre.shouldHave(matchText("state:.*delivered"));
+      OrderBuilt e12_30_02 = (OrderBuilt) waitForEvent("12:30:02");
+      assertThat(e12_30_02.getCode()).isEqualTo("o0925_1");
+      assertThat(e12_30_02.getState()).isEqualTo("delivered");
 
       // page 12:32
       open("http://localhost:42001/page/12_32");
@@ -682,24 +574,19 @@ public class TestMicroShop {
       ProductOrderedEvent e1301 = new ProductOrderedEvent();
       e1301.setId("13:01");
       publish(e1301);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_01:"));
+      waitForEvent("13:01");
 
       // create OrderRejectedEvent: order rejected
       OrderRejectedEvent e1302 = new OrderRejectedEvent();
       e1302.setId("13:02");
       publish(e1302);
-
-      open("http://localhost:42000");
-      pre = $("#history");
-      pre.shouldHave(text("- 13_02:"));
+      waitForEvent("13:02");
       try {
          Thread.sleep(3000);
       } catch (Exception e) {
       }
       eventBroker.stop();
+      spark.stop();
       warehouse.stop();
       microShop.stop();
 

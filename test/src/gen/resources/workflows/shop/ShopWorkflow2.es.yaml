@@ -89,8 +89,7 @@
 - policy: Shop
   trigger: 13:06
 
-- data: 13:06
-  order: order1300
+- data: Order order1300
   state: picking
 
 - action: Bob

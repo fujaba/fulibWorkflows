@@ -173,87 +173,6 @@ public class PartyAppBusinessLogic
       }
    }
 
-   private void handleGetPartyCommand(Event e)
-   {
-      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
-      // fulib
-      GetPartyCommand event = (GetPartyCommand) e;
-      handleDemoGetPartyCommand(event);
-   }
-
-   private void handleDemoGetPartyCommand(GetPartyCommand event)
-   {
-      if (event.getId().equals("14:01")) {
-         Party2Built sE_BBQEvent = new Party2Built();
-         sE_BBQEvent.setId("14:01:03");
-         sE_BBQEvent.setBlockId("sE_BBQ");
-         sE_BBQEvent.setName("SE BBQ");
-         sE_BBQEvent.setRegion("Kassel");
-         sE_BBQEvent.setDate("after work");
-         sE_BBQEvent.setAddress("Uni");
-         service.apply(sE_BBQEvent);
-
-      }
-   }
-
-   private void handleBuildItemCommand(Event e)
-   {
-      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
-      // fulib
-      BuildItemCommand event = (BuildItemCommand) e;
-      handleDemoBuildItemCommand(event);
-   }
-
-   private void handleDemoBuildItemCommand(BuildItemCommand event)
-   {
-      if (event.getId().equals("14:05")) {
-         ItemBuilt beerEvent = new ItemBuilt();
-         beerEvent.setId("14:05:01");
-         beerEvent.setBlockId("beer");
-         beerEvent.setName("beer");
-         beerEvent.setPrice("12.00");
-         beerEvent.setBuyer("sE_BBQ_Bob");
-         beerEvent.setParty("sE_BBQ");
-         service.apply(beerEvent);
-
-         GuestBuilt sE_BBQ_BobEvent = new GuestBuilt();
-         sE_BBQ_BobEvent.setId("14:05:02");
-         sE_BBQ_BobEvent.setBlockId("sE_BBQ_Bob");
-         sE_BBQ_BobEvent.setName("Bob");
-         sE_BBQ_BobEvent.setParty("sE_BBQ");
-         service.apply(sE_BBQ_BobEvent);
-
-      }
-      if (event.getId().equals("14:09")) {
-         ItemBuilt meatEvent = new ItemBuilt();
-         meatEvent.setId("14:09:01");
-         meatEvent.setBlockId("meat");
-         meatEvent.setName("meat");
-         meatEvent.setPrice("21.00");
-         meatEvent.setBuyer("sE_BBQ_Alice");
-         meatEvent.setParty("sE_BBQ");
-         service.apply(meatEvent);
-
-
-         ItemBookedEvent e140903 = new ItemBookedEvent();
-
-         e140903.setId("14:09:03");
-         e140903.setName("meat");
-         e140903.setPrice("21.00");
-         e140903.setBuyer("Alice");
-         e140903.setParty("sE_BBQ");
-         service.apply(e140903);
-         GuestBuilt sE_BBQ_AliceEvent = new GuestBuilt();
-         sE_BBQ_AliceEvent.setId("14:09:02");
-         sE_BBQ_AliceEvent.setBlockId("sE_BBQ_Alice");
-         sE_BBQ_AliceEvent.setName("Alice");
-         sE_BBQ_AliceEvent.setExpenses("0.00");
-         sE_BBQ_AliceEvent.setParty("sE_BBQ");
-         service.apply(sE_BBQ_AliceEvent);
-
-      }
-   }
-
    public void initEventHandlerMap()
    {
       if (handlerMap == null) {
@@ -269,7 +188,7 @@ public class PartyAppBusinessLogic
          handlerMap.put(CheckPasswordCommand.class, this::handleCheckPasswordCommand);
          handlerMap.put(GetRegionCommand.class, this::handleGetRegionCommand);
          handlerMap.put(GetPartyCommand.class, this::handleGetPartyCommand);
-         handlerMap.put(BuildItemCommand.class, this::handleBuildItemCommand);
+         handlerMap.put(BuildCommand.class, this::handleBuildCommand);
       }
    }
 
@@ -323,6 +242,87 @@ public class PartyAppBusinessLogic
          kasselEvent.setId("13:56:02");
          kasselEvent.setBlockId("Kassel");
          service.apply(kasselEvent);
+
+      }
+   }
+
+   private void handleBuildCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      BuildCommand event = (BuildCommand) e;
+      handleDemoBuildCommand(event);
+   }
+
+   private void handleDemoBuildCommand(BuildCommand event)
+   {
+      if (event.getId().equals("14:03:01")) {
+         ItemBuilt beerEvent = new ItemBuilt();
+         beerEvent.setId("14:03:02");
+         beerEvent.setBlockId("beer");
+         beerEvent.setName("beer");
+         beerEvent.setPrice("12.00");
+         beerEvent.setBuyer("sE_BBQ_Bob");
+         beerEvent.setParty("SE BBQ");
+         service.apply(beerEvent);
+
+         GuestBuilt sE_BBQ_BobEvent = new GuestBuilt();
+         sE_BBQ_BobEvent.setId("14:03:03");
+         sE_BBQ_BobEvent.setBlockId("sE_BBQ_Bob");
+         sE_BBQ_BobEvent.setName("Bob");
+         sE_BBQ_BobEvent.setParty("SE BBQ");
+         service.apply(sE_BBQ_BobEvent);
+
+      }
+      if (event.getId().equals("14:08:01")) {
+         ItemBuilt meatEvent = new ItemBuilt();
+         meatEvent.setId("14:08:02");
+         meatEvent.setBlockId("meat");
+         meatEvent.setName("meat");
+         meatEvent.setPrice("21.00");
+         meatEvent.setBuyer("sE_BBQ_Alice");
+         meatEvent.setParty("SE BBQ");
+         service.apply(meatEvent);
+
+
+         ItemBookedEvent e1409 = new ItemBookedEvent();
+
+         e1409.setId("14:09");
+         e1409.setName("meat");
+         e1409.setPrice("21.00");
+         e1409.setBuyer("Alice");
+         e1409.setParty("SE BBQ");
+         service.apply(e1409);
+         GuestBuilt sE_BBQ_AliceEvent = new GuestBuilt();
+         sE_BBQ_AliceEvent.setId("14:09:01");
+         sE_BBQ_AliceEvent.setBlockId("sE_BBQ_Alice");
+         sE_BBQ_AliceEvent.setName("Alice");
+         sE_BBQ_AliceEvent.setExpenses("0.00");
+         sE_BBQ_AliceEvent.setParty("SE BBQ");
+         service.apply(sE_BBQ_AliceEvent);
+
+      }
+   }
+
+   private void handleGetPartyCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      GetPartyCommand event = (GetPartyCommand) e;
+      handleDemoGetPartyCommand(event);
+   }
+
+   private void handleDemoGetPartyCommand(GetPartyCommand event)
+   {
+      if (event.getId().equals("14:01")) {
+         Party2Built sE_BBQEvent = new Party2Built();
+         sE_BBQEvent.setId("14:01:02");
+         sE_BBQEvent.setBlockId("SE_BBQ");
+         sE_BBQEvent.setName("SE BBQ");
+         sE_BBQEvent.setRegion("Kassel");
+         sE_BBQEvent.setDate("after work");
+         sE_BBQEvent.setAddress("Uni");
+         service.apply(sE_BBQEvent);
 
       }
    }

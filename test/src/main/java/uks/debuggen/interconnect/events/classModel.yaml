@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	dataGroup 	query 	serviceSubscribed 	command 	carConnectedEvent 	chargerInstalledEvent 	chargingRequestedEvent 	chargingApprovedEvent
+  classes: 	event 	dataEvent 	subscribeEvent 	dataGroup 	query 	serviceSubscribed 	command 	carConnectedEvent 	chargerInstalledEvent 	chargingRequestedEvent 	chargingApprovedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -13,7 +13,7 @@
   modified: 	false
   name: 	Event
   propertyStyle: 	Bean
-  subClasses: 	dataEvent 	query 	serviceSubscribed 	command 	carConnectedEvent 	chargerInstalledEvent 	chargingRequestedEvent 	chargingApprovedEvent
+  subClasses: 	dataEvent 	subscribeEvent 	query 	serviceSubscribed 	command 	carConnectedEvent 	chargerInstalledEvent 	chargingRequestedEvent 	chargingApprovedEvent
 
 - dataEvent: 	org.fulib.classmodel.Clazz
   attributes: 	dataEvent_blockId
@@ -23,6 +23,14 @@
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
   subClasses: 	dataGroup
+  superClass: 	event
+
+- subscribeEvent: 	org.fulib.classmodel.Clazz
+  attributes: 	subscribeEvent_url
+  model: 	c
+  modified: 	false
+  name: 	SubscribeEvent
+  propertyStyle: 	Bean
   superClass: 	event
 
 - dataGroup: 	org.fulib.classmodel.Clazz
@@ -134,6 +142,15 @@
   name: 	query
   other: 	query_results
   propertyStyle: 	Bean
+
+- subscribeEvent_url: 	org.fulib.classmodel.Attribute
+  clazz: 	subscribeEvent
+  id: 	SubscribeEvent_url
+  modified: 	false
+  name: 	url
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 
 - dataGroup_elements: 	org.fulib.classmodel.AssocRole
   aggregation: 	false

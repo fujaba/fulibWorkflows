@@ -73,7 +73,14 @@ public class EventBroker
 
          for (Object value : map.values()) {
             ServiceSubscribed serviceSubscribed = (ServiceSubscribed) value;
-            subscribersMap.put(serviceSubscribed.getServiceUrl(), serviceSubscribed);
+            String serviceUrl = serviceSubscribed.getServiceUrl();
+            String port = serviceUrl.substring(serviceUrl.lastIndexOf(':') + 1, serviceUrl.lastIndexOf('/'));
+            subscribersMap.put(serviceUrl, serviceSubscribed);
+
+            SubscribeEvent subscribeEvent = new SubscribeEvent();
+            subscribeEvent.setId(port);
+            subscribeEvent.setUrl(serviceUrl);
+            publisher.execute(() -> publish(subscribeEvent));
 
             // reply with list of all events
             Collection<Event> values = getHistory().values();

@@ -8,10 +8,10 @@
   packageSrcFolder: 	"test/src/test/java/uks/debuggen/interconnect"
 
 - testInterconnect: 	org.fulib.classmodel.Clazz
-  attributes: 	testInterconnect_eventBroker
-  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.interconnect.events.*;" 	"import uks.debuggen.interconnect.IonicKassel42.IonicKassel42Service;" 	"import uks.debuggen.interconnect.CityElectricsKassel.CityElectricsKasselService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
-  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import uks.debuggen.interconnect.events.*;" 	"import uks.debuggen.interconnect.IonicKassel42.IonicKassel42Service;" 	"import uks.debuggen.interconnect.CityElectricsKassel.CityElectricsKasselService;" 	"import org.fulib.yaml.Yaml;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
-  methods: 	testInterconnect_Interconnect 	testInterconnect_publish
+  attributes: 	testInterconnect_eventBroker 	testInterconnect_spark 	testInterconnect_eventQueue 	testInterconnect_history 	testInterconnect_port
+  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import spark.Request;" 	"import spark.Response;" 	"import spark.Service;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.concurrent.LinkedBlockingQueue;" 	"import static org.assertj.core.api.Assertions.assertThat;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import java.util.concurrent.TimeUnit;" 	"import java.util.logging.Level;" 	"import java.util.logging.Logger;" 	"import uks.debuggen.interconnect.events.*;" 	"import uks.debuggen.interconnect.IonicKassel42.IonicKassel42Service;" 	"import uks.debuggen.interconnect.CityElectricsKassel.CityElectricsKasselService;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import java.util.Map;" 	"import spark.Request;" 	"import spark.Response;" 	"import spark.Service;" 	"import java.util.concurrent.ExecutorService;" 	"import java.util.concurrent.Executors;" 	"import java.util.concurrent.LinkedBlockingQueue;" 	"import static org.assertj.core.api.Assertions.assertThat;" 	"import org.fulib.yaml.Yaml;" 	"import org.fulib.yaml.YamlIdMap;" 	"import java.util.concurrent.TimeUnit;" 	"import java.util.logging.Level;" 	"import java.util.logging.Logger;" 	"import uks.debuggen.interconnect.events.*;" 	"import uks.debuggen.interconnect.IonicKassel42.IonicKassel42Service;" 	"import uks.debuggen.interconnect.CityElectricsKassel.CityElectricsKasselService;" 	"import com.mashape.unirest.http.HttpResponse;" 	"import com.mashape.unirest.http.Unirest;" 	"import com.mashape.unirest.http.exceptions.UnirestException;" 	"import static com.codeborne.selenide.Selenide.open;" 	"import static com.codeborne.selenide.Selenide.$;" 	"import static com.codeborne.selenide.Condition.text;" 	"import static com.codeborne.selenide.Condition.matchText;" 	"import com.codeborne.selenide.SelenideElement;"
+  methods: 	testInterconnect_start 	testInterconnect_postApply 	testInterconnect_subscribeAndLoadOldEvents 	testInterconnect_waitForEvent 	testInterconnect_Interconnect 	testInterconnect_publish
   model: 	c
   modified: 	false
   name: 	TestInterconnect
@@ -33,6 +33,156 @@
   type: 	EventBroker
   typeSignature: 	EventBroker
 
+- testInterconnect_spark: 	org.fulib.classmodel.Attribute
+  clazz: 	testInterconnect
+  id: 	TestInterconnect_spark
+  modified: 	false
+  name: 	spark
+  propertyStyle: 	Bean
+  type: 	Service
+  typeSignature: 	Service
+
+- testInterconnect_eventQueue: 	org.fulib.classmodel.Attribute
+  clazz: 	testInterconnect
+  id: 	TestInterconnect_eventQueue
+  modified: 	false
+  name: 	eventQueue
+  propertyStyle: 	Bean
+  type: 	"LinkedBlockingQueue<Event>"
+  typeSignature: 	"LinkedBlockingQueue<Event>"
+
+- testInterconnect_history: 	org.fulib.classmodel.Attribute
+  clazz: 	testInterconnect
+  id: 	TestInterconnect_history
+  modified: 	false
+  name: 	history
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, Event>"
+  typeSignature: 	"LinkedHashMap<String,Event>"
+
+- testInterconnect_port: 	org.fulib.classmodel.Attribute
+  clazz: 	testInterconnect
+  id: 	TestInterconnect_port
+  modified: 	false
+  name: 	port
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- testInterconnect_start: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testInterconnect
+  declaration: 	"public void start()"
+  id: 	TestInterconnect_start
+  methodBody: 	"      eventQueue = new LinkedBlockingQueue<Event>();
+      history  = new LinkedHashMap<>();
+      port = 41999;
+      ExecutorService executor = Executors.newSingleThreadExecutor();
+      spark = Service.ignite();
+      spark.port(port);
+      spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      executor.submit(() -> System.out.println(\"test executor works\"));
+      executor.submit(this::subscribeAndLoadOldEvents);
+      executor.submit(() -> System.out.println(\"test executor has done subscribeAndLoadOldEvents\"));"
+  modified: 	false
+  modifiers: 	public
+  name: 	start
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/TestInterconnect/method/start()"
+
+- testInterconnect_postApply: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testInterconnect
+  declaration: 	"private String postApply(Request req, Response res)"
+  id: 	TestInterconnect_postApply
+  methodBody: 	"      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains(\"ReflectorMap could not find class description\")) {
+            Logger.getGlobal().info(\"post apply ignores unknown event \" + body);
+         } else {
+            Logger.getGlobal().log(Level.SEVERE, \"postApply failed\", e);
+         }
+      }
+      return \"apply done\";"
+  modified: 	false
+  modifiers: 	private
+  name: 	postApply
+  paramsString: 	"Request req, Response res"
+  returnType: 	String
+  signature: 	"class/TestInterconnect/method/postApply(Request,Response)"
+
+- testInterconnect_subscribeAndLoadOldEvents: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testInterconnect
+  declaration: 	"private void subscribeAndLoadOldEvents()"
+  id: 	TestInterconnect_subscribeAndLoadOldEvents
+  methodBody: 	"      ServiceSubscribed serviceSubscribed = new ServiceSubscribed()
+            .setServiceUrl(String.format(\"http://localhost:%d/apply\", port));
+      String json = Yaml.encodeSimple(serviceSubscribed);
+      try {
+         String url = \"http://localhost:42000/subscribe\";
+         HttpResponse<String> response = Unirest.post(url).body(json).asString();
+         String body = response.getBody();
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> objectMap = idMap.getObjIdMap();
+         for (Object obj : objectMap.values()) {
+            Event event = (Event) obj;
+            eventQueue.put(event);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+      }"
+  modified: 	false
+  modifiers: 	private
+  name: 	subscribeAndLoadOldEvents
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/TestInterconnect/method/subscribeAndLoadOldEvents()"
+
+- testInterconnect_waitForEvent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	testInterconnect
+  declaration: 	"public Event waitForEvent(String id)"
+  id: 	TestInterconnect_waitForEvent
+  methodBody: 	"      while (true) {
+         Event e = history.get(id);
+
+         if (e != null) {
+            return e;
+         }
+
+         try {
+            e = eventQueue.poll(Configuration.timeout, TimeUnit.MILLISECONDS);
+         }
+         catch (Exception x) {
+            throw new RuntimeException(x);
+         }
+
+         if (e == null) {
+            throw new RuntimeException(\"event timeout waiting for \" + id);
+         }
+
+         System.out.println(\"Test got event \" + e.getId());
+         history.put(e.getId(), e);
+      }"
+  modified: 	false
+  modifiers: 	public
+  name: 	waitForEvent
+  paramsString: 	"String id"
+  returnType: 	Event
+  signature: 	"class/TestInterconnect/method/waitForEvent(String)"
+
 - testInterconnect_Interconnect: 	org.fulib.classmodel.FMethod
   annotations: 	"@Test"
   clazz: 	testInterconnect
@@ -43,24 +193,19 @@ public void Interconnect()"
 eventBroker = new EventBroker();
 eventBroker.start();
 
+this.start();
+waitForEvent(\"\" + port);
+
 // start service
 IonicKassel42Service ionicKassel42 = new IonicKassel42Service();
 ionicKassel42.start();
+waitForEvent(\"42001\");
 
 // start service
 CityElectricsKasselService cityElectricsKassel = new CityElectricsKasselService();
 cityElectricsKassel.start();
-try {
-   Thread.sleep(1500);
-} catch (Exception e) {
-}
-
-open(\"http://localhost:42000\");
-$(\"body\").shouldHave(text(\"event broker\"));
-
-SelenideElement pre = $(\"pre\");
-pre.shouldHave(text(\"http://localhost:42001/apply\"));
-pre.shouldHave(text(\"http://localhost:42002/apply\"));
+waitForEvent(\"42002\");
+SelenideElement pre;
 LinkedHashMap<String, Object> modelMap;
 
 // workflow Overview
@@ -71,15 +216,10 @@ LinkedHashMap<String, Object> modelMap;
 CarConnectedEvent e1155 = new CarConnectedEvent();
 e1155.setId(\"11:55\");
 publish(e1155);
-
-open(\"http://localhost:42000\");
-pre = $(\"#history\");
-pre.shouldHave(text(\"- 11_55:\"));
+waitForEvent(\"11:55\");
 
 // check IonicKassel42
 open(\"http://localhost:42001\");
-pre = $(\"#history\");
-pre.shouldHave(text(\"- 11_55:\"));
 for (DataEvent dataEvent : ionicKassel42.getBuilder().getEventStore().values()) {
    ionicKassel42.getBuilder().load(dataEvent.getBlockId());
 }
@@ -92,8 +232,6 @@ open(\"http://localhost:42001\");
 
 // check CityElectricsKassel
 open(\"http://localhost:42002\");
-pre = $(\"#history\");
-pre.shouldHave(text(\"- 11_55:\"));
 for (DataEvent dataEvent : cityElectricsKassel.getBuilder().getEventStore().values()) {
    cityElectricsKassel.getBuilder().load(dataEvent.getBlockId());
 }
@@ -108,6 +246,7 @@ try {
 } catch (Exception e) {
 }
 eventBroker.stop();
+spark.stop();
 ionicKassel42.stop();
 cityElectricsKassel.stop();
 

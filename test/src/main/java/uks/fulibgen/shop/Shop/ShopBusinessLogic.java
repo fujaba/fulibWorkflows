@@ -119,7 +119,7 @@ public class ShopBusinessLogic
    {
       if (event.getId().equals("13:06")) {
          OrderBuilt order1300Event = new OrderBuilt();
-         order1300Event.setId("13:06");
+         order1300Event.setId("13:06:01");
          order1300Event.setBlockId("order1300");
          order1300Event.setState("picking");
          service.apply(order1300Event);
