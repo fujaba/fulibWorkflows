@@ -94,8 +94,7 @@ public class WorkflowGenerator {
          lastServiceNote = currentServiceNote;
 
          String serviceName = currentServiceNote.getName();
-         modelManager = new ClassModelManager().setMainJavaDir(mm.getClassModel().getMainJavaDir())
-               .setPackageName(mm.getClassModel().getPackageName() + "." + serviceName);
+         modelManager = mm;
          managerMap.put(serviceName, modelManager);
 
          // add model class
@@ -149,8 +148,6 @@ public class WorkflowGenerator {
       testClazz = tm.haveClass("Test" + boardName);
       testClazz.withImports("import org.junit.Test;", "import java.util.LinkedHashMap;",
             "import static org.assertj.core.api.Assertions.assertThat;");
-      testClazz.withImports(
-            String.format("import %s.%s.*;", mm.getClassModel().getPackageName(), lastServiceNote.getName()));
 
       String declaration = "@Test\n" + "public void test"
             + StrUtil.toIdentifier(eventModel.getEventStormingBoard().getName()) + "()";
@@ -162,8 +159,16 @@ public class WorkflowGenerator {
 
       testBody.append(String.format("%s logic = new %1$s();\n", logic.getName()));
 
-      // create model map
-      testBody.append("RoutingModel model = new RoutingModel();\n");
+      addAllObjectCreation();
+      addAllLinkCreation();
+      addAllCommands();
+
+      testBody.append("\nSystem.out.println();\n");
+
+      tm.haveMethod(testClazz, declaration, testBody.toString());
+   }
+
+   private void addAllObjectCreation() {
       for (Workflow workflow : eventStormingBoard.getWorkflows()) {
          for (WorkflowNote note : workflow.getNotes()) {
             if (note instanceof ExternalSystemNote) {
@@ -175,15 +180,36 @@ public class WorkflowGenerator {
                      }
                   }
                }
-            } else if (note instanceof CommandNote) {
+            }
+         }
+      }
+   }
+
+   private void addAllLinkCreation() {
+      for (Workflow workflow : eventStormingBoard.getWorkflows()) {
+         for (WorkflowNote note : workflow.getNotes()) {
+            if (note instanceof ExternalSystemNote) {
+               ExternalSystemNote externalSystemNote = (ExternalSystemNote) note;
+               for (Policy policy : externalSystemNote.getPolicies()) {
+                  for (WorkflowNote step : policy.getSteps()) {
+                     if (step instanceof DataNote) {
+                        addLinkCreationToPlainTest(step);
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   private void addAllCommands() {
+      for (Workflow workflow : eventStormingBoard.getWorkflows()) {
+         for (WorkflowNote note : workflow.getNotes()) {
+            if (note instanceof CommandNote) {
                addCommandToPlainTest(note);
             }
          }
       }
-
-      testBody.append("\nSystem.out.println();\n");
-
-      tm.haveMethod(testClazz, declaration, testBody.toString());
    }
 
    private void addCommandToPlainTest(WorkflowNote note) {
@@ -210,8 +236,8 @@ public class WorkflowGenerator {
                String type = entry.getKey();
                while (iterator.hasNext()) {
                   entry = iterator.next();
-                  testBody.append(String.format("assertThat(model.getOrCreate%s(\"%s\").get%s()).isEqualTo(\"%s\");\n",
-                        type, blockId, StrUtil.cap(entry.getKey()), entry.getValue()));
+                  testBody.append(String.format("assertThat(%s.get%s()).isEqualTo(\"%s\");\n",
+                        eventModel.getVarName(blockId), StrUtil.cap(entry.getKey()), entry.getValue()));
                }
             }
          }
@@ -226,7 +252,7 @@ public class WorkflowGenerator {
       String blockId = dataNote.getBlockId();
       String varName = StrUtil.decap(blockId);
       testBody.append(
-            String.format("\n%s %s = model.getOrCreate%1$s(\"%s\");\n", dataNote.getDataType(), varName, blockId));
+            String.format("\n%s %s = new %1$s().setId(\"%s\");\n", dataNote.getDataType(), varName, blockId));
       Iterator<Map.Entry<String, String>> iterator = mockup.entrySet().iterator();
       iterator.next();
       while (iterator.hasNext()) {
@@ -240,9 +266,31 @@ public class WorkflowGenerator {
          AssocRole role = dataClass.getRole(attr);
          if (attribute != null) {
             testBody.append(String.format("%s.set%s(\"%s\");\n", varName, StrUtil.cap(attr), value));
-         } else if (role.getCardinality() <= 1) {
-            testBody.append(String.format("%s.set%s(model.getOrCreate%s(\"%s\"));\n", varName, StrUtil.cap(attr),
-                  role.getOther().getClazz().getName(), value));
+         }
+      }
+   }
+
+   private void addLinkCreationToPlainTest(WorkflowNote note) {
+      DataNote dataNote = (DataNote) note;
+      ClassModelManager modelManager = managerMap.get(lastServiceNote.getName());
+      Clazz dataClass = modelManager.haveClass(dataNote.getDataType());
+      LinkedHashMap<String, String> mockup = getMockup(dataNote.getMap());
+      String blockId = dataNote.getBlockId();
+      String varName = eventModel.getVarName(blockId);
+      Iterator<Map.Entry<String, String>> iterator = mockup.entrySet().iterator();
+      iterator.next();
+      while (iterator.hasNext()) {
+         Map.Entry<String, String> entry = iterator.next();
+         String attr = entry.getKey();
+         if (attr.endsWith(".back")) {
+            continue;
+         }
+         String value = entry.getValue();
+         Attribute attribute = dataClass.getAttribute(attr);
+         AssocRole role = dataClass.getRole(attr);
+         if (attribute == null && role.getCardinality() <= 1) {
+            testBody.append(String.format("%s.set%s(%s);\n",
+               varName, StrUtil.cap(attr), eventModel.getVarName(value)));
          }
       }
    }

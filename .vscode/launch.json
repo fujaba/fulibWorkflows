@@ -10,6 +10,13 @@
             "request": "launch",
             "mainClass": "org.junit.runner.JUnitCore",
             "args": "org.fulib.workflows.GenShopWorkflow"
+        },
+        {
+            "type": "java",
+            "name": "GenRouting",
+            "request": "launch",
+            "mainClass": "org.junit.runner.JUnitCore",
+            "args": "org.fulib.workflows.pm.GenRouting"
         }
     ]
 }

@@ -4,8 +4,8 @@
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
   mainJavaDir: 	"test/src/main/java"
-  packageName: 	uks.debuggen.pm.Routing
-  packageSrcFolder: 	"test/src/main/java/uks/debuggen/pm/Routing"
+  packageName: 	uks.debuggen.pm.routing
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/pm/routing"
 
 - routingModel: 	org.fulib.classmodel.Clazz
   attributes: 	routingModel_modelMap

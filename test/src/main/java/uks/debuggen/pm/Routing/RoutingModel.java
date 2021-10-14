@@ -1,4 +1,4 @@
-package uks.debuggen.pm.Routing;
+package uks.debuggen.pm.routing;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
@@ -27,6 +27,24 @@ public class RoutingModel
       return this;
    }
 
+   public Route getOrCreateRoute(String id)
+   {
+      if (id == null) return null;
+      return (Route) modelMap.computeIfAbsent(id, k -> new Route().setId(k));
+   }
+
+   public Stop getOrCreateStop(String id)
+   {
+      if (id == null) return null;
+      return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
+   }
+
+   public Leg getOrCreateLeg(String id)
+   {
+      if (id == null) return null;
+      return (Leg) modelMap.computeIfAbsent(id, k -> new Leg().setId(k));
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -44,23 +62,5 @@ public class RoutingModel
          this.listeners = new PropertyChangeSupport(this);
       }
       return this.listeners;
-   }
-
-   public Route getOrCreateRoute(String id)
-   {
-      if (id == null) return null;
-      return (Route) modelMap.computeIfAbsent(id, k -> new Route().setId(k));
-   }
-
-   public Stop getOrCreateStop(String id)
-   {
-      if (id == null) return null;
-      return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
-   }
-
-   public Leg getOrCreateLeg(String id)
-   {
-      if (id == null) return null;
-      return (Leg) modelMap.computeIfAbsent(id, k -> new Leg().setId(k));
    }
 }
