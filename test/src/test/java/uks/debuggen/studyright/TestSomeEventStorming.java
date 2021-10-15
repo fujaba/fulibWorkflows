@@ -213,7 +213,8 @@ public class TestSomeEventStorming
       System.out.println("SomeEventStorming selenide was able to check body");
 
       SelenideElement pre = $("pre");
-      System.out.println("SomeEventStorming selenide was able to find <pre>");
+      System.out.println("SomeEventStorming selenide was able to find <pre>\n" + pre.getText());
+
 
       pre.shouldHave(text("http://localhost:42400/apply"));
 
