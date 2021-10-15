@@ -2,7 +2,6 @@ package uks.fulibgen.shop.Shop;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 import uks.fulibgen.shop.events.*;
-import static org.fulib.workflows.StrUtil.stripBrackets;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
@@ -10,13 +9,13 @@ public class ShopBusinessLogic
 {
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
-   public static final String PROPERTY_SERVICE = "service";
    public static final String PROPERTY_BUILDER = "builder";
+   public static final String PROPERTY_SERVICE = "service";
    private ShopModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
+   private ShopBuilder builder;
    private ShopService service;
    protected PropertyChangeSupport listeners;
-   private ShopBuilder builder;
 
    public ShopModel getModel()
    {
@@ -54,33 +53,6 @@ public class ShopBusinessLogic
       return this;
    }
 
-   public ShopService getService()
-   {
-      return this.service;
-   }
-
-   public ShopBusinessLogic setService(ShopService value)
-   {
-      if (this.service == value)
-      {
-         return this;
-      }
-
-      final ShopService oldValue = this.service;
-      if (this.service != null)
-      {
-         this.service = null;
-         oldValue.setBusinessLogic(null);
-      }
-      this.service = value;
-      if (value != null)
-      {
-         value.setBusinessLogic(this);
-      }
-      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
-      return this;
-   }
-
    public ShopBuilder getBuilder()
    {
       return this.builder;
@@ -108,114 +80,37 @@ public class ShopBusinessLogic
       return this;
    }
 
-   private void handleOrderApprovedEvent(Event e)
+   public ShopService getService()
    {
-      // no fulib
-      OrderApprovedEvent event = (OrderApprovedEvent) e;
-      handleDemoOrderApprovedEvent(event);
+      return this.service;
    }
 
-   private void handleDemoOrderApprovedEvent(OrderApprovedEvent event)
+   public ShopBusinessLogic setService(ShopService value)
    {
-      if (event.getId().equals("13:06")) {
-         OrderBuilt order1300Event = new OrderBuilt();
-         order1300Event.setId("13:06:01");
-         order1300Event.setBlockId("order1300");
-         order1300Event.setState("picking");
-         service.apply(order1300Event);
-
-      }
-   }
-
-   private void handleOrderPickedEvent(Event e)
-   {
-      // no fulib
-      OrderPickedEvent event = (OrderPickedEvent) e;
-      handleDemoOrderPickedEvent(event);
-   }
-
-   private void handleDemoOrderPickedEvent(OrderPickedEvent event)
-   {
-      if (event.getId().equals("14:03")) {
-         OrderBuilt order1300Event = new OrderBuilt();
-         order1300Event.setId("14:04");
-         order1300Event.setBlockId("order1300");
-         order1300Event.setState("shipping");
-         service.apply(order1300Event);
-
-      }
-   }
-
-   private void handleOrderDeclinedEvent(Event e)
-   {
-      // no fulib
-      OrderDeclinedEvent event = (OrderDeclinedEvent) e;
-      handleDemoOrderDeclinedEvent(event);
-   }
-
-   private void handleDemoOrderDeclinedEvent(OrderDeclinedEvent event)
-   {
-      if (event.getId().equals("13:15")) {
-         OrderBuilt order1310Event = new OrderBuilt();
-         order1310Event.setId("13:16");
-         order1310Event.setBlockId("order1310");
-         order1310Event.setState("out of stock");
-         service.apply(order1310Event);
-
-      }
-   }
-
-   public void initEventHandlerMap()
-   {
-      if (handlerMap == null) {
-         handlerMap = new LinkedHashMap<>();
-         handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
-         handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
-         handlerMap.put(SubmitOrderCommand.class, this::handleSubmitOrderCommand);
-         handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
-         handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
-         handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
-      }
-   }
-
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
+      if (this.service == value)
       {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
+         return this;
       }
-      return false;
-   }
 
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
+      final ShopService oldValue = this.service;
+      if (this.service != null)
       {
-         this.listeners = new PropertyChangeSupport(this);
+         this.service = null;
+         oldValue.setBusinessLogic(null);
       }
-      return this.listeners;
-   }
-
-   public void removeYou()
-   {
-      this.setBuilder(null);
-      this.setService(null);
-   }
-
-   private void ignoreEvent(Event event)
-   {
-      // empty
-   }
-
-   public Consumer<Event> getHandler(Event event)
-   {
-      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+      this.service = value;
+      if (value != null)
+      {
+         value.setBusinessLogic(this);
+      }
+      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
    }
 
    private void handleSubmitOrderCommand(Event e)
    {
-      // no fulib
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
       SubmitOrderCommand event = (SubmitOrderCommand) e;
       handleDemoSubmitOrderCommand(event);
    }
@@ -275,5 +170,113 @@ public class ShopBusinessLogic
          e1314.setAddress("Wonderland 1");
          service.apply(e1314);
       }
+   }
+
+   private void handleOrderApprovedEvent(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      OrderApprovedEvent event = (OrderApprovedEvent) e;
+      handleDemoOrderApprovedEvent(event);
+   }
+
+   private void handleDemoOrderApprovedEvent(OrderApprovedEvent event)
+   {
+      if (event.getId().equals("13:06")) {
+         OrderBuilt order1300Event = new OrderBuilt();
+         order1300Event.setId("13:06:01");
+         order1300Event.setBlockId("order1300");
+         order1300Event.setState("picking");
+         service.apply(order1300Event);
+
+      }
+   }
+
+   private void handleOrderPickedEvent(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      OrderPickedEvent event = (OrderPickedEvent) e;
+      handleDemoOrderPickedEvent(event);
+   }
+
+   private void handleDemoOrderPickedEvent(OrderPickedEvent event)
+   {
+      if (event.getId().equals("14:03")) {
+         OrderBuilt order1300Event = new OrderBuilt();
+         order1300Event.setId("14:04");
+         order1300Event.setBlockId("order1300");
+         order1300Event.setState("shipping");
+         service.apply(order1300Event);
+
+      }
+   }
+
+   private void handleOrderDeclinedEvent(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      OrderDeclinedEvent event = (OrderDeclinedEvent) e;
+      handleDemoOrderDeclinedEvent(event);
+   }
+
+   private void handleDemoOrderDeclinedEvent(OrderDeclinedEvent event)
+   {
+      if (event.getId().equals("13:15")) {
+         OrderBuilt order1310Event = new OrderBuilt();
+         order1310Event.setId("13:16");
+         order1310Event.setBlockId("order1310");
+         order1310Event.setState("out of stock");
+         service.apply(order1310Event);
+
+      }
+   }
+
+   public void initEventHandlerMap()
+   {
+      if (handlerMap == null) {
+         handlerMap = new LinkedHashMap<>();
+         handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
+         handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
+         handlerMap.put(SubmitOrderCommand.class, this::handleSubmitOrderCommand);
+         handlerMap.put(OrderApprovedEvent.class, this::handleOrderApprovedEvent);
+         handlerMap.put(OrderPickedEvent.class, this::handleOrderPickedEvent);
+         handlerMap.put(OrderDeclinedEvent.class, this::handleOrderDeclinedEvent);
+      }
+   }
+
+   private void ignoreEvent(Event event)
+   {
+      // empty
+   }
+
+   public Consumer<Event> getHandler(Event event)
+   {
+      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+   }
+
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   {
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
+   }
+
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
+   }
+
+   public void removeYou()
+   {
+      this.setBuilder(null);
+      this.setService(null);
    }
 }

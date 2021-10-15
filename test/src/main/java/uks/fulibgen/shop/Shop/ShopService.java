@@ -1,9 +1,16 @@
 package uks.fulibgen.shop.Shop;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.fulib.yaml.Yaml;
 import org.fulib.yaml.YamlIdMap;
 import spark.Request;
@@ -12,29 +19,6 @@ import spark.Service;
 import uks.fulibgen.shop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-import java.time.Instant;
-;
-;
-;
-;
-;
-;
-;
-;
 
 public class ShopService
 {
@@ -48,9 +32,9 @@ public class ShopService
    private int port = 42100;
    private Service spark;
    private ShopModel model;
-   protected PropertyChangeSupport listeners;
    private ShopBusinessLogic businessLogic;
    private ShopBuilder builder;
+   protected PropertyChangeSupport listeners;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -178,6 +162,30 @@ public class ShopService
       return this;
    }
 
+   public Query query(Query query)
+   {
+      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;
+   }
+
+   public String isoNow()
+   {
+      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+   }
+
    public void start()
    {
       Unirest.setTimeouts(3*60*1000, 3*60*1000);
@@ -197,6 +205,11 @@ public class ShopService
       Logger.getGlobal().info("Shop service is up and running on port " + port);
    }
 
+   public void stop()
+   {
+      spark.stop();
+   }
+
    private String getHello(Request req, Response res)
    {
       try {
@@ -211,25 +224,6 @@ public class ShopService
          Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
          return "Shop Error " + e.getMessage();
       }
-   }
-
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
-      {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
-      }
-      return false;
-   }
-
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
-      {
-         this.listeners = new PropertyChangeSupport(this);
-      }
-      return this.listeners;
    }
 
    private void subscribeAndLoadOldEvents()
@@ -269,49 +263,10 @@ public class ShopService
       publish(event);
    }
 
-   public void publish(Event event)
-   {
-      String json = Yaml.encodeSimple(event);
-
-      try {
-         HttpResponse<String> response = Unirest
-               .post("http://localhost:42000/publish")
-               .body(json)
-               .asString();
-      }
-      catch (UnirestException e) {
-         e.printStackTrace();
-      }
-   }
-
-   private String postApply(Request req, Response res)
-   {
-      String body = req.body();
-      try {
-         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
-         idMap.decode(body);
-         Map<String, Object> map = idMap.getObjIdMap();
-         for (Object value : map.values()) {
-            Event event = (Event) value;
-            apply(event);
-         }
-      }
-      catch (Exception e) {
-         String message = e.getMessage();
-         if (message.contains("ReflectorMap could not find class description")) {
-            Logger.getGlobal().info("post apply ignores unknown event " + body);
-         }
-         else {
-            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
-         }
-      }
-      return "apply done";
-   }
-
    public String getPage(Request request, Response response)
    {
-      // no fulib
-      // add your page handling here
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
       return getDemoPage(request, response);
    }
 
@@ -375,38 +330,67 @@ public class ShopService
       return html.toString();
    }
 
+   public void publish(Event event)
+   {
+      String json = Yaml.encodeSimple(event);
+
+      try {
+         HttpResponse<String> response = Unirest
+               .post("http://localhost:42000/publish")
+               .body(json)
+               .asString();
+      }
+      catch (UnirestException e) {
+         e.printStackTrace();
+      }
+   }
+
+   private String postApply(Request req, Response res)
+   {
+      String body = req.body();
+      try {
+         YamlIdMap idMap = new YamlIdMap(Event.class.getPackageName());
+         idMap.decode(body);
+         Map<String, Object> map = idMap.getObjIdMap();
+         for (Object value : map.values()) {
+            Event event = (Event) value;
+            apply(event);
+         }
+      }
+      catch (Exception e) {
+         String message = e.getMessage();
+         if (message.contains("ReflectorMap could not find class description")) {
+            Logger.getGlobal().info("post apply ignores unknown event " + body);
+         }
+         else {
+            Logger.getGlobal().log(Level.SEVERE, "postApply failed", e);
+         }
+      }
+      return "apply done";
+   }
+
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   {
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
+   }
+
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
+   }
+
    public void removeYou()
    {
       this.setBusinessLogic(null);
       this.setBuilder(null);
-   }
-
-   public Query query(Query query)
-   {
-      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
-
-      if (dataEvent == null) {
-         return query;
-      }
-
-      if (dataEvent instanceof DataGroup) {
-         DataGroup group = (DataGroup) dataEvent;
-         query.withResults(group.getElements());
-      }
-      else {
-         query.withResults(dataEvent);
-      }
-
-      return query;
-   }
-
-   public String isoNow()
-   {
-      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
-   }
-
-   public void stop()
-   {
-      spark.stop();
    }
 }

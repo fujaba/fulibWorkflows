@@ -241,13 +241,6 @@ public class TestSomeEventStorming
       eventBroker = new EventBroker();
       eventBroker.start();
 
-      try {
-         Thread.sleep(2000);
-      } catch (InterruptedException e1) {
-         // TODO Auto-generated catch block
-         e1.printStackTrace();
-      }
-
       this.start();
       waitForEvent("" + port);
 
@@ -293,12 +286,6 @@ public class TestSomeEventStorming
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
-
-      try {
-         Thread.sleep(2000);
-      } catch (InterruptedException e1) {
-         e1.printStackTrace();
-      }
 
       this.start();
       waitForEvent("" + port);

@@ -241,12 +241,6 @@ public class TestPartyApp
       eventBroker = new EventBroker();
       eventBroker.start();
 
-      try {
-         Thread.sleep(2000);
-      } catch (InterruptedException e1) {
-         e1.printStackTrace();
-      }
-
       this.start();
       waitForEvent("" + port);
 

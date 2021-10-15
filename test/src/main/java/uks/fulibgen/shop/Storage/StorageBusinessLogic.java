@@ -2,7 +2,6 @@ package uks.fulibgen.shop.Storage;
 import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 import uks.fulibgen.shop.events.*;
-import static org.fulib.workflows.StrUtil.stripBrackets;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
@@ -10,13 +9,13 @@ public class StorageBusinessLogic
 {
    public static final String PROPERTY_MODEL = "model";
    public static final String PROPERTY_HANDLER_MAP = "handlerMap";
-   public static final String PROPERTY_SERVICE = "service";
    public static final String PROPERTY_BUILDER = "builder";
+   public static final String PROPERTY_SERVICE = "service";
    private StorageModel model;
    private LinkedHashMap<Class, Consumer<Event>> handlerMap;
+   private StorageBuilder builder;
    private StorageService service;
    protected PropertyChangeSupport listeners;
-   private StorageBuilder builder;
 
    public StorageModel getModel()
    {
@@ -54,33 +53,6 @@ public class StorageBusinessLogic
       return this;
    }
 
-   public StorageService getService()
-   {
-      return this.service;
-   }
-
-   public StorageBusinessLogic setService(StorageService value)
-   {
-      if (this.service == value)
-      {
-         return this;
-      }
-
-      final StorageService oldValue = this.service;
-      if (this.service != null)
-      {
-         this.service = null;
-         oldValue.setBusinessLogic(null);
-      }
-      this.service = value;
-      if (value != null)
-      {
-         value.setBusinessLogic(this);
-      }
-      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
-      return this;
-   }
-
    public StorageBuilder getBuilder()
    {
       return this.builder;
@@ -108,9 +80,66 @@ public class StorageBusinessLogic
       return this;
    }
 
+   public StorageService getService()
+   {
+      return this.service;
+   }
+
+   public StorageBusinessLogic setService(StorageService value)
+   {
+      if (this.service == value)
+      {
+         return this;
+      }
+
+      final StorageService oldValue = this.service;
+      if (this.service != null)
+      {
+         this.service = null;
+         oldValue.setBusinessLogic(null);
+      }
+      this.service = value;
+      if (value != null)
+      {
+         value.setBusinessLogic(this);
+      }
+      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
+   }
+
+   private void handleStoreBoxCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      StoreBoxCommand event = (StoreBoxCommand) e;
+      handleDemoStoreBoxCommand(event);
+   }
+
+   private void handleDemoStoreBoxCommand(StoreBoxCommand event)
+   {
+      if (event.getId().equals("12:00")) {
+         BoxBuilt box23Event = new BoxBuilt();
+         box23Event.setId("12:01");
+         box23Event.setBlockId("box23");
+         box23Event.setProduct("shoes");
+         box23Event.setPlace("shelf23");
+         service.apply(box23Event);
+
+
+         ProductStoredEvent e1202 = new ProductStoredEvent();
+
+         e1202.setId("12:02");
+         e1202.setBox("box23");
+         e1202.setProduct("shoes");
+         e1202.setPlace("shelf23");
+         service.apply(e1202);
+      }
+   }
+
    private void handleOrderRegisteredEvent(Event e)
    {
-      // no fulib
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
       OrderRegisteredEvent event = (OrderRegisteredEvent) e;
       handleDemoOrderRegisteredEvent(event);
    }
@@ -145,84 +174,10 @@ public class StorageBusinessLogic
       }
    }
 
-   public void initEventHandlerMap()
-   {
-      if (handlerMap == null) {
-         handlerMap = new LinkedHashMap<>();
-         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
-         handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
-         handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
-         handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
-         handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
-      }
-   }
-
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
-      {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
-      }
-      return false;
-   }
-
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
-      {
-         this.listeners = new PropertyChangeSupport(this);
-      }
-      return this.listeners;
-   }
-
-   public void removeYou()
-   {
-      this.setBuilder(null);
-      this.setService(null);
-   }
-
-   private void ignoreEvent(Event event)
-   {
-      // empty
-   }
-
-   public Consumer<Event> getHandler(Event event)
-   {
-      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
-   }
-
-   private void handleStoreBoxCommand(Event e)
-   {
-      // no fulib
-      StoreBoxCommand event = (StoreBoxCommand) e;
-      handleDemoStoreBoxCommand(event);
-   }
-
-   private void handleDemoStoreBoxCommand(StoreBoxCommand event)
-   {
-      if (event.getId().equals("12:00")) {
-         BoxBuilt box23Event = new BoxBuilt();
-         box23Event.setId("12:01");
-         box23Event.setBlockId("box23");
-         box23Event.setProduct("shoes");
-         box23Event.setPlace("shelf23");
-         service.apply(box23Event);
-
-
-         ProductStoredEvent e1202 = new ProductStoredEvent();
-
-         e1202.setId("12:02");
-         e1202.setBox("box23");
-         e1202.setProduct("shoes");
-         e1202.setPlace("shelf23");
-         service.apply(e1202);
-      }
-   }
-
    private void handlePickOrderCommand(Event e)
    {
-      // no fulib
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
       PickOrderCommand event = (PickOrderCommand) e;
       handleDemoPickOrderCommand(event);
    }
@@ -252,5 +207,52 @@ public class StorageBusinessLogic
          e1403.setUser("Bob");
          service.apply(e1403);
       }
+   }
+
+   public void initEventHandlerMap()
+   {
+      if (handlerMap == null) {
+         handlerMap = new LinkedHashMap<>();
+         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+         handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
+         handlerMap.put(StoreBoxCommand.class, this::handleStoreBoxCommand);
+         handlerMap.put(OrderRegisteredEvent.class, this::handleOrderRegisteredEvent);
+         handlerMap.put(PickOrderCommand.class, this::handlePickOrderCommand);
+      }
+   }
+
+   private void ignoreEvent(Event event)
+   {
+      // empty
+   }
+
+   public Consumer<Event> getHandler(Event event)
+   {
+      return getHandlerMap().computeIfAbsent(event.getClass(), k -> this::ignoreEvent);
+   }
+
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   {
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
+   }
+
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
+   }
+
+   public void removeYou()
+   {
+      this.setBuilder(null);
+      this.setService(null);
    }
 }

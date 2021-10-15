@@ -1,26 +1,26 @@
 package uks.fulibgen.shop.Shop;
 import java.util.LinkedHashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import uks.fulibgen.shop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
-import java.util.function.Function;
-import java.util.function.Consumer;
 
 public class ShopBuilder
 {
    public static final String PROPERTY_MODEL = "model";
-   public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
-   public static final String PROPERTY_SERVICE = "service";
    public static final String PROPERTY_EVENT_STORE = "eventStore";
    public static final String PROPERTY_LOADER_MAP = "loaderMap";
    public static final String PROPERTY_GROUP_STORE = "groupStore";
+   public static final String PROPERTY_BUSINESS_LOGIC = "businessLogic";
+   public static final String PROPERTY_SERVICE = "service";
    private ShopModel model;
-   private ShopBusinessLogic businessLogic;
-   protected PropertyChangeSupport listeners;
-   private ShopService service;
    private LinkedHashMap<String, DataEvent> eventStore = new LinkedHashMap<>();
    private LinkedHashMap<Class, Function<Event, Object>> loaderMap;
    private LinkedHashMap<String, LinkedHashMap<String, DataEvent>> groupStore = new LinkedHashMap<>();
+   private ShopBusinessLogic businessLogic;
+   private ShopService service;
+   protected PropertyChangeSupport listeners;
 
    public ShopModel getModel()
    {
@@ -37,60 +37,6 @@ public class ShopBuilder
       final ShopModel oldValue = this.model;
       this.model = value;
       this.firePropertyChange(PROPERTY_MODEL, oldValue, value);
-      return this;
-   }
-
-   public ShopBusinessLogic getBusinessLogic()
-   {
-      return this.businessLogic;
-   }
-
-   public ShopBuilder setBusinessLogic(ShopBusinessLogic value)
-   {
-      if (this.businessLogic == value)
-      {
-         return this;
-      }
-
-      final ShopBusinessLogic oldValue = this.businessLogic;
-      if (this.businessLogic != null)
-      {
-         this.businessLogic = null;
-         oldValue.setBuilder(null);
-      }
-      this.businessLogic = value;
-      if (value != null)
-      {
-         value.setBuilder(this);
-      }
-      this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
-      return this;
-   }
-
-   public ShopService getService()
-   {
-      return this.service;
-   }
-
-   public ShopBuilder setService(ShopService value)
-   {
-      if (this.service == value)
-      {
-         return this;
-      }
-
-      final ShopService oldValue = this.service;
-      if (this.service != null)
-      {
-         this.service = null;
-         oldValue.setBuilder(null);
-      }
-      this.service = value;
-      if (value != null)
-      {
-         value.setBuilder(this);
-      }
-      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
       return this;
    }
 
@@ -148,42 +94,58 @@ public class ShopBuilder
       return this;
    }
 
-   public String stripBrackets(String back)
+   public ShopBusinessLogic getBusinessLogic()
    {
-      if (back == null) {
-         return "";
-      }
-      int open = back.indexOf('[');
-      int close = back.indexOf(']');
-      if (open >= 0 && close >= 0) {
-         back = back.substring(open + 1, close);
-      }
-      return back;
+      return this.businessLogic;
    }
 
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   public ShopBuilder setBusinessLogic(ShopBusinessLogic value)
    {
-      if (this.listeners != null)
+      if (this.businessLogic == value)
       {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
+         return this;
       }
-      return false;
-   }
 
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
+      final ShopBusinessLogic oldValue = this.businessLogic;
+      if (this.businessLogic != null)
       {
-         this.listeners = new PropertyChangeSupport(this);
+         this.businessLogic = null;
+         oldValue.setBuilder(null);
       }
-      return this.listeners;
+      this.businessLogic = value;
+      if (value != null)
+      {
+         value.setBuilder(this);
+      }
+      this.firePropertyChange(PROPERTY_BUSINESS_LOGIC, oldValue, value);
+      return this;
    }
 
-   public void removeYou()
+   public ShopService getService()
    {
-      this.setBusinessLogic(null);
-      this.setService(null);
+      return this.service;
+   }
+
+   public ShopBuilder setService(ShopService value)
+   {
+      if (this.service == value)
+      {
+         return this;
+      }
+
+      final ShopService oldValue = this.service;
+      if (this.service != null)
+      {
+         this.service = null;
+         oldValue.setBuilder(null);
+      }
+      this.service = value;
+      if (value != null)
+      {
+         value.setBuilder(this);
+      }
+      this.firePropertyChange(PROPERTY_SERVICE, oldValue, value);
+      return this;
    }
 
    private boolean outdated(DataEvent event)
@@ -272,6 +234,14 @@ public class ShopBuilder
       }
    }
 
+   public String getObjectId(String value)
+   {
+      if (value == null) {
+         return null;
+      }
+      return value.replaceAll("\\W+", "_");
+   }
+
    private void addToGroup(String groupId, String elementId)
    {
       DataEvent dataEvent = eventStore.get(elementId);
@@ -285,11 +255,41 @@ public class ShopBuilder
       group.put(elementId, dataEvent);
    }
 
-   public String getObjectId(String value)
+   public String stripBrackets(String back)
    {
-      if (value == null) {
-         return null;
+      if (back == null) {
+         return "";
       }
-      return value.replaceAll("\\W+", "_");
+      int open = back.indexOf('[');
+      int close = back.indexOf(']');
+      if (open >= 0 && close >= 0) {
+         back = back.substring(open + 1, close);
+      }
+      return back;
+   }
+
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
+   {
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
+   }
+
+   public PropertyChangeSupport listeners()
+   {
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
+   }
+
+   public void removeYou()
+   {
+      this.setBusinessLogic(null);
+      this.setService(null);
    }
 }

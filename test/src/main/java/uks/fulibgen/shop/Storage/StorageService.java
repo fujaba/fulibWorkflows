@@ -1,24 +1,24 @@
 package uks.fulibgen.shop.Storage;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.fulib.yaml.Yaml;
+import org.fulib.yaml.YamlIdMap;
 import spark.Request;
 import spark.Response;
 import spark.Service;
 import uks.fulibgen.shop.events.*;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import java.util.Map;
-import java.util.function.Consumer;
-import org.fulib.yaml.YamlIdMap;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 
 public class StorageService
 {
@@ -32,9 +32,9 @@ public class StorageService
    private int port = 42002;
    private Service spark;
    private StorageModel model;
-   protected PropertyChangeSupport listeners;
    private StorageBusinessLogic businessLogic;
    private StorageBuilder builder;
+   protected PropertyChangeSupport listeners;
 
    public LinkedHashMap<String, Event> getHistory()
    {
@@ -162,6 +162,30 @@ public class StorageService
       return this;
    }
 
+   public Query query(Query query)
+   {
+      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
+
+      if (dataEvent == null) {
+         return query;
+      }
+
+      if (dataEvent instanceof DataGroup) {
+         DataGroup group = (DataGroup) dataEvent;
+         query.withResults(group.getElements());
+      }
+      else {
+         query.withResults(dataEvent);
+      }
+
+      return query;
+   }
+
+   public String isoNow()
+   {
+      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
+   }
+
    public void start()
    {
       Unirest.setTimeouts(3*60*1000, 3*60*1000);
@@ -181,6 +205,11 @@ public class StorageService
       Logger.getGlobal().info("Storage service is up and running on port " + port);
    }
 
+   public void stop()
+   {
+      spark.stop();
+   }
+
    private String getHello(Request req, Response res)
    {
       try {
@@ -195,25 +224,6 @@ public class StorageService
          Logger.getGlobal().log(Level.SEVERE, e.getMessage(), e);
          return "Storage Error " + e.getMessage();
       }
-   }
-
-   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
-   {
-      if (this.listeners != null)
-      {
-         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
-         return true;
-      }
-      return false;
-   }
-
-   public PropertyChangeSupport listeners()
-   {
-      if (this.listeners == null)
-      {
-         this.listeners = new PropertyChangeSupport(this);
-      }
-      return this.listeners;
    }
 
    private void subscribeAndLoadOldEvents()
@@ -251,6 +261,25 @@ public class StorageService
       history.put(event.getId(), event);
       firePropertyChange(PROPERTY_HISTORY, null, event);
       publish(event);
+   }
+
+   public String getPage(Request request, Response response)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      return getDemoPage(request, response);
+   }
+
+   public String getDemoPage(Request request, Response response)
+   {
+      StringBuilder html = new StringBuilder();
+      String id = request.params("id");
+      String event = request.queryParams("event");
+
+
+
+      html.append("This is the Shop Service page " + id + "\n");
+      return html.toString();
    }
 
    public void publish(Event event)
@@ -292,57 +321,28 @@ public class StorageService
       return "apply done";
    }
 
-   public String getPage(Request request, Response response)
+   public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      // no fulib
-      // add your page handling here
-      return getDemoPage(request, response);
+      if (this.listeners != null)
+      {
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
+         return true;
+      }
+      return false;
    }
 
-   public String getDemoPage(Request request, Response response)
+   public PropertyChangeSupport listeners()
    {
-      StringBuilder html = new StringBuilder();
-      String id = request.params("id");
-      String event = request.queryParams("event");
-
-
-
-      html.append("This is the Shop Service page " + id + "\n");
-      return html.toString();
+      if (this.listeners == null)
+      {
+         this.listeners = new PropertyChangeSupport(this);
+      }
+      return this.listeners;
    }
 
    public void removeYou()
    {
       this.setBusinessLogic(null);
       this.setBuilder(null);
-   }
-
-   public Query query(Query query)
-   {
-      DataEvent dataEvent = getBuilder().getEventStore().get(query.getKey());
-
-      if (dataEvent == null) {
-         return query;
-      }
-
-      if (dataEvent instanceof DataGroup) {
-         DataGroup group = (DataGroup) dataEvent;
-         query.withResults(group.getElements());
-      }
-      else {
-         query.withResults(dataEvent);
-      }
-
-      return query;
-   }
-
-   public String isoNow()
-   {
-      return DateTimeFormatter.ISO_INSTANT.format(Instant.now());
-   }
-
-   public void stop()
-   {
-      spark.stop();
    }
 }
