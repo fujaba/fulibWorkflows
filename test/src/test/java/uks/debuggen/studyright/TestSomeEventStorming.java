@@ -203,15 +203,23 @@ public class TestSomeEventStorming
       studyRight.start();
 
       try {
-         Thread.sleep(1000);
+         Thread.sleep(2000);
       } catch (InterruptedException e1) {
       }
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
 
+      System.out.println("SomeEventStorming selenide was able to check body");
+
       SelenideElement pre = $("pre");
+      System.out.println("SomeEventStorming selenide was able to find <pre>");
+
       pre.shouldHave(text("http://localhost:42400/apply"));
+
+      System.out.println("SomeEventStorming selenide was able to check 42400/apply");
+
+
       LinkedHashMap<String, Object> modelMap;
 
       // workflow working smoothly
