@@ -780,7 +780,7 @@ public class TestPartyApp implements PropertyChangeListener {
       spark.stop();
       partyApp.stop();
 
-      System.out.println();
+      System.out.println("PartyApp completed gracefully");
    }
 
    public void publish(Event event)

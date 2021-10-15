@@ -269,7 +269,7 @@ eventBroker.stop();
 spark.stop();
 marburgHealthSystem.stop();
 
-System.out.println();
+System.out.println(\"HealthExperts completed gracefully\");
 "
   modified: 	false
   modifiers: 	public

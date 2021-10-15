@@ -467,7 +467,7 @@ public class TestFamilyDoctor
       spark.stop();
       docMedical.stop();
 
-      System.out.println();
+      System.out.println("FamilyDoctor completed gracefully");
    }
 
    public void publish(Event event)

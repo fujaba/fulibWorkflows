@@ -600,7 +600,7 @@ public class TestSomeEventStorming
       spark.stop();
       studyRight.stop();
 
-      System.out.println();
+      System.out.println("SomeEventStorming completed gracefully");
    }
 
    public void publish(Event event)

@@ -454,7 +454,7 @@ eventBroker.stop();
 spark.stop();
 partyApp.stop();
 
-System.out.println();
+System.out.println(\"PartyApp completed gracefully\");
 "
   modified: 	false
   modifiers: 	public

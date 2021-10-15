@@ -515,7 +515,7 @@ eventBroker.stop();
 spark.stop();
 studyRight.stop();
 
-System.out.println();
+System.out.println(\"SomeEventStorming completed gracefully\");
 "
   modified: 	false
   modifiers: 	public

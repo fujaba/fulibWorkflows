@@ -333,7 +333,7 @@ public class TestSomeEventStorming
       shop.stop();
       storage.stop();
 
-      System.out.println();
+      System.out.println("SomeEventStorming completed gracefully");
    }
 
    public void publish(Event event)

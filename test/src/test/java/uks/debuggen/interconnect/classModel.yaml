@@ -250,7 +250,7 @@ spark.stop();
 ionicKassel42.stop();
 cityElectricsKassel.stop();
 
-System.out.println();
+System.out.println(\"Interconnect completed gracefully\");
 "
   modified: 	false
   modifiers: 	public

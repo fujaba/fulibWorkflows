@@ -226,7 +226,7 @@ public class TestHealthExperts
       spark.stop();
       marburgHealthSystem.stop();
 
-      System.out.println();
+      System.out.println("HealthExperts completed gracefully");
    }
 
    public void publish(Event event)

@@ -507,7 +507,7 @@ eventBroker.stop();
 spark.stop();
 docMedical.stop();
 
-System.out.println();
+System.out.println(\"FamilyDoctor completed gracefully\");
 "
   modified: 	false
   modifiers: 	public

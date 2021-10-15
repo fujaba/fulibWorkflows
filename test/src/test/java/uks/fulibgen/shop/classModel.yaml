@@ -372,7 +372,7 @@ spark.stop();
 shop.stop();
 storage.stop();
 
-System.out.println();
+System.out.println(\"SomeEventStorming completed gracefully\");
 "
   modified: 	false
   modifiers: 	public

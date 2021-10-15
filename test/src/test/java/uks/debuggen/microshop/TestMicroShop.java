@@ -590,7 +590,7 @@ public class TestMicroShop {
       warehouse.stop();
       microShop.stop();
 
-      System.out.println();
+      System.out.println("MicroShop completed gracefully");
    }
 
    public void publish(Event event)

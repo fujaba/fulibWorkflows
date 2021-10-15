@@ -215,7 +215,7 @@ public class TestInterconnect
       ionicKassel42.stop();
       cityElectricsKassel.stop();
 
-      System.out.println();
+      System.out.println("Interconnect completed gracefully");
    }
 
    public void publish(Event event)

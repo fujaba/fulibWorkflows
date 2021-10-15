@@ -1178,7 +1178,7 @@ public class WorkflowGenerator {
       }
 
       testBody.append(testClosing.toString());
-      testBody.append("\nSystem.out.println();\n");
+      testBody.append( String.format("\nSystem.out.println(\"%s completed gracefully\");\n", boardName));
 
       tm.haveMethod(testClazz, declaration, testBody.toString());
 
