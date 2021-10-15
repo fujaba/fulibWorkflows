@@ -182,6 +182,7 @@ public class PartyAppService
       spark.get("/page/:id", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());
       spark.get("/", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      spark.init();
       executor.submit(this::subscribeAndLoadOldEvents);
       Logger.getGlobal().info("PartyApp service is up and running on port " + port);
    }

@@ -150,6 +150,7 @@ public class TestSomeEventStorming
       spark = Service.ignite();
       spark.port(port);
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      spark.init();
       executor.submit(() -> System.err.println("test executor works"));
       executor.submit(this::subscribeAndLoadOldEvents);
       executor.submit(() -> System.err.println("test executor has done subscribeAndLoadOldEvents"));
@@ -233,14 +234,19 @@ public class TestSomeEventStorming
    }
 
    @Test
-   public void testImplementation() throws IOException, InterruptedException
-   {
+   public void testImplementation() throws IOException
+      {
       System.err.println("This is the new testImplementation");
-      // no fulib
+
       eventBroker = new EventBroker();
       eventBroker.start();
 
-      Thread.sleep(2000);
+      try {
+         Thread.sleep(2000);
+      } catch (InterruptedException e1) {
+         // TODO Auto-generated catch block
+         e1.printStackTrace();
+      }
 
       this.start();
       waitForEvent("" + port);
@@ -287,6 +293,12 @@ public class TestSomeEventStorming
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
+
+      try {
+         Thread.sleep(2000);
+      } catch (InterruptedException e1) {
+         e1.printStackTrace();
+      }
 
       this.start();
       waitForEvent("" + port);

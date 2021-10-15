@@ -610,6 +610,7 @@ public class WorkflowGenerator {
       body.append("spark.get(\"/page/:id\", (req, res) -> executor.submit(() -> this.getPage(req, res)).get());\n");
       body.append("spark.get(\"/\", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());\n");
       body.append("spark.post(\"/apply\", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());\n");
+      body.append("spark.init();\n");
       body.append("executor.submit(this::subscribeAndLoadOldEvents);\n");
       body.append(
             String.format("Logger.getGlobal().info(\"%s service is up and running on port \" + port);\n", serviceName));

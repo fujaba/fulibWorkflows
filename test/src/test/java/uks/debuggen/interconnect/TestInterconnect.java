@@ -158,6 +158,12 @@ public class TestInterconnect
       eventBroker = new EventBroker();
       eventBroker.start();
 
+      try {
+         Thread.sleep(2000);
+      } catch (InterruptedException e1) {
+         e1.printStackTrace();
+      }
+
       this.start();
       waitForEvent("" + port);
 
@@ -262,6 +268,7 @@ public class TestInterconnect
       spark = Service.ignite();
       spark.port(port);
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
+      spark.init();
       executor.submit(() -> System.err.println("test executor works"));
       executor.submit(this::subscribeAndLoadOldEvents);
       executor.submit(() -> System.err.println("test executor has done subscribeAndLoadOldEvents"));
