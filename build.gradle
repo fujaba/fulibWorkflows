@@ -1,10 +1,55 @@
 plugins {
-	id 'java-library'
-	id 'org.fulib.fulibGradle' version '0.5.0'
+   id 'java-library'
+   id 'maven-publish'
+   // https://plugins.gradle.org/plugin/com.palantir.revapi
+   id 'com.palantir.revapi' version '1.4.4'
+   // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
+   id 'org.fulib.fulibGradle' version '0.5.0'
+   // https://plugins.gradle.org/plugin/com.bmuschko.nexus
+   id 'com.bmuschko.nexus' version '2.3.1'
+   // https://plugins.gradle.org/plugin/io.codearte.nexus-staging
+   id 'io.codearte.nexus-staging' version '0.22.0'
 }
 
 group = 'org.fulib'
-version = '0.1.0'
+version = 'git describe --tags'.execute().text[1..-2] // strip v and \n
+description = '''fulibWorkflows allows event modeling in *.es.yaml files and
+to generate scenario implementations'''
+
+modifyPom {
+   project {
+      name = project.name
+      description = project.description
+      url = 'https://github.com/fujaba/fulibWorkflows'
+      inceptionYear = '2021'
+
+      scm {
+         url = 'https://github.com/fujaba/fulibWorkflows'
+      }
+
+      licenses {
+         license {
+            name = 'MIT License'
+            url = 'http://www.opensource.org/licenses/mit-license.php'
+         }
+      }
+
+      developers {
+         developer {
+            id = 'azuendorf'
+            name = 'Albert Zuendorf'
+         }
+		developer {
+            id = 'Kuenssi'
+            name = 'Maximilian Freiherr von Künßberg'
+         }
+         developer {
+            id = 'Clashsoft'
+            name = 'Adrian Kunz'
+         }
+      }
+   }
+}
 
 sourceCompatibility = 1.11
 
