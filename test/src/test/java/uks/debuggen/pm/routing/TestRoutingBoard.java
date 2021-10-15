@@ -45,6 +45,6 @@ public class TestRoutingBoard
       FulibTools.objectDiagrams().dumpSVG("tmp/RoutingBoardEnd.svg", route1, kassel, leg1, fulda, leg2, frankfurt);
 
 
-      System.out.println();
+      System.err.println();
    }
 }

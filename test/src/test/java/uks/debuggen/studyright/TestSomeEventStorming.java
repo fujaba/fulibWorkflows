@@ -149,9 +149,9 @@ public class TestSomeEventStorming
       spark = Service.ignite();
       spark.port(port);
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
-      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(() -> System.err.println("test executor works"));
       executor.submit(this::subscribeAndLoadOldEvents);
-      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+      executor.submit(() -> System.err.println("test executor has done subscribeAndLoadOldEvents"));
    }
 
    private String postApply(Request req, Response res)
@@ -217,7 +217,7 @@ public class TestSomeEventStorming
             throw new RuntimeException("event timeout waiting for " + id);
          }
 
-         System.out.println("Test got event " + e.getId());
+         System.err.println("Test got event " + e.getId());
          history.put(e.getId(), e);
       }
    }
@@ -233,7 +233,7 @@ public class TestSomeEventStorming
    @Test
    public void testImplementation() throws IOException, InterruptedException
    {
-      System.out.println("This is the new testImplementation");
+      System.err.println("This is the new testImplementation");
       // no fulib
       eventBroker = new EventBroker();
       eventBroker.start();
@@ -274,7 +274,7 @@ public class TestSomeEventStorming
       studyRight.stop();
 
 
-      System.out.println("testImplementation done");
+      System.err.println("testImplementation done");
    }
 
    @Test
@@ -606,7 +606,7 @@ public class TestSomeEventStorming
       spark.stop();
       studyRight.stop();
 
-      System.out.println("SomeEventStorming completed gracefully");
+      System.err.println("SomeEventStorming completed gracefully");
    }
 
    public void publish(Event event)

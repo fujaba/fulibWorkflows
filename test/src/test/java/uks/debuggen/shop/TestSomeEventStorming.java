@@ -315,6 +315,6 @@ public class TestSomeEventStorming
       shop.stop();
       storage.stop();
 
-      System.out.println();
+      System.err.println();
    }
 }

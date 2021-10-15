@@ -104,7 +104,7 @@ try {
 eventBroker.stop();
 shop.stop();
 
-System.out.println();
+System.err.println();
 "
   modified: 	false
   modifiers: 	public

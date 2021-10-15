@@ -36,7 +36,7 @@ public class GenPartyWorkflow {
 
         workflowGenerator.generate();
 
-        System.out.println();
+        System.err.println();
     }
 
     @Test
@@ -66,6 +66,6 @@ public class GenPartyWorkflow {
 
         workflowGenerator.generate();
 
-        System.out.println();
+        System.err.println();
     }
 }

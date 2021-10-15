@@ -148,9 +148,9 @@ public class TestMicroShop {
       spark = Service.ignite();
       spark.port(port);
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
-      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(() -> System.err.println("test executor works"));
       executor.submit(this::subscribeAndLoadOldEvents);
-      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+      executor.submit(() -> System.err.println("test executor has done subscribeAndLoadOldEvents"));
    }
 
    private String postApply(Request req, Response res)
@@ -216,7 +216,7 @@ public class TestMicroShop {
             throw new RuntimeException("event timeout waiting for " + id);
          }
 
-         System.out.println("Test got event " + e.getId());
+         System.err.println("Test got event " + e.getId());
          history.put(e.getId(), e);
       }
    }
@@ -590,7 +590,7 @@ public class TestMicroShop {
       warehouse.stop();
       microShop.stop();
 
-      System.out.println("MicroShop completed gracefully");
+      System.err.println("MicroShop completed gracefully");
    }
 
    public void publish(Event event)

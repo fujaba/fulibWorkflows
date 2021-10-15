@@ -32,6 +32,6 @@ public class TestStudyRight {
 
         workflowGenerator.generate();
 
-        System.out.println();
+        System.err.println();
     }
 }

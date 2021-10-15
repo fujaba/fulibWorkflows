@@ -125,7 +125,7 @@ public class TestSomeEventStorming
       eventBroker.stop();
       shop.stop();
 
-      System.out.println();
+      System.err.println();
    }
 
    public void publish(Event event)

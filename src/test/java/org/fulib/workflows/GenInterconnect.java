@@ -35,6 +35,6 @@ public class GenInterconnect {
 
         workflowGenerator.generate();
 
-        System.out.println();
+        System.err.println();
     }
 }

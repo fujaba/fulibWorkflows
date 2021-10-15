@@ -27,6 +27,6 @@ public class GenShopWorkflow {
         workflowGenerator.loadWorkflow(mm, "test/src/gen/resources/workflows/shop/ShopWithGuiPrototypes.es.yaml");
         workflowGenerator.generate();
 
-        System.out.println();
+        System.err.println();
     }
 }

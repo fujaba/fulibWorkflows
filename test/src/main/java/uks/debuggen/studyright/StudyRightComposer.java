@@ -15,6 +15,6 @@ public class StudyRightComposer
       StudyRightService studyRight = new StudyRightService();
       studyRight.start();
 
-      System.out.println("StudyRight system is up and running ");
+      System.err.println("StudyRight system is up and running ");
    }
 }

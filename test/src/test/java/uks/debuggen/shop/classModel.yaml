@@ -262,7 +262,7 @@ eventBroker.stop();
 shop.stop();
 storage.stop();
 
-System.out.println();
+System.err.println();
 "
   modified: 	false
   modifiers: 	public

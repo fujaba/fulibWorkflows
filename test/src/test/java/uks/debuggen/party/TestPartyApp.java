@@ -187,7 +187,7 @@ public class TestPartyApp
       eventBroker.stop();
       partyApp.stop();
 
-      System.out.println("");
+      System.err.println("");
    }
 
    private void testLogin()
@@ -498,7 +498,7 @@ public class TestPartyApp
       spark.stop();
       partyApp.stop();
 
-      System.out.println("PartyApp completed gracefully");
+      System.err.println("PartyApp completed gracefully");
    }
 
    public void publish(Event event)
@@ -544,9 +544,9 @@ public class TestPartyApp
       spark = Service.ignite();
       spark.port(port);
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
-      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(() -> System.err.println("test executor works"));
       executor.submit(this::subscribeAndLoadOldEvents);
-      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+      executor.submit(() -> System.err.println("test executor has done subscribeAndLoadOldEvents"));
    }
 
    private String postApply(Request req, Response res)
@@ -612,7 +612,7 @@ public class TestPartyApp
             throw new RuntimeException("event timeout waiting for " + id);
          }
 
-         System.out.println("Test got event " + e.getId());
+         System.err.println("Test got event " + e.getId());
          history.put(e.getId(), e);
       }
    }

@@ -42,7 +42,7 @@ public class GenMedicalSystem {
 
         workflowGenerator.generate();
 
-        System.out.println();
+        System.err.println();
 
     }
 }

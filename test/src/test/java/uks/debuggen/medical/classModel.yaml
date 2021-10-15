@@ -262,7 +262,7 @@ open(\"http://localhost:42000\");
 pre = $(\"#history\");
 pre.shouldHave(text(\"- 14_07:\"));
 
-System.out.println();
+System.err.println();
 "
   modified: 	false
   modifiers: 	public

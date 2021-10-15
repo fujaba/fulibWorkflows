@@ -50,6 +50,6 @@ public class TestStudyRightBoard
       FulibTools.objectDiagrams().dumpSVG("tmp/StudyRightBoardEnd.svg", karli, stop1, r1, r2, r4, r5);
 
 
-      System.out.println();
+      System.err.println();
    }
 }

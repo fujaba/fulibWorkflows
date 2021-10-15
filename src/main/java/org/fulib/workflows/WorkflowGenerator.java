@@ -173,7 +173,7 @@ public class WorkflowGenerator {
       testBody.append(String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sEnd.svg\", %s);\n\n",
             boardName, allVarNames));
 
-      testBody.append("\nSystem.out.println();\n");
+      testBody.append("\nSystem.err.println();\n");
 
       tm.haveMethod(testClazz, declaration, testBody.toString());
    }
@@ -823,7 +823,7 @@ public class WorkflowGenerator {
          } else if (note instanceof QueryNote) {
             QueryNote classNote = (QueryNote) note;
             // add to query demo method
-            System.out.println();
+            System.err.println();
          } else if (note instanceof EventNote) {
             // fire event
             EventNote eventNote = (EventNote) note;
@@ -1178,7 +1178,7 @@ public class WorkflowGenerator {
       }
 
       testBody.append(testClosing.toString());
-      testBody.append( String.format("\nSystem.out.println(\"%s completed good and gracefully\");\n", boardName));
+      testBody.append( String.format("\nSystem.err.println(\"%s completed good and gracefully\");\n", boardName));
 
       tm.haveMethod(testClazz, declaration, testBody.toString());
 

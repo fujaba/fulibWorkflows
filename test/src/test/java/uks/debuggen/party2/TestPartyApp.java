@@ -69,7 +69,7 @@ public class TestPartyApp implements PropertyChangeListener {
       @Override
       public void propertyChange(PropertyChangeEvent evt) {
          try {
-            System.out.println("Alice listener got " + evt.getNewValue());
+            System.err.println("Alice listener got " + evt.getNewValue());
             party1EventQueue.put(evt.getNewValue());
          } catch (InterruptedException e) {
             e.printStackTrace();
@@ -86,9 +86,9 @@ public class TestPartyApp implements PropertyChangeListener {
       spark = Service.ignite();
       spark.port(port);
       spark.post("/apply", (req, res) -> executor.submit(() -> this.postApply(req, res)).get());
-      executor.submit(() -> System.out.println("test executor works"));
+      executor.submit(() -> System.err.println("test executor works"));
       executor.submit(this::subscribeAndLoadOldEvents);
-      executor.submit(() -> System.out.println("test executor has done subscribeAndLoadOldEvents"));
+      executor.submit(() -> System.err.println("test executor has done subscribeAndLoadOldEvents"));
    }
 
    private String postApply(Request req, Response res)
@@ -154,7 +154,7 @@ public class TestPartyApp implements PropertyChangeListener {
             throw new RuntimeException("event timeout waiting for " + id);
          }
 
-         System.out.println("Test got event " + e.getId());
+         System.err.println("Test got event " + e.getId());
          history.put(e.getId(), e);
       }
    }
@@ -315,7 +315,7 @@ public class TestPartyApp implements PropertyChangeListener {
       eventBroker.stop();
       spark.stop();
       bobNewPartyApp2.stop();
-      System.out.println("party2 TestPartyApp testLoadAndStoreConcept done");
+      System.err.println("party2 TestPartyApp testLoadAndStoreConcept done");
    }
 
    @Test
@@ -409,7 +409,7 @@ public class TestPartyApp implements PropertyChangeListener {
       spark.stop();
       aliceOldPartyApp.stop();
       bobNewPartyApp2.stop();
-      System.out.println("party2 TestPartyApp testMigration done");
+      System.err.println("party2 TestPartyApp testMigration done");
    }
 
    private void bookItem(String item, String price, String buyer) {
@@ -781,7 +781,7 @@ public class TestPartyApp implements PropertyChangeListener {
       spark.stop();
       partyApp.stop();
 
-      System.out.println("PartyApp completed gracefully");
+      System.err.println("PartyApp completed gracefully");
    }
 
    public void publish(Event event)
