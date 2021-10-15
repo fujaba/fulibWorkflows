@@ -140,8 +140,6 @@ public class TestSomeEventStorming
       return this;
    }
 
-
-
    public void start()
    {
       eventQueue = new LinkedBlockingQueue<Event>();
