@@ -150,8 +150,10 @@ public class TestSomeEventStorming
    }
 
    @Test
-   public void testImplentation() throws IOException, InterruptedException
+   public void testImplementation() throws IOException, InterruptedException
    {
+      System.out.println("This is the new testImplementation");
+      // no fulib
       eventBroker = new EventBroker();
       eventBroker.start();
 
@@ -175,6 +177,7 @@ public class TestSomeEventStorming
       // open("http://localhost:42400/page/welcome");
       String html = new HtmlGenerator3().generateHtml(studyRight.getHistory());
 
+      Files.createDirectories(Path.of("tmp"));
       Files.write(Path.of("tmp/history.html"), html.getBytes(StandardCharsets.UTF_8));
 
       try {
@@ -184,7 +187,7 @@ public class TestSomeEventStorming
       eventBroker.stop();
       studyRight.stop();
 
-      System.err.println("testImplentation done");
+      System.out.println("testImplementation done");
    }
 
    @Test

@@ -2,8 +2,7 @@ package uks.debuggen.medical.familydoctordegen.events;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -129,7 +128,8 @@ public class EventBroker
    {
       Unirest.setTimeouts(3*60*1000, 3*60*1000);
       String yaml = Yaml.encodeSimple(newEvent);
-      for (ServiceSubscribed service : subscribersMap.values()) {
+      ArrayList<ServiceSubscribed> values = new ArrayList<>(subscribersMap.values());
+      for (ServiceSubscribed service : values) {
          try {
             HttpResponse<String> response = Unirest.post(service.getServiceUrl())
                   .body(yaml)
