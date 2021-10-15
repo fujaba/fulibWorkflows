@@ -150,7 +150,11 @@ public class TestPartyApp
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
-
+      try {
+         Thread.sleep(2000);
+      } catch (InterruptedException e1) {
+         e1.printStackTrace();
+      }
       // start service
       PartyAppService partyApp = new PartyAppService();
       partyApp.start();
