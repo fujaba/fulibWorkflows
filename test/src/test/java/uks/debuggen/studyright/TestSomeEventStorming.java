@@ -238,9 +238,13 @@ public class TestSomeEventStorming
       eventBroker = new EventBroker();
       eventBroker.start();
 
+      this.start();
+      waitForEvent("" + port);
+
       // start service
       StudyRightService studyRight = new StudyRightService();
       studyRight.start();
+      waitForEvent("" + 42400);
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -266,7 +270,9 @@ public class TestSomeEventStorming
       } catch (Exception e) {
       }
       eventBroker.stop();
+      spark.stop();
       studyRight.stop();
+
 
       System.out.println("testImplementation done");
    }
