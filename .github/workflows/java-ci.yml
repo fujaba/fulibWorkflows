@@ -12,7 +12,7 @@ jobs:
             java:
                - 11
             os:
-#               - ubuntu
+               - ubuntu
                - windows
       steps:
          -  name: Checkout
