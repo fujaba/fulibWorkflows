@@ -170,6 +170,7 @@ public class PartyAppService
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new PartyAppModel();
       setBuilder(new PartyAppBuilder().setModel(model));
       setBusinessLogic(new PartyAppBusinessLogic());

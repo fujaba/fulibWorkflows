@@ -467,7 +467,7 @@ public class TestFamilyDoctor
       spark.stop();
       docMedical.stop();
 
-      System.err.println("FamilyDoctor completed gracefully");
+      System.err.println("FamilyDoctor completed good and gracefully");
    }
 
    public void publish(Event event)
@@ -506,6 +506,7 @@ public class TestFamilyDoctor
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;

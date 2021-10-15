@@ -653,7 +653,8 @@ return object;
   clazz: 	marburgHealthSystemService
   declaration: 	"public void start()"
   id: 	MarburgHealthSystemService_start
-  methodBody: 	"model = new MarburgHealthSystemModel();
+  methodBody: 	"Unirest.setTimeouts(3*60*1000, 3*60*1000);
+model = new MarburgHealthSystemModel();
 setBuilder(new MarburgHealthSystemBuilder().setModel(model));
 setBusinessLogic(new MarburgHealthSystemBusinessLogic());
 businessLogic.setBuilder(getBuilder());

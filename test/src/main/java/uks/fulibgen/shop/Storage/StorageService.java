@@ -164,6 +164,7 @@ public class StorageService
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new StorageModel();
       setBuilder(new StorageBuilder().setModel(model));
       setBusinessLogic(new StorageBusinessLogic());

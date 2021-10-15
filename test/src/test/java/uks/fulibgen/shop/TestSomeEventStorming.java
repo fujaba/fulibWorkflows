@@ -333,7 +333,7 @@ public class TestSomeEventStorming
       shop.stop();
       storage.stop();
 
-      System.err.println("SomeEventStorming completed gracefully");
+      System.err.println("SomeEventStorming completed good and gracefully");
    }
 
    public void publish(Event event)
@@ -372,6 +372,7 @@ public class TestSomeEventStorming
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;

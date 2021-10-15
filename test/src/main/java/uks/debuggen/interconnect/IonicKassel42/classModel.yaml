@@ -468,7 +468,8 @@ handleDemoCarConnectedEvent(event);
   clazz: 	ionicKassel42Service
   declaration: 	"public void start()"
   id: 	IonicKassel42Service_start
-  methodBody: 	"model = new IonicKassel42Model();
+  methodBody: 	"Unirest.setTimeouts(3*60*1000, 3*60*1000);
+model = new IonicKassel42Model();
 setBuilder(new IonicKassel42Builder().setModel(model));
 setBusinessLogic(new IonicKassel42BusinessLogic());
 businessLogic.setBuilder(getBuilder());

@@ -188,6 +188,7 @@ public class MicroShopService
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new MicroShopModel();
       setBuilder(new MicroShopBuilder().setModel(model));
       setBusinessLogic(new MicroShopBusinessLogic());

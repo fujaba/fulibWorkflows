@@ -1004,7 +1004,8 @@ return object;
   clazz: 	docMedicalService
   declaration: 	"public void start()"
   id: 	DocMedicalService_start
-  methodBody: 	"model = new DocMedicalModel();
+  methodBody: 	"Unirest.setTimeouts(3*60*1000, 3*60*1000);
+model = new DocMedicalModel();
 setBuilder(new DocMedicalBuilder().setModel(model));
 setBusinessLogic(new DocMedicalBusinessLogic());
 businessLogic.setBuilder(getBuilder());

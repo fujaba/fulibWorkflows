@@ -1093,7 +1093,8 @@ return object;
   clazz: 	studyRightService
   declaration: 	"public void start()"
   id: 	StudyRightService_start
-  methodBody: 	"model = new StudyRightModel();
+  methodBody: 	"Unirest.setTimeouts(3*60*1000, 3*60*1000);
+model = new StudyRightModel();
 setBuilder(new StudyRightBuilder().setModel(model));
 setBusinessLogic(new StudyRightBusinessLogic());
 businessLogic.setBuilder(getBuilder());

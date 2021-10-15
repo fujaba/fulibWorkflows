@@ -704,7 +704,8 @@ return object;
   clazz: 	storageService
   declaration: 	"public void start()"
   id: 	StorageService_start
-  methodBody: 	"model = new StorageModel();
+  methodBody: 	"Unirest.setTimeouts(3*60*1000, 3*60*1000);
+model = new StorageModel();
 setBuilder(new StorageBuilder().setModel(model));
 setBusinessLogic(new StorageBusinessLogic());
 businessLogic.setBuilder(getBuilder());

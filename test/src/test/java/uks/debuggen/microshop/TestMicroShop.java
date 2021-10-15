@@ -141,6 +141,7 @@ public class TestMicroShop {
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;
@@ -590,7 +591,7 @@ public class TestMicroShop {
       warehouse.stop();
       microShop.stop();
 
-      System.err.println("MicroShop completed gracefully");
+      System.err.println("MicroShop completed good and gracefully");
    }
 
    public void publish(Event event)

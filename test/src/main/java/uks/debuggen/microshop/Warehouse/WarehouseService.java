@@ -188,6 +188,7 @@ public class WarehouseService
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new WarehouseModel();
       setBuilder(new WarehouseBuilder().setModel(model));
       setBusinessLogic(new WarehouseBusinessLogic());

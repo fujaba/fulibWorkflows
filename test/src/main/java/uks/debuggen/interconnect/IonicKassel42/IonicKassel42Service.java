@@ -188,6 +188,7 @@ public class IonicKassel42Service
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new IonicKassel42Model();
       setBuilder(new IonicKassel42Builder().setModel(model));
       setBusinessLogic(new IonicKassel42BusinessLogic());

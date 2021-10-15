@@ -188,6 +188,7 @@ public class CityElectricsKasselService
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new CityElectricsKasselModel();
       setBuilder(new CityElectricsKasselBuilder().setModel(model));
       setBusinessLogic(new CityElectricsKasselBusinessLogic());

@@ -743,7 +743,8 @@ return object;
   clazz: 	shopService
   declaration: 	"public void start()"
   id: 	ShopService_start
-  methodBody: 	"model = new ShopModel();
+  methodBody: 	"Unirest.setTimeouts(3*60*1000, 3*60*1000);
+model = new ShopModel();
 setBuilder(new ShopBuilder().setModel(model));
 setBusinessLogic(new ShopBusinessLogic());
 businessLogic.setBuilder(getBuilder());

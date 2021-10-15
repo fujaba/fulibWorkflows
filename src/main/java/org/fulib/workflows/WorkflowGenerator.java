@@ -598,6 +598,7 @@ public class WorkflowGenerator {
       String declaration;
       // add start method
       declaration = "public void start()";
+      body.append("Unirest.setTimeouts(3*60*1000, 3*60*1000);\n");
       body.append(String.format("model = new %sModel();\n", serviceName));
       body.append(String.format("setBuilder(new %sBuilder().setModel(model));\n", serviceName));
       body.append(String.format("setBusinessLogic(new %sBusinessLogic());\n", serviceName));

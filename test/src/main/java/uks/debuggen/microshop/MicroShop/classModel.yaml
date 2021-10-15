@@ -944,7 +944,8 @@ return object;
   clazz: 	microShopService
   declaration: 	"public void start()"
   id: 	MicroShopService_start
-  methodBody: 	"model = new MicroShopModel();
+  methodBody: 	"Unirest.setTimeouts(3*60*1000, 3*60*1000);
+model = new MicroShopModel();
 setBuilder(new MicroShopBuilder().setModel(model));
 setBusinessLogic(new MicroShopBusinessLogic());
 businessLogic.setBuilder(getBuilder());

@@ -74,7 +74,8 @@
   clazz: 	testMicroShop
   declaration: 	"public void start()"
   id: 	TestMicroShop_start
-  methodBody: 	"      eventQueue = new LinkedBlockingQueue<Event>();
+  methodBody: 	"      Unirest.setTimeouts(3*60*1000, 3*60*1000);
+      eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;
       ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -546,7 +547,7 @@ spark.stop();
 warehouse.stop();
 microShop.stop();
 
-System.err.println(\"MicroShop completed gracefully\");
+System.err.println(\"MicroShop completed good and gracefully\");
 "
   modified: 	false
   modifiers: 	public

@@ -227,6 +227,7 @@ serviceQuery() ::=
 
 testStart() ::=
 <<
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;

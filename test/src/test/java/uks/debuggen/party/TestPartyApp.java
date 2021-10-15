@@ -498,7 +498,7 @@ public class TestPartyApp
       spark.stop();
       partyApp.stop();
 
-      System.err.println("PartyApp completed gracefully");
+      System.err.println("PartyApp completed good and gracefully");
    }
 
    public void publish(Event event)
@@ -537,6 +537,7 @@ public class TestPartyApp
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;

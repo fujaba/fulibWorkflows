@@ -168,6 +168,7 @@ public class StudyRightService
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new StudyRightModel();
       setBuilder(new StudyRightBuilder().setModel(model));
       setBusinessLogic(new StudyRightBusinessLogic());

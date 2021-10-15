@@ -34,6 +34,7 @@ public class EventBroker
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       ExecutorService executor = Executors.newSingleThreadExecutor();
       spark = Service.ignite();
       spark.port(port);

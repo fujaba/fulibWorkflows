@@ -215,7 +215,7 @@ public class TestInterconnect
       ionicKassel42.stop();
       cityElectricsKassel.stop();
 
-      System.err.println("Interconnect completed gracefully");
+      System.err.println("Interconnect completed good and gracefully");
    }
 
    public void publish(Event event)
@@ -254,6 +254,7 @@ public class TestInterconnect
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;

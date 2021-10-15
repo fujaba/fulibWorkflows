@@ -188,6 +188,7 @@ public class DocMedicalService
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new DocMedicalModel();
       setBuilder(new DocMedicalBuilder().setModel(model));
       setBusinessLogic(new DocMedicalBusinessLogic());

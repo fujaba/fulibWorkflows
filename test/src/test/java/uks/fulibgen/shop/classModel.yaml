@@ -74,7 +74,8 @@
   clazz: 	testSomeEventStorming
   declaration: 	"public void start()"
   id: 	TestSomeEventStorming_start
-  methodBody: 	"      eventQueue = new LinkedBlockingQueue<Event>();
+  methodBody: 	"      Unirest.setTimeouts(3*60*1000, 3*60*1000);
+      eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;
       ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -372,7 +373,7 @@ spark.stop();
 shop.stop();
 storage.stop();
 
-System.err.println(\"SomeEventStorming completed gracefully\");
+System.err.println(\"SomeEventStorming completed good and gracefully\");
 "
   modified: 	false
   modifiers: 	public

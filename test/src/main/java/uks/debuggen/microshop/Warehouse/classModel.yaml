@@ -727,7 +727,8 @@ return object;
   clazz: 	warehouseService
   declaration: 	"public void start()"
   id: 	WarehouseService_start
-  methodBody: 	"model = new WarehouseModel();
+  methodBody: 	"Unirest.setTimeouts(3*60*1000, 3*60*1000);
+model = new WarehouseModel();
 setBuilder(new WarehouseBuilder().setModel(model));
 setBusinessLogic(new WarehouseBusinessLogic());
 businessLogic.setBuilder(getBuilder());

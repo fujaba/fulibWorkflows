@@ -74,7 +74,8 @@
   clazz: 	testPartyApp
   declaration: 	"public void start()"
   id: 	TestPartyApp_start
-  methodBody: 	"      eventQueue = new LinkedBlockingQueue<Event>();
+  methodBody: 	"      Unirest.setTimeouts(3*60*1000, 3*60*1000);
+      eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;
       ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -475,7 +476,7 @@ eventBroker.stop();
 spark.stop();
 partyApp.stop();
 
-System.err.println(\"PartyApp completed gracefully\");
+System.err.println(\"PartyApp completed good and gracefully\");
 "
   modified: 	false
   modifiers: 	public

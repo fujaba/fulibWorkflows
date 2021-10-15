@@ -180,6 +180,7 @@ public class ShopService
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       model = new ShopModel();
       setBuilder(new ShopBuilder().setModel(model));
       setBusinessLogic(new ShopBusinessLogic());

@@ -226,7 +226,7 @@ public class TestHealthExperts
       spark.stop();
       marburgHealthSystem.stop();
 
-      System.err.println("HealthExperts completed gracefully");
+      System.err.println("HealthExperts completed good and gracefully");
    }
 
    public void publish(Event event)
@@ -265,6 +265,7 @@ public class TestHealthExperts
 
    public void start()
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;

@@ -74,7 +74,8 @@
   clazz: 	testHealthExperts
   declaration: 	"public void start()"
   id: 	TestHealthExperts_start
-  methodBody: 	"      eventQueue = new LinkedBlockingQueue<Event>();
+  methodBody: 	"      Unirest.setTimeouts(3*60*1000, 3*60*1000);
+      eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;
       ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -269,7 +270,7 @@ eventBroker.stop();
 spark.stop();
 marburgHealthSystem.stop();
 
-System.err.println(\"HealthExperts completed gracefully\");
+System.err.println(\"HealthExperts completed good and gracefully\");
 "
   modified: 	false
   modifiers: 	public

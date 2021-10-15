@@ -74,7 +74,8 @@
   clazz: 	testInterconnect
   declaration: 	"public void start()"
   id: 	TestInterconnect_start
-  methodBody: 	"      eventQueue = new LinkedBlockingQueue<Event>();
+  methodBody: 	"      Unirest.setTimeouts(3*60*1000, 3*60*1000);
+      eventQueue = new LinkedBlockingQueue<Event>();
       history  = new LinkedHashMap<>();
       port = 41999;
       ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -250,7 +251,7 @@ spark.stop();
 ionicKassel42.stop();
 cityElectricsKassel.stop();
 
-System.err.println(\"Interconnect completed gracefully\");
+System.err.println(\"Interconnect completed good and gracefully\");
 "
   modified: 	false
   modifiers: 	public
