@@ -316,15 +316,24 @@ public class TestPartyApp implements PropertyChangeListener {
       eventBroker = new EventBroker();
       eventBroker.start();
 
+      start();
+
+      waitForEvent("41999");
+
       // start old service
       uks.debuggen.party.PartyApp.PartyAppService aliceOldPartyApp = new uks.debuggen.party.PartyApp.PartyAppService();
       aliceOldPartyApp.listeners().addPropertyChangeListener(new AliceListener());
       aliceOldPartyApp.start();
 
+
+      waitForEvent("42001");
+
       // start new service
       PartyAppService bobNewPartyApp2 = new PartyAppService().setPort(42002);
       bobNewPartyApp2.listeners().addPropertyChangeListener(PartyAppService.PROPERTY_HISTORY, this);
       bobNewPartyApp2.start();
+
+      waitForEvent("42002");
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -388,6 +397,7 @@ public class TestPartyApp implements PropertyChangeListener {
       }
 
       eventBroker.stop();
+      spark.stop();
       aliceOldPartyApp.stop();
       bobNewPartyApp2.stop();
       System.out.println("party2 TestPartyApp testMigration done");
