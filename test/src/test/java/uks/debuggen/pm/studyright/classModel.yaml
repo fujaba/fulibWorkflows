@@ -1,0 +1,79 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	testStudyRightBoard
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/test/java"
+  packageName: 	uks.debuggen.pm.studyright
+  packageSrcFolder: 	"test/src/test/java/uks/debuggen/pm/studyright"
+
+- testStudyRightBoard: 	org.fulib.classmodel.Clazz
+  importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import org.fulib.FulibTools;" 	"import static org.assertj.core.api.Assertions.assertThat;"
+  imports: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import org.fulib.FulibTools;" 	"import static org.assertj.core.api.Assertions.assertThat;"
+  methods: 	testStudyRightBoard_testStudyRightBoard
+  model: 	c
+  modified: 	false
+  name: 	TestStudyRightBoard
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- testStudyRightBoard_testStudyRightBoard: 	org.fulib.classmodel.FMethod
+  annotations: 	"@Test"
+  clazz: 	testStudyRightBoard
+  declaration: 	"@Test
+public void testStudyRightBoard()"
+  id: 	TestStudyRightBoard_testStudyRightBoard
+  methodBody: 	"StudyGuideBusinessLogic logic = new StudyGuideBusinessLogic();
+
+Student karli = new Student().setId(\"Karli\");
+karli.setMotivation(83);
+
+Stop stop1 = new Stop().setId(\"stop1\");
+stop1.setMotivation(66);
+
+Room r1 = new Room().setId(\"r1\");
+r1.setTopic(\"math\");
+r1.setCredits(17);
+
+Room r2 = new Room().setId(\"r2\");
+r2.setTopic(\"calculus\");
+r2.setCredits(20);
+
+Room r4 = new Room().setId(\"r4\");
+r4.setTopic(\"exam\");
+
+Room r5 = new Room().setId(\"r5\");
+r5.setTopic(\"modeling\");
+r5.setCredits(29);
+
+// create links
+karli.withStops(stop1);
+stop1.setRoom(r1);
+r1.withNeighbors(r2, r5);
+r2.withNeighbors(r1, r5);
+r4.withNeighbors(r5);
+r5.withNeighbors(r1, r2, r4);
+
+FulibTools.objectDiagrams().dumpSVG(\"tmp/StudyRightBoardStart.svg\", karli, stop1, r1, r2, r4, r5);
+
+logic.findRoute(karli);
+assertThat(karli.getRoute()).isEqualTo(\"math -> calculus -> math -> modeling -> exam\");
+
+FulibTools.objectDiagrams().dumpSVG(\"tmp/StudyRightBoardEnd.svg\", karli, stop1, r1, r2, r4, r5);
+
+
+System.out.println();
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	testStudyRightBoard
+  paramsString: 	""
+  returnType: 	void
+  signature: 	"class/TestStudyRightBoard/method/testStudyRightBoard()"
+

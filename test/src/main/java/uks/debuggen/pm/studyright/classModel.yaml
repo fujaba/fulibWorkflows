@@ -1,0 +1,261 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	studyGuideModel 	student 	stop 	room 	studyGuideBusinessLogic
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/main/java"
+  packageName: 	uks.debuggen.pm.studyright
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/pm/studyright"
+
+- studyGuideModel: 	org.fulib.classmodel.Clazz
+  attributes: 	studyGuideModel_modelMap
+  importList: 	"import java.util.LinkedHashMap;"
+  imports: 	"import java.util.LinkedHashMap;"
+  methods: 	studyGuideModel_getOrCreateStudent 	studyGuideModel_getOrCreateStop 	studyGuideModel_getOrCreateRoom
+  model: 	c
+  modified: 	false
+  name: 	StudyGuideModel
+  propertyStyle: 	Bean
+
+- student: 	org.fulib.classmodel.Clazz
+  attributes: 	student_id 	student_motivation 	student_route
+  model: 	c
+  modified: 	false
+  name: 	Student
+  propertyStyle: 	Bean
+  roles: 	student_stops
+
+- stop: 	org.fulib.classmodel.Clazz
+  attributes: 	stop_id 	stop_motivation
+  model: 	c
+  modified: 	false
+  name: 	Stop
+  propertyStyle: 	Bean
+  roles: 	stop_student 	stop_room 	stop_prev 	stop_next
+
+- room: 	org.fulib.classmodel.Clazz
+  attributes: 	room_id 	room_credits 	room_topic
+  model: 	c
+  modified: 	false
+  name: 	Room
+  propertyStyle: 	Bean
+  roles: 	room_stops 	room_neighbors
+
+- studyGuideBusinessLogic: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	StudyGuideBusinessLogic
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- studyGuideModel_modelMap: 	org.fulib.classmodel.Attribute
+  clazz: 	studyGuideModel
+  id: 	StudyGuideModel_modelMap
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	modelMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, Object>"
+  typeSignature: 	"LinkedHashMap<String,Object>"
+
+- studyGuideModel_getOrCreateStudent: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyGuideModel
+  declaration: 	"public Student getOrCreateStudent(String id)"
+  id: 	StudyGuideModel_getOrCreateStudent
+  methodBody: 	"if (id == null) return null;
+return (Student) modelMap.computeIfAbsent(id, k -> new Student().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateStudent
+  paramsString: 	"String id"
+  returnType: 	Student
+  signature: 	"class/StudyGuideModel/method/getOrCreateStudent(String)"
+
+- studyGuideModel_getOrCreateStop: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyGuideModel
+  declaration: 	"public Stop getOrCreateStop(String id)"
+  id: 	StudyGuideModel_getOrCreateStop
+  methodBody: 	"if (id == null) return null;
+return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateStop
+  paramsString: 	"String id"
+  returnType: 	Stop
+  signature: 	"class/StudyGuideModel/method/getOrCreateStop(String)"
+
+- studyGuideModel_getOrCreateRoom: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	studyGuideModel
+  declaration: 	"public Room getOrCreateRoom(String id)"
+  id: 	StudyGuideModel_getOrCreateRoom
+  methodBody: 	"if (id == null) return null;
+return (Room) modelMap.computeIfAbsent(id, k -> new Room().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateRoom
+  paramsString: 	"String id"
+  returnType: 	Room
+  signature: 	"class/StudyGuideModel/method/getOrCreateRoom(String)"
+
+- student_id: 	org.fulib.classmodel.Attribute
+  clazz: 	student
+  id: 	Student_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- student_motivation: 	org.fulib.classmodel.Attribute
+  clazz: 	student
+  id: 	Student_motivation
+  modified: 	false
+  name: 	motivation
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- student_route: 	org.fulib.classmodel.Attribute
+  clazz: 	student
+  id: 	Student_route
+  modified: 	false
+  name: 	route
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- student_stops: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	student
+  collectionType: 	c1
+  id: 	Student_stops
+  modified: 	false
+  name: 	stops
+  other: 	stop_student
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- stop_id: 	org.fulib.classmodel.Attribute
+  clazz: 	stop
+  id: 	Stop_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- stop_motivation: 	org.fulib.classmodel.Attribute
+  clazz: 	stop
+  id: 	Stop_motivation
+  modified: 	false
+  name: 	motivation
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- stop_student: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	stop
+  id: 	Stop_student
+  modified: 	false
+  name: 	student
+  other: 	student_stops
+  propertyStyle: 	Bean
+
+- stop_room: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	stop
+  id: 	Stop_room
+  modified: 	false
+  name: 	room
+  other: 	room_stops
+  propertyStyle: 	Bean
+
+- stop_prev: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	stop
+  id: 	Stop_prev
+  modified: 	false
+  name: 	prev
+  other: 	stop_next
+  propertyStyle: 	Bean
+
+- stop_next: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	stop
+  collectionType: 	c1
+  id: 	Stop_next
+  modified: 	false
+  name: 	next
+  other: 	stop_prev
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- room_id: 	org.fulib.classmodel.Attribute
+  clazz: 	room
+  id: 	Room_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- room_credits: 	org.fulib.classmodel.Attribute
+  clazz: 	room
+  id: 	Room_credits
+  modified: 	false
+  name: 	credits
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- room_topic: 	org.fulib.classmodel.Attribute
+  clazz: 	room
+  id: 	Room_topic
+  modified: 	false
+  name: 	topic
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- room_stops: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	room
+  collectionType: 	c1
+  id: 	Room_stops
+  modified: 	false
+  name: 	stops
+  other: 	stop_room
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- room_neighbors: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	room
+  collectionType: 	c1
+  id: 	Room_neighbors
+  modified: 	false
+  name: 	neighbors
+  other: 	room_neighbors
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+

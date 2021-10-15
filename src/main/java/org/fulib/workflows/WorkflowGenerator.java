@@ -35,6 +35,7 @@ public class WorkflowGenerator {
    public Consumer<Object> dumpObjectDiagram;
    private EventStormingBoard eventStormingBoard;
    private StringBuilder testBody;
+   private ArrayList<String> testVarNames;
    private Clazz serviceClazz;
    private Clazz logicClass;
    private Clazz builderClass;
@@ -146,12 +147,13 @@ public class WorkflowGenerator {
 
       String boardName = StrUtil.toIdentifier(eventStormingBoard.getName());
       testClazz = tm.haveClass("Test" + boardName);
-      testClazz.withImports("import org.junit.Test;", "import java.util.LinkedHashMap;",
+      testClazz.withImports("import org.junit.Test;", "import java.util.LinkedHashMap;", "import org.fulib.FulibTools;",
             "import static org.assertj.core.api.Assertions.assertThat;");
 
       String declaration = "@Test\n" + "public void test"
             + StrUtil.toIdentifier(eventModel.getEventStormingBoard().getName()) + "()";
       testBody = new StringBuilder();
+      testVarNames = new ArrayList<>();
 
       // create business logic
       ClassModelManager modelManager = managerMap.get(lastServiceNote.getName());
@@ -161,7 +163,15 @@ public class WorkflowGenerator {
 
       addAllObjectCreation();
       addAllLinkCreation();
+
+      String allVarNames = String.join(", ", testVarNames.toArray(new String[] {}));
+      testBody.append(String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sStart.svg\", %s);\n\n",
+            boardName, allVarNames));
+
       addAllCommands();
+
+      testBody.append(String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sEnd.svg\", %s);\n\n",
+            boardName, allVarNames));
 
       testBody.append("\nSystem.out.println();\n");
 
@@ -186,6 +196,7 @@ public class WorkflowGenerator {
    }
 
    private void addAllLinkCreation() {
+      testBody.append("\n// create links\n");
       for (Workflow workflow : eventStormingBoard.getWorkflows()) {
          for (WorkflowNote note : workflow.getNotes()) {
             if (note instanceof ExternalSystemNote) {
@@ -233,6 +244,9 @@ public class WorkflowGenerator {
                iterator = mockup.entrySet().iterator();
                Map.Entry<String, String> entry = iterator.next();
                String blockId = entry.getValue();
+               if (!testVarNames.contains(blockId)) {
+                  continue;
+               }
                String type = entry.getKey();
                while (iterator.hasNext()) {
                   entry = iterator.next();
@@ -251,8 +265,8 @@ public class WorkflowGenerator {
       LinkedHashMap<String, String> mockup = getMockup(dataNote.getMap());
       String blockId = dataNote.getBlockId();
       String varName = StrUtil.decap(blockId);
-      testBody.append(
-            String.format("\n%s %s = new %1$s().setId(\"%s\");\n", dataNote.getDataType(), varName, blockId));
+      testBody.append(String.format("\n%s %s = new %1$s().setId(\"%s\");\n", dataNote.getDataType(), varName, blockId));
+      testVarNames.add(varName);
       Iterator<Map.Entry<String, String>> iterator = mockup.entrySet().iterator();
       iterator.next();
       while (iterator.hasNext()) {
@@ -265,7 +279,10 @@ public class WorkflowGenerator {
          Attribute attribute = dataClass.getAttribute(attr);
          AssocRole role = dataClass.getRole(attr);
          if (attribute != null) {
-            testBody.append(String.format("%s.set%s(\"%s\");\n", varName, StrUtil.cap(attr), value));
+            if (attribute.getType().equals(Type.STRING)) {
+               value = "\"" + value + "\"";
+            }
+            testBody.append(String.format("%s.set%s(%s);\n", varName, StrUtil.cap(attr), value));
          }
       }
    }
@@ -289,8 +306,10 @@ public class WorkflowGenerator {
          Attribute attribute = dataClass.getAttribute(attr);
          AssocRole role = dataClass.getRole(attr);
          if (attribute == null && role.getCardinality() <= 1) {
-            testBody.append(String.format("%s.set%s(%s);\n",
-               varName, StrUtil.cap(attr), eventModel.getVarName(value)));
+            testBody.append(String.format("%s.set%s(%s);\n", varName, StrUtil.cap(attr), eventModel.getVarName(value)));
+         } else if (attribute == null && role.getCardinality() > 1) {
+            value = StrUtil.stripBrackets(value);
+            testBody.append(String.format("%s.with%s(%s);\n", varName, StrUtil.cap(attr), value));
          }
       }
    }

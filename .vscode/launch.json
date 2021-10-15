@@ -17,6 +17,13 @@
             "request": "launch",
             "mainClass": "org.junit.runner.JUnitCore",
             "args": "org.fulib.workflows.pm.GenRouting"
+        },
+        {
+            "type": "java",
+            "name": "GenStudyRight",
+            "request": "launch",
+            "mainClass": "org.junit.runner.JUnitCore",
+            "args": "org.fulib.workflows.pm.GenStudyRight"
         }
     ]
 }
