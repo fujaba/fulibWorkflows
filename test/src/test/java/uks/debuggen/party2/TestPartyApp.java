@@ -251,11 +251,11 @@ public class TestPartyApp implements PropertyChangeListener {
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = 10 * 60 * 1000; // Constants.TIME_OUT;
+      Configuration.timeout = Constants.TIME_OUT;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = "-1300x600"; // Constants.BROWSER_POS;
+      Configuration.browserPosition = Constants.BROWSER_POS;
       Configuration.browserSize = "400x500";
-      // Configuration.headless = Constants.HEADLESS;
+      Configuration.headless = Constants.HEADLESS;
    }
 
    @Test
@@ -265,9 +265,16 @@ public class TestPartyApp implements PropertyChangeListener {
       eventBroker = new EventBroker();
       eventBroker.start();
 
+      start();
+
+      waitForEvent("41999");
+
       PartyAppService bobNewPartyApp2 = new PartyAppService().setPort(42007);
       bobNewPartyApp2.listeners().addPropertyChangeListener(PartyAppService.PROPERTY_HISTORY, this);
       bobNewPartyApp2.start();
+
+      waitForEvent("42007");
+
 
       open("http://localhost:42000");
       $("body").shouldHave(text("event broker"));
@@ -305,6 +312,7 @@ public class TestPartyApp implements PropertyChangeListener {
       } catch (Exception e) {
       }
       eventBroker.stop();
+      spark.stop();
       bobNewPartyApp2.stop();
       System.out.println("party2 TestPartyApp testLoadAndStoreConcept done");
    }
