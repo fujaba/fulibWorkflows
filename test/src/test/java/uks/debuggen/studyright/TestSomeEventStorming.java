@@ -193,6 +193,7 @@ public class TestSomeEventStorming
             Event event = (Event) obj;
             eventQueue.put(event);
          }
+         System.err.println("Test has completed subscribeAndLoadOldEvents");
       } catch (Exception e) {
          e.printStackTrace();
       }
@@ -238,6 +239,8 @@ public class TestSomeEventStorming
       // no fulib
       eventBroker = new EventBroker();
       eventBroker.start();
+
+      Thread.sleep(2000);
 
       this.start();
       waitForEvent("" + port);

@@ -316,6 +316,7 @@ public class TestHealthExperts
             Event event = (Event) obj;
             eventQueue.put(event);
          }
+         System.err.println("Test has completed subscribeAndLoadOldEvents");
       } catch (Exception e) {
          e.printStackTrace();
       }
