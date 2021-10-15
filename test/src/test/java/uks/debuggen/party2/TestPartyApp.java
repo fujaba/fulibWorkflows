@@ -331,7 +331,11 @@ public class TestPartyApp implements PropertyChangeListener {
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();
-
+      try {
+         Thread.sleep(2000);
+      } catch (InterruptedException e1) {
+         e1.printStackTrace();
+      }
       start();
 
       waitForEvent("41999");

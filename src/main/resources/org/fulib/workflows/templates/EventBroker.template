@@ -41,7 +41,7 @@ public class EventBroker
       spark.get("/", (req, res) -> executor.submit(() -> this.getHello(req, res)).get());
       spark.post("/subscribe", (req, res) -> executor.submit(() -> this.postSubscribe(req, res)).get());
       spark.post("/publish", (req, res) -> executor.submit(() -> this.postPublish(req, res)).get());
-
+      spark.init();
       Logger.getGlobal().info("Event Broker is up and running on port " + port);
    }
 
