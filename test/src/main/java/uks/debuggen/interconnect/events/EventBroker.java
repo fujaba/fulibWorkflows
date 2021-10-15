@@ -4,6 +4,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.*;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,7 +25,7 @@ public class EventBroker
    protected PropertyChangeSupport listeners;
    private Service spark;
    private int port = 42000;
-   private LinkedHashMap<String, ServiceSubscribed> subscribersMap = new LinkedHashMap<>();
+   private ConcurrentHashMap<String, ServiceSubscribed> subscribersMap = new ConcurrentHashMap<>();
 
    public static void main(String[] args)
    {
@@ -79,7 +80,7 @@ public class EventBroker
             SubscribeEvent subscribeEvent = new SubscribeEvent();
             subscribeEvent.setId(port);
             subscribeEvent.setUrl(serviceUrl);
-            publisher.execute(() -> publish(subscribeEvent));
+            publishEvent(subscribeEvent);
 
             // reply with list of all events
             Collection<Event> values = getHistory().values();
@@ -101,6 +102,7 @@ public class EventBroker
 
    private String postPublish(Request req, Response res)
    {
+      Unirest.setTimeouts(3*60*1000, 3*60*1000);
       try {
          String body = req.body();
 
@@ -110,10 +112,7 @@ public class EventBroker
 
          for (Object obj : newEvents.values()) {
             Event newEvent = (Event) obj;
-            if (getHistory().get(newEvent.getId()) == null) {
-               getHistory().put(newEvent.getId(), newEvent);
-               publisher.execute(() -> publish(newEvent));
-            }
+            publishEvent(newEvent);
          }
       }
       catch (Exception e) {
@@ -122,14 +121,22 @@ public class EventBroker
       return "eventbroker roger";
    }
 
+   private void publishEvent(Event newEvent) {
+      if (getHistory().get(newEvent.getId()) == null) {
+         getHistory().put(newEvent.getId(), newEvent);
+
+         String yaml = Yaml.encodeSimple(newEvent);
+         ArrayList<ServiceSubscribed> values = new ArrayList<>(subscribersMap.values());
+         for (ServiceSubscribed service : values) {
+            publisher.execute(() -> publish(service, yaml));
+         }
+      }
+   }
+
    Executor publisher = Executors.newSingleThreadExecutor();
 
-   private void publish(Event newEvent)
+   private void publish(ServiceSubscribed service, String yaml)
    {
-      Unirest.setTimeouts(3*60*1000, 3*60*1000);
-      String yaml = Yaml.encodeSimple(newEvent);
-      ArrayList<ServiceSubscribed> values = new ArrayList<>(subscribersMap.values());
-      for (ServiceSubscribed service : values) {
          try {
             HttpResponse<String> response = Unirest.post(service.getServiceUrl())
                   .body(yaml)
@@ -138,7 +145,6 @@ public class EventBroker
          catch (UnirestException e) {
             e.printStackTrace();
          }
-      }
    }
 
    public LinkedHashMap<String, Event> getHistory()
