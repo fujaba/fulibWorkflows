@@ -265,7 +265,8 @@ public class TestPartyApp implements PropertyChangeListener {
       eventBroker = new EventBroker();
       eventBroker.start();
 
-      start();
+      this.start();
+      waitForEvent("" + port);
 
       waitForEvent("41999");
 
