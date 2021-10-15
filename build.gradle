@@ -1,14 +1,11 @@
 plugins {
-   id 'java-library'
-   id 'maven-publish'
-   // https://plugins.gradle.org/plugin/com.palantir.revapi
-   id 'com.palantir.revapi' version '1.4.4'
-   // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
-   id 'org.fulib.fulibGradle' version '0.5.0'
-   // https://plugins.gradle.org/plugin/com.bmuschko.nexus
-   id 'com.bmuschko.nexus' version '2.3.1'
-   // https://plugins.gradle.org/plugin/io.codearte.nexus-staging
-   id 'io.codearte.nexus-staging' version '0.22.0'
+	id 'java'
+	id 'application'
+	id 'org.fulib.fulibGradle' version '0.2.0'
+	id 'maven-publish'
+	id 'com.jfrog.bintray' version '1.8.4'
+	id 'de.clashsoft.simple-publish' version '0.3.0'
+	id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
 
 group = 'org.fulib'
