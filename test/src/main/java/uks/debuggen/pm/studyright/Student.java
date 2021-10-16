@@ -10,13 +10,13 @@ public class Student
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_STOPS = "stops";
-   public static final String PROPERTY_MOTIVATION = "motivation";
    public static final String PROPERTY_ROUTE = "route";
+   public static final String PROPERTY_MOTIVATION = "motivation";
    private String id;
    protected PropertyChangeSupport listeners;
    private List<Stop> stops;
-   private int motivation;
    private String route;
+   private int motivation;
 
    public String getId()
    {
@@ -102,24 +102,6 @@ public class Student
       return this;
    }
 
-   public int getMotivation()
-   {
-      return this.motivation;
-   }
-
-   public Student setMotivation(int value)
-   {
-      if (value == this.motivation)
-      {
-         return this;
-      }
-
-      final int oldValue = this.motivation;
-      this.motivation = value;
-      this.firePropertyChange(PROPERTY_MOTIVATION, oldValue, value);
-      return this;
-   }
-
    public String getRoute()
    {
       return this.route;
@@ -135,6 +117,24 @@ public class Student
       final String oldValue = this.route;
       this.route = value;
       this.firePropertyChange(PROPERTY_ROUTE, oldValue, value);
+      return this;
+   }
+
+   public int getMotivation()
+   {
+      return this.motivation;
+   }
+
+   public Student setMotivation(int value)
+   {
+      if (value == this.motivation)
+      {
+         return this;
+      }
+
+      final int oldValue = this.motivation;
+      this.motivation = value;
+      this.firePropertyChange(PROPERTY_MOTIVATION, oldValue, value);
       return this;
    }
 

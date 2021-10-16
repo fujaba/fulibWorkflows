@@ -34,7 +34,7 @@
   roles: 	stop_student 	stop_room 	stop_prev 	stop_next
 
 - room: 	org.fulib.classmodel.Clazz
-  attributes: 	room_id 	room_credits 	room_topic
+  attributes: 	room_id 	room_topic 	room_credits
   model: 	c
   modified: 	false
   name: 	Room
@@ -217,15 +217,6 @@ return (Room) modelMap.computeIfAbsent(id, k -> new Room().setId(k));
   type: 	String
   typeSignature: 	String
 
-- room_credits: 	org.fulib.classmodel.Attribute
-  clazz: 	room
-  id: 	Room_credits
-  modified: 	false
-  name: 	credits
-  propertyStyle: 	Bean
-  type: 	int
-  typeSignature: 	int
-
 - room_topic: 	org.fulib.classmodel.Attribute
   clazz: 	room
   id: 	Room_topic
@@ -234,6 +225,15 @@ return (Room) modelMap.computeIfAbsent(id, k -> new Room().setId(k));
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- room_credits: 	org.fulib.classmodel.Attribute
+  clazz: 	room
+  id: 	Room_credits
+  modified: 	false
+  name: 	credits
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
 
 - room_stops: 	org.fulib.classmodel.AssocRole
   aggregation: 	false

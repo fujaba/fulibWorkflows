@@ -933,7 +933,20 @@ public class WorkflowGenerator {
          }
          Attribute attribute = getAttribute(clazz, attrName);
          if (attribute == null) {
-            modelManager.haveAttribute(clazz, attrName, Type.STRING);
+            String attrType = Type.STRING;
+            try {
+               int parseInt = Integer.parseInt(value);
+               attrType = Type.INT;
+            } catch (Exception e) {
+               try {
+                  double parse = Double.parseDouble(value);
+                  attrType = Type.DOUBLE;
+               } catch (Exception e2) {
+                  // stay with string
+               }
+            }
+
+            modelManager.haveAttribute(clazz, attrName, attrType);
          }
       }
    }

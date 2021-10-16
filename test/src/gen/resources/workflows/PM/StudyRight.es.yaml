@@ -3,24 +3,15 @@
 
 - service: StudyGuide
 
-- class: Student
-  motivation: int
-
 - data: Student Karli
   motivation: 83
   stops: [stop1]
   stops.back: student
 
-- class: Stop
-  motivation: int
-
 - data: Stop stop1
   motivation: 66
   room: r1
   room.back: [stops]
-
-- class: Room
-  credits: int
 
 - data: Room r1
   topic: math
