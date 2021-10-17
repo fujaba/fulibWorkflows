@@ -9,16 +9,16 @@ import java.util.Collection;
 public class Stop
 {
    public static final String PROPERTY_ID = "id";
-   public static final String PROPERTY_MOTIVATION = "motivation";
    public static final String PROPERTY_ROOM = "room";
    public static final String PROPERTY_PREVIOUS_STOP = "previousStop";
    public static final String PROPERTY_NEXT_STOPS = "nextStops";
+   public static final String PROPERTY_MOTIVATION = "motivation";
    private String id;
-   private String motivation;
    protected PropertyChangeSupport listeners;
    private String room;
    private Stop previousStop;
    private List<Stop> nextStops;
+   private int motivation;
 
    public String getId()
    {
@@ -35,24 +35,6 @@ public class Stop
       final String oldValue = this.id;
       this.id = value;
       this.firePropertyChange(PROPERTY_ID, oldValue, value);
-      return this;
-   }
-
-   public String getMotivation()
-   {
-      return this.motivation;
-   }
-
-   public Stop setMotivation(String value)
-   {
-      if (Objects.equals(value, this.motivation))
-      {
-         return this;
-      }
-
-      final String oldValue = this.motivation;
-      this.motivation = value;
-      this.firePropertyChange(PROPERTY_MOTIVATION, oldValue, value);
       return this;
    }
 
@@ -167,6 +149,24 @@ public class Stop
       return this;
    }
 
+   public int getMotivation()
+   {
+      return this.motivation;
+   }
+
+   public Stop setMotivation(int value)
+   {
+      if (value == this.motivation)
+      {
+         return this;
+      }
+
+      final int oldValue = this.motivation;
+      this.motivation = value;
+      this.firePropertyChange(PROPERTY_MOTIVATION, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -191,7 +191,6 @@ public class Stop
    {
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
-      result.append(' ').append(this.getMotivation());
       result.append(' ').append(this.getRoom());
       return result.substring(1);
    }

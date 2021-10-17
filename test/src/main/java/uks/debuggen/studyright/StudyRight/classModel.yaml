@@ -717,7 +717,7 @@ if (outdated(event)) {
   id: 	StudyRightBuilder_loadRoomBuilt
   methodBody: 	"RoomBuilt event = (RoomBuilt) e;
 Room object = model.getOrCreateRoom(event.getBlockId());
-object.setCredits(event.getCredits());
+object.setCredits(event.getCredits() == null ? 0 : Integer.parseInt(event.getCredits()));
 object.setUni(model.getOrCreateUniversity(event.getUni()));
 for (String name : stripBrackets(event.getDoors()).split(\",\\s+\")) {
    if (name.equals(\"\")) continue;
@@ -759,7 +759,7 @@ if (outdated(event)) {
   methodBody: 	"StudentBuilt event = (StudentBuilt) e;
 Student object = model.getOrCreateStudent(event.getBlockId());
 object.setName(event.getName());
-object.setBirthYear(Integer.parseInt(event.getBirthYear()));
+object.setBirthYear(event.getBirthYear() == null ? 0 : Integer.parseInt(event.getBirthYear()));
 object.setStudentId(event.getStudentId());
 object.setUni(model.getOrCreateUniversity(event.getUni()));
 return object;
@@ -832,7 +832,7 @@ if (outdated(event)) {
   id: 	StudyRightBuilder_loadStopBuilt
   methodBody: 	"StopBuilt event = (StopBuilt) e;
 Stop object = model.getOrCreateStop(event.getBlockId());
-object.setMotivation(event.getMotivation());
+object.setMotivation(event.getMotivation() == null ? 0 : Integer.parseInt(event.getMotivation()));
 object.setRoom(event.getRoom());
 object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
 return object;
@@ -1399,8 +1399,8 @@ catch (UnirestException e) {
   modified: 	false
   name: 	credits
   propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
+  type: 	int
+  typeSignature: 	int
 
 - room_uni: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
@@ -1506,8 +1506,8 @@ catch (UnirestException e) {
   modified: 	false
   name: 	motivation
   propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
+  type: 	int
+  typeSignature: 	int
 
 - stop_room: 	org.fulib.classmodel.Attribute
   clazz: 	stop

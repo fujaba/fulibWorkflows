@@ -184,7 +184,7 @@ public class PartyAppBuilder
       ItemBuilt event = (ItemBuilt) e;
       Item object = model.getOrCreateItem(event.getBlockId());
       object.setName(event.getName());
-      object.setPrice(event.getPrice());
+      object.setPrice(event.getPrice() == null ? 0.0 : Double.parseDouble(event.getPrice()));
       object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
       object.setParty(model.getOrCreateParty2(event.getParty()));
       return object;
@@ -196,7 +196,7 @@ public class PartyAppBuilder
       Guest object = model.getOrCreateGuest(event.getBlockId());
       object.setName(event.getName());
       object.setParty(model.getOrCreateParty2(event.getParty()));
-      object.setExpenses(event.getExpenses());
+      object.setExpenses(event.getExpenses() == null ? 0.0 : Double.parseDouble(event.getExpenses()));
       return object;
    }
 

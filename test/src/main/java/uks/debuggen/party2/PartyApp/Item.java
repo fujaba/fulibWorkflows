@@ -6,15 +6,15 @@ public class Item
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_PRICE = "price";
    public static final String PROPERTY_BUYER = "buyer";
    public static final String PROPERTY_PARTY = "party";
+   public static final String PROPERTY_PRICE = "price";
    private String id;
    private String name;
-   private String price;
    private Guest buyer;
    protected PropertyChangeSupport listeners;
    private Party2 party;
+   private double price;
 
    public String getId()
    {
@@ -49,24 +49,6 @@ public class Item
       final String oldValue = this.name;
       this.name = value;
       this.firePropertyChange(PROPERTY_NAME, oldValue, value);
-      return this;
-   }
-
-   public String getPrice()
-   {
-      return this.price;
-   }
-
-   public Item setPrice(String value)
-   {
-      if (Objects.equals(value, this.price))
-      {
-         return this;
-      }
-
-      final String oldValue = this.price;
-      this.price = value;
-      this.firePropertyChange(PROPERTY_PRICE, oldValue, value);
       return this;
    }
 
@@ -124,6 +106,24 @@ public class Item
       return this;
    }
 
+   public double getPrice()
+   {
+      return this.price;
+   }
+
+   public Item setPrice(double value)
+   {
+      if (value == this.price)
+      {
+         return this;
+      }
+
+      final double oldValue = this.price;
+      this.price = value;
+      this.firePropertyChange(PROPERTY_PRICE, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -149,7 +149,6 @@ public class Item
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
-      result.append(' ').append(this.getPrice());
       return result.substring(1);
    }
 

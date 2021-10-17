@@ -18,7 +18,7 @@ public class Guest
    private Party party;
    protected PropertyChangeSupport listeners;
    private String name;
-   private String expenses;
+   private double expenses;
 
    public String getId()
    {
@@ -149,19 +149,19 @@ public class Guest
       return this;
    }
 
-   public String getExpenses()
+   public double getExpenses()
    {
       return this.expenses;
    }
 
-   public Guest setExpenses(String value)
+   public Guest setExpenses(double value)
    {
-      if (Objects.equals(value, this.expenses))
+      if (value == this.expenses)
       {
          return this;
       }
 
-      final String oldValue = this.expenses;
+      final double oldValue = this.expenses;
       this.expenses = value;
       this.firePropertyChange(PROPERTY_EXPENSES, oldValue, value);
       return this;
@@ -192,7 +192,6 @@ public class Guest
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
-      result.append(' ').append(this.getExpenses());
       return result.substring(1);
    }
 

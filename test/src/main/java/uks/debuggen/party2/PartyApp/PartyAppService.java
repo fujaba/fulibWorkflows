@@ -466,18 +466,18 @@ public class PartyAppService
       }
       else {
          for (Guest guest : party.getGuests()) {
-            guest.setExpenses("0.00");
+            guest.setExpenses(0.00);
          }
          // list items
          double total = 0.0;
          for (Item item : party.getItems()) {
-            double p = toDouble(item.getPrice());
+            double p = item.getPrice();
             total += p;
             Guest g = item.getBuyer();
-            double x = toDouble(g.getExpenses()) + p;
-            g.setExpenses(toString(x));
+            double x = g.getExpenses() + p;
+            g.setExpenses(x);
             html.append(String.format("   <p>%s %s %s</p>\n",
-                  item.getName(), item.getPrice(), item.getBuyer().getName()));
+                  item.getName(), toString(item.getPrice()), item.getBuyer().getName()));
          }
 
          html.append(String.format("   <p>Total: %s</p>\n", toString(total)));
@@ -485,7 +485,7 @@ public class PartyAppService
          html.append(String.format("   <p>Share: %s</p>\n", toString(share)));
 
          for (Guest guest : party.getGuests()) {
-            double saldo = toDouble(guest.getExpenses()) - share;
+            double saldo = guest.getExpenses() - share;
             html.append(String.format("   <p>%s %s</p>\n", guest.getName(), toString(saldo)));
          }
 

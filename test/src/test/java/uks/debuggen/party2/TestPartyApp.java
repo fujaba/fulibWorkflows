@@ -390,10 +390,10 @@ public class TestPartyApp implements PropertyChangeListener {
       // Alice Buys meat for the SE BBQ on the old app
       aliceOpenSEBBQ();
 
-      $("body").shouldHave(text("beer 12.00 Bob"));
+      $("body").shouldHave(text("beer 12.0 Bob"));
       bookItem("meat", "21.00", "Alice");
 
-      $("body").shouldHave(text("meat 21.00 Alice"));
+      $("body").shouldHave(text("meat 21.0 Alice"));
 
       bobOpenKasselParty("SE BBQ", "Friday", "Uni");
 

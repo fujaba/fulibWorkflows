@@ -258,7 +258,7 @@ public class PartyAppBuilder
       ItemBuilt event = (ItemBuilt) e;
       Item object = model.getOrCreateItem(event.getBlockId());
       object.setName(event.getName());
-      object.setPrice(event.getPrice());
+      object.setPrice(event.getPrice() == null ? 0.0 : Double.parseDouble(event.getPrice()));
       object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
       object.setParty(model.getOrCreateParty(event.getParty()));
       return object;
@@ -270,7 +270,7 @@ public class PartyAppBuilder
       if (outdated(event)) {
          return;
       }
-      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+
       // no fulib
 
       addToGroup(event.getParty(), event.getBlockId());
@@ -282,7 +282,7 @@ public class PartyAppBuilder
       Guest object = model.getOrCreateGuest(event.getBlockId());
       object.setName(event.getName());
       object.setParty(model.getOrCreateParty(event.getParty()));
-      object.setExpenses(event.getExpenses());
+      object.setExpenses(event.getExpenses() == null ? 0.0 : Double.parseDouble(event.getExpenses()));
       return object;
    }
 

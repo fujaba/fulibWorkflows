@@ -242,7 +242,7 @@ public class StudyRightBuilder
    {
       RoomBuilt event = (RoomBuilt) e;
       Room object = model.getOrCreateRoom(event.getBlockId());
-      object.setCredits(event.getCredits());
+      object.setCredits(event.getCredits() == null ? 0 : Integer.parseInt(event.getCredits()));
       object.setUni(model.getOrCreateUniversity(event.getUni()));
       for (String name : stripBrackets(event.getDoors()).split(",\\s+")) {
          if (name.equals("")) continue;
@@ -266,7 +266,7 @@ public class StudyRightBuilder
       StudentBuilt event = (StudentBuilt) e;
       Student object = model.getOrCreateStudent(event.getBlockId());
       object.setName(event.getName());
-      object.setBirthYear(Integer.parseInt(event.getBirthYear()));
+      object.setBirthYear(event.getBirthYear() == null ? 0 : Integer.parseInt(event.getBirthYear()));
       object.setStudentId(event.getStudentId());
       object.setUni(model.getOrCreateUniversity(event.getUni()));
       return object;
@@ -303,7 +303,7 @@ public class StudyRightBuilder
    {
       StopBuilt event = (StopBuilt) e;
       Stop object = model.getOrCreateStop(event.getBlockId());
-      object.setMotivation(event.getMotivation());
+      object.setMotivation(event.getMotivation() == null ? 0 : Integer.parseInt(event.getMotivation()));
       object.setRoom(event.getRoom());
       object.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
       return object;

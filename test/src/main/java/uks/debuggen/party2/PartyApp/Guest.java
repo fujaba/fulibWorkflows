@@ -10,15 +10,15 @@ public class Guest
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_EXPENSES = "expenses";
    public static final String PROPERTY_ITEMS = "items";
    public static final String PROPERTY_PARTY = "party";
+   public static final String PROPERTY_EXPENSES = "expenses";
    private String id;
    private String name;
-   private String expenses;
    private List<Item> items;
    protected PropertyChangeSupport listeners;
    private Party2 party;
+   private double expenses;
 
    public String getId()
    {
@@ -53,24 +53,6 @@ public class Guest
       final String oldValue = this.name;
       this.name = value;
       this.firePropertyChange(PROPERTY_NAME, oldValue, value);
-      return this;
-   }
-
-   public String getExpenses()
-   {
-      return this.expenses;
-   }
-
-   public Guest setExpenses(String value)
-   {
-      if (Objects.equals(value, this.expenses))
-      {
-         return this;
-      }
-
-      final String oldValue = this.expenses;
-      this.expenses = value;
-      this.firePropertyChange(PROPERTY_EXPENSES, oldValue, value);
       return this;
    }
 
@@ -167,6 +149,24 @@ public class Guest
       return this;
    }
 
+   public double getExpenses()
+   {
+      return this.expenses;
+   }
+
+   public Guest setExpenses(double value)
+   {
+      if (value == this.expenses)
+      {
+         return this;
+      }
+
+      final double oldValue = this.expenses;
+      this.expenses = value;
+      this.firePropertyChange(PROPERTY_EXPENSES, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -192,7 +192,6 @@ public class Guest
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getName());
-      result.append(' ').append(this.getExpenses());
       return result.substring(1);
    }
 

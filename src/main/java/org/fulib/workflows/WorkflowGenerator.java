@@ -738,10 +738,10 @@ public class WorkflowGenerator {
             if (dataAttr.getType().equals(Type.STRING)) {
                body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
             } else if (dataAttr.getType().equals(Type.INT)) {
-               body.append(String.format("object.set%s(Integer.parseInt(event.get%1$s()));\n", StrUtil.cap(attrName)));
+               body.append(String.format("object.set%s(event.get%1$s() == null ? 0 : Integer.parseInt(event.get%1$s()));\n", StrUtil.cap(attrName)));
             } else if (dataAttr.getType().equals(Type.DOUBLE)) {
                body.append(
-                     String.format("object.set%s(Double.parseDouble(event.get%1$s()));\n", StrUtil.cap(attrName)));
+                     String.format("object.set%s(event.get%1$s() == null ? 0.0 : Double.parseDouble(event.get%1$s()));\n", StrUtil.cap(attrName)));
             }
          } else {
             // e.g.: event.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));

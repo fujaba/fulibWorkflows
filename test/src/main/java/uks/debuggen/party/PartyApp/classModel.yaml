@@ -643,7 +643,7 @@ if (outdated(event)) {
   methodBody: 	"ItemBuilt event = (ItemBuilt) e;
 Item object = model.getOrCreateItem(event.getBlockId());
 object.setName(event.getName());
-object.setPrice(event.getPrice());
+object.setPrice(event.getPrice() == null ? 0.0 : Double.parseDouble(event.getPrice()));
 object.setBuyer(model.getOrCreateGuest(event.getBuyer()));
 object.setParty(model.getOrCreateParty(event.getParty()));
 return object;
@@ -683,7 +683,7 @@ if (outdated(event)) {
 Guest object = model.getOrCreateGuest(event.getBlockId());
 object.setName(event.getName());
 object.setParty(model.getOrCreateParty(event.getParty()));
-object.setExpenses(event.getExpenses());
+object.setExpenses(event.getExpenses() == null ? 0.0 : Double.parseDouble(event.getExpenses()));
 return object;
 "
   modified: 	false
@@ -1544,8 +1544,8 @@ catch (UnirestException e) {
   modified: 	false
   name: 	price
   propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
+  type: 	double
+  typeSignature: 	double
 
 - item_buyer: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
@@ -1591,8 +1591,8 @@ catch (UnirestException e) {
   modified: 	false
   name: 	expenses
   propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
+  type: 	double
+  typeSignature: 	double
 
 - guest_items: 	org.fulib.classmodel.AssocRole
   aggregation: 	false

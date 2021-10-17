@@ -298,9 +298,9 @@ public class StudyRightBusinessLogic
          // always create a stop
          Room room = (Room) builder.load(event.getRoom());
          Stop previousStop = (Stop) builder.load(event.getPreviousStop());
-         String motivation = previousStop.getMotivation();
-         String credits = room.getCredits();
-         int newMotivation = Integer.parseInt(motivation) - Integer.parseInt(credits);
+         int motivation = previousStop.getMotivation();
+         int credits = room.getCredits();
+         int newMotivation = motivation - credits;
 
          StopBuilt newStopEvent = new StopBuilt();
          newStopEvent.setId(newEventId());

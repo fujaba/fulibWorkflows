@@ -9,14 +9,14 @@ import java.util.Collection;
 public class Room
 {
    public static final String PROPERTY_ID = "id";
-   public static final String PROPERTY_CREDITS = "credits";
    public static final String PROPERTY_DOORS = "doors";
    public static final String PROPERTY_UNI = "uni";
+   public static final String PROPERTY_CREDITS = "credits";
    private String id;
-   private String credits;
    protected PropertyChangeSupport listeners;
    private List<Room> doors;
    private University uni;
+   private int credits;
 
    public String getId()
    {
@@ -33,24 +33,6 @@ public class Room
       final String oldValue = this.id;
       this.id = value;
       this.firePropertyChange(PROPERTY_ID, oldValue, value);
-      return this;
-   }
-
-   public String getCredits()
-   {
-      return this.credits;
-   }
-
-   public Room setCredits(String value)
-   {
-      if (Objects.equals(value, this.credits))
-      {
-         return this;
-      }
-
-      final String oldValue = this.credits;
-      this.credits = value;
-      this.firePropertyChange(PROPERTY_CREDITS, oldValue, value);
       return this;
    }
 
@@ -147,6 +129,24 @@ public class Room
       return this;
    }
 
+   public int getCredits()
+   {
+      return this.credits;
+   }
+
+   public Room setCredits(int value)
+   {
+      if (value == this.credits)
+      {
+         return this;
+      }
+
+      final int oldValue = this.credits;
+      this.credits = value;
+      this.firePropertyChange(PROPERTY_CREDITS, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -171,7 +171,6 @@ public class Room
    {
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
-      result.append(' ').append(this.getCredits());
       return result.substring(1);
    }
 
