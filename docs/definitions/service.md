@@ -1,12 +1,6 @@
 # Service Definitions
 
 ## Required Items
-### board
-The name of the overall project
-```yaml
-- board: health experts
-```
-
 ### boundedContext
 The title of a sub-workflow that becomes its own service
 ```yaml
@@ -26,12 +20,6 @@ A stream of events provided by a broker under some topic
   events: 12:00 - 13:00
 ```
 
-### workflow
-The title of your current workflow
-```yaml
-- workflow: stiko
-```
-
 ### service
 Action performed by user
 ```yaml
@@ -40,7 +28,7 @@ Action performed by user
 ```
 
 ### subprocess
-A subprocess which is defined in a seperate workflow
+A subprocess which is defined in a separate workflow
 ```yaml
 - subprocess: register new user
 ```
