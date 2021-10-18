@@ -15,12 +15,13 @@
 ```
 
 A page defines an ui page for the user to interact with. The page entry consists of multiple items.
-Those items can only be those that are listed here. Keep in mind, that this 
+Those items can only be those that are listed here.
 
 There are a number of required items for a page, those consists of:
 
 ### name (exactly one)
-Defines the name of the page
+The `name` item defines the name of the page you are working on.
+
 ```yaml
 - name: Shop 12:55
 ```
