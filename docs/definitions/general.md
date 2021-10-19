@@ -19,5 +19,5 @@ You should only use one board event per workflow file.
 - workflow: canceled payment
 ```
 
-You can define more than one workflow in one workflow file.
+You can define more than one workflow for one board.
 Those workflows also have to be given a name.

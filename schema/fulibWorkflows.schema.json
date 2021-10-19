@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "title": "JSON schema for FulibWorkflows ",
-  "description": "Schema for the generation file of FulibWorkflows",
+  "title": "JSON schema for fulibWorkflows ",
+  "description": "Schema for the generation file of fulibWorkflows",
   "type": "array",
   "additionalItems": false,
   "$defs": {
@@ -247,19 +247,20 @@
       ]
     },
     "buttonItem": {
-      "description": "Defines a button with optional event",
+      "description": "Defines a button with optional command",
       "type": "object",
       "properties": {
         "button": {
           "type": "string"
         },
-        "event": {
+        "command": {
           "type": "string"
         }
       },
       "required": [
         "button"
-      ]
+      ],
+      "additionalProperties": false
     },
     "inputItem": {
       "description": "Defines an input with optional fill",
@@ -269,7 +270,10 @@
           "type": "string"
         },
         "fill": {
-          "type": ["string", "number"]
+          "type": [
+            "string",
+            "number"
+          ]
         }
       },
       "required": [
@@ -284,7 +288,10 @@
           "type": "string"
         },
         "fill": {
-          "type": ["string", "number"]
+          "type": [
+            "string",
+            "number"
+          ]
         }
       },
       "required": [
@@ -292,7 +299,7 @@
       ]
     }
   },
-  "items": {
+  "eventList": {
     "oneOf": [
       {
         "$ref": "#/$defs/boardItem"
