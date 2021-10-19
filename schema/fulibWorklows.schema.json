@@ -18,6 +18,19 @@
       ],
       "additionalProperties": false
     },
+    "workflowItem": {
+      "description": "The title of your current workflow",
+      "type": "object",
+      "properties": {
+        "workflow": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "workflow"
+      ],
+      "additionalProperties": false
+    },
     "boundedContext": {
       "description": "The title of an subworkflow that becomes its own service",
       "type": "object",
@@ -57,19 +70,6 @@
       },
       "required": [
         "externalSystem"
-      ],
-      "additionalProperties": false
-    },
-    "workflowItem": {
-      "description": "The title of your current workflow",
-      "type": "object",
-      "properties": {
-        "workflow": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "workflow"
       ],
       "additionalProperties": false
     },
