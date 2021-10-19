@@ -1,6 +1,5 @@
 # Service Definitions
 
-## Required Items
 ### boundedContext
 The title of a sub-workflow that becomes its own service
 ```yaml
@@ -69,19 +68,6 @@ The following steps define the reaction of a service to some triggering command 
 ```
 
 ## Optional Items
-### class
-class for data within a service
-```yaml
-- class: Person
-  name: String
-  birthYear: int
-  uni: University
-  uni.back: [persons]
-
-- class: Student
-  extends: Person
-  studentId: String
-```
 
 ### data
 data object created within a service
