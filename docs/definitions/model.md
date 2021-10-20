@@ -15,7 +15,11 @@ It is possible to extend those classes to contain extra fields and associations.
 ```
 
 ## Classes
+```yaml
+- class: Person
+```
 
+Multiple classes can be defined in the yaml notation. A class always needs a name. That name has to be upper case for the first letter to keep java naming conventions.
 
 ## Attributes
 ```yaml
@@ -24,7 +28,8 @@ It is possible to extend those classes to contain extra fields and associations.
   birthYear: int
 ```
 
-<variableName>: <variableType>
+It is possible to add as many attributes as you like in addition to those already modelled in previous/following events.
+Attributes have to be in the form `<variableName>: <variableType>` under a class event. 
 
 ## Associations
 ```yaml
@@ -42,3 +47,6 @@ If [<variableType>] -> To n association so it will be generated
 - class: Student
   extends: Person
 ```
+
+If it is necessary to use inheritance in your model it is possible to do this in yaml notation, too.
+Modelling a new class you can add the `extends: <ParentClass>`
