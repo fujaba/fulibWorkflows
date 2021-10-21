@@ -36,11 +36,14 @@
       "type": "object",
       "properties": {
         "button": {
-          "type": "string"
+          "type": "string",
+          "properties": {
+            "command": {
+              "type": "string"
+            }
+          }
         },
-        "command": {
-          "type": "string"
-        }
+        "additionalProperties": false
       },
       "required": [
         "button"
@@ -52,13 +55,16 @@
       "type": "object",
       "properties": {
         "input": {
-          "type": "string"
-        },
-        "fill": {
-          "type": [
-            "string",
-            "number"
-          ]
+          "type": "string",
+          "properties": {
+            "fill": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [
@@ -71,13 +77,16 @@
       "type": "object",
       "properties": {
         "password": {
-          "type": "string"
-        },
-        "fill": {
-          "type": [
-            "string",
-            "number"
-          ]
+          "type": "string",
+          "properties": {
+            "fill": {
+              "type": [
+                "string",
+                "number"
+              ]
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [

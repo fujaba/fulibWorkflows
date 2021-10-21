@@ -32,7 +32,7 @@
       "additionalProperties": false
     },
     "subprocessItem": {
-      "description": "A subprocess which is defined in a seperate workflow",
+      "description": "A subprocess which is defined in a separate workflow",
       "type": "object",
       "properties": {
         "subprocess": {
@@ -75,10 +75,12 @@
       "type": "object",
       "properties": {
         "externalSystem": {
-          "type": "string"
-        },
-        "events": {
-          "type": "string"
+          "type": "string",
+          "properties": {
+            "events": {
+              "type": "string"
+            }
+          }
         }
       },
       "required": [
@@ -91,10 +93,13 @@
       "type": "object",
       "properties": {
         "service": {
-          "type": "string"
-        },
-        "port": {
-          "type": "number"
+          "type": "string",
+          "properties": {
+            "port": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [
@@ -131,10 +136,12 @@
       "type": "object",
       "properties": {
         "policy": {
-          "type": "string"
-        },
-        "trigger": {
-          "type": "string"
+          "type": "string",
+          "properties": {
+            "trigger": {
+              "type": "string"
+            }
+          }
         }
       },
       "required": [
