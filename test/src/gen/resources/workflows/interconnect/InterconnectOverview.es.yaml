@@ -9,7 +9,7 @@
 
 - boundedContext: Uni Kassel Tesla charger
 
-- broker: Kassel charging
+- brokerTopic: Kassel charging
 
 - boundedContext: city electrics Kassel Inc
 
