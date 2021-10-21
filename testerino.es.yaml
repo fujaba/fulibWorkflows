@@ -1,6 +1,0 @@
-- board: testerino workflow
-
-- page:
-    - button: test
-      command: testetstetetstet
-      testerino: ffff

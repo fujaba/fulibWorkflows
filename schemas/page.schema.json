@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "JSON schema for pages used in fulibWorkflows ",
+  "description": "Page Schema for the generation file of fulibWorkflows",
+  "type": "array",
+  "additionalItems": false,
+  "$defs": {
+    "nameItem": {
+      "description": "Defines the name of the page",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "labelItem": {
+      "description": "Defines a label",
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "buttonItem": {
+      "description": "Defines a button with optional command",
+      "type": "object",
+      "properties": {
+        "button": {
+          "type": "string"
+        },
+        "command": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "button"
+      ],
+      "additionalProperties": false
+    },
+    "inputItem": {
+      "description": "Defines an input with optional fill",
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        },
+        "fill": {
+          "type": [
+            "string",
+            "number"
+          ]
+        }
+      },
+      "required": [
+        "input"
+      ],
+      "additionalProperties": false
+    },
+    "passwordItem": {
+      "description": "Defines a password input with optional fill",
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "fill": {
+          "type": [
+            "string",
+            "number"
+          ]
+        }
+      },
+      "required": [
+        "password"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "items": {
+    "oneOf": [
+      {
+        "$ref": "#/$defs/nameItem"
+      },
+      {
+        "$ref": "#/$defs/labelItem"
+      },
+      {
+        "$ref": "#/$defs/buttonItem"
+      },
+      {
+        "$ref": "#/$defs/inputItem"
+      },
+      {
+        "$ref": "#/$defs/passwordItem"
+      }
+    ]
+  }
+}
