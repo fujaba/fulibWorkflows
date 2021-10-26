@@ -4,9 +4,9 @@ import java.util.Objects;
 public class ProductStoredEvent extends Event
 {
    public static final String PROPERTY_BARCODE = "barcode";
-   public static final String PROPERTY_TYPE = "type";
+   public static final String PROPERTY_PRODUCT = "product";
    private String barcode;
-   private String type;
+   private String product;
 
    public String getBarcode()
    {
@@ -26,21 +26,21 @@ public class ProductStoredEvent extends Event
       return this;
    }
 
-   public String getType()
+   public String getProduct()
    {
-      return this.type;
+      return this.product;
    }
 
-   public ProductStoredEvent setType(String value)
+   public ProductStoredEvent setProduct(String value)
    {
-      if (Objects.equals(value, this.type))
+      if (Objects.equals(value, this.product))
       {
          return this;
       }
 
-      final String oldValue = this.type;
-      this.type = value;
-      this.firePropertyChange(PROPERTY_TYPE, oldValue, value);
+      final String oldValue = this.product;
+      this.product = value;
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
       return this;
    }
 
@@ -49,7 +49,7 @@ public class ProductStoredEvent extends Event
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getBarcode());
-      result.append(' ').append(this.getType());
+      result.append(' ').append(this.getProduct());
       return result.toString();
    }
 }

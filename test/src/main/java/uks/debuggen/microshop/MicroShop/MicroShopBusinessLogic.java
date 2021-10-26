@@ -333,27 +333,27 @@ public class MicroShopBusinessLogic
 
    private void handleDemoProductStoredEvent(ProductStoredEvent event)
    {
-      if (event.getId().equals("12:03")) {
+      if (event.getId().equals("12:04")) {
          ProductBuilt red_shoesEvent = new ProductBuilt();
-         red_shoesEvent.setId("12:03:01");
+         red_shoesEvent.setId("12:04:01");
          red_shoesEvent.setBlockId("red_shoes");
          red_shoesEvent.setName("red shoes");
          red_shoesEvent.setState("in stock");
          service.apply(red_shoesEvent);
 
       }
-      if (event.getId().equals("12:06")) {
+      if (event.getId().equals("12:07")) {
          ProductBuilt red_shoesEvent = new ProductBuilt();
-         red_shoesEvent.setId("12:06:01");
+         red_shoesEvent.setId("12:07:01");
          red_shoesEvent.setBlockId("red_shoes");
          red_shoesEvent.setName("red shoes");
          red_shoesEvent.setState("in stock");
          service.apply(red_shoesEvent);
 
       }
-      if (event.getId().equals("12:09")) {
+      if (event.getId().equals("12:10")) {
          ProductBuilt blue_jeansEvent = new ProductBuilt();
-         blue_jeansEvent.setId("12:09:01");
+         blue_jeansEvent.setId("12:10:01");
          blue_jeansEvent.setBlockId("blue_jeans");
          blue_jeansEvent.setName("blue jeans");
          blue_jeansEvent.setState("in stock");

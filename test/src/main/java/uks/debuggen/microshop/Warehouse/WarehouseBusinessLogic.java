@@ -111,7 +111,7 @@ public class WarehouseBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(BoxBuilt.class, builder::storeBoxBuilt);
+         handlerMap.put(PaletteBuilt.class, builder::storePaletteBuilt);
          handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
          handlerMap.put(StoreCommand.class, this::handleStoreCommand);
          handlerMap.put(ProductOrderedEvent.class, this::handleProductOrderedEvent);
@@ -164,26 +164,27 @@ public class WarehouseBusinessLogic
 
    private void handleDemoStoreCommand(StoreCommand event)
    {
-      if (event.getId().equals("12:02:01")) {
-         BoxBuilt b001Event = new BoxBuilt();
-         b001Event.setId("12:02:02");
+      if (event.getId().equals("12:03:01")) {
+         PaletteBuilt b001Event = new PaletteBuilt();
+         b001Event.setId("12:03:02");
          b001Event.setBlockId("b001");
          b001Event.setBarcode("b001");
-         b001Event.setContent("red shoes");
+         b001Event.setProduct("red shoes");
+         b001Event.setAmount("10");
          b001Event.setLocation("shelf 42");
          service.apply(b001Event);
 
 
-         ProductStoredEvent e1203 = new ProductStoredEvent();
+         ProductStoredEvent e1204 = new ProductStoredEvent();
 
-         e1203.setId("12:03");
-         e1203.setBarcode("b001");
-         e1203.setType("red shoes");
-         service.apply(e1203);
+         e1204.setId("12:04");
+         e1204.setBarcode("b001");
+         e1204.setProduct("red shoes");
+         service.apply(e1204);
       }
-      if (event.getId().equals("12:05:01")) {
-         BoxBuilt b002Event = new BoxBuilt();
-         b002Event.setId("12:05:02");
+      if (event.getId().equals("12:06:01")) {
+         PaletteBuilt b002Event = new PaletteBuilt();
+         b002Event.setId("12:06:02");
          b002Event.setBlockId("b002");
          b002Event.setBarcode("b002");
          b002Event.setContent("red shoes");
@@ -191,29 +192,30 @@ public class WarehouseBusinessLogic
          service.apply(b002Event);
 
 
-         ProductStoredEvent e1206 = new ProductStoredEvent();
+         ProductStoredEvent e1207 = new ProductStoredEvent();
 
-         e1206.setId("12:06");
-         e1206.setBarcode("b002");
-         e1206.setType("red shoes");
-         service.apply(e1206);
+         e1207.setId("12:07");
+         e1207.setBarcode("b002");
+         e1207.setProduct("red shoes");
+         service.apply(e1207);
       }
-      if (event.getId().equals("12:08:01")) {
-         BoxBuilt b003Event = new BoxBuilt();
-         b003Event.setId("12:08:02");
+      if (event.getId().equals("12:09:01")) {
+         PaletteBuilt b003Event = new PaletteBuilt();
+         b003Event.setId("12:09:02");
          b003Event.setBlockId("b003");
          b003Event.setBarcode("b003");
-         b003Event.setContent("blue jeans");
+         b003Event.setProduct("blue jeans");
+         b003Event.setAmount("8");
          b003Event.setLocation("shelf 1337");
          service.apply(b003Event);
 
 
-         ProductStoredEvent e1209 = new ProductStoredEvent();
+         ProductStoredEvent e1210 = new ProductStoredEvent();
 
-         e1209.setId("12:09");
-         e1209.setBarcode("b003");
-         e1209.setType("blue jeans");
-         service.apply(e1209);
+         e1210.setId("12:10");
+         e1210.setBarcode("b003");
+         e1210.setProduct("blue jeans");
+         service.apply(e1210);
       }
    }
 

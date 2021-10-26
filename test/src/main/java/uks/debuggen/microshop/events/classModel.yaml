@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	subscribeEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	boxBuilt 	productStoredEvent 	productBuilt 	addOfferCommand 	productOfferedEvent 	addCommand 	placeCommand 	orderBuilt 	customerBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	deliverCommand 	orderDeliveredEvent 	orderRejectedEvent
+  classes: 	event 	dataEvent 	subscribeEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	paletteBuilt 	productStoredEvent 	productBuilt 	addOfferCommand 	productOfferedEvent 	addCommand 	placeCommand 	orderBuilt 	customerBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	deliverCommand 	orderDeliveredEvent 	orderRejectedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -22,7 +22,7 @@
   name: 	DataEvent
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
-  subClasses: 	dataGroup 	boxBuilt 	productBuilt 	orderBuilt 	customerBuilt 	pickTaskBuilt
+  subClasses: 	dataGroup 	paletteBuilt 	productBuilt 	orderBuilt 	customerBuilt 	pickTaskBuilt
   superClass: 	event
 
 - subscribeEvent: 	org.fulib.classmodel.Clazz
@@ -68,23 +68,23 @@
   superClass: 	event
 
 - storeCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	storeCommand_barcode 	storeCommand_type 	storeCommand_location
+  attributes: 	storeCommand_barcode 	storeCommand_product 	storeCommand_amount 	storeCommand_location
   model: 	c
   modified: 	false
   name: 	StoreCommand
   propertyStyle: 	Bean
   superClass: 	command
 
-- boxBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	boxBuilt_barcode 	boxBuilt_content 	boxBuilt_location
+- paletteBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	paletteBuilt_barcode 	paletteBuilt_product 	paletteBuilt_amount 	paletteBuilt_location 	paletteBuilt_content
   model: 	c
   modified: 	false
-  name: 	BoxBuilt
+  name: 	PaletteBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
 - productStoredEvent: 	org.fulib.classmodel.Clazz
-  attributes: 	productStoredEvent_barcode 	productStoredEvent_type
+  attributes: 	productStoredEvent_barcode 	productStoredEvent_product
   model: 	c
   modified: 	false
   name: 	ProductStoredEvent
@@ -327,11 +327,20 @@
   type: 	String
   typeSignature: 	String
 
-- storeCommand_type: 	org.fulib.classmodel.Attribute
+- storeCommand_product: 	org.fulib.classmodel.Attribute
   clazz: 	storeCommand
-  id: 	StoreCommand_type
+  id: 	StoreCommand_product
   modified: 	false
-  name: 	type
+  name: 	product
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- storeCommand_amount: 	org.fulib.classmodel.Attribute
+  clazz: 	storeCommand
+  id: 	StoreCommand_amount
+  modified: 	false
+  name: 	amount
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -345,29 +354,47 @@
   type: 	String
   typeSignature: 	String
 
-- boxBuilt_barcode: 	org.fulib.classmodel.Attribute
-  clazz: 	boxBuilt
-  id: 	BoxBuilt_barcode
+- paletteBuilt_barcode: 	org.fulib.classmodel.Attribute
+  clazz: 	paletteBuilt
+  id: 	PaletteBuilt_barcode
   modified: 	false
   name: 	barcode
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- boxBuilt_content: 	org.fulib.classmodel.Attribute
-  clazz: 	boxBuilt
-  id: 	BoxBuilt_content
+- paletteBuilt_product: 	org.fulib.classmodel.Attribute
+  clazz: 	paletteBuilt
+  id: 	PaletteBuilt_product
   modified: 	false
-  name: 	content
+  name: 	product
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- boxBuilt_location: 	org.fulib.classmodel.Attribute
-  clazz: 	boxBuilt
-  id: 	BoxBuilt_location
+- paletteBuilt_amount: 	org.fulib.classmodel.Attribute
+  clazz: 	paletteBuilt
+  id: 	PaletteBuilt_amount
+  modified: 	false
+  name: 	amount
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- paletteBuilt_location: 	org.fulib.classmodel.Attribute
+  clazz: 	paletteBuilt
+  id: 	PaletteBuilt_location
   modified: 	false
   name: 	location
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- paletteBuilt_content: 	org.fulib.classmodel.Attribute
+  clazz: 	paletteBuilt
+  id: 	PaletteBuilt_content
+  modified: 	false
+  name: 	content
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -381,11 +408,11 @@
   type: 	String
   typeSignature: 	String
 
-- productStoredEvent_type: 	org.fulib.classmodel.Attribute
+- productStoredEvent_product: 	org.fulib.classmodel.Attribute
   clazz: 	productStoredEvent
-  id: 	ProductStoredEvent_type
+  id: 	ProductStoredEvent_product
   modified: 	false
-  name: 	type
+  name: 	product
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

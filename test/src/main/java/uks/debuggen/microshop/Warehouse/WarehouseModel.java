@@ -27,12 +27,6 @@ public class WarehouseModel
       return this;
    }
 
-   public Box getOrCreateBox(String id)
-   {
-      if (id == null) return null;
-      return (Box) modelMap.computeIfAbsent(id, k -> new Box().setId(k));
-   }
-
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -56,5 +50,11 @@ public class WarehouseModel
    {
       if (id == null) return null;
       return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
+   }
+
+   public Palette getOrCreatePalette(String id)
+   {
+      if (id == null) return null;
+      return (Palette) modelMap.computeIfAbsent(id, k -> new Palette().setId(k));
    }
 }

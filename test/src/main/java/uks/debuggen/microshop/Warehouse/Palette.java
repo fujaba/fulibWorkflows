@@ -2,16 +2,20 @@ package uks.debuggen.microshop.Warehouse;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class Box
+public class Palette
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_BARCODE = "barcode";
-   public static final String PROPERTY_CONTENT = "content";
+   public static final String PROPERTY_PRODUCT = "product";
+   public static final String PROPERTY_AMOUNT = "amount";
    public static final String PROPERTY_LOCATION = "location";
+   public static final String PROPERTY_CONTENT = "content";
    private String id;
    private String barcode;
-   private String content;
+   private String product;
+   private int amount;
    private String location;
+   private String content;
    protected PropertyChangeSupport listeners;
 
    public String getId()
@@ -19,7 +23,7 @@ public class Box
       return this.id;
    }
 
-   public Box setId(String value)
+   public Palette setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -37,7 +41,7 @@ public class Box
       return this.barcode;
    }
 
-   public Box setBarcode(String value)
+   public Palette setBarcode(String value)
    {
       if (Objects.equals(value, this.barcode))
       {
@@ -50,21 +54,39 @@ public class Box
       return this;
    }
 
-   public String getContent()
+   public String getProduct()
    {
-      return this.content;
+      return this.product;
    }
 
-   public Box setContent(String value)
+   public Palette setProduct(String value)
    {
-      if (Objects.equals(value, this.content))
+      if (Objects.equals(value, this.product))
       {
          return this;
       }
 
-      final String oldValue = this.content;
-      this.content = value;
-      this.firePropertyChange(PROPERTY_CONTENT, oldValue, value);
+      final String oldValue = this.product;
+      this.product = value;
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
+      return this;
+   }
+
+   public int getAmount()
+   {
+      return this.amount;
+   }
+
+   public Palette setAmount(int value)
+   {
+      if (value == this.amount)
+      {
+         return this;
+      }
+
+      final int oldValue = this.amount;
+      this.amount = value;
+      this.firePropertyChange(PROPERTY_AMOUNT, oldValue, value);
       return this;
    }
 
@@ -73,7 +95,7 @@ public class Box
       return this.location;
    }
 
-   public Box setLocation(String value)
+   public Palette setLocation(String value)
    {
       if (Objects.equals(value, this.location))
       {
@@ -83,6 +105,24 @@ public class Box
       final String oldValue = this.location;
       this.location = value;
       this.firePropertyChange(PROPERTY_LOCATION, oldValue, value);
+      return this;
+   }
+
+   public String getContent()
+   {
+      return this.content;
+   }
+
+   public Palette setContent(String value)
+   {
+      if (Objects.equals(value, this.content))
+      {
+         return this;
+      }
+
+      final String oldValue = this.content;
+      this.content = value;
+      this.firePropertyChange(PROPERTY_CONTENT, oldValue, value);
       return this;
    }
 
@@ -111,8 +151,9 @@ public class Box
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getBarcode());
-      result.append(' ').append(this.getContent());
+      result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getLocation());
+      result.append(' ').append(this.getContent());
       return result.substring(1);
    }
 }
