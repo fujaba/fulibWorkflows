@@ -11,4 +11,5 @@ function changeVisibilityOf{id}() \{
         document.getElementById("show{id}").style["display"] = "block";
     \}
 \}
+
 >>
