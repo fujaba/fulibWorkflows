@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
-  "title": "JSON schema for FulibWorkflows ",
-  "description": "Schema for the generation file of FulibWorkflows",
+  "title": "JSON schema for fulibWorkflows ",
+  "description": "Schema for the generation file of fulibWorkflows",
   "type": "array",
   "additionalItems": false,
   "$defs": {
@@ -18,8 +18,34 @@
       ],
       "additionalProperties": false
     },
+    "workflowItem": {
+      "description": "The title of your current workflow",
+      "type": "object",
+      "properties": {
+        "workflow": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "workflow"
+      ],
+      "additionalProperties": false
+    },
+    "subprocessItem": {
+      "description": "A subprocess which is defined in a separate workflow",
+      "type": "object",
+      "properties": {
+        "subprocess": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "subprocess"
+      ],
+      "additionalProperties": false
+    },
     "boundedContext": {
-      "description": "The title of an subworkflow that becomes its own service",
+      "description": "The title of a subworkflow that becomes its own service",
       "type": "object",
       "properties": {
         "boundedContext": {
@@ -49,27 +75,16 @@
       "type": "object",
       "properties": {
         "externalSystem": {
-          "type": "string"
-        },
-        "events": {
-          "type": "string"
+          "type": "string",
+          "properties": {
+            "events": {
+              "type": "string"
+            }
+          }
         }
       },
       "required": [
         "externalSystem"
-      ],
-      "additionalProperties": false
-    },
-    "workflowItem": {
-      "description": "The title of your current workflow",
-      "type": "object",
-      "properties": {
-        "workflow": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "workflow"
       ],
       "additionalProperties": false
     },
@@ -78,28 +93,19 @@
       "type": "object",
       "properties": {
         "service": {
-          "type": "string"
-        },
-        "port": {
-          "type": "number"
+          "type": "string",
+          "properties": {
+            "port": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": [
         "service"
       ],
       "additionalProperties": false
-    },
-    "subprocessItem": {
-      "description": "A subprocess which is defined in a seperate workflow",
-      "type": "object",
-      "properties": {
-        "subprocess": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "subprocess"
-      ]
     },
     "commandItem": {
       "description": "A command send by a user",
@@ -130,10 +136,12 @@
       "type": "object",
       "properties": {
         "policy": {
-          "type": "string"
-        },
-        "trigger": {
-          "type": "string"
+          "type": "string",
+          "properties": {
+            "trigger": {
+              "type": "string"
+            }
+          }
         }
       },
       "required": [
@@ -191,105 +199,14 @@
       ],
       "additionalProperties": false
     },
-    "pageList": {
+    "pageItem": {
       "description": "Defines a ui page",
       "type": "object",
       "properties": {
         "page": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
-                "$ref": "#/$defs/nameItem"
-              },
-              {
-                "$ref": "#/$defs/labelItem"
-              },
-              {
-                "$ref": "#/$defs/buttonItem"
-              },
-              {
-                "$ref": "#/$defs/inputItem"
-              },
-              {
-                "$ref": "#/$defs/passwordItem"
-              }
-            ]
-          }
+          "$ref": "page.schema.json#"
         }
-      },
-      "required": [
-        "page"
-      ]
-    },
-    "nameItem": {
-      "description": "Defines the name of the page",
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "name"
-      ]
-    },
-    "labelItem": {
-      "description": "Defines a label",
-      "type": "object",
-      "properties": {
-        "label": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "label"
-      ]
-    },
-    "buttonItem": {
-      "description": "Defines a button with optional event",
-      "type": "object",
-      "properties": {
-        "button": {
-          "type": "string"
-        },
-        "event": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "button"
-      ]
-    },
-    "inputItem": {
-      "description": "Defines an input with optional fill",
-      "type": "object",
-      "properties": {
-        "input": {
-          "type": "string"
-        },
-        "fill": {
-          "type": ["string", "number"]
-        }
-      },
-      "required": [
-        "input"
-      ]
-    },
-    "passwordItem": {
-      "description": "Defines a password input with optional fill",
-      "type": "object",
-      "properties": {
-        "password": {
-          "type": "string"
-        },
-        "fill": {
-          "type": ["string", "number"]
-        }
-      },
-      "required": [
-        "password"
-      ]
+      }
     }
   },
   "items": {
@@ -337,7 +254,7 @@
         "$ref": "#/$defs/queryItem"
       },
       {
-        "$ref": "#/$defs/pageList"
+        "$ref": "#/$defs/pageItem"
       }
     ]
   }

@@ -2,10 +2,10 @@
 - workflow: health insurances association
 
 # import health knowledge
-- broker: marburg health knowledge
+- brokerTopic: marburg health knowledge
 
 # export accounting data
-- broker: health prices
+- brokerTopic: health prices
 
 - event: test price added 14:05
   test: temperature

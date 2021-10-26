@@ -1,12 +1,16 @@
 # Definitions
 
-Definitions contain the [Service](service.md) which defines needed events and post its.
+With fulibWorkflows you have the possibility to model different use cases.
 
-Definitions of [Model](model.md) defines data which can be combined with other definitions or stand alone.
+## General
+There are a few definitions that are used to structure the generated html file. These do not have any functionality in the generated implementation besides the name of a few files.
 
-If you want to generate some basic gui for testing or further requirements engineering with the customer use the [GUI](gui.md) events.
+## Event Modelling / Service
+Using the event definitions found in [Event Modelling / Service](eventModelling_service.md) you can build workflows for one or multiple services.
 
+## GUI
+It is also possible to generate very basic plain html guis using the events defined in [GUI](gui.md).
 
-* [Service](service.md)
-* [Model](model.md)
-* [GUI](gui.md)
+## Model
+Furthermore, it is possible to define Classes and Objects for data that will be used in the implementation.
+The classes will be generated via [fulib](https://github.com/fujaba/fulib), further details on class generation events can be found in [Model](model.md).
