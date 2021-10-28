@@ -2,17 +2,18 @@
  viewBox="0.00 0.00 1004.00 422.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 418)">
 <title>uks.debuggen.microshop.Warehouse</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-418 1000,-418 1000,4 -4,4"/>
-<!-- Box -->
-<g id="node1" class="node">
-<title>Box</title>
-<polygon fill="none" stroke="black" points="8,-110 8,-132 100,-132 100,-110 8,-110"/>
-<text text-anchor="start" x="42.33" y="-116.4" font-family="Times,serif" font-size="14.00">Box</text>
-<polygon fill="none" stroke="black" points="8,-37 8,-110 100,-110 100,-37 8,-37"/>
-<text text-anchor="start" x="11" y="-94.4" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="11" y="-77.6" font-family="Times,serif" font-size="14.00">barcode :String</text>
-<text text-anchor="start" x="11" y="-60.8" font-family="Times,serif" font-size="14.00">content :String</text>
-<text text-anchor="start" x="11" y="-44" font-family="Times,serif" font-size="14.00">location :String</text>
+<polygon fill="white" stroke="none" points="-4,4 -4,-391 992,-391 992,4 -4,4"/>
+<!-- Palette -->
+<g id="node1" class="node"><title>Palette</title>
+<polygon fill="none" stroke="black" points="8,-114.5 8,-135.5 100,-135.5 100,-114.5 8,-114.5"/>
+<text text-anchor="start" x="35.5" y="-121.3" font-family="Times New Roman,serif" font-size="14.00">Palette</text>
+<polygon fill="none" stroke="black" points="8,-18.5 8,-114.5 100,-114.5 100,-18.5 8,-18.5"/>
+<text text-anchor="start" x="11" y="-100.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="11" y="-85.3" font-family="Times New Roman,serif" font-size="14.00">barcode :String</text>
+<text text-anchor="start" x="11" y="-70.3" font-family="Times New Roman,serif" font-size="14.00">product :String</text>
+<text text-anchor="start" x="11" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">amount :int</text>
+<text text-anchor="start" x="11" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
+<text text-anchor="start" x="11" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">content :String</text>
 </g>
 <!-- PickTask -->
 <g id="node2" class="node">

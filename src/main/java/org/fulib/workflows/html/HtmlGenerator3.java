@@ -33,11 +33,23 @@ public class HtmlGenerator3 {
 
     private String icon;
 
-    public void generateViewFiles(String filename, String workFlowName) {
-        generateHtml(filename, workFlowName); // Fill bodies
+    public void generateViewFiles4Board(EventStormingBoard board, String workFlowName) {
+        eventModel = new EventModel();
+        eventStormingBoard = board;
+        generateHtml4Board(workFlowName);
+        writeFiles(workFlowName);
+    }
 
+    public void generateViewFiles(String filename, String workFlowName) {
+        eventModel = new EventModel();
+        eventModel.buildEventStormModel(filename);
+        eventStormingBoard = eventModel.getEventStormingBoard();
+        generateViewFiles4Board(eventStormingBoard, workFlowName);
+    }
+
+    private void writeFiles(String workFlowName) {
         try {
-            String outputDirectoryPath = String.format("tmp//%s", workFlowName);
+            String outputDirectoryPath = String.format("tmp/%s", workFlowName);
             Files.createDirectories(Path.of(outputDirectoryPath));
 
             // Only generate css once and save it in tmp directly (Always the same content)
@@ -67,6 +79,10 @@ public class HtmlGenerator3 {
         eventModel = new EventModel();
         eventModel.buildEventStormModel(filename);
         eventStormingBoard = eventModel.getEventStormingBoard();
+        generateHtml4Board(workFlowName);
+    }
+
+    private void generateHtml4Board(String workFlowName) {
         if (dumpObjectDiagram != null) {
             dumpObjectDiagram.accept(String.format("tmp/%s/GuiEventStormingBoard.svg", workFlowName),
                     eventStormingBoard);
@@ -114,7 +130,6 @@ public class HtmlGenerator3 {
         st.add("workflowName", String.format("%sEventStorming", workFlowName));
         htmlBody.setLength(0);
         htmlBody.append(st.render());
-
     }
 
     private String notes() {

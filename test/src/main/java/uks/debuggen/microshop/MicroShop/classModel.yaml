@@ -176,27 +176,27 @@ handleDemoProductStoredEvent(event);
   clazz: 	microShopBusinessLogic
   declaration: 	"private void handleDemoProductStoredEvent(ProductStoredEvent event)"
   id: 	MicroShopBusinessLogic_handleDemoProductStoredEvent
-  methodBody: 	"if (event.getId().equals(\"12:03\")) {
+  methodBody: 	"if (event.getId().equals(\"12:04\")) {
    ProductBuilt red_shoesEvent = new ProductBuilt();
-   red_shoesEvent.setId(\"12:03:01\");
+   red_shoesEvent.setId(\"12:04:01\");
    red_shoesEvent.setBlockId(\"red_shoes\");
    red_shoesEvent.setName(\"red shoes\");
    red_shoesEvent.setState(\"in stock\");
    service.apply(red_shoesEvent);
 
 }
-if (event.getId().equals(\"12:06\")) {
+if (event.getId().equals(\"12:07\")) {
    ProductBuilt red_shoesEvent = new ProductBuilt();
-   red_shoesEvent.setId(\"12:06:01\");
+   red_shoesEvent.setId(\"12:07:01\");
    red_shoesEvent.setBlockId(\"red_shoes\");
    red_shoesEvent.setName(\"red shoes\");
    red_shoesEvent.setState(\"in stock\");
    service.apply(red_shoesEvent);
 
 }
-if (event.getId().equals(\"12:09\")) {
+if (event.getId().equals(\"12:10\")) {
    ProductBuilt blue_jeansEvent = new ProductBuilt();
-   blue_jeansEvent.setId(\"12:09:01\");
+   blue_jeansEvent.setId(\"12:10:01\");
    blue_jeansEvent.setBlockId(\"blue_jeans\");
    blue_jeansEvent.setName(\"blue jeans\");
    blue_jeansEvent.setState(\"in stock\");
@@ -1117,10 +1117,10 @@ if (\"place order\".equals(event)) {
 
 
 
-// 12:11
-if (id.equals(\"12_11\")) {
-   html.append(\"<form action=\\"/page/12_12\\" method=\\"get\\">\n\");
-   // MicroShop offers 12:11
+// 12:12
+if (id.equals(\"12_12\")) {
+   html.append(\"<form action=\\"/page/12_13\\" method=\\"get\\">\n\");
+   // MicroShop offers 12:12
    html.append(\"   <p>Offers overview</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
    html.append(\"   <p>no offers yet</p>\n\");
@@ -1128,10 +1128,10 @@ if (id.equals(\"12_11\")) {
    return html.toString();
 }
 
-// 12:12
-if (id.equals(\"12_12\")) {
+// 12:13
+if (id.equals(\"12_13\")) {
    html.append(\"<form action=\\"/page/12_16\\" method=\\"get\\">\n\");
-   // MicroShop add offer 12:12
+   // MicroShop add offer 12:13
    html.append(\"   <p>make new offer</p>\n\");
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
    html.append(\"   <p><input id=\\"price\\" name=\\"price\\" placeholder=\\"price?\\"></p>\n\");

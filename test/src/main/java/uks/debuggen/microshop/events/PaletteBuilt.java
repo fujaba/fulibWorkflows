@@ -1,23 +1,25 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class StoreCommand extends Command
+public class PaletteBuilt extends DataEvent
 {
    public static final String PROPERTY_BARCODE = "barcode";
-   public static final String PROPERTY_LOCATION = "location";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_AMOUNT = "amount";
+   public static final String PROPERTY_LOCATION = "location";
+   public static final String PROPERTY_CONTENT = "content";
    private String barcode;
-   private String location;
    private String product;
    private String amount;
+   private String location;
+   private String content;
 
    public String getBarcode()
    {
       return this.barcode;
    }
 
-   public StoreCommand setBarcode(String value)
+   public PaletteBuilt setBarcode(String value)
    {
       if (Objects.equals(value, this.barcode))
       {
@@ -30,30 +32,12 @@ public class StoreCommand extends Command
       return this;
    }
 
-   public String getLocation()
-   {
-      return this.location;
-   }
-
-   public StoreCommand setLocation(String value)
-   {
-      if (Objects.equals(value, this.location))
-      {
-         return this;
-      }
-
-      final String oldValue = this.location;
-      this.location = value;
-      this.firePropertyChange(PROPERTY_LOCATION, oldValue, value);
-      return this;
-   }
-
    public String getProduct()
    {
       return this.product;
    }
 
-   public StoreCommand setProduct(String value)
+   public PaletteBuilt setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -71,7 +55,7 @@ public class StoreCommand extends Command
       return this.amount;
    }
 
-   public StoreCommand setAmount(String value)
+   public PaletteBuilt setAmount(String value)
    {
       if (Objects.equals(value, this.amount))
       {
@@ -84,6 +68,42 @@ public class StoreCommand extends Command
       return this;
    }
 
+   public String getLocation()
+   {
+      return this.location;
+   }
+
+   public PaletteBuilt setLocation(String value)
+   {
+      if (Objects.equals(value, this.location))
+      {
+         return this;
+      }
+
+      final String oldValue = this.location;
+      this.location = value;
+      this.firePropertyChange(PROPERTY_LOCATION, oldValue, value);
+      return this;
+   }
+
+   public String getContent()
+   {
+      return this.content;
+   }
+
+   public PaletteBuilt setContent(String value)
+   {
+      if (Objects.equals(value, this.content))
+      {
+         return this;
+      }
+
+      final String oldValue = this.content;
+      this.content = value;
+      this.firePropertyChange(PROPERTY_CONTENT, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -92,6 +112,7 @@ public class StoreCommand extends Command
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getAmount());
       result.append(' ').append(this.getLocation());
+      result.append(' ').append(this.getContent());
       return result.toString();
    }
 }

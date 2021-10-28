@@ -309,10 +309,10 @@ public class MicroShopService
 
 
 
-      // 12:11
-      if (id.equals("12_11")) {
-         html.append("<form action=\"/page/12_12\" method=\"get\">\n");
-         // MicroShop offers 12:11
+      // 12:12
+      if (id.equals("12_12")) {
+         html.append("<form action=\"/page/12_13\" method=\"get\">\n");
+         // MicroShop offers 12:12
          html.append("   <p>Offers overview</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
          html.append("   <p>no offers yet</p>\n");
@@ -320,10 +320,10 @@ public class MicroShopService
          return html.toString();
       }
 
-      // 12:12
-      if (id.equals("12_12")) {
+      // 12:13
+      if (id.equals("12_13")) {
          html.append("<form action=\"/page/12_16\" method=\"get\">\n");
-         // MicroShop add offer 12:12
+         // MicroShop add offer 12:13
          html.append("   <p>make new offer</p>\n");
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"price\" name=\"price\" placeholder=\"price?\"></p>\n");

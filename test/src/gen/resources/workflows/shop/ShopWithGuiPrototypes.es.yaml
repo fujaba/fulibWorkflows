@@ -7,17 +7,27 @@
 
 - page:
     - name: Warehouse overview
-    - label: Warehouse boxes
-    - button: add
+    - label: Warehouse Home
+    - button: Store Tasks
+    - button: Pick Tasks
 
 
 - page:
-    - name: Warehouse add box
-    - label: Store new box
+    - name: Warehouse store tasks
+    - label: Warehouse palettes
+    - button: add
+    - label: empty
+
+
+- page:
+    - name: Warehouse add palette
+    - label: Store new palette
     - input: barcode
       fill: b001
-    - input: type
+    - input: product
       fill: red shoes
+    - input: amount
+      fill: 10
     - input: location
       fill: shelf 42
     - button: ok
@@ -26,14 +36,15 @@
 
 - policy: Warehouse
 
-- data: Box
+- data: Palette
   barcode: b001
-  content: red shoes
+  product: red shoes
+  amount: 10
   location: shelf 42
 
 - event: product stored
   barcode: b001
-  type: red shoes
+  product: red shoes
 
 - policy: MicroShop
 
@@ -42,18 +53,20 @@
   state: in stock
 
 - page:
-    - name: Warehouse overview
-    - label: Warehouse boxes
+    - name: Warehouse store tasks
+    - label: Warehouse palettes
     - button: add
-    - label: b001, red shoes, shelf 42
+    - label: b001, 10 red shoes, shelf 42
 
 - page:
-    - name: Warehouse add box
-    - label: Store new box
+    - name: Warehouse add palette
+    - label: Store new palette
     - input: barcode
       fill: b002
-    - input: type
+    - input: product
       fill: red shoes
+    - input: amount
+      fill: 10
     - input: location
       fill: shelf 23
     - button: ok
@@ -61,14 +74,14 @@
 
 - policy: Warehouse
 
-- data: Box
+- data: Palette
   barcode: b002
   content: red shoes
   location: shelf 23
 
 - event: product stored
   barcode: b002
-  type: red shoes
+  product: red shoes
 
 - policy: MicroShop
 
@@ -78,18 +91,20 @@
 
 - page:
     - name: Warehouse overview
-    - label: Warehouse boxes
+    - label: Warehouse palettes
     - button: add
     - label: b002, red shoes, shelf 23
     - label: b001, red shoes, shelf 42
 
 - page:
-    - name: Warehouse add box
-    - label: Store new box
+    - name: Warehouse add palette
+    - label: Store new palette
     - input: barcode
       fill: b003
-    - input: type
+    - input: product
       fill: blue jeans
+    - input: amount
+      fill: 8
     - input: location
       fill: shelf 1337
     - button: ok
@@ -97,14 +112,15 @@
 
 - policy: Warehouse
 
-- data: Box
+- data: Palette
   barcode: b003
-  content: blue jeans
+  product: blue jeans
+  amount: 8
   location: shelf 1337
 
 - event: product stored
   barcode: b003
-  type: blue jeans
+  product: blue jeans
 
 - policy: MicroShop
 
@@ -114,7 +130,7 @@
 
 - page:
     - name: Warehouse overview
-    - label: Warehouse boxes
+    - label: Warehouse palettes
     - button: add
     - label: b003, blue jeans, shelf 1337
     - label: b002, red shoes, shelf 23

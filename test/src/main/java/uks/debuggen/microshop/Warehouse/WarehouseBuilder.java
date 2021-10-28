@@ -166,26 +166,6 @@ public class WarehouseBuilder
       return true;
    }
 
-   public void storeBoxBuilt(Event e)
-   {
-      BoxBuilt event = (BoxBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
-      // fulib
-   }
-
-   public Box loadBoxBuilt(Event e)
-   {
-      BoxBuilt event = (BoxBuilt) e;
-      Box object = model.getOrCreateBox(event.getBlockId());
-      object.setBarcode(event.getBarcode());
-      object.setContent(event.getContent());
-      object.setLocation(event.getLocation());
-      return object;
-   }
-
    public Object load(String blockId)
    {
       DataEvent dataEvent = eventStore.get(blockId);
@@ -210,7 +190,7 @@ public class WarehouseBuilder
    {
       if (loaderMap == null) {
          loaderMap = new LinkedHashMap<>();
-         loaderMap.put(BoxBuilt.class, this::loadBoxBuilt);
+         loaderMap.put(PaletteBuilt.class, this::loadPaletteBuilt);
          loaderMap.put(PickTaskBuilt.class, this::loadPickTaskBuilt);
       }
    }
@@ -295,6 +275,28 @@ public class WarehouseBuilder
       object.setAddress(event.getAddress());
       object.setState(event.getState());
       object.setFrom(event.getFrom());
+      return object;
+   }
+
+   public void storePaletteBuilt(Event e)
+   {
+      PaletteBuilt event = (PaletteBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public Palette loadPaletteBuilt(Event e)
+   {
+      PaletteBuilt event = (PaletteBuilt) e;
+      Palette object = model.getOrCreatePalette(event.getBlockId());
+      object.setBarcode(event.getBarcode());
+      object.setProduct(event.getProduct());
+      object.setAmount(event.getAmount() == null ? 0 : Integer.parseInt(event.getAmount()));
+      object.setLocation(event.getLocation());
+      object.setContent(event.getContent());
       return object;
    }
 }
