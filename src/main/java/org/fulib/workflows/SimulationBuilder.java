@@ -12,6 +12,8 @@ public class SimulationBuilder {
     private ArrayList<CommandNote> commandList;
     private ArrayList<Policy> policiesList;
     private ArrayList<DataNote> dataList;
+    private ArrayList<LinkedHashMap<String, String>> mapList;
+    private ArrayList<EventNote> eventList;
 
     public ArrayList<Workflow> getWorkFlowList() {
         return workFlowList;
@@ -34,6 +36,7 @@ public class SimulationBuilder {
 
     public ArrayList<CommandNote> addCommands(String command, String delta) {
         commandList = new ArrayList<>();
+        mapList = new ArrayList<LinkedHashMap<String, String>>();
         for (Workflow workflow : workFlowList) {
             CommandNote commandNote = new CommandNote();
             commandNote.setTime(command);
@@ -42,7 +45,7 @@ public class SimulationBuilder {
             map.put("command", command);
             commandNote.setWorkflow(workflow);
             commandList.add(commandNote);
-
+            mapList.add(map);
             command = addTime(command, delta);
         }
         return commandList;
@@ -63,6 +66,7 @@ public class SimulationBuilder {
 
     public void addDatas(String data, String delta) {
         dataList = new ArrayList<DataNote>();
+        mapList.clear();
         String time = data.substring(data.length() - delta.length());
         data = data.substring(0, data.length() - delta.length());
         Iterator<Policy> policyIterator = policiesList.iterator();
@@ -79,6 +83,32 @@ public class SimulationBuilder {
             map.put("data", data + time);
             dataNote.setWorkflow(workflow);
             dataList.add(dataNote);
+            mapList.add(map);
+
+            time = addTime(time, delta);
+        }
+    }
+
+    public void addEvents(String event, String delta) {
+        eventList = new ArrayList<EventNote>();
+        mapList.clear();
+        String time = event.substring(event.length() - delta.length());
+        event = event.substring(0, event.length() - delta.length());
+        Iterator<Policy> policyIterator = policiesList.iterator();
+        for (Workflow workflow : workFlowList) {
+            EventNote eventNote = new EventNote();
+
+            eventNote.setTime(time);
+            policyIterator.hasNext();
+            Policy policy = policyIterator.next();
+            eventNote.setInteraction(policy);
+
+            LinkedHashMap<String, String> map = new LinkedHashMap<>();
+            eventNote.setMap(map);
+            map.put("event", event + time);
+            eventNote.setWorkflow(workflow);
+            eventList.add(eventNote);
+            mapList.add(map);
 
             time = addTime(time, delta);
         }
@@ -88,8 +118,7 @@ public class SimulationBuilder {
 
 
     public void add(String key, String start, String delta) {
-        for (CommandNote commandNote : commandList) {
-            LinkedHashMap<String, String> map = commandNote.getMap();
+        for (LinkedHashMap<String, String> map : mapList) {
             map.put(key, start);
             start = add(start, delta);
         }
@@ -97,8 +126,7 @@ public class SimulationBuilder {
 
     public void addList(String key, String... list) {
         int j = 0;
-        for (CommandNote commandNote : commandList) {
-            LinkedHashMap<String, String> map = commandNote.getMap();
+        for (LinkedHashMap<String, String> map : mapList) {
             map.put(key, list[j]);
             j = (j + 1) % list.length;
         }

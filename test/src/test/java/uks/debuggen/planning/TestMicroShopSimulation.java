@@ -25,6 +25,21 @@ public class TestMicroShopSimulation {
         simBuilder.addPolicies("Warehouse");
 
         simBuilder.addDatas("Palette 08:00:01", "00:15:00");
+        simBuilder.add("barcode", "pal001", "001");
+        simBuilder.addList("product", "red shoes", "red shoes", "red shoes", "blue jeans");
+        simBuilder.addList("amount", "10", "10", "10", "8");
+        simBuilder.add("location", "shelf 42", "01");
+
+        simBuilder.addEvents("product stored 08:00:02", "00:15:00");
+        simBuilder.add("barcode", "pal001", "001");
+        simBuilder.addList("product", "red shoes", "red shoes", "red shoes", "blue jeans");
+
+        simBuilder.addPolicies("MicroShop");
+
+        simBuilder.addDatas("Product 08:01:01", "00:15:00");
+        simBuilder.addList("product", "red shoes", "red shoes", "red shoes", "blue jeans");
+        simBuilder.addList("state", "in stock");
+
 
         new HtmlGenerator3().generateViewFiles4Board(board, board.getName());
 

@@ -20,7 +20,7 @@ public class GenStudyRight
          String fileName = "test/src/gen/resources/workflows/PM/StudyRight.es.yaml";
 
          HtmlGenerator3 generator = new HtmlGenerator3();
-         generator.generateViewFiles(fileName, "StudyRight");
+         generator.generateViewFiles(fileName, "StudyRightAdam");
 
          WorkflowGenerator workflowGenerator = new WorkflowGenerator();
          workflowGenerator.loadPlainModel(mm, fileName);
