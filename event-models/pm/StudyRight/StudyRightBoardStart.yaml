@@ -1,0 +1,36 @@
+- carli: 	uks.debuggen.pm.studyright.Student
+  id: 	carli
+  motivation: 	83
+  stops: 	stop1
+
+- stop1: 	uks.debuggen.pm.studyright.Stop
+  id: 	stop1
+  motivation: 	66
+  room: 	r1
+  student: 	carli
+
+- r1: 	uks.debuggen.pm.studyright.Room
+  credits: 	17
+  id: 	r1
+  neighbors: 	r2 	r5
+  stops: 	stop1
+  topic: 	math
+
+- r2: 	uks.debuggen.pm.studyright.Room
+  credits: 	20
+  id: 	r2
+  neighbors: 	r1 	r5
+  topic: 	calculus
+
+- r4: 	uks.debuggen.pm.studyright.Room
+  credits: 	0
+  id: 	r4
+  neighbors: 	r5
+  topic: 	exam
+
+- r5: 	uks.debuggen.pm.studyright.Room
+  credits: 	29
+  id: 	r5
+  neighbors: 	r1 	r2 	r4
+  topic: 	modeling
+

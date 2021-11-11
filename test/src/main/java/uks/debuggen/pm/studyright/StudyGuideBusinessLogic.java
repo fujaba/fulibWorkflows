@@ -8,6 +8,7 @@ public class StudyGuideBusinessLogic
 
     private LinkedList<Stop> todo;
     private Student student;
+    private int stopNumber = 2;
 
     public void findRoute(Student student) {
         this.student = student;
@@ -31,9 +32,11 @@ public class StudyGuideBusinessLogic
         }
 
         Stop newStop = new Stop();
+        String id = "stop" + stopNumber++;
         newStop.setRoom(room)
             .setMotivation(newMotivation)
-            .setPrev(previous);
+            .setPrev(previous)
+            .setId(id);
         todo.push(newStop);
 
         if (newMotivation == 0 && room.getTopic().equals("exam")) {
