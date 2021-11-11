@@ -75,6 +75,7 @@ dependencies {
 
 	implementation 'org.fulib:fulibTables:1.4.0'
 	implementation 'org.fulib:fulibTools:1.5.1'
+	implementation 'org.fulib:fulibMockups:0.4.0'
 
 	implementation group: 'org.antlr', name: 'ST4', version: '4.3'
 

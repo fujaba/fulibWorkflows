@@ -31,8 +31,8 @@ public void testStudyRightBoard()"
   id: 	TestStudyRightBoard_testStudyRightBoard
   methodBody: 	"StudyGuideBusinessLogic logic = new StudyGuideBusinessLogic();
 
-Student karli = new Student().setId(\"Karli\");
-karli.setMotivation(83);
+Student carli = new Student().setId(\"carli\");
+carli.setMotivation(83);
 
 Stop stop1 = new Stop().setId(\"stop1\");
 stop1.setMotivation(66);
@@ -53,19 +53,19 @@ r5.setTopic(\"modeling\");
 r5.setCredits(29);
 
 // create links
-karli.withStops(stop1);
+carli.withStops(stop1);
 stop1.setRoom(r1);
 r1.withNeighbors(r2, r5);
 r2.withNeighbors(r1, r5);
 r4.withNeighbors(r5);
 r5.withNeighbors(r1, r2, r4);
 
-FulibTools.objectDiagrams().dumpSVG(\"tmp/StudyRightBoardStart.svg\", karli, stop1, r1, r2, r4, r5);
+FulibTools.objectDiagrams().dumpSVG(\"tmp/StudyRightBoardStart.svg\", carli, stop1, r1, r2, r4, r5);
 
-logic.findRoute(karli);
-assertThat(karli.getRoute()).isEqualTo(\"math -> calculus -> math -> modeling -> exam\");
+logic.findRoute(carli);
+assertThat(carli.getRoute()).isEqualTo(\"math -> calculus -> math -> modeling -> exam\");
 
-FulibTools.objectDiagrams().dumpSVG(\"tmp/StudyRightBoardEnd.svg\", karli, stop1, r1, r2, r4, r5);
+FulibTools.objectDiagrams().dumpSVG(\"tmp/StudyRightBoardEnd.svg\", carli, stop1, r1, r2, r4, r5);
 
 
 System.err.println();

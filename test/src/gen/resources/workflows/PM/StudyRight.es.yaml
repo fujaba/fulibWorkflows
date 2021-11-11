@@ -3,7 +3,7 @@
 
 - service: StudyGuide
 
-- data: Student Karli
+- data: Student carli
   motivation: 83
   stops: [stop1]
   stops.back: student
@@ -34,7 +34,7 @@
   neighbors: [r1, r2, r4]
 
 - command: findRoute
-  student: karli
+  student: carli
 
 - data: Stop stop2
   room: calculus
@@ -42,5 +42,5 @@
   prev: stop1
   prev.back: [next]
 
-- data: Student karli
+- data: Student carli
   route: math -> calculus -> math -> modeling -> exam
