@@ -75,12 +75,10 @@
       "type": "object",
       "properties": {
         "externalSystem": {
-          "type": "string",
-          "properties": {
-            "events": {
-              "type": "string"
-            }
-          }
+          "type": "string"
+        },
+        "events": {
+          "type": "string"
         }
       },
       "required": [
@@ -93,13 +91,10 @@
       "type": "object",
       "properties": {
         "service": {
-          "type": "string",
-          "properties": {
-            "port": {
-              "type": "number"
-            }
-          },
-          "additionalProperties": false
+          "type": "string"
+        },
+        "port": {
+          "type": "number"
         }
       },
       "required": [
@@ -136,12 +131,10 @@
       "type": "object",
       "properties": {
         "policy": {
-          "type": "string",
-          "properties": {
-            "trigger": {
-              "type": "string"
-            }
-          }
+          "type": "string"
+        },
+        "trigger": {
+          "type": "string"
         }
       },
       "required": [
