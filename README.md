@@ -1,11 +1,22 @@
 # fulibWorkflows
-fulibWorkflows provides an analyzer for event modeling and the generation of an example implementation.
+fulibWorkflows provides an analyzer for event modelling and the generation of an example implementation.
 
 ## Installation
 ### Gradle
-`build.gradle`:
+```
+dependencies {
+    implementation 'org.fulib:fulibWorkflows:0.2.0'
+}
+```
 
-WIP
+### Maven
+```
+<dependency>
+  <groupId>org.fulib</groupId>
+  <artifactId>fulibWorkflows</artifactId>
+  <version>0.2.0</version>
+</dependency>
+```
 
 ## Usage
 

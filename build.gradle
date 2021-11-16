@@ -50,6 +50,7 @@ modifyPom {
 		developer {
     	    id = 'Kuenssi'
         	name = 'Maximilian Freiherr von Künßberg'
+            email = 'max.kuenssi@gmail.com'
     	}
 
       }
