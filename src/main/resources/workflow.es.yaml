@@ -1,0 +1,12 @@
+- workflow: Testerino
+
+- event: do something
+
+- page:
+    - name: Testerino
+    - label: This is a test page
+    - input: Username
+    - input: Password
+      fill: 1234
+    - button: Login
+      command: start login
