@@ -1,90 +1,19 @@
 plugins {
-   id 'java-library'
-   id 'org.fulib.fulibGradle' version '0.5.0'
-   id 'antlr'
-   id 'maven-publish'
-   id 'de.clashsoft.gentreesrc-gradle' version '0.5.0'
-   // https://plugins.gradle.org/plugin/com.bmuschko.nexus
-   id 'com.bmuschko.nexus' version '2.3.1'
-   // https://plugins.gradle.org/plugin/io.codearte.nexus-staging
-   id 'io.codearte.nexus-staging' version '0.22.0'
+    id 'java'
 }
 
-
-group = 'org.fulib'
-version = 'git describe --tags'.execute().text[1..-2] // strip v and \n
-description = '''fulibWorkflows allows event modeling in *.es.yaml files and
-to generate scenario implementations'''
-
-modifyPom {
-   project {
-      name = project.name
-      description = project.description
-      url = 'https://github.com/fujaba/fulibWorkflows/'
-      inceptionYear = '2019'
-
-      scm {
-         url = 'https://github.com/fujaba/fulibWorkflows/'
-      }
-
-      licenses {
-         license {
-            name = 'BSD 3-Clause License'
-            url = 'https://opensource.org/licenses/BSD-3-Clause'
-         }
-      }
-
-      developers {
-         developer {
-            id = 'azuendorf'
-            name = 'Albert Zündorf'
-            email = 'zuendorf@uni-kassel.de'
-         }
-
-        developer {
-            id = 'Clashsoft'
-            name = 'Adrian Kunz'
-            email = 'clashsoft@hotmail.com'
-         }
-
-		developer {
-    	    id = 'Kuenssi'
-        	name = 'Maximilian Freiherr von Künßberg'
-            email = 'max.kuenssi@gmail.com'
-    	}
-
-      }
-   }
-}
-
-
-
-sourceCompatibility = 1.11
+group 'org.example'
+version '1.0-SNAPSHOT'
 
 repositories {
-	mavenLocal()
-	mavenCentral()
-	jcenter()
-	maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    mavenCentral()
 }
 
 dependencies {
-	// https://mvnrepository.com/artifact/org.fulib/fulib
-	api group: 'org.fulib', name: 'fulib', version: '1.5.0'
-
-	fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.0'
-
-	implementation 'org.fulib:fulibTables:1.4.0'
-	implementation 'org.fulib:fulibTools:1.5.1'
-	implementation 'org.fulib:fulibMockups:0.4.0'
-
-	implementation group: 'org.antlr', name: 'ST4', version: '4.3'
-
-	testImplementation group: 'junit', name: 'junit', version: '4.13'
-	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
-
-	testImplementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
-	genImplementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
-
+test {
+    useJUnitPlatform()
+}
