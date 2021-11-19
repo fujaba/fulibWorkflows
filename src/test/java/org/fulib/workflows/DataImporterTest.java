@@ -9,6 +9,6 @@ public class DataImporterTest {
     @Test
     public void testDataImporter() {
         DataImporter dataImporter = new DataImporter();
-        dataImporter.importFromFile(Path.of("src/main/resources/workflow.es.yaml"));
+        dataImporter.importFromFile(Path.of("src/gen/resources/workflow.es.yaml"));
     }
 }
