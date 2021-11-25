@@ -6,17 +6,15 @@ public class Palette
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_BARCODE = "barcode";
-   public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_AMOUNT = "amount";
    public static final String PROPERTY_LOCATION = "location";
-   public static final String PROPERTY_CONTENT = "content";
+   public static final String PROPERTY_PRODUCT = "product";
    private String id;
    private String barcode;
-   private String product;
    private int amount;
    private String location;
-   private String content;
    protected PropertyChangeSupport listeners;
+   private WHProduct product;
 
    public String getId()
    {
@@ -51,24 +49,6 @@ public class Palette
       final String oldValue = this.barcode;
       this.barcode = value;
       this.firePropertyChange(PROPERTY_BARCODE, oldValue, value);
-      return this;
-   }
-
-   public String getProduct()
-   {
-      return this.product;
-   }
-
-   public Palette setProduct(String value)
-   {
-      if (Objects.equals(value, this.product))
-      {
-         return this;
-      }
-
-      final String oldValue = this.product;
-      this.product = value;
-      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
       return this;
    }
 
@@ -108,21 +88,30 @@ public class Palette
       return this;
    }
 
-   public String getContent()
+   public WHProduct getProduct()
    {
-      return this.content;
+      return this.product;
    }
 
-   public Palette setContent(String value)
+   public Palette setProduct(WHProduct value)
    {
-      if (Objects.equals(value, this.content))
+      if (this.product == value)
       {
          return this;
       }
 
-      final String oldValue = this.content;
-      this.content = value;
-      this.firePropertyChange(PROPERTY_CONTENT, oldValue, value);
+      final WHProduct oldValue = this.product;
+      if (this.product != null)
+      {
+         this.product = null;
+         oldValue.withoutPalettes(this);
+      }
+      this.product = value;
+      if (value != null)
+      {
+         value.withPalettes(this);
+      }
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
       return this;
    }
 
@@ -151,9 +140,12 @@ public class Palette
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getBarcode());
-      result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getLocation());
-      result.append(' ').append(this.getContent());
       return result.substring(1);
+   }
+
+   public void removeYou()
+   {
+      this.setProduct(null);
    }
 }

@@ -7,12 +7,10 @@ public class PaletteBuilt extends DataEvent
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_AMOUNT = "amount";
    public static final String PROPERTY_LOCATION = "location";
-   public static final String PROPERTY_CONTENT = "content";
    private String barcode;
    private String product;
    private String amount;
    private String location;
-   private String content;
 
    public String getBarcode()
    {
@@ -86,24 +84,6 @@ public class PaletteBuilt extends DataEvent
       return this;
    }
 
-   public String getContent()
-   {
-      return this.content;
-   }
-
-   public PaletteBuilt setContent(String value)
-   {
-      if (Objects.equals(value, this.content))
-      {
-         return this;
-      }
-
-      final String oldValue = this.content;
-      this.content = value;
-      this.firePropertyChange(PROPERTY_CONTENT, oldValue, value);
-      return this;
-   }
-
    @Override
    public String toString()
    {
@@ -112,7 +92,6 @@ public class PaletteBuilt extends DataEvent
       result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getAmount());
       result.append(' ').append(this.getLocation());
-      result.append(' ').append(this.getContent());
       return result.toString();
    }
 }

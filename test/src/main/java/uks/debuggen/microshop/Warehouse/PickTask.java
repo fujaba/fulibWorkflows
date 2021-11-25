@@ -6,21 +6,21 @@ public class PickTask
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_CODE = "code";
-   public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_SHELF = "shelf";
    public static final String PROPERTY_CUSTOMER = "customer";
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_STATE = "state";
    public static final String PROPERTY_FROM = "from";
+   public static final String PROPERTY_PRODUCT = "product";
    private String id;
    private String code;
-   private String product;
    private String shelf;
    private String customer;
    private String address;
    private String state;
    protected PropertyChangeSupport listeners;
    private String from;
+   private WHProduct product;
 
    public String getId()
    {
@@ -55,24 +55,6 @@ public class PickTask
       final String oldValue = this.code;
       this.code = value;
       this.firePropertyChange(PROPERTY_CODE, oldValue, value);
-      return this;
-   }
-
-   public String getProduct()
-   {
-      return this.product;
-   }
-
-   public PickTask setProduct(String value)
-   {
-      if (Objects.equals(value, this.product))
-      {
-         return this;
-      }
-
-      final String oldValue = this.product;
-      this.product = value;
-      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
       return this;
    }
 
@@ -166,6 +148,33 @@ public class PickTask
       return this;
    }
 
+   public WHProduct getProduct()
+   {
+      return this.product;
+   }
+
+   public PickTask setProduct(WHProduct value)
+   {
+      if (this.product == value)
+      {
+         return this;
+      }
+
+      final WHProduct oldValue = this.product;
+      if (this.product != null)
+      {
+         this.product = null;
+         oldValue.withoutPickTasks(this);
+      }
+      this.product = value;
+      if (value != null)
+      {
+         value.withPickTasks(this);
+      }
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -191,12 +200,16 @@ public class PickTask
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getId());
       result.append(' ').append(this.getCode());
-      result.append(' ').append(this.getProduct());
       result.append(' ').append(this.getShelf());
       result.append(' ').append(this.getCustomer());
       result.append(' ').append(this.getAddress());
       result.append(' ').append(this.getState());
       result.append(' ').append(this.getFrom());
       return result.substring(1);
+   }
+
+   public void removeYou()
+   {
+      this.setProduct(null);
    }
 }

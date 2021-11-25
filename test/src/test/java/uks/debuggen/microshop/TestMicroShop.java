@@ -226,7 +226,7 @@ public class TestMicroShop {
 
    @Before
    public void setTimeOut() {
-      Configuration.timeout = Constants.TIME_OUT;
+      Configuration.timeout = Constants.TIME_OUT * 20;
       Configuration.pageLoadTimeout = Configuration.timeout;
       Configuration.browserPosition = "-1300x600"; // Constants.BROWSER_POS;
       Configuration.browserSize="400x500";
@@ -266,9 +266,9 @@ public class TestMicroShop {
       // page 12:03
       open("http://localhost:42001/page/12_03");
       $("#barcode").setValue("b001");
-      $("#product").setValue("red shoes");
+      $("#product").setValue("red_shoes");
       $("#amount").setValue("10");
-      $("#location").setValue("shelf 42");
+      $("#location").setValue("shelf_42");
       $("#ok").click();
       waitForEvent("12:03:01");
 
@@ -279,16 +279,20 @@ public class TestMicroShop {
       }
       modelMap = warehouse.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_03_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/warehouse12_03_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
       // check data note 12:03:02
       PaletteBuilt e12_03_02 = (PaletteBuilt) waitForEvent("12:03:02");
       assertThat(e12_03_02.getBarcode()).isEqualTo("b001");
-      assertThat(e12_03_02.getProduct()).isEqualTo("red shoes");
+      assertThat(e12_03_02.getProduct()).isEqualTo("red_shoes");
       assertThat(e12_03_02.getAmount()).isEqualTo("10");
-      assertThat(e12_03_02.getLocation()).isEqualTo("shelf 42");
+      assertThat(e12_03_02.getLocation()).isEqualTo("shelf_42");
+      // check data note 12:03:03
+      WHProductBuilt e12_03_03 = (WHProductBuilt) waitForEvent("12:03:03");
+      assertThat(e12_03_03.getName()).isEqualTo("red_shoes");
+      assertThat(e12_03_03.getAmount()).isEqualTo("10");
 
       // check MicroShop
       open("http://localhost:42002");
@@ -297,13 +301,13 @@ public class TestMicroShop {
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_03_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/microShop12_03_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
       // check data note 12:04:01
-      ProductBuilt e12_04_01 = (ProductBuilt) waitForEvent("12:04:01");
-      assertThat(e12_04_01.getName()).isEqualTo("red shoes");
+      MSProductBuilt e12_04_01 = (MSProductBuilt) waitForEvent("12:04:01");
+      assertThat(e12_04_01.getName()).isEqualTo("red_shoes");
       assertThat(e12_04_01.getState()).isEqualTo("in stock");
 
       // page 12:05
@@ -312,9 +316,9 @@ public class TestMicroShop {
       // page 12:06
       open("http://localhost:42001/page/12_06");
       $("#barcode").setValue("b002");
-      $("#product").setValue("red shoes");
-      $("#amount").setValue("10");
-      $("#location").setValue("shelf 23");
+      $("#product").setValue("red_shoes");
+      $("#amount").setValue("8");
+      $("#location").setValue("shelf_23");
       $("#ok").click();
       waitForEvent("12:06:01");
 
@@ -325,15 +329,20 @@ public class TestMicroShop {
       }
       modelMap = warehouse.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_06_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/warehouse12_06_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
       // check data note 12:06:02
       PaletteBuilt e12_06_02 = (PaletteBuilt) waitForEvent("12:06:02");
       assertThat(e12_06_02.getBarcode()).isEqualTo("b002");
-      assertThat(e12_06_02.getContent()).isEqualTo("red shoes");
-      assertThat(e12_06_02.getLocation()).isEqualTo("shelf 23");
+      assertThat(e12_06_02.getProduct()).isEqualTo("red_shoes");
+      assertThat(e12_06_02.getAmount()).isEqualTo("8");
+      assertThat(e12_06_02.getLocation()).isEqualTo("shelf_23");
+      // check data note 12:06:03
+      WHProductBuilt e12_06_03 = (WHProductBuilt) waitForEvent("12:06:03");
+      assertThat(e12_06_03.getName()).isEqualTo("red_shoes");
+      assertThat(e12_06_03.getAmount()).isEqualTo("18");
 
       // check MicroShop
       open("http://localhost:42002");
@@ -342,13 +351,13 @@ public class TestMicroShop {
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_06_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/microShop12_06_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
       // check data note 12:07:01
-      ProductBuilt e12_07_01 = (ProductBuilt) waitForEvent("12:07:01");
-      assertThat(e12_07_01.getName()).isEqualTo("red shoes");
+      MSProductBuilt e12_07_01 = (MSProductBuilt) waitForEvent("12:07:01");
+      assertThat(e12_07_01.getName()).isEqualTo("red_shoes");
       assertThat(e12_07_01.getState()).isEqualTo("in stock");
 
       // page 12:08
@@ -357,9 +366,9 @@ public class TestMicroShop {
       // page 12:09
       open("http://localhost:42001/page/12_09");
       $("#barcode").setValue("b003");
-      $("#product").setValue("blue jeans");
-      $("#amount").setValue("8");
-      $("#location").setValue("shelf 1337");
+      $("#product").setValue("blue_jeans");
+      $("#amount").setValue("6");
+      $("#location").setValue("shelf-1337");
       $("#ok").click();
       waitForEvent("12:09:01");
 
@@ -370,16 +379,20 @@ public class TestMicroShop {
       }
       modelMap = warehouse.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_09_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/warehouse12_09_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
       // check data note 12:09:02
       PaletteBuilt e12_09_02 = (PaletteBuilt) waitForEvent("12:09:02");
       assertThat(e12_09_02.getBarcode()).isEqualTo("b003");
-      assertThat(e12_09_02.getProduct()).isEqualTo("blue jeans");
-      assertThat(e12_09_02.getAmount()).isEqualTo("8");
-      assertThat(e12_09_02.getLocation()).isEqualTo("shelf 1337");
+      assertThat(e12_09_02.getProduct()).isEqualTo("blue_jeans");
+      assertThat(e12_09_02.getAmount()).isEqualTo("6");
+      assertThat(e12_09_02.getLocation()).isEqualTo("shelf_1337");
+      // check data note 12:09:03
+      WHProductBuilt e12_09_03 = (WHProductBuilt) waitForEvent("12:09:03");
+      assertThat(e12_09_03.getName()).isEqualTo("blue_jeans");
+      assertThat(e12_09_03.getAmount()).isEqualTo("6");
 
       // check MicroShop
       open("http://localhost:42002");
@@ -388,13 +401,13 @@ public class TestMicroShop {
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_09_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/microShop12_09_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
       // check data note 12:10:01
-      ProductBuilt e12_10_01 = (ProductBuilt) waitForEvent("12:10:01");
-      assertThat(e12_10_01.getName()).isEqualTo("blue jeans");
+      MSProductBuilt e12_10_01 = (MSProductBuilt) waitForEvent("12:10:01");
+      assertThat(e12_10_01.getName()).isEqualTo("blue_jeans");
       assertThat(e12_10_01.getState()).isEqualTo("in stock");
 
       // page 12:11
@@ -405,7 +418,7 @@ public class TestMicroShop {
 
       // page 12:13
       open("http://localhost:42002/page/12_13");
-      $("#product").setValue("red shoes");
+      $("#product").setValue("red_shoes");
       $("#price").setValue("$42");
       $("#ok").click();
       waitForEvent("12:14:42");
@@ -417,13 +430,13 @@ public class TestMicroShop {
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_14_42.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/microShop12_14_42.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
       // check data note 12:14:43
-      ProductBuilt e12_14_43 = (ProductBuilt) waitForEvent("12:14:43");
-      assertThat(e12_14_43.getName()).isEqualTo("red shoes");
+      MSProductBuilt e12_14_43 = (MSProductBuilt) waitForEvent("12:14:43");
+      assertThat(e12_14_43.getName()).isEqualTo("red_shoes");
       assertThat(e12_14_43.getPrice()).isEqualTo("$42");
 
       // page 12:16
@@ -431,7 +444,7 @@ public class TestMicroShop {
 
       // page 12:17
       open("http://localhost:42002/page/12_17");
-      $("#product").setValue("blue jeans");
+      $("#product").setValue("blue_jeans");
       $("#price").setValue("$63");
       $("#ok").click();
       waitForEvent("12:17:01");
@@ -443,13 +456,13 @@ public class TestMicroShop {
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_17_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/microShop12_17_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
       // check data note 12:17:02
-      ProductBuilt e12_17_02 = (ProductBuilt) waitForEvent("12:17:02");
-      assertThat(e12_17_02.getName()).isEqualTo("blue jeans");
+      MSProductBuilt e12_17_02 = (MSProductBuilt) waitForEvent("12:17:02");
+      assertThat(e12_17_02.getName()).isEqualTo("blue_jeans");
       assertThat(e12_17_02.getPrice()).isEqualTo("$63");
 
       // page 12:19
@@ -460,8 +473,8 @@ public class TestMicroShop {
 
       // page 12:21
       open("http://localhost:42002/page/12_21");
-      $("#product").setValue("red shoes");
-      $("#customer").setValue("Carli Customer");
+      $("#product").setValue("red_shoes");
+      $("#customer").setValue("Carli_Customer");
       $("#address").setValue("Wonderland 1");
       $("#buy").click();
       waitForEvent("12:21:01");
@@ -473,7 +486,7 @@ public class TestMicroShop {
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_21_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/microShop12_21_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
@@ -489,16 +502,16 @@ public class TestMicroShop {
       }
       modelMap = warehouse.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_21_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/warehouse12_21_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
       // check data note 12:22:01
       PickTaskBuilt e12_22_01 = (PickTaskBuilt) waitForEvent("12:22:01");
       assertThat(e12_22_01.getCode()).isEqualTo("pt_o0925_1");
-      assertThat(e12_22_01.getProduct()).isEqualTo("red shoes");
+      assertThat(e12_22_01.getProduct()).isEqualTo("red_shoes");
       assertThat(e12_22_01.getShelf()).isEqualTo("[shelf 42, shelf 23]");
-      assertThat(e12_22_01.getCustomer()).isEqualTo("Carli Customer");
+      assertThat(e12_22_01.getCustomer()).isEqualTo("Carli_Customer");
       assertThat(e12_22_01.getAddress()).isEqualTo("Wonderland 1");
       assertThat(e12_22_01.getState()).isEqualTo("picking");
 
@@ -522,7 +535,7 @@ public class TestMicroShop {
       }
       modelMap = warehouse.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/warehouse12_26_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/warehouse12_26_01.svg", modelMap.values());
       }
 
       open("http://localhost:42001");
@@ -539,7 +552,7 @@ public class TestMicroShop {
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_26_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/microShop12_26_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");
@@ -567,7 +580,7 @@ public class TestMicroShop {
       }
       modelMap = microShop.getBuilder().getModel().getModelMap();
       if (modelMap.values().size() > 0) {
-         org.fulib.FulibTools.objectDiagrams().dumpSVG("tmp/microShop12_30_01.svg", modelMap.values());
+         org.fulib.FulibTools.objectDiagrams().dumpSVG("../event-models/ShopWithGuiBoard/microShop12_30_01.svg", modelMap.values());
       }
 
       open("http://localhost:42002");

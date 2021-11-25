@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	warehouseModel 	warehouseBusinessLogic 	warehouseBuilder 	warehouseService 	palette 	pickTask
+  classes: 	warehouseModel 	warehouseBusinessLogic 	warehouseBuilder 	warehouseService 	palette 	wHProduct 	pickTask
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	warehouseModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	warehouseModel_getOrCreatePalette 	warehouseModel_getOrCreatePickTask
+  methods: 	warehouseModel_getOrCreatePalette 	warehouseModel_getOrCreateWHProduct 	warehouseModel_getOrCreatePickTask
   model: 	c
   modified: 	false
   name: 	WarehouseModel
@@ -21,7 +21,7 @@
   attributes: 	warehouseBusinessLogic_model 	warehouseBusinessLogic_handlerMap
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;"
-  methods: 	warehouseBusinessLogic_handleStoreCommand 	warehouseBusinessLogic_handleDemoStoreCommand 	warehouseBusinessLogic_handleProductOrderedEvent 	warehouseBusinessLogic_handleDemoProductOrderedEvent 	warehouseBusinessLogic_handleCommand 	warehouseBusinessLogic_handleDemoCommand 	warehouseBusinessLogic_initEventHandlerMap 	warehouseBusinessLogic_ignoreEvent 	warehouseBusinessLogic_getHandler
+  methods: 	warehouseBusinessLogic_handleStoreProductCommand 	warehouseBusinessLogic_handleDemoStoreProductCommand 	warehouseBusinessLogic_handleProductOrderedEvent 	warehouseBusinessLogic_handleDemoProductOrderedEvent 	warehouseBusinessLogic_handleCommand 	warehouseBusinessLogic_handleDemoCommand 	warehouseBusinessLogic_initEventHandlerMap 	warehouseBusinessLogic_ignoreEvent 	warehouseBusinessLogic_getHandler
   model: 	c
   modified: 	false
   name: 	WarehouseBusinessLogic
@@ -32,7 +32,7 @@
   attributes: 	warehouseBuilder_model 	warehouseBuilder_eventStore 	warehouseBuilder_loaderMap 	warehouseBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;" 	"import java.util.function.Function;"
-  methods: 	warehouseBuilder_outdated 	warehouseBuilder_storePaletteBuilt 	warehouseBuilder_loadPaletteBuilt 	warehouseBuilder_storePickTaskBuilt 	warehouseBuilder_loadPickTaskBuilt 	warehouseBuilder_load 	warehouseBuilder_initLoaderMap 	warehouseBuilder_getObjectId 	warehouseBuilder_addToGroup 	warehouseBuilder_stripBrackets
+  methods: 	warehouseBuilder_outdated 	warehouseBuilder_storePaletteBuilt 	warehouseBuilder_loadPaletteBuilt 	warehouseBuilder_storeWHProductBuilt 	warehouseBuilder_loadWHProductBuilt 	warehouseBuilder_storePickTaskBuilt 	warehouseBuilder_loadPickTaskBuilt 	warehouseBuilder_load 	warehouseBuilder_initLoaderMap 	warehouseBuilder_getObjectId 	warehouseBuilder_addToGroup 	warehouseBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	WarehouseBuilder
@@ -51,18 +51,28 @@
   roles: 	warehouseService_businessLogic 	warehouseService_builder
 
 - palette: 	org.fulib.classmodel.Clazz
-  attributes: 	palette_id 	palette_barcode 	palette_product 	palette_amount 	palette_location 	palette_content
+  attributes: 	palette_id 	palette_barcode 	palette_amount 	palette_location
   model: 	c
   modified: 	false
   name: 	Palette
   propertyStyle: 	Bean
+  roles: 	palette_product
+
+- wHProduct: 	org.fulib.classmodel.Clazz
+  attributes: 	wHProduct_id 	wHProduct_name 	wHProduct_amount
+  model: 	c
+  modified: 	false
+  name: 	WHProduct
+  propertyStyle: 	Bean
+  roles: 	wHProduct_palettes 	wHProduct_pickTasks
 
 - pickTask: 	org.fulib.classmodel.Clazz
-  attributes: 	pickTask_id 	pickTask_code 	pickTask_product 	pickTask_shelf 	pickTask_customer 	pickTask_address 	pickTask_state 	pickTask_from
+  attributes: 	pickTask_id 	pickTask_code 	pickTask_shelf 	pickTask_customer 	pickTask_address 	pickTask_state 	pickTask_from
   model: 	c
   modified: 	false
   name: 	PickTask
   propertyStyle: 	Bean
+  roles: 	pickTask_product
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -95,6 +105,21 @@ return (Palette) modelMap.computeIfAbsent(id, k -> new Palette().setId(k));
   paramsString: 	"String id"
   returnType: 	Palette
   signature: 	"class/WarehouseModel/method/getOrCreatePalette(String)"
+
+- warehouseModel_getOrCreateWHProduct: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseModel
+  declaration: 	"public WHProduct getOrCreateWHProduct(String id)"
+  id: 	WarehouseModel_getOrCreateWHProduct
+  methodBody: 	"if (id == null) return null;
+return (WHProduct) modelMap.computeIfAbsent(id, k -> new WHProduct().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateWHProduct
+  paramsString: 	"String id"
+  returnType: 	WHProduct
+  signature: 	"class/WarehouseModel/method/getOrCreateWHProduct(String)"
 
 - warehouseModel_getOrCreatePickTask: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -129,44 +154,51 @@ return (PickTask) modelMap.computeIfAbsent(id, k -> new PickTask().setId(k));
   type: 	"LinkedHashMap<Class, Consumer<Event>>"
   typeSignature: 	"LinkedHashMap<Class,Consumer<Event>>"
 
-- warehouseBusinessLogic_handleStoreCommand: 	org.fulib.classmodel.FMethod
+- warehouseBusinessLogic_handleStoreProductCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	warehouseBusinessLogic
-  declaration: 	"private void handleStoreCommand(Event e)"
-  id: 	WarehouseBusinessLogic_handleStoreCommand
+  declaration: 	"private void handleStoreProductCommand(Event e)"
+  id: 	WarehouseBusinessLogic_handleStoreProductCommand
   methodBody: 	"// to protect manuel changes to this method insert a 'no' in front of fulib in the next line
 // fulib
-StoreCommand event = (StoreCommand) e;
-handleDemoStoreCommand(event);
+StoreProductCommand event = (StoreProductCommand) e;
+handleDemoStoreProductCommand(event);
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleStoreCommand
+  name: 	handleStoreProductCommand
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/WarehouseBusinessLogic/method/handleStoreCommand(Event)"
+  signature: 	"class/WarehouseBusinessLogic/method/handleStoreProductCommand(Event)"
 
-- warehouseBusinessLogic_handleDemoStoreCommand: 	org.fulib.classmodel.FMethod
+- warehouseBusinessLogic_handleDemoStoreProductCommand: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	warehouseBusinessLogic
-  declaration: 	"private void handleDemoStoreCommand(StoreCommand event)"
-  id: 	WarehouseBusinessLogic_handleDemoStoreCommand
+  declaration: 	"private void handleDemoStoreProductCommand(StoreProductCommand event)"
+  id: 	WarehouseBusinessLogic_handleDemoStoreProductCommand
   methodBody: 	"if (event.getId().equals(\"12:03:01\")) {
    PaletteBuilt b001Event = new PaletteBuilt();
    b001Event.setId(\"12:03:02\");
    b001Event.setBlockId(\"b001\");
    b001Event.setBarcode(\"b001\");
-   b001Event.setProduct(\"red shoes\");
+   b001Event.setProduct(\"red_shoes\");
    b001Event.setAmount(\"10\");
-   b001Event.setLocation(\"shelf 42\");
+   b001Event.setLocation(\"shelf_42\");
    service.apply(b001Event);
+
+   WHProductBuilt red_shoesEvent = new WHProductBuilt();
+   red_shoesEvent.setId(\"12:03:03\");
+   red_shoesEvent.setBlockId(\"red_shoes\");
+   red_shoesEvent.setName(\"red_shoes\");
+   red_shoesEvent.setAmount(\"10\");
+   service.apply(red_shoesEvent);
 
 
    ProductStoredEvent e1204 = new ProductStoredEvent();
 
    e1204.setId(\"12:04\");
    e1204.setBarcode(\"b001\");
-   e1204.setProduct(\"red shoes\");
+   e1204.setProduct(\"red_shoes\");
    service.apply(e1204);
 }
 if (event.getId().equals(\"12:06:01\")) {
@@ -174,16 +206,24 @@ if (event.getId().equals(\"12:06:01\")) {
    b002Event.setId(\"12:06:02\");
    b002Event.setBlockId(\"b002\");
    b002Event.setBarcode(\"b002\");
-   b002Event.setContent(\"red shoes\");
-   b002Event.setLocation(\"shelf 23\");
+   b002Event.setProduct(\"red_shoes\");
+   b002Event.setAmount(\"8\");
+   b002Event.setLocation(\"shelf_23\");
    service.apply(b002Event);
+
+   WHProductBuilt red_shoesEvent = new WHProductBuilt();
+   red_shoesEvent.setId(\"12:06:03\");
+   red_shoesEvent.setBlockId(\"red_shoes\");
+   red_shoesEvent.setName(\"red_shoes\");
+   red_shoesEvent.setAmount(\"18\");
+   service.apply(red_shoesEvent);
 
 
    ProductStoredEvent e1207 = new ProductStoredEvent();
 
    e1207.setId(\"12:07\");
    e1207.setBarcode(\"b002\");
-   e1207.setProduct(\"red shoes\");
+   e1207.setProduct(\"red_shoes\");
    service.apply(e1207);
 }
 if (event.getId().equals(\"12:09:01\")) {
@@ -191,26 +231,33 @@ if (event.getId().equals(\"12:09:01\")) {
    b003Event.setId(\"12:09:02\");
    b003Event.setBlockId(\"b003\");
    b003Event.setBarcode(\"b003\");
-   b003Event.setProduct(\"blue jeans\");
-   b003Event.setAmount(\"8\");
-   b003Event.setLocation(\"shelf 1337\");
+   b003Event.setProduct(\"blue_jeans\");
+   b003Event.setAmount(\"6\");
+   b003Event.setLocation(\"shelf_1337\");
    service.apply(b003Event);
+
+   WHProductBuilt blue_jeansEvent = new WHProductBuilt();
+   blue_jeansEvent.setId(\"12:09:03\");
+   blue_jeansEvent.setBlockId(\"blue_jeans\");
+   blue_jeansEvent.setName(\"blue_jeans\");
+   blue_jeansEvent.setAmount(\"6\");
+   service.apply(blue_jeansEvent);
 
 
    ProductStoredEvent e1210 = new ProductStoredEvent();
 
    e1210.setId(\"12:10\");
    e1210.setBarcode(\"b003\");
-   e1210.setProduct(\"blue jeans\");
+   e1210.setProduct(\"blue_jeans\");
    service.apply(e1210);
 }
 "
   modified: 	false
   modifiers: 	private
-  name: 	handleDemoStoreCommand
-  paramsString: 	"StoreCommand event"
+  name: 	handleDemoStoreProductCommand
+  paramsString: 	"StoreProductCommand event"
   returnType: 	void
-  signature: 	"class/WarehouseBusinessLogic/method/handleDemoStoreCommand(StoreCommand)"
+  signature: 	"class/WarehouseBusinessLogic/method/handleDemoStoreProductCommand(StoreProductCommand)"
 
 - warehouseBusinessLogic_handleProductOrderedEvent: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -239,9 +286,9 @@ handleDemoProductOrderedEvent(event);
    pt_o0925_1Event.setId(\"12:22:01\");
    pt_o0925_1Event.setBlockId(\"pt_o0925_1\");
    pt_o0925_1Event.setCode(\"pt_o0925_1\");
-   pt_o0925_1Event.setProduct(\"red shoes\");
+   pt_o0925_1Event.setProduct(\"red_shoes\");
    pt_o0925_1Event.setShelf(\"[shelf 42, shelf 23]\");
-   pt_o0925_1Event.setCustomer(\"Carli Customer\");
+   pt_o0925_1Event.setCustomer(\"Carli_Customer\");
    pt_o0925_1Event.setAddress(\"Wonderland 1\");
    pt_o0925_1Event.setState(\"picking\");
    service.apply(pt_o0925_1Event);
@@ -316,8 +363,9 @@ handleDemoCommand(event);
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
    handlerMap.put(PaletteBuilt.class, builder::storePaletteBuilt);
+   handlerMap.put(WHProductBuilt.class, builder::storeWHProductBuilt);
    handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
-   handlerMap.put(StoreCommand.class, this::handleStoreCommand);
+   handlerMap.put(StoreProductCommand.class, this::handleStoreProductCommand);
    handlerMap.put(ProductOrderedEvent.class, this::handleProductOrderedEvent);
    handlerMap.put(Command.class, this::handleCommand);
 }
@@ -468,10 +516,9 @@ if (outdated(event)) {
   methodBody: 	"PaletteBuilt event = (PaletteBuilt) e;
 Palette object = model.getOrCreatePalette(event.getBlockId());
 object.setBarcode(event.getBarcode());
-object.setProduct(event.getProduct());
+object.setProduct(model.getOrCreateWHProduct(event.getProduct()));
 object.setAmount(event.getAmount() == null ? 0 : Integer.parseInt(event.getAmount()));
 object.setLocation(event.getLocation());
-object.setContent(event.getContent());
 return object;
 "
   modified: 	false
@@ -480,6 +527,43 @@ return object;
   paramsString: 	"Event e"
   returnType: 	Palette
   signature: 	"class/WarehouseBuilder/method/loadPaletteBuilt(Event)"
+
+- warehouseBuilder_storeWHProductBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseBuilder
+  declaration: 	"public void storeWHProductBuilt(Event e)"
+  id: 	WarehouseBuilder_storeWHProductBuilt
+  methodBody: 	"WHProductBuilt event = (WHProductBuilt) e;
+if (outdated(event)) {
+   return;
+}
+// please insert a no before fulib in the next line and insert addToGroup commands as necessary
+// fulib
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	storeWHProductBuilt
+  paramsString: 	"Event e"
+  returnType: 	void
+  signature: 	"class/WarehouseBuilder/method/storeWHProductBuilt(Event)"
+
+- warehouseBuilder_loadWHProductBuilt: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	warehouseBuilder
+  declaration: 	"public WHProduct loadWHProductBuilt(Event e)"
+  id: 	WarehouseBuilder_loadWHProductBuilt
+  methodBody: 	"WHProductBuilt event = (WHProductBuilt) e;
+WHProduct object = model.getOrCreateWHProduct(event.getBlockId());
+object.setName(event.getName());
+object.setAmount(event.getAmount() == null ? 0 : Integer.parseInt(event.getAmount()));
+return object;
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	loadWHProductBuilt
+  paramsString: 	"Event e"
+  returnType: 	WHProduct
+  signature: 	"class/WarehouseBuilder/method/loadWHProductBuilt(Event)"
 
 - warehouseBuilder_storePickTaskBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -508,7 +592,7 @@ if (outdated(event)) {
   methodBody: 	"PickTaskBuilt event = (PickTaskBuilt) e;
 PickTask object = model.getOrCreatePickTask(event.getBlockId());
 object.setCode(event.getCode());
-object.setProduct(event.getProduct());
+object.setProduct(model.getOrCreateWHProduct(event.getProduct()));
 object.setShelf(event.getShelf());
 object.setCustomer(event.getCustomer());
 object.setAddress(event.getAddress());
@@ -559,6 +643,7 @@ return object;
   methodBody: 	"if (loaderMap == null) {
    loaderMap = new LinkedHashMap<>();
    loaderMap.put(PaletteBuilt.class, this::loadPaletteBuilt);
+   loaderMap.put(WHProductBuilt.class, this::loadWHProductBuilt);
    loaderMap.put(PickTaskBuilt.class, this::loadPickTaskBuilt);
 }
 "
@@ -871,10 +956,10 @@ return getDemoPage(request, response);
 String id = request.params(\"id\");
 String event = request.queryParams(\"event\");
 
-if (\"store product\".equals(event)) {
+if (\"store product 01\".equals(event)) {
 
-   // create StoreCommand: store product
-   StoreCommand e120301 = new StoreCommand();
+   // create StoreProductCommand: store product 01
+   StoreProductCommand e120301 = new StoreProductCommand();
    e120301.setId(\"12:03:01\");
    e120301.setBarcode(request.queryParams(\"barcode\"));
    e120301.setProduct(request.queryParams(\"product\"));
@@ -883,10 +968,10 @@ if (\"store product\".equals(event)) {
    apply(e120301);
 }
 
-if (\"store product\".equals(event)) {
+if (\"store product 02\".equals(event)) {
 
-   // create StoreCommand: store product
-   StoreCommand e120601 = new StoreCommand();
+   // create StoreProductCommand: store product 02
+   StoreProductCommand e120601 = new StoreProductCommand();
    e120601.setId(\"12:06:01\");
    e120601.setBarcode(request.queryParams(\"barcode\"));
    e120601.setProduct(request.queryParams(\"product\"));
@@ -895,10 +980,10 @@ if (\"store product\".equals(event)) {
    apply(e120601);
 }
 
-if (\"store product\".equals(event)) {
+if (\"store product 03\".equals(event)) {
 
-   // create StoreCommand: store product
-   StoreCommand e120901 = new StoreCommand();
+   // create StoreProductCommand: store product 03
+   StoreProductCommand e120901 = new StoreProductCommand();
    e120901.setId(\"12:09:01\");
    e120901.setBarcode(request.queryParams(\"barcode\"));
    e120901.setProduct(request.queryParams(\"product\"));
@@ -959,7 +1044,7 @@ if (id.equals(\"12_03\")) {
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
    html.append(\"   <p><input id=\\"amount\\" name=\\"amount\\" placeholder=\\"amount?\\"></p>\n\");
    html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product 01\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -971,7 +1056,7 @@ if (id.equals(\"12_05\")) {
    // Warehouse store tasks 12:05
    html.append(\"   <p>Warehouse palettes</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
-   html.append(\"   <p>b001, 10 red shoes, shelf 42</p>\n\");
+   html.append(\"   <p>b001, 10 red_shoes, shelf_42</p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -985,7 +1070,7 @@ if (id.equals(\"12_06\")) {
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
    html.append(\"   <p><input id=\\"amount\\" name=\\"amount\\" placeholder=\\"amount?\\"></p>\n\");
    html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product 02\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -997,8 +1082,8 @@ if (id.equals(\"12_08\")) {
    // Warehouse overview 12:08
    html.append(\"   <p>Warehouse palettes</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
-   html.append(\"   <p>b002, red shoes, shelf 23</p>\n\");
-   html.append(\"   <p>b001, red shoes, shelf 42</p>\n\");
+   html.append(\"   <p>b002, red_shoes, shelf_23</p>\n\");
+   html.append(\"   <p>b001, red_shoes, shelf_42</p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -1012,7 +1097,7 @@ if (id.equals(\"12_09\")) {
    html.append(\"   <p><input id=\\"product\\" name=\\"product\\" placeholder=\\"product?\\"></p>\n\");
    html.append(\"   <p><input id=\\"amount\\" name=\\"amount\\" placeholder=\\"amount?\\"></p>\n\");
    html.append(\"   <p><input id=\\"location\\" name=\\"location\\" placeholder=\\"location?\\"></p>\n\");
-   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product\\"></p>\n\");
+   html.append(\"   <p><input id=\\"event\\" name=\\"event\\" type=\\"hidden\\" value=\\"store product 03\\"></p>\n\");
    html.append(\"   <p><input id=\\"ok\\" name=\\"button\\" type=\\"submit\\" value=\\"ok\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -1024,9 +1109,9 @@ if (id.equals(\"12_11\")) {
    // Warehouse overview 12:11
    html.append(\"   <p>Warehouse palettes</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
-   html.append(\"   <p>b003, blue jeans, shelf 1337</p>\n\");
-   html.append(\"   <p>b002, red shoes, shelf 23</p>\n\");
-   html.append(\"   <p>b001, red shoes, shelf 42</p>\n\");
+   html.append(\"   <p>b003, blue_jeans, shelf_1337</p>\n\");
+   html.append(\"   <p>b002, red_shoes, shelf_23</p>\n\");
+   html.append(\"   <p>b001, red_shoes, shelf_42</p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -1036,7 +1121,7 @@ if (id.equals(\"12_25\")) {
    html.append(\"<form action=\\"/page/12_26\\" method=\\"get\\">\n\");
    // Warehouse pick tasks 12:25
    html.append(\"   <p>Pick tasks overview</p>\n\");
-   html.append(\"   <p><input id=\\"pt_o0925_1, red shoes, shelf 42, shelf 23\\" name=\\"button\\" type=\\"submit\\" value=\\"pt_o0925_1, red shoes, shelf 42, shelf 23\\"></p>\n\");
+   html.append(\"   <p><input id=\\"pt_o0925_1, red_shoes, shelf 42, shelf 23\\" name=\\"button\\" type=\\"submit\\" value=\\"pt_o0925_1, red_shoes, shelf 42, shelf 23\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -1069,7 +1154,7 @@ if (id.equals(\"12_29\")) {
    html.append(\"<form action=\\"/page/12_30\\" method=\\"get\\">\n\");
    // Warehouse delivery tasks 12:29
    html.append(\"   <p>Delivery tasks overview</p>\n\");
-   html.append(\"   <p><input id=\\"red shoes, Wonderland 1\\" name=\\"button\\" type=\\"submit\\" value=\\"red shoes, Wonderland 1\\"></p>\n\");
+   html.append(\"   <p><input id=\\"red_shoes, Wonderland 1\\" name=\\"button\\" type=\\"submit\\" value=\\"red_shoes, Wonderland 1\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -1200,15 +1285,6 @@ catch (UnirestException e) {
   type: 	String
   typeSignature: 	String
 
-- palette_product: 	org.fulib.classmodel.Attribute
-  clazz: 	palette
-  id: 	Palette_product
-  modified: 	false
-  name: 	product
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
 - palette_amount: 	org.fulib.classmodel.Attribute
   clazz: 	palette
   id: 	Palette_amount
@@ -1227,14 +1303,66 @@ catch (UnirestException e) {
   type: 	String
   typeSignature: 	String
 
-- palette_content: 	org.fulib.classmodel.Attribute
+- palette_product: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
   clazz: 	palette
-  id: 	Palette_content
+  id: 	Palette_product
   modified: 	false
-  name: 	content
+  name: 	product
+  other: 	wHProduct_palettes
+  propertyStyle: 	Bean
+
+- wHProduct_id: 	org.fulib.classmodel.Attribute
+  clazz: 	wHProduct
+  id: 	WHProduct_id
+  modified: 	false
+  name: 	id
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- wHProduct_name: 	org.fulib.classmodel.Attribute
+  clazz: 	wHProduct
+  id: 	WHProduct_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- wHProduct_amount: 	org.fulib.classmodel.Attribute
+  clazz: 	wHProduct
+  id: 	WHProduct_amount
+  modified: 	false
+  name: 	amount
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- wHProduct_palettes: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	wHProduct
+  collectionType: 	c1
+  id: 	WHProduct_palettes
+  modified: 	false
+  name: 	palettes
+  other: 	palette_product
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- wHProduct_pickTasks: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	wHProduct
+  collectionType: 	c1
+  id: 	WHProduct_pickTasks
+  modified: 	false
+  name: 	pickTasks
+  other: 	pickTask_product
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
 
 - pickTask_id: 	org.fulib.classmodel.Attribute
   clazz: 	pickTask
@@ -1250,15 +1378,6 @@ catch (UnirestException e) {
   id: 	PickTask_code
   modified: 	false
   name: 	code
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- pickTask_product: 	org.fulib.classmodel.Attribute
-  clazz: 	pickTask
-  id: 	PickTask_product
-  modified: 	false
-  name: 	product
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -1307,4 +1426,14 @@ catch (UnirestException e) {
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- pickTask_product: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	pickTask
+  id: 	PickTask_product
+  modified: 	false
+  name: 	product
+  other: 	wHProduct_pickTasks
+  propertyStyle: 	Bean
 

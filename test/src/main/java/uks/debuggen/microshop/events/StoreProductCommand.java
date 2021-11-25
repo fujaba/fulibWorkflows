@@ -1,23 +1,23 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class StoreCommand extends Command
+public class StoreProductCommand extends Command
 {
    public static final String PROPERTY_BARCODE = "barcode";
-   public static final String PROPERTY_LOCATION = "location";
    public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_AMOUNT = "amount";
+   public static final String PROPERTY_LOCATION = "location";
    private String barcode;
-   private String location;
    private String product;
    private String amount;
+   private String location;
 
    public String getBarcode()
    {
       return this.barcode;
    }
 
-   public StoreCommand setBarcode(String value)
+   public StoreProductCommand setBarcode(String value)
    {
       if (Objects.equals(value, this.barcode))
       {
@@ -30,30 +30,12 @@ public class StoreCommand extends Command
       return this;
    }
 
-   public String getLocation()
-   {
-      return this.location;
-   }
-
-   public StoreCommand setLocation(String value)
-   {
-      if (Objects.equals(value, this.location))
-      {
-         return this;
-      }
-
-      final String oldValue = this.location;
-      this.location = value;
-      this.firePropertyChange(PROPERTY_LOCATION, oldValue, value);
-      return this;
-   }
-
    public String getProduct()
    {
       return this.product;
    }
 
-   public StoreCommand setProduct(String value)
+   public StoreProductCommand setProduct(String value)
    {
       if (Objects.equals(value, this.product))
       {
@@ -71,7 +53,7 @@ public class StoreCommand extends Command
       return this.amount;
    }
 
-   public StoreCommand setAmount(String value)
+   public StoreProductCommand setAmount(String value)
    {
       if (Objects.equals(value, this.amount))
       {
@@ -81,6 +63,24 @@ public class StoreCommand extends Command
       final String oldValue = this.amount;
       this.amount = value;
       this.firePropertyChange(PROPERTY_AMOUNT, oldValue, value);
+      return this;
+   }
+
+   public String getLocation()
+   {
+      return this.location;
+   }
+
+   public StoreProductCommand setLocation(String value)
+   {
+      if (Objects.equals(value, this.location))
+      {
+         return this;
+      }
+
+      final String oldValue = this.location;
+      this.location = value;
+      this.firePropertyChange(PROPERTY_LOCATION, oldValue, value);
       return this;
    }
 

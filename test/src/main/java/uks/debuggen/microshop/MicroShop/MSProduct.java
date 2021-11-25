@@ -1,31 +1,31 @@
 package uks.debuggen.microshop.MicroShop;
-import java.util.Objects;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Collections;
 import java.util.Collection;
+import java.beans.PropertyChangeSupport;
 
-public class Product
+public class MSProduct
 {
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_NAME = "name";
+   public static final String PROPERTY_STATE = "state";
    public static final String PROPERTY_PRICE = "price";
    public static final String PROPERTY_ORDERS = "orders";
-   public static final String PROPERTY_STATE = "state";
    private String id;
    private String name;
-   private String price;
-   protected PropertyChangeSupport listeners;
-   private List<Order> orders;
    private String state;
+   private String price;
+   private List<Order> orders;
+   protected PropertyChangeSupport listeners;
 
    public String getId()
    {
       return this.id;
    }
 
-   public Product setId(String value)
+   public MSProduct setId(String value)
    {
       if (Objects.equals(value, this.id))
       {
@@ -43,7 +43,7 @@ public class Product
       return this.name;
    }
 
-   public Product setName(String value)
+   public MSProduct setName(String value)
    {
       if (Objects.equals(value, this.name))
       {
@@ -56,12 +56,30 @@ public class Product
       return this;
    }
 
+   public String getState()
+   {
+      return this.state;
+   }
+
+   public MSProduct setState(String value)
+   {
+      if (Objects.equals(value, this.state))
+      {
+         return this;
+      }
+
+      final String oldValue = this.state;
+      this.state = value;
+      this.firePropertyChange(PROPERTY_STATE, oldValue, value);
+      return this;
+   }
+
    public String getPrice()
    {
       return this.price;
    }
 
-   public Product setPrice(String value)
+   public MSProduct setPrice(String value)
    {
       if (Objects.equals(value, this.price))
       {
@@ -79,7 +97,7 @@ public class Product
       return this.orders != null ? Collections.unmodifiableList(this.orders) : Collections.emptyList();
    }
 
-   public Product withOrders(Order value)
+   public MSProduct withOrders(Order value)
    {
       if (this.orders == null)
       {
@@ -94,7 +112,7 @@ public class Product
       return this;
    }
 
-   public Product withOrders(Order... value)
+   public MSProduct withOrders(Order... value)
    {
       for (final Order item : value)
       {
@@ -103,7 +121,7 @@ public class Product
       return this;
    }
 
-   public Product withOrders(Collection<? extends Order> value)
+   public MSProduct withOrders(Collection<? extends Order> value)
    {
       for (final Order item : value)
       {
@@ -112,7 +130,7 @@ public class Product
       return this;
    }
 
-   public Product withoutOrders(Order value)
+   public MSProduct withoutOrders(Order value)
    {
       if (this.orders != null && this.orders.remove(value))
       {
@@ -122,7 +140,7 @@ public class Product
       return this;
    }
 
-   public Product withoutOrders(Order... value)
+   public MSProduct withoutOrders(Order... value)
    {
       for (final Order item : value)
       {
@@ -131,30 +149,12 @@ public class Product
       return this;
    }
 
-   public Product withoutOrders(Collection<? extends Order> value)
+   public MSProduct withoutOrders(Collection<? extends Order> value)
    {
       for (final Order item : value)
       {
          this.withoutOrders(item);
       }
-      return this;
-   }
-
-   public String getState()
-   {
-      return this.state;
-   }
-
-   public Product setState(String value)
-   {
-      if (Objects.equals(value, this.state))
-      {
-         return this;
-      }
-
-      final String oldValue = this.state;
-      this.state = value;
-      this.firePropertyChange(PROPERTY_STATE, oldValue, value);
       return this;
    }
 

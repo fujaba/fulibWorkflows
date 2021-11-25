@@ -8,15 +8,15 @@ public class Order
    public static final String PROPERTY_CODE = "code";
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_STATE = "state";
-   public static final String PROPERTY_PRODUCT = "product";
    public static final String PROPERTY_CUSTOMER = "customer";
+   public static final String PROPERTY_PRODUCT = "product";
    private String id;
    private String code;
    private String address;
    private String state;
    protected PropertyChangeSupport listeners;
-   private Product product;
    private Customer customer;
+   private MSProduct product;
 
    public String getId()
    {
@@ -90,33 +90,6 @@ public class Order
       return this;
    }
 
-   public Product getProduct()
-   {
-      return this.product;
-   }
-
-   public Order setProduct(Product value)
-   {
-      if (this.product == value)
-      {
-         return this;
-      }
-
-      final Product oldValue = this.product;
-      if (this.product != null)
-      {
-         this.product = null;
-         oldValue.withoutOrders(this);
-      }
-      this.product = value;
-      if (value != null)
-      {
-         value.withOrders(this);
-      }
-      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
-      return this;
-   }
-
    public Customer getCustomer()
    {
       return this.customer;
@@ -141,6 +114,33 @@ public class Order
          value.withOrders(this);
       }
       this.firePropertyChange(PROPERTY_CUSTOMER, oldValue, value);
+      return this;
+   }
+
+   public MSProduct getProduct()
+   {
+      return this.product;
+   }
+
+   public Order setProduct(MSProduct value)
+   {
+      if (this.product == value)
+      {
+         return this;
+      }
+
+      final MSProduct oldValue = this.product;
+      if (this.product != null)
+      {
+         this.product = null;
+         oldValue.withoutOrders(this);
+      }
+      this.product = value;
+      if (value != null)
+      {
+         value.withOrders(this);
+      }
+      this.firePropertyChange(PROPERTY_PRODUCT, oldValue, value);
       return this;
    }
 

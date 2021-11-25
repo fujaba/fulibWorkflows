@@ -339,7 +339,7 @@ public class MicroShopService
          // MicroShop offers 12:16
          html.append("   <p>Offers overview</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
-         html.append("   <p>red shoes, $42</p>\n");
+         html.append("   <p>red_shoes, $42</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
@@ -363,8 +363,8 @@ public class MicroShopService
          // MicroShop offers 12:19
          html.append("   <p>Offers overview</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
-         html.append("   <p>red shoes, $42</p>\n");
-         html.append("   <p>blue jeans, $63</p>\n");
+         html.append("   <p>red_shoes, $42</p>\n");
+         html.append("   <p>blue_jeans, $63</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
@@ -375,8 +375,8 @@ public class MicroShopService
          // MicroShop offers 12:20
          html.append("   <p>Welcome to our micro shop</p>\n");
          html.append("   <p>We have</p>\n");
-         html.append("   <p>red shoes for $42</p>\n");
-         html.append("   <p>blue jeans for $63</p>\n");
+         html.append("   <p>red_shoes for $42</p>\n");
+         html.append("   <p>blue_jeans for $63</p>\n");
          html.append("   <p><input id=\"order\" name=\"button\" type=\"submit\" value=\"order\"></p>\n");
          html.append("</form>\n");
          return html.toString();
@@ -402,7 +402,7 @@ public class MicroShopService
          // MicroShop Carli overview 12:24
          html.append("   <p>Welcome Carli</p>\n");
          html.append("   <p>Your orders are</p>\n");
-         html.append("   <p>red shoes for $42, picking</p>\n");
+         html.append("   <p>red_shoes for $42, picking</p>\n");
          html.append("   <p><input id=\"order\" name=\"button\" type=\"submit\" value=\"order\"></p>\n");
          html.append("</form>\n");
          return html.toString();

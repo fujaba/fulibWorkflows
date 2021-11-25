@@ -166,26 +166,6 @@ public class MicroShopBuilder
       return true;
    }
 
-   public void storeProductBuilt(Event e)
-   {
-      ProductBuilt event = (ProductBuilt) e;
-      if (outdated(event)) {
-         return;
-      }
-      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
-      // fulib
-   }
-
-   public Product loadProductBuilt(Event e)
-   {
-      ProductBuilt event = (ProductBuilt) e;
-      Product object = model.getOrCreateProduct(event.getBlockId());
-      object.setName(event.getName());
-      object.setState(event.getState());
-      object.setPrice(event.getPrice());
-      return object;
-   }
-
    public Object load(String blockId)
    {
       DataEvent dataEvent = eventStore.get(blockId);
@@ -210,7 +190,7 @@ public class MicroShopBuilder
    {
       if (loaderMap == null) {
          loaderMap = new LinkedHashMap<>();
-         loaderMap.put(ProductBuilt.class, this::loadProductBuilt);
+         loaderMap.put(MSProductBuilt.class, this::loadMSProductBuilt);
          loaderMap.put(OrderBuilt.class, this::loadOrderBuilt);
          loaderMap.put(CustomerBuilt.class, this::loadCustomerBuilt);
       }
@@ -290,7 +270,7 @@ public class MicroShopBuilder
       OrderBuilt event = (OrderBuilt) e;
       Order object = model.getOrCreateOrder(event.getBlockId());
       object.setCode(event.getCode());
-      object.setProduct(model.getOrCreateProduct(event.getProduct()));
+      object.setProduct(model.getOrCreateMSProduct(event.getProduct()));
       object.setCustomer(model.getOrCreateCustomer(event.getCustomer()));
       object.setAddress(event.getAddress());
       object.setState(event.getState());
@@ -312,6 +292,26 @@ public class MicroShopBuilder
       CustomerBuilt event = (CustomerBuilt) e;
       Customer object = model.getOrCreateCustomer(event.getBlockId());
       object.setName(event.getName());
+      return object;
+   }
+
+   public void storeMSProductBuilt(Event e)
+   {
+      MSProductBuilt event = (MSProductBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public MSProduct loadMSProductBuilt(Event e)
+   {
+      MSProductBuilt event = (MSProductBuilt) e;
+      MSProduct object = model.getOrCreateMSProduct(event.getBlockId());
+      object.setName(event.getName());
+      object.setState(event.getState());
+      object.setPrice(event.getPrice());
       return object;
    }
 }

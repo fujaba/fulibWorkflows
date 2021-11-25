@@ -276,10 +276,10 @@ public class WarehouseService
       String id = request.params("id");
       String event = request.queryParams("event");
 
-      if ("store product".equals(event)) {
+      if ("store product 01".equals(event)) {
 
-         // create StoreCommand: store product
-         StoreCommand e120301 = new StoreCommand();
+         // create StoreProductCommand: store product 01
+         StoreProductCommand e120301 = new StoreProductCommand();
          e120301.setId("12:03:01");
          e120301.setBarcode(request.queryParams("barcode"));
          e120301.setProduct(request.queryParams("product"));
@@ -288,10 +288,10 @@ public class WarehouseService
          apply(e120301);
       }
 
-      if ("store product".equals(event)) {
+      if ("store product 02".equals(event)) {
 
-         // create StoreCommand: store product
-         StoreCommand e120601 = new StoreCommand();
+         // create StoreProductCommand: store product 02
+         StoreProductCommand e120601 = new StoreProductCommand();
          e120601.setId("12:06:01");
          e120601.setBarcode(request.queryParams("barcode"));
          e120601.setProduct(request.queryParams("product"));
@@ -300,10 +300,10 @@ public class WarehouseService
          apply(e120601);
       }
 
-      if ("store product".equals(event)) {
+      if ("store product 03".equals(event)) {
 
-         // create StoreCommand: store product
-         StoreCommand e120901 = new StoreCommand();
+         // create StoreProductCommand: store product 03
+         StoreProductCommand e120901 = new StoreProductCommand();
          e120901.setId("12:09:01");
          e120901.setBarcode(request.queryParams("barcode"));
          e120901.setProduct(request.queryParams("product"));
@@ -364,7 +364,7 @@ public class WarehouseService
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"amount\" name=\"amount\" placeholder=\"amount?\"></p>\n");
          html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product 01\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
@@ -376,7 +376,7 @@ public class WarehouseService
          // Warehouse store tasks 12:05
          html.append("   <p>Warehouse palettes</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
-         html.append("   <p>b001, 10 red shoes, shelf 42</p>\n");
+         html.append("   <p>b001, 10 red_shoes, shelf_42</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
@@ -390,7 +390,7 @@ public class WarehouseService
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"amount\" name=\"amount\" placeholder=\"amount?\"></p>\n");
          html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product 02\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
@@ -402,8 +402,8 @@ public class WarehouseService
          // Warehouse overview 12:08
          html.append("   <p>Warehouse palettes</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
-         html.append("   <p>b002, red shoes, shelf 23</p>\n");
-         html.append("   <p>b001, red shoes, shelf 42</p>\n");
+         html.append("   <p>b002, red_shoes, shelf_23</p>\n");
+         html.append("   <p>b001, red_shoes, shelf_42</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
@@ -417,7 +417,7 @@ public class WarehouseService
          html.append("   <p><input id=\"product\" name=\"product\" placeholder=\"product?\"></p>\n");
          html.append("   <p><input id=\"amount\" name=\"amount\" placeholder=\"amount?\"></p>\n");
          html.append("   <p><input id=\"location\" name=\"location\" placeholder=\"location?\"></p>\n");
-         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product\"></p>\n");
+         html.append("   <p><input id=\"event\" name=\"event\" type=\"hidden\" value=\"store product 03\"></p>\n");
          html.append("   <p><input id=\"ok\" name=\"button\" type=\"submit\" value=\"ok\"></p>\n");
          html.append("</form>\n");
          return html.toString();
@@ -429,9 +429,9 @@ public class WarehouseService
          // Warehouse overview 12:11
          html.append("   <p>Warehouse palettes</p>\n");
          html.append("   <p><input id=\"add\" name=\"button\" type=\"submit\" value=\"add\"></p>\n");
-         html.append("   <p>b003, blue jeans, shelf 1337</p>\n");
-         html.append("   <p>b002, red shoes, shelf 23</p>\n");
-         html.append("   <p>b001, red shoes, shelf 42</p>\n");
+         html.append("   <p>b003, blue_jeans, shelf_1337</p>\n");
+         html.append("   <p>b002, red_shoes, shelf_23</p>\n");
+         html.append("   <p>b001, red_shoes, shelf_42</p>\n");
          html.append("</form>\n");
          return html.toString();
       }
@@ -441,7 +441,7 @@ public class WarehouseService
          html.append("<form action=\"/page/12_26\" method=\"get\">\n");
          // Warehouse pick tasks 12:25
          html.append("   <p>Pick tasks overview</p>\n");
-         html.append("   <p><input id=\"pt_o0925_1, red shoes, shelf 42, shelf 23\" name=\"button\" type=\"submit\" value=\"pt_o0925_1, red shoes, shelf 42, shelf 23\"></p>\n");
+         html.append("   <p><input id=\"pt_o0925_1, red_shoes, shelf 42, shelf 23\" name=\"button\" type=\"submit\" value=\"pt_o0925_1, red_shoes, shelf 42, shelf 23\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }
@@ -474,7 +474,7 @@ public class WarehouseService
          html.append("<form action=\"/page/12_30\" method=\"get\">\n");
          // Warehouse delivery tasks 12:29
          html.append("   <p>Delivery tasks overview</p>\n");
-         html.append("   <p><input id=\"red shoes, Wonderland 1\" name=\"button\" type=\"submit\" value=\"red shoes, Wonderland 1\"></p>\n");
+         html.append("   <p><input id=\"red_shoes, Wonderland 1\" name=\"button\" type=\"submit\" value=\"red_shoes, Wonderland 1\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }

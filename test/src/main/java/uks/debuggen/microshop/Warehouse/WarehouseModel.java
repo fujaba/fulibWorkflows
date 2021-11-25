@@ -57,4 +57,10 @@ public class WarehouseModel
       if (id == null) return null;
       return (Palette) modelMap.computeIfAbsent(id, k -> new Palette().setId(k));
    }
+
+   public WHProduct getOrCreateWHProduct(String id)
+   {
+      if (id == null) return null;
+      return (WHProduct) modelMap.computeIfAbsent(id, k -> new WHProduct().setId(k));
+   }
 }

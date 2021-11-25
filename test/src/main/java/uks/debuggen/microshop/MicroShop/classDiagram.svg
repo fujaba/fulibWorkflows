@@ -1,112 +1,100 @@
-<svg width="942px" height="389px"
- viewBox="0.00 0.00 941.50 389.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 385)">
+<svg width="944px" height="365px"
+ viewBox="0.00 0.00 944.00 365.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 361)">
 <title>uks.debuggen.microshop.MicroShop</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-385 937.5,-385 937.5,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-361 940,-361 940,4 -4,4"/>
 <!-- Customer -->
-<g id="node1" class="node">
-<title>Customer</title>
-<polygon fill="none" stroke="black" points="14.5,-59.5 14.5,-81.5 91.5,-81.5 91.5,-59.5 14.5,-59.5"/>
-<text text-anchor="start" x="25.78" y="-65.9" font-family="Times,serif" font-size="14.00">Customer</text>
-<polygon fill="none" stroke="black" points="14.5,-20.5 14.5,-59.5 91.5,-59.5 91.5,-20.5 14.5,-20.5"/>
-<text text-anchor="start" x="17.5" y="-43.9" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="17.5" y="-27.1" font-family="Times,serif" font-size="14.00">name :String</text>
+<g id="node1" class="node"><title>Customer</title>
+<polygon fill="none" stroke="black" points="15,-54.5 15,-75.5 91,-75.5 91,-54.5 15,-54.5"/>
+<text text-anchor="start" x="25.5" y="-61.3" font-family="Times New Roman,serif" font-size="14.00">Customer</text>
+<polygon fill="none" stroke="black" points="15,-18.5 15,-54.5 91,-54.5 91,-18.5 15,-18.5"/>
+<text text-anchor="start" x="18" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="18" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
 </g>
 <!-- Order -->
-<g id="node6" class="node">
-<title>Order</title>
-<polygon fill="none" stroke="black" points="8.5,-215.5 8.5,-237.5 97.5,-237.5 97.5,-215.5 8.5,-215.5"/>
-<text text-anchor="start" x="36.68" y="-221.9" font-family="Times,serif" font-size="14.00">Order</text>
-<polygon fill="none" stroke="black" points="8.5,-142.5 8.5,-215.5 97.5,-215.5 97.5,-142.5 8.5,-142.5"/>
-<text text-anchor="start" x="11.5" y="-199.9" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="11.5" y="-183.1" font-family="Times,serif" font-size="14.00">code :String</text>
-<text text-anchor="start" x="11.5" y="-166.3" font-family="Times,serif" font-size="14.00">address :String</text>
-<text text-anchor="start" x="11.5" y="-149.5" font-family="Times,serif" font-size="14.00">state :String</text>
+<g id="node7" class="node"><title>Order</title>
+<polygon fill="none" stroke="black" points="8,-200.5 8,-221.5 98,-221.5 98,-200.5 8,-200.5"/>
+<text text-anchor="start" x="36" y="-207.3" font-family="Times New Roman,serif" font-size="14.00">Order</text>
+<polygon fill="none" stroke="black" points="8,-134.5 8,-200.5 98,-200.5 98,-134.5 8,-134.5"/>
+<text text-anchor="start" x="11" y="-186.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="11" y="-171.3" font-family="Times New Roman,serif" font-size="14.00">code :String</text>
+<text text-anchor="start" x="11" y="-156.3" font-family="Times New Roman,serif" font-size="14.00">address :String</text>
+<text text-anchor="start" x="11" y="-141.3" font-family="Times New Roman,serif" font-size="14.00">state :String</text>
 </g>
 <!-- Customer&#45;&gt;Order -->
-<g id="edge4" class="edge">
-<title>Customer&#45;&gt;Order</title>
-<path fill="none" stroke="black" d="M52.5,-86.01C52.5,-101.94 52.5,-121.31 52.5,-138.96"/>
-<text text-anchor="middle" x="29.76" y="-126.36" font-family="Times,serif" font-size="14.00">orders *</text>
-<text text-anchor="middle" x="26.84" y="-90.21" font-family="Times,serif" font-size="14.00">customer</text>
+<g id="edge4" class="edge"><title>Customer&#45;&gt;Order</title>
+<path fill="none" stroke="black" d="M53,-80.057C53,-95.2734 53,-113.834 53,-130.657"/>
+<text text-anchor="middle" x="29.5" y="-119.457" font-family="Times New Roman,serif" font-size="14.00">orders *</text>
+<text text-anchor="middle" x="27" y="-83.857" font-family="Times New Roman,serif" font-size="14.00">customer</text>
+</g>
+<!-- MSProduct -->
+<g id="node2" class="node"><title>MSProduct</title>
+<polygon fill="none" stroke="black" points="15,-331.5 15,-352.5 91,-352.5 91,-331.5 15,-331.5"/>
+<text text-anchor="start" x="20" y="-338.3" font-family="Times New Roman,serif" font-size="14.00">MSProduct</text>
+<polygon fill="none" stroke="black" points="15,-265.5 15,-331.5 91,-331.5 91,-265.5 15,-265.5"/>
+<text text-anchor="start" x="18" y="-317.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="18" y="-302.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="18" y="-287.3" font-family="Times New Roman,serif" font-size="14.00">state :String</text>
+<text text-anchor="start" x="18" y="-272.3" font-family="Times New Roman,serif" font-size="14.00">price :String</text>
 </g>
 <!-- MicroShopBuilder -->
-<g id="node2" class="node">
-<title>MicroShopBuilder</title>
-<polygon fill="none" stroke="black" points="204.5,-76.5 204.5,-98.5 633.5,-98.5 633.5,-76.5 204.5,-76.5"/>
-<text text-anchor="start" x="366.51" y="-82.9" font-family="Times,serif" font-size="14.00">MicroShopBuilder</text>
-<polygon fill="none" stroke="black" points="204.5,-3.5 204.5,-76.5 633.5,-76.5 633.5,-3.5 204.5,-3.5"/>
-<text text-anchor="start" x="207.5" y="-60.9" font-family="Times,serif" font-size="14.00">model :MicroShopModel</text>
-<text text-anchor="start" x="207.5" y="-44.1" font-family="Times,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
-<text text-anchor="start" x="207.5" y="-27.3" font-family="Times,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
-<text text-anchor="start" x="207.5" y="-10.5" font-family="Times,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
+<g id="node3" class="node"><title>MicroShopBuilder</title>
+<polygon fill="none" stroke="black" points="214,-69.5 214,-90.5 638,-90.5 638,-69.5 214,-69.5"/>
+<text text-anchor="start" x="374" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">MicroShopBuilder</text>
+<polygon fill="none" stroke="black" points="214,-3.5 214,-69.5 638,-69.5 638,-3.5 214,-3.5"/>
+<text text-anchor="start" x="217" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">model :MicroShopModel</text>
+<text text-anchor="start" x="217" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">eventStore :LinkedHashMap&lt;String,DataEvent&gt;</text>
+<text text-anchor="start" x="217" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">loaderMap :LinkedHashMap&lt;Class,Function&lt;Event,Object&gt;&gt;</text>
+<text text-anchor="start" x="217" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">groupStore :LinkedHashMap&lt;String,LinkedHashMap&lt;String,DataEvent&gt;&gt;</text>
 </g>
 <!-- MicroShopBusinessLogic -->
-<g id="node3" class="node">
-<title>MicroShopBusinessLogic</title>
-<polygon fill="none" stroke="black" points="192.5,-198.5 192.5,-220.5 522.5,-220.5 522.5,-198.5 192.5,-198.5"/>
-<text text-anchor="start" x="284.79" y="-204.9" font-family="Times,serif" font-size="14.00">MicroShopBusinessLogic</text>
-<polygon fill="none" stroke="black" points="192.5,-159.5 192.5,-198.5 522.5,-198.5 522.5,-159.5 192.5,-159.5"/>
-<text text-anchor="start" x="195.5" y="-182.9" font-family="Times,serif" font-size="14.00">model :MicroShopModel</text>
-<text text-anchor="start" x="195.5" y="-166.1" font-family="Times,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
+<g id="node4" class="node"><title>MicroShopBusinessLogic</title>
+<polygon fill="none" stroke="black" points="152,-185.5 152,-206.5 480,-206.5 480,-185.5 152,-185.5"/>
+<text text-anchor="start" x="243" y="-192.3" font-family="Times New Roman,serif" font-size="14.00">MicroShopBusinessLogic</text>
+<polygon fill="none" stroke="black" points="152,-149.5 152,-185.5 480,-185.5 480,-149.5 152,-149.5"/>
+<text text-anchor="start" x="155" y="-171.3" font-family="Times New Roman,serif" font-size="14.00">model :MicroShopModel</text>
+<text text-anchor="start" x="155" y="-156.3" font-family="Times New Roman,serif" font-size="14.00">handlerMap :LinkedHashMap&lt;Class,Consumer&lt;Event&gt;&gt;</text>
 </g>
 <!-- MicroShopBuilder&#45;&gt;MicroShopBusinessLogic -->
-<g id="edge1" class="edge">
-<title>MicroShopBuilder&#45;&gt;MicroShopBusinessLogic</title>
-<path fill="none" stroke="black" d="M395.96,-103.12C388.15,-120.66 379.6,-139.87 372.55,-155.71"/>
-<text text-anchor="middle" x="332.5" y="-143.11" font-family="Times,serif" font-size="14.00">businessLogic</text>
-<text text-anchor="middle" x="376.13" y="-107.32" font-family="Times,serif" font-size="14.00">builder</text>
+<g id="edge1" class="edge"><title>MicroShopBuilder&#45;&gt;MicroShopBusinessLogic</title>
+<path fill="none" stroke="black" d="M386.287,-95.072C371.887,-111.959 355.968,-130.628 342.927,-145.922"/>
+<text text-anchor="middle" x="302.427" y="-134.722" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
+<text text-anchor="middle" x="366.787" y="-98.872" font-family="Times New Roman,serif" font-size="14.00">builder</text>
 </g>
 <!-- MicroShopService -->
-<g id="node5" class="node">
-<title>MicroShopService</title>
-<polygon fill="none" stroke="black" points="341.5,-354.5 341.5,-376.5 573.5,-376.5 573.5,-354.5 341.5,-354.5"/>
-<text text-anchor="start" x="405.01" y="-360.9" font-family="Times,serif" font-size="14.00">MicroShopService</text>
-<polygon fill="none" stroke="black" points="341.5,-281.5 341.5,-354.5 573.5,-354.5 573.5,-281.5 341.5,-281.5"/>
-<text text-anchor="start" x="344.5" y="-338.9" font-family="Times,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
-<text text-anchor="start" x="344.5" y="-322.1" font-family="Times,serif" font-size="14.00">port :int</text>
-<text text-anchor="start" x="344.5" y="-305.3" font-family="Times,serif" font-size="14.00">spark :Service</text>
-<text text-anchor="start" x="344.5" y="-288.5" font-family="Times,serif" font-size="14.00">model :MicroShopModel</text>
+<g id="node6" class="node"><title>MicroShopService</title>
+<polygon fill="none" stroke="black" points="302,-331.5 302,-352.5 531,-352.5 531,-331.5 302,-331.5"/>
+<text text-anchor="start" x="363.5" y="-338.3" font-family="Times New Roman,serif" font-size="14.00">MicroShopService</text>
+<polygon fill="none" stroke="black" points="302,-265.5 302,-331.5 531,-331.5 531,-265.5 302,-265.5"/>
+<text text-anchor="start" x="305" y="-317.3" font-family="Times New Roman,serif" font-size="14.00">history :LinkedHashMap&lt;String,Event&gt;</text>
+<text text-anchor="start" x="305" y="-302.3" font-family="Times New Roman,serif" font-size="14.00">port :int</text>
+<text text-anchor="start" x="305" y="-287.3" font-family="Times New Roman,serif" font-size="14.00">spark :Service</text>
+<text text-anchor="start" x="305" y="-272.3" font-family="Times New Roman,serif" font-size="14.00">model :MicroShopModel</text>
 </g>
 <!-- MicroShopBuilder&#45;&gt;MicroShopService -->
-<g id="edge2" class="edge">
-<title>MicroShopBuilder&#45;&gt;MicroShopService</title>
-<path fill="none" stroke="black" d="M510.51,-103C522.17,-113.35 532.47,-125.34 539.5,-139 560.44,-179.71 556.45,-199.48 539.5,-242 534.37,-254.88 526.3,-266.94 517.19,-277.73"/>
-<text text-anchor="middle" x="497.37" y="-265.13" font-family="Times,serif" font-size="14.00">service</text>
-<text text-anchor="middle" x="490.68" y="-107.2" font-family="Times,serif" font-size="14.00">builder</text>
+<g id="edge2" class="edge"><title>MicroShopBuilder&#45;&gt;MicroShopService</title>
+<path fill="none" stroke="black" d="M475.975,-95.3242C484.58,-106.138 492.267,-118.244 497,-131 511.688,-170.585 512.979,-186.918 497,-226 491.683,-239.006 483.217,-251.067 473.722,-261.729"/>
+<text text-anchor="middle" x="453.722" y="-250.529" font-family="Times New Roman,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="456.475" y="-99.1242" font-family="Times New Roman,serif" font-size="14.00">builder</text>
 </g>
 <!-- MicroShopBusinessLogic&#45;&gt;MicroShopService -->
-<g id="edge3" class="edge">
-<title>MicroShopBusinessLogic&#45;&gt;MicroShopService</title>
-<path fill="none" stroke="black" d="M381.96,-225.01C393.58,-240.94 407.72,-260.31 420.61,-277.96"/>
-<text text-anchor="middle" x="400.79" y="-265.36" font-family="Times,serif" font-size="14.00">service</text>
-<text text-anchor="middle" x="341.91" y="-229.21" font-family="Times,serif" font-size="14.00">businessLogic</text>
+<g id="edge3" class="edge"><title>MicroShopBusinessLogic&#45;&gt;MicroShopService</title>
+<path fill="none" stroke="black" d="M340.463,-211.057C352.258,-226.273 366.646,-244.834 379.688,-261.657"/>
+<text text-anchor="middle" x="359.688" y="-250.457" font-family="Times New Roman,serif" font-size="14.00">service</text>
+<text text-anchor="middle" x="299.963" y="-214.857" font-family="Times New Roman,serif" font-size="14.00">businessLogic</text>
 </g>
 <!-- MicroShopModel -->
-<g id="node4" class="node">
-<title>MicroShopModel</title>
-<polygon fill="none" stroke="black" points="667.5,-51.5 667.5,-73.5 925.5,-73.5 925.5,-51.5 667.5,-51.5"/>
-<text text-anchor="start" x="746.73" y="-57.9" font-family="Times,serif" font-size="14.00">MicroShopModel</text>
-<polygon fill="none" stroke="black" points="667.5,-29.5 667.5,-51.5 925.5,-51.5 925.5,-29.5 667.5,-29.5"/>
-<text text-anchor="start" x="670.5" y="-35.9" font-family="Times,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+<g id="node5" class="node"><title>MicroShopModel</title>
+<polygon fill="none" stroke="black" points="672,-47.5 672,-68.5 928,-68.5 928,-47.5 672,-47.5"/>
+<text text-anchor="start" x="750" y="-54.3" font-family="Times New Roman,serif" font-size="14.00">MicroShopModel</text>
+<polygon fill="none" stroke="black" points="672,-26.5 672,-47.5 928,-47.5 928,-26.5 672,-26.5"/>
+<text text-anchor="start" x="675" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
 </g>
-<!-- Product -->
-<g id="node7" class="node">
-<title>Product</title>
-<polygon fill="none" stroke="black" points="14.5,-354.5 14.5,-376.5 91.5,-376.5 91.5,-354.5 14.5,-354.5"/>
-<text text-anchor="start" x="31.23" y="-360.9" font-family="Times,serif" font-size="14.00">Product</text>
-<polygon fill="none" stroke="black" points="14.5,-281.5 14.5,-354.5 91.5,-354.5 91.5,-281.5 14.5,-281.5"/>
-<text text-anchor="start" x="17.5" y="-338.9" font-family="Times,serif" font-size="14.00">id :String</text>
-<text text-anchor="start" x="17.5" y="-322.1" font-family="Times,serif" font-size="14.00">name :String</text>
-<text text-anchor="start" x="17.5" y="-305.3" font-family="Times,serif" font-size="14.00">state :String</text>
-<text text-anchor="start" x="17.5" y="-288.5" font-family="Times,serif" font-size="14.00">price :String</text>
-</g>
-<!-- Order&#45;&gt;Product -->
-<g id="edge5" class="edge">
-<title>Order&#45;&gt;Product</title>
-<path fill="none" stroke="black" d="M52.5,-242.12C52.5,-253.71 52.5,-266.03 52.5,-277.63"/>
-<text text-anchor="middle" x="31.12" y="-265.03" font-family="Times,serif" font-size="14.00">product</text>
-<text text-anchor="middle" x="29.76" y="-246.32" font-family="Times,serif" font-size="14.00">orders *</text>
+<!-- Order&#45;&gt;MSProduct -->
+<g id="edge5" class="edge"><title>Order&#45;&gt;MSProduct</title>
+<path fill="none" stroke="black" d="M53,-226.072C53,-237.763 53,-250.308 53,-261.996"/>
+<text text-anchor="middle" x="30.5" y="-250.796" font-family="Times New Roman,serif" font-size="14.00">product</text>
+<text text-anchor="middle" x="29.5" y="-229.872" font-family="Times New Roman,serif" font-size="14.00">orders *</text>
 </g>
 </g>
 </svg>

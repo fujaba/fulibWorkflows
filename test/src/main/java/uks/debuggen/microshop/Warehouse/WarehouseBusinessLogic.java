@@ -112,8 +112,9 @@ public class WarehouseBusinessLogic
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
          handlerMap.put(PaletteBuilt.class, builder::storePaletteBuilt);
+         handlerMap.put(WHProductBuilt.class, builder::storeWHProductBuilt);
          handlerMap.put(PickTaskBuilt.class, builder::storePickTaskBuilt);
-         handlerMap.put(StoreCommand.class, this::handleStoreCommand);
+         handlerMap.put(StoreProductCommand.class, this::handleStoreProductCommand);
          handlerMap.put(ProductOrderedEvent.class, this::handleProductOrderedEvent);
          handlerMap.put(Command.class, this::handleCommand);
       }
@@ -154,71 +155,6 @@ public class WarehouseBusinessLogic
       this.setService(null);
    }
 
-   private void handleStoreCommand(Event e)
-   {
-      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
-      // fulib
-      StoreCommand event = (StoreCommand) e;
-      handleDemoStoreCommand(event);
-   }
-
-   private void handleDemoStoreCommand(StoreCommand event)
-   {
-      if (event.getId().equals("12:03:01")) {
-         PaletteBuilt b001Event = new PaletteBuilt();
-         b001Event.setId("12:03:02");
-         b001Event.setBlockId("b001");
-         b001Event.setBarcode("b001");
-         b001Event.setProduct("red shoes");
-         b001Event.setAmount("10");
-         b001Event.setLocation("shelf 42");
-         service.apply(b001Event);
-
-
-         ProductStoredEvent e1204 = new ProductStoredEvent();
-
-         e1204.setId("12:04");
-         e1204.setBarcode("b001");
-         e1204.setProduct("red shoes");
-         service.apply(e1204);
-      }
-      if (event.getId().equals("12:06:01")) {
-         PaletteBuilt b002Event = new PaletteBuilt();
-         b002Event.setId("12:06:02");
-         b002Event.setBlockId("b002");
-         b002Event.setBarcode("b002");
-         b002Event.setContent("red shoes");
-         b002Event.setLocation("shelf 23");
-         service.apply(b002Event);
-
-
-         ProductStoredEvent e1207 = new ProductStoredEvent();
-
-         e1207.setId("12:07");
-         e1207.setBarcode("b002");
-         e1207.setProduct("red shoes");
-         service.apply(e1207);
-      }
-      if (event.getId().equals("12:09:01")) {
-         PaletteBuilt b003Event = new PaletteBuilt();
-         b003Event.setId("12:09:02");
-         b003Event.setBlockId("b003");
-         b003Event.setBarcode("b003");
-         b003Event.setProduct("blue jeans");
-         b003Event.setAmount("8");
-         b003Event.setLocation("shelf 1337");
-         service.apply(b003Event);
-
-
-         ProductStoredEvent e1210 = new ProductStoredEvent();
-
-         e1210.setId("12:10");
-         e1210.setBarcode("b003");
-         e1210.setProduct("blue jeans");
-         service.apply(e1210);
-      }
-   }
-
    private void handleProductOrderedEvent(Event e)
    {
       // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
@@ -234,9 +170,9 @@ public class WarehouseBusinessLogic
          pt_o0925_1Event.setId("12:22:01");
          pt_o0925_1Event.setBlockId("pt_o0925_1");
          pt_o0925_1Event.setCode("pt_o0925_1");
-         pt_o0925_1Event.setProduct("red shoes");
+         pt_o0925_1Event.setProduct("red_shoes");
          pt_o0925_1Event.setShelf("[shelf 42, shelf 23]");
-         pt_o0925_1Event.setCustomer("Carli Customer");
+         pt_o0925_1Event.setCustomer("Carli_Customer");
          pt_o0925_1Event.setAddress("Wonderland 1");
          pt_o0925_1Event.setState("picking");
          service.apply(pt_o0925_1Event);
@@ -276,6 +212,93 @@ public class WarehouseBusinessLogic
          e1227.setId("12:27");
          e1227.setOrder("o0925_1");
          service.apply(e1227);
+      }
+   }
+
+   private void handleStoreProductCommand(Event e)
+   {
+      // to protect manuel changes to this method insert a 'no' in front of fulib in the next line
+      // fulib
+      StoreProductCommand event = (StoreProductCommand) e;
+      handleDemoStoreProductCommand(event);
+   }
+
+   private void handleDemoStoreProductCommand(StoreProductCommand event)
+   {
+      if (event.getId().equals("12:03:01")) {
+         PaletteBuilt b001Event = new PaletteBuilt();
+         b001Event.setId("12:03:02");
+         b001Event.setBlockId("b001");
+         b001Event.setBarcode("b001");
+         b001Event.setProduct("red_shoes");
+         b001Event.setAmount("10");
+         b001Event.setLocation("shelf_42");
+         service.apply(b001Event);
+
+         WHProductBuilt red_shoesEvent = new WHProductBuilt();
+         red_shoesEvent.setId("12:03:03");
+         red_shoesEvent.setBlockId("red_shoes");
+         red_shoesEvent.setName("red_shoes");
+         red_shoesEvent.setAmount("10");
+         service.apply(red_shoesEvent);
+
+
+         ProductStoredEvent e1204 = new ProductStoredEvent();
+
+         e1204.setId("12:04");
+         e1204.setBarcode("b001");
+         e1204.setProduct("red_shoes");
+         service.apply(e1204);
+      }
+      if (event.getId().equals("12:06:01")) {
+         PaletteBuilt b002Event = new PaletteBuilt();
+         b002Event.setId("12:06:02");
+         b002Event.setBlockId("b002");
+         b002Event.setBarcode("b002");
+         b002Event.setProduct("red_shoes");
+         b002Event.setAmount("8");
+         b002Event.setLocation("shelf_23");
+         service.apply(b002Event);
+
+         WHProductBuilt red_shoesEvent = new WHProductBuilt();
+         red_shoesEvent.setId("12:06:03");
+         red_shoesEvent.setBlockId("red_shoes");
+         red_shoesEvent.setName("red_shoes");
+         red_shoesEvent.setAmount("18");
+         service.apply(red_shoesEvent);
+
+
+         ProductStoredEvent e1207 = new ProductStoredEvent();
+
+         e1207.setId("12:07");
+         e1207.setBarcode("b002");
+         e1207.setProduct("red_shoes");
+         service.apply(e1207);
+      }
+      if (event.getId().equals("12:09:01")) {
+         PaletteBuilt b003Event = new PaletteBuilt();
+         b003Event.setId("12:09:02");
+         b003Event.setBlockId("b003");
+         b003Event.setBarcode("b003");
+         b003Event.setProduct("blue_jeans");
+         b003Event.setAmount("6");
+         b003Event.setLocation("shelf_1337");
+         service.apply(b003Event);
+
+         WHProductBuilt blue_jeansEvent = new WHProductBuilt();
+         blue_jeansEvent.setId("12:09:03");
+         blue_jeansEvent.setBlockId("blue_jeans");
+         blue_jeansEvent.setName("blue_jeans");
+         blue_jeansEvent.setAmount("6");
+         service.apply(blue_jeansEvent);
+
+
+         ProductStoredEvent e1210 = new ProductStoredEvent();
+
+         e1210.setId("12:10");
+         e1210.setBarcode("b003");
+         e1210.setProduct("blue_jeans");
+         service.apply(e1210);
       }
    }
 }

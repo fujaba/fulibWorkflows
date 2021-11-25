@@ -42,6 +42,7 @@ public class WorkflowGenerator {
    private ServiceNote lastServiceNote;
    private Clazz logic;
    private StringBuilder testClosing;
+   private String testOutputDir = "tmp";
 
    public EventModel getEventModel() {
       return eventModel;
@@ -165,13 +166,13 @@ public class WorkflowGenerator {
       addAllLinkCreation();
 
       String allVarNames = String.join(", ", testVarNames.toArray(new String[] {}));
-      testBody.append(String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sStart.svg\", %s);\n\n",
-            boardName, allVarNames));
+      testBody.append(String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sStart.svg\", %s);\n\n", boardName,
+            allVarNames));
 
       addAllCommands();
 
-      testBody.append(String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sEnd.svg\", %s);\n\n",
-            boardName, allVarNames));
+      testBody.append(
+            String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sEnd.svg\", %s);\n\n", boardName, allVarNames));
 
       testBody.append("\nSystem.err.println();\n");
 
@@ -738,10 +739,13 @@ public class WorkflowGenerator {
             if (dataAttr.getType().equals(Type.STRING)) {
                body.append(String.format("object.set%s(event.get%1$s());\n", StrUtil.cap(attrName)));
             } else if (dataAttr.getType().equals(Type.INT)) {
-               body.append(String.format("object.set%s(event.get%1$s() == null ? 0 : Integer.parseInt(event.get%1$s()));\n", StrUtil.cap(attrName)));
-            } else if (dataAttr.getType().equals(Type.DOUBLE)) {
                body.append(
-                     String.format("object.set%s(event.get%1$s() == null ? 0.0 : Double.parseDouble(event.get%1$s()));\n", StrUtil.cap(attrName)));
+                     String.format("object.set%s(event.get%1$s() == null ? 0 : Integer.parseInt(event.get%1$s()));\n",
+                           StrUtil.cap(attrName)));
+            } else if (dataAttr.getType().equals(Type.DOUBLE)) {
+               body.append(String.format(
+                     "object.set%s(event.get%1$s() == null ? 0.0 : Double.parseDouble(event.get%1$s()));\n",
+                     StrUtil.cap(attrName)));
             }
          } else {
             // e.g.: event.setPreviousStop(model.getOrCreateStop(event.getPreviousStop()));
@@ -1193,7 +1197,7 @@ public class WorkflowGenerator {
       }
 
       testBody.append(testClosing.toString());
-      testBody.append( String.format("\nSystem.err.println(\"%s completed good and gracefully\");\n", boardName));
+      testBody.append(String.format("\nSystem.err.println(\"%s completed good and gracefully\");\n", boardName));
 
       tm.haveMethod(testClazz, declaration, testBody.toString());
 
@@ -1274,8 +1278,10 @@ public class WorkflowGenerator {
                + "for (DataEvent dataEvent : %s.getBuilder().getEventStore().values()) {\n"
                + "   %1$s.getBuilder().load(dataEvent.getBlockId());\n" + "}\n"
                + "modelMap = %1$s.getBuilder().getModel().getModelMap();\n" + "if (modelMap.values().size() > 0) {\n"
-               + "   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"tmp/%1$s%s.svg\", modelMap.values());\n" + "}\n\n",
-               StrUtil.decap(service.getName()), note.getTime().replaceAll("\\W+", "_"));
+               + "   org.fulib.FulibTools.objectDiagrams().dumpSVG(\"%s/%1$s%s.svg\", modelMap.values());\n" + "}\n\n",
+               StrUtil.decap(service.getName()),
+               testOutputDir,
+               note.getTime().replaceAll("\\W+", "_"));
          check.append(loadDataEventsCode);
          check.append("");
          check.append(String.format("open(\"http://localhost:%s\");\n", service.getPort()));
@@ -1483,6 +1489,10 @@ public class WorkflowGenerator {
       String packageDirName = manager.getClassModel().getPackageName().replaceAll("\\.", "/");
       packageDirName = manager.getClassModel().getMainJavaDir() + "/" + packageDirName;
       return packageDirName;
+   }
+
+   public void setTestOutputDir(String testOutputDir) {
+      this.testOutputDir = testOutputDir;
    }
 
 }

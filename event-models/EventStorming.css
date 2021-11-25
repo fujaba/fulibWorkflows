@@ -1,64 +1,60 @@
-delimiters "{", "}"
-
-css(width) ::= <<
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css";
 
-body \{
+body {
     font-family: "Arial Narrow", Arial, sans-serif;
-\}
+}
 
-.esboard \{
+.esboard {
     height: 30%;
     overflow: scroll;
-\}
+}
 
-.lane \{
+.lane {
     display: flex;
     float: left;
     width: 3000px;
 }
-\}
 
-.box \{
+.box {
     position: relative;
     float: left;
     margin: 6px;
     padding: 12px;
-\}
+}
 
-.placeholder \{
+.placeholder {
     opacity: 0.0;
-\}
+}
 
-.event \{
+.event {
     background-color: Orange;
-\}
+}
 
-.page \{
+.page {
     background-color: LightBlue;
-\}
+}
 
-.command \{
+.command {
     background-color: LightBlue;
-\}
+}
 
-.data \{
+.data {
     background-color: #FFA2FF;
-\}
+}
 
-.user \{
+.user {
     background-color: Yellow;
-\}
+}
 
-.server \{
+.server {
     background-color: Violet;
-\}
+}
 
-.center \{
+.center {
     text-align: center;
-\}
+}
 
-.fa-rotate-45 \{
+.fa-rotate-45 {
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
@@ -66,10 +62,9 @@ body \{
     transform: rotate(45deg);
     color: #FFA2FF;
     font-size: 3em;
-\}
+}
 
-.fa-cloud \{
+.fa-cloud {
     color: LightGrey;
     font-size: 3em;
-\}
->>
+}

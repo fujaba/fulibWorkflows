@@ -118,10 +118,10 @@ public class MicroShopBusinessLogic
    private void handleDemoAddCommand(AddCommand event)
    {
       if (event.getId().equals("12:17:01")) {
-         ProductBuilt blue_jeansEvent = new ProductBuilt();
+         MSProductBuilt blue_jeansEvent = new MSProductBuilt();
          blue_jeansEvent.setId("12:17:02");
          blue_jeansEvent.setBlockId("blue_jeans");
-         blue_jeansEvent.setName("blue jeans");
+         blue_jeansEvent.setName("blue_jeans");
          blue_jeansEvent.setPrice("$63");
          service.apply(blue_jeansEvent);
 
@@ -129,7 +129,7 @@ public class MicroShopBusinessLogic
          ProductOfferedEvent e1218 = new ProductOfferedEvent();
 
          e1218.setId("12:18");
-         e1218.setName("blue jeans");
+         e1218.setName("blue_jeans");
          e1218.setPrice("$63");
          service.apply(e1218);
       }
@@ -139,7 +139,7 @@ public class MicroShopBusinessLogic
    {
       if (handlerMap == null) {
          handlerMap = new LinkedHashMap<>();
-         handlerMap.put(ProductBuilt.class, builder::storeProductBuilt);
+         handlerMap.put(MSProductBuilt.class, builder::storeMSProductBuilt);
          handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
          handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
          handlerMap.put(ProductStoredEvent.class, this::handleProductStoredEvent);
@@ -202,8 +202,8 @@ public class MicroShopBusinessLogic
          o0925_1Event.setId("12:21:02");
          o0925_1Event.setBlockId("o0925_1");
          o0925_1Event.setCode("o0925_1");
-         o0925_1Event.setProduct("red shoes");
-         o0925_1Event.setCustomer("Carli Customer");
+         o0925_1Event.setProduct("red_shoes");
+         o0925_1Event.setCustomer("Carli_Customer");
          o0925_1Event.setAddress("Wonderland 1");
          o0925_1Event.setState("new order");
          service.apply(o0925_1Event);
@@ -211,7 +211,7 @@ public class MicroShopBusinessLogic
          CustomerBuilt carli_CustomerEvent = new CustomerBuilt();
          carli_CustomerEvent.setId("12:21:03");
          carli_CustomerEvent.setBlockId("Carli_Customer");
-         carli_CustomerEvent.setName("Carli Customer");
+         carli_CustomerEvent.setName("Carli_Customer");
          service.apply(carli_CustomerEvent);
 
 
@@ -219,8 +219,8 @@ public class MicroShopBusinessLogic
 
          e1222.setId("12:22");
          e1222.setCode("o0925_1");
-         e1222.setProduct("red shoes");
-         e1222.setCustomer("Carli Customer");
+         e1222.setProduct("red_shoes");
+         e1222.setCustomer("Carli_Customer");
          e1222.setAddress("Wonderland 1");
          service.apply(e1222);
       }
@@ -279,10 +279,10 @@ public class MicroShopBusinessLogic
    private void handleDemoAddOfferCommand(AddOfferCommand event)
    {
       if (event.getId().equals("12:14:42")) {
-         ProductBuilt red_shoesEvent = new ProductBuilt();
+         MSProductBuilt red_shoesEvent = new MSProductBuilt();
          red_shoesEvent.setId("12:14:43");
          red_shoesEvent.setBlockId("red_shoes");
-         red_shoesEvent.setName("red shoes");
+         red_shoesEvent.setName("red_shoes");
          red_shoesEvent.setPrice("$42");
          service.apply(red_shoesEvent);
 
@@ -290,7 +290,7 @@ public class MicroShopBusinessLogic
          ProductOfferedEvent e1215 = new ProductOfferedEvent();
 
          e1215.setId("12:15");
-         e1215.setName("red shoes");
+         e1215.setName("red_shoes");
          e1215.setPrice("$42");
          service.apply(e1215);
       }
@@ -334,28 +334,28 @@ public class MicroShopBusinessLogic
    private void handleDemoProductStoredEvent(ProductStoredEvent event)
    {
       if (event.getId().equals("12:04")) {
-         ProductBuilt red_shoesEvent = new ProductBuilt();
+         MSProductBuilt red_shoesEvent = new MSProductBuilt();
          red_shoesEvent.setId("12:04:01");
          red_shoesEvent.setBlockId("red_shoes");
-         red_shoesEvent.setName("red shoes");
+         red_shoesEvent.setName("red_shoes");
          red_shoesEvent.setState("in stock");
          service.apply(red_shoesEvent);
 
       }
       if (event.getId().equals("12:07")) {
-         ProductBuilt red_shoesEvent = new ProductBuilt();
+         MSProductBuilt red_shoesEvent = new MSProductBuilt();
          red_shoesEvent.setId("12:07:01");
          red_shoesEvent.setBlockId("red_shoes");
-         red_shoesEvent.setName("red shoes");
+         red_shoesEvent.setName("red_shoes");
          red_shoesEvent.setState("in stock");
          service.apply(red_shoesEvent);
 
       }
       if (event.getId().equals("12:10")) {
-         ProductBuilt blue_jeansEvent = new ProductBuilt();
+         MSProductBuilt blue_jeansEvent = new MSProductBuilt();
          blue_jeansEvent.setId("12:10:01");
          blue_jeansEvent.setBlockId("blue_jeans");
-         blue_jeansEvent.setName("blue jeans");
+         blue_jeansEvent.setName("blue_jeans");
          blue_jeansEvent.setState("in stock");
          service.apply(blue_jeansEvent);
 

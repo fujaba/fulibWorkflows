@@ -191,6 +191,7 @@ public class WarehouseBuilder
       if (loaderMap == null) {
          loaderMap = new LinkedHashMap<>();
          loaderMap.put(PaletteBuilt.class, this::loadPaletteBuilt);
+         loaderMap.put(WHProductBuilt.class, this::loadWHProductBuilt);
          loaderMap.put(PickTaskBuilt.class, this::loadPickTaskBuilt);
       }
    }
@@ -269,7 +270,7 @@ public class WarehouseBuilder
       PickTaskBuilt event = (PickTaskBuilt) e;
       PickTask object = model.getOrCreatePickTask(event.getBlockId());
       object.setCode(event.getCode());
-      object.setProduct(event.getProduct());
+      object.setProduct(model.getOrCreateWHProduct(event.getProduct()));
       object.setShelf(event.getShelf());
       object.setCustomer(event.getCustomer());
       object.setAddress(event.getAddress());
@@ -293,10 +294,28 @@ public class WarehouseBuilder
       PaletteBuilt event = (PaletteBuilt) e;
       Palette object = model.getOrCreatePalette(event.getBlockId());
       object.setBarcode(event.getBarcode());
-      object.setProduct(event.getProduct());
+      object.setProduct(model.getOrCreateWHProduct(event.getProduct()));
       object.setAmount(event.getAmount() == null ? 0 : Integer.parseInt(event.getAmount()));
       object.setLocation(event.getLocation());
-      object.setContent(event.getContent());
+      return object;
+   }
+
+   public void storeWHProductBuilt(Event e)
+   {
+      WHProductBuilt event = (WHProductBuilt) e;
+      if (outdated(event)) {
+         return;
+      }
+      // please insert a no before fulib in the next line and insert addToGroup commands as necessary
+      // fulib
+   }
+
+   public WHProduct loadWHProductBuilt(Event e)
+   {
+      WHProductBuilt event = (WHProductBuilt) e;
+      WHProduct object = model.getOrCreateWHProduct(event.getBlockId());
+      object.setName(event.getName());
+      object.setAmount(event.getAmount() == null ? 0 : Integer.parseInt(event.getAmount()));
       return object;
    }
 }

@@ -25,38 +25,43 @@
     - input: barcode
       fill: b001
     - input: product
-      fill: red shoes
+      fill: red_shoes
     - input: amount
       fill: 10
     - input: location
-      fill: shelf 42
+      fill: shelf_42
     - button: ok
-      command: store product
+      command: store product 01
 
 
 - policy: Warehouse
 
 - data: Palette
   barcode: b001
-  product: red shoes
+  product: red_shoes
+  product.back: [palettes]
   amount: 10
-  location: shelf 42
+  location: shelf_42
+
+- data: WHProduct
+  name: red_shoes
+  amount: 10
 
 - event: product stored
   barcode: b001
-  product: red shoes
+  product: red_shoes
 
 - policy: MicroShop
 
-- data: Product
-  name: red shoes
+- data: MSProduct
+  name: red_shoes
   state: in stock
 
 - page:
     - name: Warehouse store tasks
     - label: Warehouse palettes
     - button: add
-    - label: b001, 10 red shoes, shelf 42
+    - label: b001, 10 red_shoes, shelf_42
 
 - page:
     - name: Warehouse add palette
@@ -64,37 +69,42 @@
     - input: barcode
       fill: b002
     - input: product
-      fill: red shoes
+      fill: red_shoes
     - input: amount
-      fill: 10
+      fill: 8
     - input: location
-      fill: shelf 23
+      fill: shelf_23
     - button: ok
-      command: store product
+      command: store product 02
 
 - policy: Warehouse
 
 - data: Palette
   barcode: b002
-  content: red shoes
-  location: shelf 23
+  product: red_shoes
+  amount: 8
+  location: shelf_23
+
+- data: WHProduct
+  name: red_shoes
+  amount: 18
 
 - event: product stored
   barcode: b002
-  product: red shoes
+  product: red_shoes
 
 - policy: MicroShop
 
-- data: Product
-  name: red shoes
+- data: MSProduct
+  name: red_shoes
   state: in stock
 
 - page:
     - name: Warehouse overview
     - label: Warehouse palettes
     - button: add
-    - label: b002, red shoes, shelf 23
-    - label: b001, red shoes, shelf 42
+    - label: b002, red_shoes, shelf_23
+    - label: b001, red_shoes, shelf_42
 
 - page:
     - name: Warehouse add palette
@@ -102,39 +112,43 @@
     - input: barcode
       fill: b003
     - input: product
-      fill: blue jeans
+      fill: blue_jeans
     - input: amount
-      fill: 8
+      fill: 6
     - input: location
-      fill: shelf 1337
+      fill: shelf-1337
     - button: ok
-      command: store product
+      command: store product 03
 
 - policy: Warehouse
 
 - data: Palette
   barcode: b003
-  product: blue jeans
-  amount: 8
-  location: shelf 1337
+  product: blue_jeans
+  amount: 6
+  location: shelf_1337
+
+- data: WHProduct
+  name: blue_jeans
+  amount: 6
 
 - event: product stored
   barcode: b003
-  product: blue jeans
+  product: blue_jeans
 
 - policy: MicroShop
 
-- data: Product
-  name: blue jeans
+- data: MSProduct
+  name: blue_jeans
   state: in stock
 
 - page:
     - name: Warehouse overview
     - label: Warehouse palettes
     - button: add
-    - label: b003, blue jeans, shelf 1337
-    - label: b002, red shoes, shelf 23
-    - label: b001, red shoes, shelf 42
+    - label: b003, blue_jeans, shelf_1337
+    - label: b002, red_shoes, shelf_23
+    - label: b001, red_shoes, shelf_42
 
 - action: Sabine Sales
 
@@ -148,7 +162,7 @@
     - name: MicroShop add offer
     - label: make new offer
     - input: product
-      fill: red shoes
+      fill: red_shoes
     - input: price
       fill: $42
     - button: ok
@@ -156,25 +170,25 @@
 
 - policy: MicroShop
 
-- data: Product
-  name: red shoes
+- data: MSProduct
+  name: red_shoes
   price: $42
 
 - event: product offered
-  name: red shoes
+  name: red_shoes
   price: $42
 
 - page:
     - name: MicroShop offers
     - label: Offers overview
     - button: add
-    - label: red shoes, $42
+    - label: red_shoes, $42
 
 - page:
     - name: MicroShop add offer
     - label: make new offer
     - input: product
-      fill: blue jeans
+      fill: blue_jeans
     - input: price
       fill: $63
     - button: ok
@@ -182,39 +196,39 @@
 
 - policy: MicroShop
 
-- data: Product
-  name: blue jeans
+- data: MSProduct
+  name: blue_jeans
   price: $63
 
 - event: product offered
-  name: blue jeans
+  name: blue_jeans
   price: $63
 
 - page:
     - name: MicroShop offers
     - label: Offers overview
     - button: add
-    - label: red shoes, $42
-    - label: blue jeans, $63
+    - label: red_shoes, $42
+    - label: blue_jeans, $63
 
 
-- action: Carli Customer
+- action: Carli_Customer
 
 - page:
     - name: MicroShop offers
     - label: Welcome to our micro shop
     - label: We have
-    - label: red shoes for $42
-    - label: blue jeans for $63
+    - label: red_shoes for $42
+    - label: blue_jeans for $63
     - button: order
 
 - page:
     - name: MicroShop buy
     - label: Welcome to our micro shop
     - input: product
-      fill: red shoes
+      fill: red_shoes
     - input: customer
-      fill: Carli Customer
+      fill: Carli_Customer
     - input: address
       fill: Wonderland 1
     - button: buy
@@ -224,29 +238,30 @@
 
 - data: Order
   code: o0925_1
-  product: red shoes
+  product: red_shoes
   product.back: [orders]
-  customer: Carli Customer
+  customer: Carli_Customer
   customer.back: [orders]
   address: Wonderland 1
   state: new order
 
 - data: Customer
-  name: Carli Customer
+  name: Carli_Customer
 
 - event: product ordered
   code: o0925_1
-  product: red shoes
-  customer: Carli Customer
+  product: red_shoes
+  customer: Carli_Customer
   address: Wonderland 1
 
 - policy: Warehouse
 
 - data: PickTask
   code: pt_o0925_1
-  product: red shoes
+  product: red_shoes
+  product.back: [pickTasks]
   shelf: [shelf 42, shelf 23]
-  customer: Carli Customer
+  customer: Carli_Customer
   address: Wonderland 1
   state: picking
 
@@ -265,7 +280,7 @@
     - name: MicroShop Carli overview
     - label: Welcome Carli
     - label: Your orders are
-    - label: red shoes for $42, picking
+    - label: red_shoes for $42, picking
     - button: order
 
 
@@ -274,7 +289,7 @@
 - page:
     - name: Warehouse pick tasks
     - label: Pick tasks overview
-    - button: pt_o0925_1, red shoes, shelf 42, shelf 23
+    - button: pt_o0925_1, red_shoes, shelf 42, shelf 23
 
 - page:
     - name: Warehouse pick one
@@ -313,7 +328,7 @@
 - page:
     - name: Warehouse delivery tasks
     - label: Delivery tasks overview
-    - button: red shoes, Wonderland 1
+    - button: red_shoes, Wonderland 1
 
 - page:
     - name: Warehouse deliver
@@ -340,7 +355,7 @@
 
 - workflow: out of stock
 
-- action: Carli Customer
+- action: Carli_Customer
 
 - event: product ordered
 

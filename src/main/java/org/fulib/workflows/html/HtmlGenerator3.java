@@ -49,23 +49,28 @@ public class HtmlGenerator3 {
 
     private void writeFiles(String workFlowName) {
         try {
-            String outputDirectoryPath = String.format("tmp/%s", workFlowName);
+            String rootDirName = "tmp";
+            if (workFlowName.contains("/")) {
+                rootDirName = workFlowName.substring(0, workFlowName.lastIndexOf("/"));
+                workFlowName = workFlowName.substring(workFlowName.lastIndexOf("/")+1);
+            }
+            String outputDirectoryPath = String.format("%s/%s", rootDirName, workFlowName);
             Files.createDirectories(Path.of(outputDirectoryPath));
 
             // Only generate css once and save it in tmp directly (Always the same content)
-            String outputCssFilePath = "tmp/EventStorming.css";
+            String outputCssFilePath = String.format("%s/EventStorming.css", rootDirName);
             if (!Files.exists(Path.of(outputCssFilePath))) {
                 Files.createFile(Path.of(outputCssFilePath));
                 Files.write(Path.of(outputCssFilePath), cssBody.toString().getBytes(StandardCharsets.UTF_8));
             }
 
-            String outputHtmlFilePath = String.format("tmp/%s/%sEventStorming.html", workFlowName, workFlowName);
+            String outputHtmlFilePath = String.format("%s/%s/%sEventStorming.html", rootDirName, workFlowName, workFlowName);
             if (!Files.exists(Path.of(outputHtmlFilePath))) {
                 Files.createFile(Path.of(outputHtmlFilePath));
             }
             Files.write(Path.of(outputHtmlFilePath), htmlBody.toString().getBytes(StandardCharsets.UTF_8));
 
-            String outputJsFilePath = String.format("tmp/%s/%sEventStorming.js", workFlowName, workFlowName);
+            String outputJsFilePath = String.format("%s/%s/%sEventStorming.js", rootDirName, workFlowName, workFlowName);
             if (!Files.exists(Path.of(outputJsFilePath))) {
                 Files.createFile(Path.of(outputJsFilePath));
             }
@@ -137,6 +142,7 @@ public class HtmlGenerator3 {
         StringBuilder buf = new StringBuilder();
         StringBuilder actionBuf = new StringBuilder();
 
+        String lastCommandTime = "12_00_00";
         notesPerLane = 1;
         maxNotesPerLane = Math.max(maxNotesPerLane, notesPerLane);
 
@@ -185,6 +191,7 @@ public class HtmlGenerator3 {
                 noteType = "data";
             } else if (note instanceof CommandNote) {
                 noteType = "command";
+                lastCommandTime = note.getTime().replaceAll("\\:", "_");
             } else if (note instanceof QueryNote) {
                 noteType = "command";
             }
@@ -228,11 +235,23 @@ public class HtmlGenerator3 {
 
             previousActor = targetActor;
 
-            st = htmlGroup.getInstanceOf("note");
-            st.add("id", time);
-            st.add("type", noteType);
-            st.add("content", noteContent);
-            actionBuf.append(st.render());
+            if (noteType.equals("data")) {
+                Policy policy = (Policy) note.getInteraction();
+                String href = StrUtil.decap(policy.getActorName()) + lastCommandTime + ".svg";
+                st = htmlGroup.getInstanceOf("dataNote");
+                st.add("id", time);
+                st.add("type", noteType);
+                st.add("content", noteContent);
+                st.add("href", href);
+                actionBuf.append(st.render());
+            }
+            else {
+                st = htmlGroup.getInstanceOf("note");
+                st.add("id", time);
+                st.add("type", noteType);
+                st.add("content", noteContent);
+                actionBuf.append(st.render());
+            }
 
             notesPerLane++;
             maxNotesPerLane = Math.max(maxNotesPerLane, notesPerLane);

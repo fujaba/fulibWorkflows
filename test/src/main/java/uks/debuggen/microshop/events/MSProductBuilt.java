@@ -1,21 +1,21 @@
 package uks.debuggen.microshop.events;
 import java.util.Objects;
 
-public class ProductBuilt extends DataEvent
+public class MSProductBuilt extends DataEvent
 {
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_PRICE = "price";
    public static final String PROPERTY_STATE = "state";
+   public static final String PROPERTY_PRICE = "price";
    private String name;
-   private String price;
    private String state;
+   private String price;
 
    public String getName()
    {
       return this.name;
    }
 
-   public ProductBuilt setName(String value)
+   public MSProductBuilt setName(String value)
    {
       if (Objects.equals(value, this.name))
       {
@@ -28,30 +28,12 @@ public class ProductBuilt extends DataEvent
       return this;
    }
 
-   public String getPrice()
-   {
-      return this.price;
-   }
-
-   public ProductBuilt setPrice(String value)
-   {
-      if (Objects.equals(value, this.price))
-      {
-         return this;
-      }
-
-      final String oldValue = this.price;
-      this.price = value;
-      this.firePropertyChange(PROPERTY_PRICE, oldValue, value);
-      return this;
-   }
-
    public String getState()
    {
       return this.state;
    }
 
-   public ProductBuilt setState(String value)
+   public MSProductBuilt setState(String value)
    {
       if (Objects.equals(value, this.state))
       {
@@ -61,6 +43,24 @@ public class ProductBuilt extends DataEvent
       final String oldValue = this.state;
       this.state = value;
       this.firePropertyChange(PROPERTY_STATE, oldValue, value);
+      return this;
+   }
+
+   public String getPrice()
+   {
+      return this.price;
+   }
+
+   public MSProductBuilt setPrice(String value)
+   {
+      if (Objects.equals(value, this.price))
+      {
+         return this;
+      }
+
+      final String oldValue = this.price;
+      this.price = value;
+      this.firePropertyChange(PROPERTY_PRICE, oldValue, value);
       return this;
    }
 

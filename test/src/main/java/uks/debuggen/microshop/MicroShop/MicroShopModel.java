@@ -27,12 +27,6 @@ public class MicroShopModel
       return this;
    }
 
-   public Product getOrCreateProduct(String id)
-   {
-      if (id == null) return null;
-      return (Product) modelMap.computeIfAbsent(id, k -> new Product().setId(k));
-   }
-
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -62,5 +56,11 @@ public class MicroShopModel
    {
       if (id == null) return null;
       return (Customer) modelMap.computeIfAbsent(id, k -> new Customer().setId(k));
+   }
+
+   public MSProduct getOrCreateMSProduct(String id)
+   {
+      if (id == null) return null;
+      return (MSProduct) modelMap.computeIfAbsent(id, k -> new MSProduct().setId(k));
    }
 }

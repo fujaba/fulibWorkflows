@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "type": "java",
             "name": "GenShopWorkflow",
@@ -18,6 +19,7 @@
             "request": "launch",
             "mainClass": "org.junit.runner.JUnitCore",
             "args": "org.fulib.workflows.pm.GenHelloWorld"
+
         },
         {
             "type": "java",
@@ -32,6 +34,13 @@
             "request": "launch",
             "mainClass": "org.junit.runner.JUnitCore",
             "args": "org.fulib.workflows.pm.GenStudyRight"
+        },
+        {
+            "type": "java",
+            "name": "TestMicroshop",
+            "request": "launch",
+            "mainClass": "org.junit.runner.JUnitCore",
+            "args": "uks.debuggen.microshop.TestMicroShop"
         }
     ]
 }

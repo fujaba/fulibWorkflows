@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	microShopModel 	microShopBusinessLogic 	microShopBuilder 	microShopService 	product 	order 	customer
+  classes: 	microShopModel 	microShopBusinessLogic 	microShopBuilder 	microShopService 	mSProduct 	order 	customer
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -11,7 +11,7 @@
   attributes: 	microShopModel_modelMap
   importList: 	"import java.util.LinkedHashMap;"
   imports: 	"import java.util.LinkedHashMap;"
-  methods: 	microShopModel_getOrCreateProduct 	microShopModel_getOrCreateOrder 	microShopModel_getOrCreateCustomer
+  methods: 	microShopModel_getOrCreateMSProduct 	microShopModel_getOrCreateOrder 	microShopModel_getOrCreateCustomer
   model: 	c
   modified: 	false
   name: 	MicroShopModel
@@ -32,7 +32,7 @@
   attributes: 	microShopBuilder_model 	microShopBuilder_eventStore 	microShopBuilder_loaderMap 	microShopBuilder_groupStore
   importList: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;" 	"import java.util.function.Function;"
   imports: 	"import java.util.LinkedHashMap;" 	"import java.util.function.Consumer;" 	"import uks.debuggen.microshop.events.*;" 	"import java.util.function.Function;"
-  methods: 	microShopBuilder_outdated 	microShopBuilder_storeProductBuilt 	microShopBuilder_loadProductBuilt 	microShopBuilder_storeOrderBuilt 	microShopBuilder_loadOrderBuilt 	microShopBuilder_storeCustomerBuilt 	microShopBuilder_loadCustomerBuilt 	microShopBuilder_load 	microShopBuilder_initLoaderMap 	microShopBuilder_getObjectId 	microShopBuilder_addToGroup 	microShopBuilder_stripBrackets
+  methods: 	microShopBuilder_outdated 	microShopBuilder_storeMSProductBuilt 	microShopBuilder_loadMSProductBuilt 	microShopBuilder_storeOrderBuilt 	microShopBuilder_loadOrderBuilt 	microShopBuilder_storeCustomerBuilt 	microShopBuilder_loadCustomerBuilt 	microShopBuilder_load 	microShopBuilder_initLoaderMap 	microShopBuilder_getObjectId 	microShopBuilder_addToGroup 	microShopBuilder_stripBrackets
   model: 	c
   modified: 	false
   name: 	MicroShopBuilder
@@ -50,13 +50,13 @@
   propertyStyle: 	Bean
   roles: 	microShopService_businessLogic 	microShopService_builder
 
-- product: 	org.fulib.classmodel.Clazz
-  attributes: 	product_id 	product_name 	product_state 	product_price
+- mSProduct: 	org.fulib.classmodel.Clazz
+  attributes: 	mSProduct_id 	mSProduct_name 	mSProduct_state 	mSProduct_price
   model: 	c
   modified: 	false
-  name: 	Product
+  name: 	MSProduct
   propertyStyle: 	Bean
-  roles: 	product_orders
+  roles: 	mSProduct_orders
 
 - order: 	org.fulib.classmodel.Clazz
   attributes: 	order_id 	order_code 	order_address 	order_state
@@ -91,20 +91,20 @@
   type: 	"LinkedHashMap<String, Object>"
   typeSignature: 	"LinkedHashMap<String,Object>"
 
-- microShopModel_getOrCreateProduct: 	org.fulib.classmodel.FMethod
+- microShopModel_getOrCreateMSProduct: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	microShopModel
-  declaration: 	"public Product getOrCreateProduct(String id)"
-  id: 	MicroShopModel_getOrCreateProduct
+  declaration: 	"public MSProduct getOrCreateMSProduct(String id)"
+  id: 	MicroShopModel_getOrCreateMSProduct
   methodBody: 	"if (id == null) return null;
-return (Product) modelMap.computeIfAbsent(id, k -> new Product().setId(k));
+return (MSProduct) modelMap.computeIfAbsent(id, k -> new MSProduct().setId(k));
 "
   modified: 	false
   modifiers: 	public
-  name: 	getOrCreateProduct
+  name: 	getOrCreateMSProduct
   paramsString: 	"String id"
-  returnType: 	Product
-  signature: 	"class/MicroShopModel/method/getOrCreateProduct(String)"
+  returnType: 	MSProduct
+  signature: 	"class/MicroShopModel/method/getOrCreateMSProduct(String)"
 
 - microShopModel_getOrCreateOrder: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -177,28 +177,28 @@ handleDemoProductStoredEvent(event);
   declaration: 	"private void handleDemoProductStoredEvent(ProductStoredEvent event)"
   id: 	MicroShopBusinessLogic_handleDemoProductStoredEvent
   methodBody: 	"if (event.getId().equals(\"12:04\")) {
-   ProductBuilt red_shoesEvent = new ProductBuilt();
+   MSProductBuilt red_shoesEvent = new MSProductBuilt();
    red_shoesEvent.setId(\"12:04:01\");
    red_shoesEvent.setBlockId(\"red_shoes\");
-   red_shoesEvent.setName(\"red shoes\");
+   red_shoesEvent.setName(\"red_shoes\");
    red_shoesEvent.setState(\"in stock\");
    service.apply(red_shoesEvent);
 
 }
 if (event.getId().equals(\"12:07\")) {
-   ProductBuilt red_shoesEvent = new ProductBuilt();
+   MSProductBuilt red_shoesEvent = new MSProductBuilt();
    red_shoesEvent.setId(\"12:07:01\");
    red_shoesEvent.setBlockId(\"red_shoes\");
-   red_shoesEvent.setName(\"red shoes\");
+   red_shoesEvent.setName(\"red_shoes\");
    red_shoesEvent.setState(\"in stock\");
    service.apply(red_shoesEvent);
 
 }
 if (event.getId().equals(\"12:10\")) {
-   ProductBuilt blue_jeansEvent = new ProductBuilt();
+   MSProductBuilt blue_jeansEvent = new MSProductBuilt();
    blue_jeansEvent.setId(\"12:10:01\");
    blue_jeansEvent.setBlockId(\"blue_jeans\");
-   blue_jeansEvent.setName(\"blue jeans\");
+   blue_jeansEvent.setName(\"blue_jeans\");
    blue_jeansEvent.setState(\"in stock\");
    service.apply(blue_jeansEvent);
 
@@ -234,10 +234,10 @@ handleDemoAddOfferCommand(event);
   declaration: 	"private void handleDemoAddOfferCommand(AddOfferCommand event)"
   id: 	MicroShopBusinessLogic_handleDemoAddOfferCommand
   methodBody: 	"if (event.getId().equals(\"12:14:42\")) {
-   ProductBuilt red_shoesEvent = new ProductBuilt();
+   MSProductBuilt red_shoesEvent = new MSProductBuilt();
    red_shoesEvent.setId(\"12:14:43\");
    red_shoesEvent.setBlockId(\"red_shoes\");
-   red_shoesEvent.setName(\"red shoes\");
+   red_shoesEvent.setName(\"red_shoes\");
    red_shoesEvent.setPrice(\"$42\");
    service.apply(red_shoesEvent);
 
@@ -245,7 +245,7 @@ handleDemoAddOfferCommand(event);
    ProductOfferedEvent e1215 = new ProductOfferedEvent();
 
    e1215.setId(\"12:15\");
-   e1215.setName(\"red shoes\");
+   e1215.setName(\"red_shoes\");
    e1215.setPrice(\"$42\");
    service.apply(e1215);
 }
@@ -280,10 +280,10 @@ handleDemoAddCommand(event);
   declaration: 	"private void handleDemoAddCommand(AddCommand event)"
   id: 	MicroShopBusinessLogic_handleDemoAddCommand
   methodBody: 	"if (event.getId().equals(\"12:17:01\")) {
-   ProductBuilt blue_jeansEvent = new ProductBuilt();
+   MSProductBuilt blue_jeansEvent = new MSProductBuilt();
    blue_jeansEvent.setId(\"12:17:02\");
    blue_jeansEvent.setBlockId(\"blue_jeans\");
-   blue_jeansEvent.setName(\"blue jeans\");
+   blue_jeansEvent.setName(\"blue_jeans\");
    blue_jeansEvent.setPrice(\"$63\");
    service.apply(blue_jeansEvent);
 
@@ -291,7 +291,7 @@ handleDemoAddCommand(event);
    ProductOfferedEvent e1218 = new ProductOfferedEvent();
 
    e1218.setId(\"12:18\");
-   e1218.setName(\"blue jeans\");
+   e1218.setName(\"blue_jeans\");
    e1218.setPrice(\"$63\");
    service.apply(e1218);
 }
@@ -330,8 +330,8 @@ handleDemoPlaceCommand(event);
    o0925_1Event.setId(\"12:21:02\");
    o0925_1Event.setBlockId(\"o0925_1\");
    o0925_1Event.setCode(\"o0925_1\");
-   o0925_1Event.setProduct(\"red shoes\");
-   o0925_1Event.setCustomer(\"Carli Customer\");
+   o0925_1Event.setProduct(\"red_shoes\");
+   o0925_1Event.setCustomer(\"Carli_Customer\");
    o0925_1Event.setAddress(\"Wonderland 1\");
    o0925_1Event.setState(\"new order\");
    service.apply(o0925_1Event);
@@ -339,7 +339,7 @@ handleDemoPlaceCommand(event);
    CustomerBuilt carli_CustomerEvent = new CustomerBuilt();
    carli_CustomerEvent.setId(\"12:21:03\");
    carli_CustomerEvent.setBlockId(\"Carli_Customer\");
-   carli_CustomerEvent.setName(\"Carli Customer\");
+   carli_CustomerEvent.setName(\"Carli_Customer\");
    service.apply(carli_CustomerEvent);
 
 
@@ -347,8 +347,8 @@ handleDemoPlaceCommand(event);
 
    e1222.setId(\"12:22\");
    e1222.setCode(\"o0925_1\");
-   e1222.setProduct(\"red shoes\");
-   e1222.setCustomer(\"Carli Customer\");
+   e1222.setProduct(\"red_shoes\");
+   e1222.setCustomer(\"Carli_Customer\");
    e1222.setAddress(\"Wonderland 1\");
    service.apply(e1222);
 }
@@ -490,7 +490,7 @@ handleDemoDeliverCommand(event);
   id: 	MicroShopBusinessLogic_initEventHandlerMap
   methodBody: 	"if (handlerMap == null) {
    handlerMap = new LinkedHashMap<>();
-   handlerMap.put(ProductBuilt.class, builder::storeProductBuilt);
+   handlerMap.put(MSProductBuilt.class, builder::storeMSProductBuilt);
    handlerMap.put(OrderBuilt.class, builder::storeOrderBuilt);
    handlerMap.put(CustomerBuilt.class, builder::storeCustomerBuilt);
    handlerMap.put(ProductStoredEvent.class, this::handleProductStoredEvent);
@@ -621,12 +621,12 @@ handleDemoDeliverCommand(event);
   returnType: 	boolean
   signature: 	"class/MicroShopBuilder/method/outdated(DataEvent)"
 
-- microShopBuilder_storeProductBuilt: 	org.fulib.classmodel.FMethod
+- microShopBuilder_storeMSProductBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	microShopBuilder
-  declaration: 	"public void storeProductBuilt(Event e)"
-  id: 	MicroShopBuilder_storeProductBuilt
-  methodBody: 	"ProductBuilt event = (ProductBuilt) e;
+  declaration: 	"public void storeMSProductBuilt(Event e)"
+  id: 	MicroShopBuilder_storeMSProductBuilt
+  methodBody: 	"MSProductBuilt event = (MSProductBuilt) e;
 if (outdated(event)) {
    return;
 }
@@ -635,18 +635,18 @@ if (outdated(event)) {
 "
   modified: 	false
   modifiers: 	public
-  name: 	storeProductBuilt
+  name: 	storeMSProductBuilt
   paramsString: 	"Event e"
   returnType: 	void
-  signature: 	"class/MicroShopBuilder/method/storeProductBuilt(Event)"
+  signature: 	"class/MicroShopBuilder/method/storeMSProductBuilt(Event)"
 
-- microShopBuilder_loadProductBuilt: 	org.fulib.classmodel.FMethod
+- microShopBuilder_loadMSProductBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
   clazz: 	microShopBuilder
-  declaration: 	"public Product loadProductBuilt(Event e)"
-  id: 	MicroShopBuilder_loadProductBuilt
-  methodBody: 	"ProductBuilt event = (ProductBuilt) e;
-Product object = model.getOrCreateProduct(event.getBlockId());
+  declaration: 	"public MSProduct loadMSProductBuilt(Event e)"
+  id: 	MicroShopBuilder_loadMSProductBuilt
+  methodBody: 	"MSProductBuilt event = (MSProductBuilt) e;
+MSProduct object = model.getOrCreateMSProduct(event.getBlockId());
 object.setName(event.getName());
 object.setState(event.getState());
 object.setPrice(event.getPrice());
@@ -654,10 +654,10 @@ return object;
 "
   modified: 	false
   modifiers: 	public
-  name: 	loadProductBuilt
+  name: 	loadMSProductBuilt
   paramsString: 	"Event e"
-  returnType: 	Product
-  signature: 	"class/MicroShopBuilder/method/loadProductBuilt(Event)"
+  returnType: 	MSProduct
+  signature: 	"class/MicroShopBuilder/method/loadMSProductBuilt(Event)"
 
 - microShopBuilder_storeOrderBuilt: 	org.fulib.classmodel.FMethod
   annotations: 	""
@@ -686,7 +686,7 @@ if (outdated(event)) {
   methodBody: 	"OrderBuilt event = (OrderBuilt) e;
 Order object = model.getOrCreateOrder(event.getBlockId());
 object.setCode(event.getCode());
-object.setProduct(model.getOrCreateProduct(event.getProduct()));
+object.setProduct(model.getOrCreateMSProduct(event.getProduct()));
 object.setCustomer(model.getOrCreateCustomer(event.getCustomer()));
 object.setAddress(event.getAddress());
 object.setState(event.getState());
@@ -770,7 +770,7 @@ return object;
   id: 	MicroShopBuilder_initLoaderMap
   methodBody: 	"if (loaderMap == null) {
    loaderMap = new LinkedHashMap<>();
-   loaderMap.put(ProductBuilt.class, this::loadProductBuilt);
+   loaderMap.put(MSProductBuilt.class, this::loadMSProductBuilt);
    loaderMap.put(OrderBuilt.class, this::loadOrderBuilt);
    loaderMap.put(CustomerBuilt.class, this::loadCustomerBuilt);
 }
@@ -1147,7 +1147,7 @@ if (id.equals(\"12_16\")) {
    // MicroShop offers 12:16
    html.append(\"   <p>Offers overview</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
-   html.append(\"   <p>red shoes, $42</p>\n\");
+   html.append(\"   <p>red_shoes, $42</p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -1171,8 +1171,8 @@ if (id.equals(\"12_19\")) {
    // MicroShop offers 12:19
    html.append(\"   <p>Offers overview</p>\n\");
    html.append(\"   <p><input id=\\"add\\" name=\\"button\\" type=\\"submit\\" value=\\"add\\"></p>\n\");
-   html.append(\"   <p>red shoes, $42</p>\n\");
-   html.append(\"   <p>blue jeans, $63</p>\n\");
+   html.append(\"   <p>red_shoes, $42</p>\n\");
+   html.append(\"   <p>blue_jeans, $63</p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -1183,8 +1183,8 @@ if (id.equals(\"12_20\")) {
    // MicroShop offers 12:20
    html.append(\"   <p>Welcome to our micro shop</p>\n\");
    html.append(\"   <p>We have</p>\n\");
-   html.append(\"   <p>red shoes for $42</p>\n\");
-   html.append(\"   <p>blue jeans for $63</p>\n\");
+   html.append(\"   <p>red_shoes for $42</p>\n\");
+   html.append(\"   <p>blue_jeans for $63</p>\n\");
    html.append(\"   <p><input id=\\"order\\" name=\\"button\\" type=\\"submit\\" value=\\"order\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -1210,7 +1210,7 @@ if (id.equals(\"12_24\")) {
    // MicroShop Carli overview 12:24
    html.append(\"   <p>Welcome Carli</p>\n\");
    html.append(\"   <p>Your orders are</p>\n\");
-   html.append(\"   <p>red shoes for $42, picking</p>\n\");
+   html.append(\"   <p>red_shoes for $42, picking</p>\n\");
    html.append(\"   <p><input id=\\"order\\" name=\\"button\\" type=\\"submit\\" value=\\"order\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
@@ -1302,48 +1302,48 @@ catch (UnirestException e) {
   other: 	microShopBuilder_service
   propertyStyle: 	Bean
 
-- product_id: 	org.fulib.classmodel.Attribute
-  clazz: 	product
-  id: 	Product_id
+- mSProduct_id: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProduct
+  id: 	MSProduct_id
   modified: 	false
   name: 	id
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- product_name: 	org.fulib.classmodel.Attribute
-  clazz: 	product
-  id: 	Product_name
+- mSProduct_name: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProduct
+  id: 	MSProduct_name
   modified: 	false
   name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- product_state: 	org.fulib.classmodel.Attribute
-  clazz: 	product
-  id: 	Product_state
+- mSProduct_state: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProduct
+  id: 	MSProduct_state
   modified: 	false
   name: 	state
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- product_price: 	org.fulib.classmodel.Attribute
-  clazz: 	product
-  id: 	Product_price
+- mSProduct_price: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProduct
+  id: 	MSProduct_price
   modified: 	false
   name: 	price
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- product_orders: 	org.fulib.classmodel.AssocRole
+- mSProduct_orders: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
-  clazz: 	product
+  clazz: 	mSProduct
   collectionType: 	c1
-  id: 	Product_orders
+  id: 	MSProduct_orders
   modified: 	false
   name: 	orders
   other: 	order_product
@@ -1393,7 +1393,7 @@ catch (UnirestException e) {
   id: 	Order_product
   modified: 	false
   name: 	product
-  other: 	product_orders
+  other: 	mSProduct_orders
   propertyStyle: 	Bean
 
 - order_customer: 	org.fulib.classmodel.AssocRole

@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	event 	dataEvent 	subscribeEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeCommand 	paletteBuilt 	productStoredEvent 	productBuilt 	addOfferCommand 	productOfferedEvent 	addCommand 	placeCommand 	orderBuilt 	customerBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	deliverCommand 	orderDeliveredEvent 	orderRejectedEvent
+  classes: 	event 	dataEvent 	subscribeEvent 	dataGroup 	query 	serviceSubscribed 	command 	storeProductCommand 	paletteBuilt 	wHProductBuilt 	productStoredEvent 	mSProductBuilt 	addOfferCommand 	productOfferedEvent 	addCommand 	placeCommand 	orderBuilt 	customerBuilt 	productOrderedEvent 	pickTaskBuilt 	pickTaskCreatedEvent 	orderPickedEvent 	deliverCommand 	orderDeliveredEvent 	orderRejectedEvent
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -22,7 +22,7 @@
   name: 	DataEvent
   propertyStyle: 	Bean
   roles: 	dataEvent_sagas 	dataEvent_query
-  subClasses: 	dataGroup 	paletteBuilt 	productBuilt 	orderBuilt 	customerBuilt 	pickTaskBuilt
+  subClasses: 	dataGroup 	paletteBuilt 	wHProductBuilt 	mSProductBuilt 	orderBuilt 	customerBuilt 	pickTaskBuilt
   superClass: 	event
 
 - subscribeEvent: 	org.fulib.classmodel.Clazz
@@ -64,22 +64,30 @@
   modified: 	false
   name: 	Command
   propertyStyle: 	Bean
-  subClasses: 	storeCommand 	addOfferCommand 	addCommand 	placeCommand 	deliverCommand
+  subClasses: 	storeProductCommand 	addOfferCommand 	addCommand 	placeCommand 	deliverCommand
   superClass: 	event
 
-- storeCommand: 	org.fulib.classmodel.Clazz
-  attributes: 	storeCommand_barcode 	storeCommand_product 	storeCommand_amount 	storeCommand_location
+- storeProductCommand: 	org.fulib.classmodel.Clazz
+  attributes: 	storeProductCommand_barcode 	storeProductCommand_product 	storeProductCommand_amount 	storeProductCommand_location
   model: 	c
   modified: 	false
-  name: 	StoreCommand
+  name: 	StoreProductCommand
   propertyStyle: 	Bean
   superClass: 	command
 
 - paletteBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	paletteBuilt_barcode 	paletteBuilt_product 	paletteBuilt_amount 	paletteBuilt_location 	paletteBuilt_content
+  attributes: 	paletteBuilt_barcode 	paletteBuilt_product 	paletteBuilt_amount 	paletteBuilt_location
   model: 	c
   modified: 	false
   name: 	PaletteBuilt
+  propertyStyle: 	Bean
+  superClass: 	dataEvent
+
+- wHProductBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	wHProductBuilt_name 	wHProductBuilt_amount
+  model: 	c
+  modified: 	false
+  name: 	WHProductBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
@@ -91,11 +99,11 @@
   propertyStyle: 	Bean
   superClass: 	event
 
-- productBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	productBuilt_name 	productBuilt_state 	productBuilt_price
+- mSProductBuilt: 	org.fulib.classmodel.Clazz
+  attributes: 	mSProductBuilt_name 	mSProductBuilt_state 	mSProductBuilt_price
   model: 	c
   modified: 	false
-  name: 	ProductBuilt
+  name: 	MSProductBuilt
   propertyStyle: 	Bean
   superClass: 	dataEvent
 
@@ -318,36 +326,36 @@
   type: 	String
   typeSignature: 	String
 
-- storeCommand_barcode: 	org.fulib.classmodel.Attribute
-  clazz: 	storeCommand
-  id: 	StoreCommand_barcode
+- storeProductCommand_barcode: 	org.fulib.classmodel.Attribute
+  clazz: 	storeProductCommand
+  id: 	StoreProductCommand_barcode
   modified: 	false
   name: 	barcode
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- storeCommand_product: 	org.fulib.classmodel.Attribute
-  clazz: 	storeCommand
-  id: 	StoreCommand_product
+- storeProductCommand_product: 	org.fulib.classmodel.Attribute
+  clazz: 	storeProductCommand
+  id: 	StoreProductCommand_product
   modified: 	false
   name: 	product
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- storeCommand_amount: 	org.fulib.classmodel.Attribute
-  clazz: 	storeCommand
-  id: 	StoreCommand_amount
+- storeProductCommand_amount: 	org.fulib.classmodel.Attribute
+  clazz: 	storeProductCommand
+  id: 	StoreProductCommand_amount
   modified: 	false
   name: 	amount
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- storeCommand_location: 	org.fulib.classmodel.Attribute
-  clazz: 	storeCommand
-  id: 	StoreCommand_location
+- storeProductCommand_location: 	org.fulib.classmodel.Attribute
+  clazz: 	storeProductCommand
+  id: 	StoreProductCommand_location
   modified: 	false
   name: 	location
   propertyStyle: 	Bean
@@ -390,11 +398,20 @@
   type: 	String
   typeSignature: 	String
 
-- paletteBuilt_content: 	org.fulib.classmodel.Attribute
-  clazz: 	paletteBuilt
-  id: 	PaletteBuilt_content
+- wHProductBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	wHProductBuilt
+  id: 	WHProductBuilt_name
   modified: 	false
-  name: 	content
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- wHProductBuilt_amount: 	org.fulib.classmodel.Attribute
+  clazz: 	wHProductBuilt
+  id: 	WHProductBuilt_amount
+  modified: 	false
+  name: 	amount
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -417,27 +434,27 @@
   type: 	String
   typeSignature: 	String
 
-- productBuilt_name: 	org.fulib.classmodel.Attribute
-  clazz: 	productBuilt
-  id: 	ProductBuilt_name
+- mSProductBuilt_name: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProductBuilt
+  id: 	MSProductBuilt_name
   modified: 	false
   name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- productBuilt_state: 	org.fulib.classmodel.Attribute
-  clazz: 	productBuilt
-  id: 	ProductBuilt_state
+- mSProductBuilt_state: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProductBuilt
+  id: 	MSProductBuilt_state
   modified: 	false
   name: 	state
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- productBuilt_price: 	org.fulib.classmodel.Attribute
-  clazz: 	productBuilt
-  id: 	ProductBuilt_price
+- mSProductBuilt_price: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProductBuilt
+  id: 	MSProductBuilt_price
   modified: 	false
   name: 	price
   propertyStyle: 	Bean
