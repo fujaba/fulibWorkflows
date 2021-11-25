@@ -36,14 +36,11 @@
       "type": "object",
       "properties": {
         "button": {
-          "type": "string",
-          "properties": {
-            "command": {
-              "type": "string"
-            }
-          }
+          "type": "string"
         },
-        "additionalProperties": false
+        "command": {
+          "type": "string"
+        }
       },
       "required": [
         "button"
@@ -55,16 +52,13 @@
       "type": "object",
       "properties": {
         "input": {
-          "type": "string",
-          "properties": {
-            "fill": {
-              "type": [
-                "string",
-                "number"
-              ]
-            }
-          },
-          "additionalProperties": false
+          "type": "string"
+        },
+        "fill": {
+          "type": [
+            "string",
+            "number"
+          ]
         }
       },
       "required": [
