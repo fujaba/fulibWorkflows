@@ -1,0 +1,111 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	page 	baseNote 	event 	workflow 	board
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"src/main/java"
+  packageName: 	org.fulib.workflows.events
+  packageSrcFolder: 	"src/main/java/org/fulib/workflows/events"
+
+- page: 	org.fulib.classmodel.Clazz
+  attributes: 	page_content
+  model: 	c
+  modified: 	false
+  name: 	Page
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- baseNote: 	org.fulib.classmodel.Clazz
+  attributes: 	baseNote_name 	baseNote_index
+  model: 	c
+  modified: 	false
+  name: 	BaseNote
+  propertyStyle: 	Bean
+  subClasses: 	page 	event 	workflow
+
+- event: 	org.fulib.classmodel.Clazz
+  attributes: 	event_data
+  model: 	c
+  modified: 	false
+  name: 	Event
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- workflow: 	org.fulib.classmodel.Clazz
+  attributes: 	workflow_notes
+  model: 	c
+  modified: 	false
+  name: 	Workflow
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- board: 	org.fulib.classmodel.Clazz
+  attributes: 	board_workflows
+  model: 	c
+  modified: 	false
+  name: 	Board
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- page_content: 	org.fulib.classmodel.Attribute
+  clazz: 	page
+  id: 	Page_content
+  modified: 	false
+  name: 	content
+  propertyStyle: 	Bean
+  type: 	"import(java.util.Map)<String, String>"
+  typeSignature: 	"Map<String,String>"
+
+- baseNote_name: 	org.fulib.classmodel.Attribute
+  clazz: 	baseNote
+  id: 	BaseNote_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- baseNote_index: 	org.fulib.classmodel.Attribute
+  clazz: 	baseNote
+  id: 	BaseNote_index
+  modified: 	false
+  name: 	index
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
+
+- event_data: 	org.fulib.classmodel.Attribute
+  clazz: 	event
+  id: 	Event_data
+  modified: 	false
+  name: 	data
+  propertyStyle: 	Bean
+  type: 	"import(java.util.Map)<String, String>"
+  typeSignature: 	"Map<String,String>"
+
+- workflow_notes: 	org.fulib.classmodel.Attribute
+  clazz: 	workflow
+  collectionType: 	c1
+  id: 	Workflow_notes
+  modified: 	false
+  name: 	notes
+  propertyStyle: 	Bean
+  type: 	BaseNote
+  typeSignature: 	BaseNote
+
+- board_workflows: 	org.fulib.classmodel.Attribute
+  clazz: 	board
+  collectionType: 	c1
+  id: 	Board_workflows
+  modified: 	false
+  name: 	workflows
+  propertyStyle: 	Bean
+  type: 	Workflow
+  typeSignature: 	Workflow
+
