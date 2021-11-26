@@ -79,7 +79,7 @@ public class BoardGenerator {
         // Get Note strings
         // Source
         // https://stackoverflow.com/questions/10065885/split-text-file-into-strings-on-empty-line
-        Pattern p = Pattern.compile("\\r\\n[\\r\\n]+"); // TODO Not working for all systems
+        Pattern p = Pattern.compile("\\n\\n|\\r\\n"); // TODO This is not working for the web editor
         List<String> notes = List.of(p.split(workflowString));
 
         for (String note : notes) {
