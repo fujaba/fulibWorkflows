@@ -50,11 +50,13 @@
 - event: product stored
   barcode: b001
   product: red_shoes
+  amount: 10
 
 - policy: MicroShop
 
 - data: MSProduct
   name: red_shoes
+  amount: 10
   state: in stock
 
 - page:
@@ -92,11 +94,13 @@
 - event: product stored
   barcode: b002
   product: red_shoes
+  amount: 8
 
 - policy: MicroShop
 
 - data: MSProduct
   name: red_shoes
+  amount: 18
   state: in stock
 
 - page:
@@ -135,12 +139,14 @@
 - event: product stored
   barcode: b003
   product: blue_jeans
+  amount: 6
 
 - policy: MicroShop
 
 - data: MSProduct
   name: blue_jeans
   state: in stock
+  amount: 6
 
 - page:
     - name: Warehouse overview
@@ -248,6 +254,10 @@
 - data: Customer
   name: Carli_Customer
 
+- data: MSProduct
+  name: red_shoes
+  amount: 17
+
 - event: product ordered
   code: o0925_1
   product: red_shoes
@@ -260,7 +270,7 @@
   code: pt_o0925_1
   product: red_shoes
   product.back: [pickTasks]
-  shelf: [shelf 42, shelf 23]
+  shelf: [shelf_42, shelf_23]
   customer: Carli_Customer
   address: Wonderland 1
   state: picking
@@ -289,7 +299,7 @@
 - page:
     - name: Warehouse pick tasks
     - label: Pick tasks overview
-    - button: pt_o0925_1, red_shoes, shelf 42, shelf 23
+    - button: pt_o0925_1, red_shoes, shelf_42, shelf_23
 
 - page:
     - name: Warehouse pick one
@@ -297,7 +307,7 @@
     - input: task
       fill: pt_o0925_1
     - input: shelf
-      fill: shelf 42
+      fill: shelf_42
     - button: done
       command: Pick
 
@@ -305,8 +315,18 @@
 
 - data: PickTask
   code: pt_o0925_1
-  from: shelf 42
+  from: shelf_42
+  palette: b001
+  palette.back: [pickTasks]
   state: shipping
+
+- data: Palette
+  barcode: b001
+  amount: 9
+
+- data: WHProduct
+  name: red_shoes
+  amount: 17
 
 - event: order picked
   order: o0925_1

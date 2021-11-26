@@ -10,6 +10,7 @@ public class PickTaskBuilt extends DataEvent
    public static final String PROPERTY_ADDRESS = "address";
    public static final String PROPERTY_STATE = "state";
    public static final String PROPERTY_FROM = "from";
+   public static final String PROPERTY_PALETTE = "palette";
    private String code;
    private String product;
    private String shelf;
@@ -17,6 +18,7 @@ public class PickTaskBuilt extends DataEvent
    private String address;
    private String state;
    private String from;
+   private String palette;
 
    public String getCode()
    {
@@ -144,6 +146,24 @@ public class PickTaskBuilt extends DataEvent
       return this;
    }
 
+   public String getPalette()
+   {
+      return this.palette;
+   }
+
+   public PickTaskBuilt setPalette(String value)
+   {
+      if (Objects.equals(value, this.palette))
+      {
+         return this;
+      }
+
+      final String oldValue = this.palette;
+      this.palette = value;
+      this.firePropertyChange(PROPERTY_PALETTE, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
@@ -155,6 +175,7 @@ public class PickTaskBuilt extends DataEvent
       result.append(' ').append(this.getAddress());
       result.append(' ').append(this.getState());
       result.append(' ').append(this.getFrom());
+      result.append(' ').append(this.getPalette());
       return result.toString();
    }
 }

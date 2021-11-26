@@ -276,6 +276,7 @@ public class WarehouseBuilder
       object.setAddress(event.getAddress());
       object.setState(event.getState());
       object.setFrom(event.getFrom());
+      object.setPalette(model.getOrCreatePalette(event.getPalette()));
       return object;
    }
 

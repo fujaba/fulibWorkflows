@@ -92,7 +92,7 @@
   superClass: 	dataEvent
 
 - productStoredEvent: 	org.fulib.classmodel.Clazz
-  attributes: 	productStoredEvent_barcode 	productStoredEvent_product
+  attributes: 	productStoredEvent_barcode 	productStoredEvent_product 	productStoredEvent_amount
   model: 	c
   modified: 	false
   name: 	ProductStoredEvent
@@ -100,7 +100,7 @@
   superClass: 	event
 
 - mSProductBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	mSProductBuilt_name 	mSProductBuilt_state 	mSProductBuilt_price
+  attributes: 	mSProductBuilt_name 	mSProductBuilt_amount 	mSProductBuilt_state 	mSProductBuilt_price
   model: 	c
   modified: 	false
   name: 	MSProductBuilt
@@ -164,7 +164,7 @@
   superClass: 	event
 
 - pickTaskBuilt: 	org.fulib.classmodel.Clazz
-  attributes: 	pickTaskBuilt_code 	pickTaskBuilt_product 	pickTaskBuilt_shelf 	pickTaskBuilt_customer 	pickTaskBuilt_address 	pickTaskBuilt_state 	pickTaskBuilt_from
+  attributes: 	pickTaskBuilt_code 	pickTaskBuilt_product 	pickTaskBuilt_shelf 	pickTaskBuilt_customer 	pickTaskBuilt_address 	pickTaskBuilt_state 	pickTaskBuilt_from 	pickTaskBuilt_palette
   model: 	c
   modified: 	false
   name: 	PickTaskBuilt
@@ -434,11 +434,29 @@
   type: 	String
   typeSignature: 	String
 
+- productStoredEvent_amount: 	org.fulib.classmodel.Attribute
+  clazz: 	productStoredEvent
+  id: 	ProductStoredEvent_amount
+  modified: 	false
+  name: 	amount
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - mSProductBuilt_name: 	org.fulib.classmodel.Attribute
   clazz: 	mSProductBuilt
   id: 	MSProductBuilt_name
   modified: 	false
   name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- mSProductBuilt_amount: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProductBuilt
+  id: 	MSProductBuilt_amount
+  modified: 	false
+  name: 	amount
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
@@ -691,6 +709,15 @@
   id: 	PickTaskBuilt_from
   modified: 	false
   name: 	from
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- pickTaskBuilt_palette: 	org.fulib.classmodel.Attribute
+  clazz: 	pickTaskBuilt
+  id: 	PickTaskBuilt_palette
+  modified: 	false
+  name: 	palette
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

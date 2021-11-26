@@ -228,7 +228,7 @@ public class TestMicroShop {
    public void setTimeOut() {
       Configuration.timeout = Constants.TIME_OUT * 20;
       Configuration.pageLoadTimeout = Configuration.timeout;
-      Configuration.browserPosition = "-1300x600"; // Constants.BROWSER_POS;
+      Configuration.browserPosition = Constants.BROWSER_POS; // "-1300x600"; //
       Configuration.browserSize="400x500";
       // Configuration.headless = Constants.HEADLESS;
    }
@@ -308,6 +308,7 @@ public class TestMicroShop {
       // check data note 12:04:01
       MSProductBuilt e12_04_01 = (MSProductBuilt) waitForEvent("12:04:01");
       assertThat(e12_04_01.getName()).isEqualTo("red_shoes");
+      assertThat(e12_04_01.getAmount()).isEqualTo("10");
       assertThat(e12_04_01.getState()).isEqualTo("in stock");
 
       // page 12:05
@@ -358,6 +359,7 @@ public class TestMicroShop {
       // check data note 12:07:01
       MSProductBuilt e12_07_01 = (MSProductBuilt) waitForEvent("12:07:01");
       assertThat(e12_07_01.getName()).isEqualTo("red_shoes");
+      assertThat(e12_07_01.getAmount()).isEqualTo("18");
       assertThat(e12_07_01.getState()).isEqualTo("in stock");
 
       // page 12:08
@@ -409,6 +411,7 @@ public class TestMicroShop {
       MSProductBuilt e12_10_01 = (MSProductBuilt) waitForEvent("12:10:01");
       assertThat(e12_10_01.getName()).isEqualTo("blue_jeans");
       assertThat(e12_10_01.getState()).isEqualTo("in stock");
+      assertThat(e12_10_01.getAmount()).isEqualTo("6");
 
       // page 12:11
       open("http://localhost:42001/page/12_11");
@@ -510,7 +513,7 @@ public class TestMicroShop {
       PickTaskBuilt e12_22_01 = (PickTaskBuilt) waitForEvent("12:22:01");
       assertThat(e12_22_01.getCode()).isEqualTo("pt_o0925_1");
       assertThat(e12_22_01.getProduct()).isEqualTo("red_shoes");
-      assertThat(e12_22_01.getShelf()).isEqualTo("[shelf 42, shelf 23]");
+      assertThat(e12_22_01.getShelf()).isEqualTo("[shelf_42, shelf_23]");
       assertThat(e12_22_01.getCustomer()).isEqualTo("Carli_Customer");
       assertThat(e12_22_01.getAddress()).isEqualTo("Wonderland 1");
       assertThat(e12_22_01.getState()).isEqualTo("picking");
@@ -524,7 +527,7 @@ public class TestMicroShop {
       // page 12:26
       open("http://localhost:42001/page/12_26");
       $("#task").setValue("pt_o0925_1");
-      $("#shelf").setValue("shelf 42");
+      $("#shelf").setValue("shelf_42");
       $("#done").click();
       waitForEvent("12:26:01");
 
@@ -542,8 +545,17 @@ public class TestMicroShop {
       // check data note 12:26:02
       PickTaskBuilt e12_26_02 = (PickTaskBuilt) waitForEvent("12:26:02");
       assertThat(e12_26_02.getCode()).isEqualTo("pt_o0925_1");
-      assertThat(e12_26_02.getFrom()).isEqualTo("shelf 42");
+      assertThat(e12_26_02.getFrom()).isEqualTo("shelf_42");
+      assertThat(e12_26_02.getPalette()).isEqualTo("b001");
       assertThat(e12_26_02.getState()).isEqualTo("shipping");
+      // check data note 12:26:03
+      PaletteBuilt e12_26_03 = (PaletteBuilt) waitForEvent("12:26:03");
+      assertThat(e12_26_03.getBarcode()).isEqualTo("b001");
+      assertThat(e12_26_03.getAmount()).isEqualTo("9");
+      // check data note 12:26:04
+      WHProductBuilt e12_26_04 = (WHProductBuilt) waitForEvent("12:26:04");
+      assertThat(e12_26_04.getName()).isEqualTo("red_shoes");
+      assertThat(e12_26_04.getAmount()).isEqualTo("17");
 
       // check MicroShop
       open("http://localhost:42002");

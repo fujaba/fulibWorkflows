@@ -56,7 +56,7 @@
   modified: 	false
   name: 	Palette
   propertyStyle: 	Bean
-  roles: 	palette_product
+  roles: 	palette_product 	palette_pickTasks
 
 - wHProduct: 	org.fulib.classmodel.Clazz
   attributes: 	wHProduct_id 	wHProduct_name 	wHProduct_amount
@@ -72,7 +72,7 @@
   modified: 	false
   name: 	PickTask
   propertyStyle: 	Bean
-  roles: 	pickTask_product
+  roles: 	pickTask_product 	pickTask_palette
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -199,6 +199,7 @@ handleDemoStoreProductCommand(event);
    e1204.setId(\"12:04\");
    e1204.setBarcode(\"b001\");
    e1204.setProduct(\"red_shoes\");
+   e1204.setAmount(\"10\");
    service.apply(e1204);
 }
 if (event.getId().equals(\"12:06:01\")) {
@@ -224,6 +225,7 @@ if (event.getId().equals(\"12:06:01\")) {
    e1207.setId(\"12:07\");
    e1207.setBarcode(\"b002\");
    e1207.setProduct(\"red_shoes\");
+   e1207.setAmount(\"8\");
    service.apply(e1207);
 }
 if (event.getId().equals(\"12:09:01\")) {
@@ -249,6 +251,7 @@ if (event.getId().equals(\"12:09:01\")) {
    e1210.setId(\"12:10\");
    e1210.setBarcode(\"b003\");
    e1210.setProduct(\"blue_jeans\");
+   e1210.setAmount(\"6\");
    service.apply(e1210);
 }
 "
@@ -287,7 +290,7 @@ handleDemoProductOrderedEvent(event);
    pt_o0925_1Event.setBlockId(\"pt_o0925_1\");
    pt_o0925_1Event.setCode(\"pt_o0925_1\");
    pt_o0925_1Event.setProduct(\"red_shoes\");
-   pt_o0925_1Event.setShelf(\"[shelf 42, shelf 23]\");
+   pt_o0925_1Event.setShelf(\"[shelf_42, shelf_23]\");
    pt_o0925_1Event.setCustomer(\"Carli_Customer\");
    pt_o0925_1Event.setAddress(\"Wonderland 1\");
    pt_o0925_1Event.setState(\"picking\");
@@ -336,9 +339,24 @@ handleDemoCommand(event);
    pt_o0925_1Event.setId(\"12:26:02\");
    pt_o0925_1Event.setBlockId(\"pt_o0925_1\");
    pt_o0925_1Event.setCode(\"pt_o0925_1\");
-   pt_o0925_1Event.setFrom(\"shelf 42\");
+   pt_o0925_1Event.setFrom(\"shelf_42\");
+   pt_o0925_1Event.setPalette(\"b001\");
    pt_o0925_1Event.setState(\"shipping\");
    service.apply(pt_o0925_1Event);
+
+   PaletteBuilt b001Event = new PaletteBuilt();
+   b001Event.setId(\"12:26:03\");
+   b001Event.setBlockId(\"b001\");
+   b001Event.setBarcode(\"b001\");
+   b001Event.setAmount(\"9\");
+   service.apply(b001Event);
+
+   WHProductBuilt red_shoesEvent = new WHProductBuilt();
+   red_shoesEvent.setId(\"12:26:04\");
+   red_shoesEvent.setBlockId(\"red_shoes\");
+   red_shoesEvent.setName(\"red_shoes\");
+   red_shoesEvent.setAmount(\"17\");
+   service.apply(red_shoesEvent);
 
 
    OrderPickedEvent e1227 = new OrderPickedEvent();
@@ -598,6 +616,7 @@ object.setCustomer(event.getCustomer());
 object.setAddress(event.getAddress());
 object.setState(event.getState());
 object.setFrom(event.getFrom());
+object.setPalette(model.getOrCreatePalette(event.getPalette()));
 return object;
 "
   modified: 	false
@@ -1121,7 +1140,7 @@ if (id.equals(\"12_25\")) {
    html.append(\"<form action=\\"/page/12_26\\" method=\\"get\\">\n\");
    // Warehouse pick tasks 12:25
    html.append(\"   <p>Pick tasks overview</p>\n\");
-   html.append(\"   <p><input id=\\"pt_o0925_1, red_shoes, shelf 42, shelf 23\\" name=\\"button\\" type=\\"submit\\" value=\\"pt_o0925_1, red_shoes, shelf 42, shelf 23\\"></p>\n\");
+   html.append(\"   <p><input id=\\"pt_o0925_1, red_shoes, shelf_42, shelf_23\\" name=\\"button\\" type=\\"submit\\" value=\\"pt_o0925_1, red_shoes, shelf_42, shelf_23\\"></p>\n\");
    html.append(\"</form>\n\");
    return html.toString();
 }
@@ -1313,6 +1332,18 @@ catch (UnirestException e) {
   other: 	wHProduct_palettes
   propertyStyle: 	Bean
 
+- palette_pickTasks: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	palette
+  collectionType: 	c1
+  id: 	Palette_pickTasks
+  modified: 	false
+  name: 	pickTasks
+  other: 	pickTask_palette
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - wHProduct_id: 	org.fulib.classmodel.Attribute
   clazz: 	wHProduct
   id: 	WHProduct_id
@@ -1435,5 +1466,15 @@ catch (UnirestException e) {
   modified: 	false
   name: 	product
   other: 	wHProduct_pickTasks
+  propertyStyle: 	Bean
+
+- pickTask_palette: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	pickTask
+  id: 	PickTask_palette
+  modified: 	false
+  name: 	palette
+  other: 	palette_pickTasks
   propertyStyle: 	Bean
 

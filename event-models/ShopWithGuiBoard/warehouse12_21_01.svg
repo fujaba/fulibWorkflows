@@ -60,7 +60,7 @@
 <text text-anchor="start" x="136.5" y="-54" font-family="Times New Roman,serif" font-size="10.00">customer = &quot;Carli_Customer&quot;</text>
 <text text-anchor="start" x="136.5" y="-43" font-family="Times New Roman,serif" font-size="10.00">from = null</text>
 <text text-anchor="start" x="136.5" y="-32" font-family="Times New Roman,serif" font-size="10.00">id = &quot;pt_o0925_1&quot;</text>
-<text text-anchor="start" x="136.5" y="-21" font-family="Times New Roman,serif" font-size="10.00">shelf = &quot;[shelf 42, shelf 23]&quot;</text>
+<text text-anchor="start" x="136.5" y="-21" font-family="Times New Roman,serif" font-size="10.00">shelf = &quot;[shelf_42, shelf_23]&quot;</text>
 <text text-anchor="start" x="136.5" y="-10" font-family="Times New Roman,serif" font-size="10.00">state = &quot;picking&quot;</text>
 </g>
 <!-- red_shoes&#45;&gt;pt_o0925_1 -->

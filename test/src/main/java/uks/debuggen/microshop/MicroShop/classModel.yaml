@@ -51,7 +51,7 @@
   roles: 	microShopService_businessLogic 	microShopService_builder
 
 - mSProduct: 	org.fulib.classmodel.Clazz
-  attributes: 	mSProduct_id 	mSProduct_name 	mSProduct_state 	mSProduct_price
+  attributes: 	mSProduct_id 	mSProduct_name 	mSProduct_amount 	mSProduct_state 	mSProduct_price
   model: 	c
   modified: 	false
   name: 	MSProduct
@@ -181,6 +181,7 @@ handleDemoProductStoredEvent(event);
    red_shoesEvent.setId(\"12:04:01\");
    red_shoesEvent.setBlockId(\"red_shoes\");
    red_shoesEvent.setName(\"red_shoes\");
+   red_shoesEvent.setAmount(\"10\");
    red_shoesEvent.setState(\"in stock\");
    service.apply(red_shoesEvent);
 
@@ -190,6 +191,7 @@ if (event.getId().equals(\"12:07\")) {
    red_shoesEvent.setId(\"12:07:01\");
    red_shoesEvent.setBlockId(\"red_shoes\");
    red_shoesEvent.setName(\"red_shoes\");
+   red_shoesEvent.setAmount(\"18\");
    red_shoesEvent.setState(\"in stock\");
    service.apply(red_shoesEvent);
 
@@ -200,6 +202,7 @@ if (event.getId().equals(\"12:10\")) {
    blue_jeansEvent.setBlockId(\"blue_jeans\");
    blue_jeansEvent.setName(\"blue_jeans\");
    blue_jeansEvent.setState(\"in stock\");
+   blue_jeansEvent.setAmount(\"6\");
    service.apply(blue_jeansEvent);
 
 }
@@ -341,6 +344,13 @@ handleDemoPlaceCommand(event);
    carli_CustomerEvent.setBlockId(\"Carli_Customer\");
    carli_CustomerEvent.setName(\"Carli_Customer\");
    service.apply(carli_CustomerEvent);
+
+   MSProductBuilt red_shoesEvent = new MSProductBuilt();
+   red_shoesEvent.setId(\"12:21:04\");
+   red_shoesEvent.setBlockId(\"red_shoes\");
+   red_shoesEvent.setName(\"red_shoes\");
+   red_shoesEvent.setAmount(\"17\");
+   service.apply(red_shoesEvent);
 
 
    ProductOrderedEvent e1222 = new ProductOrderedEvent();
@@ -648,6 +658,7 @@ if (outdated(event)) {
   methodBody: 	"MSProductBuilt event = (MSProductBuilt) e;
 MSProduct object = model.getOrCreateMSProduct(event.getBlockId());
 object.setName(event.getName());
+object.setAmount(event.getAmount() == null ? 0 : Integer.parseInt(event.getAmount()));
 object.setState(event.getState());
 object.setPrice(event.getPrice());
 return object;
@@ -1319,6 +1330,15 @@ catch (UnirestException e) {
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- mSProduct_amount: 	org.fulib.classmodel.Attribute
+  clazz: 	mSProduct
+  id: 	MSProduct_amount
+  modified: 	false
+  name: 	amount
+  propertyStyle: 	Bean
+  type: 	int
+  typeSignature: 	int
 
 - mSProduct_state: 	org.fulib.classmodel.Attribute
   clazz: 	mSProduct

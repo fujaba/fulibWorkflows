@@ -6,9 +6,11 @@ public class MSProductBuilt extends DataEvent
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_STATE = "state";
    public static final String PROPERTY_PRICE = "price";
+   public static final String PROPERTY_AMOUNT = "amount";
    private String name;
    private String state;
    private String price;
+   private String amount;
 
    public String getName()
    {
@@ -64,11 +66,30 @@ public class MSProductBuilt extends DataEvent
       return this;
    }
 
+   public String getAmount()
+   {
+      return this.amount;
+   }
+
+   public MSProductBuilt setAmount(String value)
+   {
+      if (Objects.equals(value, this.amount))
+      {
+         return this;
+      }
+
+      final String oldValue = this.amount;
+      this.amount = value;
+      this.firePropertyChange(PROPERTY_AMOUNT, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getName());
+      result.append(' ').append(this.getAmount());
       result.append(' ').append(this.getState());
       result.append(' ').append(this.getPrice());
       return result.toString();

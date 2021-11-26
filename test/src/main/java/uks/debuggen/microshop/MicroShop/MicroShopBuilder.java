@@ -310,6 +310,7 @@ public class MicroShopBuilder
       MSProductBuilt event = (MSProductBuilt) e;
       MSProduct object = model.getOrCreateMSProduct(event.getBlockId());
       object.setName(event.getName());
+      object.setAmount(event.getAmount() == null ? 0 : Integer.parseInt(event.getAmount()));
       object.setState(event.getState());
       object.setPrice(event.getPrice());
       return object;

@@ -70,6 +70,7 @@
                         <div> product stored 12:04</div>
                         <div>barcode: b001</div>
                         <div>product: red_shoes</div>
+                        <div>amount: 10</div>
 
                     </div>
                     <div class="box server">
@@ -80,6 +81,7 @@
                         <div class="box data">
                             <div>data: MSProduct red_shoes 12:04:01</div>
                             <div>name: red_shoes</div>
+                            <div>amount: 10</div>
                             <div>state: in stock</div>
 
                         </div>
@@ -144,6 +146,7 @@
                         <div> product stored 12:07</div>
                         <div>barcode: b002</div>
                         <div>product: red_shoes</div>
+                        <div>amount: 8</div>
 
                     </div>
                     <div class="box server">
@@ -154,6 +157,7 @@
                         <div class="box data">
                             <div>data: MSProduct red_shoes 12:07:01</div>
                             <div>name: red_shoes</div>
+                            <div>amount: 18</div>
                             <div>state: in stock</div>
 
                         </div>
@@ -219,6 +223,7 @@
                         <div> product stored 12:10</div>
                         <div>barcode: b003</div>
                         <div>product: blue_jeans</div>
+                        <div>amount: 6</div>
 
                     </div>
                     <div class="box server">
@@ -230,6 +235,7 @@
                             <div>data: MSProduct blue_jeans 12:10:01</div>
                             <div>name: blue_jeans</div>
                             <div>state: in stock</div>
+                            <div>amount: 6</div>
 
                         </div>
                     </a>
@@ -424,6 +430,14 @@
 
                         </div>
                     </a>
+                    <a href="microShop12_21_01.svg" target="objectDiagram">
+                        <div class="box data">
+                            <div>data: MSProduct red_shoes 12:21:04</div>
+                            <div>name: red_shoes</div>
+                            <div>amount: 17</div>
+
+                        </div>
+                    </a>
                     <div class="box event">
                         <div> product ordered 12:22</div>
                         <div>code: o0925_1</div>
@@ -442,7 +456,7 @@
                             <div>code: pt_o0925_1</div>
                             <div>product: red_shoes</div>
                             <div>product.back: [pickTasks]</div>
-                            <div>shelf: [shelf 42, shelf 23]</div>
+                            <div>shelf: [shelf_42, shelf_23]</div>
                             <div>customer: Carli_Customer</div>
                             <div>address: Wonderland 1</div>
                             <div>state: picking</div>
@@ -498,20 +512,20 @@
                     </div>
                     <div class="box page">
                         <div><i class="fa fa-bars"></i> Warehouse 12:25</div><div class="center">Pick tasks overview</div>
-                        <div class="center">[pt_o0925_1, red_shoes, shelf 42, shelf 23] </div>
+                        <div class="center">[pt_o0925_1, red_shoes, shelf_42, shelf_23] </div>
 
                     </div>
                     <div class="box page">
                         <div><i class="fa fa-bars"></i> Warehouse 12:26</div><div class="center">Pick one</div>
                         <div class="center"><u>pt_o0925_1</u></div>
-                        <div class="center"><u>shelf 42</u></div>
+                        <div class="center"><u>shelf_42</u></div>
                         <div class="center">[done] </div>
 
                     </div>
                     <div class="box command">
                         <div>command: Pick</div>
                         <div>task: pt_o0925_1</div>
-                        <div>shelf: shelf 42</div>
+                        <div>shelf: shelf_42</div>
 
                     </div>
                     <div class="box server">
@@ -522,8 +536,26 @@
                         <div class="box data">
                             <div>data: PickTask pt_o0925_1 12:26:02</div>
                             <div>code: pt_o0925_1</div>
-                            <div>from: shelf 42</div>
+                            <div>from: shelf_42</div>
+                            <div>palette: b001</div>
+                            <div>palette.back: [pickTasks]</div>
                             <div>state: shipping</div>
+
+                        </div>
+                    </a>
+                    <a href="warehouse12_26_01.svg" target="objectDiagram">
+                        <div class="box data">
+                            <div>data: Palette b001 12:26:03</div>
+                            <div>barcode: b001</div>
+                            <div>amount: 9</div>
+
+                        </div>
+                    </a>
+                    <a href="warehouse12_26_01.svg" target="objectDiagram">
+                        <div class="box data">
+                            <div>data: WHProduct red_shoes 12:26:04</div>
+                            <div>name: red_shoes</div>
+                            <div>amount: 17</div>
 
                         </div>
                     </a>
@@ -651,7 +683,7 @@
         </div>
 
     </div>
-    <iframe name="objectDiagram" width="100%" height="1000px" >
+    <iframe name="objectDiagram" width="100%" height="1000px">
 
     </iframe>
 </body>

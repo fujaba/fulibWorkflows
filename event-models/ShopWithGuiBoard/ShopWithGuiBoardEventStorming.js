@@ -7,7 +7,8 @@ function changeVisibilityOfSmoothCase() {
     } else {
         document.getElementById("showSmoothCase").style["display"] = "block";
     }
-}let showOutOfStock = false;
+}
+let showOutOfStock = false;
 
 function changeVisibilityOfOutOfStock() {
     showOutOfStock = !showOutOfStock;

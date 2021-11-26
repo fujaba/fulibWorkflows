@@ -13,12 +13,14 @@ public class MSProduct
    public static final String PROPERTY_STATE = "state";
    public static final String PROPERTY_PRICE = "price";
    public static final String PROPERTY_ORDERS = "orders";
+   public static final String PROPERTY_AMOUNT = "amount";
    private String id;
    private String name;
    private String state;
    private String price;
    private List<Order> orders;
    protected PropertyChangeSupport listeners;
+   private int amount;
 
    public String getId()
    {
@@ -155,6 +157,24 @@ public class MSProduct
       {
          this.withoutOrders(item);
       }
+      return this;
+   }
+
+   public int getAmount()
+   {
+      return this.amount;
+   }
+
+   public MSProduct setAmount(int value)
+   {
+      if (value == this.amount)
+      {
+         return this;
+      }
+
+      final int oldValue = this.amount;
+      this.amount = value;
+      this.firePropertyChange(PROPERTY_AMOUNT, oldValue, value);
       return this;
    }
 

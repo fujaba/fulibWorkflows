@@ -171,7 +171,7 @@ public class WarehouseBusinessLogic
          pt_o0925_1Event.setBlockId("pt_o0925_1");
          pt_o0925_1Event.setCode("pt_o0925_1");
          pt_o0925_1Event.setProduct("red_shoes");
-         pt_o0925_1Event.setShelf("[shelf 42, shelf 23]");
+         pt_o0925_1Event.setShelf("[shelf_42, shelf_23]");
          pt_o0925_1Event.setCustomer("Carli_Customer");
          pt_o0925_1Event.setAddress("Wonderland 1");
          pt_o0925_1Event.setState("picking");
@@ -202,9 +202,24 @@ public class WarehouseBusinessLogic
          pt_o0925_1Event.setId("12:26:02");
          pt_o0925_1Event.setBlockId("pt_o0925_1");
          pt_o0925_1Event.setCode("pt_o0925_1");
-         pt_o0925_1Event.setFrom("shelf 42");
+         pt_o0925_1Event.setFrom("shelf_42");
+         pt_o0925_1Event.setPalette("b001");
          pt_o0925_1Event.setState("shipping");
          service.apply(pt_o0925_1Event);
+
+         PaletteBuilt b001Event = new PaletteBuilt();
+         b001Event.setId("12:26:03");
+         b001Event.setBlockId("b001");
+         b001Event.setBarcode("b001");
+         b001Event.setAmount("9");
+         service.apply(b001Event);
+
+         WHProductBuilt red_shoesEvent = new WHProductBuilt();
+         red_shoesEvent.setId("12:26:04");
+         red_shoesEvent.setBlockId("red_shoes");
+         red_shoesEvent.setName("red_shoes");
+         red_shoesEvent.setAmount("17");
+         service.apply(red_shoesEvent);
 
 
          OrderPickedEvent e1227 = new OrderPickedEvent();
@@ -248,6 +263,7 @@ public class WarehouseBusinessLogic
          e1204.setId("12:04");
          e1204.setBarcode("b001");
          e1204.setProduct("red_shoes");
+         e1204.setAmount("10");
          service.apply(e1204);
       }
       if (event.getId().equals("12:06:01")) {
@@ -273,6 +289,7 @@ public class WarehouseBusinessLogic
          e1207.setId("12:07");
          e1207.setBarcode("b002");
          e1207.setProduct("red_shoes");
+         e1207.setAmount("8");
          service.apply(e1207);
       }
       if (event.getId().equals("12:09:01")) {
@@ -298,6 +315,7 @@ public class WarehouseBusinessLogic
          e1210.setId("12:10");
          e1210.setBarcode("b003");
          e1210.setProduct("blue_jeans");
+         e1210.setAmount("6");
          service.apply(e1210);
       }
    }

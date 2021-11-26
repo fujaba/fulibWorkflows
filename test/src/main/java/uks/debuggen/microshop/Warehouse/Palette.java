@@ -1,6 +1,10 @@
 package uks.debuggen.microshop.Warehouse;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
+import java.util.Collection;
 
 public class Palette
 {
@@ -9,12 +13,14 @@ public class Palette
    public static final String PROPERTY_AMOUNT = "amount";
    public static final String PROPERTY_LOCATION = "location";
    public static final String PROPERTY_PRODUCT = "product";
+   public static final String PROPERTY_PICK_TASKS = "pickTasks";
    private String id;
    private String barcode;
    private int amount;
    private String location;
    protected PropertyChangeSupport listeners;
    private WHProduct product;
+   private List<PickTask> pickTasks;
 
    public String getId()
    {
@@ -115,6 +121,72 @@ public class Palette
       return this;
    }
 
+   public List<PickTask> getPickTasks()
+   {
+      return this.pickTasks != null ? Collections.unmodifiableList(this.pickTasks) : Collections.emptyList();
+   }
+
+   public Palette withPickTasks(PickTask value)
+   {
+      if (this.pickTasks == null)
+      {
+         this.pickTasks = new ArrayList<>();
+      }
+      if (!this.pickTasks.contains(value))
+      {
+         this.pickTasks.add(value);
+         value.setPalette(this);
+         this.firePropertyChange(PROPERTY_PICK_TASKS, null, value);
+      }
+      return this;
+   }
+
+   public Palette withPickTasks(PickTask... value)
+   {
+      for (final PickTask item : value)
+      {
+         this.withPickTasks(item);
+      }
+      return this;
+   }
+
+   public Palette withPickTasks(Collection<? extends PickTask> value)
+   {
+      for (final PickTask item : value)
+      {
+         this.withPickTasks(item);
+      }
+      return this;
+   }
+
+   public Palette withoutPickTasks(PickTask value)
+   {
+      if (this.pickTasks != null && this.pickTasks.remove(value))
+      {
+         value.setPalette(null);
+         this.firePropertyChange(PROPERTY_PICK_TASKS, value, null);
+      }
+      return this;
+   }
+
+   public Palette withoutPickTasks(PickTask... value)
+   {
+      for (final PickTask item : value)
+      {
+         this.withoutPickTasks(item);
+      }
+      return this;
+   }
+
+   public Palette withoutPickTasks(Collection<? extends PickTask> value)
+   {
+      for (final PickTask item : value)
+      {
+         this.withoutPickTasks(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -147,5 +219,6 @@ public class Palette
    public void removeYou()
    {
       this.setProduct(null);
+      this.withoutPickTasks(new ArrayList<>(this.getPickTasks()));
    }
 }

@@ -12,6 +12,7 @@ public class PickTask
    public static final String PROPERTY_STATE = "state";
    public static final String PROPERTY_FROM = "from";
    public static final String PROPERTY_PRODUCT = "product";
+   public static final String PROPERTY_PALETTE = "palette";
    private String id;
    private String code;
    private String shelf;
@@ -21,6 +22,7 @@ public class PickTask
    protected PropertyChangeSupport listeners;
    private String from;
    private WHProduct product;
+   private Palette palette;
 
    public String getId()
    {
@@ -175,6 +177,33 @@ public class PickTask
       return this;
    }
 
+   public Palette getPalette()
+   {
+      return this.palette;
+   }
+
+   public PickTask setPalette(Palette value)
+   {
+      if (this.palette == value)
+      {
+         return this;
+      }
+
+      final Palette oldValue = this.palette;
+      if (this.palette != null)
+      {
+         this.palette = null;
+         oldValue.withoutPickTasks(this);
+      }
+      this.palette = value;
+      if (value != null)
+      {
+         value.withPickTasks(this);
+      }
+      this.firePropertyChange(PROPERTY_PALETTE, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -211,5 +240,6 @@ public class PickTask
    public void removeYou()
    {
       this.setProduct(null);
+      this.setPalette(null);
    }
 }

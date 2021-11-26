@@ -214,6 +214,13 @@ public class MicroShopBusinessLogic
          carli_CustomerEvent.setName("Carli_Customer");
          service.apply(carli_CustomerEvent);
 
+         MSProductBuilt red_shoesEvent = new MSProductBuilt();
+         red_shoesEvent.setId("12:21:04");
+         red_shoesEvent.setBlockId("red_shoes");
+         red_shoesEvent.setName("red_shoes");
+         red_shoesEvent.setAmount("17");
+         service.apply(red_shoesEvent);
+
 
          ProductOrderedEvent e1222 = new ProductOrderedEvent();
 
@@ -338,6 +345,7 @@ public class MicroShopBusinessLogic
          red_shoesEvent.setId("12:04:01");
          red_shoesEvent.setBlockId("red_shoes");
          red_shoesEvent.setName("red_shoes");
+         red_shoesEvent.setAmount("10");
          red_shoesEvent.setState("in stock");
          service.apply(red_shoesEvent);
 
@@ -347,6 +355,7 @@ public class MicroShopBusinessLogic
          red_shoesEvent.setId("12:07:01");
          red_shoesEvent.setBlockId("red_shoes");
          red_shoesEvent.setName("red_shoes");
+         red_shoesEvent.setAmount("18");
          red_shoesEvent.setState("in stock");
          service.apply(red_shoesEvent);
 
@@ -357,6 +366,7 @@ public class MicroShopBusinessLogic
          blue_jeansEvent.setBlockId("blue_jeans");
          blue_jeansEvent.setName("blue_jeans");
          blue_jeansEvent.setState("in stock");
+         blue_jeansEvent.setAmount("6");
          service.apply(blue_jeansEvent);
 
       }

@@ -5,8 +5,10 @@ public class ProductStoredEvent extends Event
 {
    public static final String PROPERTY_BARCODE = "barcode";
    public static final String PROPERTY_PRODUCT = "product";
+   public static final String PROPERTY_AMOUNT = "amount";
    private String barcode;
    private String product;
+   private String amount;
 
    public String getBarcode()
    {
@@ -44,12 +46,31 @@ public class ProductStoredEvent extends Event
       return this;
    }
 
+   public String getAmount()
+   {
+      return this.amount;
+   }
+
+   public ProductStoredEvent setAmount(String value)
+   {
+      if (Objects.equals(value, this.amount))
+      {
+         return this;
+      }
+
+      final String oldValue = this.amount;
+      this.amount = value;
+      this.firePropertyChange(PROPERTY_AMOUNT, oldValue, value);
+      return this;
+   }
+
    @Override
    public String toString()
    {
       final StringBuilder result = new StringBuilder(super.toString());
       result.append(' ').append(this.getBarcode());
       result.append(' ').append(this.getProduct());
+      result.append(' ').append(this.getAmount());
       return result.toString();
    }
 }

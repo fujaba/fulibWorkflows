@@ -441,7 +441,7 @@ public class WarehouseService
          html.append("<form action=\"/page/12_26\" method=\"get\">\n");
          // Warehouse pick tasks 12:25
          html.append("   <p>Pick tasks overview</p>\n");
-         html.append("   <p><input id=\"pt_o0925_1, red_shoes, shelf 42, shelf 23\" name=\"button\" type=\"submit\" value=\"pt_o0925_1, red_shoes, shelf 42, shelf 23\"></p>\n");
+         html.append("   <p><input id=\"pt_o0925_1, red_shoes, shelf_42, shelf_23\" name=\"button\" type=\"submit\" value=\"pt_o0925_1, red_shoes, shelf_42, shelf_23\"></p>\n");
          html.append("</form>\n");
          return html.toString();
       }
