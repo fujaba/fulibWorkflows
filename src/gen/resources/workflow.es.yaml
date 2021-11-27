@@ -1,5 +1,11 @@
 - workflow: Testerino
 
+- externalSystem: höhöhöhö
+
+- service: TestinService
+
+- command: Commanderino started
+
 - event: do something
   testerino: swasda
   gasdfwad: asfasd
@@ -7,9 +13,21 @@
   wadfasgfaqs: asdagdg
   Wbgsdfaa: adawdas
 
+- policy: start do something process
+
+- user: Bob
+
+- class: Wambo
+  lecture: string
+  students: int
+
+- data: wambologieClass
+  lecture: wambo
+  studentes: 31
+
 - page:
     - name: Testerino
-    - label: This is a test page
-    - input: Username
-    - input: Password
+    - text: This is a test page
+    - input: E-Mail
+    - password: Password
     - button: Login
