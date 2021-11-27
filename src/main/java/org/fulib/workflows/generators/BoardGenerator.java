@@ -1,22 +1,28 @@
 package org.fulib.workflows.generators;
 
 import org.fulib.workflows.events.Board;
+import org.fulib.workflows.events.Event;
+import org.fulib.workflows.events.Page;
 import org.fulib.workflows.events.Workflow;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BoardGenerator {
+    private final HtmlGenerator htmlGenerator = new HtmlGenerator();
 
     public void generateBoardFromFile(Path yamlFile) {
         try {
             String yamlContent = Files.readString(yamlFile);
             Board board = generateBoardFromString(yamlContent);
+            htmlGenerator.buildAndGenerateHTML(board);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,22 +85,90 @@ public class BoardGenerator {
         // Get Note strings
         // Source
         // https://stackoverflow.com/questions/10065885/split-text-file-into-strings-on-empty-line
-        Pattern p = Pattern.compile("\\n\\n|\\r\\n"); // TODO This is not working for the web editor
+        Pattern p = Pattern.compile("\\n[\\n]+|\\r\\n[\\r\\n]+");
         List<String> notes = List.of(p.split(workflowString));
 
-        for (String note : notes) {
+        for (int i = 0; i < notes.size(); i++) {
+            String note = notes.get(i);
             if (note.contains("- workflow:")) {
                 String workflowName = getValue(note);
                 workflow.setName(workflowName);
             } else if (note.contains("- event:")) {
-                // TODO Continue here tomorrow
-
+                Event event = new Event();
+                event.setName(getNameValue(note));
+                event.setIndex(i);
+                event.setData(getAdditionalData(note));
+                workflow.withNotes(event);
             } else if (note.contains("- page:")) {
-
+                Page page = new Page();
+                page.setIndex(i);
+                page.setContent(getPageContent(note));
+                page.setName(page.getContent().get("name"));
+                workflow.withNotes(page);
             }
         }
 
         return workflow;
+    }
+
+    private Map<String, String> getPageContent(String note) {
+        Map<String, String> result = new HashMap<>();
+
+        Pattern p = Pattern.compile("\\n|\\r\\n");
+        List<String> elements = List.of(p.split(note));
+
+        for (String element : elements) {
+            if (!element.contains("- page:")) {
+                String key = getKey(element);
+                String value = getValue(element);
+                result.put(key, value);
+            }
+        }
+
+        return result;
+    }
+
+    private String getNameValue(String note) {
+        int startIndex = note.indexOf(":") + 1;
+        int endIndex = note.indexOf("\r\n");
+
+        if (endIndex == -1) {
+            endIndex = note.indexOf("\n");
+        }
+
+        String value = note.substring(startIndex, endIndex);
+        value = value.strip();
+        return value;
+    }
+
+    private Map<String, String> getAdditionalData(String note) {
+        Map<String, String> result = new HashMap<>();
+
+        Pattern p = Pattern.compile("\\n|\\r\\n");
+        List<String> attributes = List.of(p.split(note));
+
+        for (String attribute : attributes) {
+            if (!attribute.contains("-")) {
+                String key = getKey(attribute);
+                String value = getValue(attribute);
+                result.put(key, value);
+            }
+        }
+
+        return result;
+    }
+
+    private String getKey(String attribute) {
+        String key = attribute.substring(0, attribute.indexOf(":"));
+
+        // Clean up key
+        if (key.contains("-")) {
+            key = key.substring(key.indexOf("-") + 1);
+        }
+
+        key = key.strip();
+
+        return key;
     }
 
     private String getValue(String note) {
