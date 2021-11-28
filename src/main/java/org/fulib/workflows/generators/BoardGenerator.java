@@ -34,12 +34,12 @@ public class BoardGenerator {
         List<String> workflows = getWorkflowChunks(yamlContent);
 
         // Generate and add Workflows to board
-        board.withWorkflows(generateWorkflows(workflows));
+        board.setWorkflows(generateWorkflows(workflows));
 
         return board;
     }
 
-    // This method is needed because i want to be able to work with multiple workflows in one board
+    // This method is needed because I want to be able to work with multiple workflows in one board
     private List<String> getWorkflowChunks(String yamlContent) {
         List<String> workflows = new ArrayList<>();
 
@@ -85,6 +85,8 @@ public class BoardGenerator {
         Pattern p = Pattern.compile("\\n[\\n]+|\\r\\n[\\r\\n]+");
         List<String> notes = List.of(p.split(workflowString));
 
+        List<BaseNote> workflowNotes = new ArrayList<>();
+
         for (int i = 0; i < notes.size(); i++) {
             String note = notes.get(i);
             if (note.contains("- workflow:")) {
@@ -94,53 +96,54 @@ public class BoardGenerator {
                 ExternalSystem externalSystem = new ExternalSystem();
                 externalSystem.setName(getValue(note));
                 externalSystem.setIndex(i);
-                workflow.withNotes(externalSystem);
+                workflowNotes.add(externalSystem);
             } else if (note.contains("- service:")) {
                 Service service = new Service();
                 service.setName(getValue(note));
                 service.setIndex(i);
-                workflow.withNotes(service);
+                workflowNotes.add(service);
             } else if (note.contains("- command")) {
                 Command command = new Command();
                 command.setName(getValue(note));
                 command.setIndex(i);
-                workflow.withNotes(command);
+                workflowNotes.add(command);
             } else if (note.contains("- event:")) {
                 Event event = new Event();
                 event.setName(getNameValue(note));
                 event.setIndex(i);
                 event.setData(getAdditionalData(note));
-                workflow.withNotes(event);
+                workflowNotes.add(event);
             } else if (note.contains("- policy")) {
                 Policy policy = new Policy();
                 policy.setName(getValue(note));
                 policy.setIndex(i);
-                workflow.withNotes(policy);
+                workflowNotes.add(policy);
             } else if (note.contains("- user")) {
                 User user = new User();
                 user.setName(getValue(note));
                 user.setIndex(i);
-                workflow.withNotes(user);
+                workflowNotes.add(user);
             } else if (note.contains("- class")) {
                 ClassDef classDef = new ClassDef();
                 classDef.setName(getNameValue(note));
                 classDef.setIndex(i);
                 classDef.setFields(getAdditionalData(note));
-                workflow.withNotes(classDef);
+                workflowNotes.add(classDef);
             } else if (note.contains("- data")) {
                 Data data = new Data();
                 data.setName(getNameValue(note));
                 data.setIndex(i);
                 data.setData(getAdditionalData(note));
-                workflow.withNotes(data);
+                workflowNotes.add(data);
             } else if (note.contains("- page:")) {
                 Page page = new Page();
                 page.setIndex(i);
                 page.setContent(getPageContent(note));
                 page.setName(page.getContent().get("name"));
-                workflow.withNotes(page);
+                workflowNotes.add(page);
             }
         }
+        workflow.setNotes(workflowNotes);
 
         return workflow;
     }

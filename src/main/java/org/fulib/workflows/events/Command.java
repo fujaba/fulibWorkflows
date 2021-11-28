@@ -1,5 +1,4 @@
 package org.fulib.workflows.events;
 
-public class Command extends BaseNote
-{
+public class Command extends BaseNote {
 }
