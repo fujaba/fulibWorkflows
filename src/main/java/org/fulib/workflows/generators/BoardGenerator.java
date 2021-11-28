@@ -173,7 +173,14 @@ public class BoardGenerator {
             endIndex = note.indexOf("\n");
         }
 
-        String value = note.substring(startIndex, endIndex);
+        String value = "";
+
+        if (endIndex == -1) {
+            value = note.substring(startIndex);
+        } else {
+            value = note.substring(startIndex, endIndex);
+        }
+
         value = value.strip();
         return value;
     }
