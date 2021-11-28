@@ -1,9 +1,6 @@
 package org.fulib.workflows.generators;
 
-import org.fulib.workflows.events.Board;
-import org.fulib.workflows.events.Event;
-import org.fulib.workflows.events.Page;
-import org.fulib.workflows.events.Workflow;
+import org.fulib.workflows.events.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -93,12 +90,49 @@ public class BoardGenerator {
             if (note.contains("- workflow:")) {
                 String workflowName = getValue(note);
                 workflow.setName(workflowName);
+            } else if (note.contains("- externalSystem:")) {
+                ExternalSystem externalSystem = new ExternalSystem();
+                externalSystem.setName(getValue(note));
+                externalSystem.setIndex(i);
+                workflow.withNotes(externalSystem);
+            } else if (note.contains("- service:")) {
+                Service service = new Service();
+                service.setName(getValue(note));
+                service.setIndex(i);
+                workflow.withNotes(service);
+            } else if (note.contains("- command")) {
+                Command command = new Command();
+                command.setName(getValue(note));
+                command.setIndex(i);
+                workflow.withNotes(command);
             } else if (note.contains("- event:")) {
                 Event event = new Event();
                 event.setName(getNameValue(note));
                 event.setIndex(i);
                 event.setData(getAdditionalData(note));
                 workflow.withNotes(event);
+            } else if (note.contains("- policy")) {
+                Policy policy = new Policy();
+                policy.setName(getValue(note));
+                policy.setIndex(i);
+                workflow.withNotes(policy);
+            } else if (note.contains("- user")) {
+                User user = new User();
+                user.setName(getValue(note));
+                user.setIndex(i);
+                workflow.withNotes(user);
+            } else if (note.contains("- class")) {
+                ClassDef classDef = new ClassDef();
+                classDef.setName(getNameValue(note));
+                classDef.setIndex(i);
+                classDef.setFields(getAdditionalData(note));
+                workflow.withNotes(classDef);
+            } else if (note.contains("- data")) {
+                Data data = new Data();
+                data.setName(getNameValue(note));
+                data.setIndex(i);
+                data.setData(getAdditionalData(note));
+                workflow.withNotes(data);
             } else if (note.contains("- page:")) {
                 Page page = new Page();
                 page.setIndex(i);

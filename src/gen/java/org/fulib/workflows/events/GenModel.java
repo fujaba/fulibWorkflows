@@ -20,7 +20,30 @@ public class GenModel implements ClassModelDecorator {
         List<BaseNote> notes;
     }
 
+    class ExternalSystem extends BaseNote {
+    }
+
+    class Service extends BaseNote {
+    }
+
+    class Command extends BaseNote {
+    }
+
     class Event extends BaseNote {
+        Map<String, String> data;
+    }
+
+    class Policy extends BaseNote {
+    }
+
+    class User extends BaseNote {
+    }
+
+    class ClassDef extends BaseNote {
+        Map<String, String> fields;
+    }
+
+    class Data extends BaseNote {
         Map<String, String> data;
     }
 

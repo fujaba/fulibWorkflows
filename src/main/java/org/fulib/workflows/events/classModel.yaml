@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	page 	baseNote 	event 	workflow 	board
+  classes: 	page 	baseNote 	data 	classDef 	user 	policy 	event 	command 	service 	externalSystem 	workflow 	board
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -21,13 +21,64 @@
   modified: 	false
   name: 	BaseNote
   propertyStyle: 	Bean
-  subClasses: 	page 	event 	workflow
+  subClasses: 	page 	data 	classDef 	user 	policy 	event 	command 	service 	externalSystem 	workflow
+
+- data: 	org.fulib.classmodel.Clazz
+  attributes: 	data_data
+  model: 	c
+  modified: 	false
+  name: 	Data
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- classDef: 	org.fulib.classmodel.Clazz
+  attributes: 	classDef_fields
+  model: 	c
+  modified: 	false
+  name: 	ClassDef
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- user: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	User
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- policy: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	Policy
+  propertyStyle: 	Bean
+  superClass: 	baseNote
 
 - event: 	org.fulib.classmodel.Clazz
   attributes: 	event_data
   model: 	c
   modified: 	false
   name: 	Event
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- command: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	Command
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- service: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	Service
+  propertyStyle: 	Bean
+  superClass: 	baseNote
+
+- externalSystem: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	ExternalSystem
   propertyStyle: 	Bean
   superClass: 	baseNote
 
@@ -79,6 +130,24 @@
   propertyStyle: 	Bean
   type: 	int
   typeSignature: 	int
+
+- data_data: 	org.fulib.classmodel.Attribute
+  clazz: 	data
+  id: 	Data_data
+  modified: 	false
+  name: 	data
+  propertyStyle: 	Bean
+  type: 	"import(java.util.Map)<String, String>"
+  typeSignature: 	"Map<String,String>"
+
+- classDef_fields: 	org.fulib.classmodel.Attribute
+  clazz: 	classDef
+  id: 	ClassDef_fields
+  modified: 	false
+  name: 	fields
+  propertyStyle: 	Bean
+  type: 	"import(java.util.Map)<String, String>"
+  typeSignature: 	"Map<String,String>"
 
 - event_data: 	org.fulib.classmodel.Attribute
   clazz: 	event
