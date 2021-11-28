@@ -25,6 +25,11 @@ public class BoardGenerator {
         }
     }
 
+    public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
+        Board board = generateBoardFromString(yamlContent);
+        return htmlGenerator.buildHTMLs(board);
+    }
+
     // This method is needed for the backend of the web editor
     public Board generateBoardFromString(String yamlContent) {
         // Create new Board
@@ -173,7 +178,7 @@ public class BoardGenerator {
             endIndex = note.indexOf("\n");
         }
 
-        String value = "";
+        String value;
 
         if (endIndex == -1) {
             value = note.substring(startIndex);

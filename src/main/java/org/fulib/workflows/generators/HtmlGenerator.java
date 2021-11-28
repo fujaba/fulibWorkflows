@@ -16,11 +16,22 @@ import java.util.List;
 import java.util.Map;
 
 public class HtmlGenerator {
+
     public void buildAndGenerateHTML(Board board) {
+        Map<String, String> generatedHTMLs = buildHTMLs(board);
+
+        for (String key : generatedHTMLs.keySet()) {
+            generateHTML(generatedHTMLs.get(key), key);
+        }
+    }
+
+    public Map<String, String> buildHTMLs(Board board) {
         BoardConstructor boardConstructor = new BoardConstructor();
         PageConstructor pageConstructor = new PageConstructor();
 
-        String boardHTML = boardConstructor.buildBoard(board);
+        Map<String, String> resultMap = new HashMap<>();
+
+        resultMap.put("Board", boardConstructor.buildBoard(board));
 
         List<String> pagesHTML = new ArrayList<>();
 
@@ -32,17 +43,12 @@ public class HtmlGenerator {
             }
         }
 
-        generateHTML(boardHTML, "Board");
-
         for (int i = 0; i < pagesHTML.size(); i++) {
             String page = pagesHTML.get(i);
-            generateHTML(page, i + "_page");
+            resultMap.put(i + "_page", page);
         }
-    }
 
-    public Map<String, String> buildHTMLs(Board board) {
-        // TODO Return type might also has to be changed
-        return new HashMap<>();
+        return resultMap;
     }
 
     private void generateHTML(String htmlContent, String fileName) {
