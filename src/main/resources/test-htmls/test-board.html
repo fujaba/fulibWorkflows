@@ -1,6 +1,3 @@
-delimiters "{", "}"
-
-page(content) ::= <<
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +5,7 @@ page(content) ::= <<
     <title>Board</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
           integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
     <style>
         .box {
             border-radius: 4px;
@@ -17,26 +15,18 @@ page(content) ::= <<
 </head>
 <body>
 <div class="container">
-    {content}
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-xs-6">
+            <div class="box" style="background-color: orange">
+                <span>aasfad</span> <br>
+                <span>aas</span> <br>
+                <span>aas   asd</span> <br>
+                <span>aasfadadsa d </span> <br>
+                <span>aasfadasd</span> <br>
+                <span>aasfadasd</span> <br>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
->>
-
-workflow(content) ::= <<
-<div class="row">
-    {content}
-</div>
->>
-
-note(content, color) ::= <<
-<div class="col-lg-2 col-md-3 col-xs-6">
-    <div class="box" style="background-color: {color}">
-        {content}
-    </div>
-</div>
->>
-
-text(text) ::= <<
-<span>{text}</span> <br>
->>
