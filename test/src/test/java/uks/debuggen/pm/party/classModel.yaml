@@ -4,8 +4,8 @@
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
   mainJavaDir: 	"test/src/test/java"
-  packageName: 	uks.debuggen.pm.studyright
-  packageSrcFolder: 	"test/src/test/java/uks/debuggen/pm/studyright"
+  packageName: 	uks.debuggen.pm.party
+  packageSrcFolder: 	"test/src/test/java/uks/debuggen/pm/party"
 
 - testPartyBoard: 	org.fulib.classmodel.Clazz
   importList: 	"import org.junit.Test;" 	"import java.util.LinkedHashMap;" 	"import org.fulib.FulibTools;" 	"import static org.assertj.core.api.Assertions.assertThat;"
@@ -31,13 +31,19 @@ public void testPartyBoard()"
   id: 	TestPartyBoard_testPartyBoard
   methodBody: 	"PartyAppBusinessLogic logic = new PartyAppBusinessLogic();
 
+PartyApp theApp = new PartyApp().setId(\"theApp\");
+
+Guest alice = new Guest().setId(\"Alice\");
+alice.setName(\"Alice\");
+
 // create links
+alice.setApp(theApp);
 
-FulibTools.objectDiagrams().dumpSVG(\"tmp/PartyBoardStart.svg\", );
+FulibTools.objectDiagrams().dumpSVG(\"../event-models/Party/partyApp12_00_00.svg\", theApp, alice);
 
-logic.getParty14:01(SE BBQFridayUni);
+logic.computeSaldo(theApp);
 
-FulibTools.objectDiagrams().dumpSVG(\"tmp/PartyBoardEnd.svg\", );
+FulibTools.objectDiagrams().dumpSVG(\"../event-models/Party/PartyBoardEnd.svg\", theApp, alice);
 
 
 System.err.println();

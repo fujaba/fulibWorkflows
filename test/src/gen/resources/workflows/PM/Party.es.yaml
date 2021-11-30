@@ -1,0 +1,25 @@
+
+- board: Party Board
+
+- service: PartyApp
+
+- action: Alice
+
+- data: PartyApp theApp
+
+- data: Guest
+  name: Alice
+  app: theApp
+  app.back: [guests]
+
+- command: computeSaldo
+  root: theApp
+
+- data: Party
+  name: SE_BBQ
+  location: Uni
+  date: Friday
+  root: theApp
+  root.back: [parties]
+
+

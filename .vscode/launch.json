@@ -4,43 +4,33 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
-
         {
             "type": "java",
-            "name": "GenShopWorkflow",
+            "name": "Launch TestClickCounter",
             "request": "launch",
-            "mainClass": "org.junit.runner.JUnitCore",
-            "args": "org.fulib.workflows.GenShopWorkflow"
+            "mainClass": "uks.debuggen.pm.clickCounter.TestClickCounter",
+            "projectName": "test"
         },
         {
             "type": "java",
-            "name": "GenHelloWorld",
+            "name": "Launch GenClickCounter",
             "request": "launch",
-            "mainClass": "org.junit.runner.JUnitCore",
-            "args": "org.fulib.workflows.pm.GenHelloWorld"
-
+            "mainClass": "org.fulib.workflows.pm.GenClickCounter",
+            "projectName": "fulibWorkflows"
         },
         {
             "type": "java",
-            "name": "GenRouting",
+            "name": "Launch GenParty",
             "request": "launch",
-            "mainClass": "org.junit.runner.JUnitCore",
-            "args": "org.fulib.workflows.pm.GenRouting"
+            "mainClass": "org.fulib.workflows.pm.GenParty",
+            "projectName": "fulibWorkflows"
         },
         {
             "type": "java",
-            "name": "GenStudyRight",
+            "name": "Launch GenClickCounter",
             "request": "launch",
-            "mainClass": "org.junit.runner.JUnitCore",
-            "args": "org.fulib.workflows.pm.GenStudyRight"
-        },
-        {
-            "type": "java",
-            "name": "TestMicroshop",
-            "request": "launch",
-            "mainClass": "org.junit.runner.JUnitCore",
-            "args": "uks.debuggen.microshop.TestMicroShop"
+            "mainClass": "org.fulib.workflows.pm.GenClickCounter",
+            "projectName": "fulibWorkflows"
         }
     ]
 }

@@ -1,0 +1,218 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	partyAppModel 	partyApp 	guest 	party 	partyAppBusinessLogic
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"test/src/main/java"
+  packageName: 	uks.debuggen.pm.party
+  packageSrcFolder: 	"test/src/main/java/uks/debuggen/pm/party"
+
+- partyAppModel: 	org.fulib.classmodel.Clazz
+  attributes: 	partyAppModel_modelMap
+  importList: 	"import java.util.LinkedHashMap;"
+  imports: 	"import java.util.LinkedHashMap;"
+  methods: 	partyAppModel_getOrCreatePartyApp 	partyAppModel_getOrCreateGuest 	partyAppModel_getOrCreateParty
+  model: 	c
+  modified: 	false
+  name: 	PartyAppModel
+  propertyStyle: 	Bean
+
+- partyApp: 	org.fulib.classmodel.Clazz
+  attributes: 	partyApp_id
+  model: 	c
+  modified: 	false
+  name: 	PartyApp
+  propertyStyle: 	Bean
+  roles: 	partyApp_guests 	partyApp_parties
+
+- guest: 	org.fulib.classmodel.Clazz
+  attributes: 	guest_id 	guest_name
+  model: 	c
+  modified: 	false
+  name: 	Guest
+  propertyStyle: 	Bean
+  roles: 	guest_app
+
+- party: 	org.fulib.classmodel.Clazz
+  attributes: 	party_id 	party_name 	party_location 	party_date
+  model: 	c
+  modified: 	false
+  name: 	Party
+  propertyStyle: 	Bean
+  roles: 	party_root
+
+- partyAppBusinessLogic: 	org.fulib.classmodel.Clazz
+  model: 	c
+  modified: 	false
+  name: 	PartyAppBusinessLogic
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- partyAppModel_modelMap: 	org.fulib.classmodel.Attribute
+  clazz: 	partyAppModel
+  id: 	PartyAppModel_modelMap
+  initialization: 	"new LinkedHashMap<>()"
+  modified: 	false
+  name: 	modelMap
+  propertyStyle: 	Bean
+  type: 	"LinkedHashMap<String, Object>"
+  typeSignature: 	"LinkedHashMap<String,Object>"
+
+- partyAppModel_getOrCreatePartyApp: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppModel
+  declaration: 	"public PartyApp getOrCreatePartyApp(String id)"
+  id: 	PartyAppModel_getOrCreatePartyApp
+  methodBody: 	"if (id == null) return null;
+return (PartyApp) modelMap.computeIfAbsent(id, k -> new PartyApp().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreatePartyApp
+  paramsString: 	"String id"
+  returnType: 	PartyApp
+  signature: 	"class/PartyAppModel/method/getOrCreatePartyApp(String)"
+
+- partyAppModel_getOrCreateGuest: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppModel
+  declaration: 	"public Guest getOrCreateGuest(String id)"
+  id: 	PartyAppModel_getOrCreateGuest
+  methodBody: 	"if (id == null) return null;
+return (Guest) modelMap.computeIfAbsent(id, k -> new Guest().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateGuest
+  paramsString: 	"String id"
+  returnType: 	Guest
+  signature: 	"class/PartyAppModel/method/getOrCreateGuest(String)"
+
+- partyAppModel_getOrCreateParty: 	org.fulib.classmodel.FMethod
+  annotations: 	""
+  clazz: 	partyAppModel
+  declaration: 	"public Party getOrCreateParty(String id)"
+  id: 	PartyAppModel_getOrCreateParty
+  methodBody: 	"if (id == null) return null;
+return (Party) modelMap.computeIfAbsent(id, k -> new Party().setId(k));
+"
+  modified: 	false
+  modifiers: 	public
+  name: 	getOrCreateParty
+  paramsString: 	"String id"
+  returnType: 	Party
+  signature: 	"class/PartyAppModel/method/getOrCreateParty(String)"
+
+- partyApp_id: 	org.fulib.classmodel.Attribute
+  clazz: 	partyApp
+  id: 	PartyApp_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- partyApp_guests: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	partyApp
+  collectionType: 	c1
+  id: 	PartyApp_guests
+  modified: 	false
+  name: 	guests
+  other: 	guest_app
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- partyApp_parties: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	partyApp
+  collectionType: 	c1
+  id: 	PartyApp_parties
+  modified: 	false
+  name: 	parties
+  other: 	party_root
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- guest_id: 	org.fulib.classmodel.Attribute
+  clazz: 	guest
+  id: 	Guest_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- guest_name: 	org.fulib.classmodel.Attribute
+  clazz: 	guest
+  id: 	Guest_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- guest_app: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	guest
+  id: 	Guest_app
+  modified: 	false
+  name: 	app
+  other: 	partyApp_guests
+  propertyStyle: 	Bean
+
+- party_id: 	org.fulib.classmodel.Attribute
+  clazz: 	party
+  id: 	Party_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party_name: 	org.fulib.classmodel.Attribute
+  clazz: 	party
+  id: 	Party_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party_location: 	org.fulib.classmodel.Attribute
+  clazz: 	party
+  id: 	Party_location
+  modified: 	false
+  name: 	location
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party_date: 	org.fulib.classmodel.Attribute
+  clazz: 	party
+  id: 	Party_date
+  modified: 	false
+  name: 	date
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- party_root: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	party
+  id: 	Party_root
+  modified: 	false
+  name: 	root
+  other: 	partyApp_parties
+  propertyStyle: 	Bean
+

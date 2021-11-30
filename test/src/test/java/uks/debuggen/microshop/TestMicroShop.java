@@ -236,6 +236,8 @@ public class TestMicroShop {
    @Test
    public void MicroShop()
    {
+      // no fulib
+
       // start the event broker
       eventBroker = new EventBroker();
       eventBroker.start();

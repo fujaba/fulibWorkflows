@@ -1,0 +1,38 @@
+
+- board: ClickCounter
+
+- action: Bob
+
+- page:
+    - name: ClickCounter
+    - button: Click_Me
+      command: do count a
+    - label: click count is 0
+
+- policy: ClickCounter
+
+- data: Counter model
+  count: 1
+
+- page:
+    - name: ClickCounter
+    - button: Click_Me
+      command: do count b
+    - label: click count is 1
+
+- data: Counter model
+  count: 2
+
+- page:
+    - name: ClickCounter
+    - button: Click_Me
+      command: do count c
+    - label: click count is 2
+
+- data: Counter model
+  count: 3
+
+- page:
+    - name: ClickCounter
+    - button: Click_Me
+    - label: click count is 3

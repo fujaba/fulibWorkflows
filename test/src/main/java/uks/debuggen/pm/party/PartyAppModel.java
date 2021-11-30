@@ -1,9 +1,9 @@
-package uks.debuggen.pm.studyright;
+package uks.debuggen.pm.party;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class StudyGuideModel
+public class PartyAppModel
 {
    public static final String PROPERTY_MODEL_MAP = "modelMap";
    private LinkedHashMap<String, Object> modelMap = new LinkedHashMap<>();
@@ -14,7 +14,7 @@ public class StudyGuideModel
       return this.modelMap;
    }
 
-   public StudyGuideModel setModelMap(LinkedHashMap<String, Object> value)
+   public PartyAppModel setModelMap(LinkedHashMap<String, Object> value)
    {
       if (Objects.equals(value, this.modelMap))
       {
@@ -25,12 +25,6 @@ public class StudyGuideModel
       this.modelMap = value;
       this.firePropertyChange(PROPERTY_MODEL_MAP, oldValue, value);
       return this;
-   }
-
-   public Student getOrCreateStudent(String id)
-   {
-      if (id == null) return null;
-      return (Student) modelMap.computeIfAbsent(id, k -> new Student().setId(k));
    }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
@@ -52,15 +46,21 @@ public class StudyGuideModel
       return this.listeners;
    }
 
-   public Stop getOrCreateStop(String id)
+   public PartyApp getOrCreatePartyApp(String id)
    {
       if (id == null) return null;
-      return (Stop) modelMap.computeIfAbsent(id, k -> new Stop().setId(k));
+      return (PartyApp) modelMap.computeIfAbsent(id, k -> new PartyApp().setId(k));
    }
 
-   public Room getOrCreateRoom(String id)
+   public Party getOrCreateParty(String id)
    {
       if (id == null) return null;
-      return (Room) modelMap.computeIfAbsent(id, k -> new Room().setId(k));
+      return (Party) modelMap.computeIfAbsent(id, k -> new Party().setId(k));
+   }
+
+   public Guest getOrCreateGuest(String id)
+   {
+      if (id == null) return null;
+      return (Guest) modelMap.computeIfAbsent(id, k -> new Guest().setId(k));
    }
 }

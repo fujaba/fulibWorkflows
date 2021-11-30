@@ -1,0 +1,57 @@
+<svg width="582px" height="290px"
+ viewBox="0.00 0.00 581.50 290.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 286)">
+<title>uks.debuggen.pm.party</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-286 577.5,-286 577.5,4 -4,4"/>
+<!-- Guest -->
+<g id="node1" class="node"><title>Guest</title>
+<polygon fill="none" stroke="black" points="15.5,-256.5 15.5,-277.5 91.5,-277.5 91.5,-256.5 15.5,-256.5"/>
+<text text-anchor="start" x="36.5" y="-263.3" font-family="Times New Roman,serif" font-size="14.00">Guest</text>
+<polygon fill="none" stroke="black" points="15.5,-220.5 15.5,-256.5 91.5,-256.5 91.5,-220.5 15.5,-220.5"/>
+<text text-anchor="start" x="18.5" y="-242.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="18.5" y="-227.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- Party -->
+<g id="node2" class="node"><title>Party</title>
+<polygon fill="none" stroke="black" points="8.5,-69.5 8.5,-90.5 99.5,-90.5 99.5,-69.5 8.5,-69.5"/>
+<text text-anchor="start" x="39" y="-76.3" font-family="Times New Roman,serif" font-size="14.00">Party</text>
+<polygon fill="none" stroke="black" points="8.5,-3.5 8.5,-69.5 99.5,-69.5 99.5,-3.5 8.5,-3.5"/>
+<text text-anchor="start" x="11.5" y="-55.3" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+<text text-anchor="start" x="11.5" y="-40.3" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<text text-anchor="start" x="11.5" y="-25.3" font-family="Times New Roman,serif" font-size="14.00">location :String</text>
+<text text-anchor="start" x="11.5" y="-10.3" font-family="Times New Roman,serif" font-size="14.00">date :String</text>
+</g>
+<!-- PartyApp -->
+<g id="node3" class="node"><title>PartyApp</title>
+<polygon fill="none" stroke="black" points="23.5,-156 23.5,-177 84.5,-177 84.5,-156 23.5,-156"/>
+<text text-anchor="start" x="26.5" y="-162.8" font-family="Times New Roman,serif" font-size="14.00">PartyApp</text>
+<polygon fill="none" stroke="black" points="23.5,-135 23.5,-156 84.5,-156 84.5,-135 23.5,-135"/>
+<text text-anchor="start" x="28.5" y="-141.8" font-family="Times New Roman,serif" font-size="14.00">id :String</text>
+</g>
+<!-- Party&#45;&gt;PartyApp -->
+<g id="edge2" class="edge"><title>Party&#45;&gt;PartyApp</title>
+<path fill="none" stroke="black" d="M53.5,-95.2125C53.5,-107.508 53.5,-120.276 53.5,-130.84"/>
+<text text-anchor="middle" x="41.5" y="-119.64" font-family="Times New Roman,serif" font-size="14.00">root</text>
+<text text-anchor="middle" x="29.5" y="-99.0125" font-family="Times New Roman,serif" font-size="14.00">parties *</text>
+</g>
+<!-- PartyApp&#45;&gt;Guest -->
+<g id="edge1" class="edge"><title>PartyApp&#45;&gt;Guest</title>
+<path fill="none" stroke="black" d="M53.5,-181.041C53.5,-191.948 53.5,-204.999 53.5,-216.702"/>
+<text text-anchor="middle" x="30.5" y="-205.502" font-family="Times New Roman,serif" font-size="14.00">guests *</text>
+<text text-anchor="middle" x="42.5" y="-184.841" font-family="Times New Roman,serif" font-size="14.00">app</text>
+</g>
+<!-- PartyAppBusinessLogic -->
+<g id="node4" class="node"><title>PartyAppBusinessLogic</title>
+<polygon fill="none" stroke="black" points="133.5,-39.5 133.5,-60.5 275.5,-60.5 275.5,-39.5 133.5,-39.5"/>
+<text text-anchor="start" x="136.5" y="-46.3" font-family="Times New Roman,serif" font-size="14.00">PartyAppBusinessLogic</text>
+<polygon fill="none" stroke="black" points="133.5,-33.5 133.5,-39.5 275.5,-39.5 275.5,-33.5 133.5,-33.5"/>
+</g>
+<!-- PartyAppModel -->
+<g id="node5" class="node"><title>PartyAppModel</title>
+<polygon fill="none" stroke="black" points="309.5,-47.5 309.5,-68.5 565.5,-68.5 565.5,-47.5 309.5,-47.5"/>
+<text text-anchor="start" x="392" y="-54.3" font-family="Times New Roman,serif" font-size="14.00">PartyAppModel</text>
+<polygon fill="none" stroke="black" points="309.5,-26.5 309.5,-47.5 565.5,-47.5 565.5,-26.5 309.5,-26.5"/>
+<text text-anchor="start" x="312.5" y="-33.3" font-family="Times New Roman,serif" font-size="14.00">modelMap :LinkedHashMap&lt;String,Object&gt;</text>
+</g>
+</g>
+</svg>

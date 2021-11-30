@@ -166,18 +166,24 @@ public class WorkflowGenerator {
       addAllLinkCreation();
 
       String allVarNames = String.join(", ", testVarNames.toArray(new String[] {}));
-      testBody.append(String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sStart.svg\", %s);\n\n", boardName,
+      testBody.append(String.format("\nFulibTools.objectDiagrams().dumpSVG(\"%s/%s%s.svg\", %s);\n\n",
+            this.testOutputDir,
+            lastSystemName, lastCommandTime,
             allVarNames));
 
       addAllCommands();
 
       testBody.append(
-            String.format("\nFulibTools.objectDiagrams().dumpSVG(\"tmp/%sEnd.svg\", %s);\n\n", boardName, allVarNames));
+            String.format("\nFulibTools.objectDiagrams().dumpSVG(\"%s/%sEnd.svg\", %s);\n\n", this.testOutputDir,
+                  boardName, allVarNames));
 
       testBody.append("\nSystem.err.println();\n");
 
       tm.haveMethod(testClazz, declaration, testBody.toString());
    }
+
+   String lastCommandTime = "12_00_00";
+   String lastSystemName = "";
 
    private void addAllObjectCreation() {
       for (Workflow workflow : eventStormingBoard.getWorkflows()) {
@@ -185,6 +191,7 @@ public class WorkflowGenerator {
             if (note instanceof ExternalSystemNote) {
                ExternalSystemNote externalSystemNote = (ExternalSystemNote) note;
                for (Policy policy : externalSystemNote.getPolicies()) {
+                  lastSystemName = StrUtil.decap(policy.getActorName());
                   for (WorkflowNote step : policy.getSteps()) {
                      if (step instanceof DataNote) {
                         addObjectCreationToPlainTest(step);
