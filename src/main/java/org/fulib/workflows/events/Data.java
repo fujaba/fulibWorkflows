@@ -1,15 +1,17 @@
 package org.fulib.workflows.events;
 
+import org.antlr.v4.runtime.misc.Pair;
+
 import java.util.Map;
 
 public class Data extends BaseNote {
-    private Map<String, String> data;
+    private Map<Integer, Pair<String, String>> data;
 
-    public Map<String, String> getData() {
+    public Map<Integer, Pair<String, String>> getData() {
         return data;
     }
 
-    public void setData(Map<String, String> data) {
+    public void setData(Map<Integer, Pair<String, String>> data) {
         this.data = data;
     }
 }

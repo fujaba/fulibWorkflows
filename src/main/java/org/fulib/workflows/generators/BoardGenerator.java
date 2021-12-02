@@ -154,6 +154,24 @@ public class BoardGenerator {
         return workflow;
     }
 
+    private Map<Integer, Pair<String, String>> getAdditionalData(String note) {
+        Map<Integer, Pair<String, String>> result = new HashMap<>();
+
+        Pattern p = Pattern.compile("\\n|\\r\\n");
+        List<String> attributes = List.of(p.split(note));
+
+        for (int i = 0; i < attributes.size(); i++) {
+            String attribute = attributes.get(i);
+            if (!attribute.contains("-")) {
+                String key = getKey(attribute);
+                String value = getValue(attribute);
+                result.put(i, new Pair<>(key, value));
+            }
+        }
+
+        return result;
+    }
+
     private Map<Integer, Pair<String, String>> getPageContent(String note) {
         Map<Integer, Pair<String, String>> result = new HashMap<>();
 
@@ -190,23 +208,6 @@ public class BoardGenerator {
 
         value = value.strip();
         return value;
-    }
-
-    private Map<String, String> getAdditionalData(String note) {
-        Map<String, String> result = new HashMap<>();
-
-        Pattern p = Pattern.compile("\\n|\\r\\n");
-        List<String> attributes = List.of(p.split(note));
-
-        for (String attribute : attributes) {
-            if (!attribute.contains("-")) {
-                String key = getKey(attribute);
-                String value = getValue(attribute);
-                result.put(key, value);
-            }
-        }
-
-        return result;
     }
 
     private String getKey(String attribute) {

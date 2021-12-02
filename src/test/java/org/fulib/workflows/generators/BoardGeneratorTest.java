@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 public class BoardGeneratorTest {
 
@@ -22,6 +23,16 @@ public class BoardGeneratorTest {
         Board board = dataImporter.generateBoardFromString(yaml);
 
         Assert.assertEquals(9, board.getWorkflows().get(0).getNotes().size());
+    }
+
+    @Test
+    public void testHTMLGeneration() {
+        String yaml = getYamlString();
+
+        BoardGenerator dataImporter = new BoardGenerator();
+        Map<String, String> htmlMap = dataImporter.generateAndReturnHTMLsFromString(yaml);
+
+        Assert.assertEquals(2, htmlMap.size());
     }
 
     private String getYamlString() {

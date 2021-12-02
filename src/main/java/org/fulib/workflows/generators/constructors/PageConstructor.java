@@ -4,7 +4,6 @@ import org.fulib.workflows.events.Page;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
-import java.util.List;
 import java.util.Objects;
 
 public class PageConstructor {

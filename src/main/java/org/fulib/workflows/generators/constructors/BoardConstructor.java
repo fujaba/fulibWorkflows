@@ -56,7 +56,7 @@ public class BoardConstructor {
                 st.add("content", buildNoteContent("Command:", note.getName()));
                 st.add("color", "lightblue");
             } else if (note instanceof Event event) {
-//                st.add("content", buildNoteContentFromMap(event.getData(), "Event:"));
+                st.add("content", buildNoteContentFromMap(event.getData(), "Event:"));
                 st.add("color", "orange");
             } else if (note instanceof Policy) {
                 st.add("content", buildNoteContent("Policy:", note.getName()));
@@ -65,10 +65,10 @@ public class BoardConstructor {
                 st.add("content", buildNoteContent("User:", note.getName()));
                 st.add("color", "yellow");
             } else if (note instanceof ClassDef classDef) {
-//                st.add("content", buildNoteContentFromMap(classDef.getFields(), "Class:"));
+                st.add("content", buildNoteContentFromMap(classDef.getFields(), "Class:"));
                 st.add("color", "lightblue"); // TODO
             } else if (note instanceof Data data) {
-//                st.add("content", buildNoteContentFromMap(data.getData(), "Data:"));
+                st.add("content", buildNoteContentFromMap(data.getData(), "Data:"));
                 st.add("color", "#FFA2FF");
             } else if (note instanceof Page page) {
                 st.add("content", buildNoteContentFromMap(page.getContent(), "Page:"));
