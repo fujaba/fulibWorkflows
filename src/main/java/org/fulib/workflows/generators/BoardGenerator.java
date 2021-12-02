@@ -1,5 +1,6 @@
 package org.fulib.workflows.generators;
 
+import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.*;
 
 import java.io.IOException;
@@ -144,7 +145,7 @@ public class BoardGenerator {
                 Page page = new Page();
                 page.setIndex(i);
                 page.setContent(getPageContent(note));
-                page.setName(page.getContent().get("name"));
+                page.setName(page.getContent().get(1).a);
                 workflowNotes.add(page);
             }
         }
@@ -153,17 +154,18 @@ public class BoardGenerator {
         return workflow;
     }
 
-    private Map<String, String> getPageContent(String note) {
-        Map<String, String> result = new HashMap<>();
+    private Map<Integer, Pair<String, String>> getPageContent(String note) {
+        Map<Integer, Pair<String, String>> result = new HashMap<>();
 
         Pattern p = Pattern.compile("\\n|\\r\\n");
         List<String> elements = List.of(p.split(note));
 
-        for (String element : elements) {
+        for (int i = 0; i < elements.size(); i++) {
+            String element = elements.get(i);
             if (!element.contains("- page:")) {
                 String key = getKey(element);
                 String value = getValue(element);
-                result.put(key, value);
+                result.put(i, new Pair<>(key, value));
             }
         }
 

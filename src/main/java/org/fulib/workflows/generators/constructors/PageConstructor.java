@@ -31,10 +31,13 @@ public class PageConstructor {
         ST st;
         StringBuilder contentBody = new StringBuilder();
 
-        List<String> list = currentPage.getContent().keySet().stream().toList();
-        for (int i = 0; i < list.size(); i++) {
-            String key = list.get(i);
-            String value = currentPage.getContent().get(key);
+        for (int i = 0; i <= currentPage.getContent().size(); i++) {
+            if (currentPage.getContent().get(i) == null) {
+                continue;
+            }
+
+            String key = currentPage.getContent().get(i).a;
+            String value = currentPage.getContent().get(i).b;
 
             if (key.contains("text")) {
                 st = pageGroup.getInstanceOf("text");

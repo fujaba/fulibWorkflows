@@ -1,5 +1,6 @@
 package org.fulib.workflows.generators.constructors;
 
+import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.*;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
@@ -55,7 +56,7 @@ public class BoardConstructor {
                 st.add("content", buildNoteContent("Command:", note.getName()));
                 st.add("color", "lightblue");
             } else if (note instanceof Event event) {
-                st.add("content", buildNoteContentFromMap(event.getData(), "Event:"));
+//                st.add("content", buildNoteContentFromMap(event.getData(), "Event:"));
                 st.add("color", "orange");
             } else if (note instanceof Policy) {
                 st.add("content", buildNoteContent("Policy:", note.getName()));
@@ -64,10 +65,10 @@ public class BoardConstructor {
                 st.add("content", buildNoteContent("User:", note.getName()));
                 st.add("color", "yellow");
             } else if (note instanceof ClassDef classDef) {
-                st.add("content", buildNoteContentFromMap(classDef.getFields(), "Class:"));
+//                st.add("content", buildNoteContentFromMap(classDef.getFields(), "Class:"));
                 st.add("color", "lightblue"); // TODO
             } else if (note instanceof Data data) {
-                st.add("content", buildNoteContentFromMap(data.getData(), "Data:"));
+//                st.add("content", buildNoteContentFromMap(data.getData(), "Data:"));
                 st.add("color", "#FFA2FF");
             } else if (note instanceof Page page) {
                 st.add("content", buildNoteContentFromMap(page.getContent(), "Page:"));
@@ -96,7 +97,7 @@ public class BoardConstructor {
         return textContent.toString();
     }
 
-    private String buildNoteContentFromMap(Map<String, String> contents, String noteName) {
+    private String buildNoteContentFromMap(Map<Integer, Pair<String, String>> contents, String noteName) {
         ST st;
 
         StringBuilder textContent = new StringBuilder();
@@ -105,9 +106,15 @@ public class BoardConstructor {
         st.add("type", noteName);
         textContent.append(st.render());
 
-        for (String key : contents.keySet()) {
-            String text = key + "= ";
-            text += contents.get(key);
+        for (int i = 0; i <= contents.size(); i++) {
+            Pair<String, String> pair = contents.get(i);
+
+            if (pair == null) {
+                continue;
+            }
+
+            String text = pair.a + "= ";
+            text += pair.b;
 
             st = boardGroup.getInstanceOf("text");
             st.add("text", text);
