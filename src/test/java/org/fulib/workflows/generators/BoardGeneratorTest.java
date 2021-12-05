@@ -16,6 +16,12 @@ public class BoardGeneratorTest {
     }
 
     @Test
+    public void testPageExport() {
+        BoardGenerator dataImporter = new BoardGenerator();
+        dataImporter.generateBoardFromFile(Path.of("src/gen/resources/pages.es.yaml"));
+    }
+
+    @Test
     public void testStringImport() {
         String yaml = getYamlString();
 

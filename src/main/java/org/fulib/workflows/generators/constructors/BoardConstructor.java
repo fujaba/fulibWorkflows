@@ -42,6 +42,7 @@ public class BoardConstructor {
     private String buildWorkflow(Workflow workflow) {
         ST st;
         StringBuilder workflowContent = new StringBuilder();
+        int pageNumber = 0;
 
         for (BaseNote note : workflow.getNotes()) {
             st = boardGroup.getInstanceOf("note");
@@ -73,6 +74,8 @@ public class BoardConstructor {
             } else if (note instanceof Page page) {
                 st.add("content", buildNoteContentFromMap(page.getContent(), "Page:"));
                 st.add("color", "lightblue"); // TODO
+                st.add("pageNumber", pageNumber);
+                pageNumber++;
             }
 
             workflowContent.append(st.render());

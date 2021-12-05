@@ -36,10 +36,10 @@ workflow(name, content) ::= <<
 </div>
 >>
 
-note(content, color) ::= <<
+note(content, color, pageNumber) ::= <<
 
 <div class="col-lg-2 col-md-3 col-xs-6">
-    <div class="box" style="background-color: {color}">
+    <div class="box" style="background-color: {color}" onclick="window.parent.setPageFromIframe({pageNumber});">
         {content}
     </div>
 </div>
