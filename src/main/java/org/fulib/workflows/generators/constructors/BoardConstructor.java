@@ -40,45 +40,50 @@ public class BoardConstructor {
     }
 
     private String buildWorkflow(Workflow workflow) {
-        ST st;
+        ST noteST;
+        ST pageST = null;
         StringBuilder workflowContent = new StringBuilder();
         int pageNumber = 0;
 
         for (BaseNote note : workflow.getNotes()) {
-            st = boardGroup.getInstanceOf("note");
+            noteST = boardGroup.getInstanceOf("note");
 
             if (note instanceof ExternalSystem) {
-                st.add("content", buildNoteContent("External System:", note.getName()));
-                st.add("color", "orange"); // TODO
+                noteST.add("content", buildNoteContent("External System:", note.getName()));
+                noteST.add("color", "orange"); // TODO
             } else if (note instanceof Service) {
-                st.add("content", buildNoteContent("Service:", note.getName()));
-                st.add("color", "violet");
+                noteST.add("content", buildNoteContent("Service:", note.getName()));
+                noteST.add("color", "violet");
             } else if (note instanceof Command) {
-                st.add("content", buildNoteContent("Command:", note.getName()));
-                st.add("color", "lightblue");
+                noteST.add("content", buildNoteContent("Command:", note.getName()));
+                noteST.add("color", "lightblue");
             } else if (note instanceof Event event) {
-                st.add("content", buildNoteContentFromMap(event.getData(), "Event:"));
-                st.add("color", "orange");
+                noteST.add("content", buildNoteContentFromMap(event.getData(), "Event:"));
+                noteST.add("color", "orange");
             } else if (note instanceof Policy) {
-                st.add("content", buildNoteContent("Policy:", note.getName()));
-                st.add("color", "orange"); // TODO
+                noteST.add("content", buildNoteContent("Policy:", note.getName()));
+                noteST.add("color", "orange"); // TODO
             } else if (note instanceof User) {
-                st.add("content", buildNoteContent("User:", note.getName()));
-                st.add("color", "yellow");
+                noteST.add("content", buildNoteContent("User:", note.getName()));
+                noteST.add("color", "yellow");
             } else if (note instanceof ClassDef classDef) {
-                st.add("content", buildNoteContentFromMap(classDef.getFields(), "Class:"));
-                st.add("color", "lightblue"); // TODO
+                noteST.add("content", buildNoteContentFromMap(classDef.getFields(), "Class:"));
+                noteST.add("color", "lightblue"); // TODO
             } else if (note instanceof Data data) {
-                st.add("content", buildNoteContentFromMap(data.getData(), "Data:"));
-                st.add("color", "#FFA2FF");
+                noteST.add("content", buildNoteContentFromMap(data.getData(), "Data:"));
+                noteST.add("color", "#FFA2FF");
             } else if (note instanceof Page page) {
-                st.add("content", buildNoteContentFromMap(page.getContent(), "Page:"));
-                st.add("color", "lightblue"); // TODO
-                st.add("pageNumber", pageNumber);
+                pageST = boardGroup.getInstanceOf("page");
+                pageST.add("content", buildNoteContentFromMap(page.getContent(), "Page:"));
+                pageST.add("color", "lightblue"); // TODO
+                pageST.add("pageNumber", pageNumber);
                 pageNumber++;
+                workflowContent.append(pageST.render());
             }
 
-            workflowContent.append(st.render());
+            if (pageST == null) {
+                workflowContent.append(noteST.render());
+            }
         }
 
         return workflowContent.toString();
