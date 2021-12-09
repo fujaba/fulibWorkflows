@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'antlr'
     // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
     id 'org.fulib.fulibGradle' version '0.5.0'
 }
@@ -36,6 +37,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
     testImplementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
+
+    antlr 'org.antlr:antlr4:4.9.3'
 }
 
 generateScenarioSource {
