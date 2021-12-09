@@ -28,7 +28,7 @@ public class BoardGeneratorTest {
         BoardGenerator dataImporter = new BoardGenerator();
         Board board = dataImporter.generateBoardFromString(yaml);
 
-        Assert.assertEquals(9, board.getWorkflows().get(0).getNotes().size());
+        Assert.assertEquals(10, board.getWorkflows().get(0).getNotes().size());
     }
 
     @Test
@@ -76,6 +76,8 @@ public class BoardGeneratorTest {
                     - input: E-Mail
                     - password: Password
                     - button: Login
+                
+                - problem: This part is bulls***
                 """;
     }
 }

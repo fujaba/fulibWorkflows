@@ -141,6 +141,11 @@ public class BoardGenerator {
                 data.setIndex(i);
                 data.setData(getAdditionalData(note));
                 workflowNotes.add(data);
+            } else if (note.contains("- problem")) {
+                Problem problem = new Problem();
+                problem.setName(getValue(note));
+                problem.setIndex(i);
+                workflowNotes.add(problem);
             } else if (note.contains("- page:")) {
                 Page page = new Page();
                 page.setIndex(i);

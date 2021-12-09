@@ -130,6 +130,18 @@
         "page"
       ],
       "additionalProperties": false
+    },
+    "problemItem": {
+      "description": "Shows a problem/question in the workflow",
+      "type": "object",
+      "properties": {
+        "problem": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "problem"
+      ]
     }
   },
   "items": {
@@ -163,6 +175,9 @@
       },
       {
         "$ref": "#/$defs/pageItem"
+      },
+      {
+        "$ref": "#/$defs/problemItem"
       }
     ]
   }
