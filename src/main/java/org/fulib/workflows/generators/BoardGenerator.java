@@ -1,7 +1,12 @@
 package org.fulib.workflows.generators;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.*;
+import org.fulib.workflows.yaml.YamlLexer;
+import org.fulib.workflows.yaml.YamlParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,6 +22,19 @@ public class BoardGenerator {
     private final HtmlGenerator htmlGenerator = new HtmlGenerator();
 
     public void generateBoardFromFileViaANTLR(Path yamlFile) {
+        try {
+            CharStream inputStream = CharStreams.fromPath(yamlFile);
+
+            YamlLexer yamlLexer = new YamlLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(yamlLexer);
+            YamlParser yamlParser = new YamlParser(commonTokenStream);
+
+            yamlParser.file2().list();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void generateBoardFromFile(Path yamlFile) {

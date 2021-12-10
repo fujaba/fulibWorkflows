@@ -10,6 +10,12 @@ import java.util.Map;
 public class BoardGeneratorTest {
 
     @Test
+    public void testAntlr() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.generateBoardFromFileViaANTLR(Path.of("src/gen/resources/workflow.es.yaml"));
+    }
+
+    @Test
     public void testFileImport() {
         BoardGenerator dataImporter = new BoardGenerator();
         dataImporter.generateBoardFromFile(Path.of("src/gen/resources/workflow.es.yaml"));
