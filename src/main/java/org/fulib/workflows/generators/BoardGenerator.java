@@ -5,8 +5,8 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.*;
-import org.fulib.workflows.yaml.YamlLexer;
-import org.fulib.workflows.yaml.YamlParser;
+import org.fulib.workflows.yaml.FulibWorkflowsLexer;
+import org.fulib.workflows.yaml.FulibWorkflowsParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,12 +25,20 @@ public class BoardGenerator {
         try {
             CharStream inputStream = CharStreams.fromPath(yamlFile);
 
-            YamlLexer yamlLexer = new YamlLexer(inputStream);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(yamlLexer);
-            YamlParser yamlParser = new YamlParser(commonTokenStream);
+            FulibWorkflowsLexer fulibWorkflowsLexer = new FulibWorkflowsLexer(inputStream);
+            CommonTokenStream commonTokenStream = new CommonTokenStream(fulibWorkflowsLexer);
+            FulibWorkflowsParser fulibWorkflowsParser = new FulibWorkflowsParser(commonTokenStream);
 
-            yamlParser.file2().list();
+            FulibWorkflowsParser.WorkflowContext workflow = fulibWorkflowsParser.list().workflow();
+            System.out.println(workflow.NAME().getText());
 
+            List<FulibWorkflowsParser.EventNoteContext> eventNotes = fulibWorkflowsParser.list().eventNote();
+
+            System.out.println(eventNotes.size());
+
+            for (FulibWorkflowsParser.EventNoteContext eventNote : eventNotes) {
+                System.out.println(eventNote.event());
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
