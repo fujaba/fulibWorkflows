@@ -16,6 +16,9 @@ import java.util.regex.Pattern;
 public class BoardGenerator {
     private final HtmlGenerator htmlGenerator = new HtmlGenerator();
 
+    public void generateBoardFromFileViaANTLR(Path yamlFile) {
+    }
+
     public void generateBoardFromFile(Path yamlFile) {
         try {
             String yamlContent = Files.readString(yamlFile);
