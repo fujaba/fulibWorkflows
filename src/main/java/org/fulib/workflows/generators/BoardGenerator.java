@@ -30,6 +30,9 @@ public class BoardGenerator {
             CommonTokenStream commonTokenStream = new CommonTokenStream(fulibWorkflowsLexer);
             FulibWorkflowsParser fulibWorkflowsParser = new FulibWorkflowsParser(commonTokenStream);
 
+            FulibWorkflowsParser.ListContext listContext = fulibWorkflowsParser.list();
+            System.out.println(listContext.eventNote().size());
+
         } catch (IOException e) {
             e.printStackTrace();
         }

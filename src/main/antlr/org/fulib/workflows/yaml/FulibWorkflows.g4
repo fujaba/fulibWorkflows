@@ -12,7 +12,7 @@ normalNote: MINUS NORMALNOTEKEY COLON NAME ;
 
 extendedNote: MINUS EXTENDEDNOTEKEY COLON NAME NEWLINE attribute+ ;
 
-page: MINUS 'page' COLON pageList;
+page: MINUS 'page' LISTCOLON NEWLINE pageList;
 
 attribute: SPACES NAME COLON value NEWLINE?;
 
@@ -35,7 +35,9 @@ NAME: ([A-Za-z]+ [ ]*)+ ;
 
 MINUS: '- ' ;
 
-COLON: ':' [ \n] ;
+COLON: ': ' ;
+
+LISTCOLON: ':';
 
 KEY: [A-Za-z]+ ;
 
