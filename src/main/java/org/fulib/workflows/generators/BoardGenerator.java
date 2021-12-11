@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.fulib.workflows.events.*;
 import org.fulib.workflows.yaml.FulibWorkflowsLexer;
 import org.fulib.workflows.yaml.FulibWorkflowsParser;
+import org.fulib.workflows.yaml.OwnFulibWorkflowsListener;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
 public class BoardGenerator {
     private final HtmlGenerator htmlGenerator = new HtmlGenerator();
 
+    // New
     public void generateBoardFromFileViaANTLR(Path yamlFile) {
         try {
             CharStream inputStream = CharStreams.fromPath(yamlFile);
@@ -31,13 +33,23 @@ public class BoardGenerator {
             FulibWorkflowsParser fulibWorkflowsParser = new FulibWorkflowsParser(commonTokenStream);
 
             FulibWorkflowsParser.ListContext listContext = fulibWorkflowsParser.list();
-            System.out.println(listContext.eventNote().size());
+            OwnFulibWorkflowsListener ownFulibWorkflowsListener = new OwnFulibWorkflowsListener();
+
+            ParseTreeWalker.DEFAULT.walk(ownFulibWorkflowsListener, listContext);
+
+            Board board = ownFulibWorkflowsListener.getBoard();
+            List<BaseNote> notes = board.getWorkflows().get(0).getNotes();
+
+            for (BaseNote note : notes) {
+                System.out.println(note.getName());
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // Old
     public void generateBoardFromFile(Path yamlFile) {
         try {
             String yamlContent = Files.readString(yamlFile);
@@ -48,6 +60,7 @@ public class BoardGenerator {
         }
     }
 
+    // Old
     public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
         Board board = generateBoardFromString(yamlContent);
         return htmlGenerator.buildHTMLs(board);
@@ -59,7 +72,7 @@ public class BoardGenerator {
         Board board = new Board();
 
         // Get chunked workflowStrings
-        List<String> workflows = getWorkflowChunks(yamlContent);
+        List<String> workflows = getWorkflowChunks(yamlContent);// Old
 
         // Generate and add Workflows to board
         board.setWorkflows(generateWorkflows(workflows));

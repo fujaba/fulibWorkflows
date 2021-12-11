@@ -18,9 +18,9 @@ attribute: SPACES NAME COLON value NEWLINE?;
 
 value: NAME | NUMBER;
 
-pageList: name NEWLINE element*;
+pageList: pageName NEWLINE element*;
 
-name: SPACES MINUS 'name' COLON NAME;
+pageName: SPACES MINUS 'name' COLON NAME;
 
 element: SPACES MINUS ELEMENTKEY COLON NAME NEWLINE;
 
