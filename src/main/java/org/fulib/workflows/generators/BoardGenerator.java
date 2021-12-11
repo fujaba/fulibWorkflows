@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.misc.Pair;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.fulib.workflows.events.*;
 import org.fulib.workflows.yaml.FulibWorkflowsLexer;
 import org.fulib.workflows.yaml.FulibWorkflowsParser;
@@ -29,7 +30,6 @@ public class BoardGenerator {
             CommonTokenStream commonTokenStream = new CommonTokenStream(fulibWorkflowsLexer);
             FulibWorkflowsParser fulibWorkflowsParser = new FulibWorkflowsParser(commonTokenStream);
 
-            System.out.println(fulibWorkflowsParser.list().eventNote().size());
         } catch (IOException e) {
             e.printStackTrace();
         }

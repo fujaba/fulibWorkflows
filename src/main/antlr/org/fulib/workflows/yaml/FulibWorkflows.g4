@@ -4,7 +4,7 @@ grammar FulibWorkflows;
 
 list: workflow NEWLINE eventNote*;
 
-eventNote: ( normalNote | extendedNote | page) NEWLINE+ ;
+eventNote: ( normalNote | extendedNote | page) NEWLINE? ;
 
 workflow: MINUS 'workflow' COLON NAME ;
 
@@ -14,15 +14,15 @@ extendedNote: MINUS EXTENDEDNOTEKEY COLON NAME NEWLINE attribute+ ;
 
 page: MINUS 'page' COLON pageList;
 
-attribute: NAME COLON value NEWLINE?;
+attribute: SPACES NAME COLON value NEWLINE?;
 
 value: NAME | NUMBER;
 
 pageList: name NEWLINE element*;
 
-name: MINUS 'name' COLON NAME;
+name: SPACES MINUS 'name' COLON NAME;
 
-element: MINUS ELEMENTKEY COLON NAME NEWLINE;
+element: SPACES MINUS ELEMENTKEY COLON NAME NEWLINE;
 
 // Atomar
 NORMALNOTEKEY: 'externalSystem' | 'service' | 'command' | 'policy' | 'user' | 'problem' ;
@@ -31,7 +31,7 @@ EXTENDEDNOTEKEY:  'event' | 'class' | 'data' ;
 
 ELEMENTKEY: 'text' | 'input' | 'password' | 'button' ;
 
-NAME: [A-Za-z ]+ ;
+NAME: ([A-Za-z]+ [ ]*)+ ;
 
 MINUS: '- ' ;
 
@@ -42,3 +42,5 @@ KEY: [A-Za-z]+ ;
 NEWLINE: [\r\n]+ | [\n]+ ;
 
 NUMBER: [0-9]+ ;
+
+SPACES: [ ]+;
