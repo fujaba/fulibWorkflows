@@ -29,17 +29,7 @@ public class BoardGenerator {
             CommonTokenStream commonTokenStream = new CommonTokenStream(fulibWorkflowsLexer);
             FulibWorkflowsParser fulibWorkflowsParser = new FulibWorkflowsParser(commonTokenStream);
 
-            FulibWorkflowsParser.WorkflowContext workflow = fulibWorkflowsParser.list().workflow();
-            System.out.println(workflow.NAME().getText());
-
-            List<FulibWorkflowsParser.EventNoteContext> eventNotes = fulibWorkflowsParser.list().eventNote();
-
-            System.out.println(eventNotes.size());
-
-            for (FulibWorkflowsParser.EventNoteContext eventNote : eventNotes) {
-                System.out.println(eventNote.event());
-            }
-
+            System.out.println(fulibWorkflowsParser.list().eventNote().size());
         } catch (IOException e) {
             e.printStackTrace();
         }

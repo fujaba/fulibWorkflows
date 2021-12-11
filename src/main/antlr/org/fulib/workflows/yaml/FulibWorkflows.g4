@@ -2,47 +2,43 @@ grammar FulibWorkflows;
 
 // fulibWorkflows parser rules
 
-list: workflow (eventNote)* ;
+list: workflow NEWLINE eventNote*;
 
-eventNote: externalSystem | service | command | event | policy | user | classDef | data | page | problem ;
+eventNote: ( normalNote | extendedNote | page) NEWLINE+ ;
 
 workflow: MINUS 'workflow' COLON NAME ;
 
-externalSystem: MINUS 'externalSystem' COLON NAME ;
+normalNote: MINUS NORMALNOTEKEY COLON NAME ;
 
-service: MINUS 'service' COLON NAME ;
+extendedNote: MINUS EXTENDEDNOTEKEY COLON NAME NEWLINE attribute+ ;
 
-command: MINUS 'command' COLON NAME ;
+page: MINUS 'page' COLON pageList;
 
-event: MINUS 'event' COLON NAME attributes;
-
-policy: MINUS 'policy' COLON NAME ;
-
-user: MINUS 'user' COLON NAME ;
-
-classDef: MINUS 'class' COLON NAME attributes;
-
-data: MINUS 'data' COLON NAME attributes;
-
-page: MINUS 'page' COLON NAME pageList;
-
-problem: MINUS 'problem' COLON NAME ;
-
-attributes: INDENT KEY COLON value;
+attribute: NAME COLON value NEWLINE?;
 
 value: NAME | NUMBER;
 
-pageList: ;
+pageList: name NEWLINE element*;
+
+name: MINUS 'name' COLON NAME;
+
+element: MINUS ELEMENTKEY COLON NAME NEWLINE;
 
 // Atomar
+NORMALNOTEKEY: 'externalSystem' | 'service' | 'command' | 'policy' | 'user' | 'problem' ;
+
+EXTENDEDNOTEKEY:  'event' | 'class' | 'data' ;
+
+ELEMENTKEY: 'text' | 'input' | 'password' | 'button' ;
+
 NAME: [A-Za-z ]+ ;
 
 MINUS: '- ' ;
 
-COLON: ': ' ;
+COLON: ':' [ \n] ;
 
 KEY: [A-Za-z]+ ;
 
-INDENT: [ \t]+ ;
+NEWLINE: [\r\n]+ | [\n]+ ;
 
 NUMBER: [0-9]+ ;

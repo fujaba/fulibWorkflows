@@ -24,10 +24,13 @@
   lecture: wambo
   studentes: 31
 
+
+
+
 - page:
     - name: Testerino
     - text: This is a test page
-    - input: E-Mail
+    - input: E Mail
     - password: Password
     - button: Login
 
