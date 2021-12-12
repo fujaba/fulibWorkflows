@@ -1,6 +1,7 @@
 package org.fulib.workflows.yaml;
 
 import org.antlr.v4.runtime.misc.Pair;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.fulib.workflows.events.*;
 
 import java.util.ArrayList;
@@ -75,12 +76,26 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
 
     @Override
     public void enterExtendedNote(FulibWorkflowsParser.ExtendedNoteContext ctx) {
-
+        noteData = new HashMap<>();
     }
 
     @Override
     public void exitExtendedNote(FulibWorkflowsParser.ExtendedNoteContext ctx) {
+        BaseNote newNote = new BaseNote();
 
+        String noteType = ctx.EXTENDEDNOTEKEY().getText();
+
+        switch (noteType) {
+            case "event" -> newNote = new Event().setData(noteData);
+            case "class" -> newNote = new ClassDef().setFields(noteData);
+            case "data" -> newNote = new Data().setData(noteData);
+        }
+        newNote.setName(ctx.NAME().getText());
+
+        newNote.setIndex(noteIndex);
+        noteIndex++;
+
+        notes.add(newNote);
     }
 
     @Override
@@ -100,15 +115,36 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
     }
 
     @Override
-    public void exitPageList(FulibWorkflowsParser.PageListContext ctx) {
-
+    public void exitPageName(FulibWorkflowsParser.PageNameContext ctx) {
+        addNoteDataEntry("name", ctx.NAME().getText());
     }
 
     @Override
-    public void exitPageName(FulibWorkflowsParser.PageNameContext ctx) {
-        String key = "name";
-        String value = ctx.NAME().getText();
+    public void exitElement(FulibWorkflowsParser.ElementContext ctx) {
+        addNoteDataEntry(ctx.ELEMENTKEY().getText(), ctx.NAME().getText());
+    }
 
+    @Override
+    public void exitAttribute(FulibWorkflowsParser.AttributeContext ctx) {
+        String key = ctx.NAME().getText();
+        String value = "";
+
+        FulibWorkflowsParser.ValueContext valueContext = ctx.value();
+        TerminalNode name = valueContext.NAME();
+        TerminalNode number = valueContext.NUMBER();
+
+        if (name == null) {
+            value = number.getText();
+        } else {
+            value = name.getText();
+        }
+
+        addNoteDataEntry(key, value);
+    }
+
+
+    // Helper Methods
+    private void addNoteDataEntry(String key, String value) {
         noteData.put(dataIndex, new Pair<>(key, value));
         dataIndex++;
     }

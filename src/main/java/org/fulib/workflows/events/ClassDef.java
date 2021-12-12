@@ -11,7 +11,9 @@ public class ClassDef extends BaseNote {
         return fields;
     }
 
-    public void setFields(Map<Integer, Pair<String, String>> fields) {
+    public ClassDef setFields(Map<Integer, Pair<String, String>> fields) {
         this.fields = fields;
+
+        return this;
     }
 }
