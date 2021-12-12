@@ -11,7 +11,8 @@ public class Event extends BaseNote {
         return data;
     }
 
-    public void setData(Map<Integer, Pair<String, String>> data) {
+    public Event setData(Map<Integer, Pair<String, String>> data) {
         this.data = data;
+        return this;
     }
 }

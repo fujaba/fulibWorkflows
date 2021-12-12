@@ -11,7 +11,9 @@ public class Data extends BaseNote {
         return data;
     }
 
-    public void setData(Map<Integer, Pair<String, String>> data) {
+    public Data setData(Map<Integer, Pair<String, String>> data) {
         this.data = data;
+
+        return this;
     }
 }

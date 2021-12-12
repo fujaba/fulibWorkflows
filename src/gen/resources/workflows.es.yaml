@@ -35,3 +35,26 @@
     - button: Login
 
 - problem: This part is very risky
+
+- workflow: Pages
+
+- page:
+    - name: Register
+    - text: Please register yourself
+    - input: E Mail
+    - input: Username
+    - password: Password
+    - password: Repeat Password
+    - button: Register
+
+- page:
+    - name: Login
+    - text: Welcome back
+    - input: Username or E Mail
+    - password: Password
+    - button: Login
+
+- page:
+    - name: Overview
+    - text: Your current Purchases
+    - button: Add Purchase
