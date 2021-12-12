@@ -11,6 +11,7 @@ import org.fulib.workflows.yaml.OwnFulibWorkflowsListener;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Map;
 
 public class BoardGenerator {
     private final HtmlGenerator htmlGenerator = new HtmlGenerator();
@@ -26,6 +27,14 @@ public class BoardGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Needed for editor backend
+    public Map<String, String> generateAndReturnHTMLs(String yamlData) {
+        CharStream inputStream = CharStreams.fromString(yamlData);
+        Board board = generateBoard(inputStream);
+
+        return htmlGenerator.buildHTMLs(board);
     }
 
     // Helper
