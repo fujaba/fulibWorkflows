@@ -10,9 +10,21 @@ import java.util.Map;
 public class BoardGeneratorTest {
 
     @Test
-    public void testAntlr() {
+    public void testAntlrOneWorkflow() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFileViaANTLR(Path.of("src/gen/resources/workflow.es.yaml"));
+    }
+
+    @Test
+    public void testAntlrMultiplePages() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.generateBoardFromFileViaANTLR(Path.of("src/gen/resources/pages.es.yaml"));
+    }
+
+    @Test
+    public void testAntlrMultipleWorkflows() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.generateBoardFromFileViaANTLR(Path.of("src/gen/resources/workflows.es.yaml"));
     }
 
     @Test

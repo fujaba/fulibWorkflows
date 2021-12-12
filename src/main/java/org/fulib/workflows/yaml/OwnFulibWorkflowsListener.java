@@ -17,18 +17,18 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
     private final List<Workflow> workflows = new ArrayList<>();
 
     private int noteIndex = 0;
-    private final List<BaseNote> notes = new ArrayList<>();
+    private List<BaseNote> notes = new ArrayList<>();
 
     private int dataIndex = 0;
     private Map<Integer, Pair<String, String>> noteData;
 
     @Override
-    public void enterList(FulibWorkflowsParser.ListContext ctx) {
+    public void enterFile(FulibWorkflowsParser.FileContext ctx) {
         board = new Board();
     }
 
     @Override
-    public void exitList(FulibWorkflowsParser.ListContext ctx) {
+    public void exitFile(FulibWorkflowsParser.FileContext ctx) {
         board.setWorkflows(workflows);
     }
 
@@ -45,6 +45,7 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
         workflowIndex++;
 
         workflows.add(currentWorkflow);
+        resetData();
     }
 
     @Override
@@ -127,7 +128,7 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
     @Override
     public void exitAttribute(FulibWorkflowsParser.AttributeContext ctx) {
         String key = ctx.NAME().getText();
-        String value = "";
+        String value;
 
         FulibWorkflowsParser.ValueContext valueContext = ctx.value();
         TerminalNode name = valueContext.NAME();
@@ -149,12 +150,16 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
         dataIndex++;
     }
 
+    private void resetData() {
+        currentWorkflow = null;
+        noteIndex = 0;
+        notes = new ArrayList<>();
+        dataIndex = 0;
+        noteData = new HashMap<>();
+    }
+
     // Getter and Setter
     public Board getBoard() {
         return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
     }
 }

@@ -2,7 +2,9 @@ grammar FulibWorkflows;
 
 // fulibWorkflows parser rules
 
-list: workflow NEWLINE eventNote*;
+file: workflows+;
+
+workflows: workflow NEWLINE eventNote*;
 
 eventNote: ( normalNote | extendedNote | page) NEWLINE? ;
 

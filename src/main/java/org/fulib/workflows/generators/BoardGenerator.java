@@ -32,17 +32,10 @@ public class BoardGenerator {
             CommonTokenStream commonTokenStream = new CommonTokenStream(fulibWorkflowsLexer);
             FulibWorkflowsParser fulibWorkflowsParser = new FulibWorkflowsParser(commonTokenStream);
 
-            FulibWorkflowsParser.ListContext listContext = fulibWorkflowsParser.list();
+            FulibWorkflowsParser.FileContext fileContext = fulibWorkflowsParser.file();
             OwnFulibWorkflowsListener ownFulibWorkflowsListener = new OwnFulibWorkflowsListener();
 
-            ParseTreeWalker.DEFAULT.walk(ownFulibWorkflowsListener, listContext);
-
-            Board board = ownFulibWorkflowsListener.getBoard();
-            List<BaseNote> notes = board.getWorkflows().get(0).getNotes();
-
-            for (BaseNote note : notes) {
-                System.out.println(note.getName());
-            }
+            ParseTreeWalker.DEFAULT.walk(ownFulibWorkflowsListener, fileContext);
 
         } catch (IOException e) {
             e.printStackTrace();
