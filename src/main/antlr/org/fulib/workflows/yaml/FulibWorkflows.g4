@@ -2,9 +2,9 @@ grammar FulibWorkflows;
 
 // fulibWorkflows parser rules
 
-file: workflows+;
+file: workflows+ ;
 
-workflows: workflow NEWLINE eventNote*;
+workflows: workflow NEWLINE eventNote* ;
 
 eventNote: ( normalNote | extendedNote | page) NEWLINE? ;
 
@@ -14,17 +14,17 @@ normalNote: MINUS NORMALNOTEKEY COLON NAME ;
 
 extendedNote: MINUS EXTENDEDNOTEKEY COLON NAME NEWLINE attribute+ ;
 
-page: MINUS 'page' LISTCOLON NEWLINE pageList;
+page: MINUS 'page' LISTCOLON NEWLINE pageList ;
 
-attribute: SPACES NAME COLON value NEWLINE?;
+attribute: SPACES NAME COLON value NEWLINE? ;
 
-value: NAME | NUMBER;
+value: NAME | NUMBER ;
 
-pageList: pageName NEWLINE element*;
+pageList: pageName NEWLINE element* ;
 
-pageName: SPACES MINUS 'name' COLON NAME;
+pageName: SPACES MINUS 'name' COLON NAME ;
 
-element: SPACES MINUS ELEMENTKEY COLON NAME NEWLINE;
+element: SPACES MINUS ELEMENTKEY COLON NAME NEWLINE ;
 
 // Atomar
 NORMALNOTEKEY: 'externalSystem' | 'service' | 'command' | 'policy' | 'user' | 'problem' ;
@@ -39,7 +39,7 @@ MINUS: '- ' ;
 
 COLON: ': ' ;
 
-LISTCOLON: ':';
+LISTCOLON: ':' ;
 
 KEY: [A-Za-z]+ ;
 
@@ -47,4 +47,4 @@ NEWLINE: [\r\n]+ | [\n]+ ;
 
 NUMBER: [0-9]+ ;
 
-SPACES: [ ]+;
+SPACES: [ ]+ ;
