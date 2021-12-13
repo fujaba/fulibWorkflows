@@ -21,7 +21,11 @@ public class HtmlGenerator {
         Map<String, String> generatedHTMLs = buildHTMLs(board);
 
         for (String key : generatedHTMLs.keySet()) {
-            generateHTML(generatedHTMLs.get(key), key);
+            if (key.equals("Board")) {
+                generateHTML(generatedHTMLs.get(key), key, "");
+            } else {
+                generateHTML(generatedHTMLs.get(key), key, "pages/");
+            }
         }
     }
 
@@ -51,9 +55,9 @@ public class HtmlGenerator {
         return resultMap;
     }
 
-    private void generateHTML(String htmlContent, String fileName) {
+    private void generateHTML(String htmlContent, String fileName, String subFolder) {
         try {
-            String outputDirectory = "tmp/";
+            String outputDirectory = "tmp/" + subFolder;
             Files.createDirectories(Path.of(outputDirectory));
 
             String outputBoardFilePath = outputDirectory + fileName + ".html";

@@ -11,10 +11,13 @@ import org.fulib.workflows.yaml.OwnFulibWorkflowsListener;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.Map;
 
 public class BoardGenerator {
     private final HtmlGenerator htmlGenerator = new HtmlGenerator();
+    private final DiagramGenerator diagramGenerator = new DiagramGenerator();
+    private final FxmlGenerator fxmlGenerator = new FxmlGenerator();
 
     // Entrypoints
     public void generateBoardFromFile(Path yamlFile) {
@@ -24,6 +27,8 @@ public class BoardGenerator {
             Board board = generateBoard(inputStream);
 
             htmlGenerator.buildAndGenerateHTML(board);
+            diagramGenerator.buildAndGenerateDiagram(board);
+            fxmlGenerator.buildAndGenerateFxmls(board);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,7 +39,25 @@ public class BoardGenerator {
         CharStream inputStream = CharStreams.fromString(yamlData);
         Board board = generateBoard(inputStream);
 
-        return htmlGenerator.buildHTMLs(board);
+        Map<String, String> result = new HashMap<>();
+        Map<String, String> boardAndPages = htmlGenerator.buildHTMLs(board);
+        result = mergeMaps(result, boardAndPages);
+
+        Map<String, String> diagrams = diagramGenerator.buildDiagrams(board);
+        result = mergeMaps(result, diagrams);
+
+        Map<String, String> fxmls = fxmlGenerator.buildFxmls(board);
+        result = mergeMaps(result, fxmls);
+
+        return result;
+    }
+
+    private Map<String, String> mergeMaps(Map<String, String> mainMap, Map<String, String> toBeMerged) {
+        Map<String, String> result = new HashMap<>(mainMap);
+
+        toBeMerged.forEach((key, value) -> result.merge(key, value, (v1, v2) -> ""));
+
+        return result;
     }
 
     // Helper
