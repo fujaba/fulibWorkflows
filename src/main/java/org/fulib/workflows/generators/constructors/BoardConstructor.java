@@ -41,7 +41,7 @@ public class BoardConstructor {
 
     private String buildWorkflow(Workflow workflow) {
         ST noteST;
-        ST pageST = null;
+        ST pageST;
         StringBuilder workflowContent = new StringBuilder();
         int pageNumber = 0;
 

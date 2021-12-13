@@ -49,7 +49,7 @@ generateScenarioSource {
 // Source: https://tomassetti.me/antlr-mega-tutorial/#chapter18
 generateGrammarSource {
     maxHeapSize = "128m"
-    arguments += ['-package', 'org.fulib.workflows.yaml', '-no-visitor', '-listener']
+    arguments += ['-package', 'org.fulib.workflows.yaml', '-no-visitor', '-listener', '-encoding', 'UTF-8']
 }
 compileJava.dependsOn generateGrammarSource
 sourceSets {

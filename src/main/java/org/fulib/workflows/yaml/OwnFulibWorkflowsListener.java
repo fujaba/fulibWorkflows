@@ -49,6 +49,11 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
     }
 
     @Override
+    public void enterEventNote(FulibWorkflowsParser.EventNoteContext ctx) {
+        dataIndex = 0;
+    }
+
+    @Override
     public void exitEventNote(FulibWorkflowsParser.EventNoteContext ctx) {
         workflows.get(workflowIndex - 1).setNotes(notes);
     }
@@ -113,6 +118,7 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
     @Override
     public void enterPageList(FulibWorkflowsParser.PageListContext ctx) {
         noteData = new HashMap<>();
+        dataIndex = 0;
     }
 
     @Override
