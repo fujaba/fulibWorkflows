@@ -35,7 +35,7 @@ public class BoardGeneratorTest {
         try {
             String yaml = Files.readString(Path.of("src/gen/resources/workflows.es.yaml"));
             Map<String, String> map = boardGenerator.generateAndReturnHTMLs(yaml);
-            Assert.assertEquals(5, map.size());
+            Assert.assertEquals(9, map.size()); // 1 Board, 4 Htmls, 4 Fxmls
         } catch (IOException e) {
             e.printStackTrace();
         }
