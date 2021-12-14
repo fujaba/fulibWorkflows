@@ -139,11 +139,16 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
         FulibWorkflowsParser.ValueContext valueContext = ctx.value();
         TerminalNode name = valueContext.NAME();
         TerminalNode number = valueContext.NUMBER();
+        TerminalNode list = valueContext.LIST();
 
-        if (name == null) {
-            value = number.getText();
-        } else {
+        if (name != null) {
             value = name.getText();
+        } else if (number != null) {
+            value = number.getText();
+        } else if (list != null) {
+            value = list.getText();
+        } else {
+            value = "Wrong Value";
         }
 
         addNoteDataEntry(key, value);

@@ -11,21 +11,27 @@ import java.util.Map;
 public class BoardGeneratorTest {
 
     @Test
-    public void testAntlrOneWorkflow() {
+    public void testOneWorkflow() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/workflow.es.yaml"));
     }
 
     @Test
-    public void testAntlrMultiplePages() {
+    public void testMultiplePages() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/pages.es.yaml"));
     }
 
     @Test
-    public void testAntlrMultipleWorkflows() {
+    public void testMultipleWorkflows() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/workflows.es.yaml"));
+    }
+
+    @Test
+    public void testObjectDiagrams() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/pm.es.yaml"));
     }
 
     @Test

@@ -18,7 +18,7 @@ page: MINUS 'page' LISTCOLON NEWLINE pageList ;
 
 attribute: SPACES NAME COLON value NEWLINE? ;
 
-value: NAME | NUMBER ;
+value: NAME | NUMBER | LIST;
 
 pageList: pageName NEWLINE element* ;
 
@@ -33,7 +33,7 @@ EXTENDEDNOTEKEY:  'event' | 'class' | 'data' ;
 
 ELEMENTKEY: 'text' | 'input' | 'password' | 'button' ;
 
-NAME: ([A-Za-zäÄöÖüÜß]+ [-/_,.']* [ ]*)+ ;
+NAME: ([A-Za-zäÄöÖüÜß] [0-9]* [-/_,.']* [ ]*)+ ;
 
 MINUS: '- ' ;
 
@@ -41,9 +41,11 @@ COLON: ': ' ;
 
 LISTCOLON: ':' ;
 
-KEY: [A-Za-z]+ ;
+KEY: [A-Za-z.]+ ;
 
 NEWLINE: [\r\n]+ | [\n]+ ;
+
+LIST: '[' (.)*? ']';
 
 NUMBER: [0-9]+ ;
 

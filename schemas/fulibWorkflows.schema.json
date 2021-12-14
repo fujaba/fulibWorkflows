@@ -54,7 +54,8 @@
       },
       "required": [
         "command"
-      ]
+      ],
+      "additionalProperties": false
     },
     "eventItem": {
       "description": "An event signalling that some system state is reached",
