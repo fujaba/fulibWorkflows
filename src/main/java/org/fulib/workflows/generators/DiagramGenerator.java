@@ -27,11 +27,15 @@ public class DiagramGenerator {
 
         List<String> diagrams = new ArrayList<>();
 
+        List<Data> previousData = new ArrayList<>();
+
         for (Workflow workflow : board.getWorkflows()) {
             for (BaseNote note : workflow.getNotes()) {
                 if (note instanceof Data) {
-                    // Big TODO because i have to know every data before that
-                    String diagramString = diagramConstructor.buildDiagram((Data) note);
+                    previousData.add((Data) note);
+
+                    // Always use current note and all previous to represent the objectDiagram according to the timeline
+                    String diagramString = diagramConstructor.buildDiagram(previousData, note.getIndex());
 
                     if (diagramString != null) {
                         diagrams.add(diagramString);

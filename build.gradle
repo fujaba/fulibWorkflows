@@ -25,7 +25,7 @@ dependencies {
     fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.0'
 
     // https://mvnrepository.com/artifact/org.fulib/fulibTools
-    testImplementation group: 'org.fulib', name: 'fulibTools', version: '1.5.1'
+    implementation group: 'org.fulib', name: 'fulibTools', version: '1.5.1'
 
     // https://mvnrepository.com/artifact/org.fulib/fulibTables
     testImplementation group: 'org.fulib', name: 'fulibTables', version: '1.4.0'
