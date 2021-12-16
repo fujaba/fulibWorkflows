@@ -29,7 +29,7 @@ element: SPACES MINUS ELEMENTKEY COLON NAME NEWLINE ;
 // Atomar
 NORMALNOTEKEY: 'externalSystem' | 'service' | 'command' | 'policy' | 'user' | 'problem' ;
 
-EXTENDEDNOTEKEY:  'event' | 'class' | 'data' ;
+EXTENDEDNOTEKEY:  'event' | 'data' ;
 
 ELEMENTKEY: 'text' | 'input' | 'password' | 'button' ;
 

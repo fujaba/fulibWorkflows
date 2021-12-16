@@ -95,18 +95,6 @@
       ],
       "additionalProperties": false
     },
-    "classItem": {
-      "description": "class for data within a service",
-      "type": "object",
-      "properties": {
-        "class": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "class"
-      ]
-    },
     "dataItem": {
       "description": "data object created within a service",
       "type": "object",
@@ -167,9 +155,6 @@
       },
       {
         "$ref": "#/$defs/userItem"
-      },
-      {
-        "$ref": "#/$defs/classItem"
       },
       {
         "$ref": "#/$defs/dataItem"

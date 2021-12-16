@@ -16,10 +16,6 @@
 
 - user: Bob
 
-- class: Wambo
-  lecture: string
-  students: int
-
 - data: Wambo wambologieClass
   lecture: wambo
   studentes: 31

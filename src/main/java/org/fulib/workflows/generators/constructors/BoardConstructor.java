@@ -87,10 +87,6 @@ public class BoardConstructor {
                 noteST.add("content", buildNoteContent("Service:", note.getName()));
                 noteST.add("color", "palevioletred");
                 workflowContent.append(noteST.render());
-            } else if (note instanceof ClassDef classDef) {
-                noteST.add("content", buildNoteContentFromMap(classDef.getFields(), "Class:"));
-                noteST.add("color", "lightsteelblue");
-                workflowContent.append(noteST.render());
             }
         }
 

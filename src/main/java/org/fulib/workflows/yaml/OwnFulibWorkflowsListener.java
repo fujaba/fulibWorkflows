@@ -93,7 +93,6 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
 
         switch (noteType) {
             case "event" -> newNote = new Event().setData(noteData);
-            case "class" -> newNote = new ClassDef().setFields(noteData);
             case "data" -> newNote = new Data().setData(noteData);
         }
         newNote.setName(ctx.NAME().getText());
