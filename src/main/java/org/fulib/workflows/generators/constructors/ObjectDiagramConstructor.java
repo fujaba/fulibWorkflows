@@ -51,11 +51,14 @@ public class ObjectDiagramConstructor {
             String type = pair.a;
             String value = pair.b;
 
+            if (type.contains(".")) {
+                continue;
+            }
+
             if (value.contains("[") || value.contains(">")) {
                 value = value.replaceAll("\\[", "");
                 value = value.replaceAll("]", "");
                 value = value.replaceAll(",", "");
-                value = value.replaceAll(">", "");
             }
 
             st.add("type", type);
