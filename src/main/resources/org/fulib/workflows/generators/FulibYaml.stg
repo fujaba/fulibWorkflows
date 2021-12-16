@@ -1,0 +1,13 @@
+delimiters "{", "}"
+
+object(name, type, attributes) ::= <<
+- {name}: .Map
+  type: {type}
+  {attributes}
+
+>>
+
+attribute(type, value) ::= <<
+{type}: {value}
+
+>>

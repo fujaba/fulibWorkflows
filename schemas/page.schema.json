@@ -18,16 +18,16 @@
       ],
       "additionalProperties": false
     },
-    "labelItem": {
-      "description": "Defines a label",
+    "textItem": {
+      "description": "Defines a text",
       "type": "object",
       "properties": {
-        "label": {
+        "text": {
           "type": "string"
         }
       },
       "required": [
-        "label"
+        "text"
       ],
       "additionalProperties": false
     },
@@ -36,9 +36,6 @@
       "type": "object",
       "properties": {
         "button": {
-          "type": "string"
-        },
-        "command": {
           "type": "string"
         }
       },
@@ -53,12 +50,6 @@
       "properties": {
         "input": {
           "type": "string"
-        },
-        "fill": {
-          "type": [
-            "string",
-            "number"
-          ]
         }
       },
       "required": [
@@ -71,16 +62,7 @@
       "type": "object",
       "properties": {
         "password": {
-          "type": "string",
-          "properties": {
-            "fill": {
-              "type": [
-                "string",
-                "number"
-              ]
-            }
-          },
-          "additionalProperties": false
+          "type": "string"
         }
       },
       "required": [
@@ -95,7 +77,7 @@
         "$ref": "#/$defs/nameItem"
       },
       {
-        "$ref": "#/$defs/labelItem"
+        "$ref": "#/$defs/textItem"
       },
       {
         "$ref": "#/$defs/buttonItem"

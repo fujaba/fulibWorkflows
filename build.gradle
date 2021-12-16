@@ -1,90 +1,126 @@
+// --------------- Plugins ---------------
+
 plugins {
-   id 'java-library'
-   id 'org.fulib.fulibGradle' version '0.5.0'
-   id 'antlr'
-   id 'maven-publish'
-   id 'de.clashsoft.gentreesrc-gradle' version '0.5.0'
-   // https://plugins.gradle.org/plugin/com.bmuschko.nexus
-   id 'com.bmuschko.nexus' version '2.3.1'
-   // https://plugins.gradle.org/plugin/io.codearte.nexus-staging
-   id 'io.codearte.nexus-staging' version '0.22.0'
+    id 'java-library'
+    id 'maven-publish'
+    id 'antlr'
+    id 'idea'
+    // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
+    id 'org.fulib.fulibGradle' version '0.5.0'
+    // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
+    id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
 }
 
+// --------------- General Settings ---------------
 
-group = 'org.fulib'
-version = 'git describe --tags'.execute().text[1..-2] // strip v and \n
-description = '''fulibWorkflows allows event modeling in *.es.yaml files and
-to generate scenario implementations'''
+group 'org.fulib'
+version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
+description = 'fulibWorkflows is tool to generate mockups and object-/class-diagrams from a workflow description.'
 
-modifyPom {
-   project {
-      name = project.name
-      description = project.description
-      url = 'https://github.com/fujaba/fulibWorkflows/'
-      inceptionYear = '2019'
-
-      scm {
-         url = 'https://github.com/fujaba/fulibWorkflows/'
-      }
-
-      licenses {
-         license {
-            name = 'BSD 3-Clause License'
-            url = 'https://opensource.org/licenses/BSD-3-Clause'
-         }
-      }
-
-      developers {
-         developer {
-            id = 'azuendorf'
-            name = 'Albert Zündorf'
-            email = 'zuendorf@uni-kassel.de'
-         }
-
-        developer {
-            id = 'Clashsoft'
-            name = 'Adrian Kunz'
-            email = 'clashsoft@hotmail.com'
-         }
-
-		developer {
-    	    id = 'Kuenssi'
-        	name = 'Maximilian Freiherr von Künßberg'
-            email = 'max.kuenssi@gmail.com'
-    	}
-
-      }
-   }
-}
-
-
-
-sourceCompatibility = 1.11
+// --------------- Dependencies ---------------
 
 repositories {
-	mavenLocal()
-	mavenCentral()
-	jcenter()
-	maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+    mavenLocal()
+    mavenCentral()
+}
+
+nexusPublishing {
+    repositories {
+        sonatype()
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = project.name
+                description = project.description
+                url = 'https://github.com/fujaba/fulibWorkflows'
+                inceptionYear = '2019'
+
+                scm {
+                    url = 'https://github.com/fujaba/fulibWorkflows'
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'zuendorf'
+                        name = 'Albert Zuendorf'
+                    }
+                    developer {
+                        id = 'Clashsoft'
+                        name = 'Adrian Kunz'
+                    }
+                    developer {
+                        id = 'Kuenssi'
+                        name = 'Maximilian Freiherr von Künßberg'
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
-	// https://mvnrepository.com/artifact/org.fulib/fulib
-	api group: 'org.fulib', name: 'fulib', version: '1.5.0'
+    // https://mvnrepository.com/artifact/org.antlr/ST4
+    implementation group: 'org.antlr', name: 'ST4', version: '4.3.1'
 
-	fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.0'
+    // https://mvnrepository.com/artifact/org.antlr/antlr4-runtime
+    implementation group: 'org.antlr', name: 'antlr4-runtime', version: '4.9.3'
 
-	implementation 'org.fulib:fulibTables:1.4.0'
-	implementation 'org.fulib:fulibTools:1.5.1'
-	implementation 'org.fulib:fulibMockups:0.4.0'
+    // https://mvnrepository.com/artifact/org.fulib/fulibScenarios
+    fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.0'
 
-	implementation group: 'org.antlr', name: 'ST4', version: '4.3'
+    // https://mvnrepository.com/artifact/org.fulib/fulibTools
+    implementation group: 'org.fulib', name: 'fulibTools', version: '1.5.1'
 
-	testImplementation group: 'junit', name: 'junit', version: '4.13'
-	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+    // https://mvnrepository.com/artifact/org.fulib/fulibTables
+    testImplementation group: 'org.fulib', name: 'fulibTables', version: '1.4.0'
 
-	testImplementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
-	genImplementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
+    // https://mvnrepository.com/artifact/org.fulib/fulibMockups
+    testImplementation group: 'org.fulib', name: 'fulibMockups', version: '0.4.0'
+
+    // https://mvnrepository.com/artifact/junit/junit
+    testImplementation group: 'junit', name: 'junit', version: '4.13'
+
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
+    testImplementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
+
+    antlr 'org.antlr:antlr4:4.9.3'
 }
 
+generateScenarioSource {
+    classDiagramSVG = true
+}
 
+// --------------- ANTLR ---------------
+
+// Source: https://tomassetti.me/antlr-mega-tutorial/#chapter18
+generateGrammarSource {
+    maxHeapSize = "128m"
+    arguments += ['-package', 'org.fulib.workflows.yaml', '-no-visitor', '-listener', '-encoding', 'UTF-8']
+}
+compileJava.dependsOn generateGrammarSource
+sourceSets {
+    generated {
+        java.srcDir 'generated-src/antlr/main/'
+    }
+}
+compileJava.source sourceSets.generated.java, sourceSets.main.java
+clean{
+    delete "generated-src"
+}
+idea {
+    module {
+        sourceDirs += file("generated-src/antlr/main/")
+    }
+}

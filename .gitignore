@@ -1,26 +1,24 @@
-.gradle
-/build/
+/.idea/
+/.gradle/
+/.settings/
 
-# Ignore Gradle GUI config
-gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Cache of project
-.gradletasknamecache
-
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
 /bin/
 /build/
 /data/
 /out/
 /temp/
 /tmp/
-/test/build/
-/test/tmp/
-/test/bin/
 
-.idea
-tmp
+hs_err_pid*
+
+.metadata
+*.iml
+local.properties
+
+/src/*/java/**/classDiagram.png
+/src/*/java/**/classDiagram.svg
+/src/*/scenarios/**/*.html
+/src/*/scenarios/**/*.png
+/src/*/scenarios/**/*.svg
+/src/*/scenarios/**/*.txt
+/src/*/scenarios/**/*.yaml
