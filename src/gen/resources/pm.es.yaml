@@ -5,15 +5,18 @@
 - data: Student carli
   motivation: 83
   stops: [stop1]
+  stops.back: student
 
 - data: Stop stop1
   motivation: 66
   room: r1
+  room.back: [stops]
 
 - data: Room r1
   topic: math
   credits: 17
   neighbors: [r2, r5]
+  neighbors.back: [neighbors]
 
 - data: Room r2
   topic: calculus
@@ -35,7 +38,7 @@
   room: calculus
   motivation: 56
   prev: stop1
+  prev.back: [next]
 
 - data: Student carli
-  route: math > calculus > math > modeling > exam
-
+  route: [math, calculus, math, modeling, exam]

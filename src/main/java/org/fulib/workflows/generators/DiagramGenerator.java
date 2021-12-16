@@ -9,7 +9,10 @@ import org.fulib.workflows.generators.constructors.DiagramConstructor;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DiagramGenerator {
     public void buildAndGenerateDiagram(Board board) {
@@ -29,13 +32,14 @@ public class DiagramGenerator {
 
         List<Data> previousData = new ArrayList<>();
 
+        // ObjectDiagrams
         for (Workflow workflow : board.getWorkflows()) {
             for (BaseNote note : workflow.getNotes()) {
                 if (note instanceof Data) {
                     previousData.add((Data) note);
 
                     // Always use current note and all previous to represent the objectDiagram according to the timeline
-                    String diagramString = diagramConstructor.buildDiagram(previousData, note.getIndex());
+                    String diagramString = diagramConstructor.buildObjectDiagram(previousData, note.getIndex());
 
                     if (diagramString != null) {
                         diagrams.add(diagramString);
@@ -45,9 +49,12 @@ public class DiagramGenerator {
         }
 
         for (int i = 0; i < diagrams.size(); i++) {
-            String page = diagrams.get(i);
-            resultMap.put(i + "_diagram", page);
+            String diagram = diagrams.get(i);
+            resultMap.put(i + "_diagram", diagram);
         }
+
+        // ClassDiagram
+        resultMap.put("classDiagram", diagramConstructor.buildClassDiagram(previousData));
 
         return resultMap;
     }
