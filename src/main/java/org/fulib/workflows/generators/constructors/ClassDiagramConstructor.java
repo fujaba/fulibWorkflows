@@ -67,27 +67,31 @@ public class ClassDiagramConstructor {
                     String[] split = pair.a.split("\\.");
                     reservedStringsForAssoc.add(split[0]);
 
-                    association.tgtName = split[0];
+                    association.srcName = split[0];
 
                     String backName = pair.b;
                     if (backName.contains("[")) {
-                        backName = backName.replaceAll("\\[", "");
-                        backName = backName.replaceAll("]", "");
-                        association.srcCardi = Type.MANY;
+                        backName = cleanupString(backName);
+                        association.tgtCardi = Type.MANY;
                     } else {
-                        association.srcCardi = Type.ONE;
+                        association.tgtCardi = Type.ONE;
                     }
 
-                    association.srcName = backName;
+                    association.tgtName = backName;
 
-                    if (association.srcName.equals(association.tgtName)) {
+                    Clazz currentClazz = clazzMap.get(currentClass);
+                    association.srcClazz = currentClazz;
+
+                    if (association.tgtName.equals(association.srcName)) {
                         // Self association
-                        Clazz clazz = clazzMap.get(currentClass);
-                        association.srcClazz = clazz;
-                        association.tgtClazz = clazz;
+                        association.tgtClazz = currentClazz;
                     } else {
                         // Association between two classes
-                        // TODO
+                        String objectName = getCorrectDataEntry(object, split[0], association);
+                        String tgtClassName = findClazz(objectName);
+                        if (tgtClassName != null) {
+                            association.tgtClazz = clazzMap.get(tgtClassName.toLowerCase());
+                        }
                     }
 
                     associations.add(association);
@@ -95,6 +99,37 @@ public class ClassDiagramConstructor {
                 }
             }
         }
+    }
+
+    private String getCorrectDataEntry(Data object, String tgtName, Association association) {
+        for (Integer integer : object.getData().keySet()) {
+            Pair<String, String> pair = object.getData().get(integer);
+            String key = pair.a;
+
+            if (key.equals(tgtName)) {
+                if (pair.b.contains("[")) {
+                    association.srcCardi = Type.MANY;
+                } else {
+                    association.srcCardi = Type.ONE;
+                }
+
+                return pair.b;
+            }
+        }
+        return null;
+    }
+
+    private String findClazz(String searchName) {
+        for (Data object : objects) {
+            String objectName = object.getName().split(" ")[1];
+
+            searchName = cleanupString(searchName);
+
+            if (objectName.equals(searchName)) {
+                return object.getName().split(" ")[0];
+            }
+        }
+        return null;
     }
 
     private void createAttributes(ClassModelManager mm) {
@@ -113,19 +148,6 @@ public class ClassDiagramConstructor {
                 }
             }
         }
-    }
-
-    private String evaluateAttributeType(String value) {
-        // Check for numbers
-        Pattern intPattern = Pattern.compile("^\\d+");
-
-        boolean isInt = intPattern.matcher(value).find();
-
-        if (isInt) {
-            return Type.INT;
-        }
-
-        return Type.STRING;
     }
 
     private void createClazz(ClassModelManager mm) {
@@ -153,5 +175,30 @@ public class ClassDiagramConstructor {
         }
 
         return result;
+    }
+
+
+    // Helper Methods
+    private String cleanupString(String string) {
+        String result = string;
+
+        result = result.replaceAll("\\[", "");
+        result = result.replaceAll("]", "");
+        result = result.replaceAll(",", "");
+
+        return result;
+    }
+
+    private String evaluateAttributeType(String value) {
+        // Check for numbers
+        Pattern intPattern = Pattern.compile("^\\d+");
+
+        boolean isInt = intPattern.matcher(value).find();
+
+        if (isInt) {
+            return Type.INT;
+        }
+
+        return Type.STRING;
     }
 }
