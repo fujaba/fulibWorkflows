@@ -5,6 +5,7 @@ import org.fulib.workflows.events.*;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -49,7 +50,7 @@ public class BoardConstructor {
             noteST = boardGroup.getInstanceOf("note");
 
             if (note instanceof Event event) {
-                noteST.add("content", buildNoteContentFromMap(event.getData(), "Event:"));
+                noteST.add("content", buildNoteContentFromNote(event, "Event:"));
                 noteST.add("color", "orange");
                 workflowContent.append(noteST.render());
             } else if (note instanceof ExternalSystem) {
@@ -65,7 +66,7 @@ public class BoardConstructor {
                 noteST.add("color", "gold");
                 workflowContent.append(noteST.render());
             } else if (note instanceof Data data) {
-                noteST.add("content", buildNoteContentFromMap(data.getData(), "Data:"));
+                noteST.add("content", buildNoteContentFromNote(data, "Data:"));
                 noteST.add("color", "darkseagreen");
                 workflowContent.append(noteST.render());
             } else if (note instanceof Policy) {
@@ -74,7 +75,7 @@ public class BoardConstructor {
                 workflowContent.append(noteST.render());
             } else if (note instanceof Page page) {
                 pageST = boardGroup.getInstanceOf("page");
-                pageST.add("content", buildNoteContentFromMap(page.getContent(), "Page:"));
+                pageST.add("content", buildNoteContentFromNote(page, "Page:"));
                 pageST.add("color", "palegreen");
                 pageST.add("pageNumber", pageNumber);
                 pageNumber++;
@@ -109,7 +110,9 @@ public class BoardConstructor {
         return textContent.toString();
     }
 
-    private String buildNoteContentFromMap(Map<Integer, Pair<String, String>> contents, String noteName) {
+    private String buildNoteContentFromNote(BaseNote note, String noteName) {
+        Map<Integer, Pair<String, String>> contents = new HashMap<>();
+
         ST st;
 
         StringBuilder textContent = new StringBuilder();
@@ -117,6 +120,23 @@ public class BoardConstructor {
         st = boardGroup.getInstanceOf("type");
         st.add("type", noteName);
         textContent.append(st.render());
+
+        switch (noteName) {
+            case "Event:" -> {
+                contents = ((Event) note).getData();
+                st = boardGroup.getInstanceOf("text");
+                st.add("text", "name= " + note.getName());
+                textContent.append(st.render());
+            }
+            case "Data:" -> {
+                contents = ((Data) note).getData();
+                st = boardGroup.getInstanceOf("text");
+                st.add("text", "name= " + note.getName());
+                textContent.append(st.render());
+            }
+            case "Page:" -> contents = ((Page) note).getContent();
+            default -> System.out.println("Unknown Type");
+        }
 
         for (int i = 0; i <= contents.size(); i++) {
             Pair<String, String> pair = contents.get(i);
