@@ -33,7 +33,7 @@ EXTENDEDNOTEKEY:  'event' | 'class' | 'data' ;
 
 ELEMENTKEY: 'text' | 'input' | 'password' | 'button' ;
 
-NAME: ([A-Za-zäÄöÖüÜß] [0-9]* [-/_,.']* [ ]*)+ ;
+NAME: ([A-Za-zäÄöÖüÜß] [0-9]* [-/_,.'>]* [ ]* [0-9]* [-/_,.'>]* [ ]*)+ ;
 
 MINUS: '- ' ;
 
