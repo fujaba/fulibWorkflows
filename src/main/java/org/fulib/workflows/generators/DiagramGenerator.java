@@ -4,7 +4,8 @@ import org.fulib.workflows.events.BaseNote;
 import org.fulib.workflows.events.Board;
 import org.fulib.workflows.events.Data;
 import org.fulib.workflows.events.Workflow;
-import org.fulib.workflows.generators.constructors.DiagramConstructor;
+import org.fulib.workflows.generators.constructors.ClassDiagramConstructor;
+import org.fulib.workflows.generators.constructors.ObjectDiagramConstructor;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +25,7 @@ public class DiagramGenerator {
     }
 
     public Map<String, String> buildDiagrams(Board board) {
-        DiagramConstructor diagramConstructor = new DiagramConstructor();
+        ObjectDiagramConstructor diagramConstructor = new ObjectDiagramConstructor();
 
         Map<String, String> resultMap = new HashMap<>();
 
@@ -53,8 +54,10 @@ public class DiagramGenerator {
             resultMap.put(i + "_diagram", diagram);
         }
 
+        ClassDiagramConstructor classDiagramConstructor = new ClassDiagramConstructor();
+
         // ClassDiagram
-        resultMap.put("classDiagram", diagramConstructor.buildClassDiagram(previousData));
+        resultMap.put("classDiagram", classDiagramConstructor.buildClassDiagram(previousData));
 
         return resultMap;
     }
