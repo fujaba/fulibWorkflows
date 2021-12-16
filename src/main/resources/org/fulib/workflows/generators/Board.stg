@@ -45,10 +45,10 @@ note(content, color) ::= <<
 </div>
 >>
 
-page(content, color, pageNumber) ::= <<
+page(content, color, index) ::= <<
 
 <div class="col-lg-2 col-md-3 col-xs-6">
-    <div class="box" style="background-color: {color}" onclick="window.parent.setPageFromIframe({pageNumber});">
+    <div class="box" style="background-color: {color}" onclick="window.parent.setIndexFromIframe({index});">
         {content}
     </div>
 </div>

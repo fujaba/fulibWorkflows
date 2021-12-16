@@ -45,6 +45,7 @@ public class BoardConstructor {
         ST pageST;
         StringBuilder workflowContent = new StringBuilder();
         int pageNumber = 0;
+        int dataNumber = 0;
 
         for (BaseNote note : workflow.getNotes()) {
             noteST = boardGroup.getInstanceOf("note");
@@ -66,9 +67,12 @@ public class BoardConstructor {
                 noteST.add("color", "gold");
                 workflowContent.append(noteST.render());
             } else if (note instanceof Data data) {
-                noteST.add("content", buildNoteContentFromNote(data, "Data:"));
-                noteST.add("color", "darkseagreen");
-                workflowContent.append(noteST.render());
+                pageST = boardGroup.getInstanceOf("page");
+                pageST.add("content", buildNoteContentFromNote(data, "Data:"));
+                pageST.add("color", "darkseagreen");
+                pageST.add("index", dataNumber);
+                dataNumber++;
+                workflowContent.append(pageST.render());
             } else if (note instanceof Policy) {
                 noteST.add("content", buildNoteContent("Policy:", note.getName()));
                 noteST.add("color", "#C8A2C8");
@@ -77,7 +81,7 @@ public class BoardConstructor {
                 pageST = boardGroup.getInstanceOf("page");
                 pageST.add("content", buildNoteContentFromNote(page, "Page:"));
                 pageST.add("color", "palegreen");
-                pageST.add("pageNumber", pageNumber);
+                pageST.add("index", pageNumber);
                 pageNumber++;
                 workflowContent.append(pageST.render());
             } else if (note instanceof Problem) {
