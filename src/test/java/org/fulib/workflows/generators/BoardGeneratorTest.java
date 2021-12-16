@@ -46,4 +46,17 @@ public class BoardGeneratorTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void testPMFromString() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+
+        try {
+            String yaml = Files.readString(Path.of("src/gen/resources/pm.es.yaml"));
+            Map<String, String> map = boardGenerator.generateAndReturnHTMLs(yaml);
+            Assert.assertEquals(9, map.size()); // 1 Board, 8 Diagrams
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

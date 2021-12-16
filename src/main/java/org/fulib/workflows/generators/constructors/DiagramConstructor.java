@@ -48,8 +48,18 @@ public class DiagramConstructor {
             Pair<String, String> pair = note.getData().get(i);
             ST st = fulibYamlGroup.getInstanceOf("attribute");
 
-            st.add("type", pair.a);
-            st.add("value", pair.b);
+            String type = pair.a;
+            String value = pair.b;
+
+            if (value.contains("[") || value.contains(">")) {
+                value = value.replaceAll("\\[", "");
+                value = value.replaceAll("]", "");
+                value = value.replaceAll(",", "");
+                value = value.replaceAll(">", "");
+            }
+
+            st.add("type", type);
+            st.add("value", value);
 
             attributesBody.append(st.render());
         }
