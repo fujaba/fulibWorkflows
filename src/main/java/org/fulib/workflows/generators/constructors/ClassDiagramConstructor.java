@@ -13,28 +13,36 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class ClassDiagramConstructor {
-    private List<Association> associations = new ArrayList<>();
+
+    private List<Data> objects;
+    private final Map<String, Clazz> clazzMap = new HashMap<>();
+    private final List<Association> associations = new ArrayList<>();
+    private final List<String> reservedStringsForAssoc = new ArrayList<>();
 
     public String buildClassDiagram(List<Data> objects) {
+        this.objects = objects;
+
         ClassModelManager mm = new ClassModelManager();
 
-        List<Clazz> clazzList = createClazz(mm, objects);
-        List<String> reservedStringsForAssoc = buildAssocsAndReturnAssocNames(objects, clazzList);
-        createAttributes(mm, clazzList, objects, reservedStringsForAssoc);
+        // Create a map String, Clazz containing every possible class from the Data notes
+        createClazz(mm);
 
-        for (Association association : associations) {
-            mm.associate(association.srcClazz, association.srcName, association.srcCardi, association.tgtClazz, association.tgtName, association.tgtCardi);
-        }
+        // Create all associations and put it into a global list
+        buildAssociations();
+
+        // Create all attributes
+        createAttributes(mm);
 
         return generateClassDiagram(mm.getClassModel());
     }
 
-    private List<String> buildAssocsAndReturnAssocNames(List<Data> objects, List<Clazz> clazzList) {
-        List<String> result = new ArrayList<>();
-
+    private void buildAssociations() {
         for (Data object : objects) {
             Association association = new Association();
             for (Integer integer : object.getData().keySet()) {
@@ -42,7 +50,7 @@ public class ClassDiagramConstructor {
 
                 if (pair.a.contains(".")) {
                     String[] split = pair.a.split("\\.");
-                    result.add(split[0]);
+                    reservedStringsForAssoc.add(split[0]);
 
                     association.tgtName = split[0];
 
@@ -57,65 +65,58 @@ public class ClassDiagramConstructor {
 
                     association.srcName = backName;
 
-                    // TODO get src and target clazz.....
-
                     if (association.srcName.equals(association.tgtName)) {
                         // Self association
-                        association.srcClazz = getClazzByName(association.srcName, clazzList, true);
-                        association.tgtClazz = getClazzByName(association.tgtName, clazzList, true);
+                        association.srcClazz = clazzMap.get(association.srcName);
+                        association.tgtClazz = clazzMap.get(association.tgtName);
+                    } else {
+                        //TODO Other stuff
                     }
 
-
                     associations.add(association);
-                    result.add(backName);
+                    reservedStringsForAssoc.add(backName);
                 }
             }
         }
-
-        return result;
     }
 
-    private void createAttributes(ClassModelManager mm, List<Clazz> clazzList, List<Data> objects, List<String> reservedStringsForAssoc) {
+    private void createAttributes(ClassModelManager mm) {
         for (Data object : objects) {
             for (Integer integer : object.getData().keySet()) {
                 Pair<String, String> pair = object.getData().get(integer);
                 String attributeName = pair.a;
 
-                Clazz clazz = getClazzByName(object.getName().split(" ")[0], clazzList, false);
+                String className = object.getName().split(" ")[0].toLowerCase();
 
-                if (!reservedStringsForAssoc.contains(attributeName)) {
-                    mm.haveAttribute(clazz, attributeName, Type.STRING);
+                Clazz clazz = clazzMap.get(className);
+
+                if (!reservedStringsForAssoc.contains(attributeName) && !attributeName.contains(".")) {
+                    String type = evaluateAttributeType(pair.b);
+                    mm.haveAttribute(clazz, attributeName, type);
                 }
             }
         }
     }
 
-    private Clazz getClazzByName(String s, List<Clazz> clazzList, boolean lowercase) {
-        for (Clazz clazz : clazzList) {
-            String clazzName = clazz.getName();
+    private String evaluateAttributeType(String value) {
+        // Check for numbers
+        Pattern intPattern = Pattern.compile("^\\d+");
 
-            if (lowercase) {
-                clazzName = clazzName.toLowerCase();
-            }
+        boolean isInt = intPattern.matcher(value).find();
 
-            if (s.equals(clazzName)) {
-                return clazz;
-            }
+        if (isInt) {
+            return Type.INT;
         }
-        return null;
+
+        return Type.STRING;
     }
 
-    private List<Clazz> createClazz(ClassModelManager mm, List<Data> objects) {
-        List<Clazz> result = new ArrayList<>();
-
+    private void createClazz(ClassModelManager mm) {
         for (Data object : objects) {
             String className = object.getName().split(" ")[0];
 
-            Clazz clazz = mm.haveClass(className);
-            result.add(clazz);
+            clazzMap.put(className.toLowerCase(), mm.haveClass(className));
         }
-
-        return result;
     }
 
     private String generateClassDiagram(ClassModel classModel) {
