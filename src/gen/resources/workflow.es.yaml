@@ -20,7 +20,7 @@
   lecture: string
   students: int
 
-- data: wambologieClass
+- data: Wambo wambologieClass
   lecture: wambo
   studentes: 31
 
