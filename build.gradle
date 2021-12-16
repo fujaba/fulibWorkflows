@@ -13,7 +13,7 @@ plugins {
 
 // --------------- General Settings ---------------
 
-group 'org.fulib'
+group = 'org.fulib'
 version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
 description = 'fulibWorkflows is tool to generate mockups and object-/class-diagrams from a workflow description.'
 
@@ -33,7 +33,7 @@ nexusPublishing {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
+            from(components.java)
             pom {
                 name = project.name
                 description = project.description
@@ -62,7 +62,7 @@ publishing {
                     }
                     developer {
                         id = 'Kuenssi'
-                        name = 'Maximilian Freiherr von Künßberg'
+                        name = 'Maximilian Freiherr von Kuenssberg'
                     }
                 }
             }
