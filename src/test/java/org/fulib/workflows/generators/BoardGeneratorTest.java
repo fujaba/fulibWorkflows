@@ -35,7 +35,7 @@ public class BoardGeneratorTest {
     }
 
     @Test
-    public void testAntlrMultipleWorkflowsFromString() {
+    public void testMultipleWorkflowsFromString() {
         BoardGenerator boardGenerator = new BoardGenerator();
 
         try {
