@@ -33,18 +33,33 @@ public class ClassDiagramConstructor {
         // Create a map String, Clazz containing every possible class from the Data notes
         createClazz(mm);
 
-        // Create all associations and put it into a global list
+        // Build all associations and put it into a global list
+        // Also Build a list of attributes, that are not allowed to be created
         buildAssociations();
 
         // Create all attributes
         createAttributes(mm);
 
+        // Create all associations
+        createAssociations(mm);
+
         return generateClassDiagram(mm.getClassModel());
+    }
+
+    private void createAssociations(ClassModelManager mm) {
+        for (Association assoc : associations) {
+            if (assoc.srcClazz == null || assoc.tgtClazz == null) {
+                continue;
+            }
+
+            mm.associate(assoc.srcClazz, assoc.srcName, assoc.srcCardi, assoc.tgtClazz, assoc.tgtName, assoc.tgtCardi);
+        }
     }
 
     private void buildAssociations() {
         for (Data object : objects) {
             Association association = new Association();
+            String currentClass = object.getName().split(" ")[0].toLowerCase();
             for (Integer integer : object.getData().keySet()) {
                 Pair<String, String> pair = object.getData().get(integer);
 
@@ -67,10 +82,12 @@ public class ClassDiagramConstructor {
 
                     if (association.srcName.equals(association.tgtName)) {
                         // Self association
-                        association.srcClazz = clazzMap.get(association.srcName);
-                        association.tgtClazz = clazzMap.get(association.tgtName);
+                        Clazz clazz = clazzMap.get(currentClass);
+                        association.srcClazz = clazz;
+                        association.tgtClazz = clazz;
                     } else {
-                        //TODO Other stuff
+                        // Association between two classes
+                        // TODO
                     }
 
                     associations.add(association);
