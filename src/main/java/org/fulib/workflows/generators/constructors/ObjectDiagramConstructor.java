@@ -8,6 +8,7 @@ import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -23,7 +24,9 @@ public class ObjectDiagramConstructor {
     }
 
     private String buildFulibYamlNotation(List<Data> notes) {
-        fulibYamlGroup = new STGroupFile(Objects.requireNonNull(this.getClass().getResource("../FulibYaml.stg")));
+        URL resource = PageConstructor.class.getResource("FulibYaml.stg");
+
+        fulibYamlGroup = new STGroupFile(Objects.requireNonNull(resource));
         StringBuilder yamlBody = new StringBuilder();
 
         for (Data note : notes) {

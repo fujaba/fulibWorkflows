@@ -4,6 +4,7 @@ import org.fulib.workflows.events.Page;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
+import java.net.URL;
 import java.util.Objects;
 
 public class FxmlConstructor {
@@ -13,8 +14,9 @@ public class FxmlConstructor {
 
     public String buildFxml(Page page) {
         currentPage = page;
+        URL resource = PageConstructor.class.getResource("Fxml.stg");
 
-        fxmlGroup = new STGroupFile(Objects.requireNonNull(this.getClass().getResource("../Fxml.stg")));
+        fxmlGroup = new STGroupFile(Objects.requireNonNull(resource));
         StringBuilder pageBody = new StringBuilder();
 
         // Complete the page

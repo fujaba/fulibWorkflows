@@ -4,6 +4,7 @@ import org.fulib.workflows.events.Page;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
+import java.net.URL;
 import java.util.Objects;
 
 public class PageConstructor {
@@ -14,7 +15,9 @@ public class PageConstructor {
     public String buildPage(Page page) {
         currentPage = page;
 
-        pageGroup = new STGroupFile(Objects.requireNonNull(this.getClass().getResource("../Page.stg")));
+        URL resource = PageConstructor.class.getResource("Page.stg");
+
+        pageGroup = new STGroupFile(Objects.requireNonNull(resource));
         StringBuilder pageBody = new StringBuilder();
 
         // Complete the page
