@@ -1,4 +1,4 @@
-package org.fulib.workflows.generation;
+package org.fulib.workflows.utils;
 
 import org.fulib.classmodel.Clazz;
 

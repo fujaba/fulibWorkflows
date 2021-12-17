@@ -7,7 +7,7 @@ import org.fulib.builder.Type;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
 import org.fulib.workflows.events.Data;
-import org.fulib.workflows.generation.Association;
+import org.fulib.workflows.utils.Association;
 
 import java.io.IOException;
 import java.nio.file.Files;
