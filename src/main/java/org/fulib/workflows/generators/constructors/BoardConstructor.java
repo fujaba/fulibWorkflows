@@ -5,6 +5,7 @@ import org.fulib.workflows.events.*;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +17,9 @@ public class BoardConstructor {
 
     public String buildBoard(Board board) {
         currentBoard = board;
-        boardGroup = new STGroupFile(Objects.requireNonNull(this.getClass().getResource("../Board.stg")));
+        URL resource = PageConstructor.class.getResource("Board.stg");
+
+        boardGroup = new STGroupFile(Objects.requireNonNull(resource));
         StringBuilder boardBody = new StringBuilder();
 
         ST st = boardGroup.getInstanceOf("board");
