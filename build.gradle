@@ -3,6 +3,7 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'signing'
     id 'antlr'
     id 'idea'
     // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
@@ -15,7 +16,7 @@ plugins {
 
 group = 'org.fulib'
 version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
-description = 'fulibWorkflows is tool to generate mockups and object-/class-diagrams from a workflow description.'
+description = 'fulibWorkflows is a tool to generate mockups and object-/class-diagrams from a workflow description.'
 
 // --------------- Dependencies ---------------
 
@@ -24,51 +25,50 @@ repositories {
     mavenCentral()
 }
 
-nexusPublishing {
-    repositories {
-        sonatype()
-    }
+nexusPublishing.repositories.sonatype()
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from(components.java)
-            pom {
-                name = project.name
-                description = project.description
-                url = 'https://github.com/fujaba/fulibWorkflows'
-                inceptionYear = '2019'
+publishing.publications.create('mavenJava', MavenPublication) {
+    it.from(components.java)
+    it.pom {
+        name = project.name
+        description = project.description
+        url = 'https://github.com/fujaba/fulibWorkflows'
+        inceptionYear = '2019'
 
-                scm {
-                    url = 'https://github.com/fujaba/fulibWorkflows'
-                }
+        scm {
+            url = 'https://github.com/fujaba/fulibWorkflows'
+        }
 
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://www.opensource.org/licenses/mit-license.php'
-                    }
-                }
+        licenses {
+            license {
+                name = 'MIT License'
+                url = 'https://www.opensource.org/licenses/mit-license.php'
+            }
+        }
 
-                developers {
-                    developer {
-                        id = 'zuendorf'
-                        name = 'Albert Zuendorf'
-                    }
-                    developer {
-                        id = 'Clashsoft'
-                        name = 'Adrian Kunz'
-                    }
-                    developer {
-                        id = 'Kuenssi'
-                        name = 'Maximilian Freiherr von Kuenssberg'
-                    }
-                }
+        developers {
+            developer {
+                id = 'zuendorf'
+                name = 'Albert Zuendorf'
+            }
+            developer {
+                id = 'Clashsoft'
+                name = 'Adrian Kunz'
+            }
+            developer {
+                id = 'Kuenssi'
+                name = 'Maximilian Freiherr von Kuenssberg'
             }
         }
     }
 }
+
+signing.sign publishing.publications.mavenJava
 
 dependencies {
     // https://mvnrepository.com/artifact/org.antlr/ST4
@@ -116,7 +116,7 @@ sourceSets {
     }
 }
 compileJava.source sourceSets.generated.java, sourceSets.main.java
-clean{
+clean {
     delete "generated-src"
 }
 idea {
