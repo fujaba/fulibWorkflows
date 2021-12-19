@@ -23,6 +23,14 @@ Every workflow needs to have a name displayed after the `:`.
 There has to be at least on workflow event present at the top of the file.
 If this is not the case, events before that will not be displayed.
 
+# service
+```yaml
+- service: Authorization Service
+```
+Every service needs a name. It helps to clarify which service performs steps in a workflow.
+
+The name of a service must not be unique.
+
 ### problem
 ```yaml
 - problem: This part fails often
@@ -39,4 +47,46 @@ For this the `problem` event is introduced. It can hold information or questions
 This can be helpful in the development or for a future discussion with other domain experts.
 
 ## Event Storming Events
-// TODO
+### event (original: Domain Event)
+```yaml
+- event: registration completed
+
+- event: registration completed
+  username: Karli
+  mail: karli@business.com
+```
+An event is signalling an action performed in the business process.
+Usually it is written in past tense.
+
+In fulibWorkflows it is possible to enrich an event with additional data. Similar to the `data` event.
+
+### user
+```yaml
+- user: Karli
+```
+The user is similar to the `service` event.
+Every user needs a name. It helps to clarify which user performs steps in a workflow.
+
+The name of a service must not be unique.
+
+### policy (original: business process)
+```yaml
+- policy: Manage registration
+```
+With a policy it is possible to clarify that a certain number of steps are performed automatically due to a distinct prior event.
+A policy can trigger new `events`.
+
+### command
+```yaml
+- command: register clicked
+```
+A command was triggered by a user interacting with a `page`.
+
+### externalSystem
+```yaml
+- externalSystem: Google
+```
+An external system describes a third-party service which is needed for a process but not developed by the company or it is
+developed by a separate team.
+
+It is similar to `service`/`user`.
