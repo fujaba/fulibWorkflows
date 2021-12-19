@@ -1,17 +1,14 @@
 ## fulibWorkflows v0.1.0
 
---------------------
 - initial release
 
 ## fulibWorkflows v0.2.0
 
---------------------
 - Add simulations
 - Get proper types from values
 
 ## fulibWorkflows v0.3.0
 
---------------------
 ### General
 #### Complete rework of fulibWorkflows
 - Parsing *.es.yaml content via ANTLR4 Grammar
@@ -40,6 +37,5 @@
 
 ## fulibWorkflows v0.3.1
 
---------------------
 ### Fixes
 - Fixed fatal error for loading of String templates in a jar
