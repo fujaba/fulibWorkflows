@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * The ClassDiagramConstructor builds a classdiagram from all data events from an fulibWorkflows Board via fulib.
+ */
 public class ClassDiagramConstructor {
 
     private List<Data> objects;
@@ -25,6 +28,11 @@ public class ClassDiagramConstructor {
     private final List<Association> associations = new ArrayList<>();
     private final List<String> reservedStringsForAssoc = new ArrayList<>();
 
+    /**
+     * Builds a class model using fulib and generates a svg class diagram
+     * @param objects list of data notes
+     * @return classdiagram svg file content as string
+     */
     public String buildClassDiagram(List<Data> objects) {
         this.objects = objects;
 

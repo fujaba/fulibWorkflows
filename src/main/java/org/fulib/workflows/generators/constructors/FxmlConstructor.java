@@ -7,11 +7,19 @@ import org.stringtemplate.v4.STGroupFile;
 import java.net.URL;
 import java.util.Objects;
 
+/**
+ * The FxmlConstructor builds a fxml mockup from a page event from an fulibWorkflows Board.
+ */
 public class FxmlConstructor {
     private Page currentPage;
 
     private STGroupFile fxmlGroup;
 
+    /**
+     * Uses string templates to build fxml file containing a mockup
+     * @param page Page object filled with the content of the mockup
+     * @return fxml file content as String
+     */
     public String buildFxml(Page page) {
         currentPage = page;
         URL resource = PageConstructor.class.getResource("Fxml.stg");

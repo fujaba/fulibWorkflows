@@ -7,11 +7,19 @@ import org.stringtemplate.v4.STGroupFile;
 import java.net.URL;
 import java.util.Objects;
 
+/**
+ * The PageConstructor builds a html mockup from a page event from an fulibWorkflows Board.
+ */
 public class PageConstructor {
     private Page currentPage;
 
     private STGroupFile pageGroup;
 
+    /**
+     * Uses string templates to build html file containing a mockup
+     * @param page Page object filled with the content of the mockup
+     * @return fxml file content as String
+     */
     public String buildPage(Page page) {
         currentPage = page;
 
