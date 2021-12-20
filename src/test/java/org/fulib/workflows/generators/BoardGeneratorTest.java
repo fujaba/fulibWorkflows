@@ -17,9 +17,21 @@ public class BoardGeneratorTest {
     }
 
     @Test
-    public void testMultiplePages() {
+    public void testMultiplePagesFromFile() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/pages.es.yaml"));
+    }
+
+    @Test
+    public void testMultiplePagesFromString() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+
+        try {
+            String yamlContent = Files.readString(Path.of("src/gen/resources/pages.es.yaml"));
+            boardGenerator.generateBoardFromString(yamlContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -40,7 +52,7 @@ public class BoardGeneratorTest {
 
         try {
             String yaml = Files.readString(Path.of("src/gen/resources/workflows.es.yaml"));
-            Map<String, String> map = boardGenerator.generateAndReturnHTMLs(yaml);
+            Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromString(yaml);
             Assert.assertEquals(11, map.size()); // 1 Board, 4 Htmls, 4 Fxmls, 1 ObjectDiagram, 1 ClassDiagram
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,12 +63,8 @@ public class BoardGeneratorTest {
     public void testPMFromString() {
         BoardGenerator boardGenerator = new BoardGenerator();
 
-        try {
-            String yaml = Files.readString(Path.of("src/gen/resources/pm.es.yaml"));
-            Map<String, String> map = boardGenerator.generateAndReturnHTMLs(yaml);
-            Assert.assertEquals(10, map.size()); // 1 Board, 8 ObjectDiagrams, 1 ClassDiagram
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Path yamlFile = Path.of("src/gen/resources/pm.es.yaml");
+        Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
+        Assert.assertEquals(10, map.size()); // 1 Board, 8 ObjectDiagrams, 1 ClassDiagram
     }
 }
