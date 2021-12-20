@@ -19,7 +19,9 @@ public class BoardGenerator {
     private final DiagramGenerator diagramGenerator = new DiagramGenerator();
     private final FxmlGenerator fxmlGenerator = new FxmlGenerator();
 
-    // Entrypoints
+    /**
+     * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
+     */
     public void generateBoardFromFile(Path yamlFile) {
         try {
             CharStream inputStream = CharStreams.fromPath(yamlFile);
@@ -34,8 +36,53 @@ public class BoardGenerator {
         }
     }
 
-    // Needed for editor backend
-    public Map<String, String> generateAndReturnHTMLs(String yamlData) {
+    /**
+     * @param yamlContent the content of a *.es.yaml file
+     */
+    public void generateBoardFromString(String yamlContent) {
+        CharStream inputStream = CharStreams.fromString(yamlContent);
+
+        Board board = generateBoard(inputStream);
+
+        htmlGenerator.buildAndGenerateHTML(board);
+        diagramGenerator.buildAndGenerateDiagram(board);
+        fxmlGenerator.buildAndGenerateFxmls(board);
+    }
+
+    /**
+     *
+     * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
+     * @return
+     */
+    public Map<String, String> generateAndReturnHTMLsFromFile(Path yamlFile) {
+        CharStream inputStream = null;
+        try {
+            inputStream = CharStreams.fromPath(yamlFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Board board = generateBoard(inputStream);
+
+        Map<String, String> result = new HashMap<>();
+        Map<String, String> boardAndPages = htmlGenerator.buildHTMLs(board);
+        result = mergeMaps(result, boardAndPages);
+
+        Map<String, String> diagrams = diagramGenerator.buildDiagrams(board);
+        result = mergeMaps(result, diagrams);
+
+        Map<String, String> fxmls = fxmlGenerator.buildFxmls(board);
+        result = mergeMaps(result, fxmls);
+
+        return result;
+    }
+
+    /**
+     *
+     * @param yamlData
+     * @return
+     */
+    public Map<String, String> generateAndReturnHTMLsFromString(String yamlData) {
         CharStream inputStream = CharStreams.fromString(yamlData);
         Board board = generateBoard(inputStream);
 
