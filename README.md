@@ -24,7 +24,7 @@ dependencies {
     // ...
     
     // https://mvnrepository.com/artifact/org.fulib/fulibWorkflows
-    implementation group: 'org.fulib', name: 'fulibWorkflows', version: '0.3.1'
+    implementation group: 'org.fulib', name: 'fulibWorkflows', version: '0.3.2'
 }
 ```
 
@@ -33,12 +33,14 @@ dependencies {
 <dependency>
   <groupId>org.fulib</groupId>
   <artifactId>fulibWorkflows</artifactId>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
 </dependency>
 ```
 
 ## Usage
 Check out the [Quickstart Guide](docs/quickstart/README.md) or the [detailed documentation](docs/definitions/README.md) to learn how to use fulibWorkflows.
+
+Also take a look at the [limitations](docs/limitations/README.md) for the fulibWorkflows syntax.
 
 # License
 [MIT](https://github.com/fujaba/fulibWorkflows/blob/main/LICENSE.md)
