@@ -43,6 +43,13 @@
 
 ## fulibWorkflows v0.3.2
 
+## Breaking Changes
+- Renamed public BoardGenerator methods. New Methods:
+  - generateBoardFromFile
+  - generateBoardFromString
+  - generateAndReturnHTMLsFromFile
+  - generateAndReturnHTMLsFromString
+
 ## General
 - Added JavaDoc to not generated classes
 
