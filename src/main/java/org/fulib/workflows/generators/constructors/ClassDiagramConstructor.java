@@ -30,6 +30,7 @@ public class ClassDiagramConstructor {
 
     /**
      * Builds a class model using fulib and generates a svg class diagram
+     *
      * @param objects list of data notes
      * @return classdiagram svg file content as string
      */
@@ -51,7 +52,13 @@ public class ClassDiagramConstructor {
         // Create all associations
         createAssociations(mm);
 
-        return generateClassDiagram(mm.getClassModel());
+        String classDiagramString = generateClassDiagram(mm.getClassModel());
+
+        if (mm.getClassModel().getClasses().size() > 0) {
+            return classDiagramString;
+        } else {
+            return null;
+        }
     }
 
     private void createAssociations(ClassModelManager mm) {
@@ -167,7 +174,7 @@ public class ClassDiagramConstructor {
     }
 
     private String generateClassDiagram(ClassModel classModel) {
-        String fileName = "tmp/test/classdiagram";
+        String fileName = "temporary/test/classdiagram";
         String result = "";
 
         fileName = FulibTools.classDiagrams().dumpSVG(classModel, fileName);
@@ -177,7 +184,8 @@ public class ClassDiagramConstructor {
 
             Files.deleteIfExists(Path.of(fileName + ".svg"));
 
-            Files.deleteIfExists(Path.of("tmp/test/"));
+            Files.deleteIfExists(Path.of("temporary/test/"));
+            Files.deleteIfExists(Path.of("temporary/"));
         } catch (IOException e) {
             e.printStackTrace();
         }
