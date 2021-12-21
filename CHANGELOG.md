@@ -39,3 +39,19 @@
 
 ### Fixes
 - Fixed fatal error for loading of String templates in a jar
+  Changelog eintrag für v0.3.2
+
+## fulibWorkflows v0.3.2
+
+## General
+- Added JavaDoc to not generated classes
+
+## Generation
+- Restyled the generated event storming board
+- Add \t for indentation
+
+## Fixes
+- Only generate tmp or test directory if needed
+- Only generate classdiagram if there is a class in the classmodel
+- Add padding for buttons to generated html pages
+- Use `id` instead of `fx:id` in the generated fxml files

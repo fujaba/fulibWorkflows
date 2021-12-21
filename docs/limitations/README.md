@@ -2,10 +2,8 @@
 Due to the current grammar there are limitations to the syntax.
 
 ## General
-A workfow description always has to have an EOF.
+A workflow description always has to have an EOF.
 Between every event there has to be an empty line.
-
-Indentation is only allowed with spaces right now.
 
 ## Key limitations
 A key is only allowed to consist of letters A-Z and a dot.
