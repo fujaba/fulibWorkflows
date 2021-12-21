@@ -21,14 +21,14 @@ page(content, pageName) ::= <<
 
 text(text) ::= <<
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center pt-2">
         <span>{text}</span>
     </div>
 >>
 
 input(id, label) ::= <<
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center pt-2">
         <label for="{id}">{label}</label>
     </div>
     <div class="row justify-content-center">
@@ -38,7 +38,7 @@ input(id, label) ::= <<
 
 password(id, label) ::= <<
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center pt-2">
         <label for="{id}">{label}</label>
     </div>
     <div class="row justify-content-center">
@@ -48,7 +48,7 @@ password(id, label) ::= <<
 
 button(description) ::= <<
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center pt-2">
         <button type="button" class="btn btn-success" onclick="window.parent.showToast('{description} clicked');">{description}</button>
     </div>
 >>

@@ -16,15 +16,15 @@ extendedNote: MINUS EXTENDEDNOTEKEY COLON NAME NEWLINE attribute+ ;
 
 page: MINUS 'page' LISTCOLON NEWLINE pageList ;
 
-attribute: SPACES NAME COLON value NEWLINE? ;
+attribute: INDENTATION NAME COLON value NEWLINE? ;
 
 value: NAME | NUMBER | LIST;
 
 pageList: pageName NEWLINE element* ;
 
-pageName: SPACES MINUS 'name' COLON NAME ;
+pageName: INDENTATION MINUS 'name' COLON NAME ;
 
-element: SPACES MINUS ELEMENTKEY COLON NAME NEWLINE ;
+element: INDENTATION MINUS ELEMENTKEY COLON NAME NEWLINE ;
 
 // Atomar
 NORMALNOTEKEY: 'externalSystem' | 'service' | 'command' | 'policy' | 'user' | 'problem' ;
@@ -45,8 +45,8 @@ KEY: [A-Za-z.]+ ;
 
 NEWLINE: [\r\n]+ | [\n]+ ;
 
-LIST: '[' (.)*? ']';
+LIST: '[' (.)*? ']' ;
 
 NUMBER: [0-9]+ ;
 
-SPACES: [ ]+ ;
+INDENTATION: [\t]+ | [ ]+ ;
