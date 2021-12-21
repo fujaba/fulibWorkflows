@@ -14,9 +14,18 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The ObjectDiagramConstructor builds an objectdiagram from a list of data events from an fulibWorkflows Board.
+ */
 public class ObjectDiagramConstructor {
     private STGroupFile fulibYamlGroup;
 
+    /**
+     * Builds object description in fulibYaml syntax and generates a svg object diagram via fulibTools
+     * @param notes list of data notes
+     * @param index references the index of the objectdiagram
+     * @return classdiagram svg file content as string
+     */
     public String buildObjectDiagram(List<Data> notes, int index) {
         String objectYaml = buildFulibYamlNotation(notes);
 

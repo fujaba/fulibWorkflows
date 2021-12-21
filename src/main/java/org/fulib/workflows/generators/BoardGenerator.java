@@ -14,12 +14,17 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The BoardGenerator is the main entry point for the parsing of fulibWorkflows and the generation of files.
+ */
 public class BoardGenerator {
     private final HtmlGenerator htmlGenerator = new HtmlGenerator();
     private final DiagramGenerator diagramGenerator = new DiagramGenerator();
     private final FxmlGenerator fxmlGenerator = new FxmlGenerator();
 
-    // Entrypoints
+    /** Generates mockup and diagram files from a *.es.yaml file
+     * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
+     */
     public void generateBoardFromFile(Path yamlFile) {
         try {
             CharStream inputStream = CharStreams.fromPath(yamlFile);
@@ -34,11 +39,49 @@ public class BoardGenerator {
         }
     }
 
-    // Needed for editor backend
-    public Map<String, String> generateAndReturnHTMLs(String yamlData) {
-        CharStream inputStream = CharStreams.fromString(yamlData);
+    /** Generates mockup and diagram files from fulibWorkflows description
+     * @param yamlContent the content of a *.es.yaml file
+     */
+    public void generateBoardFromString(String yamlContent) {
+        CharStream inputStream = CharStreams.fromString(yamlContent);
+
         Board board = generateBoard(inputStream);
 
+        htmlGenerator.buildAndGenerateHTML(board);
+        diagramGenerator.buildAndGenerateDiagram(board);
+        fxmlGenerator.buildAndGenerateFxmls(board);
+    }
+
+    /** Generates and returns generated files from a *.es.yaml file
+     * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
+     * @return Map containing all generated file contents as value, key is a combination from a number and Board/page/diagram/fxml/classdiagram
+     */
+    public Map<String, String> generateAndReturnHTMLsFromFile(Path yamlFile) {
+        try {
+            CharStream inputStream = CharStreams.fromPath(yamlFile);
+
+            Board board = generateBoard(inputStream);
+
+            return buildAndReturnFiles(board);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /** Generates and returns generated files from fulibWorkflows description
+     * @param yamlContent the content of a *.es.yaml file
+     * @return Map containing all generated file contents as value, key is a combination from a number and Board/page/diagram/fxml/classdiagram
+     */
+    public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
+        CharStream inputStream = CharStreams.fromString(yamlContent);
+        Board board = generateBoard(inputStream);
+
+        return buildAndReturnFiles(board);
+    }
+
+    private Map<String, String> buildAndReturnFiles(Board board) {
         Map<String, String> result = new HashMap<>();
         Map<String, String> boardAndPages = htmlGenerator.buildHTMLs(board);
         result = mergeMaps(result, boardAndPages);
@@ -48,7 +91,6 @@ public class BoardGenerator {
 
         Map<String, String> fxmls = fxmlGenerator.buildFxmls(board);
         result = mergeMaps(result, fxmls);
-
         return result;
     }
 
