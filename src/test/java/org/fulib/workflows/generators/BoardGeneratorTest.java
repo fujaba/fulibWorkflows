@@ -67,4 +67,36 @@ public class BoardGeneratorTest {
         Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
         Assert.assertEquals(10, map.size()); // 1 Board, 8 ObjectDiagrams, 1 ClassDiagram
     }
+
+    @Test
+    public void testPagesTabsFromString() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.generateBoardFromString(pagesWithTabs());
+    }
+
+    // Helper
+    private String pagesWithTabs() {
+        return "- workflow: Pages\n" +
+                "\n" +
+                "- page:\n" +
+                "\t- name: Register\n" +
+                "\t\t- text: Please register yourself\n" +
+                "\t\t- input: E-Mail\n" +
+                "\t\t- input: Username\n" +
+                "\t- password: Password\n" +
+                "\t- password: Repeat Password\n" +
+                "\t\t- button: Register\n" +
+                "\n" +
+                "- page:\n" +
+                "    - name: Login\n" +
+                "    - text: Welcome back\n" +
+                "    - input: Username/E-Mail\n" +
+                "    - password: Password\n" +
+                "    - button: Login\n" +
+                "\n" +
+                "- page:\n" +
+                "    - name: Overview\n" +
+                "    - text: Your current Purchases\n" +
+                "    - button: Add Purchase\n";
+    }
 }
