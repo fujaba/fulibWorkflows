@@ -65,7 +65,7 @@ linkedNote(color, name, content, index, description) ::= <<
         <p class="card-text">
             {content}
         </p>
-        <a href="#" class="card-link" onclick="window.parent.setIndexFromIframe({index});">Go to {description}</a>
+        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index});">Go to {description}</a>
     </div>
 </div>
 >>
