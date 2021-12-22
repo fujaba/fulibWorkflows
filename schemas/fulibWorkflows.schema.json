@@ -130,7 +130,8 @@
       },
       "required": [
         "problem"
-      ]
+      ],
+      "additionalProperties": false
     }
   },
   "items": {
