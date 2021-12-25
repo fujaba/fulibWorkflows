@@ -22,7 +22,7 @@ value: NAME | NUMBER | LIST;
 
 pageList: pageName NEWLINE element* ;
 
-pageName: INDENTATION MINUS 'name' COLON NAME ;
+pageName: INDENTATION MINUS 'pageName' COLON NAME ;
 
 element: INDENTATION MINUS ELEMENTKEY COLON NAME NEWLINE ;
 

@@ -1,7 +1,7 @@
 - workflow: Pages
 
 - page:
-    - name: Register
+    - pageName: Register
     - text: Please register yourself
     - input: E-Mail
     - input: Username
@@ -10,13 +10,13 @@
     - button: Register
 
 - page:
-    - name: Login
+    - pageName: Login
     - text: Welcome back
     - input: Username/E-Mail
     - password: Password
     - button: Login
 
 - page:
-    - name: Overview
+    - pageName: Overview
     - text: Your current Purchases
     - button: Add Purchase

@@ -6,7 +6,7 @@ Elements can only be arranged vertically. A horizontal arrangement is not possib
 
 ```yaml
 - page:
-    - name: Example Shop
+    - pageName: Example Shop
     - text: Welcome to the Example shop
     - input: Name
     - input: Adress
@@ -19,10 +19,10 @@ Elements can only be arranged vertically. A horizontal arrangement is not possib
 ### Page name
 
 ```yaml
-- name: Example Shop
+- pageName: Example Shop
 ```
 
-The `name` item defines the name of the page. The name of a page must not be unique in one file.
+The `pageName` item defines the name of the page. The name of a page must not be unique in one file.
 
 ### Texts
 

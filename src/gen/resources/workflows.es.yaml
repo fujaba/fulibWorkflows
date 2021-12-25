@@ -19,12 +19,13 @@
 - data: Wambo wambologieClass
   lecture: wambo
   studentes: 31
+  name: wambologie
 
 
 
 
 - page:
-    - name: Testerino
+    - pageName: Testerino
     - text: This is a test page
     - input: E Mail
     - password: Password
@@ -35,7 +36,7 @@
 - workflow: Pages
 
 - page:
-    - name: Register
+    - pageName: Register
     - text: Please register yourself
     - input: E-Mail
     - input: Username
@@ -44,13 +45,13 @@
     - button: Register
 
 - page:
-    - name: Login
+    - pageName: Login
     - text: Welcome back
     - input: Username/E-Mail
     - password: Password
     - button: Login
 
 - page:
-    - name: Overview
+    - pageName: Overview
     - text: Your current Purchases
     - button: Add Purchase

@@ -24,7 +24,7 @@
 
 
 - page:
-    - name: Testerino
+    - pageName: Testerino
     - text: This is a test page
     - input: E Mail
     - password: Password

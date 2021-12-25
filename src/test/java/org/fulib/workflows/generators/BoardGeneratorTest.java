@@ -79,7 +79,7 @@ public class BoardGeneratorTest {
         return "- workflow: Pages\n" +
                 "\n" +
                 "- page:\n" +
-                "\t- name: Register\n" +
+                "\t- pageName: Register\n" +
                 "\t\t- text: Please register yourself\n" +
                 "\t\t- input: E-Mail\n" +
                 "\t\t- input: Username\n" +
@@ -88,14 +88,14 @@ public class BoardGeneratorTest {
                 "\t\t- button: Register\n" +
                 "\n" +
                 "- page:\n" +
-                "    - name: Login\n" +
+                "    - pageName: Login\n" +
                 "    - text: Welcome back\n" +
                 "    - input: Username/E-Mail\n" +
                 "    - password: Password\n" +
                 "    - button: Login\n" +
                 "\n" +
                 "- page:\n" +
-                "    - name: Overview\n" +
+                "    - pageName: Overview\n" +
                 "    - text: Your current Purchases\n" +
                 "    - button: Add Purchase\n";
     }
