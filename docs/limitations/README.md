@@ -26,4 +26,4 @@ These consist of the following strings:
 
 - workflow, page, externalSystem, service, command, policy, user, problem 
 - event, data 
-- name, text, input, password, button 
+- pageName, text, input, password, button 

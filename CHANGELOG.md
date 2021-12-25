@@ -39,7 +39,6 @@
 
 ### Fixes
 - Fixed fatal error for loading of String templates in a jar
-  Changelog eintrag für v0.3.2
 
 ## fulibWorkflows v0.3.2
 
@@ -62,3 +61,10 @@
 - Only generate classdiagram if there is a class in the classmodel
 - Add padding for buttons to generated html pages
 - Use `id` instead of `fx:id` in the generated fxml files
+
+## fulibWorkflows v0.3.3
+
+## Fixes
+- Remove href from <a> html element
+- Content of an event storming board is always aligned to the left
+- Lower shadow effect on cards

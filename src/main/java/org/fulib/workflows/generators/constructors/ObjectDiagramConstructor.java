@@ -3,6 +3,7 @@ package org.fulib.workflows.generators.constructors;
 import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.FulibTools;
 import org.fulib.workflows.events.Data;
+import org.fulib.workflows.utils.IncorrectDataValueException;
 import org.fulib.yaml.YamlIdMap;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
@@ -22,6 +23,7 @@ public class ObjectDiagramConstructor {
 
     /**
      * Builds object description in fulibYaml syntax and generates a svg object diagram via fulibTools
+     *
      * @param notes list of data notes
      * @param index references the index of the objectdiagram
      * @return classdiagram svg file content as string
@@ -43,7 +45,15 @@ public class ObjectDiagramConstructor {
 
             String[] s = note.getName().split(" ");
 
-            st.add("name", s[1]);
+            try {
+                st.add("name", s[1]);
+            } catch (Exception e) {
+                try {
+                    throw new IncorrectDataValueException("Invalid value. Needs to be '- data: <ClassName> <objectName>'");
+                } catch (IncorrectDataValueException ex) {
+                    ex.printStackTrace();
+                }
+            }
             st.add("type", s[0]);
             st.add("attributes", buildAttributes(note));
 

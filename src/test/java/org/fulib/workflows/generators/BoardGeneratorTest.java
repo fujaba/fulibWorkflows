@@ -17,6 +17,24 @@ public class BoardGeneratorTest {
     }
 
     @Test
+    public void testEventsWorkflow() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/events.es.yaml"));
+    }
+
+    @Test
+    public void testFalseDataWorkflow() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+
+        try {
+            boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/falseData.es.yaml"));
+        } catch (Exception e) {
+            // Is a valid check, because the root exception is an IndexOutOfBoundsException
+            Assert.assertEquals("begin 1, end 0, length 0", e.getMessage());
+        }
+    }
+
+    @Test
     public void testMultiplePagesFromFile() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/pages.es.yaml"));
@@ -79,7 +97,7 @@ public class BoardGeneratorTest {
         return "- workflow: Pages\n" +
                 "\n" +
                 "- page:\n" +
-                "\t- name: Register\n" +
+                "\t- pageName: Register\n" +
                 "\t\t- text: Please register yourself\n" +
                 "\t\t- input: E-Mail\n" +
                 "\t\t- input: Username\n" +
@@ -88,14 +106,14 @@ public class BoardGeneratorTest {
                 "\t\t- button: Register\n" +
                 "\n" +
                 "- page:\n" +
-                "    - name: Login\n" +
+                "    - pageName: Login\n" +
                 "    - text: Welcome back\n" +
                 "    - input: Username/E-Mail\n" +
                 "    - password: Password\n" +
                 "    - button: Login\n" +
                 "\n" +
                 "- page:\n" +
-                "    - name: Overview\n" +
+                "    - pageName: Overview\n" +
                 "    - text: Your current Purchases\n" +
                 "    - button: Add Purchase\n";
     }

@@ -1,0 +1,13 @@
+- workflow: events
+
+- event: Ordered
+
+- event: checked availability
+
+- event: checked address
+
+- event: payed
+
+- event: shipped
+
+- event: delivered

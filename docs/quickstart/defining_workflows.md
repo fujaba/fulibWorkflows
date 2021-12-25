@@ -13,7 +13,7 @@ In case you did not do that check out the [Installation](../../README.md#Install
 - user: Gonpachiro
 
 - page:
-    - name: Registration
+    - pageName: Registration
     - text: Please register yourself
     - input: Name
     - input: Mail

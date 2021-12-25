@@ -1,6 +1,6 @@
 grammar FulibWorkflows;
 
-// fulibWorkflows parser rules
+// Non-Terminals
 
 file: workflows+ ;
 
@@ -12,7 +12,7 @@ workflow: MINUS 'workflow' COLON NAME ;
 
 normalNote: MINUS NORMALNOTEKEY COLON NAME ;
 
-extendedNote: MINUS EXTENDEDNOTEKEY COLON NAME NEWLINE attribute+ ;
+extendedNote: MINUS EXTENDEDNOTEKEY COLON NAME NEWLINE attribute* ;
 
 page: MINUS 'page' LISTCOLON NEWLINE pageList ;
 
@@ -22,11 +22,11 @@ value: NAME | NUMBER | LIST;
 
 pageList: pageName NEWLINE element* ;
 
-pageName: INDENTATION MINUS 'name' COLON NAME ;
+pageName: INDENTATION MINUS 'pageName' COLON NAME ;
 
 element: INDENTATION MINUS ELEMENTKEY COLON NAME NEWLINE ;
 
-// Atomar
+// Terminals
 NORMALNOTEKEY: 'externalSystem' | 'service' | 'command' | 'policy' | 'user' | 'problem' ;
 
 EXTENDEDNOTEKEY:  'event' | 'data' ;

@@ -9,12 +9,12 @@
       "description": "Defines the name of the page",
       "type": "object",
       "properties": {
-        "name": {
+        "pageName": {
           "type": "string"
         }
       },
       "required": [
-        "name"
+        "pageName"
       ],
       "additionalProperties": false
     },
