@@ -23,6 +23,18 @@ public class BoardGeneratorTest {
     }
 
     @Test
+    public void testFalseDataWorkflow() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+
+        try {
+            boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/falseData.es.yaml"));
+        } catch (Exception e) {
+            // Is a valid check, because the root exception is an IndexOutOfBoundsException
+            Assert.assertEquals("begin 1, end 0, length 0", e.getMessage());
+        }
+    }
+
+    @Test
     public void testMultiplePagesFromFile() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/pages.es.yaml"));
