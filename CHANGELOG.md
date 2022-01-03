@@ -68,3 +68,13 @@
 - Remove href from <a> html element
 - Content of an event storming board is always aligned to the left
 - Lower shadow effect on cards
+
+## fulibWorkflows v0.3.4
+
+## General
+- Rename name item of pages to pageName
+- Add a custom exception for object diagram creation
+
+## Fixes
+- JSON-Schema for problem note fixed
+- Events are allowed to not have additional attributes
