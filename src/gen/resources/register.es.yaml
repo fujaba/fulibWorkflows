@@ -1,0 +1,38 @@
+- workflow: User Registration
+
+- user: Karli
+
+- page:
+    - pageName: Registration
+    - text: Please create a new account
+    - input: Username
+    - input: E-Mail
+    - password: Password
+    - password: Repeat Password
+    - button: Register
+
+- command: Register clicked
+
+- policy: check e-mail input
+
+- externalSystem: E-Mail Checker
+
+- problem: This part is always taking a lot of time somehow
+
+- event: e-mail is valid
+
+- service: User management
+
+- policy: create user
+
+- event: user data received
+  username: Karli
+  eMail: karli@example.com
+  psw: Karli!Example42
+
+- data: User karli
+  username: Karli
+  eMail: karli@example.com
+  psw: Karli!Example42
+
+- event: User created
