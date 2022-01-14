@@ -24,6 +24,8 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
 
     private Pair<String, String> pageAction;
 
+    private String pageName;
+
     @Override
     public void enterFile(FulibWorkflowsParser.FileContext ctx) {
         board = new Board();
@@ -106,9 +108,15 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
     }
 
     @Override
+    public void enterPage(FulibWorkflowsParser.PageContext ctx) {
+        pageName = "";
+    }
+
+    @Override
     public void exitPage(FulibWorkflowsParser.PageContext ctx) {
         Page newPage = new Page();
 
+        newPage.setName(pageName);
         newPage.setContent(noteData);
         newPage.setIndex(noteIndex);
         noteIndex++;
@@ -124,6 +132,7 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
 
     @Override
     public void exitPageName(FulibWorkflowsParser.PageNameContext ctx) {
+        pageName = ctx.NAME().getText();
         addNoteDataEntry("name", ctx.NAME().getText());
     }
 

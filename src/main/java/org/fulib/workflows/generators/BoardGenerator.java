@@ -18,9 +18,9 @@ import java.util.Map;
  * The BoardGenerator is the main entry point for the parsing of fulibWorkflows and the generation of files.
  */
 public class BoardGenerator {
-    private final HtmlGenerator htmlGenerator = new HtmlGenerator();
     private final DiagramGenerator diagramGenerator = new DiagramGenerator();
     private final FxmlGenerator fxmlGenerator = new FxmlGenerator();
+    private HtmlGenerator htmlGenerator;
 
     /** Generates mockup and diagram files from a *.es.yaml file
      * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
@@ -30,6 +30,8 @@ public class BoardGenerator {
             CharStream inputStream = CharStreams.fromPath(yamlFile);
 
             Board board = generateBoard(inputStream);
+
+            htmlGenerator = new HtmlGenerator(board);
 
             htmlGenerator.buildAndGenerateHTML(board);
             diagramGenerator.buildAndGenerateDiagram(board);
@@ -47,6 +49,8 @@ public class BoardGenerator {
 
         Board board = generateBoard(inputStream);
 
+        htmlGenerator = new HtmlGenerator(board);
+
         htmlGenerator.buildAndGenerateHTML(board);
         diagramGenerator.buildAndGenerateDiagram(board);
         fxmlGenerator.buildAndGenerateFxmls(board);
@@ -61,6 +65,8 @@ public class BoardGenerator {
             CharStream inputStream = CharStreams.fromPath(yamlFile);
 
             Board board = generateBoard(inputStream);
+
+            htmlGenerator = new HtmlGenerator(board);
 
             return buildAndReturnFiles(board);
         } catch (IOException e) {
@@ -77,6 +83,8 @@ public class BoardGenerator {
     public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
         CharStream inputStream = CharStreams.fromString(yamlContent);
         Board board = generateBoard(inputStream);
+
+        htmlGenerator = new HtmlGenerator(board);
 
         return buildAndReturnFiles(board);
     }
