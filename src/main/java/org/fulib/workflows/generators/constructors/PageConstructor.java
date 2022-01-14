@@ -49,6 +49,8 @@ public class PageConstructor {
             String key = currentPage.getContent().get(i).a;
             String value = currentPage.getContent().get(i).b;
 
+            // TODO add fill and targetPage
+
             if (key.contains("text")) {
                 st = pageGroup.getInstanceOf("text");
                 st.add("text", value);

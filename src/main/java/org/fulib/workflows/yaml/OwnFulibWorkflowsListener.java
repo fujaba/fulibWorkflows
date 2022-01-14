@@ -22,6 +22,8 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
     private int dataIndex = 0;
     private Map<Integer, Pair<String, String>> noteData;
 
+    private Pair<String, String> pageAction;
+
     @Override
     public void enterFile(FulibWorkflowsParser.FileContext ctx) {
         board = new Board();
@@ -126,8 +128,46 @@ public class OwnFulibWorkflowsListener extends FulibWorkflowsBaseListener {
     }
 
     @Override
-    public void exitElement(FulibWorkflowsParser.ElementContext ctx) {
+    public void exitText(FulibWorkflowsParser.TextContext ctx) {
+        addNoteDataEntry("text", ctx.NAME().getText());
+    }
+
+    @Override
+    public void enterInputField(FulibWorkflowsParser.InputFieldContext ctx) {
+        pageAction = null;
+    }
+
+    @Override
+    public void exitInputField(FulibWorkflowsParser.InputFieldContext ctx) {
         addNoteDataEntry(ctx.ELEMENTKEY().getText(), ctx.NAME().getText());
+        // add exitFill pair
+        if (pageAction != null) {
+            addNoteDataEntry(pageAction.a, pageAction.b);
+        }
+    }
+
+    @Override
+    public void enterButton(FulibWorkflowsParser.ButtonContext ctx) {
+        pageAction = null;
+    }
+
+    @Override
+    public void exitButton(FulibWorkflowsParser.ButtonContext ctx) {
+        addNoteDataEntry("button", ctx.NAME().getText());
+        // add targetPage pair
+        if (pageAction != null) {
+            addNoteDataEntry(pageAction.a, pageAction.b);
+        }
+    }
+
+    @Override
+    public void exitFill(FulibWorkflowsParser.FillContext ctx) {
+        pageAction = new Pair<>("fill", ctx.NAME().getText());
+    }
+
+    @Override
+    public void exitTargetPage(FulibWorkflowsParser.TargetPageContext ctx) {
+        pageAction = new Pair<>("targetPage", ctx.NAME().getText());
     }
 
     @Override

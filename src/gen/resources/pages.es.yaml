@@ -4,10 +4,15 @@
     - pageName: Register
     - text: Please register yourself
     - input: E-Mail
+      fill: test@test.test
     - input: Username
+      fill: Testerino
     - password: Password
+      fill: asd
     - password: Repeat Password
+      fill: asd
     - button: Register
+      targetPage: Login
 
 - page:
     - pageName: Login
@@ -15,6 +20,7 @@
     - input: Username/E-Mail
     - password: Password
     - button: Login
+      targetPage: Overview
 
 - page:
     - pageName: Overview
