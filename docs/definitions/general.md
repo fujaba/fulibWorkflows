@@ -67,7 +67,7 @@ In fulibWorkflows it is possible to enrich an event with additional data. Simila
 The user is similar to the `service` event.
 Every user needs a name. It helps to clarify which user performs steps in a workflow.
 
-The name of a service must not be unique.
+The name of a user must not be unique.
 
 ### policy (original: business process)
 ```yaml

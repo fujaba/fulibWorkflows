@@ -17,6 +17,12 @@ public class BoardGeneratorTest {
     }
 
     @Test
+    public void testRegistration() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/register.es.yaml"));
+    }
+
+    @Test
     public void testEventsWorkflow() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/events.es.yaml"));
