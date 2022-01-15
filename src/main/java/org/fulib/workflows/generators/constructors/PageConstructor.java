@@ -85,10 +85,15 @@ public class PageConstructor {
                 st = pageGroup.getInstanceOf("button");
                 st.add("description", value);
 
+                int foundTargetIndex;
+
                 if (targetIndex < targetPageIndexList.size()) {
-                    st.add("targetIndex", targetPageIndexList.get(targetIndex));
+                    foundTargetIndex = targetPageIndexList.get(targetIndex);
+                } else {
+                    foundTargetIndex = currentPage.getIndex();
                 }
 
+                st.add("targetIndex", foundTargetIndex);
                 targetIndex++;
                 contentBody.append(st.render());
             }
