@@ -18,7 +18,7 @@ Only positive integers are allowed.
 ### String
 A string has to begin with a letter. (A-Z, Umlauts, ß).
 After that a number can follow.
-Allowed separators for words are Spaces and the following special characters: [-/_,.']
+Allowed separators for words are Spaces and the following special characters: [-/_,.'@!?]
 
 ## Blocked keys
 Special strings that are used as identifiers in the grammar are not allowed to use as keys in event and data notes.
@@ -26,4 +26,4 @@ These consist of the following strings:
 
 - workflow, page, externalSystem, service, command, policy, user, problem 
 - event, data 
-- pageName, text, input, password, button 
+- pageName, text, input, password, button, fill, targetPage

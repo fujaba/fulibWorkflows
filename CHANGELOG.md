@@ -78,3 +78,11 @@
 ## Fixes
 - JSON-Schema for problem note fixed
 - Events are allowed to not have additional attributes
+
+## fulibWorkflows v0.3.5
+
+## General
+- Additional special characters allowed
+- New additions to pages
+- Changed Antlr Grammar
+- PageName must be unique in a workflow file
