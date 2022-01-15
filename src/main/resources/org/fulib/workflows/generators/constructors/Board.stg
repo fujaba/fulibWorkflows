@@ -57,7 +57,7 @@ actor(color, icon, name) ::= <<
 </div>
 >>
 
-linkedNote(color, name, content, index, description) ::= <<
+linkedNote(color, name, content, index, diagramType, description) ::= <<
 
 <div class="card col-xs m-2 shadow" style="background-color: {color}">
     <div class="card-body">
@@ -65,7 +65,7 @@ linkedNote(color, name, content, index, description) ::= <<
         <p class="card-text">
             {content}
         </p>
-        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index});">Go to {description}</a>
+        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, '{diagramType}');">Go to {description}</a>
     </div>
 </div>
 >>

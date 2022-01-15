@@ -104,6 +104,7 @@ public class BoardConstructor {
                 linkedNoteST.add("name", "Data");
                 linkedNoteST.add("content", buildNoteContentFromNote(data, "Data"));
                 linkedNoteST.add("index", dataIndex);
+                linkedNoteST.add("diagramType", "objects");
                 linkedNoteST.add("description", "objectdiagram");
                 dataIndex++;
                 workflowContent.append(linkedNoteST.render());
@@ -112,6 +113,7 @@ public class BoardConstructor {
                 linkedNoteST.add("name", "Page");
                 linkedNoteST.add("content", buildNoteContentFromNote(page, "Page"));
                 linkedNoteST.add("index", pageIndex);
+                linkedNoteST.add("diagramType", "pages");
                 linkedNoteST.add("description", "page");
                 pageIndex++;
                 workflowContent.append(linkedNoteST.render());

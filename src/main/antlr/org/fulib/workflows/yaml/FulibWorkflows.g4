@@ -24,16 +24,26 @@ pageList: pageName NEWLINE element* ;
 
 pageName: INDENTATION MINUS 'pageName' COLON NAME ;
 
-element: INDENTATION MINUS ELEMENTKEY COLON NAME NEWLINE ;
+element:  text | inputField | button ;
+
+text: INDENTATION MINUS 'text' COLON NAME NEWLINE;
+
+inputField: INDENTATION MINUS ELEMENTKEY COLON NAME NEWLINE fill? ;
+
+button: INDENTATION MINUS 'button' COLON NAME NEWLINE targetPage?;
+
+fill: INDENTATION 'fill' COLON NAME NEWLINE;
+
+targetPage: INDENTATION 'targetPage' COLON NAME NEWLINE;
 
 // Terminals
 NORMALNOTEKEY: 'externalSystem' | 'service' | 'command' | 'policy' | 'user' | 'problem' ;
 
 EXTENDEDNOTEKEY:  'event' | 'data' ;
 
-ELEMENTKEY: 'text' | 'input' | 'password' | 'button' ;
+ELEMENTKEY: 'input' | 'password' ;
 
-NAME: ([A-Za-zäÄöÖüÜß] [0-9]* [-/_,.']* [ ]* [0-9]* [-/_,.'>]* [ ]*)+ ;
+NAME: ([A-Za-zäÄöÖüÜß] [0-9]* [-/_,.'@!?]* [ ]* [0-9]* [-/_,.'@!?]* [ ]*)+ ;
 
 MINUS: '- ' ;
 

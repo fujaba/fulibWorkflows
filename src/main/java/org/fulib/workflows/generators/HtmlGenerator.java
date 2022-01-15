@@ -1,5 +1,6 @@
 package org.fulib.workflows.generators;
 
+import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.BaseNote;
 import org.fulib.workflows.events.Board;
 import org.fulib.workflows.events.Page;
@@ -19,6 +20,11 @@ import java.util.Map;
  * The HtmlGenerator manages the building and generation of an event storming board and mockup pages described as page events.
  */
 public class HtmlGenerator {
+    private final Map<String, Integer> allPagesMap = new HashMap<>();
+
+    HtmlGenerator(Board board) {
+        createAllPagesMap(board);
+    }
 
     /**
      * Builds and generates an event storming board and page mockups from event storming Board
@@ -53,8 +59,9 @@ public class HtmlGenerator {
 
         for (Workflow workflow : board.getWorkflows()) {
             for (BaseNote note : workflow.getNotes()) {
-                if (note instanceof Page) {
-                    pagesHTML.add(pageConstructor.buildPage((Page) note));
+                if (note instanceof Page page) {
+                    List<Integer> targetPageIndexList = evaluateTargetPageIndex(page);
+                    pagesHTML.add(pageConstructor.buildPage(page, targetPageIndexList));
                 }
             }
         }
@@ -65,6 +72,25 @@ public class HtmlGenerator {
         }
 
         return resultMap;
+    }
+
+    private List<Integer> evaluateTargetPageIndex(Page page) {
+        List<Integer> result = new ArrayList<>();
+
+        for (int i = 0; i < page.getContent().size(); i++) {
+            Pair<String, String> elementPair = page.getContent().get(i);
+            if (elementPair.a.equals("targetPage")) {
+                String targetPageName = elementPair.b;
+
+                Integer targetIndex = allPagesMap.get(targetPageName);
+
+                if (targetIndex != null) {
+                 result.add(targetIndex);
+                }
+            }
+        }
+
+        return result;
     }
 
     private void generateHTML(String htmlContent, String fileName, String subFolder) {
@@ -80,6 +106,19 @@ public class HtmlGenerator {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void createAllPagesMap(Board board) {
+        int index = 0;
+
+        for (Workflow workflow : board.getWorkflows()) {
+            for (BaseNote note : workflow.getNotes()) {
+                if (note instanceof Page page) {
+                    allPagesMap.put(page.getName(), index);
+                    index++;
+                }
+            }
         }
     }
 }

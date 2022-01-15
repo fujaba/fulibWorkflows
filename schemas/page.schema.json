@@ -37,6 +37,9 @@
       "properties": {
         "button": {
           "type": "string"
+        },
+        "targetPage": {
+          "type": "string"
         }
       },
       "required": [
@@ -50,6 +53,9 @@
       "properties": {
         "input": {
           "type": "string"
+        },
+        "fill": {
+          "type": "string"
         }
       },
       "required": [
@@ -62,6 +68,9 @@
       "type": "object",
       "properties": {
         "password": {
+          "type": "string"
+        },
+        "fill": {
           "type": "string"
         }
       },

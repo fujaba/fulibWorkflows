@@ -26,29 +26,29 @@ text(text) ::= <<
     </div>
 >>
 
-input(id, label) ::= <<
+input(id, label, fill) ::= <<
 
     <div class="row justify-content-center pt-2">
         <label for="{id}">{label}</label>
     </div>
     <div class="row justify-content-center">
-        <input type="text" id="{id}" placeholder="{label}?"/>
+        <input type="text" id="{id}" placeholder="{label}?" value="{fill}"/>
     </div>
 >>
 
-password(id, label) ::= <<
+password(id, label, fill) ::= <<
 
     <div class="row justify-content-center pt-2">
         <label for="{id}">{label}</label>
     </div>
     <div class="row justify-content-center">
-        <input type="password" id="{id}" placeholder="{label}?"/>
+        <input type="password" id="{id}" placeholder="{label}?" value="{fill}"/>
     </div>
 >>
 
-button(description) ::= <<
+button(description, targetIndex) ::= <<
 
     <div class="row justify-content-center pt-2">
-        <button type="button" class="btn btn-success" onclick="window.parent.showToast('{description} clicked');">{description}</button>
+        <button type="button" class="btn btn-success" onclick="window.parent.changeFrameWithToast('{description} clicked', {targetIndex});">{description}</button>
     </div>
 >>
