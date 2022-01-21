@@ -22,3 +22,5 @@ local.properties
 /src/*/scenarios/**/*.svg
 /src/*/scenarios/**/*.txt
 /src/*/scenarios/**/*.yaml
+.vscode/settings.json
+.vscode/launch.json

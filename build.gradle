@@ -17,6 +17,8 @@ plugins {
 group = 'org.fulib'
 version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
 description = 'fulibWorkflows is a tool to generate mockups and object-/class-diagrams from a workflow description.'
+sourceCompatibility='1.17'
+targetCompatibility='1.17'
 
 // --------------- Dependencies ---------------
 

@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * The ObjectDiagramConstructor builds an objectdiagram from a list of data events from an fulibWorkflows Board.
@@ -98,8 +99,9 @@ public class ObjectDiagramConstructor {
 
         YamlIdMap idMap = new YamlIdMap();
         Object root = idMap.decode(objectYaml);
+        Set<Object> keySet = idMap.getIdObjMap().keySet();
 
-        fileName = FulibTools.objectDiagrams().dumpSVG(fileName, root);
+        fileName = FulibTools.objectDiagrams().dumpSVG(fileName, keySet);
 
         try {
             result = Files.readString(Path.of(fileName + ".svg"));
