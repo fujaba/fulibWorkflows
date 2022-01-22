@@ -57,15 +57,15 @@ actor(color, icon, name) ::= <<
 </div>
 >>
 
-linkedNote(color, name, content, index, diagramType, description) ::= <<
+objectNote(content, index) ::= <<
 
-<div class="card col-xs m-2 shadow" style="background-color: {color}">
+<div class="card col-xs m-2 shadow" style="background-color: darkseagreen">
     <div class="card-body">
-        <h5 class="card-title">{name}</h5>
+        <h5 class="card-title">Data</h5>
         <p class="card-text">
             {content}
         </p>
-        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, '{diagramType}');">Go to {description}</a>
+        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, 'objects');">Go to objectdiagram</a>
     </div>
 </div>
 >>
@@ -88,8 +88,3 @@ cardText(text) ::= <<
 {text} <br>
 >>
 
-
-pageFrame() ::=<<
-
-    <iframe name="pageFrame" src="./pages/0_page.html" frameborder="5" width="400px" height="600px"></iframe>
->>
