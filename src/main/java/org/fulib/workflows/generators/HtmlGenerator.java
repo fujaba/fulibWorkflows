@@ -50,7 +50,7 @@ public class HtmlGenerator {
      */
     public Map<String, String> buildHTMLs(Board board) {
         BoardConstructor boardConstructor = new BoardConstructor().setStandAlone(this.standAlone);
-        PageConstructor pageConstructor = new PageConstructor();
+        PageConstructor pageConstructor = new PageConstructor().setStandAlone(this.standAlone);
 
         Map<String, String> resultMap = new HashMap<>();
 

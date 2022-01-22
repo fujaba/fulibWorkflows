@@ -78,7 +78,7 @@ linkedNoteAlone(color, name, content, index, diagramType, description) ::= <<
         <p class="card-text">
             {content}
         </p>
-        <a class="card-link" role="button" href="pages/{index}_page.html" target="pageFrame">Show page below</a>
+        <a class="card-link" role="button" href="{description}s/{index}_{description}.{diagramType}" target="pageFrame">Show {description} below</a>
     </div>
 </div>
 >>
@@ -89,7 +89,7 @@ cardText(text) ::= <<
 >>
 
 
-pageFrame() ::=
-<<
+pageFrame() ::=<<
+
     <iframe name="pageFrame" src="./pages/0_page.html" frameborder="5" width="400px" height="600px"></iframe>
 >>

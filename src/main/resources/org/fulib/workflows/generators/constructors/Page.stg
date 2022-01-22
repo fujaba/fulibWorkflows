@@ -52,3 +52,10 @@ button(description, targetIndex) ::= <<
         <button type="button" class="btn btn-success" onclick="window.parent.changeFrameWithToast('{description} clicked', {targetIndex});">{description}</button>
     </div>
 >>
+
+buttonAlone(description, targetIndex) ::= <<
+
+    <div class="row justify-content-center pt-2">
+        <a type="button" class="btn btn-success" href="{targetIndex}_page.html">{description}</a>
+    </div>
+>>

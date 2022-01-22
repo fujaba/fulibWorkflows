@@ -50,11 +50,6 @@ public class BoardConstructor {
             boardContent.append(st.render());
         }
 
-        if (this.standAlone) {
-            st = boardGroup.getInstanceOf("pageFrame");
-            boardContent.append(st.render());
-        }
-
         return boardContent.toString();
     }
 
@@ -108,6 +103,15 @@ public class BoardConstructor {
                 actorST.add("icon", "pc-horizontal");
                 actorST.add("name", note.getName());
                 workflowContent.append(actorST.render());
+            } else if (note instanceof Data data && this.standAlone) {
+                linkedNoteAloneST.add("color", "darkseagreen");
+                linkedNoteAloneST.add("name", "Data");
+                linkedNoteAloneST.add("content", buildNoteContentFromNote(data, "Data"));
+                linkedNoteAloneST.add("index", dataIndex);
+                linkedNoteAloneST.add("diagramType", "svg");
+                linkedNoteAloneST.add("description", "diagram");
+                dataIndex++;
+                workflowContent.append(linkedNoteAloneST.render());
             } else if (note instanceof Data data) {
                 linkedNoteST.add("color", "darkseagreen");
                 linkedNoteST.add("name", "Data");
@@ -122,7 +126,7 @@ public class BoardConstructor {
                 linkedNoteAloneST.add("name", "Page");
                 linkedNoteAloneST.add("content", buildNoteContentFromNote(page, "Page"));
                 linkedNoteAloneST.add("index", pageIndex);
-                linkedNoteAloneST.add("diagramType", "pages");
+                linkedNoteAloneST.add("diagramType", "html");
                 linkedNoteAloneST.add("description", "page");
                 pageIndex++;
                 workflowContent.append(linkedNoteAloneST.render());
