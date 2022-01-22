@@ -57,15 +57,15 @@ actor(color, icon, name) ::= <<
 </div>
 >>
 
-linkedNote(color, name, content, index, diagramType, description) ::= <<
+objectNote(content, index) ::= <<
 
-<div class="card col-xs m-2 shadow" style="background-color: {color}">
+<div class="card col-xs m-2 shadow" style="background-color: darkseagreen">
     <div class="card-body">
-        <h5 class="card-title">{name}</h5>
+        <h5 class="card-title">Data</h5>
         <p class="card-text">
             {content}
         </p>
-        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, '{diagramType}');">Go to {description}</a>
+        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, 'objects');">Go to objectdiagram</a>
     </div>
 </div>
 >>
@@ -73,4 +73,40 @@ linkedNote(color, name, content, index, diagramType, description) ::= <<
 cardText(text) ::= <<
 
 {text} <br>
+>>
+
+pageNote(name, content, index) ::= <<
+
+<div class="card col-xs m-2 shadow" style="background-color: palegreen">
+    <div class="card-body" style="text-align:center">
+        <h5 class="card-title">
+            <i class="bi bi-list"></i>
+            {name}
+        </h5>
+        <p class="card-text">
+            {content}
+        </p>
+        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, 'pages');">Go to page</a>
+    </div>
+</div>
+>>
+
+pageText(text) ::= <<
+
+<b>{text}</b> <br>
+>>
+
+pageInput(desc) ::= <<
+
+<u>{desc}</u> <br>
+>>
+
+pageFill(value) ::= <<
+
+<i>{value}</i> <br>
+>>
+
+pageButton(desc) ::= <<
+
+[{desc}] <br>
 >>
