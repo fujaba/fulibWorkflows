@@ -21,6 +21,7 @@ public class BoardGenerator {
     private final DiagramGenerator diagramGenerator = new DiagramGenerator();
     private final FxmlGenerator fxmlGenerator = new FxmlGenerator();
     private HtmlGenerator htmlGenerator;
+    private boolean standAlone;
 
     /** Generates mockup and diagram files from a *.es.yaml file
      * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
@@ -31,7 +32,7 @@ public class BoardGenerator {
 
             Board board = generateBoard(inputStream);
 
-            htmlGenerator = new HtmlGenerator(board);
+            htmlGenerator = new HtmlGenerator(board).setStandAlone(this.standAlone);
 
             htmlGenerator.buildAndGenerateHTML(board);
             diagramGenerator.buildAndGenerateDiagram(board);
@@ -122,5 +123,10 @@ public class BoardGenerator {
         ParseTreeWalker.DEFAULT.walk(ownFulibWorkflowsListener, fileContext);
 
         return ownFulibWorkflowsListener.getBoard();
+    }
+
+    public BoardGenerator setStandAlone() {
+        standAlone = true;
+        return this;
     }
 }

@@ -70,7 +70,26 @@ linkedNote(color, name, content, index, diagramType, description) ::= <<
 </div>
 >>
 
+linkedNoteAlone(color, name, content, index, diagramType, description) ::= <<
+
+<div class="card col-xs m-2 shadow" style="background-color: {color}">
+    <div class="card-body">
+        <h5 class="card-title">{name}</h5>
+        <p class="card-text">
+            {content}
+        </p>
+        <a class="card-link" role="button" href="pages/{index}_page.html" target="pageFrame">Show page below</a>
+    </div>
+</div>
+>>
+
 cardText(text) ::= <<
 
 {text} <br>
+>>
+
+
+pageFrame() ::=
+<<
+    <iframe name="pageFrame" src="./pages/0_page.html" frameborder="5" width="400px" height="600px"></iframe>
 >>

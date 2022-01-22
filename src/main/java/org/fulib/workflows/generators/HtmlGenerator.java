@@ -21,6 +21,7 @@ import java.util.Map;
  */
 public class HtmlGenerator {
     private final Map<String, Integer> allPagesMap = new HashMap<>();
+    private boolean standAlone;
 
     HtmlGenerator(Board board) {
         createAllPagesMap(board);
@@ -48,7 +49,7 @@ public class HtmlGenerator {
      * @return Map containing a board and page mockups as string value, key consists of an index and Board/page
      */
     public Map<String, String> buildHTMLs(Board board) {
-        BoardConstructor boardConstructor = new BoardConstructor();
+        BoardConstructor boardConstructor = new BoardConstructor().setStandAlone(this.standAlone);
         PageConstructor pageConstructor = new PageConstructor();
 
         Map<String, String> resultMap = new HashMap<>();
@@ -120,5 +121,10 @@ public class HtmlGenerator {
                 }
             }
         }
+    }
+
+    public HtmlGenerator setStandAlone(boolean standAlone) {
+        this.standAlone = standAlone;
+        return this;
     }
 }

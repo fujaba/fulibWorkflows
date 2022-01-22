@@ -12,7 +12,7 @@ public class MicroShopGen {
     }
     @Test
     public void testOneWorkflow() {
-        BoardGenerator boardGenerator = new BoardGenerator();
+        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/microshop.es.yaml"));
     }
 }
