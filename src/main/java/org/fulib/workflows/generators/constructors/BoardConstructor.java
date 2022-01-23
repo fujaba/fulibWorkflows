@@ -57,8 +57,7 @@ public class BoardConstructor {
     private String buildWorkflow(Workflow workflow) {
         ST noteST;
         ST actorST;
-        ST linkedNoteST;
-        ST linkedNoteAloneST;
+        ST objectNoteST;
         StringBuilder workflowContent = new StringBuilder();
         int pageIndex = 0;
         int dataIndex = 0;
@@ -66,8 +65,10 @@ public class BoardConstructor {
         for (BaseNote note : workflow.getNotes()) {
             noteST = boardGroup.getInstanceOf("note");
             actorST = boardGroup.getInstanceOf("actor");
-            linkedNoteST = boardGroup.getInstanceOf("linkedNote");
-            linkedNoteAloneST = boardGroup.getInstanceOf("linkedNoteAlone");
+            objectNoteST = boardGroup.getInstanceOf("objectNote");
+            if (this.standAlone) {
+                objectNoteST = boardGroup.getInstanceOf("objectNoteAlone");
+            }
 
             if (note instanceof Event event) {
                 noteST.add("name", "Event");
@@ -104,29 +105,11 @@ public class BoardConstructor {
                 actorST.add("icon", "pc-horizontal");
                 actorST.add("name", note.getName());
                 workflowContent.append(actorST.render());
-            } else if (note instanceof Data data && this.standAlone) {
-                linkedNoteAloneST.add("color", "darkseagreen");
-                linkedNoteAloneST.add("name", "Data");
-                linkedNoteAloneST.add("content", buildNoteContentFromNote(data, "Data"));
-                linkedNoteAloneST.add("index", dataIndex);
-                linkedNoteAloneST.add("diagramType", "svg");
-                linkedNoteAloneST.add("description", "diagram");
-                dataIndex++;
-                workflowContent.append(linkedNoteAloneST.render());
             } else if (note instanceof Data data) {
-                linkedNoteST.add("content", buildNoteContentFromNote(data, "Data"));
-                linkedNoteST.add("index", dataIndex);
+                objectNoteST.add("content", buildNoteContentFromNote(data, "Data"));
+                objectNoteST.add("index", dataIndex);
                 dataIndex++;
-                workflowContent.append(linkedNoteST.render());
-            } else if (note instanceof Page page && this.standAlone) {
-                linkedNoteAloneST.add("color", "palegreen");
-                linkedNoteAloneST.add("name", "Page");
-                linkedNoteAloneST.add("content", buildNoteContentFromNote(page, "Page"));
-                linkedNoteAloneST.add("index", pageIndex);
-                linkedNoteAloneST.add("diagramType", "html");
-                linkedNoteAloneST.add("description", "page");
-                pageIndex++;
-                workflowContent.append(linkedNoteAloneST.render());
+                workflowContent.append(objectNoteST.render());
             } else if (note instanceof Page page) {
                 String pageNote = buildPageNote(page, pageIndex);
                 pageIndex++;
@@ -188,6 +171,59 @@ public class BoardConstructor {
         }
 
         return textContent.toString();
+    }
+
+    private String buildPageNote(Page page, int pageIndex) {
+        ST pageNoteST = boardGroup.getInstanceOf("pageNote");
+        if (this.standAlone) {
+            pageNoteST = boardGroup.getInstanceOf("pageNoteAlone");
+        }
+
+        pageNoteST.add("name", page.getName());
+        pageNoteST.add("content", buildPageContent(page));
+        pageNoteST.add("index", pageIndex);
+
+        return pageNoteST.render();
+    }
+
+    private String buildPageContent(Page page) {
+        StringBuilder pageContent = new StringBuilder();
+        Map<Integer, Pair<String, String>> contents = page.getContent();
+
+        for (int i = 0; i < contents.size(); i++) {
+            ST st;
+            Pair<String, String> pair = contents.get(i);
+
+            String desc = pair.a;
+            String value = pair.b;
+
+            switch (desc) {
+                case "text" -> {
+                    st = boardGroup.getInstanceOf("pageText");
+                    st.add("text", value);
+                    pageContent.append(st.render());
+                }
+                case "input", "password" -> {
+                    st = boardGroup.getInstanceOf("pageInput");
+                    st.add("desc", value);
+                    pageContent.append(st.render());
+                }
+                case "fill" -> {
+                    st = boardGroup.getInstanceOf("pageFill");
+                    st.add("value", value);
+                    pageContent.append(st.render());
+                }
+                case "button" -> {
+                    st = boardGroup.getInstanceOf("pageButton");
+                    st.add("desc", value);
+                    pageContent.append(st.render());
+                }
+                default -> {
+                }
+            }
+        }
+
+        return pageContent.toString();
     }
 
     public BoardConstructor setStandAlone(boolean standAlone) {
