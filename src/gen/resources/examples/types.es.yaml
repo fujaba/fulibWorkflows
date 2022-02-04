@@ -1,0 +1,12 @@
+- workflow: test
+
+- page:
+    - pageName: Numbers area awesome
+    - text: Current Number 42
+    - input: Testerino
+      fill: 1337
+    - password: Password
+      fill: 420
+    - button: nice
+
+- event: Testerino Schmesterino
