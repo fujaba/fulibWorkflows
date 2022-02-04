@@ -1,15 +1,10 @@
 package org.fulib.workflows.generators;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.fulib.workflows.events.Board;
-import org.fulib.workflows.yaml.FulibWorkflowsLexer;
-import org.fulib.workflows.yaml.FulibWorkflowsParser;
-import org.fulib.workflows.yaml.OwnFulibWorkflowsListener;
+import org.fulib.workflows.yaml.OwnYamlParser;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +22,7 @@ public class BoardGenerator {
      */
     public void generateBoardFromFile(Path yamlFile) {
         try {
-            CharStream inputStream = CharStreams.fromPath(yamlFile);
+            String inputStream = Files.readString(yamlFile);
 
             Board board = generateBoard(inputStream);
 
@@ -45,9 +40,7 @@ public class BoardGenerator {
      * @param yamlContent the content of a *.es.yaml file
      */
     public void generateBoardFromString(String yamlContent) {
-        CharStream inputStream = CharStreams.fromString(yamlContent);
-
-        Board board = generateBoard(inputStream);
+        Board board = generateBoard(yamlContent);
 
         htmlGenerator = new HtmlGenerator(board);
 
@@ -62,7 +55,7 @@ public class BoardGenerator {
      */
     public Map<String, String> generateAndReturnHTMLsFromFile(Path yamlFile) {
         try {
-            CharStream inputStream = CharStreams.fromPath(yamlFile);
+            String inputStream = Files.readString(yamlFile);
 
             Board board = generateBoard(inputStream);
 
@@ -81,8 +74,7 @@ public class BoardGenerator {
      * @return Map containing all generated file contents as value, key is a combination from a number and Board/page/diagram/fxml/classdiagram
      */
     public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
-        CharStream inputStream = CharStreams.fromString(yamlContent);
-        Board board = generateBoard(inputStream);
+        Board board = generateBoard(yamlContent);
 
         htmlGenerator = new HtmlGenerator(board);
 
@@ -111,16 +103,9 @@ public class BoardGenerator {
     }
 
     // Helper
-    private Board generateBoard(CharStream inputStream) {
-        FulibWorkflowsLexer fulibWorkflowsLexer = new FulibWorkflowsLexer(inputStream);
-        CommonTokenStream commonTokenStream = new CommonTokenStream(fulibWorkflowsLexer);
-        FulibWorkflowsParser fulibWorkflowsParser = new FulibWorkflowsParser(commonTokenStream);
-
-        FulibWorkflowsParser.FileContext fileContext = fulibWorkflowsParser.file();
-        OwnFulibWorkflowsListener ownFulibWorkflowsListener = new OwnFulibWorkflowsListener();
-
-        ParseTreeWalker.DEFAULT.walk(ownFulibWorkflowsListener, fileContext);
-
-        return ownFulibWorkflowsListener.getBoard();
+    private Board generateBoard(String yamlContent) {
+        OwnYamlParser ownYamlParser = new OwnYamlParser();
+        ownYamlParser.parseYAML(yamlContent);
+        return ownYamlParser.getBoard();
     }
 }
