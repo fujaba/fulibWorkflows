@@ -26,12 +26,25 @@ public class OwnYamlParser {
     private int dataIndex = 0;
     private Map<Integer, Pair<String, String>> noteData = new HashMap<>();
 
+    /** Uses Snakeyaml to parse the yamlInput and builds the Event-Storming-Board object
+     * @param yamlInput fulibWorkflows description from an *.es.yaml file
+     */
     public void parseYAML(String yamlInput) {
         Yaml yaml = new Yaml();
         List<Object> loadedEvents = yaml.load(yamlInput);
 
         for (Object loadedEvent : loadedEvents) {
-            Map<String, Object> singleEventMap = (HashMap<String, Object>) loadedEvent; // TODO fix this warning
+            if (!(loadedEvent instanceof Map)) {
+                try {
+                    throw new FulibWorkflowsParseError("Notes must be an object");
+                } catch (FulibWorkflowsParseError e) {
+                    e.printStackTrace();
+                }
+                continue;
+            }
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> singleEventMap = (Map<String, Object>) loadedEvent;
 
             for (Map.Entry<String, Object> entry : singleEventMap.entrySet()) {
                 String key = entry.getKey();
@@ -64,7 +77,17 @@ public class OwnYamlParser {
     }
 
     private void parsePageEntries(Object value) {
-        List<HashMap<String, Object>> pageEntryMaps = (ArrayList<HashMap<String, Object>>) value; // TODO fix this warning
+        if (!(value instanceof List)) {
+            try {
+                throw new FulibWorkflowsParseError("Page entries must be a list");
+            } catch (FulibWorkflowsParseError e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        @SuppressWarnings("unchecked")
+        List<HashMap<String, Object>> pageEntryMaps = (List<HashMap<String, Object>>) value;
 
         for (HashMap<String, Object> pageEntryMap : pageEntryMaps) {
             for (Map.Entry<String, Object> pageEntry : pageEntryMap.entrySet()) {
@@ -194,7 +217,7 @@ public class OwnYamlParser {
             event.setData(noteData);
         } else {
             try {
-                throw new FulibWorkflowsParseError("Fuuuuuuuuuuuuuuuuuuuuuck");
+                throw new FulibWorkflowsParseError("Additional attributes only allowed for data and event notes");
             } catch (FulibWorkflowsParseError e) {
                 e.printStackTrace();
             }
@@ -236,7 +259,7 @@ public class OwnYamlParser {
             return String.valueOf(valueAsInt);
         } else {
             try {
-                throw new FulibWorkflowsParseError("Shiiiiiiiiiiiiiiiiiiiiiiit");
+                throw new FulibWorkflowsParseError("Attribute value must be String or Integer");
             } catch (FulibWorkflowsParseError e) {
                 e.printStackTrace();
             }
