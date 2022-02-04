@@ -81,6 +81,8 @@ public class ObjectDiagramConstructor {
                 value = value.replaceAll("\\[", "");
                 value = value.replaceAll("]", "");
                 value = value.replaceAll(",", "");
+            } else {
+                value = "\"" + value + "\"";
             }
 
             st.add("type", type);

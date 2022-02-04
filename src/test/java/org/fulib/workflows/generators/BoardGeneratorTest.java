@@ -71,7 +71,7 @@ public class BoardGeneratorTest {
     }
 
     @Test
-    public void testNumbersWorkflow() {
+    public void testTypesWorkflow() {
         BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/examples/types.es.yaml"));
     }
