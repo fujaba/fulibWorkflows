@@ -1,0 +1,67 @@
+- workflow: Pages
+
+- page:
+    - pageName: Register
+    - text: Please register yourself
+    - input: E-Mail
+    - input: Username
+    - password: Password
+    - password: Repeat Password
+    - button: Register
+      targetPage: Login
+
+- page:
+    - pageName: Login
+    - text: Welcome back
+    - input: Username/E-Mail
+    - password: Password
+    - button: Login
+      targetPage: Overview1
+
+- page:
+    - pageName: Overview1
+    - text: Your current Purchases
+    - button: Add Purchase
+      targetPage: AddPurchase1
+    - button: Logout
+      targetPage: Logout
+
+- page:
+    - pageName: AddPurchase1
+    - text: New Purchase
+    - input: Item
+    - input: Amount
+    - button: Buy
+      targetPage: Overview2
+
+- page:
+    - pageName: Overview2
+    - text: Your current Purchases
+    - text: T-Shirt x5
+    - button: Add Purchase
+      targetPage: AddPurchase2
+    - button: Logout
+      targetPage: Logout
+
+- page:
+    - pageName: AddPurchase2
+    - text: New Purchase
+    - input: Item
+    - input: Amount
+    - button: Buy
+      targetPage: Overview3
+
+- page:
+    - pageName: Overview3
+    - text: Your current Purchases
+    - text: T-Shirt x5
+    - text: Red Socks x10
+    - button: Add Purchase
+    - button: Logout
+      targetPage: Logout
+
+- page:
+    - pageName: Logout
+    - text: See you soon
+    - button: Back to login
+      targetPage: Login
