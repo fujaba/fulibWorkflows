@@ -17,6 +17,8 @@ public class BoardGenerator {
     private final FxmlGenerator fxmlGenerator = new FxmlGenerator();
     private HtmlGenerator htmlGenerator;
 
+    private boolean webGeneration = false;
+
     /** Generates mockup and diagram files from a *.es.yaml file
      * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
      */
@@ -107,5 +109,14 @@ public class BoardGenerator {
         OwnYamlParser ownYamlParser = new OwnYamlParser();
         ownYamlParser.parseYAML(yamlContent);
         return ownYamlParser.getBoard();
+    }
+
+    // Getter and Setter
+    public boolean isWebGeneration() {
+        return webGeneration;
+    }
+
+    public void setWebGeneration(boolean webGeneration) {
+        this.webGeneration = webGeneration;
     }
 }

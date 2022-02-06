@@ -11,6 +11,7 @@ public class WebEditorExampleTest {
     @Test
     public void testDataModelling() {
         BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.setWebGeneration(true);
 
         Path yamlFile = Path.of("src/gen/resources/examples/webeditor/dataModelling.es.yaml");
         Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
@@ -20,6 +21,7 @@ public class WebEditorExampleTest {
     @Test
     public void testMicroservices() {
         BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.setWebGeneration(true);
 
         Path yamlFile = Path.of("src/gen/resources/examples/webeditor/microservices.es.yaml");
         Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
@@ -31,6 +33,7 @@ public class WebEditorExampleTest {
     @Test
     public void testPages() {
         BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.setWebGeneration(true);
 
         Path yamlFile = Path.of("src/gen/resources/examples/webeditor/pages.es.yaml");
         Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
