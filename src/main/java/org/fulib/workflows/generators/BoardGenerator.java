@@ -28,7 +28,7 @@ public class BoardGenerator {
 
             Board board = generateBoard(inputStream);
 
-            htmlGenerator = new HtmlGenerator(board);
+            htmlGenerator = new HtmlGenerator(board, this);
 
             htmlGenerator.buildAndGenerateHTML(board);
             diagramGenerator.buildAndGenerateDiagram(board);
@@ -44,7 +44,7 @@ public class BoardGenerator {
     public void generateBoardFromString(String yamlContent) {
         Board board = generateBoard(yamlContent);
 
-        htmlGenerator = new HtmlGenerator(board);
+        htmlGenerator = new HtmlGenerator(board, this);
 
         htmlGenerator.buildAndGenerateHTML(board);
         diagramGenerator.buildAndGenerateDiagram(board);
@@ -61,7 +61,7 @@ public class BoardGenerator {
 
             Board board = generateBoard(inputStream);
 
-            htmlGenerator = new HtmlGenerator(board);
+            htmlGenerator = new HtmlGenerator(board, this);
 
             return buildAndReturnFiles(board);
         } catch (IOException e) {
@@ -78,7 +78,7 @@ public class BoardGenerator {
     public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
         Board board = generateBoard(yamlContent);
 
-        htmlGenerator = new HtmlGenerator(board);
+        htmlGenerator = new HtmlGenerator(board, this);
 
         return buildAndReturnFiles(board);
     }

@@ -54,6 +54,7 @@ public class GenerationTest {
     @Test
     public void testMultiplePagesFromFile() {
         BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.setWebGeneration(true);
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/examples/webeditor/pages.es.yaml"));
     }
 

@@ -57,7 +57,7 @@ actor(color, icon, name) ::= <<
 </div>
 >>
 
-objectNote(content, index) ::= <<
+objectNote(content) ::= <<
 
 <div class="card col-xs m-2 shadow" style="background-color: darkseagreen">
     <div class="card-body">
@@ -65,9 +65,6 @@ objectNote(content, index) ::= <<
         <p class="card-text">
             {content}
         </p>
-        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, 'objects');">Go to objectdiagram</a>
-    </div>
-</div>
 >>
 
 cardText(text) ::= <<
@@ -75,7 +72,7 @@ cardText(text) ::= <<
 {text} <br>
 >>
 
-pageNote(name, content, index) ::= <<
+pageNote(name, content) ::= <<
 
 <div class="card col-xs m-2 shadow" style="background-color: palegreen">
     <div class="card-body" style="text-align:center">
@@ -86,9 +83,6 @@ pageNote(name, content, index) ::= <<
         <p class="card-text">
             {content}
         </p>
-        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, 'pages');">Go to page</a>
-    </div>
-</div>
 >>
 
 pageText(text) ::= <<
@@ -109,4 +103,15 @@ pageFill(value) ::= <<
 pageButton(desc) ::= <<
 
 [{desc}] <br>
+>>
+
+linkedNoteLink(index, type, description) ::= <<
+
+        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, '{type}');">Go to {description}</a>
+>>
+
+dataANDPageClose() ::= <<
+
+    </div>
+</div>
 >>

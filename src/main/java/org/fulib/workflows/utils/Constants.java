@@ -15,10 +15,10 @@ public class Constants {
 
     // Page elements
     public static final String PAGE_NAME = "pageName";
-    public static final String TEXT = "text";
-    public static final String BUTTON = "button";
-    public static final String TARGET_PAGE = "targetPage";
-    public static final String INPUT = "input";
-    public static final String PASSWORD = "password";
-    public static final String FILL = "fill";
+
+    // Web-Editor Constants
+    public static final String PAGE_TYPE = "pages";
+    public static final String OBJECT_DIAGRAM_TYPE = "objects";
+    public static final String PAGE_DESCRIPTION = "page";
+    public static final String OBJECTDIAGRAM_DESCRIPTION = "objectdiagram";
 }

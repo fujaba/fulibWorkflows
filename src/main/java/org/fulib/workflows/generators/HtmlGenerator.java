@@ -21,9 +21,11 @@ import java.util.Map;
  */
 public class HtmlGenerator {
     private final Map<String, Integer> allPagesMap = new HashMap<>();
+    private BoardGenerator boardGenerator;
 
-    HtmlGenerator(Board board) {
+    HtmlGenerator(Board board, BoardGenerator boardGenerator) {
         createAllPagesMap(board);
+        this.boardGenerator = boardGenerator;
     }
 
     /**
@@ -53,7 +55,7 @@ public class HtmlGenerator {
 
         Map<String, String> resultMap = new HashMap<>();
 
-        resultMap.put("Board", boardConstructor.buildBoard(board));
+        resultMap.put("Board", boardConstructor.buildBoard(board, boardGenerator.isWebGeneration()));
 
         List<String> pagesHTML = new ArrayList<>();
 
