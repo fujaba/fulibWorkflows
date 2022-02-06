@@ -86,3 +86,12 @@
 - New additions to pages
 - Changed Antlr Grammar
 - PageName must be unique in a workflow file
+
+## fulibWorkflows v0.3.6
+
+## General
+- Removed Antlr Grammar and Parser
+- Used Snakeyaml instead for parsing and building needed data model
+- Added possibility to generate for local or web
+- Only show last added object (and all correctly connected to that one) in the object diagrams
+- Reworked appearance of page notes in the event storming board
