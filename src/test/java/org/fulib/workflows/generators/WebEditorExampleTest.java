@@ -34,6 +34,6 @@ public class WebEditorExampleTest {
 
         Path yamlFile = Path.of("src/gen/resources/examples/webeditor/pages.es.yaml");
         Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
-        Assert.assertEquals(17, map.size()); // 1 Board, 8 Pages (HTML), 8 Pages (FXML)
+        Assert.assertEquals(25, map.size()); // 1 Board, 12 Pages (HTML), 12 Pages (FXML)
     }
 }
