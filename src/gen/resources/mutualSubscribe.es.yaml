@@ -1,0 +1,59 @@
+- workflow: Warehouse first
+
+- user: Alice
+
+- command: Warehouse start
+
+- service: Warehouse
+
+- data: WHAppControl whapp
+  providers: []
+
+- data: WHBuilder whbuilder
+  subscribers: []
+
+- event: Subscribe
+  provider: localhost_3000
+  subscriber: localhost_3100
+
+- command: Shop start
+
+- service: Shop
+
+- data: MSAppControl msapp
+  providers: []
+
+- data: MSBuilder msbuilder
+  subscribers: []
+
+- event: Subscribe
+  provider: localhost_3100
+  subscriber: localhost_3000
+
+- service: Warehouse
+
+- data: WHBuilder whbuilder
+  subscribers: [localhost_3100]
+
+- event: Subscribe Return
+  status: success
+
+- event: Subscribe
+  provider: localhost_3100
+  subscriber: localhost_3000
+
+- service: Shop
+
+- data: MSAppControl msapp
+  providers: [localhost_3000]
+
+- data: MSBuilder msbuilder
+  subscribers: [localhost_3000]
+
+- event: Subscribe Return
+  status: success
+
+- service: Warehouse
+
+- data: WHAppControl whapp
+  providers: [localhost_3100]
