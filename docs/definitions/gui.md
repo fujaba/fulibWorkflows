@@ -58,6 +58,8 @@ It is possible to add content which will be prefilled in the mockup. For this in
 Password Inputs are a special type of the former [inputs](#Inputs). They can be used the same way, the only difference is, that the
 data entered in the password field will not show the text. Instead, it will show dots instead of text.
 
+Password Fields can be prefilled in the mockup too. For this password gets an additional attribute called `fill`.
+
 ### Buttons
 
 ```yaml

@@ -1,15 +1,10 @@
 package org.fulib.workflows.generators;
 
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.fulib.workflows.events.Board;
-import org.fulib.workflows.yaml.FulibWorkflowsLexer;
-import org.fulib.workflows.yaml.FulibWorkflowsParser;
-import org.fulib.workflows.yaml.OwnFulibWorkflowsListener;
+import org.fulib.workflows.yaml.OwnYamlParser;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,16 +18,18 @@ public class BoardGenerator {
     private HtmlGenerator htmlGenerator;
     private boolean standAlone;
 
+    private boolean webGeneration = false;
+
     /** Generates mockup and diagram files from a *.es.yaml file
      * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
      */
     public void generateBoardFromFile(Path yamlFile) {
         try {
-            CharStream inputStream = CharStreams.fromPath(yamlFile);
+            String inputStream = Files.readString(yamlFile);
 
             Board board = generateBoard(inputStream);
 
-            htmlGenerator = new HtmlGenerator(board).setStandAlone(this.standAlone);
+            htmlGenerator = new HtmlGenerator(board, this);
 
             htmlGenerator.buildAndGenerateHTML(board);
             diagramGenerator.buildAndGenerateDiagram(board);
@@ -46,11 +43,9 @@ public class BoardGenerator {
      * @param yamlContent the content of a *.es.yaml file
      */
     public void generateBoardFromString(String yamlContent) {
-        CharStream inputStream = CharStreams.fromString(yamlContent);
+        Board board = generateBoard(yamlContent);
 
-        Board board = generateBoard(inputStream);
-
-        htmlGenerator = new HtmlGenerator(board);
+        htmlGenerator = new HtmlGenerator(board, this);
 
         htmlGenerator.buildAndGenerateHTML(board);
         diagramGenerator.buildAndGenerateDiagram(board);
@@ -63,11 +58,11 @@ public class BoardGenerator {
      */
     public Map<String, String> generateAndReturnHTMLsFromFile(Path yamlFile) {
         try {
-            CharStream inputStream = CharStreams.fromPath(yamlFile);
+            String inputStream = Files.readString(yamlFile);
 
             Board board = generateBoard(inputStream);
 
-            htmlGenerator = new HtmlGenerator(board);
+            htmlGenerator = new HtmlGenerator(board, this);
 
             return buildAndReturnFiles(board);
         } catch (IOException e) {
@@ -82,10 +77,9 @@ public class BoardGenerator {
      * @return Map containing all generated file contents as value, key is a combination from a number and Board/page/diagram/fxml/classdiagram
      */
     public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
-        CharStream inputStream = CharStreams.fromString(yamlContent);
-        Board board = generateBoard(inputStream);
+        Board board = generateBoard(yamlContent);
 
-        htmlGenerator = new HtmlGenerator(board);
+        htmlGenerator = new HtmlGenerator(board, this);
 
         return buildAndReturnFiles(board);
     }
@@ -112,17 +106,19 @@ public class BoardGenerator {
     }
 
     // Helper
-    private Board generateBoard(CharStream inputStream) {
-        FulibWorkflowsLexer fulibWorkflowsLexer = new FulibWorkflowsLexer(inputStream);
-        CommonTokenStream commonTokenStream = new CommonTokenStream(fulibWorkflowsLexer);
-        FulibWorkflowsParser fulibWorkflowsParser = new FulibWorkflowsParser(commonTokenStream);
+    private Board generateBoard(String yamlContent) {
+        OwnYamlParser ownYamlParser = new OwnYamlParser();
+        ownYamlParser.parseYAML(yamlContent);
+        return ownYamlParser.getBoard();
+    }
 
-        FulibWorkflowsParser.FileContext fileContext = fulibWorkflowsParser.file();
-        OwnFulibWorkflowsListener ownFulibWorkflowsListener = new OwnFulibWorkflowsListener();
+    // Getter and Setter
+    public boolean isWebGeneration() {
+        return webGeneration;
+    }
 
-        ParseTreeWalker.DEFAULT.walk(ownFulibWorkflowsListener, fileContext);
-
-        return ownFulibWorkflowsListener.getBoard();
+    public void setWebGeneration(boolean webGeneration) {
+        this.webGeneration = webGeneration;
     }
 
     public BoardGenerator setStandAlone() {

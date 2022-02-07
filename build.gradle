@@ -4,7 +4,6 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'signing'
-    id 'antlr'
     id 'idea'
     // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
     id 'org.fulib.fulibGradle' version '0.5.0'
@@ -73,6 +72,9 @@ publishing.publications.create('mavenJava', MavenPublication) {
 signing.sign publishing.publications.mavenJava
 
 dependencies {
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml
+    implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.1'
+
     // https://mvnrepository.com/artifact/org.antlr/ST4
     implementation group: 'org.antlr', name: 'ST4', version: '4.3.1'
 
@@ -96,33 +98,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
     testImplementation group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.30'
-
-    antlr 'org.antlr:antlr4:4.9.3'
 }
 
 generateScenarioSource {
     classDiagramSVG = true
-}
-
-// --------------- ANTLR ---------------
-
-// Source: https://tomassetti.me/antlr-mega-tutorial/#chapter18
-generateGrammarSource {
-    maxHeapSize = "128m"
-    arguments += ['-package', 'org.fulib.workflows.yaml', '-no-visitor', '-listener', '-encoding', 'UTF-8']
-}
-compileJava.dependsOn generateGrammarSource
-sourceSets {
-    generated {
-        java.srcDir 'generated-src/antlr/main/'
-    }
-}
-compileJava.source sourceSets.generated.java, sourceSets.main.java
-clean {
-    delete "generated-src"
-}
-idea {
-    module {
-        sourceDirs += file("generated-src/antlr/main/")
-    }
 }

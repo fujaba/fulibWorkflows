@@ -22,6 +22,8 @@ import java.util.Set;
 public class ObjectDiagramConstructor {
     private STGroupFile fulibYamlGroup;
 
+    private String currentNoteName;
+
     /**
      * Builds object description in fulibYaml syntax and generates a svg object diagram via fulibTools
      *
@@ -41,27 +43,36 @@ public class ObjectDiagramConstructor {
         fulibYamlGroup = new STGroupFile(Objects.requireNonNull(resource));
         StringBuilder yamlBody = new StringBuilder();
 
-        for (Data note : notes) {
-            ST st = fulibYamlGroup.getInstanceOf("object");
+        Data currentNote = notes.get(notes.size() - 1);
+        buildFulibYamlObject(currentNote, yamlBody);
 
-            String[] s = note.getName().split(" ");
-
-            try {
-                st.add("name", s[1]);
-            } catch (Exception e) {
-                try {
-                    throw new IncorrectDataValueException("Invalid value. Needs to be '- data: <ClassName> <objectName>'");
-                } catch (IncorrectDataValueException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            st.add("type", s[0]);
-            st.add("attributes", buildAttributes(note));
-
-            yamlBody.append(st.render());
+        for (int i = 0; i < notes.size() - 1; i++) {
+            Data note = notes.get(i);
+            buildFulibYamlObject(note, yamlBody);
         }
 
         return yamlBody.toString();
+    }
+
+    private void buildFulibYamlObject(Data note, StringBuilder yamlBody) {
+        ST st = fulibYamlGroup.getInstanceOf("object");
+
+        String[] s = note.getName().split(" ");
+
+        try {
+            st.add("name", s[1]);
+            currentNoteName = s[1];
+        } catch (Exception e) {
+            try {
+                throw new IncorrectDataValueException("Invalid value. Needs to be '- data: <ClassName> <objectName>'");
+            } catch (IncorrectDataValueException ex) {
+                ex.printStackTrace();
+            }
+        }
+        st.add("type", s[0]);
+        st.add("attributes", buildAttributes(note));
+
+        yamlBody.append(st.render());
     }
 
     private String buildAttributes(Data note) {
@@ -82,6 +93,8 @@ public class ObjectDiagramConstructor {
                 value = value.replaceAll("\\[", "");
                 value = value.replaceAll("]", "");
                 value = value.replaceAll(",", "");
+            } else {
+                value = "\"" + value + "\"";
             }
 
             st.add("type", type);

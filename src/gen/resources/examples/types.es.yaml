@@ -1,0 +1,19 @@
+- workflow: test
+
+- page:
+    - pageName: Numbers area awesome
+    - text: Current Number 42
+    - input: Testerino
+      fill: 1337
+    - password: Password
+      fill: 420
+    - button: nice
+
+- service: "#StudyGuide"
+
+- event: numbers, just numbers
+
+- data: Testerino Schmesterino
+  motivation: "#83"
+  credits: 69
+  name: Albert Zündorf
