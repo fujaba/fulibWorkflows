@@ -120,6 +120,7 @@ public class ObjectDiagramConstructor {
             Files.deleteIfExists(Path.of(fileName + ".svg"));
 
             Files.deleteIfExists(Path.of("tmp/test/"));
+            Files.deleteIfExists(Path.of("tmp/"));
         } catch (IOException e) {
             e.printStackTrace();
         }
