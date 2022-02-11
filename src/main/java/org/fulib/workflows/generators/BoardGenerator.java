@@ -13,37 +13,38 @@ import java.util.Map;
  * The BoardGenerator is the main entry point for the parsing of fulibWorkflows and the generation of files.
  */
 public class BoardGenerator {
-    private final DiagramGenerator diagramGenerator = new DiagramGenerator();
-    private final FxmlGenerator fxmlGenerator = new FxmlGenerator();
+    private DiagramGenerator diagramGenerator;
+    private FxmlGenerator fxmlGenerator;
     private HtmlGenerator htmlGenerator;
 
     private boolean webGeneration = false;
+    private String genDir = "tmp";
 
-    /** Generates mockup and diagram files from a *.es.yaml file
+    /**
+     * Generates mockup and diagram files from a *.es.yaml file
+     *
      * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
      */
     public void generateBoardFromFile(Path yamlFile) {
         try {
-            String inputStream = Files.readString(yamlFile);
+            String yamlContent = Files.readString(yamlFile);
 
-            Board board = generateBoard(inputStream);
-
-            htmlGenerator = new HtmlGenerator(board, this);
-
-            htmlGenerator.buildAndGenerateHTML(board);
-            diagramGenerator.buildAndGenerateDiagram(board);
-            fxmlGenerator.buildAndGenerateFxmls(board);
+            generateBoardFromString(yamlContent);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /** Generates mockup and diagram files from fulibWorkflows description
+    /**
+     * Generates mockup and diagram files from fulibWorkflows description
+     *
      * @param yamlContent the content of a *.es.yaml file
      */
     public void generateBoardFromString(String yamlContent) {
         Board board = generateBoard(yamlContent);
 
+        diagramGenerator = new DiagramGenerator(this);
+        fxmlGenerator = new FxmlGenerator(this);
         htmlGenerator = new HtmlGenerator(board, this);
 
         htmlGenerator.buildAndGenerateHTML(board);
@@ -51,7 +52,9 @@ public class BoardGenerator {
         fxmlGenerator.buildAndGenerateFxmls(board);
     }
 
-    /** Generates and returns generated files from a *.es.yaml file
+    /**
+     * Generates and returns generated files from a *.es.yaml file
+     *
      * @param yamlFile the location of the yaml file, exp.: "src/gen/resources/example.es.yaml"
      * @return Map containing all generated file contents as value, key is a combination from a number and Board/page/diagram/fxml/classdiagram
      */
@@ -61,6 +64,8 @@ public class BoardGenerator {
 
             Board board = generateBoard(inputStream);
 
+            diagramGenerator = new DiagramGenerator(this);
+            fxmlGenerator = new FxmlGenerator(this);
             htmlGenerator = new HtmlGenerator(board, this);
 
             return buildAndReturnFiles(board);
@@ -71,13 +76,17 @@ public class BoardGenerator {
         return null;
     }
 
-    /** Generates and returns generated files from fulibWorkflows description
+    /**
+     * Generates and returns generated files from fulibWorkflows description
+     *
      * @param yamlContent the content of a *.es.yaml file
      * @return Map containing all generated file contents as value, key is a combination from a number and Board/page/diagram/fxml/classdiagram
      */
     public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
         Board board = generateBoard(yamlContent);
 
+        diagramGenerator = new DiagramGenerator(this);
+        fxmlGenerator = new FxmlGenerator(this);
         htmlGenerator = new HtmlGenerator(board, this);
 
         return buildAndReturnFiles(board);
@@ -116,7 +125,17 @@ public class BoardGenerator {
         return webGeneration;
     }
 
-    public void setWebGeneration(boolean webGeneration) {
+    public BoardGenerator setWebGeneration(boolean webGeneration) {
         this.webGeneration = webGeneration;
+        return this;
+    }
+
+    public String getGenDir() {
+        return genDir;
+    }
+
+    public BoardGenerator setGenDir(String genDir) {
+        this.genDir = genDir;
+        return this;
     }
 }
