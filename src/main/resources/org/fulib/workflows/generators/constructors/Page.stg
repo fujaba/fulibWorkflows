@@ -26,23 +26,23 @@ text(text) ::= <<
     </div>
 >>
 
-input(id, label, fill) ::= <<
+input(id, label, value) ::= <<
 
     <div class="row justify-content-center pt-2">
         <label for="{id}">{label}</label>
     </div>
     <div class="row justify-content-center">
-        <input type="text" id="{id}" placeholder="{label}?" value="{fill}"/>
+        <input type="text" id="{id}" placeholder="{label}?" value="{value}"/>
     </div>
 >>
 
-password(id, label, fill) ::= <<
+password(id, label, value) ::= <<
 
     <div class="row justify-content-center pt-2">
         <label for="{id}">{label}</label>
     </div>
     <div class="row justify-content-center">
-        <input type="password" id="{id}" placeholder="{label}?" value="{fill}"/>
+        <input type="password" id="{id}" placeholder="{label}?" value="{value}"/>
     </div>
 >>
 

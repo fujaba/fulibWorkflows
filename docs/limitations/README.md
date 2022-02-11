@@ -10,4 +10,4 @@ These consist of the following strings:
 
 - workflow, page, externalSystem, service, command, policy, user, problem 
 - event, data 
-- pageName, text, input, password, button, fill, targetPage
+- pageName, text, input, password, button, value, targetPage

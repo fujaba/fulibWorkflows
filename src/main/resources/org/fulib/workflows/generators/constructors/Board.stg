@@ -95,7 +95,7 @@ pageInput(desc) ::= <<
 <u>{desc}</u> <br>
 >>
 
-pageFill(value) ::= <<
+pageValue(value) ::= <<
 
 <i>{value}</i> <br>
 >>

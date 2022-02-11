@@ -10,7 +10,7 @@ Elements can only be arranged vertically. A horizontal arrangement is not possib
     - text: Welcome to the Example shop
     - input: Name
     - input: Address
-      fill: Kassel
+      value: Kassel
     - password: Password
     - password: Repeat password
     - button: cancel
@@ -41,13 +41,13 @@ page. It can be a headline, a label for an input field or a divider.
 - input: Name
 
 - input: Address
-  fill: Kassel
+  value: Kassel
 ```
 
 Inputs are input fields, where the text after `input:` will be the id of the html element and the placeholder displayed
 in the implementation. A page can contain multiple inputs. 
 
-It is possible to add content which will be prefilled in the mockup. For this input gets an additional attribute called `fill`.
+It is possible to add content which will be prefilled in the mockup. For this input gets an additional attribute called `value`.
 
 ### Password Inputs
 
@@ -58,7 +58,7 @@ It is possible to add content which will be prefilled in the mockup. For this in
 Password Inputs are a special type of the former [inputs](#Inputs). They can be used the same way, the only difference is, that the
 data entered in the password field will not show the text. Instead, it will show dots instead of text.
 
-Password Fields can be prefilled in the mockup too. For this password gets an additional attribute called `fill`.
+Password Fields can be prefilled in the mockup too. For this password gets an additional attribute called `value`.
 
 ### Buttons
 

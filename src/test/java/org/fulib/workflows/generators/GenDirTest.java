@@ -9,7 +9,7 @@ public class GenDirTest {
     public void testWebGenDir() {
         BoardGenerator boardGenerator = new BoardGenerator()
                 .setWebGeneration(true)
-                .setGenDir("tmp/MicroservicesExample");
+                .setGenDir("temp/MicroservicesExample");
 
         Path yamlFile = Path.of("src/gen/resources/examples/webeditor/microservices.es.yaml");
         boardGenerator.generateBoardFromFile(yamlFile);

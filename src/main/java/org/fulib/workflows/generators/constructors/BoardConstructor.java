@@ -227,8 +227,8 @@ public class BoardConstructor {
                     st.add("desc", value);
                     pageContent.append(st.render());
                 }
-                case "fill" -> {
-                    st = boardGroup.getInstanceOf("pageFill");
+                case "value" -> {
+                    st = boardGroup.getInstanceOf("pageValue");
                     st.add("value", value);
                     pageContent.append(st.render());
                 }
