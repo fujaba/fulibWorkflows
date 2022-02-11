@@ -174,7 +174,7 @@ public class ClassDiagramConstructor {
     }
 
     private String generateClassDiagram(ClassModel classModel) {
-        String fileName = "tmp/diagrams/classdiagram";
+        String fileName = "genTmp/diagrams/classdiagram";
         String result = "";
 
         fileName = FulibTools.classDiagrams().dumpSVG(classModel, fileName);
@@ -184,8 +184,8 @@ public class ClassDiagramConstructor {
 
             Files.deleteIfExists(Path.of(fileName + ".svg"));
 
-            Files.deleteIfExists(Path.of("tmp/diagrams/"));
-            Files.deleteIfExists(Path.of("tmp/"));
+            Files.deleteIfExists(Path.of("genTmp/diagrams/"));
+            Files.deleteIfExists(Path.of("genTmp/"));
         } catch (IOException e) {
             e.printStackTrace();
         }

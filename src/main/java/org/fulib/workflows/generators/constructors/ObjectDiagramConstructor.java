@@ -106,7 +106,7 @@ public class ObjectDiagramConstructor {
     }
 
     private String generateObjectDiagram(String objectYaml, int index) {
-        String fileName = "tmp/diagrams/diagram_" + index;
+        String fileName = "genTmp/diagrams/diagram_" + index;
         String result = "";
 
         YamlIdMap idMap = new YamlIdMap();
@@ -119,8 +119,8 @@ public class ObjectDiagramConstructor {
 
             Files.deleteIfExists(Path.of(fileName + ".svg"));
 
-            Files.deleteIfExists(Path.of("tmp/diagrams/"));
-            Files.deleteIfExists(Path.of("tmp/"));
+            Files.deleteIfExists(Path.of("genTmp/diagrams/"));
+            Files.deleteIfExists(Path.of("genTmp/"));
         } catch (IOException e) {
             e.printStackTrace();
         }
