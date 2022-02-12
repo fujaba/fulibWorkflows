@@ -95,3 +95,14 @@
 - Added possibility to generate for local or web
 - Only show last added object (and all correctly connected to that one) in the object diagrams
 - Reworked appearance of page notes in the event storming board
+
+## fulibWorkflows v0.4.0
+
+## Breaking Changes
+- Renamed the `fill` attribute in page to `value`
+
+## General
+- Added possibility to set the generation directory via field in BoardGenerator
+
+## Fixes
+- If just using the generationAndReturn method the tmp folder didn't get deleted for objectdiagrams

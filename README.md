@@ -24,7 +24,7 @@ dependencies {
     // ...
     
     // https://mvnrepository.com/artifact/org.fulib/fulibWorkflows
-    implementation group: 'org.fulib', name: 'fulibWorkflows', version: '0.3.6'
+    implementation group: 'org.fulib', name: 'fulibWorkflows', version: '0.4.0'
 }
 ```
 
@@ -33,7 +33,7 @@ dependencies {
 <dependency>
   <groupId>org.fulib</groupId>
   <artifactId>fulibWorkflows</artifactId>
-  <version>0.3.6</version>
+  <version>0.4.0</version>
 </dependency>
 ```
 
