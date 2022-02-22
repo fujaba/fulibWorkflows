@@ -31,13 +31,13 @@
     - pageName: Warehouse add palette red_shoes
     - text: Store new palette
     - input: barcode
-      fill: b001
+      value: b001
     - input: product
-      fill: red_shoes
+      value: red_shoes
     - input: amount
-      fill: O10
+      value: O10
     - input: location
-      fill: shelf_42
+      value: shelf_42
     - button: ok
 
 - service: Warehouse
@@ -75,13 +75,13 @@
     - pageName: Warehouse add palette
     - text: Store new palette
     - input: barcode
-      fill: b002
+      value: b002
     - input: product
-      fill: red_shoes
+      value: red_shoes
     - input: amount
-      fill: O8
+      value: O8
     - input: location
-      fill: shelf_23
+      value: shelf_23
     - button: ok
 
 - service: Warehouse
@@ -119,13 +119,13 @@
     - pageName: Warehouse add palette
     - text: Store new palette
     - input: barcode
-      fill: b003
+      value: b003
     - input: product
-      fill: blue_jeans
+      value: blue_jeans
     - input: amount
-      fill: O6
+      value: O6
     - input: location
-      fill: shelf_1337
+      value: shelf_1337
     - button: ok
 
 - service: Warehouse
@@ -185,9 +185,9 @@
     - pageName: MicroShop edit offer 2
     - text: Edit offer
     - input: product
-      fill: red_shoes
+      value: red_shoes
     - input: price
-      fill: O42
+      value: O42
     - button: Submit
       targetPage: MicroShop offers 2
 
@@ -214,9 +214,9 @@
     - pageName: MicroShop edit offer 3
     - text: Edit offer
     - input: product
-      fill: blue_jeans
+      value: blue_jeans
     - input: price
-      fill: O63
+      value: O63
     - button: Submit
       targetPage: MicroShop offers 3
 
@@ -254,7 +254,7 @@
     - pageName: MicroShop buy 1
     - text: Welcome to our micro shop
     - input: product
-      fill: red_shoes
+      value: red_shoes
     - input: customer
     - input: address
     - button: buy
@@ -264,11 +264,11 @@
     - pageName: MicroShop buy 2
     - text: Welcome to our micro shop
     - input: product
-      fill: red_shoes
+      value: red_shoes
     - input: customer
-      fill: Carli_Customer
+      value: Carli_Customer
     - input: address
-      fill: Wonderland 1
+      value: Wonderland 1
     - button: buy
       targetPage: MicroShop Carli overview 1
 
