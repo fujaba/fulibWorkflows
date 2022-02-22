@@ -48,13 +48,13 @@
       "additionalProperties": false
     },
     "inputItem": {
-      "description": "Defines an input with optional fill",
+      "description": "Defines an input with optional value",
       "type": "object",
       "properties": {
         "input": {
           "type": "string"
         },
-        "fill": {
+        "value": {
           "type": ["string", "integer"]
         }
       },
@@ -64,13 +64,13 @@
       "additionalProperties": false
     },
     "passwordItem": {
-      "description": "Defines a password input with optional fill",
+      "description": "Defines a password input with optional value",
       "type": "object",
       "properties": {
         "password": {
           "type": "string"
         },
-        "fill": {
+        "value": {
           "type": ["string", "integer"]
         }
       },

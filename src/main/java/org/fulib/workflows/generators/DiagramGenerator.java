@@ -19,6 +19,11 @@ import java.util.Map;
  * The DiagramGenerator manages the building and generation of object and class diagrams.
  */
 public class DiagramGenerator {
+    private BoardGenerator boardGenerator;
+
+    DiagramGenerator(BoardGenerator boardGenerator) {
+        this.boardGenerator = boardGenerator;
+    }
 
     /**
      * Builds and generates diagrams from an event storming Board
@@ -29,7 +34,7 @@ public class DiagramGenerator {
         Map<String, String> generatedDiagrams = buildDiagrams(board);
 
         for (String key : generatedDiagrams.keySet()) {
-            generateDiagram(generatedDiagrams.get(key), key);
+            generateDiagram(generatedDiagrams.get(key), key, key.equals("classDiagram"));
         }
     }
 
@@ -81,9 +86,11 @@ public class DiagramGenerator {
         return resultMap;
     }
 
-    private void generateDiagram(String diagramContent, String fileName) {
+    private void generateDiagram(String diagramContent, String fileName, boolean isClass) {
         try {
-            String outputDirectory = "tmp/diagrams/";
+            String outputDirectory = boardGenerator.getGenDir();
+            outputDirectory += isClass ? "/class/" : "/diagrams/";
+
             Files.createDirectories(Path.of(outputDirectory));
 
             String outputDiagramFilePath = outputDirectory + fileName + ".svg";

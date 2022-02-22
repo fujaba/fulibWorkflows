@@ -97,7 +97,7 @@ public class HtmlGenerator {
 
     private void generateHTML(String htmlContent, String fileName, String subFolder) {
         try {
-            String outputDirectory = "tmp/" + subFolder;
+            String outputDirectory = boardGenerator.getGenDir() + "/" + subFolder;
             Files.createDirectories(Path.of(outputDirectory));
 
             String outputBoardFilePath = outputDirectory + fileName + ".html";

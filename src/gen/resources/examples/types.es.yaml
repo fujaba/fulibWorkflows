@@ -4,9 +4,9 @@
     - pageName: Numbers area awesome
     - text: Current Number 42
     - input: Testerino
-      fill: 1337
+      value: 1337
     - password: Password
-      fill: 420
+      value: 420
     - button: nice
 
 - service: "#StudyGuide"

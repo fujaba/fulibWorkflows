@@ -131,7 +131,7 @@ public class GenerationTest {
     public void testMultiplePagesFromFileFromString() {
         BoardGenerator boardGenerator = new BoardGenerator();
         try {
-            String yamlContent = Files.readString(Path.of("src/gen/resources/examples/pages.es.yaml"));
+            String yamlContent = Files.readString(Path.of("src/gen/resources/examples/webeditor/pages.es.yaml"));
             boardGenerator.generateBoardFromString(yamlContent);
         } catch (IOException e) {
             e.printStackTrace();

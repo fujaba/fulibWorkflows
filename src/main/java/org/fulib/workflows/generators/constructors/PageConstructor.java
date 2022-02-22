@@ -55,7 +55,7 @@ public class PageConstructor {
 
             String key = currentPage.getContent().get(i).a;
 
-            if (key.equals("fill") || key.equals("targetPage")) {
+            if (key.equals("value") || key.equals("targetPage")) {
                 continue;
             }
 
@@ -75,13 +75,13 @@ public class PageConstructor {
                 st = pageGroup.getInstanceOf("input");
                 st.add("id", i + "input");
                 st.add("label", value);
-                st.add("fill", getFill(nextElement));
+                st.add("value", getValue(nextElement));
                 contentBody.append(st.render());
             } else if (key.contains("password")) {
                 st = pageGroup.getInstanceOf("password");
                 st.add("id", i + "password");
                 st.add("label", value);
-                st.add("fill", getFill(nextElement));
+                st.add("value", getValue(nextElement));
                 contentBody.append(st.render());
             } else if (key.contains("button")) {
                 if (this.standAlone) {
@@ -108,10 +108,10 @@ public class PageConstructor {
         return contentBody.toString();
     }
 
-    private String getFill(Pair<String, String> nextElement) {
+    private String getValue(Pair<String, String> nextElement) {
         String result = "";
 
-        if (nextElement.a.equals("fill")) {
+        if (nextElement.a.equals("value")) {
             result = nextElement.b;
         }
 

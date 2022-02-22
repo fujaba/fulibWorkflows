@@ -1,13 +1,11 @@
 # Generation
 
-## Gen Files
-
 The code needed to start the generation is pretty simple and can be used in `src/main/java` or `src/test/java`. That
 only depends upon if you added the dependency for `implementation` or `testImplementation`, the usage is the same.
 
 Either way the following code snippet shows you what you need to know.
 
-### Generation methods
+## Generation methods
 
 ```java
 import java.nio.file.Path;
