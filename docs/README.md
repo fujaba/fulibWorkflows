@@ -1,4 +1,4 @@
-## Introduction
+# Introduction
 Welcome to the official fulibWorkflows documentation.
 
 You can learn how to define workflows and generate the corresponding files.

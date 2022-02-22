@@ -1,4 +1,4 @@
-# General Definitions
+# General
 This section describes events already known from Event Storming, new events and restrictions for values.
 
 ## Additions to Event Storming Events

@@ -1,4 +1,4 @@
-# Gui Definitions
+# GUI
 
 The page 'event' consists of multiple items to build a page. Out of such an event there will be generated a plain html
 view styled with bootstrap 4.6. The layout depends on the order the items are listed in the workflow file.
