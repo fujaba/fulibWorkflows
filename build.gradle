@@ -72,6 +72,8 @@ publishing.publications.create('mavenJava', MavenPublication) {
 signing.sign publishing.publications.mavenJava
 
 dependencies {
+    implementation group: 'org.json', name: 'json', version: '20090211'
+
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml
     implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.1'
 

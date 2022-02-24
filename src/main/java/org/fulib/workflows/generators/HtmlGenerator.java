@@ -22,6 +22,7 @@ import java.util.Map;
 public class HtmlGenerator {
     private final Map<String, Integer> allPagesMap = new HashMap<>();
     private BoardGenerator boardGenerator;
+    private boolean standAlone = false;
 
     HtmlGenerator(Board board, BoardGenerator boardGenerator) {
         createAllPagesMap(board);
