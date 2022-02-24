@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.fulib.StrUtil;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
@@ -18,6 +17,7 @@ public class GraphDiagram {
     private List<Edge> edges = new ArrayList<>();
 
     private Graph currentGraph;
+    private String edgesText;
 
     public GraphDiagram() {
         currentGraph = root;
@@ -33,17 +33,8 @@ public class GraphDiagram {
         }
 
         String modelsText = "";
-        String edges = "";
-        for (Node node : root.getNodes().values()) {
-            String attrText = node.getAttrText();
-            attrText = attrText.replaceAll("\n", "<br align='left'/>");
-            ST ost = stGroup.getInstanceOf("simpleObject");
-            ost.add("objectId", node.getId());
-            ost.add("label", node.getLabel());
-            ost.add("attrList", attrText);
-            String oneObject = ost.render();
-            modelsText += oneObject + "\n";
-        }
+        edgesText = "";
+        modelsText = nodesOfGraphText(root, stGroup);
 
         for (Edge edge : this.edges) {
             ST est = stGroup.getInstanceOf("edge");
@@ -53,13 +44,13 @@ public class GraphDiagram {
             est.add("tgt", edge.getTgtId());
             est.add("color", "black");
             String oneEdge = est.render();
-            edges += oneEdge;
+            edgesText += oneEdge;
         }
 
         ST st = stGroup.getInstanceOf("graph");
         st.add("title", root.getId());
         st.add("objects", modelsText);
-        st.add("edges", edges);
+        st.add("edges", edgesText);
         String dotString = st.render();
         // Files.writeString(Path.of("disjointModels/dotString.txt"), dotString,
         // StandardCharsets.UTF_8);
@@ -67,8 +58,37 @@ public class GraphDiagram {
         return svgString;
     }
 
-    public GraphDiagram addGraph(String graphId, String label) {
+    private String nodesOfGraphText(Graph graph, STGroup stGroup) {
+        String modelsText = "";
+        for (Node node : graph.getNodes().values()) {
+            if (node instanceof Graph) {
+                String subText = nodesOfGraphText(node.toGraph(), stGroup);
 
+                ST subGraph = stGroup.getInstanceOf("subgraph");
+                subGraph.add("graphId", node.getId());
+                subGraph.add("label", node.getLabel());
+                subGraph.add("objects", subText);
+                String oneSubgraph = subGraph.render();
+                modelsText += oneSubgraph;
+                continue;
+            }
+
+            String attrText = node.getAttrText() != null ? node.getAttrText() : "";
+            attrText = attrText.replaceAll("\n", "<br align='left'/>");
+            ST ost = stGroup.getInstanceOf("simpleObject");
+            ost.add("objectId", node.getId());
+            ost.add("label", node.getLabel());
+            ost.add("attrList", attrText);
+            String oneObject = ost.render();
+            modelsText += oneObject + "\n";
+        }
+        return modelsText;
+    }
+
+    public GraphDiagram addGraph(String graphId, String label) {
+        Node newNode = root.getNodes().computeIfAbsent(graphId, (k) -> new Graph().setId(graphId));
+        newNode.setLabel(label);
+        currentGraph = newNode.toGraph();
         return this;
     }
 

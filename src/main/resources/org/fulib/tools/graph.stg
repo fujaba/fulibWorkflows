@@ -12,9 +12,10 @@ subgraph(graphId, label, objects) ::= <<
   subgraph cluster_$graphId$ {
     label = "$label$"
     fontsize="10"
-    color = white
+    color = black
     $objects$
   }
+
 >>
 
 simpleObject(objectId, label, attrList) ::= <<
