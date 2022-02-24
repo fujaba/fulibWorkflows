@@ -1,0 +1,43 @@
+
+delimiters "$", "$"
+
+graph(title, objects, edges) ::= <<
+digraph "$title$" {
+    $objects$
+    $edges$
+}
+>>
+
+subgraph(graphId, label, objects) ::= <<
+  subgraph cluster_$graphId$ {
+    label = "$label$"
+    fontsize="10"
+    color = white
+    $objects$
+  }
+>>
+
+simpleObject(objectId, label, attrList) ::= <<
+"$objectId$" [
+    shape=plaintext
+    fontsize="10"
+    label=<
+      <table border='0' cellborder='1' cellspacing='0'>
+        <tr><td><u>$label$</u></td></tr>
+        <tr><td>$attrList$</td></tr>
+      </table>
+    >
+];
+>>
+
+edge(src, srclabel, tgt, tgtlabel, color) ::= <<
+"$src$" -> "$tgt$" [
+    arrowhead=none
+    fontsize="10"
+    headlabel="$srclabel$"
+    taillabel="$tgtlabel$"
+    color=$color$
+    fontcolor=$color$
+]
+
+>>
