@@ -107,7 +107,7 @@ pageButton(desc) ::= <<
 
 linkedNoteLink(index, type, description) ::= <<
 
-        <a class="card-link" role="button" onclick="window.parent.setIndexFromIframe({index}, '{type}');">Go to {description}</a>
+        <a class="card-link" role="button" onclick="window.parent.postMessage(\{type: 'setIndexFromIframe', index: {index}, diagramType: '{type}'\}, '*')">Go to {description}</a>
 >>
 
 dataANDPageClose() ::= <<

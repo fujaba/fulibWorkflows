@@ -49,6 +49,6 @@ password(id, label, value) ::= <<
 button(description, targetIndex) ::= <<
 
     <div class="row justify-content-center pt-2">
-        <button type="button" class="btn btn-success" onclick="window.parent.changeFrameWithToast('{description} clicked', {targetIndex});">{description}</button>
+        <button type="button" class="btn btn-success" onclick="window.parent.postMessage(\{type: 'changeFrameWithToast', toastContent: '{description} clicked', index: {targetIndex}, diagramType: 'pages'\}, '*')">{description}</button>
     </div>
 >>
