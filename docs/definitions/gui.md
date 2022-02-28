@@ -1,7 +1,7 @@
 # GUI
 
 The page 'event' consists of multiple items to build a page. Out of such an event there will be generated a plain html
-view styled with bootstrap 4.6. The layout depends on the order the items are listed in the workflow file.
+view styled with bootstrap v5.1.3. The layout depends on the order the items are listed in the workflow file.
 Elements can only be arranged vertically. A horizontal arrangement is not possible at this point.
 
 ```yaml
@@ -76,4 +76,5 @@ an id in the view generation.
 It is also possible to add an attribute called `targetPage` to a button. The value must be a pageName.
 Out of this fulibWorkflows extracts which mockup should be shown after clicking on the generated button.
 This only works for HTML-Mockups in the [fulibWorkflows Web-Editor](https://workflows-editor-frontend.herokuapp.com/).
+
 Sidenote: The Web-Editor will be moved to fulib.org in the future.
