@@ -106,3 +106,10 @@
 
 ## Fixes
 - If just using the generationAndReturn method the tmp folder didn't get deleted for objectdiagrams
+
+## fulibWorkflows v0.4.1
+
+## General
+- Updated generation templates to bootstrap v5
+- Updated gradle to v7.4
+- Changed page/board interaction for web generation for usage in fulib.org
