@@ -35,7 +35,7 @@ workflow(name, content) ::= <<
 
 note(name, content, color) ::= <<
 
-<div class="card col-xs m-2 shadow" style="background-color: {color}">
+<div class="card col-md-auto m-2 shadow" style="background-color: {color}">
     <div class="card-body">
         <h5 class="card-title">{name}</h5>
         <p class="card-text">
@@ -59,7 +59,7 @@ actor(color, icon, name) ::= <<
 
 objectNote(content) ::= <<
 
-<div class="card col-xs m-2 shadow" style="background-color: darkseagreen">
+<div class="card col-md-auto m-2 shadow" style="background-color: darkseagreen">
     <div class="card-body">
         <h5 class="card-title">Data</h5>
         <p class="card-text">
@@ -74,7 +74,7 @@ cardText(text) ::= <<
 
 pageNote(name, content) ::= <<
 
-<div class="card col-xs m-2 shadow" style="background-color: palegreen">
+<div class="card col-md-auto m-2 shadow" style="background-color: palegreen">
     <div class="card-body" style="text-align:center">
         <h5 class="card-title">
             <i class="bi bi-list"></i>
