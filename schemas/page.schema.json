@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/fujaba/fulibWorkflows/main/schemas/page.schema.json",
   "title": "JSON schema for pages used in fulibWorkflows ",
   "description": "Page Schema for the generation file of fulibWorkflows",
   "type": "array",
