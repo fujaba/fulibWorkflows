@@ -2,6 +2,7 @@ package org.fulib.workflows.yaml;
 
 import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.*;
+import org.fulib.workflows.utils.FulibWorkflowsLintError;
 import org.fulib.workflows.utils.FulibWorkflowsParseError;
 import org.yaml.snakeyaml.Yaml;
 
@@ -26,10 +27,19 @@ public class OwnYamlParser {
     private int dataIndex = 0;
     private Map<Integer, Pair<String, String>> noteData = new HashMap<>();
 
-    /** Uses Snakeyaml to parse the yamlInput and builds the Event-Storming-Board object
+    /**
+     * Uses Snakeyaml to parse the yamlInput and builds the Event-Storming-Board object
+     *
      * @param yamlInput fulibWorkflows description from an *.es.yaml file
      */
     public void parseYAML(String yamlInput) {
+        yamlInput = cleanUpInput(yamlInput);
+        boolean lintSuccessfully = lintInput(yamlInput);
+
+        if (!lintSuccessfully) {
+            return;
+        }
+
         Yaml yaml = new Yaml();
         List<Object> loadedEvents = yaml.load(yamlInput);
 
@@ -266,5 +276,24 @@ public class OwnYamlParser {
         }
 
         return null;
+    }
+
+
+    private String cleanUpInput(String yamlInput) {
+        return yamlInput.replaceAll("/\t/g", "  ");
+    }
+
+    private boolean lintInput(String yamlInput) {
+        if (!yamlInput.contains("- workflow: ")) {
+            try {
+                throw new FulibWorkflowsLintError("Needs at least on workflow note (best at the beginning)");
+            } catch (FulibWorkflowsLintError e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        // TODO lint against the schema and throw good error if something is wrong
+        return true;
     }
 }
