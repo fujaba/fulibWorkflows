@@ -85,7 +85,7 @@ public class ClassDiagramConstructor {
                     association.srcName = split[0];
 
                     String backName = pair.b;
-                    if (backName.contains("[")) {
+                    if (backName.startsWith("[")) {
                         backName = cleanupString(backName);
                         association.tgtCardi = Type.MANY;
                     } else {
@@ -122,7 +122,7 @@ public class ClassDiagramConstructor {
             String key = pair.a;
 
             if (key.equals(tgtName)) {
-                if (pair.b.contains("[")) {
+                if (pair.b.startsWith("[")) {
                     association.srcCardi = Type.MANY;
                 } else {
                     association.srcCardi = Type.ONE;

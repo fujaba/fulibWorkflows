@@ -1,0 +1,9 @@
+- workflow: Data with list
+
+- data: Data data
+  test: [21, 22, 45]
+
+- data: Room r1
+  topic: math
+  credits: 17
+  description: "[TODO] Write this"
