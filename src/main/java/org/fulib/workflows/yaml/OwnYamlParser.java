@@ -128,94 +128,94 @@ public class OwnYamlParser {
 
     private BaseNote evaluateCurrentNote(String key) {
         switch (key) {
-            case WORKFLOW:
+            case WORKFLOW -> {
                 if (currentWorkflow != null) {
                     setWorkflow();
                 }
-
                 Workflow workflow = new Workflow();
                 workflow.setIndex(workflowIndex);
                 workflowIndex++;
                 workflows.add(workflow);
                 currentWorkflow = workflow;
                 return workflow;
-            case EXTERNAL_SYSTEM:
+            }
+            case EXTERNAL_SYSTEM -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 ExternalSystem externalSystem = new ExternalSystem();
                 externalSystem.setIndex(noteIndex);
                 noteIndex++;
                 notes.add(externalSystem);
                 return externalSystem;
-            case SERVICE:
+            }
+            case SERVICE -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Service service = new Service();
                 notes.add(service);
                 return service;
-            case COMMAND:
+            }
+            case COMMAND -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Command command = new Command();
                 notes.add(command);
                 return command;
-            case EVENT:
+            }
+            case EVENT -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Event event = new Event();
                 notes.add(event);
                 currentNote = event;
                 return event;
-            case POLICY:
+            }
+            case POLICY -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Policy policy = new Policy();
                 notes.add(policy);
                 return policy;
-            case USER:
+            }
+            case USER -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 User user = new User();
                 notes.add(user);
                 return user;
-            case DATA:
+            }
+            case DATA -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Data data = new Data();
                 notes.add(data);
                 currentNote = data;
                 return data;
-            case PAGE:
+            }
+            case PAGE -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Page page = new Page();
                 notes.add(page);
                 currentNote = page;
                 return page;
-            case PROBLEM:
+            }
+            case PROBLEM -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Problem problem = new Problem();
                 notes.add(problem);
                 return problem;
+            }
         }
         return null;
     }
@@ -255,12 +255,8 @@ public class OwnYamlParser {
         int valueAsInt = -1;
 
         switch (valueType) {
-            case "String":
-                valueAsString = (String) value;
-                break;
-            case "Integer":
-                valueAsInt = (int) value;
-                break;
+            case "String" -> valueAsString = (String) value;
+            case "Integer" -> valueAsInt = (int) value;
         }
 
         if (!valueAsString.equals("")) {
