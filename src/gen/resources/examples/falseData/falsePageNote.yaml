@@ -1,0 +1,12 @@
+- workflow: Pages
+
+- page:
+    - pageName: Register
+    - text: Please register yourself
+    - test: test
+    - input: E-Mail
+    - input: Username
+    - password: Password
+    - password: Repeat Password
+    - button: Register
+      targetPage: RegisterFilled

@@ -20,7 +20,7 @@ public class GenerationTest {
         BoardGenerator boardGenerator = new BoardGenerator();
 
         try {
-            boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/examples/falseData.es.yaml"));
+            boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/examples/falseData/falseDataNote.es.yaml"));
         } catch (Exception e) {
             // Is a valid check, because the root exception is an IndexOutOfBoundsException
             Assert.assertEquals("begin 1, end 0, length 0", e.getMessage());
@@ -75,7 +75,7 @@ public class GenerationTest {
         BoardGenerator boardGenerator = new BoardGenerator();
 
         try {
-            String yamlContent = Files.readString(Path.of("src/gen/resources/examples/falseData.es.yaml"));
+            String yamlContent = Files.readString(Path.of("src/gen/resources/examples/falseData/falseDataNote.es.yaml"));
             boardGenerator.generateBoardFromString(yamlContent);
         } catch (Exception e) {
             // Is a valid check, because the root exception is an IndexOutOfBoundsException

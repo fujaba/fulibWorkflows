@@ -85,6 +85,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.fulib/fulibTools
     implementation group: 'org.fulib', name: 'fulibTools', version: '1.5.1'
 
+    // https://mvnrepository.com/artifact/io.vertx/vertx-json-schema
+    implementation group: 'io.vertx', name: 'vertx-json-schema', version: '4.2.5'
+
     // https://mvnrepository.com/artifact/org.fulib/fulibTables
     testImplementation group: 'org.fulib', name: 'fulibTables', version: '1.4.0'
 
