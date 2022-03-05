@@ -262,16 +262,22 @@ public class OwnYamlParser {
 
         String valueAsString = "";
         int valueAsInt = -1;
+        List<String> valueAsArrayList = null;
 
         switch (valueType) {
             case "String" -> valueAsString = (String) value;
             case "Integer" -> valueAsInt = (int) value;
+            case "ArrayList" -> {
+                valueAsArrayList = (List<String>) value;
+            }
         }
 
         if (!valueAsString.equals("")) {
             return valueAsString;
         } else if (valueAsInt != -1) {
             return String.valueOf(valueAsInt);
+        } else if (valueAsArrayList != null) {
+            return valueAsArrayList.toString();
         } else {
             try {
                 throw new FulibWorkflowsParseError("Attribute value must be String or Integer");

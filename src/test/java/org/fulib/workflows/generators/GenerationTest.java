@@ -58,6 +58,20 @@ public class GenerationTest {
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/examples/webeditor/pages.es.yaml"));
     }
 
+    @Test
+    public void testDataWithListFromFile() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.setWebGeneration(true);
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/examples/dataWithList.es.yaml"));
+    }
+
+    @Test
+    public void testDataModellingFromFile() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.setWebGeneration(true);
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/examples/webeditor/dataModelling.es.yaml"));
+    }
+
     // From String
     @Test
     public void testEventsWorkflowFromString() {
@@ -132,6 +146,17 @@ public class GenerationTest {
         BoardGenerator boardGenerator = new BoardGenerator();
         try {
             String yamlContent = Files.readString(Path.of("src/gen/resources/examples/webeditor/pages.es.yaml"));
+            boardGenerator.generateBoardFromString(yamlContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testDataWithListFromString() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        try {
+            String yamlContent = Files.readString(Path.of("src/gen/resources/examples/dataWithList.es.yaml"));
             boardGenerator.generateBoardFromString(yamlContent);
         } catch (IOException e) {
             e.printStackTrace();
