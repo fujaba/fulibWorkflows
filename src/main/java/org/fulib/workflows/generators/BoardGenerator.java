@@ -116,8 +116,8 @@ public class BoardGenerator {
     // Helper
     private Board generateBoard(String yamlContent) {
         OwnYamlParser ownYamlParser = new OwnYamlParser();
-        boolean success = ownYamlParser.parseYAML(yamlContent);
-        return success ? ownYamlParser.getBoard() : null;
+        ownYamlParser.parseYAML(yamlContent);
+        return ownYamlParser.getBoard();
     }
 
     // Getter and Setter

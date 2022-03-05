@@ -85,8 +85,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.fulib/fulibTools
     implementation group: 'org.fulib', name: 'fulibTools', version: '1.5.1'
 
-    implementation group: 'com.networknt', name: 'json-schema-validator', version: '1.0.66'
-
     // https://mvnrepository.com/artifact/org.fulib/fulibTables
     testImplementation group: 'org.fulib', name: 'fulibTables', version: '1.4.0'
 

@@ -1,22 +1,15 @@
 package org.fulib.workflows.yaml;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.networknt.schema.JsonSchema;
-import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
-import com.networknt.schema.ValidationMessage;
 import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.*;
 import org.fulib.workflows.utils.FulibWorkflowsLintError;
 import org.fulib.workflows.utils.FulibWorkflowsParseError;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.fulib.workflows.utils.Constants.*;
 
@@ -39,12 +32,12 @@ public class OwnYamlParser {
      *
      * @param yamlInput fulibWorkflows description from an *.es.yaml file
      */
-    public boolean parseYAML(String yamlInput) {
+    public void parseYAML(String yamlInput) {
         yamlInput = cleanUpInput(yamlInput);
         boolean lintSuccessfully = lintInput(yamlInput);
 
         if (!lintSuccessfully) {
-            return false;
+            return;
         }
 
         Yaml yaml = new Yaml();
@@ -91,7 +84,6 @@ public class OwnYamlParser {
         setWorkflow();
 
         board.setWorkflows(workflows);
-        return true;
     }
 
     private void parsePageEntries(Object value) {
@@ -136,94 +128,94 @@ public class OwnYamlParser {
 
     private BaseNote evaluateCurrentNote(String key) {
         switch (key) {
-            case WORKFLOW -> {
+            case WORKFLOW:
                 if (currentWorkflow != null) {
                     setWorkflow();
                 }
+
                 Workflow workflow = new Workflow();
                 workflow.setIndex(workflowIndex);
                 workflowIndex++;
                 workflows.add(workflow);
                 currentWorkflow = workflow;
                 return workflow;
-            }
-            case EXTERNAL_SYSTEM -> {
+            case EXTERNAL_SYSTEM:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 ExternalSystem externalSystem = new ExternalSystem();
                 externalSystem.setIndex(noteIndex);
                 noteIndex++;
                 notes.add(externalSystem);
                 return externalSystem;
-            }
-            case SERVICE -> {
+            case SERVICE:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 Service service = new Service();
                 notes.add(service);
                 return service;
-            }
-            case COMMAND -> {
+            case COMMAND:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 Command command = new Command();
                 notes.add(command);
                 return command;
-            }
-            case EVENT -> {
+            case EVENT:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 Event event = new Event();
                 notes.add(event);
                 currentNote = event;
                 return event;
-            }
-            case POLICY -> {
+            case POLICY:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 Policy policy = new Policy();
                 notes.add(policy);
                 return policy;
-            }
-            case USER -> {
+            case USER:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 User user = new User();
                 notes.add(user);
                 return user;
-            }
-            case DATA -> {
+            case DATA:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 Data data = new Data();
                 notes.add(data);
                 currentNote = data;
                 return data;
-            }
-            case PAGE -> {
+            case PAGE:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 Page page = new Page();
                 notes.add(page);
                 currentNote = page;
                 return page;
-            }
-            case PROBLEM -> {
+            case PROBLEM:
                 if (currentNote != null) {
                     setExtendedNote();
                 }
+
                 Problem problem = new Problem();
                 notes.add(problem);
                 return problem;
-            }
         }
         return null;
     }
@@ -263,8 +255,12 @@ public class OwnYamlParser {
         int valueAsInt = -1;
 
         switch (valueType) {
-            case "String" -> valueAsString = (String) value;
-            case "Integer" -> valueAsInt = (int) value;
+            case "String":
+                valueAsString = (String) value;
+                break;
+            case "Integer":
+                valueAsInt = (int) value;
+                break;
         }
 
         if (!valueAsString.equals("")) {
@@ -288,48 +284,16 @@ public class OwnYamlParser {
     }
 
     private boolean lintInput(String yamlInput) {
-        boolean result = true;
-
         if (!yamlInput.contains("- workflow: ")) {
             try {
                 throw new FulibWorkflowsLintError("Needs at least on workflow note (best at the beginning)");
             } catch (FulibWorkflowsLintError e) {
                 e.printStackTrace();
             }
-            result = false;
+            return false;
         }
 
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        JsonSchemaFactory factory = JsonSchemaFactory.builder(JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7)).objectMapper(mapper).build();
-        String schemaString = null;
-        try {
-            schemaString = Files.readString(Path.of("schemas/fulibWorkflows.schema.json"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JsonSchema schema = factory.getSchema(schemaString);
-
-        Set<ValidationMessage> validateMsg = null;
-        try {
-            JsonNode jsonNode = mapper.readTree(yamlInput);
-            validateMsg = schema.validate(jsonNode);
-        } catch (IOException e) {
-            e.printStackTrace();
-            result = false;
-        }
-
-        if (validateMsg != null && !validateMsg.isEmpty()) {
-            result = false;
-
-            for (ValidationMessage validationMessage : validateMsg) {
-                try {
-                    throw new FulibWorkflowsLintError(validationMessage.getMessage());
-                } catch (FulibWorkflowsLintError e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return result;
+        // TODO lint against the schema and throw good error if something is wrong
+        return true;
     }
 }
