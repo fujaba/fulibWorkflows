@@ -1,20 +1,11 @@
 package org.fulib.workflows.yaml;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-import io.vertx.json.schema.Schema;
-import io.vertx.json.schema.SchemaParser;
-import io.vertx.json.schema.SchemaRouter;
-import io.vertx.json.schema.SchemaRouterOptions;
 import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.*;
 import org.fulib.workflows.utils.FulibWorkflowsLintError;
 import org.fulib.workflows.utils.FulibWorkflowsParseError;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -289,7 +280,6 @@ public class OwnYamlParser {
         return null;
     }
 
-
     private String cleanUpInput(String yamlInput) {
         return yamlInput.replaceAll("/\t/g", "  ");
     }
@@ -303,31 +293,6 @@ public class OwnYamlParser {
             }
             return false;
         }
-
-        SchemaRouter schemaRouter = SchemaRouter.create(Vertx.vertx(), new SchemaRouterOptions());
-        SchemaParser schemaParser = SchemaParser.createDraft7SchemaParser(schemaRouter);
-
-        String jsonSchema = null;
-        try {
-            jsonSchema = Files.readString(Path.of("schemas/fulibWorkflows.schema.json"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (jsonSchema == null) {
-            return false;
-        }
-
-        JsonObject object = new JsonObject(jsonSchema);
-        Schema schema = schemaParser.parse(object);
-        List<Object> loadedEvents = yaml.load(yamlInput);
-
-        schema.validateAsync(loadedEvents).onComplete(ar -> {
-            if (ar.failed()) {
-                ar.cause().printStackTrace();
-                // TODO Parse Message into something usefull and send them up to be able to send good stuff to console/editor?
-            }
-        });
 
         return true;
     }
