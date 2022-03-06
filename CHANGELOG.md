@@ -113,3 +113,10 @@
 - Updated generation templates to bootstrap v5
 - Updated gradle to v7.4
 - Changed page/board interaction for web generation for usage in fulib.org
+
+## fulibWorkflows v0.4.2
+
+## General
+- Added dark mode to generated html files
+- Added lint input prior used in web editor
+- Accepts list as type for attributes for data notes

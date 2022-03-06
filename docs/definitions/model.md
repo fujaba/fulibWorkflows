@@ -9,13 +9,13 @@ Out of all objects there will be generated a classdiagram automatically.
 - data: Room r1
   topic: math
   credits: 17
-  neighbors: "[r2, r5]"
-  neighbors.back: "[neighbors]"
+  neighbors: [r2, r5]
+  neighbors.back: [neighbors]
 
 - data: Room r2
   topic: calculus
   credits: 20
-  neighbors: "[r1, r5]"
+  neighbors: [r1, r5]
 ```
 
 ## Objects
@@ -44,8 +44,8 @@ The value is either `int` or `String`.
 ## Associations
 ```yaml
 - data: Room r1
-  neighbors: "[r2]"
-  neighbors.back: "[neighbors]"
+  neighbors: [r2]
+  neighbors.back: [neighbors]
 
 - data: Room r2
 ```
@@ -55,5 +55,4 @@ Using the example above to define Person -> University you will have to add `<fi
 After that simply add `<fieldNameInFirstClass>.back: <fieldNameInSecondClass>`.
 The cardinalities one and many are both present in the example.
 If you want to model a direction as a `to many` - association you will have to add square brackets to the text after `:`.
-It is important to declare a `to many` - association as string with additional `"` at start and end position.
 In the case that it is a `to one` - association simply miss out the square brackets.
