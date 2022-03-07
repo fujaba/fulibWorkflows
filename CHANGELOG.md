@@ -122,4 +122,11 @@
 - Accepts list as type for attributes for data notes
 
 ## fulibWorkflows v0.4.3
+
+## General
 - Added code into html stg for fulib.org theme switch
+
+## fulibWorkflows v0.4.4
+
+## Fixes
+- Fix Regex for removing tabs as indentation for yaml parser
