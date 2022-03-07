@@ -11,6 +11,13 @@ page(content, pageName) ::= <<
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-darkmode@5.0.0-beta.1/css/darktheme.css"/>
 </head>
 <body data-theme="auto">
+<script>
+    window.addEventListener('message', event => \{
+        if (event.data.type === 'setTheme') \{
+            document.body.dataset.theme = event.data.theme;
+        \}
+    \});
+</script>
 <div class="d-flex justify-content-center">
     <div class="col-md-auto text-center">
     {content}
