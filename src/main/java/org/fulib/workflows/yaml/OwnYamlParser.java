@@ -281,7 +281,7 @@ public class OwnYamlParser {
     }
 
     private String cleanUpInput(String yamlInput) {
-        return yamlInput.replaceAll("/\t/g", "  ");
+        return yamlInput.replaceAll("\\t", "  ");
     }
 
     private boolean lintInput(String yamlInput) {
