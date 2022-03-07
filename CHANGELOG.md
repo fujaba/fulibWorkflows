@@ -120,3 +120,6 @@
 - Added dark mode to generated html files
 - Added lint input prior used in web editor
 - Accepts list as type for attributes for data notes
+
+## fulibWorkflows v0.4.3
+- Added code into html stg for fulib.org theme switch
