@@ -1,0 +1,460 @@
+# start typing your workflow or select an example using the dropdown above.
+
+- workflow: New workflow
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}</pre>
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	<FONT COLOR="blue">int x = 42;</FONT><br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	<FONT COLOR="blue">int y = 23;</FONT><br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	<FONT COLOR="blue">x = y;</FONT><br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	<FONT COLOR="blue">x = 23;</FONT><br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	<FONT COLOR="blue">int x = 23;</FONT><br>
+       	int y = 23;<br>
+       	<FONT COLOR="blue">x = 23;</FONT><br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 23;<br>
+       	int y = 23;<br>
+       	x = 23;<br>
+       	<FONT COLOR="blue">y = 1337;</FONT><br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 23;<br>
+       	<FONT COLOR="blue">int y = 1337;</FONT><br>
+       	x = 23;<br>
+       	<FONT COLOR="blue">y = 1337;</FONT><br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 23;<br>
+       	int y = 1337;<br>
+       	x = 23;<br>
+       	y = 1337;<br>
+       	<FONT COLOR="blue">assertThat(x).isEqualTo(23);</FONT><br>
+   		}</pre>
+
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 23;<br>
+       	int y = 1337;<br>
+       	x = 23;<br>
+       	y = 1337;<br>
+       	<FONT COLOR="blue">assertThat(23).isEqualTo(23);</FONT><br>
+   		}</pre>
+
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 23;<br>
+       	int y = 1337;<br>
+       	x = 23;<br>
+       	y = 1337;<br>
+       	<FONT COLOR="blue">true</FONT><br>
+   		}</pre>
+
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">testValues();</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 23;<br>
+       	int y = 1337;<br>
+       	x = 23;<br>
+       	y = 1337;<br>
+       	true<br>
+   		<FONT COLOR="blue">}</FONT></pre>
+
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	<FONT COLOR="blue">void;</FONT><br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}</pre>
+
+
+- page:
+  - pageName: TCM
+  - text: Three Column Machine
+  - text: Col Code
+  - text: <pre>public static void main(String[] args)<br>
+      {<br>
+      	testValues();<br>
+      	testGgt();<br>
+      	testRoute();<br>
+   		}<br>
+      public static void testValues()<br>
+   		{<br>
+       	int x = 42;<br>
+       	int y = 23;<br>
+       	x = y;<br>
+       	y = 1337;<br>
+       	assertThat(x).isEqualTo(23);<br>
+   		}</pre>
+  - text: Col Stack
+  - text: <pre>public static void main(String[] args = null)<br>
+      {<br>
+      	void;<br>
+      	<FONT COLOR="blue">testGgt();</FONT><br>
+      	testRoute();<br>
+   		}</pre>
