@@ -106,3 +106,27 @@
 
 ## Fixes
 - If just using the generationAndReturn method the tmp folder didn't get deleted for objectdiagrams
+
+## fulibWorkflows v0.4.1
+
+## General
+- Updated generation templates to bootstrap v5
+- Updated gradle to v7.4
+- Changed page/board interaction for web generation for usage in fulib.org
+
+## fulibWorkflows v0.4.2
+
+## General
+- Added dark mode to generated html files
+- Added lint input prior used in web editor
+- Accepts list as type for attributes for data notes
+
+## fulibWorkflows v0.4.3
+
+## General
+- Added code into html stg for fulib.org theme switch
+
+## fulibWorkflows v0.4.4
+
+## Fixes
+- Fix Regex for removing tabs as indentation for yaml parser

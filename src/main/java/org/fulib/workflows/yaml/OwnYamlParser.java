@@ -2,6 +2,7 @@ package org.fulib.workflows.yaml;
 
 import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.*;
+import org.fulib.workflows.utils.FulibWorkflowsLintError;
 import org.fulib.workflows.utils.FulibWorkflowsParseError;
 import org.yaml.snakeyaml.Yaml;
 
@@ -14,6 +15,7 @@ import static org.fulib.workflows.utils.Constants.*;
 
 public class OwnYamlParser {
     private final Board board = new Board();
+    private final Yaml yaml = new Yaml();
 
     private int workflowIndex = 0;
     private Workflow currentWorkflow;
@@ -26,11 +28,19 @@ public class OwnYamlParser {
     private int dataIndex = 0;
     private Map<Integer, Pair<String, String>> noteData = new HashMap<>();
 
-    /** Uses Snakeyaml to parse the yamlInput and builds the Event-Storming-Board object
+    /**
+     * Uses Snakeyaml to parse the yamlInput and builds the Event-Storming-Board object
+     *
      * @param yamlInput fulibWorkflows description from an *.es.yaml file
      */
     public void parseYAML(String yamlInput) {
-        Yaml yaml = new Yaml();
+        yamlInput = cleanUpInput(yamlInput);
+        boolean lintSuccessfully = lintInput(yamlInput);
+
+        if (!lintSuccessfully) {
+            return;
+        }
+
         List<Object> loadedEvents = yaml.load(yamlInput);
 
         for (Object loadedEvent : loadedEvents) {
@@ -118,94 +128,94 @@ public class OwnYamlParser {
 
     private BaseNote evaluateCurrentNote(String key) {
         switch (key) {
-            case WORKFLOW:
+            case WORKFLOW -> {
                 if (currentWorkflow != null) {
                     setWorkflow();
                 }
-
                 Workflow workflow = new Workflow();
                 workflow.setIndex(workflowIndex);
                 workflowIndex++;
                 workflows.add(workflow);
                 currentWorkflow = workflow;
                 return workflow;
-            case EXTERNAL_SYSTEM:
+            }
+            case EXTERNAL_SYSTEM -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 ExternalSystem externalSystem = new ExternalSystem();
                 externalSystem.setIndex(noteIndex);
                 noteIndex++;
                 notes.add(externalSystem);
                 return externalSystem;
-            case SERVICE:
+            }
+            case SERVICE -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Service service = new Service();
                 notes.add(service);
                 return service;
-            case COMMAND:
+            }
+            case COMMAND -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Command command = new Command();
                 notes.add(command);
                 return command;
-            case EVENT:
+            }
+            case EVENT -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Event event = new Event();
                 notes.add(event);
                 currentNote = event;
                 return event;
-            case POLICY:
+            }
+            case POLICY -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Policy policy = new Policy();
                 notes.add(policy);
                 return policy;
-            case USER:
+            }
+            case USER -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 User user = new User();
                 notes.add(user);
                 return user;
-            case DATA:
+            }
+            case DATA -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Data data = new Data();
                 notes.add(data);
                 currentNote = data;
                 return data;
-            case PAGE:
+            }
+            case PAGE -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Page page = new Page();
                 notes.add(page);
                 currentNote = page;
                 return page;
-            case PROBLEM:
+            }
+            case PROBLEM -> {
                 if (currentNote != null) {
                     setExtendedNote();
                 }
-
                 Problem problem = new Problem();
                 notes.add(problem);
                 return problem;
+            }
         }
         return null;
     }
@@ -243,20 +253,22 @@ public class OwnYamlParser {
 
         String valueAsString = "";
         int valueAsInt = -1;
+        List<String> valueAsArrayList = null;
 
         switch (valueType) {
-            case "String":
-                valueAsString = (String) value;
-                break;
-            case "Integer":
-                valueAsInt = (int) value;
-                break;
+            case "String" -> valueAsString = (String) value;
+            case "Integer" -> valueAsInt = (int) value;
+            case "ArrayList" -> {
+                valueAsArrayList = (List<String>) value;
+            }
         }
 
         if (!valueAsString.equals("")) {
             return valueAsString;
         } else if (valueAsInt != -1) {
             return String.valueOf(valueAsInt);
+        } else if (valueAsArrayList != null) {
+            return valueAsArrayList.toString();
         } else {
             try {
                 throw new FulibWorkflowsParseError("Attribute value must be String or Integer");
@@ -266,5 +278,22 @@ public class OwnYamlParser {
         }
 
         return null;
+    }
+
+    private String cleanUpInput(String yamlInput) {
+        return yamlInput.replaceAll("\\t", "  ");
+    }
+
+    private boolean lintInput(String yamlInput) {
+        if (!yamlInput.contains("- workflow: ")) {
+            try {
+                throw new FulibWorkflowsLintError("Needs at least on workflow note (best at the beginning)");
+            } catch (FulibWorkflowsLintError e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        return true;
     }
 }

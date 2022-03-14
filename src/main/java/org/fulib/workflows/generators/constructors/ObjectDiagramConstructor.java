@@ -89,7 +89,7 @@ public class ObjectDiagramConstructor {
                 continue;
             }
 
-            if (value.contains("[") || value.contains(">")) {
+            if (value.startsWith("[") && value.endsWith("]")) {
                 value = value.replaceAll("\\[", "");
                 value = value.replaceAll("]", "");
                 value = value.replaceAll(",", "");
