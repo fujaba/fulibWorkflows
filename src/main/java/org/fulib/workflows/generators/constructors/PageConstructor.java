@@ -69,6 +69,9 @@ public class PageConstructor {
 
             if (key.contains("text")) {
                 st = pageGroup.getInstanceOf("text");
+                if (value != null && value.startsWith("<pre>")) {
+                    st = pageGroup.getInstanceOf("pre");
+                }
                 st.add("text", value);
                 contentBody.append(st.render());
             } else if (key.contains("input")) {

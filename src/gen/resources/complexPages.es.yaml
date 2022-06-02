@@ -5,33 +5,37 @@
 - page:
   - pageName: TCM
   - text: Three Column Machine
-  - text: Col Code
-  - text: <pre>public static void main(String[] args)<br>
-      {<br>
-      	testValues();<br>
-      	testGgt();<br>
-      	testRoute();<br>
-   		}<br>
-      public static void testValues()<br>
-   		{<br>
-       	int x = 42;<br>
-       	int y = 23;<br>
-       	x = y;<br>
-       	y = 1337;<br>
-       	assertThat(x).isEqualTo(23);<br>
+  - input: numOfRuns
+    value: 42
+  - button: Run
+  - text: >
+			<pre> // static segment
+
+			public static void main(String[] args) {
+         testValues();
+         testGgt();
+         testRoute();
+   		}
+
+      public static void testValues() {
+       	 int x = 42;
+       	 int y = 23;
+       	 x = y;
+       	 y = 1337;
+       	 assertThat(x).isEqualTo(23);
    		}</pre>
-  - text: Col Stack
-  - text: <pre>public static void main(String[] args = null)<br>
-      {<br>
-      	<FONT COLOR="blue">testValues();</FONT><br>
-      	testGgt();<br>
-      	testRoute();<br>
-   		}</pre>
+  - text: >
+			<pre> // stack segment
+
+			public static void main(String[] args = null) {
+         <FONT COLOR="blue">testValues();</FONT>
+      	 testGgt();
+      	 testRoute();
+   		} </pre>
 
 - page:
   - pageName: TCM
   - text: Three Column Machine
-  - text: Col Code
   - text: <pre>public static void main(String[] args)<br>
       {<br>
       	testValues();<br>
