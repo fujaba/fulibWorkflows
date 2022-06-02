@@ -88,6 +88,20 @@ objectNote(content) ::= <<
         </p>
 >>
 
+objectNoteAlone(content, index) ::= <<
+
+<div class="card col-xs m-2 shadow" style="background-color: darkseagreen">
+    <div class="card-body">
+        <h5 class="card-title">Data</h5>
+        <p class="card-text">
+            {content}
+        </p>
+        <a class="card-link" role="button" href="diagrams/{index}_diagram.svg" target="pageFrame">Show diagram below</a>
+    </div>
+</div>
+>>
+
+
 cardText(text) ::= <<
 
 {text} <br>
@@ -105,6 +119,8 @@ pageNote(name, content) ::= <<
             {content}
         </p>
 >>
+
+
 
 pageText(text) ::= <<
 

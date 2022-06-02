@@ -1,0 +1,120 @@
+
+- workflow: Two Players
+
+- page:
+    - pageName: Setup Screen
+    - text: New Game
+    - input: black player
+    - input: white player
+    - button: create game
+
+- page:
+    - pageName: Setup Screen
+    - text: New Game
+    - input: black player
+      fill: Alice
+    - input: white player
+      fill: Bob
+    - button: create game
+
+
+- event: Game for 2 started
+  whitePlayer: Alice
+  blackPlayer: Bob
+
+- page:
+    - pageName: Ingame start
+    - text: black Alice
+    - text: action place stone
+    - text: o--o--o
+    - text: lo-o-ol
+    - text: lloooll
+    - text: ooo ooo
+    - text: lloooll
+    - text: lo-o-ol
+    - text: o--o--o
+
+- page:
+    - pageName: Ingame start
+    - text: black Alice
+    - text: action place stone
+    - text: B--o--o
+    - text: lo-o-ol
+    - text: lloooll
+    - text: ooo ooo
+    - text: lloooll
+    - text: lo-o-ol
+    - text: o--o--o
+
+- event: stone placed
+  color: black
+  position: a1
+
+- page:
+    - pageName: Ingame start
+    - text: white Bob
+    - text: action place stone
+    - text: B--o--o
+    - text: lo-o-ol
+    - text: lloooll
+    - text: ooo ooo
+    - text: lloooll
+    - text: lo-o-ol
+    - text: o--o--o
+
+- page:
+    - pageName: Ingame start
+    - text: white Bob
+    - text: action place stone
+    - text: B--o--W
+    - text: lo-o-ol
+    - text: lloooll
+    - text: ooo ooo
+    - text: lloooll
+    - text: lo-o-ol
+    - text: o--o--o
+
+
+- event: stone placed
+  color: black
+  position: a3
+
+- event: ...
+
+- event: mill closed
+  color: white
+
+- event: stone stolen
+  color: black
+  position: a3
+
+- event: ...
+
+- event: stone moved
+  color: white
+  oldPos: a1
+  newPos: a2
+
+- workflow: AI
+
+- page:
+    - pageName: Setup Screen
+    - text: New Game
+    - input: black player
+    - button: create game against AI
+    - input: white player
+    - button: create game
+
+- event: Game against AI started
+  whitePlayer: Alice
+
+- event: stone placed
+  color: white
+  position: a1
+
+- event: stone placed
+  color: black
+  position: a3
+
+- event: ...
+

@@ -20,6 +20,8 @@ public class BoardConstructor {
     private STGroupFile boardGroup;
     private boolean webGeneration;
 
+    private boolean standAlone;
+
     /**
      * Builds an event storming board
      *
@@ -67,6 +69,9 @@ public class BoardConstructor {
             noteST = boardGroup.getInstanceOf("note");
             actorST = boardGroup.getInstanceOf("actor");
             objectNoteST = boardGroup.getInstanceOf("objectNote");
+            if (this.standAlone) {
+                objectNoteST = boardGroup.getInstanceOf("objectNoteAlone");
+            }
 
             if (note instanceof Event event) {
                 noteST.add("name", "Event");
@@ -198,6 +203,9 @@ public class BoardConstructor {
 
     private String buildPageNote(Page page) {
         ST pageNoteST = boardGroup.getInstanceOf("pageNote");
+        if (this.standAlone) {
+            pageNoteST = boardGroup.getInstanceOf("pageNoteAlone");
+        }
 
         pageNoteST.add("name", page.getName());
         pageNoteST.add("content", buildPageContent(page));
@@ -243,5 +251,10 @@ public class BoardConstructor {
         }
 
         return pageContent.toString();
+    }
+
+    public BoardConstructor setStandAlone(boolean standAlone) {
+        this.standAlone = standAlone;
+        return this;
     }
 }

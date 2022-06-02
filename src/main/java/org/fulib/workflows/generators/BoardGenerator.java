@@ -16,6 +16,7 @@ public class BoardGenerator {
     private DiagramGenerator diagramGenerator;
     private FxmlGenerator fxmlGenerator;
     private HtmlGenerator htmlGenerator;
+    private boolean standAlone;
 
     private boolean webGeneration = false;
     private String genDir = "tmp";
@@ -136,6 +137,11 @@ public class BoardGenerator {
 
     public BoardGenerator setGenDir(String genDir) {
         this.genDir = genDir;
+        return this;
+    }
+
+    public BoardGenerator setStandAlone() {
+        standAlone = true;
         return this;
     }
 }
