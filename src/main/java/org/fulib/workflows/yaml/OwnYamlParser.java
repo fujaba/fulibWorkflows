@@ -65,7 +65,7 @@ public class OwnYamlParser {
                     newNote.setIndex(noteIndex);
                     noteIndex++;
 
-                    if (key.equals(PAGE)) {
+                    if (key.equals(PAGE) || key.equals(DIV)) {
                         parsePageEntries(entry.getValue());
                     } else {
                         newNote.setName((String) entry.getValue());
@@ -88,11 +88,7 @@ public class OwnYamlParser {
 
     private void parsePageEntries(Object value) {
         if (!(value instanceof List)) {
-            try {
-                throw new FulibWorkflowsParseError("Page entries must be a list");
-            } catch (FulibWorkflowsParseError e) {
-                e.printStackTrace();
-            }
+            printStackTraceFor("Page entries must be a list");
             return;
         }
 
@@ -103,7 +99,7 @@ public class OwnYamlParser {
             for (Map.Entry<String, Object> pageEntry : pageEntryMap.entrySet()) {
                 String key = pageEntry.getKey();
 
-                if (key.equals(PAGE_NAME)) {
+                if (key.equals(PAGE_NAME) || key.equals(DIV_NAME)) {
                     currentNote.setName((String) pageEntry.getValue());
                 }
 
@@ -117,6 +113,22 @@ public class OwnYamlParser {
             noteIndex = 0;
             dataIndex = 0;
             currentNote = null;
+        }
+        else if (currentNote instanceof Div page) {
+            page.setContent(noteData);
+            noteData = new HashMap<>();
+            noteIndex = 0;
+            dataIndex = 0;
+            currentNote = null;
+        }
+
+    }
+
+    private void printStackTraceFor(String message) {
+        try {
+            throw new FulibWorkflowsParseError(message);
+        } catch (FulibWorkflowsParseError e) {
+            e.printStackTrace();
         }
     }
 
@@ -204,6 +216,15 @@ public class OwnYamlParser {
                     setExtendedNote();
                 }
                 Page page = new Page();
+                notes.add(page);
+                currentNote = page;
+                return page;
+            }
+            case DIV -> {
+                if (currentNote != null) {
+                    setExtendedNote();
+                }
+                Div page = new Div();
                 notes.add(page);
                 currentNote = page;
                 return page;
