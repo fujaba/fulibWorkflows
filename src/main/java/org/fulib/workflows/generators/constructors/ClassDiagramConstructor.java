@@ -71,7 +71,8 @@ public class ClassDiagramConstructor {
                     }
                 }
                 else if ( ! key.startsWith(".") && ! key.equals("type")) {
-                    mm.haveAttribute(myClass, key, "String");
+                    String type = learnTypeFromValue(value);
+                    mm.haveAttribute(myClass, key, type);
                 }
 
             }
@@ -84,6 +85,22 @@ public class ClassDiagramConstructor {
         } else {
             return null;
         }
+    }
+
+    private String learnTypeFromValue(Object value) {
+        try {
+            int parseInt = Integer.parseInt(value.toString());
+            return "int";
+        } catch (Exception e) {
+        }
+
+        try {
+            double parse = Double.parseDouble(value.toString().replace(',', '.'));
+            return "double";
+        } catch (Exception e) {
+        }
+
+        return "String";
     }
 
     private YamlObject getOneYamlValue(Object value) {

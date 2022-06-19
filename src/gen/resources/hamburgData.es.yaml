@@ -125,7 +125,7 @@
 
 - data: Product tshirt
   amount: 42
-  price: 5,00
+  price: 5,99
 
 - user: Carli
 
@@ -137,7 +137,7 @@
 
 - data: Product mug
   amount: 60
-  price: 1
+  price: 1,99
 
 
 - user: Alice
