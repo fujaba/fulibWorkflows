@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch HamburgDataTest",
+            "request": "launch",
+            "mainClass": "org.fulib.workflows.generators.HamburgDataTest",
+            "projectName": "fulibWorkflows"
+        },
+        {
+            "type": "java",
             "name": "Launch NestedPagesTest",
             "request": "launch",
             "mainClass": "org.fulib.workflows.generators.NestedPagesTest",
