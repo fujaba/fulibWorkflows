@@ -19,7 +19,7 @@ page(content, pageName) ::= <<
     \});
 </script>
 <div class="d-flex justify-content-center">
-    <div class="col-md-auto text-center">
+    <div class="col-md-auto">
     {content}
     </div>
 </div>
@@ -29,6 +29,13 @@ page(content, pageName) ::= <<
 
 text(text) ::= <<
 
+    <div class="mb-3 text-center">
+        <span>{text}</span>
+    </div>
+>>
+
+pre(text) ::= <<
+
     <div class="mb-3">
         <span>{text}</span>
     </div>
@@ -36,7 +43,7 @@ text(text) ::= <<
 
 input(id, label, value) ::= <<
 
-    <div class="mb-3">
+    <div class="mb-3 text-center">
         <label class="form-label" for="{id}">{label}</label>
         <input class="form-control" type="text" id="{id}" placeholder="{label}?" value="{value}"/>
     </div>
@@ -44,7 +51,7 @@ input(id, label, value) ::= <<
 
 password(id, label, value) ::= <<
 
-    <div class="mb-3">
+    <div class="mb-3 text-center">
         <label class="form-label" for="{id}">{label}</label>
         <input class="form-control" type="password" id="{id}" placeholder="{label}?" value="{value}"/>
     </div>
@@ -52,7 +59,14 @@ password(id, label, value) ::= <<
 
 button(description, targetIndex) ::= <<
 
-    <div class="mb-3">
+    <div class="mb-3 text-center">
         <button type="button" class="btn btn-success" onclick="window.parent.postMessage(\{type: 'changeFrameWithToast', toastContent: '{description} clicked', index: {targetIndex}, diagramType: 'pages'\}, '*')">{description}</button>
+    </div>
+>>
+
+buttonAlone(description, targetIndex) ::= <<
+
+    <div class="row justify-content-center pt-2">
+        <a type="button" class="btn btn-success" href="{targetIndex}_page.html">{description}</a>
     </div>
 >>

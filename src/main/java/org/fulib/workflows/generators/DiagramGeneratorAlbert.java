@@ -1,11 +1,9 @@
 package org.fulib.workflows.generators;
 
-import org.fulib.workflows.events.BaseNote;
-import org.fulib.workflows.events.Board;
-import org.fulib.workflows.events.Data;
-import org.fulib.workflows.events.Workflow;
+import org.fulib.workflows.events.*;
 import org.fulib.workflows.generators.constructors.ClassDiagramConstructor;
 import org.fulib.workflows.generators.constructors.ObjectDiagramConstructor;
+import org.fulib.yaml.YamlObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,14 +12,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * The DiagramGenerator manages the building and generation of object and class diagrams.
  */
-public class DiagramGenerator {
+public class DiagramGeneratorAlbert {
     private BoardGenerator boardGenerator;
 
-    DiagramGenerator(BoardGenerator boardGenerator) {
+    DiagramGeneratorAlbert(BoardGenerator boardGenerator) {
         this.boardGenerator = boardGenerator;
     }
 
@@ -34,7 +33,7 @@ public class DiagramGenerator {
         Map<String, String> generatedDiagrams = buildDiagrams(board);
 
         for (String key : generatedDiagrams.keySet()) {
-            generateDiagram(generatedDiagrams.get(key), key, key.equals("classDiagram"));
+            generateDiagram(generatedDiagrams.get(key), key, key.startsWith("classDiagram"));
         }
     }
 
@@ -51,12 +50,20 @@ public class DiagramGenerator {
 
         List<String> diagrams = new ArrayList<>();
 
+        Map<String, List<Data>> previousServiceData = new HashMap<>();
+        String currentService = "default";
+
         List<Data> previousData = new ArrayList<>();
 
         // ObjectDiagrams
         for (Workflow workflow : board.getWorkflows()) {
             for (BaseNote note : workflow.getNotes()) {
-                if (note instanceof Data) {
+                if (note instanceof Service) {
+                    Service service = (Service) note;
+                    currentService = service.getName();
+                }
+                else if (note instanceof Data) {
+                    previousData = previousServiceData.computeIfAbsent(currentService, k -> new ArrayList<>());
                     previousData.add((Data) note);
 
                     // Always use current note and all previous to represent the objectDiagram according to the timeline
@@ -76,11 +83,16 @@ public class DiagramGenerator {
 
         ClassDiagramConstructor classDiagramConstructor = new ClassDiagramConstructor();
 
-        // ClassDiagram
-        String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData);
+        // ClassDiagrams
+        for (Entry<String, List<Data>> entry : previousServiceData.entrySet()) {
+            String key = entry.getKey();
+            previousData = entry.getValue();
+            Map<String, YamlObject> yamlGraph = diagramConstructor.buildFulibGraphDiagram(previousData);
+            String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData, yamlGraph);
 
-        if (classdiagramString != null) {
-            resultMap.put("classDiagram", classdiagramString);
+            if (classdiagramString != null) {
+                resultMap.put("classDiagram_" + key, classdiagramString);
+            }
         }
 
         return resultMap;

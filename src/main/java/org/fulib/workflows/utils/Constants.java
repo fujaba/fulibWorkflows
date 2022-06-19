@@ -11,10 +11,12 @@ public class Constants {
     public static final String USER = "user";
     public static final String DATA = "data";
     public static final String PAGE = "page";
+    public static final String DIV = "div";
     public static final String PROBLEM = "problem";
 
     // Page elements
     public static final String PAGE_NAME = "pageName";
+    public static final String DIV_NAME = "divName";
 
     // Web-Editor Constants
     public static final String PAGE_TYPE = "pages";

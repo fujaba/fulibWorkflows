@@ -16,6 +16,8 @@ plugins {
 group = 'org.fulib'
 version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
 description = 'fulibWorkflows is a tool to generate mockups and object-/class-diagrams from a workflow description.'
+sourceCompatibility='1.17'
+targetCompatibility='1.17'
 
 // --------------- Dependencies ---------------
 
@@ -70,6 +72,8 @@ publishing.publications.create('mavenJava', MavenPublication) {
 signing.sign publishing.publications.mavenJava
 
 dependencies {
+    implementation group: 'org.json', name: 'json', version: '20090211'
+
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml
     implementation group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: '2.13.1'
 
@@ -84,6 +88,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.fulib/fulibTools
     implementation group: 'org.fulib', name: 'fulibTools', version: '1.5.1'
+
+    // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
+    implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.18.0'
 
     // https://mvnrepository.com/artifact/org.fulib/fulibTables
     testImplementation group: 'org.fulib', name: 'fulibTables', version: '1.4.0'

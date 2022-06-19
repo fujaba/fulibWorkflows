@@ -1,0 +1,65 @@
+- workflow: nested
+
+- page:
+  - pageName: main
+  - text: Three Column Machine
+  - div: static
+  - div: stack
+
+- div:
+  - divName: static
+  - text: static segment
+  - text: >
+      <pre>
+
+			public static void main(String[] args) {
+         testValues();
+         testGgt();
+         testRoute();
+   		}
+
+      public static void testValues() {
+       	 int x = 42;
+       	 int y = 23;
+       	 x = y;
+       	 y = 1337;
+       	 assertThat(x).isEqualTo(23);
+   		}</pre>
+
+
+- div:
+  - divName: stack
+  - text: stack segment
+  - text: >
+      <pre>
+
+      public static void main(String[] args = null) {
+         <FONT COLOR="blue">testValues();</FONT>
+         testGgt();
+         testRoute();
+      }</pre>
+
+- div:
+  - divName: stack
+  - text: stack segment
+  - text: >
+      <pre>
+
+      public static void main(String[] args = null) {
+         testValues();
+         <FONT COLOR="blue">testGgt();</FONT>
+         testRoute();
+      }</pre>
+
+- div:
+  - divName: stack
+  - text: stack segment
+  - text: >
+      <pre>
+
+      public static void main(String[] args = null) {
+         testValues();
+         testGgt();
+         <FONT COLOR="blue">testRoute();</FONT>
+      }</pre>
+

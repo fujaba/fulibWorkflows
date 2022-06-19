@@ -13,9 +13,10 @@ import java.util.Map;
  * The BoardGenerator is the main entry point for the parsing of fulibWorkflows and the generation of files.
  */
 public class BoardGenerator {
-    private DiagramGenerator diagramGenerator;
+    private DiagramGeneratorAlbert diagramGenerator;
     private FxmlGenerator fxmlGenerator;
     private HtmlGenerator htmlGenerator;
+    private boolean standAlone;
 
     private boolean webGeneration = false;
     private String genDir = "tmp";
@@ -43,7 +44,7 @@ public class BoardGenerator {
     public void generateBoardFromString(String yamlContent) {
         Board board = generateBoard(yamlContent);
 
-        diagramGenerator = new DiagramGenerator(this);
+        diagramGenerator = new DiagramGeneratorAlbert(this);
         fxmlGenerator = new FxmlGenerator(this);
         htmlGenerator = new HtmlGenerator(board, this);
 
@@ -64,7 +65,7 @@ public class BoardGenerator {
 
             Board board = generateBoard(inputStream);
 
-            diagramGenerator = new DiagramGenerator(this);
+            diagramGenerator = new DiagramGeneratorAlbert(this);
             fxmlGenerator = new FxmlGenerator(this);
             htmlGenerator = new HtmlGenerator(board, this);
 
@@ -85,7 +86,7 @@ public class BoardGenerator {
     public Map<String, String> generateAndReturnHTMLsFromString(String yamlContent) {
         Board board = generateBoard(yamlContent);
 
-        diagramGenerator = new DiagramGenerator(this);
+        diagramGenerator = new DiagramGeneratorAlbert(this);
         fxmlGenerator = new FxmlGenerator(this);
         htmlGenerator = new HtmlGenerator(board, this);
 
@@ -136,6 +137,11 @@ public class BoardGenerator {
 
     public BoardGenerator setGenDir(String genDir) {
         this.genDir = genDir;
+        return this;
+    }
+
+    public BoardGenerator setStandAlone() {
+        standAlone = true;
         return this;
     }
 }

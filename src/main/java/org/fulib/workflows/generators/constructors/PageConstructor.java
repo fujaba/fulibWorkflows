@@ -17,6 +17,8 @@ public class PageConstructor {
 
     private STGroupFile pageGroup;
 
+    private boolean standAlone;
+
     /**
      * Uses string templates to build html file containing a mockup
      *
@@ -67,6 +69,9 @@ public class PageConstructor {
 
             if (key.contains("text")) {
                 st = pageGroup.getInstanceOf("text");
+                if (value != null && value.startsWith("<pre>")) {
+                    st = pageGroup.getInstanceOf("pre");
+                }
                 st.add("text", value);
                 contentBody.append(st.render());
             } else if (key.contains("input")) {
@@ -82,7 +87,11 @@ public class PageConstructor {
                 st.add("value", getValue(nextElement));
                 contentBody.append(st.render());
             } else if (key.contains("button")) {
-                st = pageGroup.getInstanceOf("button");
+                if (this.standAlone) {
+                    st = pageGroup.getInstanceOf("buttonAlone");
+                } else {
+                    st = pageGroup.getInstanceOf("button");
+                }
                 st.add("description", value);
 
                 int foundTargetIndex;
@@ -110,5 +119,10 @@ public class PageConstructor {
         }
 
         return result;
+    }
+
+    public PageConstructor setStandAlone(boolean standAlone) {
+        this.standAlone = standAlone;
+        return this;
     }
 }

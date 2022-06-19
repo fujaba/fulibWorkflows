@@ -1,0 +1,46 @@
+
+- workflow: Two Players
+
+- event: Game for 2 started
+  whitePlayer: Alice
+  blackPlayer: Bob
+
+- event: stone placed
+  color: white
+  position: a1
+
+- event: stone placed
+  color: black
+  position: a3
+
+- event: ...
+
+- event: mill closed
+  color: white
+
+- event: stone stolen
+  color: black
+  position: a3
+
+- event: ...
+
+- event: stone moved
+  color: white
+  oldPos: a1
+  newPos: a2
+
+- workflow: AI
+
+- event: Game against AI started
+  whitePlayer: Alice
+
+- event: stone placed
+  color: white
+  position: a1
+
+- event: stone placed
+  color: black
+  position: a3
+
+- event: ...
+

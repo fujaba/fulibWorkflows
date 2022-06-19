@@ -1,0 +1,157 @@
+
+# big picture
+
+- workflow: Supply
+
+- user: Bob
+
+- page:
+  - pageName: Overview
+  - text: UKSShop
+  - button: Order_Supply
+    targetPage: Order_Supply
+  - button: Store Supply
+    targetPage: Store_Supply
+  - button: "..."
+
+- page:
+  - pageName: Order_Supply
+  - text: UKSShop
+  - input: product?
+    value: coffee mugs
+  - input: amount?
+    value: 50
+  - input: vendor?
+    value: amazon
+  - button: order
+    targetPage: Supply_Confirm
+
+- page:
+  - pageName: Supply_Confirm
+  - text: UKSShop
+  - text: Success!
+  - text: You ordered
+  - text: 50 coffee mugs
+  - text: from Amazon
+  - button: close
+
+- event: supply ordered
+  product: coffee mugs
+  amount: 50
+
+- service: Storage
+
+- data: Box b003
+  product: mug
+  amount: 50
+  state: just_ordered
+
+- page:
+  - pageName: Overview
+  - text: UKSShop
+  - button: Order_Supply
+    targetPage: Order_Supply
+  - button: Store Supply
+    targetPage: Store_Supply
+  - button: "..."
+
+- page:
+  - pageName: Store_Supply
+  - text: UKSShop
+  - input: box id?
+    value: b003
+  - input: product?
+    value: coffee mugs
+  - input: amount?
+    value: 50
+  - input: place?
+    value: shelf1
+  - button: add
+
+- page:
+  - pageName: Overview
+  - text: UKSShop
+  - button: Order_Supply
+    targetPage: Order_Supply
+  - button: Store Supply
+    targetPage: Store_Supply
+  - button: "..."
+
+
+- event: supply stored
+  box: b003
+  product: coffee mug
+  amount: 50
+  place: front shelf
+
+- service: Storage
+
+- data: Box b003
+  product: mug
+  amount: 50
+  state: inStore
+  place: shelf1
+
+- data: Box b002
+  product: mug
+  amount: 10
+  state: inStore
+  place: shelf2
+
+- data: Box b001
+  product: tshirt
+  amount: 42
+  state: inStore
+  place: shelf1
+
+- data: Product mug
+  boxes: [b002, b003]
+
+- data: Product tshirt
+  boxes: [b001]
+
+- data: Shelf shelf1
+  boxes: [b003]
+
+- data: Shelf shelf2
+  boxes: [b002]
+
+
+- service: Sales
+
+- data: Product mug
+  amount: 60
+  price: toBeAssigned
+
+- data: Product tshirt
+  amount: 42
+  price: 5,99
+
+- user: Carli
+
+- event: prod offered
+  product: coffee mugs
+  price: Euro 1
+
+- service: Sales
+
+- data: Product mug
+  amount: 60
+  price: 1,99
+
+
+- user: Alice
+
+- event: prod ordered
+  orderId: O_001
+  product: coffe mugs
+  amount: 1
+  customer: Alice
+  address: Wonderland 1
+
+- user: Carli
+
+- event: prod delivered
+  orderId: O_001
+
+
