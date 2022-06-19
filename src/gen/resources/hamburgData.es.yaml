@@ -44,7 +44,7 @@
 - data: Box b003
   product: mug
   amount: 50
-  place: just_ordered
+  state: just_ordered
 
 - page:
   - pageName: Overview
@@ -89,16 +89,19 @@
 - data: Box b003
   product: mug
   amount: 50
+  state: inStore
   place: shelf1
 
 - data: Box b002
   product: mug
   amount: 10
+  state: inStore
   place: shelf2
 
 - data: Box b001
   product: tshirt
   amount: 42
+  state: inStore
   place: shelf1
 
 - data: Product mug

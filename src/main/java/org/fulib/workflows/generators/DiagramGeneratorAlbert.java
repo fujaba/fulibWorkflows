@@ -3,6 +3,7 @@ package org.fulib.workflows.generators;
 import org.fulib.workflows.events.*;
 import org.fulib.workflows.generators.constructors.ClassDiagramConstructor;
 import org.fulib.workflows.generators.constructors.ObjectDiagramConstructor;
+import org.fulib.yaml.YamlObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * The DiagramGenerator manages the building and generation of object and class diagrams.
@@ -31,7 +33,7 @@ public class DiagramGeneratorAlbert {
         Map<String, String> generatedDiagrams = buildDiagrams(board);
 
         for (String key : generatedDiagrams.keySet()) {
-            generateDiagram(generatedDiagrams.get(key), key, key.equals("classDiagram"));
+            generateDiagram(generatedDiagrams.get(key), key, key.startsWith("classDiagram"));
         }
     }
 
@@ -81,11 +83,16 @@ public class DiagramGeneratorAlbert {
 
         ClassDiagramConstructor classDiagramConstructor = new ClassDiagramConstructor();
 
-        // ClassDiagram
-        String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData);
+        // ClassDiagrams
+        for (Entry<String, List<Data>> entry : previousServiceData.entrySet()) {
+            String key = entry.getKey();
+            previousData = entry.getValue();
+            Map<String, YamlObject> yamlGraph = diagramConstructor.buildFulibGraphDiagram(previousData);
+            String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData, yamlGraph);
 
-        if (classdiagramString != null) {
-            resultMap.put("classDiagram", classdiagramString);
+            if (classdiagramString != null) {
+                resultMap.put("classDiagram_" + key, classdiagramString);
+            }
         }
 
         return resultMap;

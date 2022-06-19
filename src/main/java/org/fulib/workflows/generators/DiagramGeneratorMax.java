@@ -77,7 +77,8 @@ public class DiagramGenerator {
         ClassDiagramConstructor classDiagramConstructor = new ClassDiagramConstructor();
 
         // ClassDiagram
-        String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData);
+        String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData,
+            	diagramConstructor.buildFulibGraphDiagram(previousData));
 
         if (classdiagramString != null) {
             resultMap.put("classDiagram", classdiagramString);

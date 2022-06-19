@@ -8,18 +8,18 @@ import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
 import org.fulib.workflows.events.Data;
 import org.fulib.workflows.utils.Association;
+import org.fulib.yaml.YamlObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 /**
- * The ClassDiagramConstructor builds a classdiagram from all data events from an fulibWorkflows Board via fulib.
+ * The ClassDiagramConstructor builds a classdiagram from all data events from
+ * an fulibWorkflows Board via fulib.
  */
 public class ClassDiagramConstructor {
 
@@ -27,30 +27,55 @@ public class ClassDiagramConstructor {
     private final Map<String, Clazz> clazzMap = new HashMap<>();
     private final List<Association> associations = new ArrayList<>();
     private final List<String> reservedStringsForAssoc = new ArrayList<>();
+    private Map<String, YamlObject> yamlGraph;
 
     /**
      * Builds a class model using fulib and generates a svg class diagram
      *
-     * @param objects list of data notes
+     * @param objects   list of data notes
+     * @param yamlGraph
      * @return classdiagram svg file content as string
      */
-    public String buildClassDiagram(List<Data> objects) {
+    public String buildClassDiagram(List<Data> objects, Map<String, YamlObject> yamlGraph) {
         this.objects = objects;
+        this.yamlGraph = yamlGraph;
 
         ClassModelManager mm = new ClassModelManager();
 
-        // Create a map String, Clazz containing every possible class from the Data notes
         createClazz(mm);
 
-        // Build all associations and put it into a global list
-        // Also Build a list of attributes, that are not allowed to be created
-        buildAssociations();
+        for (YamlObject yamlObject : yamlGraph.values()) {
+            Clazz myClass = mm.haveClass(yamlObject.getType());
+            mm.haveAttribute(myClass, "name", "String");
+            for (Entry<String, Object> entry : yamlObject.getProperties().entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
 
-        // Create all attributes
-        createAttributes(mm);
+                YamlObject yamlValue = getOneYamlValue(value);
 
-        // Create all associations
-        createAssociations(mm);
+                if (yamlValue != null) {
+                    Clazz valueClass = mm.haveClass(yamlValue.getType());
+                    int valueSize = getSize(value);
+                    Entry<String, Object> revEntry = findReverseReference(yamlValue, yamlObject);
+                    if (revEntry != null) {
+                        String revKey = revEntry.getKey();
+                        Object revValue = revEntry.getValue();
+                        YamlObject revYamlObject = getOneYamlValue(revValue);
+                        int revSize = getSize(revValue);
+                        try {
+                            mm.haveRole(myClass, key, valueSize, valueClass, revKey, revSize);
+
+                        } catch (Exception e) {
+                            // assoc already there from the reverse side, ignore
+                        }
+                    }
+                }
+                else if ( ! key.startsWith(".") && ! key.equals("type")) {
+                    mm.haveAttribute(myClass, key, "String");
+                }
+
+            }
+        }
 
         String classDiagramString = generateClassDiagram(mm.getClassModel());
 
@@ -59,6 +84,53 @@ public class ClassDiagramConstructor {
         } else {
             return null;
         }
+    }
+
+    private YamlObject getOneYamlValue(Object value) {
+        if (value instanceof Collection set) {
+            return (YamlObject) set.toArray()[0];
+        }
+        if (value instanceof YamlObject yamlValue) {
+            return yamlValue;
+        }
+
+        return null;
+    }
+
+    private int getSize(Object value) {
+        if (value instanceof Collection) {
+            return 42;
+        }
+        if (value instanceof YamlObject) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    private Clazz getTargetClass(ClassModelManager mm, Object value) {
+        if (value instanceof Collection set) {
+            value = set.toArray()[0];
+        }
+
+        if (value instanceof YamlObject yamlObject) {
+            return mm.haveClass(yamlObject.getType());
+        }
+
+        return null;
+    }
+
+    private Entry<String, Object> findReverseReference(YamlObject yamlTgt, YamlObject yamlObject) {
+        for (Entry<String, Object> revEntry : yamlTgt.getProperties().entrySet()) {
+            if (revEntry.getValue() instanceof Collection revCollection) {
+                if (revCollection.contains(yamlObject)) {
+                    return revEntry;
+                } else if (revEntry.getValue() == yamlObject) {
+                    return revEntry;
+                }
+            }
+        }
+        return null;
     }
 
     private void createAssociations(ClassModelManager mm) {
@@ -166,8 +238,8 @@ public class ClassDiagramConstructor {
     }
 
     private void createClazz(ClassModelManager mm) {
-        for (Data object : objects) {
-            String className = object.getName().split(" ")[0];
+        for (YamlObject object : yamlGraph.values()) {
+            String className = "" + object.getType();
 
             clazzMap.put(className.toLowerCase(), mm.haveClass(className));
         }
@@ -192,7 +264,6 @@ public class ClassDiagramConstructor {
 
         return result;
     }
-
 
     // Helper Methods
     private String cleanupString(String string) {

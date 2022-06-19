@@ -49,7 +49,7 @@ public class ObjectDiagramConstructor {
         return "";
     }
 
-    private Map<String, YamlObject> buildFulibGraphDiagram(List<Data> notes) {
+    public Map<String, YamlObject> buildFulibGraphDiagram(List<Data> notes) {
         Map<String, YamlObject> yamlGraph = new LinkedHashMap<>();
 
         // first collect all nodes
