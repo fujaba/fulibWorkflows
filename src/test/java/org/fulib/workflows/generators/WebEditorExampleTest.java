@@ -26,8 +26,8 @@ public class WebEditorExampleTest {
         Path yamlFile = Path.of("src/gen/resources/examples/webeditor/microservices.es.yaml");
         Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
 
-        // 1 Board, 22 Pages (HTML), 22 Pages (FXML), 21 ObjectDiagrams, 1 ClassDiagram
-        Assert.assertEquals(67, map.size());
+        // 1 Board, 22 Pages (HTML), 22 Pages (FXML), 21 ObjectDiagrams, 2 ClassDiagrams
+        Assert.assertEquals(68, map.size());
     }
 
     @Test

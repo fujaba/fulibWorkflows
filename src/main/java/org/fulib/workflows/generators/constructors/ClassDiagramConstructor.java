@@ -9,6 +9,7 @@ import org.fulib.classmodel.Clazz;
 import org.fulib.workflows.events.Data;
 import org.fulib.workflows.utils.Association;
 import org.fulib.yaml.YamlObject;
+import org.stringtemplate.v4.compiler.CodeGenerator.conditional_return;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,15 +46,23 @@ public class ClassDiagramConstructor {
         createClazz(mm);
 
         for (YamlObject yamlObject : yamlGraph.values()) {
+            if (yamlObject.getType() == null) {
+                continue;
+            }
+
             Clazz myClass = mm.haveClass(yamlObject.getType());
             mm.haveAttribute(myClass, "name", "String");
             for (Entry<String, Object> entry : yamlObject.getProperties().entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
 
+                if (key.contains(".")) {
+                    continue;
+                }
+
                 YamlObject yamlValue = getOneYamlValue(value);
 
-                if (yamlValue != null) {
+                if (yamlValue != null && yamlValue.getType() != null) {
                     Clazz valueClass = mm.haveClass(yamlValue.getType());
                     int valueSize = getSize(value);
                     Entry<String, Object> revEntry = findReverseReference(yamlValue, yamlObject);
@@ -256,8 +265,11 @@ public class ClassDiagramConstructor {
 
     private void createClazz(ClassModelManager mm) {
         for (YamlObject object : yamlGraph.values()) {
-            String className = "" + object.getType();
+            if (object.getType() == null) {
+                continue;
+            }
 
+            String className = "" + object.getType();
             clazzMap.put(className.toLowerCase(), mm.haveClass(className));
         }
     }
