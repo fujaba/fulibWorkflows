@@ -15,7 +15,7 @@ public class WebEditorExampleTest {
 
         Path yamlFile = Path.of("src/gen/resources/examples/webeditor/dataModelling.es.yaml");
         Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
-        Assert.assertEquals(10, map.size()); // 1 Board, 8 ObjectDiagrams, 1 ClassDiagram
+        Assert.assertEquals(12, map.size()); // 1 Board, 8 ObjectDiagrams, 1 ClassDiagram
     }
 
     @Test

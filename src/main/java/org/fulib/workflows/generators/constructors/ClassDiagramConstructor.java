@@ -18,6 +18,8 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
+import javax.swing.Spring;
+
 /**
  * The ClassDiagramConstructor builds a classdiagram from all data events from
  * an fulibWorkflows Board via fulib.
@@ -81,7 +83,10 @@ public class ClassDiagramConstructor {
                 }
                 else if ( ! key.startsWith(".") && ! key.equals("type")) {
                     String type = learnTypeFromValue(value);
-                    mm.haveAttribute(myClass, key, type);
+                    try {
+                        mm.haveAttribute(myClass, key, type);
+                    } catch (Exception e) {
+                    }
                 }
 
             }
@@ -152,6 +157,11 @@ public class ClassDiagramConstructor {
                 if (revCollection.contains(yamlObject)) {
                     return revEntry;
                 } else if (revEntry.getValue() == yamlObject) {
+                    return revEntry;
+                }
+            }
+            else if (revEntry.getValue() instanceof YamlObject yamlValue) {
+                if (yamlValue == yamlObject) {
                     return revEntry;
                 }
             }
