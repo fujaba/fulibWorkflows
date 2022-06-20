@@ -17,10 +17,10 @@ import java.util.Map.Entry;
 /**
  * The DiagramGenerator manages the building and generation of object and class diagrams.
  */
-public class DiagramGeneratorAlbert {
+public class DiagramGenerator {
     private BoardGenerator boardGenerator;
 
-    DiagramGeneratorAlbert(BoardGenerator boardGenerator) {
+    DiagramGenerator(BoardGenerator boardGenerator) {
         this.boardGenerator = boardGenerator;
     }
 
