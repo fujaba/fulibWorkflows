@@ -92,6 +92,7 @@ public class GraphDiagramTest {
 
         String svg = diag.toSVG();
 
+        Files.createDirectories(Path.of("tmp"));
         Files.writeString(Path.of("tmp/jsondiag.svg"), svg);
 
     }
