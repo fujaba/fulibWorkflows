@@ -1,16 +1,15 @@
 # Model
 It is possible to define data created in a workflow. Out of those data events it is possible to create
-objectdiagrams. The more data events are in the workflow the bigger the later objectdiagrams get if the objects
-are connected to each other.
+object diagrams. The more data events are in the workflow the bigger, the later object diagrams get.
 
-Out of all objects there will be generated a classdiagram automatically.
+Objects that are related to a specific service in the workflows' description will be combined and for each service
+a class diagram will be generated automatically.
 
 ```yaml
 - data: Room r1
   topic: math
   credits: 17
   neighbors: [r2, r5]
-  neighbors.back: [neighbors]
 
 - data: Room r2
   topic: calculus
@@ -45,14 +44,20 @@ The value is either `int` or `String`.
 ```yaml
 - data: Room r1
   neighbors: [r2]
-  neighbors.back: [neighbors]
 
 - data: Room r2
+  stop: s1
+
+- data: Stop s1
 ```
 To define a bidirectional association you will have to define both directions when using it for a data event the first time.
 
-Using the example above to define Person -> University you will have to add `<fieldNameInFirstClass>: <dataNameSecondClass>`.
-After that simply add `<fieldNameInFirstClass>.back: <fieldNameInSecondClass>`.
+Using the example above to define Room <-> Room you will have to add `<fieldNameInFirstClass>: <dataNameSecondClass>`.
 The cardinalities one and many are both present in the example.
-If you want to model a direction as a `to many` - association you will have to add square brackets to the text after `:`.
+While evaluating the classes from the objects fulibWorkflows checks if additonal data to an object is either an attribute or an
+association.
+This is realized through looking for other data notes which have the name `r2` for example.
+If an object with that name exists an association will be present in the corresponding class diagram.
+
+For a `to many` - association you will have to add square brackets to the text after `:` as displayed in `neighbors: [r2]`.
 In the case that it is a `to one` - association simply miss out the square brackets.

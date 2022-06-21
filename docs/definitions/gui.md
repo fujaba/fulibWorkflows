@@ -75,6 +75,4 @@ an id in the view generation.
 
 It is also possible to add an attribute called `targetPage` to a button. The value must be a pageName.
 Out of this fulibWorkflows extracts which mockup should be shown after clicking on the generated button.
-This only works for HTML-Mockups in the [fulibWorkflows Web-Editor](https://workflows-editor-frontend.herokuapp.com/).
-
-Sidenote: The Web-Editor will be moved to fulib.org in the future.
+This only works for HTML-Mockups in the fulibWorkflows Web-Editor on [fulib.org](https://fulib.org/workflows).
