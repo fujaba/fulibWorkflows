@@ -288,12 +288,13 @@ public class ClassDiagramConstructor {
         String fileName = "genTmp/diagrams/classdiagram";
         String result = "";
 
-        fileName = FulibTools.classDiagrams().dumpSVG(classModel, fileName);
+        fileName = FulibTools.classDiagrams().withScale(2).dumpSVG(classModel, fileName);
 
         try {
-            result = Files.readString(Path.of(fileName + ".svg"));
+            Path path = Path.of(fileName + ".svg");
+            result = Files.readString(path);
 
-            Files.deleteIfExists(Path.of(fileName + ".svg"));
+            Files.deleteIfExists(path);
 
             Files.deleteIfExists(Path.of("genTmp/diagrams/"));
             Files.deleteIfExists(Path.of("genTmp/"));

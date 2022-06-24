@@ -53,13 +53,12 @@ public class DiagramGenerator {
         Map<String, List<Data>> previousServiceData = new HashMap<>();
         String currentService = "default";
 
-        List<Data> previousData = new ArrayList<>();
+        List<Data> previousData;
 
         // ObjectDiagrams
         for (Workflow workflow : board.getWorkflows()) {
             for (BaseNote note : workflow.getNotes()) {
-                if (note instanceof Service) {
-                    Service service = (Service) note;
+                if (note instanceof Service service) {
                     currentService = service.getName();
                 }
                 else if (note instanceof Data) {
@@ -106,10 +105,11 @@ public class DiagramGenerator {
             Files.createDirectories(Path.of(outputDirectory));
 
             String outputDiagramFilePath = outputDirectory + fileName + ".svg";
-            if (!Files.exists(Path.of(outputDiagramFilePath))) {
-                Files.createFile(Path.of(outputDiagramFilePath));
+            Path path = Path.of(outputDiagramFilePath);
+            if (!Files.exists(path)) {
+                Files.createFile(path);
             }
-            Files.writeString(Path.of(outputDiagramFilePath), diagramContent);
+            Files.writeString(path, diagramContent);
 
         } catch (IOException e) {
             e.printStackTrace();

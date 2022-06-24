@@ -39,7 +39,7 @@ public class ObjectDiagramConstructor {
         // String objectYaml = buildFulibYamlNotation(notes);
         Map<String, YamlObject> yamlGraph = buildFulibGraphDiagram(notes);
 
-        FulibTools.objectDiagrams().dumpSVG("./tmp/_yamlGraph.svg", yamlGraph.values());
+        FulibTools.objectDiagrams().withScale(2).dumpSVG("./tmp/_yamlGraph.svg", yamlGraph.values());
         try {
             return Files.readString(Path.of("./tmp/_yamlGraph.svg"));
         } catch (IOException e) {
