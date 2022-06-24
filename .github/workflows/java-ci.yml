@@ -63,7 +63,7 @@ jobs:
       - name: Build Service with Gradle
         run: ./gradlew :service:build
       - name: Build the Workflows Docker Image
-        if: needs.deployment.outputs.namespace
+        if: matrix.os == 'ubuntu' && matrix.java == 17 && needs.deployment.outputs.namespace
         uses: whoan/docker-build-with-cache-action@v5
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -73,7 +73,7 @@ jobs:
           image_tag: ${{ needs.deployment.outputs.version }}
           context: workflows/
       - name: Deploy the Workflows Backend to Rancher
-        if: needs.deployment.outputs.namespace
+        if: matrix.os == 'ubuntu' && matrix.java == 17 && needs.deployment.outputs.namespace
         uses: sekassel-research/actions-rancher-update@2.0.2
         with:
           rancher_url: ${{ secrets.RANCHER_URL }}
