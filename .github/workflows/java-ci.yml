@@ -71,7 +71,7 @@ jobs:
           registry: ${{ secrets.DOCKER_REGISTRY }}
           image_name: fulib/fulib.org-workflows
           image_tag: ${{ needs.deployment.outputs.version }}
-          context: workflows/
+          context: service/
       - name: Deploy the Workflows Backend to Rancher
         if: matrix.os == 'ubuntu' && matrix.java == 17 && needs.deployment.outputs.namespace
         uses: sekassel-research/actions-rancher-update@2.0.2
