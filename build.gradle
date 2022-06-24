@@ -17,11 +17,15 @@ plugins {
 
 // --------------- General Settings ---------------
 
-group = 'org.fulib'
-version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
+def tag = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
+allprojects {
+    group = 'org.fulib'
+    version = tag
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
 description = 'fulibWorkflows is a tool to generate mockups and object-/class-diagrams from a workflow description.'
-sourceCompatibility='1.17'
-targetCompatibility='1.17'
 
 // --------------- Dependencies ---------------
 
