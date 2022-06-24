@@ -1,2 +1,2 @@
 rootProject.name = 'fulibWorkflows'
-
+include ':service'
