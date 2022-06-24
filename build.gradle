@@ -9,15 +9,23 @@ plugins {
     id 'org.fulib.fulibGradle' version '0.5.0'
     // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
     id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
+
+    // for service
+    id 'org.springframework.boot' version '2.5.6' apply false
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
 }
 
 // --------------- General Settings ---------------
 
-group = 'org.fulib'
-version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
+def tag = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
+allprojects {
+    group = 'org.fulib'
+    version = tag
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
 description = 'fulibWorkflows is a tool to generate mockups and object-/class-diagrams from a workflow description.'
-sourceCompatibility='1.17'
-targetCompatibility='1.17'
 
 // --------------- Dependencies ---------------
 
