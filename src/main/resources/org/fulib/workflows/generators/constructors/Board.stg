@@ -19,7 +19,7 @@ board(content) ::= <<
         \}
         .card:hover \{
             z-index: 1;
-            transform: perspective(1000px) translateY(20px) translateZ(100px) rotateX(15deg);
+            transform: perspective(3000px) translateY(20px) translateZ(100px) rotateX(15deg);
             box-shadow: 0 1rem 3rem rgba(0,0,0,0.5) !important;
         \}
     </style>
