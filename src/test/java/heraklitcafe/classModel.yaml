@@ -1,0 +1,104 @@
+- c: 	org.fulib.classmodel.ClassModel
+  classes: 	branch 	place 	table 	orderItem
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"src/test/java"
+  packageName: 	heraklitcafe
+  packageSrcFolder: 	"src/test/java/heraklitcafe"
+
+- branch: 	org.fulib.classmodel.Clazz
+  attributes: 	branch_name
+  model: 	c
+  modified: 	false
+  name: 	Branch
+  propertyStyle: 	Bean
+
+- place: 	org.fulib.classmodel.Clazz
+  attributes: 	place_name
+  model: 	c
+  modified: 	false
+  name: 	Place
+  propertyStyle: 	Bean
+  roles: 	place_tables
+
+- table: 	org.fulib.classmodel.Clazz
+  attributes: 	table_name
+  model: 	c
+  modified: 	false
+  name: 	Table
+  propertyStyle: 	Bean
+  roles: 	table_place
+
+- orderItem: 	org.fulib.classmodel.Clazz
+  attributes: 	orderItem_name
+  model: 	c
+  modified: 	false
+  name: 	OrderItem
+  propertyStyle: 	Bean
+
+- c1: 	org.fulib.classmodel.CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- branch_name: 	org.fulib.classmodel.Attribute
+  clazz: 	branch
+  id: 	Branch_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- place_name: 	org.fulib.classmodel.Attribute
+  clazz: 	place
+  id: 	Place_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- place_tables: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	place
+  collectionType: 	c1
+  id: 	Place_tables
+  modified: 	false
+  name: 	tables
+  other: 	table_place
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- table_name: 	org.fulib.classmodel.Attribute
+  clazz: 	table
+  id: 	Table_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- table_place: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	table
+  id: 	Table_place
+  modified: 	false
+  name: 	place
+  other: 	place_tables
+  propertyStyle: 	Bean
+
+- orderItem_name: 	org.fulib.classmodel.Attribute
+  clazz: 	orderItem
+  id: 	OrderItem_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+

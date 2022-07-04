@@ -31,6 +31,11 @@ public class ClassDiagramConstructor {
     private final List<Association> associations = new ArrayList<>();
     private final List<String> reservedStringsForAssoc = new ArrayList<>();
     private Map<String, YamlObject> yamlGraph;
+    private ClassModelManager mm;
+
+    public ClassModelManager getMm() {
+        return mm;
+    }
 
     /**
      * Builds a class model using fulib and generates a svg class diagram
@@ -43,7 +48,7 @@ public class ClassDiagramConstructor {
         this.objects = objects;
         this.yamlGraph = yamlGraph;
 
-        ClassModelManager mm = new ClassModelManager();
+        mm = new ClassModelManager();
 
         createClazz(mm);
 

@@ -1,5 +1,9 @@
 package org.fulib.workflows.generators;
 
+import org.fulib.Fulib;
+import org.fulib.FulibTools;
+import org.fulib.builder.ClassModelManager;
+import org.fulib.classmodel.ClassModel;
 import org.fulib.workflows.events.Board;
 import org.fulib.workflows.yaml.OwnYamlParser;
 
@@ -8,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * The BoardGenerator is the main entry point for the parsing of fulibWorkflows and the generation of files.
@@ -143,5 +149,19 @@ public class BoardGenerator {
     public BoardGenerator setStandAlone() {
         standAlone = true;
         return this;
+    }
+
+    public void generateClassCode(String path, String packageName) {
+        // for each class model
+        Set<Entry<String, ClassModelManager>> entrySet = this.diagramGenerator.getClassDiagramMap().entrySet();
+        for (Entry<String,ClassModelManager> entry : entrySet) {
+            // generate code
+            String diagramName = entry.getKey();
+            ClassModelManager mm = entry.getValue();
+
+            ClassModel classModel = mm.getClassModel();
+            classModel.setMainJavaDir(path).setPackageName(packageName);
+            Fulib.generator().generate(classModel);
+        }
     }
 }

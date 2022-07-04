@@ -1,5 +1,6 @@
 package org.fulib.workflows.generators;
 
+import org.fulib.builder.ClassModelManager;
 import org.fulib.workflows.events.*;
 import org.fulib.workflows.generators.constructors.ClassDiagramConstructor;
 import org.fulib.workflows.generators.constructors.ObjectDiagramConstructor;
@@ -19,6 +20,11 @@ import java.util.Map.Entry;
  */
 public class DiagramGenerator {
     private BoardGenerator boardGenerator;
+    private Map<String, ClassModelManager> classDiagramMap;
+
+    public Map<String, ClassModelManager> getClassDiagramMap() {
+        return classDiagramMap;
+    }
 
     DiagramGenerator(BoardGenerator boardGenerator) {
         this.boardGenerator = boardGenerator;
@@ -47,6 +53,7 @@ public class DiagramGenerator {
         ObjectDiagramConstructor diagramConstructor = new ObjectDiagramConstructor();
 
         Map<String, String> resultMap = new HashMap<>();
+        classDiagramMap = new HashMap<>();
 
         List<String> diagrams = new ArrayList<>();
 
@@ -88,6 +95,8 @@ public class DiagramGenerator {
             previousData = entry.getValue();
             Map<String, YamlObject> yamlGraph = diagramConstructor.buildFulibGraphDiagram(previousData);
             String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData, yamlGraph);
+
+            classDiagramMap.put(key, classDiagramConstructor.getMm());
 
             if (classdiagramString != null) {
                 resultMap.put("classDiagram_" + key, classdiagramString);
