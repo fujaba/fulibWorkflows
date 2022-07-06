@@ -21,9 +21,14 @@ import java.util.Map.Entry;
 public class DiagramGenerator {
     private BoardGenerator boardGenerator;
     private Map<String, ClassModelManager> classDiagramMap;
+    private Map<String, Map<String, YamlObject>> objectListMap;
 
     public Map<String, ClassModelManager> getClassDiagramMap() {
         return classDiagramMap;
+    }
+
+    public Map<String, Map<String, YamlObject>> getObjectListMap() {
+        return objectListMap;
     }
 
     DiagramGenerator(BoardGenerator boardGenerator) {
@@ -54,6 +59,7 @@ public class DiagramGenerator {
 
         Map<String, String> resultMap = new HashMap<>();
         classDiagramMap = new HashMap<>();
+        objectListMap = new HashMap<>();
 
         List<String> diagrams = new ArrayList<>();
 
@@ -94,6 +100,7 @@ public class DiagramGenerator {
             String key = entry.getKey();
             previousData = entry.getValue();
             Map<String, YamlObject> yamlGraph = diagramConstructor.buildFulibGraphDiagram(previousData);
+            objectListMap.put(key, yamlGraph);
             String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData, yamlGraph);
 
             classDiagramMap.put(key, classDiagramConstructor.getMm());

@@ -1,12 +1,14 @@
-package heraklitcafe;
+package heraklitcafe.data;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
 public class OrderItem
 {
    public static final String PROPERTY_NAME = "name";
+   public static final String PROPERTY_PLACE = "place";
    private String name;
    protected PropertyChangeSupport listeners;
+   private Place place;
 
    public String getName()
    {
@@ -23,6 +25,33 @@ public class OrderItem
       final String oldValue = this.name;
       this.name = value;
       this.firePropertyChange(PROPERTY_NAME, oldValue, value);
+      return this;
+   }
+
+   public Place getPlace()
+   {
+      return this.place;
+   }
+
+   public OrderItem setPlace(Place value)
+   {
+      if (this.place == value)
+      {
+         return this;
+      }
+
+      final Place oldValue = this.place;
+      if (this.place != null)
+      {
+         this.place = null;
+         oldValue.withoutItems(this);
+      }
+      this.place = value;
+      if (value != null)
+      {
+         value.withItems(this);
+      }
+      this.firePropertyChange(PROPERTY_PLACE, oldValue, value);
       return this;
    }
 
@@ -51,5 +80,10 @@ public class OrderItem
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getName());
       return result.substring(1);
+   }
+
+   public void removeYou()
+   {
+      this.setPlace(null);
    }
 }

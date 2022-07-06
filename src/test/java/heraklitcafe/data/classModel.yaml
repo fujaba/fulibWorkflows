@@ -4,8 +4,8 @@
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
   mainJavaDir: 	"src/test/java"
-  packageName: 	heraklitcafe
-  packageSrcFolder: 	"src/test/java/heraklitcafe"
+  packageName: 	heraklitcafe.data
+  packageSrcFolder: 	"src/test/java/heraklitcafe/data"
 
 - branch: 	org.fulib.classmodel.Clazz
   attributes: 	branch_name
@@ -20,7 +20,7 @@
   modified: 	false
   name: 	Place
   propertyStyle: 	Bean
-  roles: 	place_tables
+  roles: 	place_tables 	place_items
 
 - table: 	org.fulib.classmodel.Clazz
   attributes: 	table_name
@@ -36,6 +36,7 @@
   modified: 	false
   name: 	OrderItem
   propertyStyle: 	Bean
+  roles: 	orderItem_place
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -74,6 +75,18 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
+- place_items: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	place
+  collectionType: 	c1
+  id: 	Place_items
+  modified: 	false
+  name: 	items
+  other: 	orderItem_place
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - table_name: 	org.fulib.classmodel.Attribute
   clazz: 	table
   id: 	Table_name
@@ -101,4 +114,14 @@
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- orderItem_place: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	orderItem
+  id: 	OrderItem_place
+  modified: 	false
+  name: 	place
+  other: 	place_items
+  propertyStyle: 	Bean
 

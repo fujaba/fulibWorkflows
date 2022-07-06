@@ -6,10 +6,12 @@ import org.fulib.builder.ClassModelManager;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.workflows.events.Board;
 import org.fulib.workflows.yaml.OwnYamlParser;
+import org.fulib.yaml.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +28,7 @@ public class BoardGenerator {
 
     private boolean webGeneration = false;
     private String genDir = "tmp";
+    private String id;
 
     /**
      * Generates mockup and diagram files from a *.es.yaml file
@@ -163,5 +166,47 @@ public class BoardGenerator {
             classModel.setMainJavaDir(path).setPackageName(packageName);
             Fulib.generator().generate(classModel);
         }
+    }
+
+    public Map<String, Object> loadObjectStructure(String packageName, String service) {
+        Map<String, Map<String, YamlObject>> objectListMap = diagramGenerator.getObjectListMap();
+        Map<String, YamlObject> serviceGraph = objectListMap.get(service);
+        Collection<YamlObject> values = serviceGraph.values();
+
+        ReflectorMap reflectorMap = new ReflectorMap(packageName);
+        Map<String, Object> objMap = new HashMap<>();
+        for (YamlObject yamlObject : values) {
+            String id = yamlObject.getId();
+            String type = yamlObject.getType();
+            Reflector reflector = reflectorMap.getReflector(type);
+            Object obj = reflector.newInstance();
+            reflector.setValue(obj, "name", id);
+            objMap.put(id, obj);
+        }
+        for (YamlObject yamlObject : values) {
+            String id = yamlObject.getId();
+            String type = yamlObject.getType();
+            Reflector reflector = reflectorMap.getReflector(type);
+            Object obj = objMap.get(id);
+            for (Entry<String, Object> entry : yamlObject.getProperties().entrySet()) {
+                String prop = entry.getKey();
+                Object value = entry.getValue();
+
+                if (prop.equals(".id") || prop.equals("type")) {
+                    continue;
+                }
+
+                if (value instanceof Collection valueList) {
+                    for (YamlObject yamlValue : values) {
+                        Object tgt = objMap.get(yamlValue.getId());
+                        reflector.setValue(obj, prop, tgt);
+                    }
+                }
+                else {
+                    reflector.setValue(obj, prop, value);
+                }
+            }
+        }
+        return objMap;
     }
 }

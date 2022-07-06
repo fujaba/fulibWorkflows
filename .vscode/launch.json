@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch HeraklitCafeOperating",
+            "request": "launch",
+            "mainClass": "heraklitcafe.ops.HeraklitCafeOperating",
+            "projectName": "fulibWorkflows"
+        },
+        {
+            "type": "java",
             "name": "Launch HeraklitRestaurantTest",
             "request": "launch",
             "mainClass": "org.fulib.workflows.generators.HeraklitRestaurantTest",

@@ -30,7 +30,10 @@
   place: freeTables
 
 - data: Place menu
-  items: [o_rice, o_meat, o_salad]
-- data: OrderItem o_rice
-- data: OrderItem o_meat
-- data: OrderItem o_salad
+  items: [m_rice, m_meat, m_salad]
+- data: OrderItem m_rice
+  place: menu
+- data: OrderItem m_meat
+  place: menu
+- data: OrderItem m_salad
+  place: menu
