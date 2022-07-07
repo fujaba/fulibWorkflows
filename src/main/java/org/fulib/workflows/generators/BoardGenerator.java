@@ -165,6 +165,7 @@ public class BoardGenerator {
             ClassModel classModel = mm.getClassModel();
             classModel.setMainJavaDir(path).setPackageName(packageName);
             Fulib.generator().generate(classModel);
+            FulibTools.classDiagrams().dumpSVG(classModel, String.format("%s/%s/classDiag.svg", path, packageName.replaceAll("\\.", "/")));
         }
     }
 

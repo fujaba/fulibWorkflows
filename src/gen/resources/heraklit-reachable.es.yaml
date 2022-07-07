@@ -1,0 +1,42 @@
+
+# reachability graphs
+
+- workflow: compute cafe space
+
+- data: Graph start
+  label: all 4 tables at freeTables
+  cons: [op1, op2]
+
+- data: Graph t1_Offered
+  label: t1 offered
+  prods: [op1]
+  cons: [op3]
+
+- data: Graph t2_Offered
+  label: t2 offered
+  prods: [op2]
+  cons: [op4]
+
+- data: Graph t1_t2_Offered
+  label: t1 t2 offered
+  prods: [op3, op4]
+
+- data: Op op1
+  label: offer
+  src: start
+  tgt: t1_Offered
+
+- data: Op op2
+  label: offer
+  src: start
+  tgt: t2_Offered
+
+- data: Op op3
+  label: offer
+  src: t1_Offered
+  tgt: t1_t2_Offered
+
+- data: Op op4
+  label: offer
+  src: t2_Offered
+  tgt: t1_t2_Offered
