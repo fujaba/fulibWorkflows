@@ -249,4 +249,8 @@ public class Graph
       this.certificate = certificate;
    }
 
+public Graph draw(String string) {
+    return null;
+}
+
 }

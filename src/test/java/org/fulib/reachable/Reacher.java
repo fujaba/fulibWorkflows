@@ -6,10 +6,12 @@ import java.nio.file.Path;
 import java.util.*;
 
 import org.fulib.FulibTables;
+import org.fulib.FulibTools;
 import org.fulib.patterns.PatternMatcher;
 import org.fulib.patterns.model.Pattern;
 import org.fulib.patterns.model.PatternObject;
 import org.fulib.tables.ObjectTable;
+import org.fulib.tools.GraphDiagram;
 import org.fulib.yaml.*;
 
 public class Reacher {
@@ -35,6 +37,40 @@ public class Reacher {
     public Reacher setStartGraph(Graph graph) {
         this.startGraph = graph;
         return this;
+    }
+
+    public void draw(String path) {
+        FulibTools.objectDiagrams().dumpSVG(path + "/reachable.svg", reachableGraph.objMap().get("G0"));
+
+        // draw reachable with links
+        GraphDiagram diag = new GraphDiagram();
+        for (Object object : reachableGraph.objMap().values()) {
+            Graph g = (Graph) object;
+            diag.addNode(g.getName(), g.getName(), g.getLabel())
+                    .addHref(g.getName(), String.format("href=\"%s.svg\"", g.getName()));
+
+            for (Op op : g.getCons()) {
+                Graph tgt = op.getTgt();
+                diag.addEdge(g.getName(), op.getName(), tgt.getName(), "");
+            }
+        }
+        String svg = diag.toSVG();
+
+        try {
+            Files.createDirectories(Path.of(path));
+            Files.writeString(Path.of(path + "/linkedReachable.svg"), svg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // draw states
+        for (Object obj : reachableGraph.objMap().values()) {
+            Graph graph = (Graph) obj;
+            TreeMap<String, Object> treeMap = new TreeMap();
+            treeMap.putAll(graph.objMap());
+            FulibTools.objectDiagrams().dumpSVG(String.format("%s/%s.svg", path, graph.getName()),
+                    treeMap.values());
+        }
     }
 
     public Graph reach() {
@@ -82,7 +118,8 @@ public class Reacher {
 
             // create clone row
             ArrayList<Object> cloneRow = createCloneRow();
-            Graph cloneGraph = new Graph().setName("G" + reachableGraph.objMap().size()).setObjMap(cloneMap).setLabel("offered tables: " + cloneRow.get(cloneRow.size()-1));
+            Graph cloneGraph = new Graph().setName("G" + reachableGraph.objMap().size()).setObjMap(cloneMap)
+                    .setLabel("offered tables: " + cloneRow.get(cloneRow.size() - 1));
 
             // modify clone
             currentRule.getOp().accept(cloneGraph, cloneRow);
@@ -93,8 +130,7 @@ public class Reacher {
             if (oldGraph != null) {
                 // just add op link
                 new Op().setName(currentRule.getName()).setSrc(currentGraph).setTgt(oldGraph);
-            }
-            else {
+            } else {
                 certificateMap.put(cloneGraph.certificate(), cloneGraph);
                 reachableGraph.withGraph(cloneGraph);
                 new Op().setName(currentRule.getName()).setSrc(currentGraph).setTgt(cloneGraph);
@@ -118,7 +154,7 @@ public class Reacher {
         String certificate = String.join("\n", dataNotes);
         g.setCertificate(certificate);
         try {
-            Files.writeString(Path.of("tmp/"+g.getName()+".es.yaml"), certificate);
+            Files.writeString(Path.of("tmp/" + g.getName() + ".es.yaml"), certificate);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -128,7 +164,8 @@ public class Reacher {
     private String certifyProperties(TreeSet<String> dataNotes, Object obj) {
         Reflector reflector = reflectorMap.getReflector(obj);
         // for each property
-        String result = String.format("- data: %s %s\n",  obj.getClass().getSimpleName(),  reflector.getValue(obj, "name"));
+        String result = String.format("- data: %s %s\n", obj.getClass().getSimpleName(),
+                reflector.getValue(obj, "name"));
 
         for (String prop : reflector.getAllProperties()) {
             Object value = reflector.getValue(obj, prop);
@@ -138,12 +175,10 @@ public class Reacher {
                     continue;
                 }
                 valueString = certifyCollection(valueList);
-            }
-            else if (value.getClass().getPackage().getName().equals(packageName)) {
+            } else if (value.getClass().getPackage().getName().equals(packageName)) {
                 Reflector valueReflector = reflectorMap.getReflector(value);
                 valueString = (String) valueReflector.getValue(value, "name");
-            }
-            else {
+            } else {
                 valueString = "" + value;
             }
             String line = String.format("  %s: %s\n", prop, valueString);

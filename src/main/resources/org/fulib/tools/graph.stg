@@ -18,7 +18,7 @@ subgraph(graphId, label, objects) ::= <<
 
 >>
 
-simpleObject(objectId, label, attrList) ::= <<
+simpleObject(objectId, label, attrList, href) ::= <<
 "$objectId$" [
     shape=plaintext
     fontsize="10"
@@ -28,7 +28,7 @@ simpleObject(objectId, label, attrList) ::= <<
         <tr><td>$attrList$</td></tr>
       </table>
     >
-];
+    $href$];
 >>
 
 edge(src, srclabel, tgt, tgtlabel, color) ::= <<

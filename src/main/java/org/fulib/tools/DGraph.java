@@ -3,12 +3,12 @@ package org.fulib.tools;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Graph extends Node {
+public class DGraph extends Node {
 
     private Map<String, Node> nodes = new LinkedHashMap<>();
 
     @Override
-    public Graph toGraph() {
+    public DGraph toGraph() {
         return this;
     }
 

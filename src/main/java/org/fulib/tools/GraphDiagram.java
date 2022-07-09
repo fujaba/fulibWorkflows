@@ -13,10 +13,10 @@ import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 
 public class GraphDiagram {
-    private Graph root = new Graph().setId("root").toGraph();
+    private DGraph root = new DGraph().setId("root").toGraph();
     private List<Edge> edges = new ArrayList<>();
 
-    private Graph currentGraph;
+    private DGraph currentGraph;
     private String edgesText;
 
     public GraphDiagram() {
@@ -58,10 +58,10 @@ public class GraphDiagram {
         return svgString;
     }
 
-    private String nodesOfGraphText(Graph graph, STGroup stGroup) {
+    private String nodesOfGraphText(DGraph graph, STGroup stGroup) {
         String modelsText = "";
         for (Node node : graph.getNodes().values()) {
-            if (node instanceof Graph) {
+            if (node instanceof DGraph) {
                 String subText = nodesOfGraphText(node.toGraph(), stGroup);
 
                 ST subGraph = stGroup.getInstanceOf("subgraph");
@@ -79,6 +79,9 @@ public class GraphDiagram {
             ost.add("objectId", node.getId());
             ost.add("label", node.getLabel());
             ost.add("attrList", attrText);
+            if (node.getHref() != null) {
+                ost.add("href", node.getHref());
+            }
             String oneObject = ost.render();
             modelsText += oneObject + "\n";
         }
@@ -86,7 +89,7 @@ public class GraphDiagram {
     }
 
     public GraphDiagram addGraph(String graphId, String label) {
-        Node newNode = root.getNodes().computeIfAbsent(graphId, (k) -> new Graph().setId(graphId));
+        Node newNode = root.getNodes().computeIfAbsent(graphId, (k) -> new DGraph().setId(graphId));
         newNode.setLabel(label);
         currentGraph = newNode.toGraph();
         return this;
@@ -107,6 +110,12 @@ public class GraphDiagram {
     public GraphDiagram addAttrText(String nodeId, String attrText) {
         Node newNode = currentGraph.getNodes().computeIfAbsent(nodeId, (k) -> new Node().setId(k));
         newNode.setAttrText(attrText);
+        return this;
+    }
+
+    public GraphDiagram addHref(String nodeId, String href) {
+        Node newNode = currentGraph.getNodes().computeIfAbsent(nodeId, (k) -> new Node().setId(k));
+        newNode.setHref(href);
         return this;
     }
 
@@ -146,17 +155,18 @@ public class GraphDiagram {
         return this;
     }
 
-    public Graph getRoot() {
+    public DGraph getRoot() {
         return root;
     }
 
-    public GraphDiagram setRoot(Graph root) {
+    public GraphDiagram setRoot(DGraph root) {
         this.root = root;
         return this;
     }
 
-    public Graph getCurrentGraph() {
+    public DGraph getCurrentGraph() {
         return currentGraph;
     }
+
 
 }

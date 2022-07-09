@@ -4,9 +4,19 @@ public class Node {
     private String id;
     private String label;
     private String attrText;
+    private String href;
+
+    public String getHref() {
+        return href;
+    }
+
+    public Node setHref(String href) {
+        this.href = href;
+        return this;
+    }
 
 
-    public Graph toGraph() {
+    public DGraph toGraph() {
         return null;
     }
 

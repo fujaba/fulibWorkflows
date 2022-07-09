@@ -48,11 +48,9 @@ public class HeraklitCafeOperating {
 
         // start graph and rules, lets reach
         Graph reachables = reacher.reach();
+        reacher.draw("tmp/reachable");
 
-        // compute reachbility graph
-        FulibTools.objectDiagrams().dumpSVG("tmp/reachable/reachable.svg", graph);
 
-        // compute trace graphs
     }
 
     private void addRules(Reacher reacher) {
