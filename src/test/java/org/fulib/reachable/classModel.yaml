@@ -16,7 +16,7 @@
   roles: 	graph_cons 	graph_prods
 
 - op: 	org.fulib.classmodel.Clazz
-  attributes: 	op_name 	op_label
+  attributes: 	op_name
   model: 	c
   modified: 	false
   name: 	Op
@@ -77,15 +77,6 @@
   id: 	Op_name
   modified: 	false
   name: 	name
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- op_label: 	org.fulib.classmodel.Attribute
-  clazz: 	op
-  id: 	Op_label
-  modified: 	false
-  name: 	label
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String

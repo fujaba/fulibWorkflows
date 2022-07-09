@@ -1,0 +1,47 @@
+<svg width="210px" height="230px"
+ viewBox="0.00 0.00 210.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 226)">
+<title>heraklitcafe.data</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-226 206,-226 206,4 -4,4"/>
+<!-- Branch -->
+<g id="node1" class="node"><title>Branch</title>
+<polygon fill="none" stroke="black" points="8,-25 8,-46 84,-46 84,-25 8,-25"/>
+<text text-anchor="start" x="26" y="-31.8" font-family="Times New Roman,serif" font-size="14.00">Branch</text>
+<polygon fill="none" stroke="black" points="8,-4 8,-25 84,-25 84,-4 8,-4"/>
+<text text-anchor="start" x="11" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- OrderItem -->
+<g id="node2" class="node"><title>OrderItem</title>
+<polygon fill="none" stroke="black" points="118,-25 118,-46 194,-46 194,-25 118,-25"/>
+<text text-anchor="start" x="127" y="-31.8" font-family="Times New Roman,serif" font-size="14.00">OrderItem</text>
+<polygon fill="none" stroke="black" points="118,-4 118,-25 194,-25 194,-4 118,-4"/>
+<text text-anchor="start" x="121" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- Place -->
+<g id="node3" class="node"><title>Place</title>
+<polygon fill="none" stroke="black" points="118,-111 118,-132 194,-132 194,-111 118,-111"/>
+<text text-anchor="start" x="140.5" y="-117.8" font-family="Times New Roman,serif" font-size="14.00">Place</text>
+<polygon fill="none" stroke="black" points="118,-90 118,-111 194,-111 194,-90 118,-90"/>
+<text text-anchor="start" x="121" y="-96.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- OrderItem&#45;&gt;Place -->
+<g id="edge1" class="edge"><title>OrderItem&#45;&gt;Place</title>
+<path fill="none" stroke="black" d="M156,-50.2963C156,-61.4407 156,-74.6206 156,-85.7583"/>
+<text text-anchor="middle" x="141" y="-74.5583" font-family="Times New Roman,serif" font-size="14.00">place</text>
+<text text-anchor="middle" x="136" y="-54.0963" font-family="Times New Roman,serif" font-size="14.00">items *</text>
+</g>
+<!-- Table -->
+<g id="node4" class="node"><title>Table</title>
+<polygon fill="none" stroke="black" points="118,-197 118,-218 194,-218 194,-197 118,-197"/>
+<text text-anchor="start" x="140" y="-203.8" font-family="Times New Roman,serif" font-size="14.00">Table</text>
+<polygon fill="none" stroke="black" points="118,-176 118,-197 194,-197 194,-176 118,-176"/>
+<text text-anchor="start" x="121" y="-182.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- Place&#45;&gt;Table -->
+<g id="edge2" class="edge"><title>Place&#45;&gt;Table</title>
+<path fill="none" stroke="black" d="M156,-136.296C156,-147.441 156,-160.621 156,-171.758"/>
+<text text-anchor="middle" x="134.5" y="-160.558" font-family="Times New Roman,serif" font-size="14.00">tables *</text>
+<text text-anchor="middle" x="141" y="-140.096" font-family="Times New Roman,serif" font-size="14.00">place</text>
+</g>
+</g>
+</svg>

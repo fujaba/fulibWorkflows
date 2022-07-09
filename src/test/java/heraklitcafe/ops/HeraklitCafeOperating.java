@@ -44,14 +44,7 @@ public class HeraklitCafeOperating {
 
         Reacher reacher = new Reacher().setStartGraph(graph);
 
-        // add first rule
-        PatternBuilder pb = FulibTables.patternBuilder();
-        PatternObject freeTablesVar = pb.buildPatternObject("freeTables");
-        PatternObject tableVar = pb.buildPatternObject("table");
-        pb.buildPatternLink(freeTablesVar,  "place",  "tables",tableVar);
-
-        Rule offerTable = new Rule().setPattern(pb.getPattern()).setOp(this::offerTable);
-        reacher.withRule(offerTable);
+        addRules(reacher);
 
         // start graph and rules, lets reach
         Graph reachables = reacher.reach();
@@ -62,10 +55,22 @@ public class HeraklitCafeOperating {
         // compute trace graphs
     }
 
+    private void addRules(Reacher reacher) {
+        // add first rule
+        PatternBuilder pb = FulibTables.patternBuilder();
+        PatternObject freeTablesVar = pb.buildPatternObject("freeTables");
+        PatternObject tableVar = pb.buildPatternObject("table");
+        pb.buildPatternLink(freeTablesVar,  "place",  "tables",tableVar);
+
+        Rule offerTable = new Rule().setName("offer").setPattern(pb.getPattern()).setOp(this::offerTable);
+        reacher.withRule(offerTable);
+    }
+
     private void offerTable(Graph graph, ArrayList<Object> row) {
         Table t = (Table) row.get(1);
-        Place offeredTables = (Place) graph.theObjMap().get("offeredTables");
+        Place offeredTables = (Place) graph.objMap().get("offeredTables");
         t.setPlace(offeredTables);
+        graph.setLabel("offeredTables: " + offeredTables.getTables());
     }
 
 }

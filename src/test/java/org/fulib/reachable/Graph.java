@@ -2,6 +2,11 @@ package org.fulib.reachable;
 
 import java.beans.PropertyChangeSupport;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Collections;
+import java.util.Collection;
 
 public class Graph
 {
@@ -13,23 +18,28 @@ public class Graph
    private String label;
    private List<Op> cons;
    private List<Op> prods;
-   private Map<String, Object> objMap;
+   private Map<String, Object> _objMap;
    protected PropertyChangeSupport listeners;
+   private String certificate;
 
-   public Map<String, Object> theObjMap() {
-       return objMap;
+   public String certificate() {
+       return certificate;
+   }
+
+   public Map<String, Object> objMap() {
+       return _objMap;
    }
 
    public Graph setObjMap(Map<String, Object> objMap) {
-       this.objMap = objMap;
+       this._objMap = objMap;
        return this;
    }
 
    public Graph withGraph(Graph graph) {
-      if (objMap == null) {
-         objMap = new LinkedHashMap<>();
+      if (_objMap == null) {
+         _objMap = new LinkedHashMap<>();
       }
-      objMap.put(graph.getName(), graph);
+      _objMap.put(graph.getName(), graph);
       return this;
    }
 
@@ -235,5 +245,8 @@ public class Graph
       this.withoutProds(new ArrayList<>(this.getProds()));
    }
 
+   public void setCertificate(String certificate) {
+      this.certificate = certificate;
+   }
 
 }

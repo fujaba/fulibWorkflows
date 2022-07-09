@@ -22,21 +22,17 @@
   prods: [op3, op4]
 
 - data: Op op1
-  label: offer
   src: start
   tgt: t1_Offered
 
 - data: Op op2
-  label: offer
   src: start
   tgt: t2_Offered
 
 - data: Op op3
-  label: offer
   src: t1_Offered
   tgt: t1_t2_Offered
 
 - data: Op op4
-  label: offer
   src: t2_Offered
   tgt: t1_t2_Offered

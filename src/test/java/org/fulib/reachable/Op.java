@@ -5,11 +5,9 @@ import java.beans.PropertyChangeSupport;
 public class Op
 {
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_LABEL = "label";
    public static final String PROPERTY_SRC = "src";
    public static final String PROPERTY_TGT = "tgt";
    private String name;
-   private String label;
    private Graph src;
    private Graph tgt;
    protected PropertyChangeSupport listeners;
@@ -29,24 +27,6 @@ public class Op
       final String oldValue = this.name;
       this.name = value;
       this.firePropertyChange(PROPERTY_NAME, oldValue, value);
-      return this;
-   }
-
-   public String getLabel()
-   {
-      return this.label;
-   }
-
-   public Op setLabel(String value)
-   {
-      if (Objects.equals(value, this.label))
-      {
-         return this;
-      }
-
-      final String oldValue = this.label;
-      this.label = value;
-      this.firePropertyChange(PROPERTY_LABEL, oldValue, value);
       return this;
    }
 
@@ -128,7 +108,6 @@ public class Op
    {
       final StringBuilder result = new StringBuilder();
       result.append(' ').append(this.getName());
-      result.append(' ').append(this.getLabel());
       return result.substring(1);
    }
 
