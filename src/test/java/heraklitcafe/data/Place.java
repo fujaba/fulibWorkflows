@@ -12,10 +12,12 @@ public class Place
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_TABLES = "tables";
    public static final String PROPERTY_ITEMS = "items";
+   public static final String PROPERTY_CLIENTS = "clients";
    private String name;
    private List<Table> tables;
    protected PropertyChangeSupport listeners;
    private List<OrderItem> items;
+   private List<Client> clients;
 
    public String getName()
    {
@@ -167,6 +169,72 @@ public class Place
       return this;
    }
 
+   public List<Client> getClients()
+   {
+      return this.clients != null ? Collections.unmodifiableList(this.clients) : Collections.emptyList();
+   }
+
+   public Place withClients(Client value)
+   {
+      if (this.clients == null)
+      {
+         this.clients = new ArrayList<>();
+      }
+      if (!this.clients.contains(value))
+      {
+         this.clients.add(value);
+         value.setPlace(this);
+         this.firePropertyChange(PROPERTY_CLIENTS, null, value);
+      }
+      return this;
+   }
+
+   public Place withClients(Client... value)
+   {
+      for (final Client item : value)
+      {
+         this.withClients(item);
+      }
+      return this;
+   }
+
+   public Place withClients(Collection<? extends Client> value)
+   {
+      for (final Client item : value)
+      {
+         this.withClients(item);
+      }
+      return this;
+   }
+
+   public Place withoutClients(Client value)
+   {
+      if (this.clients != null && this.clients.remove(value))
+      {
+         value.setPlace(null);
+         this.firePropertyChange(PROPERTY_CLIENTS, value, null);
+      }
+      return this;
+   }
+
+   public Place withoutClients(Client... value)
+   {
+      for (final Client item : value)
+      {
+         this.withoutClients(item);
+      }
+      return this;
+   }
+
+   public Place withoutClients(Collection<? extends Client> value)
+   {
+      for (final Client item : value)
+      {
+         this.withoutClients(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -197,6 +265,7 @@ public class Place
    public void removeYou()
    {
       this.withoutTables(new ArrayList<>(this.getTables()));
+      this.withoutClients(new ArrayList<>(this.getClients()));
       this.withoutItems(new ArrayList<>(this.getItems()));
    }
 }

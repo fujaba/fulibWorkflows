@@ -46,3 +46,8 @@
   place: clientsEntry
 - data: Client Bob
   place: clientsEntry
+
+- data: Client Alice
+  table: t1
+- data: Table t1
+  client: Alice

@@ -14,7 +14,7 @@ public class HeraklitRestaurantTest {
     @Test
     public void testGenCafeData() {
         BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
-        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant-extended.es.yaml"));
         boardGenerator.generateClassCode("src/test/java", "heraklitcafe.data");
     }
 

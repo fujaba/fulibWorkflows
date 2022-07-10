@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	branch 	place 	table 	orderItem
+  classes: 	branch 	place 	table 	orderItem 	client
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -20,7 +20,7 @@
   modified: 	false
   name: 	Place
   propertyStyle: 	Bean
-  roles: 	place_tables 	place_items
+  roles: 	place_tables 	place_clients 	place_items
 
 - table: 	org.fulib.classmodel.Clazz
   attributes: 	table_name
@@ -28,7 +28,7 @@
   modified: 	false
   name: 	Table
   propertyStyle: 	Bean
-  roles: 	table_place
+  roles: 	table_place 	table_client
 
 - orderItem: 	org.fulib.classmodel.Clazz
   attributes: 	orderItem_name
@@ -37,6 +37,14 @@
   name: 	OrderItem
   propertyStyle: 	Bean
   roles: 	orderItem_place
+
+- client: 	org.fulib.classmodel.Clazz
+  attributes: 	client_name
+  model: 	c
+  modified: 	false
+  name: 	Client
+  propertyStyle: 	Bean
+  roles: 	client_place 	client_table
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -75,6 +83,18 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
+- place_clients: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	place
+  collectionType: 	c1
+  id: 	Place_clients
+  modified: 	false
+  name: 	clients
+  other: 	client_place
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - place_items: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -106,6 +126,16 @@
   other: 	place_tables
   propertyStyle: 	Bean
 
+- table_client: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	table
+  id: 	Table_client
+  modified: 	false
+  name: 	client
+  other: 	client_table
+  propertyStyle: 	Bean
+
 - orderItem_name: 	org.fulib.classmodel.Attribute
   clazz: 	orderItem
   id: 	OrderItem_name
@@ -123,5 +153,34 @@
   modified: 	false
   name: 	place
   other: 	place_items
+  propertyStyle: 	Bean
+
+- client_name: 	org.fulib.classmodel.Attribute
+  clazz: 	client
+  id: 	Client_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- client_place: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	client
+  id: 	Client_place
+  modified: 	false
+  name: 	place
+  other: 	place_clients
+  propertyStyle: 	Bean
+
+- client_table: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	client
+  id: 	Client_table
+  modified: 	false
+  name: 	table
+  other: 	table_client
   propertyStyle: 	Bean
 

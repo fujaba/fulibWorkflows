@@ -2,22 +2,22 @@ package heraklitcafe.data;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
 
-public class Table
+public class Client
 {
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_PLACE = "place";
-   public static final String PROPERTY_CLIENT = "client";
+   public static final String PROPERTY_TABLE = "table";
    private String name;
    private Place place;
    protected PropertyChangeSupport listeners;
-   private Client client;
+   private Table table;
 
    public String getName()
    {
       return this.name;
    }
 
-   public Table setName(String value)
+   public Client setName(String value)
    {
       if (Objects.equals(value, this.name))
       {
@@ -35,7 +35,7 @@ public class Table
       return this.place;
    }
 
-   public Table setPlace(Place value)
+   public Client setPlace(Place value)
    {
       if (this.place == value)
       {
@@ -46,41 +46,41 @@ public class Table
       if (this.place != null)
       {
          this.place = null;
-         oldValue.withoutTables(this);
+         oldValue.withoutClients(this);
       }
       this.place = value;
       if (value != null)
       {
-         value.withTables(this);
+         value.withClients(this);
       }
       this.firePropertyChange(PROPERTY_PLACE, oldValue, value);
       return this;
    }
 
-   public Client getClient()
+   public Table getTable()
    {
-      return this.client;
+      return this.table;
    }
 
-   public Table setClient(Client value)
+   public Client setTable(Table value)
    {
-      if (this.client == value)
+      if (this.table == value)
       {
          return this;
       }
 
-      final Client oldValue = this.client;
-      if (this.client != null)
+      final Table oldValue = this.table;
+      if (this.table != null)
       {
-         this.client = null;
-         oldValue.setTable(null);
+         this.table = null;
+         oldValue.setClient(null);
       }
-      this.client = value;
+      this.table = value;
       if (value != null)
       {
-         value.setTable(this);
+         value.setClient(this);
       }
-      this.firePropertyChange(PROPERTY_CLIENT, oldValue, value);
+      this.firePropertyChange(PROPERTY_TABLE, oldValue, value);
       return this;
    }
 
@@ -114,6 +114,6 @@ public class Table
    public void removeYou()
    {
       this.setPlace(null);
-      this.setClient(null);
+      this.setTable(null);
    }
 }

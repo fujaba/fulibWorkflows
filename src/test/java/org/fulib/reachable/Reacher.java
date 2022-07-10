@@ -29,6 +29,10 @@ public class Reacher {
     private ReflectorMap reflectorMap;
     private String packageName;
 
+    public ArrayList<Rule> getRuleSet() {
+        return ruleSet;
+    }
+
     public Reacher withRule(Rule rule) {
         ruleSet.add(rule);
         return this;
@@ -101,10 +105,11 @@ public class Reacher {
 
     private void reachAllMatches() {
         Pattern pattern = currentRule.getPattern();
-        PatternObject rootPO = pattern.getObjects().get(0);
-        String rootName = rootPO.getName();
         PatternMatcher matcher = FulibTables.matcher(pattern);
-        ObjectTable matchTable = matcher.match(rootName, currentGraph.objMap().get(rootName));
+        matcher.withRootPatternObjects(pattern.getObjects());
+        matcher.withRootObjects(currentGraph.objMap().values());
+        matcher.match();
+        ObjectTable matchTable = matcher.getMatchTable(pattern.getObjects().get(pattern.getObjects().size()-1));
 
         System.out.println(matchTable);
         // for all matches
@@ -146,6 +151,7 @@ public class Reacher {
         packageName = objects.iterator().next().getClass().getPackage().getName();
         reflectorMap = new ReflectorMap(packageName);
         TreeSet<String> dataNotes = new TreeSet<>();
+        dataNotes.add("- workflow: state\n");
         for (Object obj : objects) {
             String oneData = certifyProperties(dataNotes, obj);
             dataNotes.add(oneData);
@@ -154,7 +160,7 @@ public class Reacher {
         String certificate = String.join("\n", dataNotes);
         g.setCertificate(certificate);
         try {
-            Files.writeString(Path.of("tmp/" + g.getName() + ".es.yaml"), certificate);
+            Files.writeString(Path.of("tmp/reachable/" + g.getName() + ".es.yaml"), certificate);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -169,6 +175,9 @@ public class Reacher {
 
         for (String prop : reflector.getAllProperties()) {
             Object value = reflector.getValue(obj, prop);
+            if (value == null) {
+                continue;
+            }
             String valueString = "";
             if (value instanceof Collection valueList) {
                 if (valueList.isEmpty()) {

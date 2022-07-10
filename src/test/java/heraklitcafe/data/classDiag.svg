@@ -1,8 +1,8 @@
-<svg width="210px" height="230px"
- viewBox="0.00 0.00 210.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="320px" height="230px"
+ viewBox="0.00 0.00 320.00 230.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1.0 1.0) rotate(0) translate(4 226)">
 <title>heraklitcafe.data</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-226 206,-226 206,4 -4,4"/>
+<polygon fill="white" stroke="none" points="-4,4 -4,-226 316,-226 316,4 -4,4"/>
 <!-- Branch -->
 <g id="node1" class="node"><title>Branch</title>
 <polygon fill="none" stroke="black" points="8,-25 8,-46 84,-46 84,-25 8,-25"/>
@@ -10,38 +10,57 @@
 <polygon fill="none" stroke="black" points="8,-4 8,-25 84,-25 84,-4 8,-4"/>
 <text text-anchor="start" x="11" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
 </g>
+<!-- Client -->
+<g id="node2" class="node"><title>Client</title>
+<polygon fill="none" stroke="black" points="228,-25 228,-46 304,-46 304,-25 228,-25"/>
+<text text-anchor="start" x="249.5" y="-31.8" font-family="Times New Roman,serif" font-size="14.00">Client</text>
+<polygon fill="none" stroke="black" points="228,-4 228,-25 304,-25 304,-4 228,-4"/>
+<text text-anchor="start" x="231" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- Place -->
+<g id="node4" class="node"><title>Place</title>
+<polygon fill="none" stroke="black" points="154,-111 154,-132 230,-132 230,-111 154,-111"/>
+<text text-anchor="start" x="176.5" y="-117.8" font-family="Times New Roman,serif" font-size="14.00">Place</text>
+<polygon fill="none" stroke="black" points="154,-90 154,-111 230,-111 230,-90 154,-90"/>
+<text text-anchor="start" x="157" y="-96.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- Client&#45;&gt;Place -->
+<g id="edge2" class="edge"><title>Client&#45;&gt;Place</title>
+<path fill="none" stroke="black" d="M244.596,-50.2963C234.778,-61.4407 223.168,-74.6206 213.356,-85.7583"/>
+<text text-anchor="middle" x="198.356" y="-74.5583" font-family="Times New Roman,serif" font-size="14.00">place</text>
+<text text-anchor="middle" x="221.596" y="-54.0963" font-family="Times New Roman,serif" font-size="14.00">clients *</text>
+</g>
+<!-- Table -->
+<g id="node5" class="node"><title>Table</title>
+<polygon fill="none" stroke="black" points="191,-197 191,-218 267,-218 267,-197 191,-197"/>
+<text text-anchor="start" x="213" y="-203.8" font-family="Times New Roman,serif" font-size="14.00">Table</text>
+<polygon fill="none" stroke="black" points="191,-176 191,-197 267,-197 267,-176 191,-176"/>
+<text text-anchor="start" x="194" y="-182.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+</g>
+<!-- Client&#45;&gt;Table -->
+<g id="edge1" class="edge"><title>Client&#45;&gt;Table</title>
+<path fill="none" stroke="black" d="M262.676,-50.202C259.398,-72.6031 253.885,-106.761 247,-136 244.183,-147.962 240.346,-161.054 236.938,-171.948"/>
+<text text-anchor="middle" x="250.438" y="-160.748" font-family="Times New Roman,serif" font-size="14.00">table</text>
+<text text-anchor="middle" x="277.676" y="-54.002" font-family="Times New Roman,serif" font-size="14.00">client</text>
+</g>
 <!-- OrderItem -->
-<g id="node2" class="node"><title>OrderItem</title>
+<g id="node3" class="node"><title>OrderItem</title>
 <polygon fill="none" stroke="black" points="118,-25 118,-46 194,-46 194,-25 118,-25"/>
 <text text-anchor="start" x="127" y="-31.8" font-family="Times New Roman,serif" font-size="14.00">OrderItem</text>
 <polygon fill="none" stroke="black" points="118,-4 118,-25 194,-25 194,-4 118,-4"/>
 <text text-anchor="start" x="121" y="-10.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
 </g>
-<!-- Place -->
-<g id="node3" class="node"><title>Place</title>
-<polygon fill="none" stroke="black" points="118,-111 118,-132 194,-132 194,-111 118,-111"/>
-<text text-anchor="start" x="140.5" y="-117.8" font-family="Times New Roman,serif" font-size="14.00">Place</text>
-<polygon fill="none" stroke="black" points="118,-90 118,-111 194,-111 194,-90 118,-90"/>
-<text text-anchor="start" x="121" y="-96.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
-</g>
 <!-- OrderItem&#45;&gt;Place -->
-<g id="edge1" class="edge"><title>OrderItem&#45;&gt;Place</title>
-<path fill="none" stroke="black" d="M156,-50.2963C156,-61.4407 156,-74.6206 156,-85.7583"/>
-<text text-anchor="middle" x="141" y="-74.5583" font-family="Times New Roman,serif" font-size="14.00">place</text>
-<text text-anchor="middle" x="136" y="-54.0963" font-family="Times New Roman,serif" font-size="14.00">items *</text>
-</g>
-<!-- Table -->
-<g id="node4" class="node"><title>Table</title>
-<polygon fill="none" stroke="black" points="118,-197 118,-218 194,-218 194,-197 118,-197"/>
-<text text-anchor="start" x="140" y="-203.8" font-family="Times New Roman,serif" font-size="14.00">Table</text>
-<polygon fill="none" stroke="black" points="118,-176 118,-197 194,-197 194,-176 118,-176"/>
-<text text-anchor="start" x="121" y="-182.8" font-family="Times New Roman,serif" font-size="14.00">name :String</text>
+<g id="edge3" class="edge"><title>OrderItem&#45;&gt;Place</title>
+<path fill="none" stroke="black" d="M166.413,-50.2963C171.189,-61.4407 176.837,-74.6206 181.611,-85.7583"/>
+<text text-anchor="middle" x="166.611" y="-74.5583" font-family="Times New Roman,serif" font-size="14.00">place</text>
+<text text-anchor="middle" x="146.413" y="-54.0963" font-family="Times New Roman,serif" font-size="14.00">items *</text>
 </g>
 <!-- Place&#45;&gt;Table -->
-<g id="edge2" class="edge"><title>Place&#45;&gt;Table</title>
-<path fill="none" stroke="black" d="M156,-136.296C156,-147.441 156,-160.621 156,-171.758"/>
-<text text-anchor="middle" x="134.5" y="-160.558" font-family="Times New Roman,serif" font-size="14.00">tables *</text>
-<text text-anchor="middle" x="141" y="-140.096" font-family="Times New Roman,serif" font-size="14.00">place</text>
+<g id="edge4" class="edge"><title>Place&#45;&gt;Table</title>
+<path fill="none" stroke="black" d="M202.702,-136.296C207.611,-147.441 213.416,-160.621 218.322,-171.758"/>
+<text text-anchor="middle" x="196.822" y="-160.558" font-family="Times New Roman,serif" font-size="14.00">tables *</text>
+<text text-anchor="middle" x="187.702" y="-140.096" font-family="Times New Roman,serif" font-size="14.00">place</text>
 </g>
 </g>
 </svg>
