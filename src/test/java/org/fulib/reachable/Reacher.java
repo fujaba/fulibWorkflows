@@ -28,6 +28,8 @@ public class Reacher {
     private YamlIdMap origIdMap;
     private ReflectorMap reflectorMap;
     private String packageName;
+    private String drawPath;
+    private boolean certifierIgnoreNames = false;
 
     public ArrayList<Rule> getRuleSet() {
         return ruleSet;
@@ -38,13 +40,23 @@ public class Reacher {
         return this;
     }
 
+    public Reacher setDrawPath(String drawPath) {
+        this.drawPath = drawPath;
+        return this;
+    }
+
+    public Reacher setCertifierIgnoreNames(boolean certifierIgnoreNames) {
+        this.certifierIgnoreNames = certifierIgnoreNames;
+        return this;
+    }
+
     public Reacher setStartGraph(Graph graph) {
         this.startGraph = graph;
         return this;
     }
 
-    public void draw(String path) {
-        FulibTools.objectDiagrams().dumpSVG(path + "/reachable.svg", reachableGraph.objMap().get("G0"));
+    public void draw() {
+        FulibTools.objectDiagrams().dumpSVG(drawPath + "/reachable.svg", reachableGraph.objMap().get("G0"));
 
         // draw reachable with links
         GraphDiagram diag = new GraphDiagram();
@@ -61,8 +73,8 @@ public class Reacher {
         String svg = diag.toSVG();
 
         try {
-            Files.createDirectories(Path.of(path));
-            Files.writeString(Path.of(path + "/linkedReachable.svg"), svg);
+            Files.createDirectories(Path.of(drawPath));
+            Files.writeString(Path.of(drawPath + "/linkedReachable.svg"), svg);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,7 +84,7 @@ public class Reacher {
             Graph graph = (Graph) obj;
             TreeMap<String, Object> treeMap = new TreeMap();
             treeMap.putAll(graph.objMap());
-            FulibTools.objectDiagrams().dumpSVG(String.format("%s/%s.svg", path, graph.getName()),
+            FulibTools.objectDiagrams().dumpSVG(String.format("%s/%s.svg", drawPath, graph.getName()),
                     treeMap.values());
         }
     }
@@ -81,6 +93,11 @@ public class Reacher {
         reachableGraph = new Graph().setName("reachable").setLabel("reachable heraklit cafe states");
         certify(startGraph);
         certificateMap.put(startGraph.certificate(), startGraph);
+        try {
+            Files.writeString(Path.of(this.drawPath + "/startGraphCertificate.txt"), startGraph.certificate());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         reachableGraph.withGraph(startGraph);
 
         todoList = new ArrayList<>();
@@ -150,7 +167,7 @@ public class Reacher {
         Collection<Object> objects = g.objMap().values();
         packageName = objects.iterator().next().getClass().getPackage().getName();
         reflectorMap = new ReflectorMap(packageName);
-        TreeSet<String> dataNotes = new TreeSet<>();
+        TreeSet<String> dataNotes = new TreeSet<>((a, b) -> a.compareTo(b) < 0 ? -1 : 1);
         dataNotes.add("- workflow: state\n");
         for (Object obj : objects) {
             String oneData = certifyProperties(dataNotes, obj);
@@ -160,20 +177,36 @@ public class Reacher {
         String certificate = String.join("\n", dataNotes);
         g.setCertificate(certificate);
         try {
-            Files.writeString(Path.of("tmp/reachable/" + g.getName() + ".es.yaml"), certificate);
+            Files.writeString(Path.of(this.drawPath + "/" + g.getName() + ".es.yaml"), certificate);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return this;
     }
 
+    private String getCertifierName(Reflector reflector, Object obj) {
+        if (this.certifierIgnoreNames) {
+            if ("Table".indexOf(obj.getClass().getSimpleName()) >= 0)
+            {
+                return "t";
+            }
+            return reflector.getValue(obj, "name").toString();
+        }
+        else {
+            return reflector.getValue(obj, "name").toString();
+        }
+    }
+
     private String certifyProperties(TreeSet<String> dataNotes, Object obj) {
         Reflector reflector = reflectorMap.getReflector(obj);
         // for each property
         String result = String.format("- data: %s %s\n", obj.getClass().getSimpleName(),
-                reflector.getValue(obj, "name"));
+                getCertifierName(reflector, obj));
 
         for (String prop : reflector.getAllProperties()) {
+            if (prop.equals("name") && obj.getClass().getSimpleName().equals("Table")) {
+                continue;
+            }
             Object value = reflector.getValue(obj, prop);
             if (value == null) {
                 continue;
@@ -186,7 +219,7 @@ public class Reacher {
                 valueString = certifyCollection(valueList);
             } else if (value.getClass().getPackage().getName().equals(packageName)) {
                 Reflector valueReflector = reflectorMap.getReflector(value);
-                valueString = (String) valueReflector.getValue(value, "name");
+                valueString = (String) getCertifierName(valueReflector, value);
             } else {
                 valueString = "" + value;
             }
@@ -197,10 +230,10 @@ public class Reacher {
     }
 
     private String certifyCollection(Collection valueList) {
-        TreeSet<String> valueSet = new TreeSet<>();
+        TreeSet<String> valueSet = new TreeSet<>((a, b) -> a.compareTo(b) < 0 ? -1 : 1);
         for (Object value : valueList) {
             Reflector valueReflector = reflectorMap.getReflector(value);
-            String name = (String) valueReflector.getValue(value, "name");
+            String name = (String) getCertifierName(valueReflector, value);
             valueSet.add(name);
         }
         String line = String.join(", ", valueSet);
@@ -216,5 +249,8 @@ public class Reacher {
         }
         return result;
     }
+
+
+
 
 }

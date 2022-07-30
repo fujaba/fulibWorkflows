@@ -31,11 +31,17 @@ public class HeraklitCafeOperating {
     private Rule enterRule;
 
     public static void main(String[] args) {
-        new HeraklitCafeOperating().init();
+        new HeraklitCafeOperating().runExperiments();
     }
 
-    public void init() {
-        // es.yaml laden
+    public void runExperiments() {
+
+        offerTablesAndEnterRulesNoNames();
+        offerTablesAndEnterRulesWithTableAndCustomerNames();
+
+    }
+
+    private void offerTablesAndEnterRulesNoNames() {
         BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
 
@@ -44,27 +50,36 @@ public class HeraklitCafeOperating {
         String yaml = Yaml.encode(objMap.values().toArray());
         Graph graph = new Graph().setName("G0").setLabel("start").setObjMap(objMap);
 
-        Reacher reacher = new Reacher().setStartGraph(graph);
+        Reacher reacher = new Reacher()
+                .setStartGraph(graph)
+                .setDrawPath("tmp/reachable/offerTablesAndEnterRulesNoNames")
+                .setCertifierIgnoreNames(true);
 
         addRules(reacher);
 
         // start graph and rules, lets reach
         Graph reachables = reacher.reach();
-        reacher.draw("tmp/reachable");
+        reacher.draw();
+    }
 
-        // try enter rule
-        // load graph G15
-        boardGenerator = new BoardGenerator().setStandAlone();
-        boardGenerator.generateBoardFromFile(Path.of("tmp/reachable/G15.es.yaml"));
+    private void offerTablesAndEnterRulesWithTableAndCustomerNames() {
+        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
+
+        // execute init workflow
         objMap = boardGenerator.loadObjectStructure(Place.class.getPackage().getName(), "default");
+        String yaml = Yaml.encode(objMap.values().toArray());
+        Graph graph = new Graph().setName("G0").setLabel("start").setObjMap(objMap);
 
-        // Pattern pattern = enterRule.getPattern();
-        // PatternMatcher matcher = FulibTables.matcher(pattern);
-        // matcher.withRootPatternObjects(pattern.getObjects());
-        // matcher.withRootObjects(objMap.values());
-        // matcher.match();
-        // ObjectTable matchTable = matcher.getMatchTable(pattern.getObjects().get(pattern.getObjects().size()-1));
-        // System.out.println(matchTable);
+        Reacher reacher = new Reacher()
+                .setStartGraph(graph)
+                .setDrawPath("tmp/reachable/offerTablesAndEnterRulesWithTableAndCustomerNames");
+
+        addRules(reacher);
+
+        // start graph and rules, lets reach
+        Graph reachables = reacher.reach();
+        reacher.draw();
     }
 
     private void addRules(Reacher reacher) {
