@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	branch 	place 	table 	orderItem 	client
+  classes: 	branch 	place 	table 	meal 	orderItem 	client 	order
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -20,7 +20,7 @@
   modified: 	false
   name: 	Place
   propertyStyle: 	Bean
-  roles: 	place_tables 	place_clients 	place_items
+  roles: 	place_tables 	place_clients 	place_meals 	place_orders
 
 - table: 	org.fulib.classmodel.Clazz
   attributes: 	table_name
@@ -28,7 +28,15 @@
   modified: 	false
   name: 	Table
   propertyStyle: 	Bean
-  roles: 	table_place 	table_client
+  roles: 	table_place 	table_client 	table_order
+
+- meal: 	org.fulib.classmodel.Clazz
+  attributes: 	meal_name
+  model: 	c
+  modified: 	false
+  name: 	Meal
+  propertyStyle: 	Bean
+  roles: 	meal_place 	meal_items 	meal_orders
 
 - orderItem: 	org.fulib.classmodel.Clazz
   attributes: 	orderItem_name
@@ -36,7 +44,7 @@
   modified: 	false
   name: 	OrderItem
   propertyStyle: 	Bean
-  roles: 	orderItem_place
+  roles: 	orderItem_meals
 
 - client: 	org.fulib.classmodel.Clazz
   attributes: 	client_name
@@ -45,6 +53,14 @@
   name: 	Client
   propertyStyle: 	Bean
   roles: 	client_place 	client_table
+
+- order: 	org.fulib.classmodel.Clazz
+  attributes: 	order_name
+  model: 	c
+  modified: 	false
+  name: 	Order
+  propertyStyle: 	Bean
+  roles: 	order_place 	order_table 	order_meal
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -95,15 +111,27 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- place_items: 	org.fulib.classmodel.AssocRole
+- place_meals: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
   clazz: 	place
   collectionType: 	c1
-  id: 	Place_items
+  id: 	Place_meals
   modified: 	false
-  name: 	items
-  other: 	orderItem_place
+  name: 	meals
+  other: 	meal_place
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- place_orders: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	place
+  collectionType: 	c1
+  id: 	Place_orders
+  modified: 	false
+  name: 	orders
+  other: 	order_place
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -136,6 +164,59 @@
   other: 	client_table
   propertyStyle: 	Bean
 
+- table_order: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	table
+  id: 	Table_order
+  modified: 	false
+  name: 	order
+  other: 	order_table
+  propertyStyle: 	Bean
+
+- meal_name: 	org.fulib.classmodel.Attribute
+  clazz: 	meal
+  id: 	Meal_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- meal_place: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	meal
+  id: 	Meal_place
+  modified: 	false
+  name: 	place
+  other: 	place_meals
+  propertyStyle: 	Bean
+
+- meal_items: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	meal
+  collectionType: 	c1
+  id: 	Meal_items
+  modified: 	false
+  name: 	items
+  other: 	orderItem_meals
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- meal_orders: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	meal
+  collectionType: 	c1
+  id: 	Meal_orders
+  modified: 	false
+  name: 	orders
+  other: 	order_meal
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - orderItem_name: 	org.fulib.classmodel.Attribute
   clazz: 	orderItem
   id: 	OrderItem_name
@@ -145,15 +226,17 @@
   type: 	String
   typeSignature: 	String
 
-- orderItem_place: 	org.fulib.classmodel.AssocRole
+- orderItem_meals: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
-  cardinality: 	1
+  cardinality: 	42
   clazz: 	orderItem
-  id: 	OrderItem_place
+  collectionType: 	c1
+  id: 	OrderItem_meals
   modified: 	false
-  name: 	place
-  other: 	place_items
+  name: 	meals
+  other: 	meal_items
   propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
 
 - client_name: 	org.fulib.classmodel.Attribute
   clazz: 	client
@@ -182,5 +265,46 @@
   modified: 	false
   name: 	table
   other: 	table_client
+  propertyStyle: 	Bean
+
+- order_name: 	org.fulib.classmodel.Attribute
+  clazz: 	order
+  id: 	Order_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- order_place: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	order
+  collectionType: 	c1
+  id: 	Order_place
+  modified: 	false
+  name: 	place
+  other: 	place_orders
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- order_table: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	order
+  id: 	Order_table
+  modified: 	false
+  name: 	table
+  other: 	table_order
+  propertyStyle: 	Bean
+
+- order_meal: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	order
+  id: 	Order_meal
+  modified: 	false
+  name: 	meal
+  other: 	meal_orders
   propertyStyle: 	Bean
 

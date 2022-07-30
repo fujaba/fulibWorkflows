@@ -3,6 +3,7 @@ package org.fulib.reachable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 import org.fulib.FulibTables;
@@ -94,7 +95,9 @@ public class Reacher {
         certify(startGraph);
         certificateMap.put(startGraph.certificate(), startGraph);
         try {
+            Files.createDirectories(Path.of(this.drawPath));
             Files.writeString(Path.of(this.drawPath + "/startGraphCertificate.txt"), startGraph.certificate());
+            Files.writeString(Path.of(this.drawPath + "/matchTables.txt"), "");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,8 +129,13 @@ public class Reacher {
         matcher.withRootPatternObjects(pattern.getObjects());
         matcher.withRootObjects(currentGraph.objMap().values());
         matcher.match();
-        ObjectTable matchTable = matcher.getMatchTable(pattern.getObjects().get(pattern.getObjects().size()-1));
+        ObjectTable matchTable = matcher.getMatchTable(pattern.getObjects().get(0));
 
+        try {
+            Files.writeString(Path.of(this.drawPath + "/matchTables.txt"), matchTable.toString(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println(matchTable);
         // for all matches
         for (Object obj : matchTable.getTable()) {
@@ -186,13 +194,14 @@ public class Reacher {
 
     private String getCertifierName(Reflector reflector, Object obj) {
         if (this.certifierIgnoreNames) {
-            if ("Table".indexOf(obj.getClass().getSimpleName()) >= 0)
-            {
+            if ("Table".indexOf(obj.getClass().getSimpleName()) >= 0) {
                 return "t";
             }
+            if ("Client".indexOf(obj.getClass().getSimpleName()) >= 0) {
+                return "client";
+            }
             return reflector.getValue(obj, "name").toString();
-        }
-        else {
+        } else {
             return reflector.getValue(obj, "name").toString();
         }
     }
@@ -204,7 +213,9 @@ public class Reacher {
                 getCertifierName(reflector, obj));
 
         for (String prop : reflector.getAllProperties()) {
-            if (prop.equals("name") && obj.getClass().getSimpleName().equals("Table")) {
+            if (prop.equals("name") &&
+                    (obj.getClass().getSimpleName().equals("Table")
+                            || obj.getClass().getSimpleName().equals("Client"))) {
                 continue;
             }
             Object value = reflector.getValue(obj, prop);
@@ -249,8 +260,5 @@ public class Reacher {
         }
         return result;
     }
-
-
-
 
 }

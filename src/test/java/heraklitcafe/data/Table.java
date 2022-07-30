@@ -7,10 +7,12 @@ public class Table
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_PLACE = "place";
    public static final String PROPERTY_CLIENT = "client";
+   public static final String PROPERTY_ORDER = "order";
    private String name;
    private Place place;
    protected PropertyChangeSupport listeners;
    private Client client;
+   private Order order;
 
    public String getName()
    {
@@ -84,6 +86,33 @@ public class Table
       return this;
    }
 
+   public Order getOrder()
+   {
+      return this.order;
+   }
+
+   public Table setOrder(Order value)
+   {
+      if (this.order == value)
+      {
+         return this;
+      }
+
+      final Order oldValue = this.order;
+      if (this.order != null)
+      {
+         this.order = null;
+         oldValue.setTable(null);
+      }
+      this.order = value;
+      if (value != null)
+      {
+         value.setTable(this);
+      }
+      this.firePropertyChange(PROPERTY_ORDER, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -115,5 +144,6 @@ public class Table
    {
       this.setPlace(null);
       this.setClient(null);
+      this.setOrder(null);
    }
 }

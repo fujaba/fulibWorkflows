@@ -22,7 +22,7 @@ public class HeraklitRestaurantTest {
     public void testGenReachabilityData() {
         BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-reachable.es.yaml"));
-        boardGenerator.generateClassCode("src/test/java", "org.fulib.reachable");
+        // boardGenerator.generateClassCode("src/test/java", "org.fulib.reachable");
     }
 
 }

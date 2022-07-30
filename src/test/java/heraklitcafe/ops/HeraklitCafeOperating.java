@@ -20,9 +20,7 @@ import org.fulib.tables.ObjectTable;
 import org.fulib.workflows.generators.BoardGenerator;
 import org.fulib.yaml.Yaml;
 
-import heraklitcafe.data.Client;
-import heraklitcafe.data.Place;
-import heraklitcafe.data.Table;
+import heraklitcafe.data.*;
 
 public class HeraklitCafeOperating {
 
@@ -35,10 +33,32 @@ public class HeraklitCafeOperating {
     }
 
     public void runExperiments() {
+        moreRulesNoNames();
+        // offerTablesAndEnterRulesNoNames();
+        // offerTablesAndEnterRulesWithTableAndCustomerNames();
 
-        offerTablesAndEnterRulesNoNames();
-        offerTablesAndEnterRulesWithTableAndCustomerNames();
+    }
 
+    private void moreRulesNoNames() {
+        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
+
+        // execute init workflow
+        objMap = boardGenerator.loadObjectStructure(Place.class.getPackage().getName(), "default");
+        String yaml = Yaml.encode(objMap.values().toArray());
+        Graph graph = new Graph().setName("G0").setLabel("start").setObjMap(objMap);
+
+        Reacher reacher = new Reacher()
+                .setStartGraph(graph)
+                .setDrawPath("tmp/reachable/moreRulesNoNames")
+                .setCertifierIgnoreNames(true);
+
+        addSelectRule(reacher);
+        addOfferAndEnterRules(reacher);
+
+        // start graph and rules, lets reach
+        Graph reachables = reacher.reach();
+        reacher.draw();
     }
 
     private void offerTablesAndEnterRulesNoNames() {
@@ -55,7 +75,7 @@ public class HeraklitCafeOperating {
                 .setDrawPath("tmp/reachable/offerTablesAndEnterRulesNoNames")
                 .setCertifierIgnoreNames(true);
 
-        addRules(reacher);
+        addOfferAndEnterRules(reacher);
 
         // start graph and rules, lets reach
         Graph reachables = reacher.reach();
@@ -75,14 +95,14 @@ public class HeraklitCafeOperating {
                 .setStartGraph(graph)
                 .setDrawPath("tmp/reachable/offerTablesAndEnterRulesWithTableAndCustomerNames");
 
-        addRules(reacher);
+        addOfferAndEnterRules(reacher);
 
         // start graph and rules, lets reach
         Graph reachables = reacher.reach();
         reacher.draw();
     }
 
-    private void addRules(Reacher reacher) {
+    private void addOfferAndEnterRules(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
         PatternObject freeTablesVar = pb.buildPatternObject("freeTables");
@@ -105,6 +125,53 @@ public class HeraklitCafeOperating {
         enterRule = new Rule().setName("enter").setPattern(pb.getPattern()).setOp(this::enter);
         reacher.withRule(enterRule);
 
+    }
+
+    private void addSelectRule(Reacher reacher) {
+        // offer rule
+        PatternBuilder pb = FulibTables.patternBuilder();
+        PatternObject clientsReadyPlaceVar = pb.buildPatternObject("clientsReady");
+        PatternObject menuPlaceVar = pb.buildPatternObject("menu");
+        PatternObject ordersPlaceVar = pb.buildPatternObject("orders");
+        PatternObject waitingClientsPlaceVar = pb.buildPatternObject("waitingClients");
+        PatternObject tableVar = pb.buildPatternObject("table");
+        PatternObject mealVar = pb.buildPatternObject("meal");
+
+
+        pb.buildAttributeConstraint(menuPlaceVar, Place.class, p -> p.getName().equals("menu"));
+        pb.buildAttributeConstraint(clientsReadyPlaceVar, Place.class, p -> p.getName().equals("clientsReady"));
+        pb.buildAttributeConstraint(ordersPlaceVar, Place.class, p -> p.getName().equals("orders"));
+        pb.buildAttributeConstraint(waitingClientsPlaceVar, Place.class, p -> p.getName().equals("waitingClients"));
+
+        pb.buildPatternLink(clientsReadyPlaceVar, "place", "tables", tableVar);
+        pb.buildPatternLink(menuPlaceVar, "place", "meals", mealVar);
+
+        Rule selectRule = new Rule().setName("select").setPattern(pb.getPattern()).setOp(this::selectOp);
+        reacher.withRule(selectRule);
+
+
+    }
+
+
+    private void selectOp(Graph graph, ArrayList<Object> row) {
+        Table t = (Table) row.get(1);
+        Client c = t.getClient();
+        Meal m = (Meal) row.get(3);
+        Place orders = (Place) row.get(4);
+        Place waitingClients = (Place) row.get(5);
+
+        long orderNum = graph.objMap().values().stream().filter(o -> (o instanceof Order)).count();
+
+        Order order = new Order().setName("order" + orderNum);
+        order.setTable(t);
+        order.setMeal(m);
+        order.withPlace(orders, waitingClients);
+
+        waitingClients.withClients(c);
+        waitingClients.withTables(t);
+
+        // create an Order and add it to
+        graph.setLabel("orders: " + orders.getOrders());
     }
 
     private void offerTable(Graph graph, ArrayList<Object> row) {

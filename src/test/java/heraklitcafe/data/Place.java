@@ -11,13 +11,15 @@ public class Place
 {
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_TABLES = "tables";
-   public static final String PROPERTY_ITEMS = "items";
    public static final String PROPERTY_CLIENTS = "clients";
+   public static final String PROPERTY_MEALS = "meals";
+   public static final String PROPERTY_ORDERS = "orders";
    private String name;
    private List<Table> tables;
    protected PropertyChangeSupport listeners;
-   private List<OrderItem> items;
    private List<Client> clients;
+   private List<Meal> meals;
+   private List<Order> orders;
 
    public String getName()
    {
@@ -103,72 +105,6 @@ public class Place
       return this;
    }
 
-   public List<OrderItem> getItems()
-   {
-      return this.items != null ? Collections.unmodifiableList(this.items) : Collections.emptyList();
-   }
-
-   public Place withItems(OrderItem value)
-   {
-      if (this.items == null)
-      {
-         this.items = new ArrayList<>();
-      }
-      if (!this.items.contains(value))
-      {
-         this.items.add(value);
-         value.setPlace(this);
-         this.firePropertyChange(PROPERTY_ITEMS, null, value);
-      }
-      return this;
-   }
-
-   public Place withItems(OrderItem... value)
-   {
-      for (final OrderItem item : value)
-      {
-         this.withItems(item);
-      }
-      return this;
-   }
-
-   public Place withItems(Collection<? extends OrderItem> value)
-   {
-      for (final OrderItem item : value)
-      {
-         this.withItems(item);
-      }
-      return this;
-   }
-
-   public Place withoutItems(OrderItem value)
-   {
-      if (this.items != null && this.items.remove(value))
-      {
-         value.setPlace(null);
-         this.firePropertyChange(PROPERTY_ITEMS, value, null);
-      }
-      return this;
-   }
-
-   public Place withoutItems(OrderItem... value)
-   {
-      for (final OrderItem item : value)
-      {
-         this.withoutItems(item);
-      }
-      return this;
-   }
-
-   public Place withoutItems(Collection<? extends OrderItem> value)
-   {
-      for (final OrderItem item : value)
-      {
-         this.withoutItems(item);
-      }
-      return this;
-   }
-
    public List<Client> getClients()
    {
       return this.clients != null ? Collections.unmodifiableList(this.clients) : Collections.emptyList();
@@ -235,6 +171,138 @@ public class Place
       return this;
    }
 
+   public List<Meal> getMeals()
+   {
+      return this.meals != null ? Collections.unmodifiableList(this.meals) : Collections.emptyList();
+   }
+
+   public Place withMeals(Meal value)
+   {
+      if (this.meals == null)
+      {
+         this.meals = new ArrayList<>();
+      }
+      if (!this.meals.contains(value))
+      {
+         this.meals.add(value);
+         value.setPlace(this);
+         this.firePropertyChange(PROPERTY_MEALS, null, value);
+      }
+      return this;
+   }
+
+   public Place withMeals(Meal... value)
+   {
+      for (final Meal item : value)
+      {
+         this.withMeals(item);
+      }
+      return this;
+   }
+
+   public Place withMeals(Collection<? extends Meal> value)
+   {
+      for (final Meal item : value)
+      {
+         this.withMeals(item);
+      }
+      return this;
+   }
+
+   public Place withoutMeals(Meal value)
+   {
+      if (this.meals != null && this.meals.remove(value))
+      {
+         value.setPlace(null);
+         this.firePropertyChange(PROPERTY_MEALS, value, null);
+      }
+      return this;
+   }
+
+   public Place withoutMeals(Meal... value)
+   {
+      for (final Meal item : value)
+      {
+         this.withoutMeals(item);
+      }
+      return this;
+   }
+
+   public Place withoutMeals(Collection<? extends Meal> value)
+   {
+      for (final Meal item : value)
+      {
+         this.withoutMeals(item);
+      }
+      return this;
+   }
+
+   public List<Order> getOrders()
+   {
+      return this.orders != null ? Collections.unmodifiableList(this.orders) : Collections.emptyList();
+   }
+
+   public Place withOrders(Order value)
+   {
+      if (this.orders == null)
+      {
+         this.orders = new ArrayList<>();
+      }
+      if (!this.orders.contains(value))
+      {
+         this.orders.add(value);
+         value.withPlace(this);
+         this.firePropertyChange(PROPERTY_ORDERS, null, value);
+      }
+      return this;
+   }
+
+   public Place withOrders(Order... value)
+   {
+      for (final Order item : value)
+      {
+         this.withOrders(item);
+      }
+      return this;
+   }
+
+   public Place withOrders(Collection<? extends Order> value)
+   {
+      for (final Order item : value)
+      {
+         this.withOrders(item);
+      }
+      return this;
+   }
+
+   public Place withoutOrders(Order value)
+   {
+      if (this.orders != null && this.orders.remove(value))
+      {
+         value.withoutPlace(this);
+         this.firePropertyChange(PROPERTY_ORDERS, value, null);
+      }
+      return this;
+   }
+
+   public Place withoutOrders(Order... value)
+   {
+      for (final Order item : value)
+      {
+         this.withoutOrders(item);
+      }
+      return this;
+   }
+
+   public Place withoutOrders(Collection<? extends Order> value)
+   {
+      for (final Order item : value)
+      {
+         this.withoutOrders(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -266,6 +334,7 @@ public class Place
    {
       this.withoutTables(new ArrayList<>(this.getTables()));
       this.withoutClients(new ArrayList<>(this.getClients()));
-      this.withoutItems(new ArrayList<>(this.getItems()));
+      this.withoutMeals(new ArrayList<>(this.getMeals()));
+      this.withoutOrders(new ArrayList<>(this.getOrders()));
    }
 }

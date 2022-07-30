@@ -1,14 +1,18 @@
 package heraklitcafe.data;
 import java.util.Objects;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
+import java.util.Collection;
 
 public class OrderItem
 {
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_PLACE = "place";
+   public static final String PROPERTY_MEALS = "meals";
    private String name;
    protected PropertyChangeSupport listeners;
-   private Place place;
+   private List<Meal> meals;
 
    public String getName()
    {
@@ -28,30 +32,69 @@ public class OrderItem
       return this;
    }
 
-   public Place getPlace()
+   public List<Meal> getMeals()
    {
-      return this.place;
+      return this.meals != null ? Collections.unmodifiableList(this.meals) : Collections.emptyList();
    }
 
-   public OrderItem setPlace(Place value)
+   public OrderItem withMeals(Meal value)
    {
-      if (this.place == value)
+      if (this.meals == null)
       {
-         return this;
+         this.meals = new ArrayList<>();
       }
-
-      final Place oldValue = this.place;
-      if (this.place != null)
+      if (!this.meals.contains(value))
       {
-         this.place = null;
-         oldValue.withoutItems(this);
-      }
-      this.place = value;
-      if (value != null)
-      {
+         this.meals.add(value);
          value.withItems(this);
+         this.firePropertyChange(PROPERTY_MEALS, null, value);
       }
-      this.firePropertyChange(PROPERTY_PLACE, oldValue, value);
+      return this;
+   }
+
+   public OrderItem withMeals(Meal... value)
+   {
+      for (final Meal item : value)
+      {
+         this.withMeals(item);
+      }
+      return this;
+   }
+
+   public OrderItem withMeals(Collection<? extends Meal> value)
+   {
+      for (final Meal item : value)
+      {
+         this.withMeals(item);
+      }
+      return this;
+   }
+
+   public OrderItem withoutMeals(Meal value)
+   {
+      if (this.meals != null && this.meals.remove(value))
+      {
+         value.withoutItems(this);
+         this.firePropertyChange(PROPERTY_MEALS, value, null);
+      }
+      return this;
+   }
+
+   public OrderItem withoutMeals(Meal... value)
+   {
+      for (final Meal item : value)
+      {
+         this.withoutMeals(item);
+      }
+      return this;
+   }
+
+   public OrderItem withoutMeals(Collection<? extends Meal> value)
+   {
+      for (final Meal item : value)
+      {
+         this.withoutMeals(item);
+      }
       return this;
    }
 
@@ -84,6 +127,6 @@ public class OrderItem
 
    public void removeYou()
    {
-      this.setPlace(null);
+      this.withoutMeals(new ArrayList<>(this.getMeals()));
    }
 }
