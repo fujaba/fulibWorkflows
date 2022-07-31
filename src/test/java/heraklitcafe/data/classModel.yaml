@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	branch 	place 	table 	meal 	orderItem 	client 	order
+  classes: 	branch 	place 	table 	selection 	orderItem 	client 	order
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -20,7 +20,7 @@
   modified: 	false
   name: 	Place
   propertyStyle: 	Bean
-  roles: 	place_tables 	place_clients 	place_meals 	place_orders
+  roles: 	place_tables 	place_clients 	place_selections 	place_orders
 
 - table: 	org.fulib.classmodel.Clazz
   attributes: 	table_name
@@ -30,13 +30,13 @@
   propertyStyle: 	Bean
   roles: 	table_place 	table_client 	table_order
 
-- meal: 	org.fulib.classmodel.Clazz
-  attributes: 	meal_name
+- selection: 	org.fulib.classmodel.Clazz
+  attributes: 	selection_name
   model: 	c
   modified: 	false
-  name: 	Meal
+  name: 	Selection
   propertyStyle: 	Bean
-  roles: 	meal_place 	meal_items 	meal_orders
+  roles: 	selection_place 	selection_items 	selection_orders
 
 - orderItem: 	org.fulib.classmodel.Clazz
   attributes: 	orderItem_name
@@ -44,7 +44,7 @@
   modified: 	false
   name: 	OrderItem
   propertyStyle: 	Bean
-  roles: 	orderItem_meals
+  roles: 	orderItem_selections
 
 - client: 	org.fulib.classmodel.Clazz
   attributes: 	client_name
@@ -60,7 +60,7 @@
   modified: 	false
   name: 	Order
   propertyStyle: 	Bean
-  roles: 	order_place 	order_table 	order_meal
+  roles: 	order_place 	order_table 	order_selection
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -111,15 +111,15 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- place_meals: 	org.fulib.classmodel.AssocRole
+- place_selections: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
   clazz: 	place
   collectionType: 	c1
-  id: 	Place_meals
+  id: 	Place_selections
   modified: 	false
-  name: 	meals
-  other: 	meal_place
+  name: 	selections
+  other: 	selection_place
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -174,46 +174,46 @@
   other: 	order_table
   propertyStyle: 	Bean
 
-- meal_name: 	org.fulib.classmodel.Attribute
-  clazz: 	meal
-  id: 	Meal_name
+- selection_name: 	org.fulib.classmodel.Attribute
+  clazz: 	selection
+  id: 	Selection_name
   modified: 	false
   name: 	name
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
 
-- meal_place: 	org.fulib.classmodel.AssocRole
+- selection_place: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
-  clazz: 	meal
-  id: 	Meal_place
+  clazz: 	selection
+  id: 	Selection_place
   modified: 	false
   name: 	place
-  other: 	place_meals
+  other: 	place_selections
   propertyStyle: 	Bean
 
-- meal_items: 	org.fulib.classmodel.AssocRole
+- selection_items: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
-  clazz: 	meal
+  clazz: 	selection
   collectionType: 	c1
-  id: 	Meal_items
+  id: 	Selection_items
   modified: 	false
   name: 	items
-  other: 	orderItem_meals
+  other: 	orderItem_selections
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- meal_orders: 	org.fulib.classmodel.AssocRole
+- selection_orders: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
-  clazz: 	meal
+  clazz: 	selection
   collectionType: 	c1
-  id: 	Meal_orders
+  id: 	Selection_orders
   modified: 	false
   name: 	orders
-  other: 	order_meal
+  other: 	order_selection
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -226,15 +226,15 @@
   type: 	String
   typeSignature: 	String
 
-- orderItem_meals: 	org.fulib.classmodel.AssocRole
+- orderItem_selections: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
   clazz: 	orderItem
   collectionType: 	c1
-  id: 	OrderItem_meals
+  id: 	OrderItem_selections
   modified: 	false
-  name: 	meals
-  other: 	meal_items
+  name: 	selections
+  other: 	selection_items
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -298,13 +298,13 @@
   other: 	table_order
   propertyStyle: 	Bean
 
-- order_meal: 	org.fulib.classmodel.AssocRole
+- order_selection: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
   clazz: 	order
-  id: 	Order_meal
+  id: 	Order_selection
   modified: 	false
-  name: 	meal
-  other: 	meal_orders
+  name: 	selection
+  other: 	selection_orders
   propertyStyle: 	Bean
 

@@ -11,12 +11,12 @@ public class Order
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_PLACE = "place";
    public static final String PROPERTY_TABLE = "table";
-   public static final String PROPERTY_MEAL = "meal";
+   public static final String PROPERTY_SELECTION = "selection";
    private String name;
    private List<Place> place;
    protected PropertyChangeSupport listeners;
    private Table table;
-   private Meal meal;
+   private Selection selection;
 
    public String getName()
    {
@@ -129,30 +129,30 @@ public class Order
       return this;
    }
 
-   public Meal getMeal()
+   public Selection getSelection()
    {
-      return this.meal;
+      return this.selection;
    }
 
-   public Order setMeal(Meal value)
+   public Order setSelection(Selection value)
    {
-      if (this.meal == value)
+      if (this.selection == value)
       {
          return this;
       }
 
-      final Meal oldValue = this.meal;
-      if (this.meal != null)
+      final Selection oldValue = this.selection;
+      if (this.selection != null)
       {
-         this.meal = null;
+         this.selection = null;
          oldValue.withoutOrders(this);
       }
-      this.meal = value;
+      this.selection = value;
       if (value != null)
       {
          value.withOrders(this);
       }
-      this.firePropertyChange(PROPERTY_MEAL, oldValue, value);
+      this.firePropertyChange(PROPERTY_SELECTION, oldValue, value);
       return this;
    }
 
@@ -187,6 +187,6 @@ public class Order
    {
       this.withoutPlace(new ArrayList<>(this.getPlace()));
       this.setTable(null);
-      this.setMeal(null);
+      this.setSelection(null);
    }
 }

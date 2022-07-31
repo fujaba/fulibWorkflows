@@ -11,10 +11,7 @@ import org.fulib.yaml.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.Map.Entry;
 
 /**
@@ -197,8 +194,9 @@ public class BoardGenerator {
                     continue;
                 }
 
-                if (value instanceof Collection valueList) {
-                    for (YamlObject yamlValue : values) {
+                if (value instanceof Collection ) {
+                    ArrayList<YamlObject> valueList = (ArrayList<YamlObject>) value;
+                    for (YamlObject yamlValue : valueList) {
                         Object tgt = objMap.get(yamlValue.getId());
                         reflector.setValue(obj, prop, tgt);
                     }

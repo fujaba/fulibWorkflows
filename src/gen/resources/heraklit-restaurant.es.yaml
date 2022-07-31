@@ -31,17 +31,20 @@
   place: freeTables
 
 - data: Place menu
-  meals: [m1, m2]
-- data: Meal m1
+  selections: [sel1, sel2]
+- data: Selection sel1
   items: [m_meat, m_rice]
   place: menu
-- data: Meal m2
+- data: Selection sel2
+  items: [m_salad]
   place: menu
 
 - data: OrderItem m_rice
-  meals: [m1]
+  selections: [sel1]
 - data: OrderItem m_meat
+  selections: [sel1]
 - data: OrderItem m_salad
+  selections: [sel2]
 
 - data: Place clientsEntry
   clients: [Alice, Bob]

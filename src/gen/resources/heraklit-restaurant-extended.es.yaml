@@ -31,23 +31,22 @@
   place: freeTables
 
 - data: Place menu
-  meals: [m1, m2, m3]
-- data: Meal m1
+  selections: [sel1, sel2]
+- data: Selection sel1
   items: [m_meat, m_rice]
   place: menu
-- data: Meal m2
+- data: Selection sel2
   items: [m_salad]
   place: menu
-- data: Meal m3
-  items: [m_meat, m_salad, m_rice]
-  place: menu
+
 
 - data: OrderItem m_rice
-  meals: [m1, m3]
+  selections: [sel1]
 - data: OrderItem m_meat
-  meals: [m1, m3]
+  selections: [sel1]
 - data: OrderItem m_salad
-  meals: [m2, m3]
+  selections: [sel2]
+
 
 
 - data: Place clientsEntry
@@ -65,13 +64,13 @@
 
 - data: Order order1
   table: t1
-  meal: m1
+  selection: sel1
   place: [orders, waitingClients]
 
 - data: Table t1
   order: order1
 
-- data: Meal m1
+- data: Selection sel1
   orders: [order1]
 
 - data: Place orders

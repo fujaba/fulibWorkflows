@@ -12,14 +12,14 @@ public class Place
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_TABLES = "tables";
    public static final String PROPERTY_CLIENTS = "clients";
-   public static final String PROPERTY_MEALS = "meals";
    public static final String PROPERTY_ORDERS = "orders";
+   public static final String PROPERTY_SELECTIONS = "selections";
    private String name;
    private List<Table> tables;
    protected PropertyChangeSupport listeners;
    private List<Client> clients;
-   private List<Meal> meals;
    private List<Order> orders;
+   private List<Selection> selections;
 
    public String getName()
    {
@@ -171,72 +171,6 @@ public class Place
       return this;
    }
 
-   public List<Meal> getMeals()
-   {
-      return this.meals != null ? Collections.unmodifiableList(this.meals) : Collections.emptyList();
-   }
-
-   public Place withMeals(Meal value)
-   {
-      if (this.meals == null)
-      {
-         this.meals = new ArrayList<>();
-      }
-      if (!this.meals.contains(value))
-      {
-         this.meals.add(value);
-         value.setPlace(this);
-         this.firePropertyChange(PROPERTY_MEALS, null, value);
-      }
-      return this;
-   }
-
-   public Place withMeals(Meal... value)
-   {
-      for (final Meal item : value)
-      {
-         this.withMeals(item);
-      }
-      return this;
-   }
-
-   public Place withMeals(Collection<? extends Meal> value)
-   {
-      for (final Meal item : value)
-      {
-         this.withMeals(item);
-      }
-      return this;
-   }
-
-   public Place withoutMeals(Meal value)
-   {
-      if (this.meals != null && this.meals.remove(value))
-      {
-         value.setPlace(null);
-         this.firePropertyChange(PROPERTY_MEALS, value, null);
-      }
-      return this;
-   }
-
-   public Place withoutMeals(Meal... value)
-   {
-      for (final Meal item : value)
-      {
-         this.withoutMeals(item);
-      }
-      return this;
-   }
-
-   public Place withoutMeals(Collection<? extends Meal> value)
-   {
-      for (final Meal item : value)
-      {
-         this.withoutMeals(item);
-      }
-      return this;
-   }
-
    public List<Order> getOrders()
    {
       return this.orders != null ? Collections.unmodifiableList(this.orders) : Collections.emptyList();
@@ -303,6 +237,72 @@ public class Place
       return this;
    }
 
+   public List<Selection> getSelections()
+   {
+      return this.selections != null ? Collections.unmodifiableList(this.selections) : Collections.emptyList();
+   }
+
+   public Place withSelections(Selection value)
+   {
+      if (this.selections == null)
+      {
+         this.selections = new ArrayList<>();
+      }
+      if (!this.selections.contains(value))
+      {
+         this.selections.add(value);
+         value.setPlace(this);
+         this.firePropertyChange(PROPERTY_SELECTIONS, null, value);
+      }
+      return this;
+   }
+
+   public Place withSelections(Selection... value)
+   {
+      for (final Selection item : value)
+      {
+         this.withSelections(item);
+      }
+      return this;
+   }
+
+   public Place withSelections(Collection<? extends Selection> value)
+   {
+      for (final Selection item : value)
+      {
+         this.withSelections(item);
+      }
+      return this;
+   }
+
+   public Place withoutSelections(Selection value)
+   {
+      if (this.selections != null && this.selections.remove(value))
+      {
+         value.setPlace(null);
+         this.firePropertyChange(PROPERTY_SELECTIONS, value, null);
+      }
+      return this;
+   }
+
+   public Place withoutSelections(Selection... value)
+   {
+      for (final Selection item : value)
+      {
+         this.withoutSelections(item);
+      }
+      return this;
+   }
+
+   public Place withoutSelections(Collection<? extends Selection> value)
+   {
+      for (final Selection item : value)
+      {
+         this.withoutSelections(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -334,7 +334,7 @@ public class Place
    {
       this.withoutTables(new ArrayList<>(this.getTables()));
       this.withoutClients(new ArrayList<>(this.getClients()));
-      this.withoutMeals(new ArrayList<>(this.getMeals()));
+      this.withoutSelections(new ArrayList<>(this.getSelections()));
       this.withoutOrders(new ArrayList<>(this.getOrders()));
    }
 }

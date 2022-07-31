@@ -135,7 +135,7 @@ public class HeraklitCafeOperating {
         PatternObject ordersPlaceVar = pb.buildPatternObject("orders");
         PatternObject waitingClientsPlaceVar = pb.buildPatternObject("waitingClients");
         PatternObject tableVar = pb.buildPatternObject("table");
-        PatternObject mealVar = pb.buildPatternObject("meal");
+        PatternObject selectionVar = pb.buildPatternObject("selection");
 
 
         pb.buildAttributeConstraint(menuPlaceVar, Place.class, p -> p.getName().equals("menu"));
@@ -144,7 +144,7 @@ public class HeraklitCafeOperating {
         pb.buildAttributeConstraint(waitingClientsPlaceVar, Place.class, p -> p.getName().equals("waitingClients"));
 
         pb.buildPatternLink(clientsReadyPlaceVar, "place", "tables", tableVar);
-        pb.buildPatternLink(menuPlaceVar, "place", "meals", mealVar);
+        pb.buildPatternLink(menuPlaceVar, "place", "selections", selectionVar);
 
         Rule selectRule = new Rule().setName("select").setPattern(pb.getPattern()).setOp(this::selectOp);
         reacher.withRule(selectRule);
@@ -156,15 +156,13 @@ public class HeraklitCafeOperating {
     private void selectOp(Graph graph, ArrayList<Object> row) {
         Table t = (Table) row.get(1);
         Client c = t.getClient();
-        Meal m = (Meal) row.get(3);
+        Selection m = (Selection) row.get(3);
         Place orders = (Place) row.get(4);
         Place waitingClients = (Place) row.get(5);
 
-        long orderNum = graph.objMap().values().stream().filter(o -> (o instanceof Order)).count();
-
-        Order order = new Order().setName("order" + orderNum);
+        Order order = new Order().setName("order-" + t.getName() + m.getName());
         order.setTable(t);
-        order.setMeal(m);
+        order.setSelection(m);
         order.withPlace(orders, waitingClients);
 
         waitingClients.withClients(c);

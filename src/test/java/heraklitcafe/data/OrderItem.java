@@ -9,10 +9,10 @@ import java.util.Collection;
 public class OrderItem
 {
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_MEALS = "meals";
+   public static final String PROPERTY_SELECTIONS = "selections";
    private String name;
    protected PropertyChangeSupport listeners;
-   private List<Meal> meals;
+   private List<Selection> selections;
 
    public String getName()
    {
@@ -32,68 +32,68 @@ public class OrderItem
       return this;
    }
 
-   public List<Meal> getMeals()
+   public List<Selection> getSelections()
    {
-      return this.meals != null ? Collections.unmodifiableList(this.meals) : Collections.emptyList();
+      return this.selections != null ? Collections.unmodifiableList(this.selections) : Collections.emptyList();
    }
 
-   public OrderItem withMeals(Meal value)
+   public OrderItem withSelections(Selection value)
    {
-      if (this.meals == null)
+      if (this.selections == null)
       {
-         this.meals = new ArrayList<>();
+         this.selections = new ArrayList<>();
       }
-      if (!this.meals.contains(value))
+      if (!this.selections.contains(value))
       {
-         this.meals.add(value);
+         this.selections.add(value);
          value.withItems(this);
-         this.firePropertyChange(PROPERTY_MEALS, null, value);
+         this.firePropertyChange(PROPERTY_SELECTIONS, null, value);
       }
       return this;
    }
 
-   public OrderItem withMeals(Meal... value)
+   public OrderItem withSelections(Selection... value)
    {
-      for (final Meal item : value)
+      for (final Selection item : value)
       {
-         this.withMeals(item);
+         this.withSelections(item);
       }
       return this;
    }
 
-   public OrderItem withMeals(Collection<? extends Meal> value)
+   public OrderItem withSelections(Collection<? extends Selection> value)
    {
-      for (final Meal item : value)
+      for (final Selection item : value)
       {
-         this.withMeals(item);
+         this.withSelections(item);
       }
       return this;
    }
 
-   public OrderItem withoutMeals(Meal value)
+   public OrderItem withoutSelections(Selection value)
    {
-      if (this.meals != null && this.meals.remove(value))
+      if (this.selections != null && this.selections.remove(value))
       {
          value.withoutItems(this);
-         this.firePropertyChange(PROPERTY_MEALS, value, null);
+         this.firePropertyChange(PROPERTY_SELECTIONS, value, null);
       }
       return this;
    }
 
-   public OrderItem withoutMeals(Meal... value)
+   public OrderItem withoutSelections(Selection... value)
    {
-      for (final Meal item : value)
+      for (final Selection item : value)
       {
-         this.withoutMeals(item);
+         this.withoutSelections(item);
       }
       return this;
    }
 
-   public OrderItem withoutMeals(Collection<? extends Meal> value)
+   public OrderItem withoutSelections(Collection<? extends Selection> value)
    {
-      for (final Meal item : value)
+      for (final Selection item : value)
       {
-         this.withoutMeals(item);
+         this.withoutSelections(item);
       }
       return this;
    }
@@ -127,6 +127,6 @@ public class OrderItem
 
    public void removeYou()
    {
-      this.withoutMeals(new ArrayList<>(this.getMeals()));
+      this.withoutSelections(new ArrayList<>(this.getSelections()));
    }
 }
