@@ -77,3 +77,11 @@
   orders: [order1]
 - data: Place waitingClients
   orders: [order1]
+
+- data: Place orderItems
+  itemRefs: [ir1]
+- data: ItemRef ir1
+  orderItem: m_rice
+  place: orderItems
+- data: OrderItem m_rice
+  itemRefs: [ir1]

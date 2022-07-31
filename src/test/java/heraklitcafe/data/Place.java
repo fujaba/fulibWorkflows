@@ -14,12 +14,14 @@ public class Place
    public static final String PROPERTY_CLIENTS = "clients";
    public static final String PROPERTY_ORDERS = "orders";
    public static final String PROPERTY_SELECTIONS = "selections";
+   public static final String PROPERTY_ITEM_REFS = "itemRefs";
    private String name;
    private List<Table> tables;
    protected PropertyChangeSupport listeners;
    private List<Client> clients;
    private List<Order> orders;
    private List<Selection> selections;
+   private List<ItemRef> itemRefs;
 
    public String getName()
    {
@@ -303,6 +305,72 @@ public class Place
       return this;
    }
 
+   public List<ItemRef> getItemRefs()
+   {
+      return this.itemRefs != null ? Collections.unmodifiableList(this.itemRefs) : Collections.emptyList();
+   }
+
+   public Place withItemRefs(ItemRef value)
+   {
+      if (this.itemRefs == null)
+      {
+         this.itemRefs = new ArrayList<>();
+      }
+      if (!this.itemRefs.contains(value))
+      {
+         this.itemRefs.add(value);
+         value.setPlace(this);
+         this.firePropertyChange(PROPERTY_ITEM_REFS, null, value);
+      }
+      return this;
+   }
+
+   public Place withItemRefs(ItemRef... value)
+   {
+      for (final ItemRef item : value)
+      {
+         this.withItemRefs(item);
+      }
+      return this;
+   }
+
+   public Place withItemRefs(Collection<? extends ItemRef> value)
+   {
+      for (final ItemRef item : value)
+      {
+         this.withItemRefs(item);
+      }
+      return this;
+   }
+
+   public Place withoutItemRefs(ItemRef value)
+   {
+      if (this.itemRefs != null && this.itemRefs.remove(value))
+      {
+         value.setPlace(null);
+         this.firePropertyChange(PROPERTY_ITEM_REFS, value, null);
+      }
+      return this;
+   }
+
+   public Place withoutItemRefs(ItemRef... value)
+   {
+      for (final ItemRef item : value)
+      {
+         this.withoutItemRefs(item);
+      }
+      return this;
+   }
+
+   public Place withoutItemRefs(Collection<? extends ItemRef> value)
+   {
+      for (final ItemRef item : value)
+      {
+         this.withoutItemRefs(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -336,5 +404,6 @@ public class Place
       this.withoutClients(new ArrayList<>(this.getClients()));
       this.withoutSelections(new ArrayList<>(this.getSelections()));
       this.withoutOrders(new ArrayList<>(this.getOrders()));
+      this.withoutItemRefs(new ArrayList<>(this.getItemRefs()));
    }
 }

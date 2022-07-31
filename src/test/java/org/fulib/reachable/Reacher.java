@@ -15,6 +15,8 @@ import org.fulib.tables.ObjectTable;
 import org.fulib.tools.GraphDiagram;
 import org.fulib.yaml.*;
 
+import heraklitcafe.data.ItemRef;
+
 public class Reacher {
 
     private Graph startGraph;
@@ -31,6 +33,7 @@ public class Reacher {
     private String packageName;
     private String drawPath;
     private boolean certifierIgnoreNames = false;
+    private String nameIgnoredClasses = "Table Client ItemRef";
 
     public ArrayList<Rule> getRuleSet() {
         return ruleSet;
@@ -132,7 +135,8 @@ public class Reacher {
         ObjectTable matchTable = matcher.getMatchTable(pattern.getObjects().get(0));
 
         try {
-            Files.writeString(Path.of(this.drawPath + "/matchTables.txt"), matchTable.toString(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            Files.writeString(Path.of(this.drawPath + "/matchTables.txt"), matchTable.toString(),
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -165,6 +169,16 @@ public class Reacher {
                 reachableGraph.withGraph(cloneGraph);
                 new Op().setName(currentRule.getName()).setSrc(currentGraph).setTgt(cloneGraph);
                 todoList.add(cloneGraph);
+                try {
+                    Files.writeString(Path.of(this.drawPath + "/" + cloneGraph.getName() + ".cert.txt"),
+                            cloneGraph.certificate());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (cloneGraph.getName().equals("G204")) {
+                    System.out.println(String.join("\n", cloneGraph.objMap().keySet()));
+                    System.out.println();
+                }
             }
         }
 
@@ -177,6 +191,7 @@ public class Reacher {
         reflectorMap = new ReflectorMap(packageName);
         TreeSet<String> dataNotes = new TreeSet<>((a, b) -> a.compareTo(b) < 0 ? -1 : 1);
         dataNotes.add("- workflow: state\n");
+        int numOfItemRef = 1;
         for (Object obj : objects) {
             String oneData = certifyProperties(dataNotes, obj);
             dataNotes.add(oneData);
@@ -194,11 +209,8 @@ public class Reacher {
 
     private String getCertifierName(Reflector reflector, Object obj) {
         if (this.certifierIgnoreNames) {
-            if ("Table".indexOf(obj.getClass().getSimpleName()) >= 0) {
-                return "t";
-            }
-            if ("Client".indexOf(obj.getClass().getSimpleName()) >= 0) {
-                return "client";
+            if (nameIgnoredClasses.indexOf(obj.getClass().getSimpleName()) >= 0) {
+                return "nn";
             }
             return reflector.getValue(obj, "name").toString();
         } else {
@@ -214,8 +226,7 @@ public class Reacher {
 
         for (String prop : reflector.getAllProperties()) {
             if (prop.equals("name") &&
-                    (obj.getClass().getSimpleName().equals("Table")
-                            || obj.getClass().getSimpleName().equals("Client"))) {
+                    (nameIgnoredClasses.indexOf(obj.getClass().getSimpleName()) >= 0)) {
                 continue;
             }
             Object value = reflector.getValue(obj, prop);

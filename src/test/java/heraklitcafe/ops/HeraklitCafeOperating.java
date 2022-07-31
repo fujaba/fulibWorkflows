@@ -53,8 +53,9 @@ public class HeraklitCafeOperating {
                 .setDrawPath("tmp/reachable/moreRulesNoNames")
                 .setCertifierIgnoreNames(true);
 
-        addSelectRule(reacher);
+        addUnfoldRule(reacher);
         addOfferAndEnterRules(reacher);
+        addSelectRule(reacher);
 
         // start graph and rules, lets reach
         Graph reachables = reacher.reach();
@@ -127,6 +128,49 @@ public class HeraklitCafeOperating {
 
     }
 
+    private void addUnfoldRule(Reacher reacher) {
+        // offer rule
+        PatternBuilder pb = FulibTables.patternBuilder();
+
+        PatternObject ordersPlaceVar = pb.buildPatternObject("orders");
+        pb.buildAttributeConstraint(ordersPlaceVar, Place.class, p -> p.getName().equals("orders"));
+
+        PatternObject orderItemsPlaceVar = pb.buildPatternObject("orderItems");
+        pb.buildAttributeConstraint(orderItemsPlaceVar, Place.class, p -> p.getName().equals("orderItems"));
+
+        PatternObject pendingOrdersPlaceVar = pb.buildPatternObject("pendingOrders");
+        pb.buildAttributeConstraint(pendingOrdersPlaceVar, Place.class, p -> p.getName().equals("pendingOrders"));
+
+        PatternObject orderVar = pb.buildPatternObject("order");
+        pb.buildPatternLink(ordersPlaceVar, "place", "orders", orderVar);
+
+        Rule rule = new Rule().setName("unfold").setPattern(pb.getPattern()).setOp(this::unfoldOp);
+        reacher.withRule(rule);
+    }
+
+    int itemRefNum = 1;
+
+    private void unfoldOp(Graph graph, ArrayList<Object> row) {
+        Place ordersPlace = (Place) row.get(0);
+        Order order = (Order) row.get(1);
+        Place orderItemsPlace = (Place) row.get(2);
+        Place pendingPlace = (Place) row.get(3);
+
+        ordersPlace.withoutOrders(order);
+
+        for (OrderItem orderItem : order.getSelection().getItems()) {
+            ItemRef ir = new ItemRef().setName("ir" + itemRefNum++)
+            .setOrderItem(orderItem)
+            .setPlace(orderItemsPlace);
+            graph.objMap().put(ir.getName(), ir);
+        }
+
+        pendingPlace.withOrders(order);
+
+        // create an Order and add it to
+        graph.setLabel("pending: " + pendingPlace.getOrders());
+    }
+
     private void addSelectRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
@@ -136,7 +180,6 @@ public class HeraklitCafeOperating {
         PatternObject waitingClientsPlaceVar = pb.buildPatternObject("waitingClients");
         PatternObject tableVar = pb.buildPatternObject("table");
         PatternObject selectionVar = pb.buildPatternObject("selection");
-
 
         pb.buildAttributeConstraint(menuPlaceVar, Place.class, p -> p.getName().equals("menu"));
         pb.buildAttributeConstraint(clientsReadyPlaceVar, Place.class, p -> p.getName().equals("clientsReady"));
@@ -148,10 +191,7 @@ public class HeraklitCafeOperating {
 
         Rule selectRule = new Rule().setName("select").setPattern(pb.getPattern()).setOp(this::selectOp);
         reacher.withRule(selectRule);
-
-
     }
-
 
     private void selectOp(Graph graph, ArrayList<Object> row) {
         Table t = (Table) row.get(1);
@@ -164,6 +204,8 @@ public class HeraklitCafeOperating {
         order.setTable(t);
         order.setSelection(m);
         order.withPlace(orders, waitingClients);
+        graph.objMap().put(order.getName(), order);
+
 
         waitingClients.withClients(c);
         waitingClients.withTables(t);
