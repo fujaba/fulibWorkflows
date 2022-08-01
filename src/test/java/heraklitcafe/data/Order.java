@@ -12,11 +12,13 @@ public class Order
    public static final String PROPERTY_PLACE = "place";
    public static final String PROPERTY_TABLE = "table";
    public static final String PROPERTY_SELECTION = "selection";
+   public static final String PROPERTY_MEAL_ITEMS = "mealItems";
    private String name;
    private List<Place> place;
    protected PropertyChangeSupport listeners;
    private Table table;
    private Selection selection;
+   private List<MealItem> mealItems;
 
    public String getName()
    {
@@ -156,6 +158,72 @@ public class Order
       return this;
    }
 
+   public List<MealItem> getMealItems()
+   {
+      return this.mealItems != null ? Collections.unmodifiableList(this.mealItems) : Collections.emptyList();
+   }
+
+   public Order withMealItems(MealItem value)
+   {
+      if (this.mealItems == null)
+      {
+         this.mealItems = new ArrayList<>();
+      }
+      if (!this.mealItems.contains(value))
+      {
+         this.mealItems.add(value);
+         value.setOrder(this);
+         this.firePropertyChange(PROPERTY_MEAL_ITEMS, null, value);
+      }
+      return this;
+   }
+
+   public Order withMealItems(MealItem... value)
+   {
+      for (final MealItem item : value)
+      {
+         this.withMealItems(item);
+      }
+      return this;
+   }
+
+   public Order withMealItems(Collection<? extends MealItem> value)
+   {
+      for (final MealItem item : value)
+      {
+         this.withMealItems(item);
+      }
+      return this;
+   }
+
+   public Order withoutMealItems(MealItem value)
+   {
+      if (this.mealItems != null && this.mealItems.remove(value))
+      {
+         value.setOrder(null);
+         this.firePropertyChange(PROPERTY_MEAL_ITEMS, value, null);
+      }
+      return this;
+   }
+
+   public Order withoutMealItems(MealItem... value)
+   {
+      for (final MealItem item : value)
+      {
+         this.withoutMealItems(item);
+      }
+      return this;
+   }
+
+   public Order withoutMealItems(Collection<? extends MealItem> value)
+   {
+      for (final MealItem item : value)
+      {
+         this.withoutMealItems(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -188,5 +256,6 @@ public class Order
       this.withoutPlace(new ArrayList<>(this.getPlace()));
       this.setTable(null);
       this.setSelection(null);
+      this.withoutMealItems(new ArrayList<>(this.getMealItems()));
    }
 }

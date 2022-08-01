@@ -7,10 +7,12 @@ public class MealItem
    public static final String PROPERTY_NAME = "name";
    public static final String PROPERTY_PLACE = "place";
    public static final String PROPERTY_ORDER_ITEM = "orderItem";
+   public static final String PROPERTY_ORDER = "order";
    private String name;
    private Place place;
    private OrderItem orderItem;
    protected PropertyChangeSupport listeners;
+   private Order order;
 
    public String getName()
    {
@@ -84,6 +86,33 @@ public class MealItem
       return this;
    }
 
+   public Order getOrder()
+   {
+      return this.order;
+   }
+
+   public MealItem setOrder(Order value)
+   {
+      if (this.order == value)
+      {
+         return this;
+      }
+
+      final Order oldValue = this.order;
+      if (this.order != null)
+      {
+         this.order = null;
+         oldValue.withoutMealItems(this);
+      }
+      this.order = value;
+      if (value != null)
+      {
+         value.withMealItems(this);
+      }
+      this.firePropertyChange(PROPERTY_ORDER, oldValue, value);
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -115,5 +144,6 @@ public class MealItem
    {
       this.setPlace(null);
       this.setOrderItem(null);
+      this.setOrder(null);
    }
 }

@@ -92,6 +92,10 @@
 - data: MealItem mi1
   place: mealItems
   orderItem: m_rice
+  order: order1
 
 - data: OrderItem m_rice
+  mealItems: [mi1]
+
+- data: Order order1
   mealItems: [mi1]

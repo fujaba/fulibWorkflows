@@ -3,6 +3,7 @@ package heraklitcafe.ops;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -53,10 +54,11 @@ public class HeraklitCafeOperating {
                 .setDrawPath("tmp/reachable/moreRulesNoNames")
                 .setCertifierIgnoreNames(true);
 
-        addCookRule(reacher);
+        handOverRule(reacher);
         addOfferAndEnterRules(reacher);
         addSelectRule(reacher);
         addUnfoldRule(reacher);
+        addCookRule(reacher);
 
         // start graph and rules, lets reach
         Graph reachables = reacher.reach();
@@ -127,6 +129,72 @@ public class HeraklitCafeOperating {
         enterRule = new Rule().setName("enter").setPattern(pb.getPattern()).setOp(this::enter);
         reacher.withRule(enterRule);
 
+    }
+
+    private void handOverRule(Reacher reacher) {
+        // offer rule
+        PatternBuilder pb = FulibTables.patternBuilder();
+
+        PatternObject pendingOrdersPlaceVar = pb.buildPatternObject("pendingOrders");
+        pb.buildAttributeConstraint(pendingOrdersPlaceVar, Place.class, p -> p.getName().equals("pendingOrders"));
+
+        PatternObject mealItemsPlaceVar = pb.buildPatternObject("mealItems");
+        pb.buildAttributeConstraint(mealItemsPlaceVar, Place.class, p -> p.getName().equals("mealItems"));
+
+        PatternObject waitingClientsPlaceVar = pb.buildPatternObject("waitingClients");
+        pb.buildAttributeConstraint(waitingClientsPlaceVar, Place.class, p -> p.getName().equals("waitingClients"));
+
+        PatternObject diningClientsPlaceVar = pb.buildPatternObject("diningClients");
+        pb.buildAttributeConstraint(diningClientsPlaceVar, Place.class, p -> p.getName().equals("diningClients"));
+
+        PatternObject orderVar = pb.buildPatternObject("order");
+        pb.buildPatternLink(pendingOrdersPlaceVar, "place", "orders", orderVar);
+
+        pb.buildMatchConstraint(this::handOverConstraint, orderVar, mealItemsPlaceVar);
+
+        Rule rule = new Rule().setName("handOver").setPattern(pb.getPattern()).setOp(this::handOverOp);
+        reacher.withRule(rule);
+    }
+
+    private boolean handOverConstraint(Map<String, Object> map) {
+        Order order = (Order) map.get("order");
+        Place mealItems = (Place) map.get("mealItems");
+
+        for (OrderItem orderItem : order.getSelection().getItems()) {
+            ObjectTable<OrderItem> objectTable = new ObjectTable<>("orderItem", orderItem);
+            ObjectTable<MealItem> mealItemTable = objectTable.expandAll("mealItem", oi -> oi.getMealItems());
+            mealItemTable.filter(mi -> mi.getPlace() != null);
+            System.out.println(mealItemTable);
+            if (mealItemTable.getTable().size() == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void handOverOp(Graph graph, ArrayList<Object> row) {
+        Order order = (Order) row.get(1);
+        Place diningPlace = (Place) row.get(4);
+
+        // select mealItems
+        for (OrderItem orderItem : order.getSelection().getItems()) {
+            ObjectTable<OrderItem> objectTable = new ObjectTable<>("orderItem", orderItem);
+            ObjectTable<MealItem> mealItemTable = objectTable.expandAll("mealItem", oi -> oi.getMealItems());
+            mealItemTable.filter(mi -> mi.getPlace() != null);
+            ObjectTable<Place> mealItemsPlaceTable = mealItemTable.expand("mealItemsPlace", mi -> mi.getPlace());
+            System.out.println(mealItemsPlaceTable);
+            MealItem mi = mealItemTable.toList().get(0);
+            mi.setPlace(null);
+            order.withMealItems(mi);
+        }
+
+        order.withoutPlace(order.getPlace());
+        order.withPlace(diningPlace);
+        order.getTable().setPlace(diningPlace);
+        order.getTable().getClient().setPlace(diningPlace);
+
+        // create an Order and add it to
+        graph.setLabel("handOver: " + diningPlace.getTables());
     }
 
     private void addCookRule(Reacher reacher) {
@@ -217,14 +285,16 @@ public class HeraklitCafeOperating {
         PatternObject clientsReadyPlaceVar = pb.buildPatternObject("clientsReady");
         PatternObject menuPlaceVar = pb.buildPatternObject("menu");
         PatternObject ordersPlaceVar = pb.buildPatternObject("orders");
+
         PatternObject waitingClientsPlaceVar = pb.buildPatternObject("waitingClients");
+        pb.buildAttributeConstraint(waitingClientsPlaceVar, Place.class, p -> p.getName().equals("waitingClients"));
+
         PatternObject tableVar = pb.buildPatternObject("table");
         PatternObject selectionVar = pb.buildPatternObject("selection");
 
         pb.buildAttributeConstraint(menuPlaceVar, Place.class, p -> p.getName().equals("menu"));
         pb.buildAttributeConstraint(clientsReadyPlaceVar, Place.class, p -> p.getName().equals("clientsReady"));
         pb.buildAttributeConstraint(ordersPlaceVar, Place.class, p -> p.getName().equals("orders"));
-        pb.buildAttributeConstraint(waitingClientsPlaceVar, Place.class, p -> p.getName().equals("waitingClients"));
 
         pb.buildPatternLink(clientsReadyPlaceVar, "place", "tables", tableVar);
         pb.buildPatternLink(menuPlaceVar, "place", "selections", selectionVar);

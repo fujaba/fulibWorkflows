@@ -60,7 +60,7 @@
   modified: 	false
   name: 	Order
   propertyStyle: 	Bean
-  roles: 	order_place 	order_table 	order_selection
+  roles: 	order_place 	order_table 	order_selection 	order_mealItems
 
 - itemRef: 	org.fulib.classmodel.Clazz
   attributes: 	itemRef_name
@@ -76,7 +76,7 @@
   modified: 	false
   name: 	MealItem
   propertyStyle: 	Bean
-  roles: 	mealItem_place 	mealItem_orderItem
+  roles: 	mealItem_place 	mealItem_orderItem 	mealItem_order
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -372,6 +372,18 @@
   other: 	selection_orders
   propertyStyle: 	Bean
 
+- order_mealItems: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	order
+  collectionType: 	c1
+  id: 	Order_mealItems
+  modified: 	false
+  name: 	mealItems
+  other: 	mealItem_order
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - itemRef_name: 	org.fulib.classmodel.Attribute
   clazz: 	itemRef
   id: 	ItemRef_name
@@ -428,5 +440,15 @@
   modified: 	false
   name: 	orderItem
   other: 	orderItem_mealItems
+  propertyStyle: 	Bean
+
+- mealItem_order: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	mealItem
+  id: 	MealItem_order
+  modified: 	false
+  name: 	order
+  other: 	order_mealItems
   propertyStyle: 	Bean
 

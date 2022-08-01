@@ -140,7 +140,7 @@ public class Reacher {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(matchTable);
+        // System.out.println(matchTable);
         // for all matches
         for (Object obj : matchTable.getTable()) {
             row = (ArrayList<Object>) obj;
