@@ -1,10 +1,7 @@
 package heraklitcafe.ops;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 import org.fulib.FulibTables;
@@ -54,6 +51,7 @@ public class HeraklitCafeOperating {
                 .setDrawPath("tmp/reachable/moreRulesNoNames")
                 .setCertifierIgnoreNames(true);
 
+        addLeaveRule(reacher);
         handOverRule(reacher);
         addOfferAndEnterRules(reacher);
         addSelectRule(reacher);
@@ -131,6 +129,66 @@ public class HeraklitCafeOperating {
 
     }
 
+    private void addLeaveRule(Reacher reacher) {
+        // offer rule
+        PatternBuilder pb = FulibTables.patternBuilder();
+
+        PatternObject diningClientsPlaceVar = pb.buildPatternObject("diningClients");
+        pb.buildAttributeConstraint(diningClientsPlaceVar, Place.class, p -> p.getName().equals("diningClients"));
+
+        PatternObject vacatedTablesPlaceVar = pb.buildPatternObject("vacatedTables");
+        pb.buildAttributeConstraint(vacatedTablesPlaceVar, Place.class, p -> p.getName().equals("vacatedTables"));
+
+        PatternObject clientsEntryPlaceVar = pb.buildPatternObject("clientsEntry");
+        pb.buildAttributeConstraint(clientsEntryPlaceVar, Place.class, p -> p.getName().equals("clientsEntry"));
+
+        PatternObject orderVar = pb.buildPatternObject("order");
+        pb.buildPatternLink(diningClientsPlaceVar, "place", "orders", orderVar);
+
+        Rule rule = new Rule().setName("leave").setPattern(pb.getPattern()).setOp(this::leaveOp);
+        reacher.withRule(rule);
+    }
+
+    private void leaveOp(Graph graph, ArrayList<Object> row) {
+        System.out.println(row);
+        Order order = (Order) row.get(1);
+        String orderName = order.getName();
+        Place vacatedPlace = (Place) row.get(2);
+        Place clientsEntryPlace = (Place) row.get(3);
+
+        ArrayList<MealItem> mealItemsList = new ArrayList<>(order.getMealItems());
+        for (MealItem mi : mealItemsList) {
+            mi.removeYou();
+            graph.objMap().remove(mi.getName());
+        }
+
+        Table t = order.getTable();
+        t.setPlace(vacatedPlace);
+        Client c = t.getClient();
+        c.setTable(null);
+        // c.setPlace(clientsEntryPlace);
+        String clientName = c.getName().toLowerCase();
+        c.removeYou();
+        Object clientFromObjMap = graph.objMap().get(clientName);
+        graph.objMap().remove(clientName);
+        Object clientAfterRemove = graph.objMap().get(clientName);
+
+        order.removeYou();
+        Object orderInObjMap = graph.objMap().get(orderName);
+        graph.objMap().remove(orderName);
+        Object orderAfterRemove = graph.objMap().get(orderName);
+
+
+        // TreeMap<String, Object> treeMap = new TreeMap();
+        // treeMap.putAll(graph.objMap());
+        // Object orderInTreeMap = treeMap.get(orderName);
+        // FulibTools.objectDiagrams().dumpSVG(String.format("%s/%s.svg", "tmp", graph.getName()),
+        //         treeMap.values());
+
+        // create an Order and add it to
+        graph.setLabel("leave: " + vacatedPlace.getTables());
+    }
+
     private void handOverRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
@@ -164,7 +222,7 @@ public class HeraklitCafeOperating {
             ObjectTable<OrderItem> objectTable = new ObjectTable<>("orderItem", orderItem);
             ObjectTable<MealItem> mealItemTable = objectTable.expandAll("mealItem", oi -> oi.getMealItems());
             mealItemTable.filter(mi -> mi.getPlace() != null);
-            System.out.println(mealItemTable);
+            // System.out.println(mealItemTable);
             if (mealItemTable.getTable().size() == 0) {
                 return false;
             }
@@ -182,7 +240,7 @@ public class HeraklitCafeOperating {
             ObjectTable<MealItem> mealItemTable = objectTable.expandAll("mealItem", oi -> oi.getMealItems());
             mealItemTable.filter(mi -> mi.getPlace() != null);
             ObjectTable<Place> mealItemsPlaceTable = mealItemTable.expand("mealItemsPlace", mi -> mi.getPlace());
-            System.out.println(mealItemsPlaceTable);
+            // System.out.println(mealItemsPlaceTable);
             MealItem mi = mealItemTable.toList().get(0);
             mi.setPlace(null);
             order.withMealItems(mi);
@@ -310,7 +368,7 @@ public class HeraklitCafeOperating {
         Place orders = (Place) row.get(4);
         Place waitingClients = (Place) row.get(5);
 
-        Order order = new Order().setName("order-" + t.getName() + m.getName());
+        Order order = new Order().setName("order_" + t.getName() + m.getName());
         order.setTable(t);
         order.setSelection(m);
         order.withPlace(orders, waitingClients);
