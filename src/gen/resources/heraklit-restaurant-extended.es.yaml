@@ -85,3 +85,13 @@
   place: orderItems
 - data: OrderItem m_rice
   itemRefs: [ir1]
+
+- data: Place mealItems
+  mealItems: [mi1]
+
+- data: MealItem mi1
+  place: mealItems
+  orderItem: m_rice
+
+- data: OrderItem m_rice
+  mealItems: [mi1]

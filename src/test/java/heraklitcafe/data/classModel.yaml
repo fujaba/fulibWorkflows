@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	branch 	place 	table 	selection 	orderItem 	client 	order 	itemRef
+  classes: 	branch 	place 	table 	selection 	orderItem 	client 	order 	itemRef 	mealItem
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -20,7 +20,7 @@
   modified: 	false
   name: 	Place
   propertyStyle: 	Bean
-  roles: 	place_tables 	place_clients 	place_selections 	place_orders 	place_itemRefs
+  roles: 	place_tables 	place_clients 	place_selections 	place_orders 	place_itemRefs 	place_mealItems
 
 - table: 	org.fulib.classmodel.Clazz
   attributes: 	table_name
@@ -44,7 +44,7 @@
   modified: 	false
   name: 	OrderItem
   propertyStyle: 	Bean
-  roles: 	orderItem_selections 	orderItem_itemRefs
+  roles: 	orderItem_selections 	orderItem_itemRefs 	orderItem_mealItems
 
 - client: 	org.fulib.classmodel.Clazz
   attributes: 	client_name
@@ -69,6 +69,14 @@
   name: 	ItemRef
   propertyStyle: 	Bean
   roles: 	itemRef_place 	itemRef_orderItem
+
+- mealItem: 	org.fulib.classmodel.Clazz
+  attributes: 	mealItem_name
+  model: 	c
+  modified: 	false
+  name: 	MealItem
+  propertyStyle: 	Bean
+  roles: 	mealItem_place 	mealItem_orderItem
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -152,6 +160,18 @@
   modified: 	false
   name: 	itemRefs
   other: 	itemRef_place
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- place_mealItems: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	place
+  collectionType: 	c1
+  id: 	Place_mealItems
+  modified: 	false
+  name: 	mealItems
+  other: 	mealItem_place
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -270,6 +290,18 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
+- orderItem_mealItems: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	orderItem
+  collectionType: 	c1
+  id: 	OrderItem_mealItems
+  modified: 	false
+  name: 	mealItems
+  other: 	mealItem_orderItem
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - client_name: 	org.fulib.classmodel.Attribute
   clazz: 	client
   id: 	Client_name
@@ -367,5 +399,34 @@
   modified: 	false
   name: 	orderItem
   other: 	orderItem_itemRefs
+  propertyStyle: 	Bean
+
+- mealItem_name: 	org.fulib.classmodel.Attribute
+  clazz: 	mealItem
+  id: 	MealItem_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- mealItem_place: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	mealItem
+  id: 	MealItem_place
+  modified: 	false
+  name: 	place
+  other: 	place_mealItems
+  propertyStyle: 	Bean
+
+- mealItem_orderItem: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	mealItem
+  id: 	MealItem_orderItem
+  modified: 	false
+  name: 	orderItem
+  other: 	orderItem_mealItems
   propertyStyle: 	Bean
 

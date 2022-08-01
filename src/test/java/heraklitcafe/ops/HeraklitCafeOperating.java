@@ -53,9 +53,10 @@ public class HeraklitCafeOperating {
                 .setDrawPath("tmp/reachable/moreRulesNoNames")
                 .setCertifierIgnoreNames(true);
 
-        addUnfoldRule(reacher);
+        addCookRule(reacher);
         addOfferAndEnterRules(reacher);
         addSelectRule(reacher);
+        addUnfoldRule(reacher);
 
         // start graph and rules, lets reach
         Graph reachables = reacher.reach();
@@ -128,6 +129,45 @@ public class HeraklitCafeOperating {
 
     }
 
+    private void addCookRule(Reacher reacher) {
+        // offer rule
+        PatternBuilder pb = FulibTables.patternBuilder();
+
+        PatternObject orderItemsPlaceVar = pb.buildPatternObject("orderItems");
+        pb.buildAttributeConstraint(orderItemsPlaceVar, Place.class, p -> p.getName().equals("orderItems"));
+
+        PatternObject mealItemsPlaceVar = pb.buildPatternObject("mealItems");
+        pb.buildAttributeConstraint(mealItemsPlaceVar, Place.class, p -> p.getName().equals("mealItems"));
+
+        PatternObject itemRefVar = pb.buildPatternObject("itemRef");
+        pb.buildPatternLink(orderItemsPlaceVar, "place", "itemRefs", itemRefVar);
+
+        PatternObject orderItemVar = pb.buildPatternObject("orderItem");
+        pb.buildPatternLink(itemRefVar, "itemRefs", "orderItem", orderItemVar);
+
+        Rule rule = new Rule().setName("cook").setPattern(pb.getPattern()).setOp(this::cookOp);
+        reacher.withRule(rule);
+    }
+
+    int mealItemNum = 1;
+
+    private void cookOp(Graph graph, ArrayList<Object> row) {
+        ItemRef itemRef = (ItemRef) row.get(1);
+        OrderItem orderItem = (OrderItem) row.get(2);
+        Place mealItems = (Place) row.get(3);
+
+        itemRef.removeYou();
+        graph.objMap().remove(itemRef.getName());
+
+        MealItem mi = new MealItem().setName("mi" + mealItemNum++)
+                .setOrderItem(orderItem)
+                .setPlace(mealItems);
+        graph.objMap().put(mi.getName(), mi);
+
+        // create an Order and add it to
+        graph.setLabel("mealItems: " + mealItems.getMealItems());
+    }
+
     private void addUnfoldRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
@@ -160,8 +200,8 @@ public class HeraklitCafeOperating {
 
         for (OrderItem orderItem : order.getSelection().getItems()) {
             ItemRef ir = new ItemRef().setName("ir" + itemRefNum++)
-            .setOrderItem(orderItem)
-            .setPlace(orderItemsPlace);
+                    .setOrderItem(orderItem)
+                    .setPlace(orderItemsPlace);
             graph.objMap().put(ir.getName(), ir);
         }
 
@@ -205,7 +245,6 @@ public class HeraklitCafeOperating {
         order.setSelection(m);
         order.withPlace(orders, waitingClients);
         graph.objMap().put(order.getName(), order);
-
 
         waitingClients.withClients(c);
         waitingClients.withTables(t);

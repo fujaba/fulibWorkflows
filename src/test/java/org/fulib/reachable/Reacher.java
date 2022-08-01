@@ -33,7 +33,7 @@ public class Reacher {
     private String packageName;
     private String drawPath;
     private boolean certifierIgnoreNames = false;
-    private String nameIgnoredClasses = "Table Client ItemRef";
+    private String nameIgnoredClasses = "Table Client ItemRef MealItem";
 
     public ArrayList<Rule> getRuleSet() {
         return ruleSet;
@@ -174,10 +174,6 @@ public class Reacher {
                             cloneGraph.certificate());
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
-                if (cloneGraph.getName().equals("G204")) {
-                    System.out.println(String.join("\n", cloneGraph.objMap().keySet()));
-                    System.out.println();
                 }
             }
         }
