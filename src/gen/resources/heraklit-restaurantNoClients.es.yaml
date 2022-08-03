@@ -1,0 +1,50 @@
+# Heraklit with fulib
+
+- workflow: init
+
+- data: Branch uksCafeteria
+
+- data: Place freeTables
+- data: Place offeredTables
+- data: Place vacatedTables
+
+- data: Place clientsEntry
+- data: Place clientsReady
+- data: Place menu
+- data: Place waitingClients
+- data: Place orders
+- data: Place diningClients
+
+- data: Place pendingOrders
+- data: Place orderItems
+- data: Place mealItems
+
+- data: Place freeTables
+  tables: [t1, t2, t3, t4]
+- data: Table t1
+  place: freeTables
+- data: Table t2
+  place: freeTables
+- data: Table t3
+  place: freeTables
+- data: Table t4
+  place: freeTables
+
+- data: Place menu
+  selections: [sel1, sel2]
+- data: Selection sel1
+  items: [m_meat, m_rice]
+  place: menu
+- data: Selection sel2
+  items: [m_salad]
+  place: menu
+
+- data: OrderItem m_rice
+  selections: [sel1]
+- data: OrderItem m_meat
+  selections: [sel1]
+- data: OrderItem m_salad
+  selections: [sel2]
+
+
+

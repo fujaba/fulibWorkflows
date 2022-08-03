@@ -31,10 +31,39 @@ public class HeraklitCafeOperating {
     }
 
     public void runExperiments() {
+        moreRulesNoNamesNoClients();
         moreRulesNoNames();
-        // offerTablesAndEnterRulesNoNames();
-        // offerTablesAndEnterRulesWithTableAndCustomerNames();
+        offerTablesAndEnterRulesNoNames();
+        offerTablesAndEnterRulesWithTableAndCustomerNames();
 
+    }
+
+    private void moreRulesNoNamesNoClients() {
+        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurantNoClients.es.yaml"));
+
+        // execute init workflow
+        objMap = boardGenerator.loadObjectStructure(Place.class.getPackage().getName(), "default");
+        String yaml = Yaml.encode(objMap.values().toArray());
+        Graph graph = new Graph().setName("G0").setLabel("start").setObjMap(objMap);
+
+        Reacher reacher = new Reacher()
+                .setStartGraph(graph)
+                .setDrawPath("tmp/reachable/moreRulesNoNamesNoClients")
+                .setCertifierIgnoreNames(true);
+
+        addClientsRule(reacher);
+        releaseTableRule(reacher);
+        addLeaveRule(reacher);
+        handOverRule(reacher);
+        addOfferAndEnterRules(reacher);
+        addSelectRule(reacher);
+        addUnfoldRule(reacher);
+        addCookRule(reacher);
+
+        // start graph and rules, lets reach
+        Graph reachables = reacher.reach();
+        reacher.draw();
     }
 
     private void moreRulesNoNames() {

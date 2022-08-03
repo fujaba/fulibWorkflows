@@ -197,6 +197,7 @@ public class Reacher {
         String certificate = String.join("\n", dataNotes);
         g.setCertificate(certificate);
         try {
+            Files.createDirectories(Path.of(this.drawPath));
             Files.writeString(Path.of(this.drawPath + "/" + g.getName() + ".es.yaml"), certificate);
         } catch (IOException e) {
             e.printStackTrace();
