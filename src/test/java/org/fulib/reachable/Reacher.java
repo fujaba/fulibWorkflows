@@ -60,8 +60,9 @@ public class Reacher {
     }
 
     public void draw() {
-        FulibTools.objectDiagrams().dumpSVG(drawPath + "/reachable.svg", reachableGraph.objMap().get("G0"));
+        // FulibTools.objectDiagrams().dumpSVG(drawPath + "/reachable.svg", reachableGraph.objMap().get("G0"));
 
+        System.out.println("Number of reachable graphs: " + reachableGraph.objMap().size());
         // draw reachable with links
         GraphDiagram diag = new GraphDiagram();
         for (Object object : reachableGraph.objMap().values()) {

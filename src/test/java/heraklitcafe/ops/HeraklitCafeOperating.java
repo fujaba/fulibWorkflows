@@ -51,6 +51,7 @@ public class HeraklitCafeOperating {
                 .setDrawPath("tmp/reachable/moreRulesNoNames")
                 .setCertifierIgnoreNames(true);
 
+        releaseTableRule(reacher);
         addLeaveRule(reacher);
         handOverRule(reacher);
         addOfferAndEnterRules(reacher);
@@ -129,6 +130,35 @@ public class HeraklitCafeOperating {
 
     }
 
+    private void releaseTableRule(Reacher reacher) {
+        // offer rule
+        PatternBuilder pb = FulibTables.patternBuilder();
+
+        PatternObject vacatedTablesPlaceVar = pb.buildPatternObject("vacatedTables");
+        pb.buildAttributeConstraint(vacatedTablesPlaceVar, Place.class, p -> p.getName().equals("vacatedTables"));
+
+        PatternObject freeTablesPlaceVar = pb.buildPatternObject("freeTables");
+        pb.buildAttributeConstraint(freeTablesPlaceVar, Place.class, p -> p.getName().equals("freeTables"));
+
+        PatternObject tableVar = pb.buildPatternObject("table");
+        pb.buildPatternLink(vacatedTablesPlaceVar, "place", "tables", tableVar);
+
+        Rule rule = new Rule().setName("releaseTable").setPattern(pb.getPattern()).setOp(this::releaseTableOp);
+        reacher.withRule(rule);
+    }
+
+    private void releaseTableOp(Graph graph, ArrayList<Object> row) {
+        System.out.println(row);
+        Place vacatedPlace = (Place) row.get(0);
+        Table table = (Table) row.get(1);
+        Place freePlace = (Place) row.get(2);
+
+        table.setPlace(freePlace);
+
+        // create an Order and add it to
+        graph.setLabel("release: " + freePlace.getTables());
+    }
+
     private void addLeaveRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
@@ -150,7 +180,7 @@ public class HeraklitCafeOperating {
     }
 
     private void leaveOp(Graph graph, ArrayList<Object> row) {
-        System.out.println(row);
+        // System.out.println(row);
         Order order = (Order) row.get(1);
         String orderName = order.getName();
         Place vacatedPlace = (Place) row.get(2);
@@ -177,13 +207,6 @@ public class HeraklitCafeOperating {
         Object orderInObjMap = graph.objMap().get(orderName);
         graph.objMap().remove(orderName);
         Object orderAfterRemove = graph.objMap().get(orderName);
-
-
-        // TreeMap<String, Object> treeMap = new TreeMap();
-        // treeMap.putAll(graph.objMap());
-        // Object orderInTreeMap = treeMap.get(orderName);
-        // FulibTools.objectDiagrams().dumpSVG(String.format("%s/%s.svg", "tmp", graph.getName()),
-        //         treeMap.values());
 
         // create an Order and add it to
         graph.setLabel("leave: " + vacatedPlace.getTables());
