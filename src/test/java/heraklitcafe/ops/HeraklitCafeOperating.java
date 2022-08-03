@@ -51,6 +51,7 @@ public class HeraklitCafeOperating {
                 .setDrawPath("tmp/reachable/moreRulesNoNames")
                 .setCertifierIgnoreNames(true);
 
+        addClientsRule(reacher);
         releaseTableRule(reacher);
         addLeaveRule(reacher);
         handOverRule(reacher);
@@ -130,6 +131,41 @@ public class HeraklitCafeOperating {
 
     }
 
+    private void addClientsRule(Reacher reacher) {
+        // offer rule
+        PatternBuilder pb = FulibTables.patternBuilder();
+
+        PatternObject offeredTablesVar = pb.buildPatternObject("offeredTables");
+        pb.buildAttributeConstraint(offeredTablesVar, Place.class, p -> p.getName().equals("offeredTables"));
+
+        PatternObject clientsEntryPlaceVar = pb.buildPatternObject("clientsEntry");
+        pb.buildAttributeConstraint(clientsEntryPlaceVar, Place.class, p -> p.getName().equals("clientsEntry"));
+
+        pb.buildMatchConstraint(map -> (((Place) map.get("offeredTables")).getTables().size() == 4
+                && ((Place) map.get("clientsEntry")).getClients().size() == 0),
+                offeredTablesVar, clientsEntryPlaceVar);
+
+        Rule rule = new Rule().setName("addClients").setPattern(pb.getPattern()).setOp(this::addClientsOp);
+        reacher.withRule(rule);
+    }
+
+    int nextClientNum = 3;
+
+    private void addClientsOp(Graph graph, ArrayList<Object> row) {
+        System.out.println(row);
+        Place clientsEntry = (Place) row.get(1);
+
+        Client client = new Client().setName("client" + nextClientNum++);
+        client.setPlace(clientsEntry);
+        graph.objMap().put(client.getName(), client);
+        client = new Client().setName("client" + nextClientNum++);
+        client.setPlace(clientsEntry);
+        graph.objMap().put(client.getName(), client);
+
+        // create an Order and add it to
+        graph.setLabel("addClients: " + clientsEntry.getClients());
+    }
+
     private void releaseTableRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
@@ -148,7 +184,7 @@ public class HeraklitCafeOperating {
     }
 
     private void releaseTableOp(Graph graph, ArrayList<Object> row) {
-        System.out.println(row);
+        // System.out.println(row);
         Place vacatedPlace = (Place) row.get(0);
         Table table = (Table) row.get(1);
         Place freePlace = (Place) row.get(2);
