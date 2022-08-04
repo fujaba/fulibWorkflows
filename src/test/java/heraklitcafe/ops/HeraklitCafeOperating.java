@@ -31,11 +31,93 @@ public class HeraklitCafeOperating {
     }
 
     public void runExperiments() {
+        moreRulesNoNamesReduceByModules();
         moreRulesNoNamesNoClients();
         moreRulesNoNames();
         offerTablesAndEnterRulesNoNames();
         offerTablesAndEnterRulesWithTableAndCustomerNames();
 
+    }
+
+    private void moreRulesNoNamesReduceByModules() {
+        System.out.println("doing moreRulesNoNamesReduceByModules");
+        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
+
+        // execute init workflow
+        objMap = boardGenerator.loadObjectStructure(Place.class.getPackage().getName(), "default");
+        String yaml = Yaml.encode(objMap.values().toArray());
+        Graph graph = new Graph().setName("G0").setLabel("start").setObjMap(objMap);
+
+        Reacher reacher = new Reacher()
+                .setStartGraph(graph)
+                .setDrawPath("tmp/reachable/moreRulesNoNamesReduceByModules")
+                .setCertifierIgnoreNames(true);
+
+        addClientsRule(reacher);
+        releaseTableRule(reacher);
+        addLeaveRule(reacher);
+        handOverRule(reacher);
+        addOfferAndEnterRules(reacher);
+        addSelectRule(reacher);
+        addUnfoldRule(reacher);
+        addCookRule(reacher);
+
+        // start graph and rules, lets reach
+        Graph reachables = reacher.reach();
+
+        // try to remove inner transitions
+        // find all transitions gp -enter-> gx
+        removeListOfInnerStates(reachables, "enter", "unfold", "cook", "releaseTable");
+
+        reacher.draw();
+        System.out.println(" ....  moreRulesNoNamesReduceByModules done");
+    }
+
+    private void removeListOfInnerStates(Graph reachables, String... labelList) {
+        for (String label : labelList) {
+            removeInnerStates(reachables, label);
+        }
+    }
+
+    private void removeInnerStates(Graph reachables, String label) {
+        ArrayList<Object> stateList = new ArrayList<>(reachables.objMap().values());
+        for (Object state : stateList) {
+            Graph gx = (Graph) state;
+            if ( ! hasProd(gx, label)) {
+                continue;
+            }
+
+            // remove incoming ops, store gp -enter-> gx
+            Graph gp = null;
+            ArrayList<Op> opList = new ArrayList<>(gx.getProds());
+            for (Op op : opList) {
+                if (op.getName().equals(label)) {
+                    gp = op.getSrc();
+                }
+                op.removeYou();
+            }
+
+            // for all gx -> gn replace by gp -> gn
+            opList = new ArrayList<>(gx.getCons());
+            for (Op op : opList) {
+                new Op().setName(op.getName())
+                .setSrc(gp).setTgt(op.getTgt());
+                op.removeYou();
+            }
+            // remove gx
+            reachables.objMap().remove(gx.getName());
+        }
+    }
+
+
+    private boolean hasProd(Graph gx, String label) {
+        for (Op op : gx.getProds()) {
+            if (op.getName().equals(label)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void moreRulesNoNamesNoClients() {
