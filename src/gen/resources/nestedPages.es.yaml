@@ -3,22 +3,20 @@
 - page:
   - pageName: main
   - text: Three Column Machine
-  - div: static
-  - div: stack
+  - div: [static, stack]
 
 - div:
   - divName: static
   - text: static segment
   - text: >
       <pre>
-
-			public static void main(String[] args) {
+      public static void main(String[] args) {
          testValues();
          testGgt();
          testRoute();
-   		}
+   	    }
 
-      public static void testValues() {
+        public static void testValues() {
        	 int x = 42;
        	 int y = 23;
        	 x = y;

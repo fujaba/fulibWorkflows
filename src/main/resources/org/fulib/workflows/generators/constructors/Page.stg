@@ -37,7 +37,7 @@ text(text) ::= <<
 pre(text) ::= <<
 
     <div class="mb-3">
-        <span>{text}</span>
+        <pre>{text}</pre>
     </div>
 >>
 
@@ -69,4 +69,20 @@ buttonAlone(description, targetIndex) ::= <<
     <div class="row justify-content-center pt-2">
         <a type="button" class="btn btn-success" href="{targetIndex}_page.html">{description}</a>
     </div>
+>>
+
+rowOfDiv(divList) ::= <<
+
+    <div class="row justify-content-center">
+        { divList : divCol() }
+    </div>
+>>
+
+divCol(value) ::= <<
+
+        <div class="col-auto">
+            <div class="mb-3 text-center">
+                {value}
+            </div>
+        </div>
 >>

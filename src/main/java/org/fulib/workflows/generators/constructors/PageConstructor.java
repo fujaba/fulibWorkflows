@@ -2,6 +2,7 @@ package org.fulib.workflows.generators.constructors;
 
 import org.antlr.v4.runtime.misc.Pair;
 import org.fulib.workflows.events.Page;
+import org.fulib.StrUtil;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroupFile;
 
@@ -35,7 +36,8 @@ public class PageConstructor {
 
         // Complete the page
         ST st = pageGroup.getInstanceOf("page");
-        st.add("content", buildPageContent(targetPageIndexList));
+        String pageContent = buildPageContent(targetPageIndexList);
+        st.add("content", pageContent);
         st.add("pageName", currentPage.getName());
 
         pageBody.append(st.render());
@@ -105,10 +107,33 @@ public class PageConstructor {
                 st.add("targetIndex", foundTargetIndex);
                 targetIndex++;
                 contentBody.append(st.render());
+            } else if (key.equals("div")) {
+                // first add the list of div names
+                st = pageGroup.getInstanceOf("rowOfDiv");
+
+                String[] split = stripBraces(value).split(",");
+                st.add("divList", split);
+                String str = st.render();
+                contentBody.append(str);
+                // later add the div contents as a row
+
             }
         }
 
         return contentBody.toString();
+    }
+
+    private String stripBraces(String value)
+    {
+        int pos = value.indexOf('[');
+        if (pos >= 0) {
+            value = value.substring(pos + 1);
+        }
+        pos = value.indexOf(']');
+        if (pos >= 0) {
+            value = value.substring(0, pos);
+        }
+        return value;
     }
 
     private String getValue(Pair<String, String> nextElement) {

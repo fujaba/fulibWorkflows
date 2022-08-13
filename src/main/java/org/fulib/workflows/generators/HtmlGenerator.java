@@ -1,10 +1,7 @@
 package org.fulib.workflows.generators;
 
 import org.antlr.v4.runtime.misc.Pair;
-import org.fulib.workflows.events.BaseNote;
-import org.fulib.workflows.events.Board;
-import org.fulib.workflows.events.Page;
-import org.fulib.workflows.events.Workflow;
+import org.fulib.workflows.events.*;
 import org.fulib.workflows.generators.constructors.BoardConstructor;
 import org.fulib.workflows.generators.constructors.PageConstructor;
 
@@ -64,7 +61,11 @@ public class HtmlGenerator {
             for (BaseNote note : workflow.getNotes()) {
                 if (note instanceof Page page) {
                     List<Integer> targetPageIndexList = evaluateTargetPageIndex(page);
-                    pagesHTML.add(pageConstructor.buildPage(page, targetPageIndexList));
+                    String pageContent = pageConstructor.buildPage(page, targetPageIndexList);
+                    pagesHTML.add(pageContent);
+                }
+                if (note instanceof Div div) {
+
                 }
             }
         }
