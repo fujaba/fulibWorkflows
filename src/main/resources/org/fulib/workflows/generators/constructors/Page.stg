@@ -20,7 +20,7 @@ page(content, pageName) ::= <<
 </script>
 <div class="d-flex justify-content-center">
     <div class="col-md-auto">
-    {content}
+{content}
     </div>
 </div>
 </body>
@@ -37,7 +37,7 @@ text(text) ::= <<
 pre(text) ::= <<
 
     <div class="mb-3">
-        <pre>{text}</pre>
+{text}
     </div>
 >>
 
@@ -74,15 +74,15 @@ buttonAlone(description, targetIndex) ::= <<
 rowOfDiv(divList) ::= <<
 
     <div class="row justify-content-center">
-        { divList : divCol() }
+{ divList : divCol() }
     </div>
 >>
 
 divCol(value) ::= <<
 
-        <div class="col-auto">
-            <div class="mb-3 text-center">
-                {value}
+        <div class="col">
+            <div class="mb-3">
+{value}
             </div>
         </div>
 >>

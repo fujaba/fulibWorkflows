@@ -6,58 +6,246 @@
   - div: [static, stack]
 
 - div:
-  - divName: static
-  - text: static segment
-  - text: >
+    - divName: static
+    - text: static segment
+    - div: psvmain
+    - div: testValues
+
+- div:
+  - divName: psvmain
+  - text: |
       <pre>
       public static void main(String[] args) {
          testValues();
          testGgt();
          testRoute();
-   	    }
+   	  }</pre>
 
+- div:
+    - divName: testValues
+    - text: |
+        <pre>
         public static void testValues() {
-       	 int x = 42;
-       	 int y = 23;
-       	 x = y;
-       	 y = 1337;
-       	 assertThat(x).isEqualTo(23);
-   		}</pre>
+         	 int x = 42;
+         	 int y = 23;
+         	 x = y;
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: stack
+    - text: stack segment
+    - div: main-1
 
 
 - div:
-  - divName: stack
-  - text: stack segment
-  - text: >
-      <pre>
+    - divName: main-1
+    - text: |
+        <pre>
+        public static void main(String[] args = null) {
+           <FONT COLOR="blue" style="background-color:yellow;">testValues();</FONT>
+           testGgt();
+           testRoute();
+        }</pre>
 
-      public static void main(String[] args = null) {
-         <FONT COLOR="blue">testValues();</FONT>
-         testGgt();
-         testRoute();
-      }</pre>
-
-- div:
-  - divName: stack
-  - text: stack segment
-  - text: >
-      <pre>
-
-      public static void main(String[] args = null) {
-         testValues();
-         <FONT COLOR="blue">testGgt();</FONT>
-         testRoute();
-      }</pre>
 
 - div:
-  - divName: stack
-  - text: stack segment
-  - text: >
-      <pre>
+    - divName: stack
+    - text: stack segment
+    - div: main-1
+    - div: testValues-1
 
-      public static void main(String[] args = null) {
-         testValues();
-         testGgt();
-         <FONT COLOR="blue">testRoute();</FONT>
-      }</pre>
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 <FONT COLOR="blue" style="background-color:yellow;">int x = 42;</FONT>
+         	 int y = 23;
+         	 x = y;
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
 
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 42;
+         	 <FONT COLOR="blue" style="background-color:yellow;">int y = 23;</FONT>
+         	 x = y;
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 42;
+         	 int y = 23;
+         	 x = <FONT COLOR="blue" style="background-color:yellow;">y</FONT>;
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 42;
+         	 <FONT style="background-color:lightgrey;">int y = 23;</FONT>;
+         	 x = <FONT COLOR="blue" style="background-color:yellow;">y</FONT>;
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 42;
+         	 <FONT style="background-color:lightgrey;">int y = 23;</FONT>
+         	 x = <FONT COLOR="blue" style="background-color:yellow;">23</FONT>;
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 42;
+         	 int y = 23;
+         	 <FONT COLOR="blue" style="background-color:yellow;">x = 23;</FONT>
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 <FONT style="background-color:lightgrey;">int x = 42;</FONT>
+         	 int y = 23;
+         	 <FONT COLOR="blue" style="background-color:yellow;">x = 23;</FONT>
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 <FONT style="background-color:lightgrey;">int x = <FONT COLOR="blue" style="background-color:yellow;">23</FONT>;</FONT>
+         	 int y = 23;
+         	 <FONT COLOR="blue" style="background-color:yellow;">x = 23;</FONT>
+         	 y = 1337;
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 23;
+         	 <FONT style="background-color:lightgrey;">int y = 23;</FONT>
+         	 <FONT COLOR="lightgrey">x = 23;</FONT>
+         	 <FONT COLOR="blue" style="background-color:yellow;">y = 1337;</FONT>
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 23;
+         	 int y = <FONT style="background-color:yellow;">1337</FONT>;
+         	 <FONT COLOR="lightgrey">x = 23;</FONT>
+         	 <FONT COLOR="blue" style="background-color:yellow;">y = 1337;</FONT>
+         	 assertThat(x).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 <FONT style="background-color:lightgrey;">int x = 23;</FONT>
+         	 int y = 1337;
+         	 <FONT COLOR="lightgrey">x = 23;</FONT>
+         	 <FONT COLOR="lightgrey">y = 1337;</FONT>
+         	 assertThat(<FONT COLOR="blue" style="background-color:yellow;">x</FONT>).isEqualTo(23);
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 23;
+         	 int y = 1337;
+         	 <FONT COLOR="lightgrey">x = 23;</FONT>
+         	 <FONT COLOR="lightgrey">y = 1337;</FONT>
+         	 <FONT COLOR="blue" style="background-color:yellow;">assertThat(23).isEqualTo(23);</FONT>
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 23;
+         	 int y = 1337;
+         	 <FONT COLOR="lightgrey">x = 23;</FONT>
+         	 <FONT COLOR="lightgrey">y = 1337;</FONT>
+         	 <FONT COLOR="blue" style="background-color:yellow;">true;</FONT>
+        }</pre>
+
+- div:
+    - divName: testValues-1
+    - text: |
+        <pre>
+        public static void testValues() {
+         	 int x = 23;
+         	 int y = 1337;
+         	 <FONT COLOR="lightgrey">x = 23;</FONT>
+         	 <FONT COLOR="lightgrey">y = 1337;</FONT>
+         	 <FONT COLOR="lightgrey">true;</FONT>
+        <FONT COLOR="blue" style="background-color:yellow;">}</FONT></pre>
+
+- div:
+    - divName: main-1
+    - text: |
+        <pre>
+        public static void main(String[] args = null) {
+           <FONT COLOR="blue" style="background-color:yellow;">void</FONT>
+           testGgt();
+           testRoute();
+        }</pre>
+
+- div:
+    - divName: stack
+    - text: stack segment
+    - div: main-1
+
+- div:
+    - divName: main-1
+    - text: |
+        <pre>
+        public static void main(String[] args = null) {
+           <FONT COLOR="lightgrey">void</FONT>
+           <FONT COLOR="blue" style="background-color:yellow;">testGgt();</FONT>
+           testRoute();
+        }</pre>

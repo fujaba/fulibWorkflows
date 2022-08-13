@@ -17,10 +17,13 @@ public class BaseNote {
 
     /**
      * Setter for name field
+     *
      * @param name String containing the name of the note
+     * @return
      */
-    public void setName(String name) {
+    public BaseNote setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
