@@ -60,7 +60,8 @@ public class HtmlGenerator
 
       Map<String, String> resultMap = new HashMap<>();
 
-      resultMap.put("Board", boardConstructor.buildBoard(board, boardGenerator.isWebGeneration()));
+      String htmlBoard = boardConstructor.buildBoard(board, boardGenerator.isWebGeneration());
+      resultMap.put("Board", htmlBoard);
 
       List<String> pagesHTML = new ArrayList<>();
 

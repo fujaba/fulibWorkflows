@@ -12,7 +12,7 @@ public class NestedPagesTest {
     }
     @Test
     public void testOneWorkflow() {
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator().setWebGeneration(true);
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/nestedPages.es.yaml"));
     }
 }

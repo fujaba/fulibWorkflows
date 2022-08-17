@@ -7,6 +7,7 @@ import org.stringtemplate.v4.STGroupFile;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -22,6 +23,10 @@ public class BoardConstructor {
 
     private boolean standAlone;
 
+    private final Map<String, Page> divPageMap = new LinkedHashMap<>();
+    private boolean pageComplete;
+    private Page lastPage;
+
     /**
      * Builds an event storming board
      *
@@ -36,8 +41,10 @@ public class BoardConstructor {
         boardGroup = new STGroupFile(Objects.requireNonNull(resource));
         StringBuilder boardBody = new StringBuilder();
 
+        String boardContent = buildBoardContent();
+
         ST st = boardGroup.getInstanceOf("board");
-        st.add("content", buildBoardContent());
+        st.add("content", boardContent);
 
         boardBody.append(st.render());
         return boardBody.toString();
@@ -48,9 +55,11 @@ public class BoardConstructor {
         StringBuilder boardContent = new StringBuilder();
 
         for (Workflow workflow : currentBoard.getWorkflows()) {
+            String htmlWorkflow = buildWorkflow(workflow);
+
             st = boardGroup.getInstanceOf("workflow");
             st.add("name", workflow.getName());
-            st.add("content", buildWorkflow(workflow));
+            st.add("content", htmlWorkflow);
             boardContent.append(st.render());
         }
 
@@ -114,10 +123,33 @@ public class BoardConstructor {
                 closeDataOrPageNote(workflowContent, dataIndex, false);
                 dataIndex++;
             } else if (note instanceof Page page) {
+                lastPage = page;
+                pageComplete = true;
                 String pageNote = buildPageNote(page);
                 workflowContent.append(pageNote);
                 closeDataOrPageNote(workflowContent, pageIndex, true);
-                pageIndex++;
+                if (pageComplete) {
+                    pageIndex++;
+                }
+            } else if (note instanceof Div div) {
+                pageComplete = true;
+                Page divPage = new Page();
+                divPage.setName(div.getName());
+                divPage.setIndex(div.getIndex());
+                divPage.setContent(div.getContent());
+                divPageMap.put(div.getName(), divPage);
+
+                String pageNote = buildPageNote(divPage);
+                workflowContent.append(pageNote);
+                closeDataOrPageNote(workflowContent, pageIndex, true);
+
+                if (lastPage != null) {
+                    buildPageNote(lastPage);
+                }
+
+                if (pageComplete) {
+                    pageIndex++;
+                }
             }
         }
 
@@ -207,8 +239,10 @@ public class BoardConstructor {
             pageNoteST = boardGroup.getInstanceOf("pageNoteAlone");
         }
 
+        String pageContent = buildPageContent(page);
+
         pageNoteST.add("name", page.getName());
-        pageNoteST.add("content", buildPageContent(page));
+        pageNoteST.add("content", pageContent);
 
         return pageNoteST.render();
     }
@@ -227,6 +261,10 @@ public class BoardConstructor {
             switch (desc) {
                 case "text" -> {
                     st = boardGroup.getInstanceOf("pageText");
+                    if (value.indexOf("<pre>") >= 0) {
+                        value = value.replace("<pre>", "<pre  style=\"text-align:left\">");
+                        st = boardGroup.getInstanceOf("pagePre");
+                    }
                     st.add("text", value);
                     pageContent.append(st.render());
                 }
@@ -245,12 +283,44 @@ public class BoardConstructor {
                     st.add("desc", value);
                     pageContent.append(st.render());
                 }
+                case "div" -> {
+
+                    st = boardGroup.getInstanceOf("pageText");
+                    st.add("text", value);
+                    pageContent.append(st.render());
+
+                    // is the page complete?
+                    String[] split = stripBraces(value).split(",");
+                    for (int j = 0; j < split.length; j++) {
+                        split[j] = split[j].trim();
+                        Page divPage = divPageMap.get(split[j]);
+                        if (divPage != null) {
+                            String content = buildPageNote(divPage);
+                        }
+                        else {
+                            pageComplete = false;
+                        }
+                    }
+                }
                 default -> {
                 }
             }
         }
 
         return pageContent.toString();
+    }
+
+    private String stripBraces(String value)
+    {
+        int pos = value.indexOf('[');
+        if (pos >= 0) {
+            value = value.substring(pos + 1);
+        }
+        pos = value.indexOf(']');
+        if (pos >= 0) {
+            value = value.substring(0, pos);
+        }
+        return value;
     }
 
     public BoardConstructor setStandAlone(boolean standAlone) {

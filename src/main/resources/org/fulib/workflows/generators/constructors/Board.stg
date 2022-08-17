@@ -33,7 +33,7 @@ board(content) ::= <<
     \});
 </script>
 <div class="container-fluid" style="min-width: 100%; width: max-content">
-    {content}
+{content}
 </div>
 </body>
 </html>
@@ -50,8 +50,9 @@ workflow(name, content) ::= <<
             <p class="card-text" style="color: black">{name}</p>
         </div>
     </div>
-    {content}
+{content}
 </div>
+
 >>
 
 note(name, content, color) ::= <<
@@ -60,7 +61,7 @@ note(name, content, color) ::= <<
     <div class="card-body">
         <h5 class="card-title" style="color: black">{name}</h5>
         <p class="card-text" style="color: black">
-            {content}
+{content}
         </p>
     </div>
 </div>
@@ -84,7 +85,7 @@ objectNote(content) ::= <<
     <div class="card-body">
         <h5 class="card-title" style="color: black">Data</h5>
         <p class="card-text" style="color: black">
-            {content}
+{content}
         </p>
 >>
 
@@ -94,7 +95,7 @@ objectNoteAlone(content, index) ::= <<
     <div class="card-body">
         <h5 class="card-title">Data</h5>
         <p class="card-text">
-            {content}
+{content}
         </p>
         <a class="card-link" role="button" href="diagrams/{index}_diagram.svg" target="pageFrame">Show diagram below</a>
     </div>
@@ -116,7 +117,7 @@ pageNote(name, content) ::= <<
             {name}
         </h5>
         <p class="card-text" style="color: black">
-            {content}
+{content}
         </p>
 >>
 
@@ -125,6 +126,11 @@ pageNote(name, content) ::= <<
 pageText(text) ::= <<
 
 <b>{text}</b> <br>
+>>
+
+pagePre(text) ::= <<
+
+{text} <br>
 >>
 
 pageInput(desc) ::= <<
