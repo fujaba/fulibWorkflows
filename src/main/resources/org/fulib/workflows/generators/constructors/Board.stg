@@ -67,6 +67,17 @@ note(name, content, color) ::= <<
 </div>
 >>
 
+develop(content) ::= <<
+
+<div class="card col-md-auto m-2 shadow" style="background-color: lightyellow">
+    <div class="card-body">
+        <p class="card-text" style="color: black">
+{content}
+        </p>
+    </div>
+</div>
+>>
+
 actor(color, icon, name) ::= <<
 
 <div class="card col-md-auto m-2 shadow" style="background-color: {color}; max-height: 100px">

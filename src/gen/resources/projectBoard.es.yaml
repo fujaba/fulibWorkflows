@@ -1,0 +1,20 @@
+
+- workflow: uni work
+
+- page:
+  - pageName: main
+  - text: Three Column Machine
+
+- develop:
+    - task: Mails
+
+- develop:
+    - date: now
+
+
+- develop:
+    - task: |
+        GI Group Meeting
+        Microservices
+        enroll
+

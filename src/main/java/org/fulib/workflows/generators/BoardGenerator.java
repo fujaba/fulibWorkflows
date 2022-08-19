@@ -25,6 +25,7 @@ public class BoardGenerator {
 
     private boolean webGeneration = false;
     private String genDir = "tmp";
+
     private String id;
 
     /**

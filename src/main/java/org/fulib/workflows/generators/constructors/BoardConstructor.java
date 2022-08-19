@@ -150,13 +150,34 @@ public class BoardConstructor {
                 if (pageComplete) {
                     pageIndex++;
                 }
+            } else if (note instanceof Develop develop) {
+               String content = buildDevelop(develop);
+               workflowContent.append(content);
             }
         }
 
         return workflowContent.toString();
     }
 
-    private void closeDataOrPageNote(StringBuilder workflowContent, int index, boolean isPage) {
+   private String buildDevelop(Develop develop)
+   {
+      // just add all key value pairs
+      StringBuilder result = new StringBuilder();
+      for (Map.Entry<Integer, Pair<String, String>> entry : develop.getContent().entrySet()) {
+         Pair<String, String> pair = entry.getValue();
+         String value = pair.b.replaceAll("\n", "<br>\n");
+         String line = String.format("%s: %s<br>\n", pair.a, value);
+         result.append(line);
+      }
+
+      // develop(content)
+      ST st = boardGroup.getInstanceOf("develop");
+      st.add("content", result.toString());
+      String content = st.render();
+      return content;
+   }
+
+   private void closeDataOrPageNote(StringBuilder workflowContent, int index, boolean isPage) {
         StringBuilder closeContent = new StringBuilder();
         ST st;
 

@@ -65,7 +65,7 @@ public class OwnYamlParser {
                     newNote.setIndex(noteIndex);
                     noteIndex++;
 
-                    if (key.equals(PAGE) || key.equals(DIV)) {
+                    if (key.equals(PAGE) || key.equals(DIV) || key.equals(DEVELOP)) {
                         parsePageEntries(entry.getValue());
                     } else {
                         newNote.setName((String) entry.getValue());
@@ -115,6 +115,13 @@ public class OwnYamlParser {
             currentNote = null;
         }
         else if (currentNote instanceof Div page) {
+            page.setContent(noteData);
+            noteData = new HashMap<>();
+            noteIndex = 0;
+            dataIndex = 0;
+            currentNote = null;
+        }
+        else if (currentNote instanceof Develop page) {
             page.setContent(noteData);
             noteData = new HashMap<>();
             noteIndex = 0;
@@ -228,6 +235,15 @@ public class OwnYamlParser {
                 notes.add(page);
                 currentNote = page;
                 return page;
+            }
+            case DEVELOP -> {
+                if (currentNote != null) {
+                    setExtendedNote();
+                }
+                Develop develop = new Develop();
+                notes.add(develop);
+                currentNote = develop;
+                return develop;
             }
             case PROBLEM -> {
                 if (currentNote != null) {

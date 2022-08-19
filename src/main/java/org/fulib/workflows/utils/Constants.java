@@ -12,6 +12,8 @@ public class Constants {
     public static final String DATA = "data";
     public static final String PAGE = "page";
     public static final String DIV = "div";
+
+    public static final String DEVELOP = "develop";
     public static final String PROBLEM = "problem";
 
     // Page elements
