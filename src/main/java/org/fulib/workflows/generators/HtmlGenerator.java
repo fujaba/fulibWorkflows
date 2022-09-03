@@ -134,7 +134,7 @@ public class HtmlGenerator
             Files.createFile(Path.of(outputBoardFilePath));
          }
          Files.writeString(Path.of(outputBoardFilePath), htmlContent);
-         System.out.println("Bard written to: " + outputBoardFilePath);
+         System.out.println("Board written to: " + outputBoardFilePath);
       }
       catch (IOException e) {
          e.printStackTrace();

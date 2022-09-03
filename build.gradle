@@ -98,7 +98,7 @@ dependencies {
     implementation group: 'org.fulib', name: 'fulibTools', version: '1.5.1'
 
     // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
-    implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.18.0'
+    implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.18.1'
 
     // https://mvnrepository.com/artifact/org.fulib/fulibTables
     testImplementation group: 'org.fulib', name: 'fulibTables', version: '1.4.0'

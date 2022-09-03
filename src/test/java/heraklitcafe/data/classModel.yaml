@@ -1,5 +1,5 @@
 - c: 	org.fulib.classmodel.ClassModel
-  classes: 	branch 	place 	table 	selection 	orderItem 	client 	order 	itemRef 	mealItem
+  classes: 	branch 	place 	transition 	table 	selection 	orderItem 	client 	order 	itemRef 	mealItem
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -20,7 +20,15 @@
   modified: 	false
   name: 	Place
   propertyStyle: 	Bean
-  roles: 	place_tables 	place_clients 	place_selections 	place_orders 	place_itemRefs 	place_mealItems
+  roles: 	place_out 	place_tables 	place_in 	place_clients 	place_selections 	place_orders 	place_itemRefs 	place_mealItems
+
+- transition: 	org.fulib.classmodel.Clazz
+  attributes: 	transition_name
+  model: 	c
+  modified: 	false
+  name: 	Transition
+  propertyStyle: 	Bean
+  roles: 	transition_src 	transition_tgt
 
 - table: 	org.fulib.classmodel.Clazz
   attributes: 	table_name
@@ -103,6 +111,18 @@
   type: 	String
   typeSignature: 	String
 
+- place_out: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	place
+  collectionType: 	c1
+  id: 	Place_out
+  modified: 	false
+  name: 	out
+  other: 	transition_src
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - place_tables: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
@@ -112,6 +132,18 @@
   modified: 	false
   name: 	tables
   other: 	table_place
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- place_in: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	place
+  collectionType: 	c1
+  id: 	Place_in
+  modified: 	false
+  name: 	in
+  other: 	transition_tgt
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
@@ -172,6 +204,39 @@
   modified: 	false
   name: 	mealItems
   other: 	mealItem_place
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- transition_name: 	org.fulib.classmodel.Attribute
+  clazz: 	transition
+  id: 	Transition_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- transition_src: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	transition
+  collectionType: 	c1
+  id: 	Transition_src
+  modified: 	false
+  name: 	src
+  other: 	place_out
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- transition_tgt: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	transition
+  collectionType: 	c1
+  id: 	Transition_tgt
+  modified: 	false
+  name: 	tgt
+  other: 	place_in
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 

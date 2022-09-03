@@ -5,19 +5,48 @@
 - data: Branch uksCafeteria
 
 - data: Place freeTables
+  out: [offerTable]
+- data: Transition offerTable
+  tgt: [offeredTables]
 - data: Place offeredTables
+  out: [enter]
 - data: Place vacatedTables
-
+  out: [release]
 - data: Place clientsEntry
+  out: [enter]
+- data: Transition enter
+  tgt: [clientsReady]
 - data: Place clientsReady
+  out: [select]
 - data: Place menu
+  out: [select]
+- data: Transition select
+  tgt: [menu, orders, waitingClients]
 - data: Place waitingClients
+  out: [handOver]
 - data: Place orders
+  out: [unfold]
+- data: Transition unfold
+  out: [orderItems, pendingOrders]
 - data: Place diningClients
+  out: [leave]
 
 - data: Place pendingOrders
+  out: [handOver]
 - data: Place orderItems
+  out: [cook]
+- data: Transition cook
+  tgt: [mealItems]
 - data: Place mealItems
+  out: [handOver]
+- data: Transition handOver
+  tgt: [diningClients]
+
+- data: Transition leave
+  tgt: [vacatedTables]
+
+- data: Transition release
+  tgt: [freeTables]
 
 - data: Place freeTables
   tables: [t1, t2, t3, t4]

@@ -16,6 +16,8 @@ public class Place
    public static final String PROPERTY_SELECTIONS = "selections";
    public static final String PROPERTY_ITEM_REFS = "itemRefs";
    public static final String PROPERTY_MEAL_ITEMS = "mealItems";
+   public static final String PROPERTY_OUT = "out";
+   public static final String PROPERTY_IN = "in";
    private String name;
    private List<Table> tables;
    protected PropertyChangeSupport listeners;
@@ -24,6 +26,8 @@ public class Place
    private List<Selection> selections;
    private List<ItemRef> itemRefs;
    private List<MealItem> mealItems;
+   private List<Transition> out;
+   private List<Transition> in;
 
    public String getName()
    {
@@ -439,6 +443,138 @@ public class Place
       return this;
    }
 
+   public List<Transition> getOut()
+   {
+      return this.out != null ? Collections.unmodifiableList(this.out) : Collections.emptyList();
+   }
+
+   public Place withOut(Transition value)
+   {
+      if (this.out == null)
+      {
+         this.out = new ArrayList<>();
+      }
+      if (!this.out.contains(value))
+      {
+         this.out.add(value);
+         value.withSrc(this);
+         this.firePropertyChange(PROPERTY_OUT, null, value);
+      }
+      return this;
+   }
+
+   public Place withOut(Transition... value)
+   {
+      for (final Transition item : value)
+      {
+         this.withOut(item);
+      }
+      return this;
+   }
+
+   public Place withOut(Collection<? extends Transition> value)
+   {
+      for (final Transition item : value)
+      {
+         this.withOut(item);
+      }
+      return this;
+   }
+
+   public Place withoutOut(Transition value)
+   {
+      if (this.out != null && this.out.remove(value))
+      {
+         value.withoutSrc(this);
+         this.firePropertyChange(PROPERTY_OUT, value, null);
+      }
+      return this;
+   }
+
+   public Place withoutOut(Transition... value)
+   {
+      for (final Transition item : value)
+      {
+         this.withoutOut(item);
+      }
+      return this;
+   }
+
+   public Place withoutOut(Collection<? extends Transition> value)
+   {
+      for (final Transition item : value)
+      {
+         this.withoutOut(item);
+      }
+      return this;
+   }
+
+   public List<Transition> getIn()
+   {
+      return this.in != null ? Collections.unmodifiableList(this.in) : Collections.emptyList();
+   }
+
+   public Place withIn(Transition value)
+   {
+      if (this.in == null)
+      {
+         this.in = new ArrayList<>();
+      }
+      if (!this.in.contains(value))
+      {
+         this.in.add(value);
+         value.withTgt(this);
+         this.firePropertyChange(PROPERTY_IN, null, value);
+      }
+      return this;
+   }
+
+   public Place withIn(Transition... value)
+   {
+      for (final Transition item : value)
+      {
+         this.withIn(item);
+      }
+      return this;
+   }
+
+   public Place withIn(Collection<? extends Transition> value)
+   {
+      for (final Transition item : value)
+      {
+         this.withIn(item);
+      }
+      return this;
+   }
+
+   public Place withoutIn(Transition value)
+   {
+      if (this.in != null && this.in.remove(value))
+      {
+         value.withoutTgt(this);
+         this.firePropertyChange(PROPERTY_IN, value, null);
+      }
+      return this;
+   }
+
+   public Place withoutIn(Transition... value)
+   {
+      for (final Transition item : value)
+      {
+         this.withoutIn(item);
+      }
+      return this;
+   }
+
+   public Place withoutIn(Collection<? extends Transition> value)
+   {
+      for (final Transition item : value)
+      {
+         this.withoutIn(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -468,7 +604,9 @@ public class Place
 
    public void removeYou()
    {
+      this.withoutOut(new ArrayList<>(this.getOut()));
       this.withoutTables(new ArrayList<>(this.getTables()));
+      this.withoutIn(new ArrayList<>(this.getIn()));
       this.withoutClients(new ArrayList<>(this.getClients()));
       this.withoutSelections(new ArrayList<>(this.getSelections()));
       this.withoutOrders(new ArrayList<>(this.getOrders()));

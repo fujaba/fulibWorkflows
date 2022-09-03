@@ -5,7 +5,12 @@
 - data: Branch uksCafeteria
 
 - data: Place freeTables
+  out: [offerTable]
+- data: Transition offerTable
+  src: [freeTables]
+  tgt: [offeredTables]
 - data: Place offeredTables
+  in: [offerTable]
 - data: Place vacatedTables
 
 - data: Place clientsEntry

@@ -1,21 +1,34 @@
 package org.fulib.reachable;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
+import guru.nidi.graphviz.attribute.*;
+import guru.nidi.graphviz.engine.Format;
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.model.LinkSource;
+import guru.nidi.graphviz.model.MutableGraph;
+import guru.nidi.graphviz.model.Node;
 import org.fulib.FulibTables;
 import org.fulib.FulibTools;
 import org.fulib.patterns.PatternMatcher;
 import org.fulib.patterns.model.Pattern;
 import org.fulib.patterns.model.PatternObject;
+import org.fulib.patterns.model.RoleObject;
 import org.fulib.tables.ObjectTable;
 import org.fulib.tools.GraphDiagram;
 import org.fulib.yaml.*;
 
 import heraklitcafe.data.ItemRef;
+
+import static guru.nidi.graphviz.attribute.Attributes.attr;
+import static guru.nidi.graphviz.attribute.Rank.RankDir.LEFT_TO_RIGHT;
+import static guru.nidi.graphviz.model.Factory.*;
+import static guru.nidi.graphviz.model.Link.to;
 
 public class Reacher {
 
@@ -58,6 +71,82 @@ public class Reacher {
         this.startGraph = graph;
         return this;
     }
+
+    public void drawRules()
+    {
+
+        for (Rule r : this.getRuleSet()) {
+            String ruleName = r.getName();
+            String prefix = "lhs.";
+
+            MutableGraph lhs = mutGraph("LHS").setDirected(true).setCluster(true);
+            lhs.graphAttrs().add(Label.of("LHS"));
+            lhs.nodeAttrs().add(Shape.BOX);
+
+            for(PatternObject po : r.getPattern().getObjects()) {
+                Node node = node(prefix + po.getName()).with(Label.of(po.getName()));
+                lhs = lhs.add(node);
+            }
+
+            if (r.getPatternConstraint() != null) {
+                Node node = node(prefix + "constraint").with(Label.of(r.getPatternConstraint()), Shape.NONE);
+                lhs.add(node);
+            }
+
+            ArrayList<RoleObject> doneRoles = new ArrayList<>();
+
+            for( RoleObject role : r.getPattern().getRoles()) {
+                if (doneRoles.contains(role)) {
+                    continue;
+                }
+                Node link = node(prefix + role.getObject().getName())
+                      .link(to(node(prefix + role.getOther().getObject().getName()))
+                            .with(attr("label", Label.of(role.getOther().getName()))));
+                lhs.add(link);
+                doneRoles.add(role);
+                doneRoles.add(role.getOther());
+            }
+
+
+            MutableGraph rhs = mutGraph("RHS").setDirected(true).setCluster(true);
+            rhs.graphAttrs().add(Label.of("RHS"));
+            rhs.nodeAttrs().add(Shape.BOX);
+
+            if (r.getRhs() != null) {
+                for(PatternObject po : r.getRhs().getObjects()) {
+                    Node node = node(po.getName()).with(Label.of(po.getName()));
+                    rhs = rhs.add(node);
+                }
+
+                doneRoles = new ArrayList<>();
+
+                for( RoleObject role : r.getRhs().getRoles()) {
+                    if (doneRoles.contains(role)) {
+                        continue;
+                    }
+                    Node link = node(role.getObject().getName())
+                          .link(to(node(role.getOther().getObject().getName())).with(attr("label", Label.of(role.getOther().getName()))));
+                    rhs.add(link);
+                    doneRoles.add(role);
+                    doneRoles.add(role.getOther());
+                }
+            }
+
+            guru.nidi.graphviz.model.Graph g = graph(ruleName).directed()
+                  .graphAttr().with(Label.of(ruleName))
+                  .nodeAttr().with(Font.name("arial"))
+                  .linkAttr().with("class", "link-class")
+                  .with(lhs, rhs);
+            try {
+                Graphviz.fromGraph(g).height(100).render(Format.SVG).toFile(new File(String.format("tmp/reachable/rules/%s.svg", ruleName)));
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("Drawing " +  r.getName());
+        }
+    }
+
 
     public void draw() {
         // FulibTools.objectDiagrams().dumpSVG(drawPath + "/reachable.svg", reachableGraph.objMap().get("G0"));

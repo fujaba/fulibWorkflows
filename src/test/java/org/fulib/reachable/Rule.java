@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.function.BiConsumer;
 
 import org.fulib.patterns.model.Pattern;
-import org.fulib.patterns.model.PatternObject;
 
 public class Rule {
 
     private Pattern pattern;
+    private Pattern rhs;
     private BiConsumer<Graph, ArrayList<Object>> op;
     private String name;
+    private String patternConstraint;
 
     public Pattern getPattern() {
         return pattern;
@@ -22,6 +23,17 @@ public class Rule {
 
     public Rule setPattern(Pattern pattern) {
         this.pattern = pattern;
+        return this;
+    }
+
+    public Pattern getRhs()
+    {
+        return rhs;
+    }
+
+    public Rule setRhs(Pattern rhs)
+    {
+        this.rhs = rhs;
         return this;
     }
 
@@ -39,4 +51,14 @@ public class Rule {
         return this;
     }
 
+    public String getPatternConstraint()
+    {
+        return patternConstraint;
+    }
+
+    public Rule setPatternConstraint(String patternConstraint)
+    {
+        this.patternConstraint = patternConstraint;
+        return this;
+    }
 }

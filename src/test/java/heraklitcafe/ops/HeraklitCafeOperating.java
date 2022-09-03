@@ -27,7 +27,28 @@ public class HeraklitCafeOperating {
     private Rule enterRule;
 
     public static void main(String[] args) {
-        new HeraklitCafeOperating().runExperiments();
+        if (args != null && args.length > 0 && args[0].equals("drawRules")) {
+            new HeraklitCafeOperating().drawRules();
+        }
+        else {
+            new HeraklitCafeOperating().runExperiments();
+        }
+    }
+
+    private void drawRules()
+    {
+        Reacher reacher = new Reacher();
+
+        addClientsRule(reacher);
+        releaseTableRule(reacher);
+        addLeaveRule(reacher);
+        handOverRule(reacher);
+        addOfferAndEnterRules(reacher);
+        addSelectRule(reacher);
+        addUnfoldRule(reacher);
+        addCookRule(reacher);
+
+        reacher.drawRules();
     }
 
     public void runExperiments() {
@@ -221,23 +242,58 @@ public class HeraklitCafeOperating {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
         PatternObject freeTablesVar = pb.buildPatternObject("freeTables");
+        PatternObject offeredTablesVar = pb.buildPatternObject("offeredTables");
         pb.buildAttributeConstraint(freeTablesVar, Place.class, p -> p.getName().equals("freeTables"));
+        pb.buildAttributeConstraint(offeredTablesVar, Place.class, p -> p.getName().equals("offeredTables"));
         PatternObject tableVar = pb.buildPatternObject("table");
         pb.buildPatternLink(freeTablesVar, "place", "tables", tableVar);
-        Rule offerTable = new Rule().setName("offer").setPattern(pb.getPattern()).setOp(this::offerTable);
+        Rule offerTable = new Rule().setName("offer")
+              .setPattern(pb.getPattern());
+
+        pb = FulibTables.patternBuilder();
+        freeTablesVar = pb.buildPatternObject("freeTables");
+        offeredTablesVar = pb.buildPatternObject("offeredTables");
+        pb.buildAttributeConstraint(freeTablesVar, Place.class, p -> p.getName().equals("freeTables"));
+        pb.buildAttributeConstraint(offeredTablesVar, Place.class, p -> p.getName().equals("offeredTables"));
+        tableVar = pb.buildPatternObject("table");
+        pb.buildPatternLink(offeredTablesVar, "place", "tables", tableVar);
+
+        offerTable.setRhs(pb.getPattern()).setOp(this::offerTable);
         reacher.withRule(offerTable);
 
         // enter rule
         pb = FulibTables.patternBuilder();
-        PatternObject offeredTablesVar = pb.buildPatternObject("offeredTables");
+        offeredTablesVar = pb.buildPatternObject("offeredTables");
         pb.buildAttributeConstraint(offeredTablesVar, Place.class, p -> p.getName().equals("offeredTables"));
         PatternObject clientsEntryVar = pb.buildPatternObject("clientsEntry");
         pb.buildAttributeConstraint(clientsEntryVar, Place.class, p -> p.getName().equals("clientsEntry"));
+        PatternObject clientsReadyVar = pb.buildPatternObject("clientsReady");
+        pb.buildAttributeConstraint(clientsReadyVar, Place.class, p -> p.getName().equals("clientsReady"));
         tableVar = pb.buildPatternObject("table");
         PatternObject clientVar = pb.buildPatternObject("client");
         pb.buildPatternLink(offeredTablesVar, "place", "tables", tableVar);
         pb.buildPatternLink(clientsEntryVar, "place", "clients", clientVar);
         enterRule = new Rule().setName("enter").setPattern(pb.getPattern()).setOp(this::enter);
+
+        pb = FulibTables.patternBuilder();
+        offeredTablesVar = pb.buildPatternObject("offeredTables");
+        pb.buildAttributeConstraint(offeredTablesVar, Place.class, p -> p.getName().equals("offeredTables"));
+        clientsEntryVar = pb.buildPatternObject("clientsEntry");
+        pb.buildAttributeConstraint(clientsEntryVar, Place.class, p -> p.getName().equals("clientsEntry"));
+        clientsReadyVar = pb.buildPatternObject("clientsReady");
+        pb.buildAttributeConstraint(clientsReadyVar, Place.class, p -> p.getName().equals("clientsReady"));
+        tableVar = pb.buildPatternObject("table");
+        clientVar = pb.buildPatternObject("client");
+        //        t.setPlace(clientsReady);
+        //        c.setPlace(clientsReady);
+        //        c.setTable(t);
+        pb.buildPatternLink(clientsReadyVar, "place", "tables", tableVar);
+        pb.buildPatternLink(clientsReadyVar, "place", "clients", clientVar);
+        pb.buildPatternLink(clientVar, "client", "table", tableVar);
+        enterRule.setRhs(pb.getPattern());
+
+
+
         reacher.withRule(enterRule);
 
     }
@@ -245,18 +301,29 @@ public class HeraklitCafeOperating {
     private void addClientsRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
-
         PatternObject offeredTablesVar = pb.buildPatternObject("offeredTables");
         pb.buildAttributeConstraint(offeredTablesVar, Place.class, p -> p.getName().equals("offeredTables"));
-
         PatternObject clientsEntryPlaceVar = pb.buildPatternObject("clientsEntry");
         pb.buildAttributeConstraint(clientsEntryPlaceVar, Place.class, p -> p.getName().equals("clientsEntry"));
-
         pb.buildMatchConstraint(map -> (((Place) map.get("offeredTables")).getTables().size() == 4
                 && ((Place) map.get("clientsEntry")).getClients().size() == 0),
                 offeredTablesVar, clientsEntryPlaceVar);
-
         Rule rule = new Rule().setName("addClients").setPattern(pb.getPattern()).setOp(this::addClientsOp);
+        rule.setPatternConstraint("{offeredTables.tables.size() == 4}");
+
+        pb = FulibTables.patternBuilder();
+        offeredTablesVar = pb.buildPatternObject("offeredTables");
+        pb.buildAttributeConstraint(offeredTablesVar, Place.class, p -> p.getName().equals("offeredTables"));
+        clientsEntryPlaceVar = pb.buildPatternObject("clientsEntry");
+        pb.buildAttributeConstraint(clientsEntryPlaceVar, Place.class, p -> p.getName().equals("clientsEntry"));
+        PatternObject aliceVar = pb.buildPatternObject("Clara");
+        pb.buildPatternLink(clientsEntryPlaceVar, "place", "clients", aliceVar);
+        PatternObject bobVar = pb.buildPatternObject("Dora");
+        pb.buildPatternLink(clientsEntryPlaceVar, "place", "clients", bobVar);
+
+        rule.setRhs(pb.getPattern());
+
+
         reacher.withRule(rule);
     }
 
@@ -362,22 +429,16 @@ public class HeraklitCafeOperating {
     private void handOverRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
-
         PatternObject pendingOrdersPlaceVar = pb.buildPatternObject("pendingOrders");
         pb.buildAttributeConstraint(pendingOrdersPlaceVar, Place.class, p -> p.getName().equals("pendingOrders"));
-
         PatternObject mealItemsPlaceVar = pb.buildPatternObject("mealItems");
         pb.buildAttributeConstraint(mealItemsPlaceVar, Place.class, p -> p.getName().equals("mealItems"));
-
         PatternObject waitingClientsPlaceVar = pb.buildPatternObject("waitingClients");
         pb.buildAttributeConstraint(waitingClientsPlaceVar, Place.class, p -> p.getName().equals("waitingClients"));
-
         PatternObject diningClientsPlaceVar = pb.buildPatternObject("diningClients");
         pb.buildAttributeConstraint(diningClientsPlaceVar, Place.class, p -> p.getName().equals("diningClients"));
-
         PatternObject orderVar = pb.buildPatternObject("order");
         pb.buildPatternLink(pendingOrdersPlaceVar, "place", "orders", orderVar);
-
         pb.buildMatchConstraint(this::handOverConstraint, orderVar, mealItemsPlaceVar);
 
         Rule rule = new Rule().setName("handOver").setPattern(pb.getPattern()).setOp(this::handOverOp);
@@ -428,20 +489,28 @@ public class HeraklitCafeOperating {
     private void addCookRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
-
         PatternObject orderItemsPlaceVar = pb.buildPatternObject("orderItems");
         pb.buildAttributeConstraint(orderItemsPlaceVar, Place.class, p -> p.getName().equals("orderItems"));
-
         PatternObject mealItemsPlaceVar = pb.buildPatternObject("mealItems");
         pb.buildAttributeConstraint(mealItemsPlaceVar, Place.class, p -> p.getName().equals("mealItems"));
-
         PatternObject itemRefVar = pb.buildPatternObject("itemRef");
         pb.buildPatternLink(orderItemsPlaceVar, "place", "itemRefs", itemRefVar);
-
         PatternObject orderItemVar = pb.buildPatternObject("orderItem");
         pb.buildPatternLink(itemRefVar, "itemRefs", "orderItem", orderItemVar);
-
         Rule rule = new Rule().setName("cook").setPattern(pb.getPattern()).setOp(this::cookOp);
+
+        pb = FulibTables.patternBuilder();
+        orderItemsPlaceVar = pb.buildPatternObject("orderItems");
+        pb.buildAttributeConstraint(orderItemsPlaceVar, Place.class, p -> p.getName().equals("orderItems"));
+        mealItemsPlaceVar = pb.buildPatternObject("mealItems");
+        pb.buildAttributeConstraint(mealItemsPlaceVar, Place.class, p -> p.getName().equals("mealItems"));
+        PatternObject mealItemVar = pb.buildPatternObject("mealItem");
+        pb.buildPatternLink(mealItemsPlaceVar, "place", "mealItems", mealItemVar);
+        orderItemVar = pb.buildPatternObject("orderItem");
+        pb.buildPatternLink(mealItemVar, "mealItem", "orderItem", orderItemVar);
+        rule.setRhs(pb.getPattern());
+
+
         reacher.withRule(rule);
     }
 
@@ -467,20 +536,33 @@ public class HeraklitCafeOperating {
     private void addUnfoldRule(Reacher reacher) {
         // offer rule
         PatternBuilder pb = FulibTables.patternBuilder();
-
         PatternObject ordersPlaceVar = pb.buildPatternObject("orders");
         pb.buildAttributeConstraint(ordersPlaceVar, Place.class, p -> p.getName().equals("orders"));
-
         PatternObject orderItemsPlaceVar = pb.buildPatternObject("orderItems");
         pb.buildAttributeConstraint(orderItemsPlaceVar, Place.class, p -> p.getName().equals("orderItems"));
-
         PatternObject pendingOrdersPlaceVar = pb.buildPatternObject("pendingOrders");
         pb.buildAttributeConstraint(pendingOrdersPlaceVar, Place.class, p -> p.getName().equals("pendingOrders"));
-
         PatternObject orderVar = pb.buildPatternObject("order");
+        PatternObject selectionVar = pb.buildPatternObject("selection");
         pb.buildPatternLink(ordersPlaceVar, "place", "orders", orderVar);
-
+        pb.buildPatternLink(orderVar, "order", "selection", selectionVar);
         Rule rule = new Rule().setName("unfold").setPattern(pb.getPattern()).setOp(this::unfoldOp);
+        rule.setPatternConstraint("copyAllItems(selection.getItems(), orderItems)");
+
+        pb = FulibTables.patternBuilder();
+        ordersPlaceVar = pb.buildPatternObject("orders");
+        pb.buildAttributeConstraint(ordersPlaceVar, Place.class, p -> p.getName().equals("orders"));
+        orderItemsPlaceVar = pb.buildPatternObject("orderItems");
+        pb.buildAttributeConstraint(orderItemsPlaceVar, Place.class, p -> p.getName().equals("orderItems"));
+        pendingOrdersPlaceVar = pb.buildPatternObject("pendingOrders");
+        pb.buildAttributeConstraint(pendingOrdersPlaceVar, Place.class, p -> p.getName().equals("pendingOrders"));
+        orderVar = pb.buildPatternObject("order");
+        selectionVar = pb.buildPatternObject("selection");
+        pb.buildPatternLink(pendingOrdersPlaceVar, "place", "orders", orderVar);
+        pb.buildPatternLink(orderVar, "order", "selection", selectionVar);
+        rule.setRhs(pb.getPattern());
+
+
         reacher.withRule(rule);
     }
 
@@ -513,21 +595,40 @@ public class HeraklitCafeOperating {
         PatternObject clientsReadyPlaceVar = pb.buildPatternObject("clientsReady");
         PatternObject menuPlaceVar = pb.buildPatternObject("menu");
         PatternObject ordersPlaceVar = pb.buildPatternObject("orders");
-
         PatternObject waitingClientsPlaceVar = pb.buildPatternObject("waitingClients");
         pb.buildAttributeConstraint(waitingClientsPlaceVar, Place.class, p -> p.getName().equals("waitingClients"));
-
         PatternObject tableVar = pb.buildPatternObject("table");
+        PatternObject clientVar = pb.buildPatternObject("client");
         PatternObject selectionVar = pb.buildPatternObject("selection");
-
         pb.buildAttributeConstraint(menuPlaceVar, Place.class, p -> p.getName().equals("menu"));
         pb.buildAttributeConstraint(clientsReadyPlaceVar, Place.class, p -> p.getName().equals("clientsReady"));
         pb.buildAttributeConstraint(ordersPlaceVar, Place.class, p -> p.getName().equals("orders"));
-
         pb.buildPatternLink(clientsReadyPlaceVar, "place", "tables", tableVar);
         pb.buildPatternLink(menuPlaceVar, "place", "selections", selectionVar);
-
+        pb.buildPatternLink(tableVar, "table", "client", clientVar);
         Rule selectRule = new Rule().setName("select").setPattern(pb.getPattern()).setOp(this::selectOp);
+
+        pb = FulibTables.patternBuilder();
+        clientsReadyPlaceVar = pb.buildPatternObject("clientsReady");
+        menuPlaceVar = pb.buildPatternObject("menu");
+        ordersPlaceVar = pb.buildPatternObject("orders");
+        waitingClientsPlaceVar = pb.buildPatternObject("waitingClients");
+        PatternObject order = pb.buildPatternObject("order_t1_m2");
+        pb.buildAttributeConstraint(waitingClientsPlaceVar, Place.class, p -> p.getName().equals("waitingClients"));
+        tableVar = pb.buildPatternObject("table");
+        clientVar = pb.buildPatternObject("client");
+        selectionVar = pb.buildPatternObject("selection");
+        pb.buildPatternLink(menuPlaceVar, "place", "selections", selectionVar);
+        pb.buildPatternLink(order, "order", "table", tableVar);
+        pb.buildPatternLink(order, "order", "selection", selectionVar);
+        pb.buildPatternLink(ordersPlaceVar, "place", "orders", order);
+        pb.buildPatternLink(waitingClientsPlaceVar, "place", "orders", order);
+        pb.buildPatternLink(waitingClientsPlaceVar, "place", "tables", tableVar);
+        pb.buildPatternLink(waitingClientsPlaceVar, "place", "clients", clientVar);
+        pb.buildPatternLink(tableVar, "table", "client", clientVar);
+        // pb.buildPatternLink(waitingClientsPlaceVar, "place", "clients", );
+        selectRule.setRhs(pb.getPattern());
+
         reacher.withRule(selectRule);
     }
 
