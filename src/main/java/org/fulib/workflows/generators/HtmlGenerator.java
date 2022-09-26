@@ -63,7 +63,7 @@ public class HtmlGenerator {
                 if (note instanceof Page page) {
                     lastPage = page;
                     List<Integer> targetPageIndexList = evaluateTargetPageIndex(page);
-                    String pageContent = pageConstructor.buildPage(page, targetPageIndexList, divPageMap);
+                    String pageContent = pageConstructor.buildPage(page, targetPageIndexList, divPageMap, this.boardGenerator.isWebGeneration());
                     if (pageContent != null) {
                         pagesHTML.add(pageContent);
                     }
@@ -78,7 +78,7 @@ public class HtmlGenerator {
                     if (lastPage != null) {
                         List<Integer> targetPageIndexList = evaluateTargetPageIndex(lastPage);
 
-                        String lastPageContent = pageConstructor.buildPage(lastPage, targetPageIndexList, divPageMap);
+                        String lastPageContent = pageConstructor.buildPage(lastPage, targetPageIndexList, divPageMap, this.boardGenerator.isWebGeneration());
                         if (lastPageContent != null) {
                             pagesHTML.add(lastPageContent);
                         }
