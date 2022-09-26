@@ -4,7 +4,7 @@ In case you did not do that check out the [Installation](../../README.md#Install
 
 - Create a new directory `src/gen/resources/workflows`
 - Add your first workflow file with the `.es.yaml` file extension
-- A workflow file needs at least on `- workflow:` event
+- A workflow file needs at least one `- workflow:` event
 
 ## Example Workflow
 ```yaml

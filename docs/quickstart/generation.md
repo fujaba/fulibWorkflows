@@ -16,9 +16,9 @@ public class Generate {
 
         Path filePath = Path.of("src/gen/resources/workflow.es.yaml"); // Path to the es.yaml file
 
-        String yamlContent = "";
+        String yamlContent;
         try {
-            yamlContent = Files.readString(Path.of("src/gen/resources/workflow.es.yaml"));
+            yamlContent = Files.readString(filePath);
             boardGenerator.generateBoardFromString(yamlContent);
         } catch (IOException e) {
             e.printStackTrace();

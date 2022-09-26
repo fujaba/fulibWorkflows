@@ -8,6 +8,7 @@ Values can either be a string or an integer.
 Special strings that are used as identifiers in the description are not allowed to use as keys in event and data notes.
 These consist of the following strings:
 
-- workflow, page, externalSystem, service, command, policy, user, problem 
+- workflow, page, externalSystem, service, command, policy, user, problem, div
 - event, data 
 - pageName, text, input, password, button, value, targetPage
+- divName
