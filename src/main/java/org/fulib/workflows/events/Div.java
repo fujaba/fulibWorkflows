@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.misc.Pair;
 import java.util.Map;
 
 /**
- * Processes Page note from event storming
+ * Processes div note for pages from event storming
  */
 public class Div extends BaseNote {
     private Map<Integer, Pair<String, String>> content;
@@ -20,7 +20,7 @@ public class Div extends BaseNote {
 
     /**
      * Setter for content field
-     * @param content Map containing content from a page note
+     * @param content Map containing content from a div note
      */
     public void setContent(Map<Integer, Pair<String, String>> content) {
         this.content = content;

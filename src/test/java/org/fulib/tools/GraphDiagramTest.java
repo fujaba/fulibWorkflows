@@ -1,11 +1,11 @@
 package org.fulib.tools;
 
+import org.junit.Test;
+import org.junit.runner.JUnitCore;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import org.junit.Test;
-import org.junit.runner.JUnitCore;
 
 public class GraphDiagramTest {
     public static void main(String[] args) {

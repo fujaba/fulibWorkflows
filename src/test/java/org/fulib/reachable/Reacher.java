@@ -1,16 +1,10 @@
 package org.fulib.reachable;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.*;
-
-import guru.nidi.graphviz.attribute.*;
+import guru.nidi.graphviz.attribute.Font;
+import guru.nidi.graphviz.attribute.Label;
+import guru.nidi.graphviz.attribute.Shape;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
-import guru.nidi.graphviz.model.LinkSource;
 import guru.nidi.graphviz.model.MutableGraph;
 import guru.nidi.graphviz.model.Node;
 import org.fulib.FulibTables;
@@ -21,12 +15,19 @@ import org.fulib.patterns.model.PatternObject;
 import org.fulib.patterns.model.RoleObject;
 import org.fulib.tables.ObjectTable;
 import org.fulib.tools.GraphDiagram;
-import org.fulib.yaml.*;
+import org.fulib.yaml.Reflector;
+import org.fulib.yaml.ReflectorMap;
+import org.fulib.yaml.Yaml;
+import org.fulib.yaml.YamlIdMap;
 
-import heraklitcafe.data.ItemRef;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
 
 import static guru.nidi.graphviz.attribute.Attributes.attr;
-import static guru.nidi.graphviz.attribute.Rank.RankDir.LEFT_TO_RIGHT;
 import static guru.nidi.graphviz.model.Factory.*;
 import static guru.nidi.graphviz.model.Link.to;
 

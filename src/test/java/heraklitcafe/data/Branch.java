@@ -1,6 +1,7 @@
 package heraklitcafe.data;
-import java.util.Objects;
+
 import java.beans.PropertyChangeSupport;
+import java.util.Objects;
 
 public class Branch
 {

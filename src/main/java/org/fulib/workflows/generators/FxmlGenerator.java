@@ -1,6 +1,9 @@
 package org.fulib.workflows.generators;
 
-import org.fulib.workflows.events.*;
+import org.fulib.workflows.events.BaseNote;
+import org.fulib.workflows.events.Board;
+import org.fulib.workflows.events.Page;
+import org.fulib.workflows.events.Workflow;
 import org.fulib.workflows.generators.constructors.FxmlConstructor;
 
 import java.io.IOException;
@@ -71,10 +74,11 @@ public class FxmlGenerator {
             Files.createDirectories(Path.of(outputDirectory));
 
             String outputFxmlFilePath = outputDirectory + fileName + ".fxml";
-            if (!Files.exists(Path.of(outputFxmlFilePath))) {
-                Files.createFile(Path.of(outputFxmlFilePath));
+            Path outputPath = Path.of(outputFxmlFilePath);
+            if (!Files.exists(outputPath)) {
+                Files.createFile(outputPath);
             }
-            Files.writeString(Path.of(outputFxmlFilePath), fxmlContent);
+            Files.writeString(outputPath, fxmlContent);
 
         } catch (IOException e) {
             e.printStackTrace();

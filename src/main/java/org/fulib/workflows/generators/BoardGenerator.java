@@ -6,7 +6,9 @@ import org.fulib.builder.ClassModelManager;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.workflows.events.Board;
 import org.fulib.workflows.yaml.OwnYamlParser;
-import org.fulib.yaml.*;
+import org.fulib.yaml.Reflector;
+import org.fulib.yaml.ReflectorMap;
+import org.fulib.yaml.YamlObject;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,12 +23,8 @@ public class BoardGenerator {
     private DiagramGenerator diagramGenerator;
     private FxmlGenerator fxmlGenerator;
     private HtmlGenerator htmlGenerator;
-    private boolean standAlone;
-
     private boolean webGeneration = false;
     private String genDir = "tmp";
-
-    private String id;
 
     /**
      * Generates mockup and diagram files from a *.es.yaml file
@@ -147,15 +145,10 @@ public class BoardGenerator {
         return this;
     }
 
-    public BoardGenerator setStandAlone() {
-        standAlone = true;
-        return this;
-    }
-
     public void generateClassCode(String path, String packageName) {
         // for each class model
         Set<Entry<String, ClassModelManager>> entrySet = this.diagramGenerator.getClassDiagramMap().entrySet();
-        for (Entry<String,ClassModelManager> entry : entrySet) {
+        for (Entry<String, ClassModelManager> entry : entrySet) {
             // generate code
             String diagramName = entry.getKey();
             ClassModelManager mm = entry.getValue();
@@ -195,14 +188,13 @@ public class BoardGenerator {
                     continue;
                 }
 
-                if (value instanceof Collection ) {
+                if (value instanceof Collection) {
                     ArrayList<YamlObject> valueList = (ArrayList<YamlObject>) value;
                     for (YamlObject yamlValue : valueList) {
                         Object tgt = objMap.get(yamlValue.getId());
                         reflector.setValue(obj, prop, tgt);
                     }
-                }
-                else {
+                } else {
                     reflector.setValue(obj, prop, value);
                 }
             }

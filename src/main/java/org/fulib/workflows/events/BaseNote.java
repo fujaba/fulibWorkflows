@@ -19,7 +19,7 @@ public class BaseNote {
      * Setter for name field
      *
      * @param name String containing the name of the note
-     * @return
+     * @return BaseNote object itself
      */
     public BaseNote setName(String name) {
         this.name = name;

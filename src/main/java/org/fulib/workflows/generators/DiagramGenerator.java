@@ -79,7 +79,7 @@ public class DiagramGenerator {
                     previousData.add((Data) note);
 
                     // Always use current note and all previous to represent the objectDiagram according to the timeline
-                    String diagramString = diagramConstructor.buildObjectDiagram(previousData, note.getIndex());
+                    String diagramString = diagramConstructor.buildObjectDiagram(previousData);
 
                     if (diagramString != null) {
                         diagrams.add(diagramString);
@@ -101,7 +101,7 @@ public class DiagramGenerator {
             previousData = entry.getValue();
             Map<String, YamlObject> yamlGraph = diagramConstructor.buildFulibGraphDiagram(previousData);
             objectListMap.put(key, yamlGraph);
-            String classdiagramString = classDiagramConstructor.buildClassDiagram(previousData, yamlGraph);
+            String classdiagramString = classDiagramConstructor.buildClassDiagram(yamlGraph);
 
             classDiagramMap.put(key, classDiagramConstructor.getMm());
 

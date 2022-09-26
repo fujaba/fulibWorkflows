@@ -1,9 +1,9 @@
 package org.fulib.reachable;
 
+import org.fulib.patterns.model.Pattern;
+
 import java.util.ArrayList;
 import java.util.function.BiConsumer;
-
-import org.fulib.patterns.model.Pattern;
 
 public class Rule {
 

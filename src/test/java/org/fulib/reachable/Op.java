@@ -1,6 +1,7 @@
 package org.fulib.reachable;
-import java.util.Objects;
+
 import java.beans.PropertyChangeSupport;
+import java.util.Objects;
 
 public class Op
 {

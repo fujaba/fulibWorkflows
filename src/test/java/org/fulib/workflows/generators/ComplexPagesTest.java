@@ -1,9 +1,9 @@
 package org.fulib.workflows.generators;
 
-import java.nio.file.Path;
-
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
+
+import java.nio.file.Path;
 
 public class ComplexPagesTest {
 
@@ -12,7 +12,7 @@ public class ComplexPagesTest {
     }
     @Test
     public void testOneWorkflow() {
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/complexPages.es.yaml"));
     }
 }

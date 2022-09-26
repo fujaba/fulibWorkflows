@@ -1,9 +1,9 @@
 package org.fulib.workflows.generators;
 
-import java.nio.file.Path;
-
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
+
+import java.nio.file.Path;
 
 public class HeraklitRestaurantTest {
 
@@ -13,14 +13,14 @@ public class HeraklitRestaurantTest {
 
     @Test
     public void testGenCafeData() {
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant-extended.es.yaml"));
         boardGenerator.generateClassCode("src/test/java", "heraklitcafe.data");
     }
 
     @Test
     public void testGenReachabilityData() {
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-reachable.es.yaml"));
         // boardGenerator.generateClassCode("src/test/java", "org.fulib.reachable");
     }

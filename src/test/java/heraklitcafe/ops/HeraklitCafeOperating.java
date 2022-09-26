@@ -1,14 +1,8 @@
 package heraklitcafe.ops;
 
-import java.nio.file.Path;
-import java.util.*;
-import java.util.function.BiConsumer;
-
+import heraklitcafe.data.*;
 import org.fulib.FulibTables;
-import org.fulib.FulibTools;
 import org.fulib.patterns.PatternBuilder;
-import org.fulib.patterns.PatternMatcher;
-import org.fulib.patterns.model.Pattern;
 import org.fulib.patterns.model.PatternObject;
 import org.fulib.reachable.Graph;
 import org.fulib.reachable.Op;
@@ -18,7 +12,9 @@ import org.fulib.tables.ObjectTable;
 import org.fulib.workflows.generators.BoardGenerator;
 import org.fulib.yaml.Yaml;
 
-import heraklitcafe.data.*;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class HeraklitCafeOperating {
 
@@ -62,7 +58,7 @@ public class HeraklitCafeOperating {
 
     private void moreRulesNoNamesReduceByModules() {
         System.out.println("doing moreRulesNoNamesReduceByModules");
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
 
         // execute init workflow
@@ -142,7 +138,7 @@ public class HeraklitCafeOperating {
     }
 
     private void moreRulesNoNamesNoClients() {
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurantNoClients.es.yaml"));
 
         // execute init workflow
@@ -170,7 +166,7 @@ public class HeraklitCafeOperating {
     }
 
     private void moreRulesNoNames() {
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
 
         // execute init workflow
@@ -198,7 +194,7 @@ public class HeraklitCafeOperating {
     }
 
     private void offerTablesAndEnterRulesNoNames() {
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
 
         // execute init workflow
@@ -219,7 +215,7 @@ public class HeraklitCafeOperating {
     }
 
     private void offerTablesAndEnterRulesWithTableAndCustomerNames() {
-        BoardGenerator boardGenerator = new BoardGenerator().setStandAlone();
+        BoardGenerator boardGenerator = new BoardGenerator();
         boardGenerator.generateBoardFromFile(Path.of("src/gen/resources/heraklit-restaurant.es.yaml"));
 
         // execute init workflow

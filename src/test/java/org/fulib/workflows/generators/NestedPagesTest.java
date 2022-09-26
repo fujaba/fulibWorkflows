@@ -1,9 +1,9 @@
 package org.fulib.workflows.generators;
 
-import java.nio.file.Path;
-
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
+
+import java.nio.file.Path;
 
 public class NestedPagesTest {
 

@@ -2,11 +2,6 @@ package org.fulib.reachable;
 
 import java.beans.PropertyChangeSupport;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Collections;
-import java.util.Collection;
 
 public class Graph
 {

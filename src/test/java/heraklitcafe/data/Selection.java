@@ -1,10 +1,7 @@
 package heraklitcafe.data;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Collections;
-import java.util.Collection;
+
 import java.beans.PropertyChangeSupport;
+import java.util.*;
 
 public class Selection
 {

@@ -20,9 +20,6 @@ public class BoardConstructor {
     private Board currentBoard;
     private STGroupFile boardGroup;
     private boolean webGeneration;
-
-    private boolean standAlone;
-
     private final Map<String, Page> divPageMap = new LinkedHashMap<>();
     private boolean pageComplete;
     private Page lastPage;
@@ -77,9 +74,9 @@ public class BoardConstructor {
         for (BaseNote note : workflow.getNotes()) {
             noteST = boardGroup.getInstanceOf("note");
             actorST = boardGroup.getInstanceOf("actor");
-            objectNoteST = boardGroup.getInstanceOf("objectNote");
-            if (this.standAlone) {
-                objectNoteST = boardGroup.getInstanceOf("objectNoteAlone");
+            objectNoteST = boardGroup.getInstanceOf("objectNoteAlone");
+            if (this.webGeneration) {
+                objectNoteST = boardGroup.getInstanceOf("objectNote");
             }
 
             if (note instanceof Event event) {
@@ -151,33 +148,31 @@ public class BoardConstructor {
                     pageIndex++;
                 }
             } else if (note instanceof Develop develop) {
-               String content = buildDevelop(develop);
-               workflowContent.append(content);
+                String content = buildDevelop(develop);
+                workflowContent.append(content);
             }
         }
 
         return workflowContent.toString();
     }
 
-   private String buildDevelop(Develop develop)
-   {
-      // just add all key value pairs
-      StringBuilder result = new StringBuilder();
-      for (Map.Entry<Integer, Pair<String, String>> entry : develop.getContent().entrySet()) {
-         Pair<String, String> pair = entry.getValue();
-         String value = pair.b.replaceAll("\n", "<br>\n");
-         String line = String.format("%s: %s<br>\n", pair.a, value);
-         result.append(line);
-      }
+    private String buildDevelop(Develop develop) {
+        // just add all key value pairs
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<Integer, Pair<String, String>> entry : develop.getContent().entrySet()) {
+            Pair<String, String> pair = entry.getValue();
+            String value = pair.b.replaceAll("\n", "<br>\n");
+            String line = String.format("%s: %s<br>\n", pair.a, value);
+            result.append(line);
+        }
 
-      // develop(content)
-      ST st = boardGroup.getInstanceOf("develop");
-      st.add("content", result.toString());
-      String content = st.render();
-      return content;
-   }
+        // develop(content)
+        ST st = boardGroup.getInstanceOf("develop");
+        st.add("content", result.toString());
+        return st.render();
+    }
 
-   private void closeDataOrPageNote(StringBuilder workflowContent, int index, boolean isPage) {
+    private void closeDataOrPageNote(StringBuilder workflowContent, int index, boolean isPage) {
         StringBuilder closeContent = new StringBuilder();
         ST st;
 
@@ -256,9 +251,6 @@ public class BoardConstructor {
 
     private String buildPageNote(Page page) {
         ST pageNoteST = boardGroup.getInstanceOf("pageNote");
-        if (this.standAlone) {
-            pageNoteST = boardGroup.getInstanceOf("pageNoteAlone");
-        }
 
         String pageContent = buildPageContent(page);
 
@@ -282,7 +274,7 @@ public class BoardConstructor {
             switch (desc) {
                 case "text" -> {
                     st = boardGroup.getInstanceOf("pageText");
-                    if (value.indexOf("<pre>") >= 0) {
+                    if (value.contains("<pre>")) {
                         value = value.replace("<pre>", "<pre  style=\"text-align:left\">");
                         st = boardGroup.getInstanceOf("pagePre");
                     }
@@ -317,8 +309,7 @@ public class BoardConstructor {
                         Page divPage = divPageMap.get(split[j]);
                         if (divPage != null) {
                             String content = buildPageNote(divPage);
-                        }
-                        else {
+                        } else {
                             pageComplete = false;
                         }
                     }
@@ -331,8 +322,7 @@ public class BoardConstructor {
         return pageContent.toString();
     }
 
-    private String stripBraces(String value)
-    {
+    private String stripBraces(String value) {
         int pos = value.indexOf('[');
         if (pos >= 0) {
             value = value.substring(pos + 1);
@@ -342,10 +332,5 @@ public class BoardConstructor {
             value = value.substring(0, pos);
         }
         return value;
-    }
-
-    public BoardConstructor setStandAlone(boolean standAlone) {
-        this.standAlone = standAlone;
-        return this;
     }
 }
