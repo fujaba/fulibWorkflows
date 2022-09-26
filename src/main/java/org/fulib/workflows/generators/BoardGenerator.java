@@ -48,7 +48,6 @@ public class BoardGenerator {
      */
     public void generateBoardFromString(String yamlContent) {
         Board board = generateBoard(yamlContent);
-        FulibTools.objectDiagrams().dumpSVG("tmp/nestedPagesBoard.svg", board);
         diagramGenerator = new DiagramGenerator(this);
         fxmlGenerator = new FxmlGenerator(this);
         htmlGenerator = new HtmlGenerator(board, this);

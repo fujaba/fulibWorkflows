@@ -133,6 +133,19 @@
         "problem"
       ],
       "additionalProperties": false
+    },
+    "divItem": {
+      "description": "Defines a ui page",
+      "type": "object",
+      "properties": {
+        "div": {
+          "$ref": "div.schema.json"
+        }
+      },
+      "required": [
+        "div"
+      ],
+      "additionalProperties": false
     }
   },
   "items": {
@@ -166,6 +179,9 @@
       },
       {
         "$ref": "#/$defs/problemItem"
+      },
+      {
+        "$ref": "#/$defs/divItem"
       }
     ]
   }
