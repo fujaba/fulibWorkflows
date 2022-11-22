@@ -146,7 +146,7 @@ public class BoardGenerator {
 
     public void generateClassCode(String path, String packageName) {
         // for each class model
-        Set<Entry<String, ClassModelManager>> entrySet = this.diagramGenerator.getClassDiagramMap().entrySet();
+        Set<Entry<String, ClassModelManager>> entrySet = diagramGenerator.getClassDiagramMap().entrySet();
         for (Entry<String, ClassModelManager> entry : entrySet) {
             // generate code
             String diagramName = entry.getKey();
