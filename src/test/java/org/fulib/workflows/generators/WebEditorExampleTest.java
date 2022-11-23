@@ -39,4 +39,14 @@ public class WebEditorExampleTest {
         Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
         Assert.assertEquals(25, map.size()); // 1 Board, 12 Pages (HTML), 12 Pages (FXML)
     }
+
+    @Test
+    public void testSubPages() {
+        BoardGenerator boardGenerator = new BoardGenerator();
+        boardGenerator.setWebGeneration(true);
+
+        Path yamlFile = Path.of("src/gen/resources/examples/webeditor/subPages.es.yaml");
+        Map<String, String> map = boardGenerator.generateAndReturnHTMLsFromFile(yamlFile);
+        Assert.assertEquals(4, map.size()); // 1 Board, 2 Pages (HTML), 1 Pages (FXML) -> broken fxml
+    }
 }

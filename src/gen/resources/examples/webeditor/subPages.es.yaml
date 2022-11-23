@@ -1,0 +1,28 @@
+- workflow: Sub pages
+
+- page:
+  - pageName: Dashboard
+  - text: Welcome to the page
+  - div: [login, register]
+
+- div:
+  - divName: login
+  - text: Please log in
+  - input: Username
+  - password: Password
+  - button: Login
+
+- div:
+  - divName: register
+  - text: Please register
+  - input: Username
+  - input: E-Mail
+  - password: Password
+  - button: Register
+
+- div:
+    - divName: login
+    - text: Please log in
+    - input: E-Mail
+    - password: Password
+    - button: Login

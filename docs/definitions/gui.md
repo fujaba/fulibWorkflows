@@ -80,7 +80,20 @@ This only works for HTML-Mockups in the fulibWorkflows Web-Editor on [fulib.org]
 
 ## Divs
 ```yaml
+- page:
+    - pageName: Dashboard
+    - text: Welcome
+    - divs: [login, register]
+
 - div:
-    - divName: test
-    - text: Testerino
+    - divName: login
+    - text: Please log in
+
+- div:
+    - divName: register
+    - text: Register yourself
 ```
+
+A page can also consist of multiple divs. The Divs will become columns in the generated html-file.
+Divs can be seen as sub pages and therefore can consist of the same elements.
+When a div changes the generated html-file changes accordingly without another page-note.

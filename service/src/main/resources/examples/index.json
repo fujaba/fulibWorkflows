@@ -12,6 +12,10 @@
     "path": "Pages.es.yaml"
   },
   {
+    "name": "Sub pages",
+    "path": "SubPages.es.yaml"
+  },
+  {
     "name": "Microservices",
     "path": "Microservices.es.yaml"
   }
